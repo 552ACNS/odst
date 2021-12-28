@@ -1,11 +1,20 @@
 import { Module } from '@nestjs/common';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { GraphQLModule } from '@nestjs/graphql';
+import { PersonModule } from '../person/person.module';
+import { OrgModule } from '../org/org.module';
+import { IncidentModule } from '../incident/incident.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    GraphQLModule.forRoot({
+      autoSchemaFile: true,
+      playground: process.env.NODE_ENV !== 'production',
+      // plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      // Disables playground because the apollo server system is better
+    }),
+    PersonModule,
+    OrgModule,
+    IncidentModule    
+  ],
 })
 export class AppModule {}

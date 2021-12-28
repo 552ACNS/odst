@@ -1,0 +1,52 @@
+import { InputType, Field, PartialType } from '@nestjs/graphql';
+import { Prisma } from '.prisma/client';
+import { PersonUpdateManyWithoutOrgInput } from './person.update.input';
+import { OrgCreateInput } from './org.create.input';
+import { OrgWhereUniqueInput } from './org.unique.input';
+
+@InputType()
+export class OrgUpdateInput
+  extends PartialType(OrgCreateInput)
+  implements Prisma.OrgUpdateInput
+{
+  @Field(() => [PersonUpdateManyWithoutOrgInput], { nullable: true })
+  persons?: Prisma.PersonUpdateManyWithoutOrgInput;
+}
+
+// Think yall forgot to finish this....
+
+@InputType()
+export class OrgUpdateOneRequiredWithoutPersonsInput
+  implements Prisma.OrgUpdateOneRequiredWithoutPersonsInput
+{
+  @Field(() => [OrgWhereUniqueInput], { nullable: true })
+  connect?: Prisma.OrgWhereUniqueInput;
+
+  //@Field(() => OrgCreateWithoutPersonsInput, { nullable: true })
+  //  create?: Prisma.OrgCreateWithoutPersonsInput;
+
+  //@Field(() => OrgUpdateWithoutPersonsDataInput, { nullable: true })
+  //update?: Prisma.OrgUpdateWithoutPersonsDataInput;
+
+  //upsert?: Prisma.OrgUpsertWithoutPersonsInput;
+}
+
+///@InputType()
+//export class OrgUpdateOneRequiredWithoutPersonsInput
+//// implements Prisma.OrgUpdateOneRequiredWithoutPersonsInput
+//{
+//  @Field(() => OrgWhereUniqueInput)
+// connect?: Prisma.OrgWhereUniqueInput;
+
+// @Field(() => OrgCreateInput)
+// create?: Prisma.OrgCreateInput;
+
+// @Field()
+// delete?: boolean;
+
+// @Field()
+// disconnect?: boolean;
+
+// @Field()
+// set?: Prisma.OrgWhereUniqueInput;
+//}

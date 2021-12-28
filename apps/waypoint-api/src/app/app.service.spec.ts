@@ -15,7 +15,7 @@ describe('AppService', () => {
 
   describe('getData', () => {
     it('should return "Welcome to waypoint-api!"', () => {
-      expect(service.getData()).toEqual({ message: 'Welcome to waypoint-api!' });
+      expect(service.getData()).toEqual("Hello You!");
     });
   });
 });

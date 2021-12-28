@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@odst/types": ["libs/types/src/index.ts"]
-    }
+    },
+    "strictNullChecks": true
   },
   "exclude": ["node_modules", "tmp"]
 }

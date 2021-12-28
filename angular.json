@@ -49,6 +49,29 @@
             "jestConfig": "apps/waypoint-api/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "prisma-generate": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx prisma generate --schema=apps/waypoint-api/schema.prisma"
+          }
+        },
+        "prisma-migrate": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "envFile": "apps/waypoint-api/.env.local",
+            "command": "npx prisma db push --accept-data-loss",
+            "schema": "apps/waypoint-api/schema.prisma"
+          },
+          "configurations": {
+            "test": {
+              "envFile": "apps/waypoint-api/.env.test"
+            },
+            "production": {
+              "envFile": "apps/waypoint-api/.env.prod",
+              "command": "npx prisma migrate deploy"
+            }
+          }
         }
       },
       "tags": []

@@ -1,0 +1,149 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Person {
+  id              String     @id @default(uuid()) // Prisma uses @id to mark the primary key
+  dodId           Float      @unique // @unique is equivalent to UNIQUE
+  ssn             Int        @unique
+  email           String     @unique
+  firstName       String
+  middleInitial   String?    @db.Char(1) // @db.Char(1) is equivalent to VARCHAR(1)
+  lastName        String
+  hairColor       HairColor
+  eyeColor        EyeColor
+  birthDate       DateTime
+  birthCity       String
+  birthState      BirthState
+  birthCountry    String
+  citizenshipId   String
+  initialTraining Boolean    @default(false)
+  NDA             Boolean    @default(false)
+  spec            Spec       @default(value: OTHER) // Example
+  grade           Int
+  org             Org        @relation(fields: [orgId], references: [id]) // @relation(fields: [orgId], references: [id]) is equivalent to FOREIGN KEY
+  orgId           String
+  role            Role       @default(value: NONE)
+  height          Int // This is in inches
+}
+
+model Org {
+  id       String   @id @default(uuid())
+  name     String   @unique // Example "552 ACNS"
+  aliases  String[]
+  orgTier  OrgTier
+  persons  Person[] // an org can have many different people
+  parentId String? // a parent org can have many child orgs
+  parent   Org?     @relation("ParentChild", fields: [parentId], references: [id])
+  children Org[]    @relation("ParentChild") // This is a self relation
+}
+
+model Incident {
+  id           String   @id @default(uuid())
+  openDate     DateTime
+  closeDate    DateTime
+  reportedDate DateTime
+  selfReported Boolean
+}
+
+enum Role {
+  ADMIN
+  SM // Security Manager
+  NONE // default value
+}
+
+enum HairColor {
+  BLACK // haircolors
+  BLONDE
+  BROWN
+  GRAY
+  RED
+  WHITE
+  BALD
+}
+
+enum Spec {
+  ENLISTED
+  OFFICER
+  CIVILIAN
+  CONTRACTOR
+  WARRANT
+  OTHER
+}
+
+enum EyeColor {
+  BLUE
+  GREEN
+  BROWN
+  BLACK
+  HAZEL
+}
+
+enum OrgTier {
+  WING
+  GROUP
+  SQUADRON
+  OTHER
+}
+
+enum BirthState {
+  OTHER
+  AL // Alabama
+  AK // Alaska
+  AZ // Arizona
+  AR // Arkansas
+  CA // California
+  CO // Colorado
+  CT // Connecticut
+  DE // Delaware
+  FL // Florida
+  GA // Georgia
+  HI // Hawaii
+  ID // Idaho
+  IL // Illinois
+  IN // Indiana
+  IA // Iowa
+  KS // Kansas
+  KY // Kentucky
+  LA // Louisiana
+  ME // Maine
+  MD // Maryland
+  MA // Massachusetts
+  MI // Michigan
+  MN // Minnesota
+  MS // Mississippi
+  MO // Missouri
+  MT // Montana
+  NE // Nebraska
+  NV // Nevada
+  NH // New Hampshire
+  NJ // New Jersey
+  NM // New Mexico
+  NY // New York
+  NC // North Carolina
+  ND // North Dakota
+  OH // Ohio
+  OK // Oklahoma
+  OR // Oregon
+  PA // Pennsylvania
+  RI // Rhode Island
+  SC // South Carolina
+  SD // South Dakota
+  TN // Tennessee
+  TX // Texas
+  UT // Utah
+  VT // Vermont
+  VA // Virginia
+  WA // Washington
+  WV // West Virginia
+  WI // Wisconsin
+  WY // Wyoming
+}
