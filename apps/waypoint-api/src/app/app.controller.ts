@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { Message } from '@odst/api-interfaces';
+import { Message } from '@odst/types';
 
 import { AppService } from './app.service';
 

@@ -1,19 +1,19 @@
 {
   "version": 1,
   "projects": {
-    "api": {
-      "root": "apps/api",
-      "sourceRoot": "apps/api/src",
+    "waypoint-api": {
+      "root": "apps/waypoint-api",
+      "sourceRoot": "apps/waypoint-api/src",
       "projectType": "application",
       "architect": {
         "build": {
           "builder": "@nrwl/node:build",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/api",
-            "main": "apps/api/src/main.ts",
-            "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
+            "outputPath": "dist/apps/waypoint-api",
+            "main": "apps/waypoint-api/src/main.ts",
+            "tsConfig": "apps/waypoint-api/tsconfig.app.json",
+            "assets": ["apps/waypoint-api/src/assets"]
           },
           "configurations": {
             "production": {
@@ -22,8 +22,8 @@
               "inspect": false,
               "fileReplacements": [
                 {
-                  "replace": "apps/api/src/environments/environment.ts",
-                  "with": "apps/api/src/environments/environment.prod.ts"
+                  "replace": "apps/waypoint-api/src/environments/environment.ts",
+                  "with": "apps/waypoint-api/src/environments/environment.prod.ts"
                 }
               ]
             }
@@ -32,37 +32,37 @@
         "serve": {
           "builder": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "api:build"
+            "buildTarget": "waypoint-api:build"
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": ["apps/api/**/*.ts"]
+            "lintFilePatterns": ["apps/waypoint-api/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/api"],
+          "outputs": ["coverage/apps/waypoint-api"],
           "options": {
-            "jestConfig": "apps/api/jest.config.js",
+            "jestConfig": "apps/waypoint-api/jest.config.js",
             "passWithNoTests": true
           }
         }
       },
       "tags": []
     },
-    "api-interfaces": {
-      "root": "libs/api-interfaces",
-      "sourceRoot": "libs/api-interfaces/src",
+    "types": {
+      "root": "libs/types",
+      "sourceRoot": "libs/types/src",
       "projectType": "library",
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": ["libs/api-interfaces/**/*.ts"]
+            "lintFilePatterns": ["libs/types/**/*.ts"]
           }
         }
       },

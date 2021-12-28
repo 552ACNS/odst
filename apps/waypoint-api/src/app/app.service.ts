@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Message } from '@odst/api-interfaces';
+import { Message } from '@odst/types';
 
 @Injectable()
 export class AppService {
   getData(): Message {
-    return { message: 'Welcome to api!' };
+    return { message: 'Welcome to waypoint-api!' };
   }
 }

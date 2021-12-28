@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Message } from '@odst/api-interfaces';
+import { Message } from '@odst/types';
 
 @Component({
   selector: 'odst-root',
