@@ -59,17 +59,15 @@
         "prisma-migrate": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "envFile": "apps/waypoint-api/.env.local",
-            "command": "npx prisma db push --accept-data-loss",
+            "command": "env-cmd -f apps/waypoint-api/.env.local prisma db push --accept-data-loss",
             "schema": "apps/waypoint-api/schema.prisma"
           },
           "configurations": {
             "test": {
-              "envFile": "apps/waypoint-api/.env.test"
+              "command": "env-cmd -f apps/waypoint-api/.env.test prisma db push --accept-data-loss"
             },
             "production": {
-              "envFile": "apps/waypoint-api/.env.prod",
-              "command": "npx prisma migrate deploy"
+              "command": "env-cmd -f apps/waypoint-api/.env.prod prisma migrate dev"
             }
           }
         }

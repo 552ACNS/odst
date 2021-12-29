@@ -26,6 +26,7 @@
     "@nrwl/angular": "13.4.1",
     "@prisma/client": "^3.7.0",
     "apollo-server-express": "^3.5.0",
+    "env-cmd": "^10.1.0",
     "graphql": "^15",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.4.0",
