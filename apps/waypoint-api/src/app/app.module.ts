@@ -7,6 +7,7 @@ import { HairColor, EyeColor, BirthState, Role, Spec, OrgTier } from '@prisma/cl
 import { ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageDisabled
 } from "apollo-server-core";
+import { join } from 'path';
 // Register enum types here, if they are used in multiple places, make sure that they are registered
 // only once and that the resource module that is imported first is the one that registers them
 registerEnumType(HairColor, { name: 'HairColor' });
@@ -19,7 +20,7 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
 @Module({
   imports: [
     GraphQLModule.forRoot({
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'apps/waypoint-api/schema.gql'),      
       // playground: process.env.NODE_ENV !== 'production',
       playground: false,
       plugins: [
