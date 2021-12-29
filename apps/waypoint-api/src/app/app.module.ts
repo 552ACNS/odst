@@ -20,7 +20,7 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
 @Module({
   imports: [
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'apps/waypoint-api/schema.gql'),      
+      autoSchemaFile: join(process.cwd(), 'apps/waypoint-api/schema.graphql'),      
       // playground: process.env.NODE_ENV !== 'production',
       playground: false,
       plugins: [
