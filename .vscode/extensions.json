@@ -2,8 +2,14 @@
   "recommendations": [
     "angular.ng-template",
     "nrwl.angular-console",
+    "eamodio.gitlens",
+    "graphql.vscode-graphql",
+    "visualstudioexptteam.vscodeintellicode",
+    "prisma.prisma",
+    "pkief.material-icon-theme",
     "esbenp.prettier-vscode",
     "firsttris.vscode-jest-runner",
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "ms-azuretools.vscode-docker"
   ]
 }

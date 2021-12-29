@@ -13,6 +13,9 @@
             "outputPath": "dist/apps/waypoint-api",
             "main": "apps/waypoint-api/src/main.ts",
             "tsConfig": "apps/waypoint-api/tsconfig.app.json",
+            "tsPlugins": [
+              "@nestjs/graphql/plugin"
+            ],
             "assets": ["apps/waypoint-api/src/assets"]
           },
           "configurations": {
