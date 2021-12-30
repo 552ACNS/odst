@@ -13,9 +13,7 @@ import {
   @InputType()
   export class PersonCreateWithoutOrgInput
     implements Prisma.PersonCreateWithoutOrgInput
-  {
-    id?: string;
-  
+  {  
     @Field(() => HairColor)
     hairColor!: HairColor;
   

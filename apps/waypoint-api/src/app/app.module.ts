@@ -21,10 +21,9 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'apps/waypoint-api/schema.graphql'),      
-      // playground: process.env.NODE_ENV !== 'production',
       playground: false,
+      introspection: process.env.NODE_ENV !== 'production',
       plugins: [
-        // Install a landing page plugin based on NODE_ENV
         process.env.NODE_ENV === 'production'
           ? ApolloServerPluginLandingPageDisabled()
           : ApolloServerPluginLandingPageLocalDefault(),

@@ -6,7 +6,6 @@ import { Prisma } from "@prisma/client";
   
     implements Prisma.IncidentCreateInput
   {
-    id?: string;
     openDate:  Date;
     closeDate: Date;
     reportedDate: Date;
