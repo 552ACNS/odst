@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@odst/gql": ["libs/gql/src/index.ts"],
       "@odst/types": ["libs/types/src/index.ts"]
     },
     "strictNullChecks": true,

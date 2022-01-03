@@ -20,8 +20,8 @@ const GET_ORGS = gql`
 })
 export class AppComponent implements OnInit, OnDestroy {
   constructor(private apollo: Apollo) {}
-  loading = false;
-  orgs: OrgGQL[] = [];
+  loading = true;
+  orgs: OrgGQL[] = [{id: "", name: "", aliases: [], orgTier: "WING", parentId: null}];
 
   private querySubscription: Subscription;
   orgName = 'Haha';

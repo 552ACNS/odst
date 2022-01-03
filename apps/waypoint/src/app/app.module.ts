@@ -3,12 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { GraphQLModule } from './graphql/graphql.module';
 import { Apollo } from 'apollo-angular';
+import { GQLModule } from '@odst/gql';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, GraphQLModule],
+  imports: [BrowserModule, HttpClientModule, GQLModule],
   providers: [Apollo],
   bootstrap: [AppComponent],
 })

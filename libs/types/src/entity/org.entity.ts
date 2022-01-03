@@ -2,7 +2,6 @@ import {
     ObjectType,
     Field,
     InputType,
-    registerEnumType,
   } from '@nestjs/graphql';
   import { Org, OrgTier } from '@prisma/client';
   
