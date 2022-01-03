@@ -7,5 +7,6 @@
   "diffEditor.codeLens": true,
   "editor.bracketPairColorization.enabled": true,
   "editor.guides.bracketPairs": "active",
-  "workbench.iconTheme": "material-icon-theme"
+  "workbench.iconTheme": "material-icon-theme",
+  "angular.enable-strict-mode-prompt": false,
 }

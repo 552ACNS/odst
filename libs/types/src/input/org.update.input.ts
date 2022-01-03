@@ -10,7 +10,7 @@ export class OrgUpdateInput
   implements Prisma.OrgUpdateInput
 {
   @Field(() => [PersonUpdateManyWithoutOrgInput], { nullable: true })
-  persons?: Prisma.PersonUpdateManyWithoutOrgInput;
+  override persons?: Prisma.PersonUpdateManyWithoutOrgInput;
 }
 
 // Think yall forgot to finish this....

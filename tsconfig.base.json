@@ -10,14 +10,16 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2018", "dom", "esnext.asynciterable"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@odst/types": ["libs/types/src/index.ts"]
     },
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false
   },
   "exclude": ["node_modules", "tmp"]
 }

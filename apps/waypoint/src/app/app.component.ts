@@ -1,12 +1,44 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Apollo, gql } from 'apollo-angular';
+import { OrgGQL } from '@odst/types';
+import { Subscription } from 'rxjs';
+
+const GET_ORGS = gql`
+  query {
+    findManyOrgs {
+      id
+      name
+      aliases
+    }
+  }
+`;
 
 @Component({
   selector: 'odst-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  // hello$ = this.http.get<Message>('/api/hello');
-  constructor(private http: HttpClient) {}
+export class AppComponent implements OnInit, OnDestroy {
+  constructor(private apollo: Apollo) {}
+  loading = false;
+  orgs: OrgGQL[] = [];
+
+  private querySubscription: Subscription;
+  orgName = 'Haha';
+
+  ngOnInit() {
+    this.querySubscription = this.apollo.watchQuery<any>({
+      query: GET_ORGS
+    })
+      .valueChanges
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.orgs = data.findManyOrgs;
+        console.log("hello")
+      });
+  }
+
+  ngOnDestroy() {
+    this.querySubscription.unsubscribe();
+  }
 }

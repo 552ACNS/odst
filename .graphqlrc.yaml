@@ -1,0 +1,3 @@
+projects:
+  waypoint:
+    schema: http://localhost:3333/graphql

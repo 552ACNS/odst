@@ -191,7 +191,6 @@ input PersonCreateInput {
   birthState: BirthState!
   role: Role!
   spec: Spec!
-  id: String
   dodId: Float!
   ssn: Float!
   email: String!
@@ -226,7 +225,6 @@ input PersonUpdateInput {
   birthState: BirthState
   role: Role
   spec: Spec
-  id: String
   dodId: Float
   ssn: Float
   email: String
@@ -303,7 +301,6 @@ input PersonCreateWithoutOrgInput {
   birthState: BirthState!
   role: Role!
   spec: Spec!
-  id: String
   dodId: Float!
   ssn: Float!
   email: String!
@@ -331,7 +328,6 @@ input PersonUpdateWithWhereUniqueWithoutOrgInput {
 }
 
 input IncidentCreateInput {
-  id: String
   openDate: DateTime!
   closeDate: DateTime!
   reportedDate: DateTime!
