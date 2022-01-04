@@ -29,7 +29,7 @@ jobs:
     pool:
       name: Default
       demands:
-        - agent.name -equals DOUP-DEVOPS'
+        - agent.name -equals DOUP-DEVOPS
     condition: eq(variables['Build.Reason'], 'PullRequest')
     steps:
       - script: npm install --global yarn
