@@ -19,6 +19,7 @@ jobs:
     steps:
       - script: npm install --global yarn
       - script: yarn
+      - script: yarn nx run waypoint-api:prisma-generate
       - script: npx nx affected --base=HEAD~1 --target=build --parallel --max-parallel=3
       - script: npx nx affected --base=HEAD~1 --target=test --parallel --max-parallel=2
 
@@ -29,5 +30,6 @@ jobs:
     steps:
       - script: npm install --global yarn
       - script: yarn
+      - script: yarn nx run waypoint-api:prisma-generate
       - script: npx nx affected --target=build --parallel --max-parallel=3
       - script: npx nx affected --target=test --parallel --max-parallel=2
