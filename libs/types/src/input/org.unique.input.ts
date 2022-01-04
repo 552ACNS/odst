@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { Org, OrgTier, Person, Prisma } from '@prisma/client';
+import { OrgTier, Prisma } from '@prisma/client';
 
 @InputType()
 export class OrgWhereUniqueInput implements Prisma.OrgWhereUniqueInput {

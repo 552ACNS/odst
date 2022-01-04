@@ -23,7 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   loading = true;
   orgs: OrgGQL[] = [{id: "", name: "", aliases: [], orgTier: "WING", parentId: null}];
 
-  private querySubscription: Subscription;
+  querySubscription: Subscription;
   orgName = 'Haha';
 
   ngOnInit() {
@@ -39,6 +39,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.querySubscription.unsubscribe();
+    if (this.querySubscription) {
+      this.querySubscription.unsubscribe();
+    }
   }
 }
