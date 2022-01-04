@@ -14,7 +14,9 @@ variables:
 jobs:
   - job: master
     pool:
-      vmImage: 'ubuntu-latest'
+      name: Default
+      demands:
+        - agent.name -equals DOUP-DEVOPS'
     condition: ne(variables['Build.Reason'], 'PullRequest')
     steps:
       - script: npm install --global yarn
@@ -25,7 +27,9 @@ jobs:
 
   - job: pr
     pool:
-      vmImage: 'ubuntu-latest'
+      name: Default
+      demands:
+        - agent.name -equals DOUP-DEVOPS'
     condition: eq(variables['Build.Reason'], 'PullRequest')
     steps:
       - script: npm install --global yarn
