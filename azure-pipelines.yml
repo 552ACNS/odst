@@ -14,7 +14,9 @@ variables:
 jobs:
   - job: master
     pool:
-      vmImage: 'ubuntu-latest'
+      name: Default
+      demands:
+        - agent.name -equals DOUP-DEVOPS
     condition: ne(variables['Build.Reason'], 'PullRequest')
     steps:
       - script: npm install --global yarn
@@ -25,11 +27,13 @@ jobs:
 
   - job: pr
     pool:
-      vmImage: 'ubuntu-latest'
+      name: Default
+      demands:
+        - agent.name -equals DOUP-DEVOPS
     condition: eq(variables['Build.Reason'], 'PullRequest')
     steps:
-      - script: npm install --global yarn
+      - script: npm install -g yarn
+      - script: npm install -g nx
       - script: yarn
       - script: yarn nx run waypoint-api:prisma-generate
-      - script: npx nx affected --target=build --parallel --max-parallel=3
-      - script: npx nx affected --target=test --parallel --max-parallel=2
+      - script: yarn nx affected --target=test --base=origin/master --head=HEAD
