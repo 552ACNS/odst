@@ -32,7 +32,8 @@ jobs:
         - agent.name -equals DOUP-DEVOPS
     condition: eq(variables['Build.Reason'], 'PullRequest')
     steps:
-      - script: npm install --global yarn
+      - script: npm install -g yarn
+      - script: npm install -g nx
       - script: yarn
       - script: yarn nx run waypoint-api:prisma-generate
       - script: npx nx affected --target=build --parallel --max-parallel=3
