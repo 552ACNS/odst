@@ -10,4 +10,5 @@ export class UserGQL implements User {
 
   @Field(() => String)
   personId: string;
+  previousPasswords: string[];
 }

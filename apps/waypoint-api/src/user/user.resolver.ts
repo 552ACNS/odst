@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { UserCreateInput, UserUpdateInput, UserGQL, UserWhereUniqueInput } from '@odst/types';
 
-
 @Resolver(() => UserGQL)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}

@@ -11,11 +11,12 @@ generator client {
 }
 
 model User {
-  id            String      @id @default(uuid())
-  username      String      @unique
-  passwordHash  String      //should be unique?
-  person        Person      @relation(fields: [personId], references: [id])
-  personId      String
+  id                String   @id @default(uuid())
+  username          String   @unique
+  passwordHash      String //should be unique?
+  person            Person   @relation(fields: [personId], references: [id])
+  personId          String   @unique
+  previousPasswords String[]
 }
 
 model Person {

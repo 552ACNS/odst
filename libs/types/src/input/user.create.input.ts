@@ -8,6 +8,7 @@ import { UserWhereUniqueInput } from './user.unique.input';
 export class UserCreateWithoutPersonInput implements Prisma.UserCreateWithoutPersonInput {
   username: string;
   passwordHash: string;
+  previousPasswords: string[];
 }
 
 @InputType()

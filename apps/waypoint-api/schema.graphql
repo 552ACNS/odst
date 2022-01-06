@@ -138,6 +138,7 @@ type UserGQL {
   personId: String!
   username: String!
   passwordHash: String!
+  previousPasswords: [String!]!
 }
 
 type IncidentGQL {
@@ -185,6 +186,7 @@ input UserGQLInput {
   personId: String!
   username: String!
   passwordHash: String!
+  previousPasswords: [String!]!
 }
 
 type Query {
@@ -379,6 +381,7 @@ input PersonUpdateWithWhereUniqueWithoutOrgInput {
 input UserCreateInput {
   username: String!
   passwordHash: String!
+  previousPasswords: [String!]!
   person: PersonCreateNestedOneWithoutUserInput!
 }
 
@@ -396,6 +399,7 @@ input PersonCreateOrConnectWithoutUserInput {
 input UserUpdateInput {
   username: String
   passwordHash: String
+  previousPasswords: [String!]
   person: PersonUpdateOneRequiredWithoutUserInput
 }
 
