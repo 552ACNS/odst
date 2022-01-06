@@ -16,7 +16,6 @@ model User {
   passwordHash  String      //should be unique?
   person        Person      @relation(fields: [personId], references: [id])
   personId      String
-
 }
 
 model Person {

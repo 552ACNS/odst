@@ -1,15 +1,15 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import {
   BirthState,
   EyeColor,
   HairColor,
   Person,
   Role,
-  Spec,
-  User
+  Spec
 } from '@prisma/client';
 
 @ObjectType()
+@InputType('PersonGQLInput')
 export class PersonGQL implements Person {
   @Field(() => String, { nullable: true })
   id: string;

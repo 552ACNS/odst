@@ -9,6 +9,7 @@ export class UserUncheckedUpdateWithoutPersonInput
   extends PartialType(UserCreateWithoutPersonInput)
   implements Prisma.UserUncheckedUpdateWithoutPersonInput {}
 
+@InputType()
 export class UserUpdateInput
   extends UserUncheckedUpdateWithoutPersonInput
   implements Prisma.UserUpdateInput

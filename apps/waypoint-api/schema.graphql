@@ -133,6 +133,13 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type UserGQL {
+  id: String
+  personId: String!
+  username: String!
+  passwordHash: String!
+}
+
 type IncidentGQL {
   id: String
   openDate: DateTime!
@@ -149,6 +156,37 @@ input OrgGQLInput {
   aliases: [String!]!
 }
 
+input PersonGQLInput {
+  id: String
+  hairColor: HairColor!
+  middleInitial: String
+  birthState: BirthState!
+  eyeColor: EyeColor!
+  spec: Spec!
+  role: Role!
+  dodId: Float!
+  ssn: Float!
+  email: String!
+  firstName: String!
+  lastName: String!
+  birthDate: DateTime!
+  birthCity: String!
+  birthCountry: String!
+  height: Float!
+  citizenshipId: String!
+  initialTraining: Boolean!
+  NDA: Boolean!
+  grade: Float!
+  orgId: String!
+}
+
+input UserGQLInput {
+  id: String
+  personId: String!
+  username: String!
+  passwordHash: String!
+}
+
 type Query {
   findManyPersons: [PersonGQL!]!
   findUniquePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
@@ -157,6 +195,8 @@ type Query {
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   removeOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
+  findManyUsers: [UserGQL!]!
+  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   findUniqueIncident(incidentWhereUniqueInput: IncidentWhereUniqueInput!): IncidentGQL!
 }
 
@@ -172,6 +212,12 @@ input OrgWhereUniqueInput {
   name: String
 }
 
+input UserWhereUniqueInput {
+  id: String
+  username: String
+  personId: String
+}
+
 input IncidentWhereUniqueInput {
   id: String
 }
@@ -182,6 +228,9 @@ type Mutation {
   deletePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgUpdateInput: OrgUpdateInput!, OrgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
+  createUser(userCreateInput: UserCreateInput!): UserGQL!
+  updateUser(UserUpdateInput: UserUpdateInput!, userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   createIncident(incidentCreateInput: IncidentCreateInput!): IncidentGQL!
 }
 
@@ -325,6 +374,33 @@ input PersonCreateManyOrgInputEnvelope {
 input PersonUpdateWithWhereUniqueWithoutOrgInput {
   data: PersonUpdateInput!
   where: String!
+}
+
+input UserCreateInput {
+  username: String!
+  passwordHash: String!
+  person: PersonCreateNestedOneWithoutUserInput!
+}
+
+input PersonCreateNestedOneWithoutUserInput {
+  connect: PersonWhereUniqueInput
+  create: PersonGQLInput
+  connectOrCreate: PersonCreateOrConnectWithoutUserInput
+}
+
+input PersonCreateOrConnectWithoutUserInput {
+  where: PersonWhereUniqueInput!
+  create: PersonGQLInput!
+}
+
+input UserUpdateInput {
+  username: String
+  passwordHash: String
+  person: PersonUpdateOneRequiredWithoutUserInput
+}
+
+input PersonUpdateOneRequiredWithoutUserInput {
+  connect: PersonWhereUniqueInput
 }
 
 input IncidentCreateInput {
