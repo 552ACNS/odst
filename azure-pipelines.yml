@@ -39,7 +39,7 @@ jobs:
         displayName: Install packages
       - script: yarn nx run waypoint-api:prisma-generate
         displayName: Generate Prisma clients
-      - script: yarn nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --parallel --max-parallel=3
+      - script: yarn nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=cobertura --parallel --max-parallel=3
         displayName: Run tests
       - task: PublishTestResults@2
         inputs:
