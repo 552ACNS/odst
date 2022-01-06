@@ -6,6 +6,7 @@ import {
   Person,
   Role,
   Spec,
+  User
 } from '@prisma/client';
 
 @ObjectType()
