@@ -39,14 +39,14 @@ jobs:
           version: '16.13.x'
           checkLatest: true
         displayName: 'Install LTS of Node.js'
-      - task: Cache@2
-        inputs:
-          key: '"yarn" | "$(Agent.OS)" | yarn.lock'
-          restoreKeys: |
-           yarn | "$(Agent.OS)"
-           yarn
-          path: $(YARN_CACHE_FOLDER)
-        displayName: Cache Node modules
+      # - task: Cache@2
+      #   inputs:
+      #     key: '"yarn" | "$(Agent.OS)" | yarn.lock'
+      #     restoreKeys: |
+      #      yarn | "$(Agent.OS)"
+      #      yarn
+      #     path: $(YARN_CACHE_FOLDER)
+      #   displayName: Cache Node modules
       - script: npm install -g yarn
         displayName: Install yarn
       - script: npm install -g nx
