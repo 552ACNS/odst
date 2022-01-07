@@ -66,7 +66,7 @@ jobs:
       - script: dotnet tool install -g dotnet-reportgenerator-globaltool
         continueOnError: true
         displayName: Install report generator (may fail)
-      - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged -reporttypes:'HtmlInline_AzurePipelines;Cobertura
+      - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
         displayName: Create code coverage report
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish code coverage'
