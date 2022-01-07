@@ -72,7 +72,7 @@ jobs:
         displayName: 'Publish code coverage'
         inputs:
           codeCoverageTool: Cobertura
-          summaryFileLocation:  '**/cobertura-coverage.xml'
+          summaryFileLocation:  './coverage/merged/Cobertura.xml'
     
 
 
