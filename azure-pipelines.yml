@@ -32,7 +32,7 @@ jobs:
         - agent.name -equals DOUP-DEVOPS
     condition: eq(variables['Build.Reason'], 'PullRequest')
     steps:
-      - template: ./azure-pipelines/steps/install-node-modules.yml
+      - template: ./azure-pipelines/yarn.yml
       - script: yarn nx run waypoint-api:prisma-generate
         displayName: Generate Prisma clients
       - script: yarn nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=text --parallel
