@@ -72,6 +72,29 @@ describe('PersonsResolver', () => {
     expect(actual).toStrictEqual(resolvedPersons);
   });
 
+  it('Should call the method to find a unique Person', async () => {
+    // TEST PARAMS
+    const personToFind: PersonCreateInput = testPersons[0];
+    const methodToSpy = 'findUnique';
+
+    // TODO: Seems awkward to cast the Person here, but I don't know how to do it otherwise
+    const resolvedPerson: PersonGQL = personToFind as unknown as PersonGQL;
+
+    // Change value of promise
+    const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
+
+    //Make it so that the createPerson method returns the fake Person
+    const spy = jest
+      .spyOn(servicer, methodToSpy)
+      .mockImplementation(() => result);
+    // Call the createPerson method by calling the controller
+    const actual = await resolver.findUnique({ dodId : personToFind.dodId });
+    // Assert that the method was called
+    expect(spy).toHaveBeenCalled();
+
+    expect(actual).toStrictEqual(resolvedPerson);
+  });
+
   it('Should return call the method that returns the people with the org id', async () => {
     // TEST PARAMS
     const methodToSpy = 'findManyInOrg';
@@ -102,6 +125,29 @@ describe('PersonsResolver', () => {
     expect(actual).toStrictEqual(resolvedPersons);
 
     expect(actual).toHaveLength(7);
+  });
+
+  it('Should update a Person', async () => {
+    // TEST PARAMS
+    const methodToSpy = 'update';
+    const newfirstName = "new.firstName";
+    //Create a GQL definition of the Person to update
+    const updatedPerson: PersonGQL = testPersons[2] as unknown as PersonGQL;
+
+    //Create a promised result that will match the Person GQL data type that will be updated
+    const result: Promise<PersonGQL> = Promise.resolve(updatedPerson);
+
+    //Create the spy on the service
+    const spy = jest
+      .spyOn(servicer, methodToSpy)
+      .mockImplementation(() => result);
+
+    // Call the update service and get the actual to be compared to result
+    const actual = await resolver.update({ dodId: updatedPerson.dodId }, { firstName: newfirstName });
+    // Assert that the method was called
+    expect(spy).toHaveBeenCalled();
+    //Determine if the actual and result are the same
+    expect(actual).toEqual(updatedPerson);
   });
 
   it('Should delete a person', async () => {
