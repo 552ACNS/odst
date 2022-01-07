@@ -1,15 +1,16 @@
 trigger:
   - master
-  - dev
 pr:
   - master
   - dev
 
 variables:
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn  
   ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
     NX_BRANCH: 'master'
   ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
     NX_BRANCH: $(System.PullRequest.PullRequestNumber)
+
 
 jobs:
   - job: master
@@ -31,20 +32,20 @@ jobs:
         - agent.name -equals DOUP-DEVOPS
     condition: eq(variables['Build.Reason'], 'PullRequest')
     steps:
-      - script: npm install -g yarn
-        displayName: Install yarn
-      - script: npm install -g nx
-        displayName: Install nx
-      - script: yarn
-        displayName: Install packages
+      - template: ./azure-pipelines/steps/install-node-modules.yml
       - script: yarn nx run waypoint-api:prisma-generate
         displayName: Generate Prisma clients
-      - script: yarn nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=cobertura --parallel --max-parallel=3
+      - script: yarn nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=text --parallel
         displayName: Run tests
-      - task: PublishTestResults@2
+      - script: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          reportgenerator -reports:$(Agent.WorkFolder)/**/coverage-cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:'HtmlInline_AzurePipelines;Cobertura'
+        displayName: Create code coverage report
+      - task: PublishCodeCoverageResults@1
+        displayName: 'Publish code coverage'
         inputs:
-          testResultsFormat: 'JUnit'
-          testResultsFiles: '**/cobertura-coverage.xml'
+          codeCoverageTool: Cobertura
+          summaryFileLocation:  '**/cobertura-coverage.xml'
     
 
 
