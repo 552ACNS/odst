@@ -72,10 +72,55 @@ describe('UsersResolver', () => {
     expect(actual).toStrictEqual(resolvedUsers);
   });
 
+  it('Should call the method to find a unique User', async () => {
+    // TEST PARAMS
+    const userToFind: UserCreateInput = testUsers[0];
+    const methodToSpy = 'findUnique';
+
+    // TODO: Seems awkward to cast the User here, but I don't know how to do it otherwise
+    const resolvedUser: UserGQL = userToFind as unknown as UserGQL;
+
+    // Change value of promise
+    const result: Promise<UserGQL> = Promise.resolve(resolvedUser);
+
+    //Make it so that the createUser method returns the fake User
+    const spy = jest
+      .spyOn(servicer, methodToSpy)
+      .mockImplementation(() => result);
+    // Call the createUser method by calling the controller
+    const actual = await resolver.findUnique({ username: userToFind.username });
+    // Assert that the method was called
+    expect(spy).toHaveBeenCalled();
+
+    expect(actual).toStrictEqual(resolvedUser);
+  });
+
+  it('Should update a User', async () => {
+    // TEST PARAMS
+    const methodToSpy = 'update';
+    const newUsername = "new.username";
+    //Create a GQL definition of the User to update
+    const updatedUser: UserGQL = testUsers[2] as unknown as UserGQL;
+
+    //Create a promised result that will match the User GQL data type that will be updated
+    const result: Promise<UserGQL> = Promise.resolve(updatedUser);
+
+    //Create the spy on the service
+    const spy = jest
+      .spyOn(servicer, methodToSpy)
+      .mockImplementation(() => result);
+
+    // Call the update service and get the actual to be compared to result
+    const actual = await resolver.update({ username: updatedUser.username }, { username: newUsername });
+    // Assert that the method was called
+    expect(spy).toHaveBeenCalled();
+    //Determine if the actual and result are the same
+    expect(actual).toEqual(updatedUser);
+  });
+
   it('Should delete a User', async () => {
     // TEST PARAMS
     const methodToSpy = 'delete';
-    const username = "tom.sawyer";
     //Create a GQL definition of the User to delete
     const deletedUser: UserGQL = testUsers[2] as unknown as UserGQL;
 
@@ -88,7 +133,7 @@ describe('UsersResolver', () => {
       .mockImplementation(() => result);
 
     // Call the delete service and get the actual to be compared to result
-    const actual = await resolver.delete({ username: username });
+    const actual = await resolver.delete({ username: deletedUser.username });
     // Assert that the method was called
     expect(spy).toHaveBeenCalled();
     //Determine if the actual and result are the same
