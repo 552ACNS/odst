@@ -52,7 +52,7 @@ jobs:
       - script: npm install -g nx
         displayName: Install nx
       - script: yarn install --ignore-engines --frozen-lockfile
-        displayName: Install dependencies only if there is no cache available
+        displayName: Install dependencies
         # condition: ne(variables['CacheRestored'], 'true')
       - task: UseDotNet@2
         displayName: 'Use .NET Core 6.0 sdk'
@@ -64,6 +64,8 @@ jobs:
       - script: yarn nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=cobertura --parallel
         displayName: Run tests
       - script: dotnet tool install -g dotnet-reportgenerator-globaltool
+        continueOnError: true
+        displayName: Install report generator (may fail)
       - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged -reporttypes:'HtmlInline_AzurePipelines;Cobertura'
         displayName: Create code coverage report
       - task: PublishCodeCoverageResults@1
