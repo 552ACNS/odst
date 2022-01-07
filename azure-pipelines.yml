@@ -63,9 +63,8 @@ jobs:
         displayName: Generate Prisma clients
       - script: yarn nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=cobertura --parallel
         displayName: Run tests
-      - script: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-          reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged -reporttypes:'HtmlInline_AzurePipelines;Cobertura'
+      - script: dotnet tool install -g dotnet-reportgenerator-globaltool
+      - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged -reporttypes:'HtmlInline_AzurePipelines;Cobertura'
         displayName: Create code coverage report
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish code coverage'
