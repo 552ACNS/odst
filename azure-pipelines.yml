@@ -5,7 +5,6 @@ pr:
   - dev
 
 variables:
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn  
   ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
     NX_BRANCH: 'master'
   ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
@@ -56,8 +55,6 @@ jobs:
       #   displayName: Cache Node modules
       - script: npm install -g yarn
         displayName: Install yarn
-      - script: npm install -g nx
-        displayName: Install nx
       - script: yarn install --ignore-engines --frozen-lockfile
         displayName: Install dependencies
       - task: UseDotNet@2
@@ -65,9 +62,9 @@ jobs:
         inputs:
           packageType: sdk
           version: 6.x
-      - script: yarn nx run waypoint-api:prisma-generate
+      - script: npx nx run waypoint-api:prisma-generate
         displayName: Generate Prisma clients
-      - script: yarn nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=cobertura --parallel
+      - script: npx nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=cobertura --parallel
         displayName: Run tests
       - script: dotnet tool update -g dotnet-reportgenerator-globaltool
         continueOnError: true
