@@ -7,6 +7,7 @@ export class LoginUserInput {
   @Field()
   username: string;
 
+  //user's plaintext password
   @Field(() => String)
   password: string;
 }
