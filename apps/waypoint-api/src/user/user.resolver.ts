@@ -44,7 +44,7 @@ export class UserResolver {
   // find all users
   @Query(() => [UserGQL], { name: 'findManyUsers' })
   @UseGuards(JwtAuthGUard)
-  async findMany(@Context() context): Promise<UserGQL[]> {
+  async findMany(): Promise<UserGQL[]> {
     return this.userService.findMany();
   }
 

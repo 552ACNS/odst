@@ -16,6 +16,7 @@ import { JwtStrategy } from './jwt.strategy';
       secret: 'this-should-not-be-hardcoded-here', //process.env.JWT_SECRET
     }),
   ],
-  providers: [AuthService, AuthResolver, LocalStrategy, JwtStrategy],
+  providers: [AuthResolver, LocalStrategy, JwtStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}
