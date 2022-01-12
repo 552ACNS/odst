@@ -6,8 +6,8 @@ import { PersonUpdateOneRequiredWithoutUserInput } from './org.update.input';
 export class UserUpdateInput implements Prisma.UserUpdateInput
 {
   username?: string;
-  passwordHash?: string;
-  previousPasswords?: string[];
+  password?: string;
+
   @Field(() => PersonUpdateOneRequiredWithoutUserInput)
   person?: Prisma.PersonUpdateOneRequiredWithoutUserInput;
 }

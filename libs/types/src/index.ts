@@ -10,6 +10,8 @@ export * from './input/incident.unique.input';
 export * from './input/user.create.input';
 export * from './input/user.update.input';
 export * from './input/user.unique.input';
+export * from './input/login.response';
+export * from './input/login.input';
 //#endregion
 
 //#region Entities

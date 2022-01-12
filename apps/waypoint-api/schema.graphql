@@ -133,12 +133,9 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type UserGQL {
-  id: String
-  personId: String!
-  username: String!
-  passwordHash: String!
-  previousPasswords: [String!]!
+type LoginResponse {
+  token: String!
+  user: UserGQL!
 }
 
 type IncidentGQL {
@@ -147,6 +144,12 @@ type IncidentGQL {
   closeDate: DateTime!
   reportedDate: DateTime!
   selfReported: Boolean!
+}
+
+type UserGQL {
+  id: String
+  personId: String!
+  username: String!
 }
 
 input OrgGQLInput {
@@ -185,11 +188,11 @@ input UserGQLInput {
   id: String
   personId: String!
   username: String!
-  passwordHash: String!
-  previousPasswords: [String!]!
 }
 
 type Query {
+  findManyUsers: [UserGQL!]!
+  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   findManyPersons: [PersonGQL!]!
   findUniquePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
   findManyPersonsInOrg(personWhereUniqueInput: PersonWhereUniqueInput!): [PersonGQL!]!
@@ -197,9 +200,13 @@ type Query {
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   removeOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
-  findManyUsers: [UserGQL!]!
-  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   findUniqueIncident(incidentWhereUniqueInput: IncidentWhereUniqueInput!): IncidentGQL!
+}
+
+input UserWhereUniqueInput {
+  id: String
+  username: String
+  personId: String
 }
 
 input PersonWhereUniqueInput {
@@ -214,26 +221,60 @@ input OrgWhereUniqueInput {
   name: String
 }
 
-input UserWhereUniqueInput {
-  id: String
-  username: String
-  personId: String
-}
-
 input IncidentWhereUniqueInput {
   id: String
 }
 
 type Mutation {
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  signup(signupUserInput: SignupUserInput!): UserGQL!
+  createUser(userCreateInput: UserCreateInput!): UserGQL!
+  updateUser(UserUpdateInput: UserUpdateInput!, userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   createPerson(personCreateInput: PersonCreateInput!): PersonGQL!
   updatePerson(PersonUpdateInput: PersonUpdateInput!, personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
   deletePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgUpdateInput: OrgUpdateInput!, OrgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  createUser(userCreateInput: UserCreateInput!): UserGQL!
-  updateUser(UserUpdateInput: UserUpdateInput!, userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
-  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   createIncident(incidentCreateInput: IncidentCreateInput!): IncidentGQL!
+}
+
+input LoginUserInput {
+  username: String!
+  password: String!
+}
+
+input SignupUserInput {
+  username: String!
+  password: String!
+  person: PersonCreateNestedOneWithoutUserInput!
+}
+
+input PersonCreateNestedOneWithoutUserInput {
+  connect: PersonWhereUniqueInput
+  create: PersonGQLInput
+  connectOrCreate: PersonCreateOrConnectWithoutUserInput
+}
+
+input PersonCreateOrConnectWithoutUserInput {
+  where: PersonWhereUniqueInput!
+  create: PersonGQLInput!
+}
+
+input UserCreateInput {
+  person: PersonCreateNestedOneWithoutUserInput!
+  username: String!
+  password: String!
+}
+
+input UserUpdateInput {
+  person: PersonUpdateOneRequiredWithoutUserInput
+  username: String
+  password: String
+}
+
+input PersonUpdateOneRequiredWithoutUserInput {
+  connect: PersonWhereUniqueInput
 }
 
 input PersonCreateInput {
@@ -376,35 +417,6 @@ input PersonCreateManyOrgInputEnvelope {
 input PersonUpdateWithWhereUniqueWithoutOrgInput {
   data: PersonUpdateInput!
   where: String!
-}
-
-input UserCreateInput {
-  username: String!
-  passwordHash: String!
-  previousPasswords: [String!]!
-  person: PersonCreateNestedOneWithoutUserInput!
-}
-
-input PersonCreateNestedOneWithoutUserInput {
-  connect: PersonWhereUniqueInput
-  create: PersonGQLInput
-  connectOrCreate: PersonCreateOrConnectWithoutUserInput
-}
-
-input PersonCreateOrConnectWithoutUserInput {
-  where: PersonWhereUniqueInput!
-  create: PersonGQLInput!
-}
-
-input UserUpdateInput {
-  username: String
-  passwordHash: String
-  previousPasswords: [String!]
-  person: PersonUpdateOneRequiredWithoutUserInput
-}
-
-input PersonUpdateOneRequiredWithoutUserInput {
-  connect: PersonWhereUniqueInput
 }
 
 input IncidentCreateInput {
