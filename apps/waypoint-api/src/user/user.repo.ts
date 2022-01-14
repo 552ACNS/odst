@@ -2,8 +2,8 @@ import { UserCreateInput } from '@odst/types';
 
 export const TestUserCreateInput: UserCreateInput[] = [
   {
-    username: "john.doe",
-    password: "d4a2aa603c411106da8624b3c91ca636e8745c06986f6ddb06bcb077855c8ca5",
+    username: "validusername",
+    password: "$2b$10$lYLvDW.qcmZhkpckBIst/.2jvC7rqD./U6MO0GFVVVlW52tlOkgWy",
     person: {
       connect: {
         dodId: 123456789,

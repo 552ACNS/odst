@@ -1,7 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginUserInput, SignupUserInput } from '@odst/types';
+import { LoginResponse, LoginUserInput, SignupUserInput } from '@odst/types';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -15,6 +15,7 @@ export class AuthService {
     username: string,
     passwordPlaintextInput: string
   ): Promise<any> {
+
     const user = await this.userService.findUnique({ username: username });
     if (user) {
       //first is plaintext, second is hash to compare it to
@@ -22,14 +23,13 @@ export class AuthService {
 
       if (valid) {
         const { password, ...result } = user;
-
         return result;
       }
     }
     return null;
   }
 
-  async login(loginInput: LoginUserInput) {
+  async login(loginInput: LoginUserInput) : Promise<LoginResponse>{
     const user = await this.userService.findUnique({
       username: loginInput.username,
     });
