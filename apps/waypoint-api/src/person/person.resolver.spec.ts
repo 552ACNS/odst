@@ -4,7 +4,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PersonCreateInput, PersonGQL } from '@odst/types';
 import { PersonResolver } from './person.resolver';
 import { PersonService } from './person.service';
-
 import { TestPersonCreateInput } from './person.repo';
 
 describe('PersonsResolver', () => {

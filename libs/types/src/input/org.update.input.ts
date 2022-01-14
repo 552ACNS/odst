@@ -3,6 +3,7 @@ import { Prisma } from '.prisma/client';
 import { PersonUpdateManyWithoutOrgInput } from './person.update.input';
 import { OrgCreateInput } from './org.create.input';
 import { OrgWhereUniqueInput } from './org.unique.input';
+import { PersonWhereUniqueInput } from './person.unique.input';
 
 @InputType()
 export class OrgUpdateInput
@@ -29,6 +30,14 @@ export class OrgUpdateOneRequiredWithoutPersonsInput
   //update?: Prisma.OrgUpdateWithoutPersonsDataInput;
 
   //upsert?: Prisma.OrgUpsertWithoutPersonsInput;
+}
+
+@InputType()
+export class PersonUpdateOneRequiredWithoutUserInput
+  implements Prisma.PersonUpdateOneRequiredWithoutUserInput
+{
+  @Field(() => PersonWhereUniqueInput, { nullable: true })
+  connect?: Prisma.PersonWhereUniqueInput;
 }
 
 ///@InputType()

@@ -1,22 +1,27 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { OrgService } from './org.service';
 import { OrgGQL, OrgCreateInput, OrgUpdateInput, OrgWhereUniqueInput } from '@odst/types';
+import { JwtAuthGuard } from '../auth/jwt.auth-guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => OrgGQL)
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
   @Mutation(() => OrgGQL, { name: 'createOrg' })
+  @UseGuards(JwtAuthGuard)
   create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput) {
     return this.orgService.create(orgCreateInput);
   }
 
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
+  @UseGuards(JwtAuthGuard)
   async findMany(): Promise<OrgGQL[]> {
     return this.orgService.findMany();
   }
 
   @Query(() => [OrgGQL], { name: 'getSubOrgs' })
+  @UseGuards(JwtAuthGuard)
   async getSubOrgs(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput,
@@ -25,6 +30,7 @@ export class OrgResolver {
   }
 
   @Query(() => OrgGQL, { name: 'findUniqueOrg' })
+  @UseGuards(JwtAuthGuard)
   async findUnique(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput,
@@ -33,6 +39,7 @@ export class OrgResolver {
   }
 
   @Mutation(() => OrgGQL, { name: 'updateOrg' })
+  @UseGuards(JwtAuthGuard)
   async update(
     @Args('OrgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput,
@@ -43,6 +50,7 @@ export class OrgResolver {
   }
 
   @Query(() => [OrgGQL], { name: 'removeOrg' })
+  @UseGuards(JwtAuthGuard)
   async delete(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput,

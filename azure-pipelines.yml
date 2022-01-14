@@ -20,7 +20,7 @@ jobs:
     condition: ne(variables['Build.Reason'], 'PullRequest')
     steps:
       - checkout: self
-        clean: false 
+        clean: false
       - task: UseNode@1
         inputs:
           version: '16.13.x'
@@ -39,7 +39,7 @@ jobs:
     condition: eq(variables['Build.Reason'], 'PullRequest')
     steps:
       - checkout: self
-        clean: false 
+        clean: false
       - task: UseNode@1
         inputs:
           version: '16.13.x'
@@ -56,11 +56,12 @@ jobs:
           version: 6.x
       - script: npx nx run waypoint-api:prisma-generate
         displayName: Generate Prisma clients
+      - script: npx nx affected --target=lint --base=origin/master --head=HEAD --parallel
+        displayName: Run linter
       - script: npx nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=cobertura --parallel
         displayName: Run tests
       - script: dotnet tool update -g dotnet-reportgenerator-globaltool
         continueOnError: true
-        condition: 
         displayName: Install report generator
       - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
         displayName: Create code coverage report
@@ -68,7 +69,4 @@ jobs:
         displayName: 'Publish code coverage'
         inputs:
           codeCoverageTool: Cobertura
-          summaryFileLocation:  './coverage/merged/Cobertura.xml'
-    
-
-
+          summaryFileLocation: './coverage/merged/Cobertura.xml'
