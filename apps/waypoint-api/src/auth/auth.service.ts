@@ -14,7 +14,7 @@ export class AuthService {
   async validateUser(
     username: string,
     passwordPlaintextInput: string
-  ): Promise<any> {
+  ): Promise<unknown> {
 
     const user = await this.userService.findUnique({ username: username });
     if (user) {

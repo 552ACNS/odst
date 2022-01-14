@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PersonService } from './person.service';
 import { PersonCreateInput, PersonUpdateInput, PersonGQL, PersonWhereUniqueInput } from '@odst/types';
-import { JwtAuthGUard } from '../auth/jwt.auth-guard';
+import { JwtAuthGuard } from '../auth/jwt.auth-guard';
 import { UseGuards } from '@nestjs/common';
 
 
@@ -11,7 +11,7 @@ export class PersonResolver {
 
   // create a person
   @Mutation(() => PersonGQL, { name: 'createPerson' })
-  @UseGuards(JwtAuthGUard)
+  @UseGuards(JwtAuthGuard)
   async create(
     @Args('personCreateInput') personCreateInput: PersonCreateInput,
   ) {
@@ -20,13 +20,13 @@ export class PersonResolver {
 
   // find all persons
   @Query(() => [PersonGQL], { name: 'findManyPersons' })
-  @UseGuards(JwtAuthGUard)
+  @UseGuards(JwtAuthGuard)
   async findMany() {
     return await this.personService.findMany();
   }
 
   @Query(() => PersonGQL, { name: 'findUniquePerson' })
-  @UseGuards(JwtAuthGUard)
+  @UseGuards(JwtAuthGuard)
   async findUnique(
     @Args('personWhereUniqueInput')
     personWhereUniqueInput: PersonWhereUniqueInput,
@@ -36,7 +36,7 @@ export class PersonResolver {
 
   // find all persons in an org
   @Query(() => [PersonGQL], { name: 'findManyPersonsInOrg' })
-  @UseGuards(JwtAuthGUard)
+  @UseGuards(JwtAuthGuard)
   async findManyInOrg(
     // TODO: REDO THIS After authentication is completed
     @Args('personWhereUniqueInput')
@@ -46,7 +46,7 @@ export class PersonResolver {
   }
 
   @Mutation(() => PersonGQL, { name: 'updatePerson' })
-  @UseGuards(JwtAuthGUard)
+  @UseGuards(JwtAuthGuard)
   async update(
     @Args('personWhereUniqueInput')
     personWhereUniqueInput: PersonWhereUniqueInput,
@@ -57,7 +57,7 @@ export class PersonResolver {
   }
 
   @Mutation(() => PersonGQL, { name: 'deletePerson' })
-  @UseGuards(JwtAuthGUard)
+  @UseGuards(JwtAuthGuard)
   async delete(
     @Args('personWhereUniqueInput')
     personWhereUniqueInput: PersonWhereUniqueInput,

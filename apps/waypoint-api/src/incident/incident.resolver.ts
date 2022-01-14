@@ -2,7 +2,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { IncidentCreateInput, IncidentGQL, IncidentWhereUniqueInput } from '@odst/types';
-import { JwtAuthGUard } from '../auth/jwt.auth-guard';
+import { JwtAuthGuard } from '../auth/jwt.auth-guard';
 import { IncidentService } from './incident.service';
 
 @Resolver(() => IncidentGQL)
@@ -10,7 +10,7 @@ export class IncidentResolver {
   constructor(private readonly incidentService: IncidentService) {}
 
   @Mutation(() => IncidentGQL, { name: 'createIncident' })
-  @UseGuards(JwtAuthGUard)
+  @UseGuards(JwtAuthGuard)
   async create(
     @Args('incidentCreateInput') incidentCreateInput: IncidentCreateInput,
   ) {
@@ -19,7 +19,7 @@ export class IncidentResolver {
 
 
   @Query(() => IncidentGQL, { name: 'findUniqueIncident' })
-  @UseGuards(JwtAuthGUard)
+  @UseGuards(JwtAuthGuard)
   async findUnique(
     @Args('incidentWhereUniqueInput')
     incidentWhereUniqueInput: IncidentWhereUniqueInput,
