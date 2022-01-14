@@ -70,6 +70,28 @@ describe('OrgResolver', () => {
     expect(actual).toStrictEqual(resolvedOrgs);
   });
 
+  it('Should call the method to find a unique Org', async () => {
+    // TEST PARAMS
+    const orgToFind: OrgCreateInput = TestOrgCreateInput[0];
+    const methodToSpy = 'findUnique';
+
+    // TODO: Seems awkward to cast the Org here, but I don't know how to do it otherwise
+    const resolvedOrg: OrgGQL = orgToFind as unknown as OrgGQL;
+
+    // Change value of promise
+    const result: Promise<OrgGQL> = Promise.resolve(resolvedOrg);
+
+    //Make it so that the createOrg method returns the fake Org
+    const spy = jest
+      .spyOn(servicer, methodToSpy)
+      .mockImplementation(() => result);
+    // Call the createOrg method by calling the controller
+    const actual = await resolver.findUnique({ name: orgToFind.name });
+    // Assert that the method was called
+    expect(spy).toHaveBeenCalled();
+
+    expect(actual).toStrictEqual(resolvedOrg);
+  });
   it('should call the method to find an org`s subOrgs', async () => {
     // TEST PARAMS
     const methodToSpy = 'getSubOrgs';
@@ -121,5 +143,27 @@ describe('OrgResolver', () => {
     expect(spy).toHaveBeenCalled();
 
     expect(actual).toBe(resolvedOrg);
+  });
+
+  it('Should delete a Org', async () => {
+    // TEST PARAMS
+    const methodToSpy = 'delete';
+    //Create a GQL definition of the Org to delete
+    const deletedOrg: OrgGQL = TestOrgCreateInput[2] as unknown as OrgGQL;
+
+    //Create a promised result that will match the Org GQL data type that will be deleted
+    const result: Promise<OrgGQL> = Promise.resolve(deletedOrg);
+
+    //Create the spy on the service
+    const spy = jest
+      .spyOn(servicer, methodToSpy)
+      .mockImplementation(() => result);
+
+    // Call the delete service and get the actual to be compared to result
+    const actual = await resolver.delete({ name: deletedOrg.name });
+    // Assert that the method was called
+    expect(spy).toHaveBeenCalled();
+    //Determine if the actual and result are the same
+    expect(actual).toEqual(deletedOrg);
   });
 });
