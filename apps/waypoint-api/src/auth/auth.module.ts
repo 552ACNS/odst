@@ -12,8 +12,9 @@ import { JwtStrategy } from './jwt.strategy';
     UserModule,
     PassportModule,
     JwtModule.register({
+      //TODO implement refresh tokens
       signOptions: { expiresIn: '15m' },
-      secret: 'this-should-not-be-hardcoded-here', //process.env.JWT_SECRET
+      secret: 'this-should-not-be-hardcoded-here', //TODO process.env.JWT_SECRET
     }),
   ],
   providers: [AuthService, AuthResolver, LocalStrategy, JwtStrategy],
