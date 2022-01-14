@@ -5,7 +5,6 @@ pr:
   - dev
 
 variables:
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn  
   ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
     NX_BRANCH: 'master'
   ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
@@ -20,6 +19,13 @@ jobs:
         - agent.name -equals DOUP-DEVOPS
     condition: ne(variables['Build.Reason'], 'PullRequest')
     steps:
+      - checkout: self
+        clean: false
+      - task: UseNode@1
+        inputs:
+          version: '16.13.x'
+          checkLatest: true
+        displayName: 'Install LTS of Node.js'
       - script: npm install --global yarn
       - script: yarn
       - script: yarn nx run waypoint-api:prisma-generate
@@ -33,41 +39,30 @@ jobs:
     condition: eq(variables['Build.Reason'], 'PullRequest')
     steps:
       - checkout: self
-        clean: false 
+        clean: false
       - task: UseNode@1
         inputs:
           version: '16.13.x'
           checkLatest: true
         displayName: 'Install LTS of Node.js'
-      # - task: Cache@2
-      #   inputs:
-      #     key: '"yarn" | "$(Agent.OS)" | yarn.lock'
-      #     restoreKeys: |
-      #      yarn | "$(Agent.OS)"
-      #      yarn
-      #     path: $(YARN_CACHE_FOLDER)
-      #   displayName: Cache Node modules
       - script: npm install -g yarn
         displayName: Install yarn
-      - script: npm install -g nx
-        displayName: Install nx
       - script: yarn install --ignore-engines --frozen-lockfile
         displayName: Install dependencies
-        # condition: ne(variables['CacheRestored'], 'true')
       - task: UseDotNet@2
         displayName: 'Use .NET Core 6.0 sdk'
         inputs:
           packageType: sdk
           version: 6.x
-      - script: yarn nx run waypoint-api:prisma-generate
+      - script: npx nx run waypoint-api:prisma-generate
         displayName: Generate Prisma clients
-      - script: yarn nx affected --target=lint --base=origin/master --head=HEAD --parallel
+      - script: npx nx affected --target=lint --base=origin/master --head=HEAD --parallel
         displayName: Run linter
-      - script: yarn nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=cobertura --parallel
+      - script: npx nx affected --target=test --base=origin/master --head=HEAD --codeCoverage=true --coverageReporters=cobertura --parallel
         displayName: Run tests
       - script: dotnet tool update -g dotnet-reportgenerator-globaltool
         continueOnError: true
-        displayName: Install report generator (may fail)
+        displayName: Install report generator
       - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
         displayName: Create code coverage report
       - task: PublishCodeCoverageResults@1
