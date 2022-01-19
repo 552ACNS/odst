@@ -51,6 +51,8 @@ export class CreatePersonComponent implements OnInit {
     personHairColor: ['', Validators.required],
     personEyeColor: ['', Validators.required],
     personSpec: ['', Validators.required],
+    personGrade: ['', Validators.required],
+    personOrg: ['', Validators.required],
     personInitialTraining: ['', Validators.nullValidator],
     personNDA: ['', Validators.nullValidator],
   });
@@ -112,16 +114,16 @@ export class CreatePersonComponent implements OnInit {
             citizenshipId: 'Yes',
             initialTraining: this.personForm.get(['personInitialTraining'])?.value,
             NDA: this.personForm.get(['personNDA'])?.value,
-            grade: this.personForm.get(['personGrade'])?.value,
+            grade: parseFloat(this.personForm.get(['personGrade'])?.value),
             eyeColor: this.personForm.get(['personEyeColor'])?.value,
             hairColor: this.personForm.get(['personHairColor'])?.value,
             birthState: this.personForm.get(['personBirthState'])?.value,
             role: 'NONE',
             spec: this.personForm.get(['personSpec'])?.value,
-            height: this.personForm.value["personHeight"],
+            height: parseFloat(this.personForm.value["personHeight"]),
             org: {
               connect: {
-                id: '481ef6fb-898d-459f-9dfb-0d64f948ad40',
+                id: this.personForm.get(['personOrg'])?.value,
               },
             },
           },

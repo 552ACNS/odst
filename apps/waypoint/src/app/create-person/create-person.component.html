@@ -85,7 +85,7 @@
         />
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Choose a date</mat-label>
+        <mat-label>Birth Date</mat-label>
         <input
           matInput
           [matDatepicker]="picker"
@@ -131,6 +131,13 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Organization" formControlName="personOrg">
+          <mat-option *ngFor='let org of orgs' [value]="org.id">
+            {{org.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <section>
         <mat-checkbox formControlName="personInitialTraining"
           >Initial Training</mat-checkbox
@@ -150,4 +157,3 @@
     </mat-card-content>
   </mat-card>
 </form>
-<button mat-raised-button color="primary" (click)="Testing()">Test</button>
