@@ -8,7 +8,7 @@ import { EyeColor } from '@prisma/client';
 import { BirthState } from '@prisma/client';
 import { Apollo, gql, Mutation } from 'apollo-angular';
 import { useMutation } from '@apollo/client';
-import { PersonGQL } from '@odst/types';
+import { OrgGQL } from '@odst/types';
 import { PersonCreateInput } from '@odst/types';
 import { Subscription } from 'rxjs';
 
@@ -22,6 +22,9 @@ export class CreatePersonComponent implements OnInit {
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
+  orgs: OrgGQL[] = [{id: "", name: "", aliases: [], orgTier: "WING", parentId: null}];
+  querySubscription: Subscription;
+  loading = true;
 
   personForm = this.fb.group({
     personFirstName: ['', Validators.required],
@@ -44,84 +47,98 @@ export class CreatePersonComponent implements OnInit {
     personBirthCity: ['', Validators.required],
     personHeight: ['', Validators.required],
     personBirthDate: ['', Validators.required],
+    personBirthState: ['', Validators.required],
+    personHairColor: ['', Validators.required],
+    personEyeColor: ['', Validators.required],
+    personSpec: ['', Validators.required],
+    personInitialTraining: ['', Validators.nullValidator],
+    personNDA: ['', Validators.nullValidator],
   });
 
   constructor(private fb: FormBuilder, private apollo: Apollo) {}
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   ngOnInit(): void {
-    console.log('$testing');
+    const GET_ORGS = gql`
+  query {
+    findManyOrgs {
+      id
+      name
+      aliases
+    }
   }
+`;
+    this.querySubscription = this.apollo.watchQuery<any>({
+      query: GET_ORGS
+    })
+      .valueChanges
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.orgs = data.findManyOrgs;
+      });
+  }
+
+  Testing(): void {
+    alert(this.personForm.get(['personNDA'])?.value)
+  }
+
+  counter(n: number) {
+    return Array.from({length: n}, (_, i) => i + 1);
+}
 
   PersonSubmit(): void {
     const SUBMIT_PERSON = gql`
-    mutation PersonCreateInput {
-      PersonCreateInput(
-        firstName: $firstName,
-        lastName: $lastName,
-        middleInitial: $middleInitial,
-        ssn: $ssn,
-        dodId: $dodId,
-        birthDate: $birthDate,
-        birthCity: $birthCity,
-        birthCountry: $birthCountry,
-        citizenshipId: $citizenshipId,
-        initialTraining: $initialTraining,
-        NDA: $NDA,
-        grade: $grade,
-        eyeColor: $eyeColor,
-        hairColor: $hairColor,
-        birthState: $birthState,
-        role: $role,
-        spec: $spec,
-        height: $height
-      )
-      {
-        id
+      mutation createPerson($personCreateInput: PersonCreateInput!) {
+        createPerson(personCreateInput: $personCreateInput) {
+          id
+        }
       }
-    }
     `;
-    console.log(this.personForm.get(['personFirstName']));
-    this.apollo.mutate({
-      mutation: SUBMIT_PERSON,
-      variables: {
-        // firstName: this.personForm.value["personFirstName"],
-        // lastName: this.personForm.value["personLastName"],
-        // middleInitial: this.personForm.value["personMiddleInitial"],
-        // ssn: this.personForm.value["personSSN"],
-        // dodID: this.personForm.value["personDoDIDNumber"],
-        // birthDate: this.personForm.value["personBirthDate"],
-        // birthCity: this.personForm.value["personBirthCity"],
-        // birthCountry: this.personForm.value["personBirthCountry"],
-        // citizenshipId: this.personForm.value["personFirstName"],
-        // initialTraining: this.personForm.value["personFirstName"],
-        // NDA: this.personForm.value["personFirstName"],
-        // grade: this.personForm.value["personFirstName"],
-        // eyeColor: this.personForm.value["personFirstName"],
-        // haircolor: this.personForm.value["personFirstName"],
-        // birthState: this.personForm.value["personFirstName"],
-        // role: this.personForm.value["personFirstName"],
-        // spec: this.personForm.value["personFirstName"],
-        // height: this.personForm.value["personFirstName"]
-        firstName: 'Barry',
-        lastName: 'Benson',
-        middleInitial: 'B',
-        ssn: 420692022,
-        dodID: 1234567890,
-        birthDate: '02/11/2007',
-        birthCity: 'New York City',
-        birthCountry: 'US',
-        citizenshipId: 'Yes',
-        initialTraining: true,
-        NDA: false,
-        grade: 9,
-        eyeColor: 'BROWN',
-        haircolor: 'BROWN',
-        birthState: 'NY',
-        role: 'ADMIN',
-        spec: 'OFFICER',
-        height: 69,
-      }
-    });
+    console.log(this.personForm.get(['personBirthState']));
+    this.apollo
+      .mutate({
+        mutation: SUBMIT_PERSON,
+        variables: {
+          personCreateInput: {
+            firstName: this.personForm.value["personFirstName"],
+            lastName: this.personForm.value["personLastName"],
+            middleInitial: this.personForm.value["personMiddleInitial"],
+            email: this.personForm.value["personEmail"],
+            ssn: parseFloat(this.personForm.value["personSSN"]),
+            dodId: parseFloat(this.personForm.value["personDoDIDNumber"]),
+            birthDate: this.personForm.value["personBirthDate"],
+            birthCity: this.personForm.value["personBirthCity"],
+            birthCountry: this.personForm.value["personBirthCountry"],
+            citizenshipId: 'Yes',
+            initialTraining: this.personForm.get(['personInitialTraining'])?.value,
+            NDA: this.personForm.get(['personNDA'])?.value,
+            grade: this.personForm.get(['personGrade'])?.value,
+            eyeColor: this.personForm.get(['personEyeColor'])?.value,
+            hairColor: this.personForm.get(['personHairColor'])?.value,
+            birthState: this.personForm.get(['personBirthState'])?.value,
+            role: 'NONE',
+            spec: this.personForm.get(['personSpec'])?.value,
+            height: this.personForm.value["personHeight"],
+            org: {
+              connect: {
+                id: '481ef6fb-898d-459f-9dfb-0d64f948ad40',
+              },
+            },
+          },
+        },
+      })
+      .subscribe(
+        ({ data }) => {
+          alert(data);
+        },
+        (error) => {
+          alert('there was an error sending the query: /n' + error);
+        }
+      );
+  }
+  ngOnDestroy() {
+    if (this.querySubscription) {
+      this.querySubscription.unsubscribe();
+    }
   }
 }

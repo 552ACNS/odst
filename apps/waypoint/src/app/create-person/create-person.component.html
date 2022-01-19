@@ -64,7 +64,10 @@
         />
       </mat-form-field>
       <mat-form-field>
-        <mat-select placeholder="Birth State">
+        <mat-select
+          placeholder="Birth State"
+          formControlName="personBirthState"
+        >
           <mat-option
             *ngFor="let birthState of birthStates"
             [value]="birthState"
@@ -93,14 +96,14 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-select placeholder="Hair Color">
+        <mat-select placeholder="Hair Color" formControlName="personHairColor">
           <mat-option *ngFor="let hairColor of hairColors" [value]="hairColor">
             {{ hairColor }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <mat-select placeholder="Eye Color">
+        <mat-select placeholder="Eye Color" formControlName="personEyeColor">
           <mat-option *ngFor="let eyeColor of eyeColors" [value]="eyeColor">
             {{ eyeColor }}
           </mat-option>
@@ -115,19 +118,36 @@
         />
       </mat-form-field>
       <mat-form-field>
-        <mat-select placeholder="Spec">
+        <mat-select placeholder="Spec" formControlName="personSpec">
           <mat-option *ngFor="let spec of specs" [value]="spec">
             {{ spec }}
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Grade" formControlName="personGrade">
+          <mat-option *ngFor='let in of counter(8) ;let i = index' [value]="i">
+            {{i}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <section>
-        <mat-checkbox>Initial Training</mat-checkbox>
+        <mat-checkbox formControlName="personInitialTraining"
+          >Initial Training</mat-checkbox
+        >
       </section>
       <section>
-        <mat-checkbox>NDA</mat-checkbox>
+        <mat-checkbox formControlName="personNDA">NDA</mat-checkbox>
       </section>
-      <button mat-raised-button color="primary" (click)="PersonSubmit()">submit</button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="PersonSubmit()"
+        [disabled]="!personForm.valid"
+      >
+        submit
+      </button>
     </mat-card-content>
   </mat-card>
 </form>
+<button mat-raised-button color="primary" (click)="Testing()">Test</button>
