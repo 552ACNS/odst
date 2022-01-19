@@ -126,22 +126,20 @@
       </mat-form-field>
       <mat-form-field>
         <mat-select placeholder="Grade" formControlName="personGrade">
-          <mat-option *ngFor='let in of counter(8) ;let i = index' [value]="i">
-            {{i}}
+          <mat-option *ngFor="let in of counter(8); let i = index" [value]="i">
+            {{ i }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field>
         <mat-select placeholder="Organization" formControlName="personOrg">
-          <mat-option *ngFor='let org of orgs' [value]="org.id">
-            {{org.name}}
+          <mat-option *ngFor="let org of orgs" [value]="org.id">
+            {{ org.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <section>
-        <mat-checkbox formControlName="personInitialTraining"
-          >Initial Training</mat-checkbox
-        >
+        <mat-checkbox formControlName="personInitialTraining">Initial Training</mat-checkbox>
       </section>
       <section>
         <mat-checkbox formControlName="personNDA">NDA</mat-checkbox>
@@ -157,3 +155,4 @@
     </mat-card-content>
   </mat-card>
 </form>
+<button mat-raised-button (click)="Testing()" color="primary">Testing</button>

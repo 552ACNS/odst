@@ -17,9 +17,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CreateOrgComponent } from './create-org/create-org.component';
 
 @NgModule({
-  declarations: [AppComponent, CreatePersonComponent],
+  declarations: [AppComponent, CreatePersonComponent, CreateOrgComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

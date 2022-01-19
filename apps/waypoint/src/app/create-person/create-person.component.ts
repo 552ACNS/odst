@@ -23,6 +23,7 @@ export class CreatePersonComponent implements OnInit {
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
   orgs: OrgGQL[] = [{id: "", name: "", aliases: [], orgTier: "WING", parentId: null}];
+  personGrades: number[];
   querySubscription: Subscription;
   loading = true;
 
@@ -55,6 +56,7 @@ export class CreatePersonComponent implements OnInit {
     personOrg: ['', Validators.required],
     personInitialTraining: ['', Validators.nullValidator],
     personNDA: ['', Validators.nullValidator],
+    personInitTrngCheck: ['', Validators.nullValidator],
   });
 
   constructor(private fb: FormBuilder, private apollo: Apollo) {}
@@ -80,8 +82,26 @@ export class CreatePersonComponent implements OnInit {
       });
   }
 
+  personInitTrngCheck(): boolean {
+    if (this.personForm.get(['personInitialTraining'])?.value == true) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
+  personNDAcheck(): boolean {
+    if (this.personForm.get(['personNDA'])?.value == true) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
   Testing(): void {
-    alert(this.personForm.get(['personNDA'])?.value)
+    alert("boom")
   }
 
   counter(n: number) {
@@ -112,8 +132,8 @@ export class CreatePersonComponent implements OnInit {
             birthCity: this.personForm.value["personBirthCity"],
             birthCountry: this.personForm.value["personBirthCountry"],
             citizenshipId: 'Yes',
-            initialTraining: this.personForm.get(['personInitialTraining'])?.value,
-            NDA: this.personForm.get(['personNDA'])?.value,
+            initialTraining: this.personInitTrngCheck(),
+            NDA: this.personNDAcheck(),
             grade: parseFloat(this.personForm.get(['personGrade'])?.value),
             eyeColor: this.personForm.get(['personEyeColor'])?.value,
             hairColor: this.personForm.get(['personHairColor'])?.value,
