@@ -10,11 +10,20 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id                String   @id @default(uuid())
+  username          String   @unique
+  password          String //should be unique?
+  person            Person   @relation(fields: [personId], references: [id])
+  personId          String   @unique
+}
+
 model Person {
   id              String     @id @default(uuid()) // Prisma uses @id to mark the primary key
   dodId           Float      @unique // @unique is equivalent to UNIQUE
   ssn             Int        @unique
   email           String     @unique
+  user            User?
   firstName       String
   middleInitial   String?    @db.Char(1) // @db.Char(1) is equivalent to VARCHAR(1)
   lastName        String
