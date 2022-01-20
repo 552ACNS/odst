@@ -29,6 +29,15 @@ export class CreateOrgComponent implements OnInit {
   });
 
   constructor(private fb: FormBuilder, private apollo: Apollo) {}
+  // isString(input: string): null | string{
+  //   if(!input){
+  //     return null;
+  //   }
+  //   else{
+  //     return input;
+  //   }
+  // }
+
 
   // addAlias(): void {
   //   if (this.orgForm.get(['orgAlias'])?.value !== null) {
@@ -52,9 +61,13 @@ export class CreateOrgComponent implements OnInit {
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.orgs = data.findManyOrgs;
+        // this.orgs = (data.findManyOrgs as Partial<Org>[]).sort((org1,org2)=> (org1.name! > org2.name!) ? 1 : -1 );
       });
   }
+
+
 
   OrgSubmit(): void {
     const SUBMIT_ORG = gql`
@@ -74,12 +87,12 @@ export class CreateOrgComponent implements OnInit {
             aliases: [],
             parent: {
               connect: {
-                id: this.orgForm.get(["orgChildren"])?.value
+                id: this.orgForm.get(["orgParent"])?.value
               },
             },
             children: {
               connect: {
-                id: this.orgForm.get(["orgParent"])?.value
+                id: this.orgForm.get(["orgChildren"])?.value
               },
             },
           },

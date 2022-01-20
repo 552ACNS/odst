@@ -36,11 +36,11 @@
           placeholder="Parent Organization"
           formControlName="orgParent"
         >
+        <mat-option>
+          Not Applicable
+        </mat-option>
           <mat-option *ngFor="let org of orgs" [value]="org.id">
             {{ org.name }}
-          </mat-option>
-          <mat-option>
-            {{ null }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -49,11 +49,11 @@
           placeholder="Children Organization"
           formControlName="orgChildren"
         >
+        <mat-option>
+          Not Applicable
+        </mat-option>
           <mat-option *ngFor="let org of orgs" [value]="org.id">
             {{ org.name }}
-          </mat-option>
-          <mat-option>
-            {{ null }}
           </mat-option>
         </mat-select>
       </mat-form-field>

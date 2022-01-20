@@ -1,6 +1,7 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { OrgService } from './org.service';
 import { OrgGQL, OrgCreateInput, OrgUpdateInput, OrgWhereUniqueInput } from '@odst/types';
+import { Prisma } from '@prisma/client';
 
 @Resolver(() => OrgGQL)
 export class OrgResolver {
@@ -13,7 +14,12 @@ export class OrgResolver {
 
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
   async findMany(): Promise<OrgGQL[]> {
-    return this.orgService.findMany();
+    // return this.orgService.findMany();
+    return this.orgService.orgs({
+      orderBy: {
+        name: "asc" 
+      }
+    })
   }
 
   @Query(() => [OrgGQL], { name: 'getSubOrgs' })
