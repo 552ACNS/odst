@@ -104,8 +104,8 @@ export class CreatePersonComponent implements OnInit {
     alert("boom")
   }
 
-  counter(n: number) {
-    return Array.from({length: n}, (_, i) => i + 1);
+  counter(n: number): number[] {
+    return [...Array(5).keys()];
 }
 
   PersonSubmit(): void {
