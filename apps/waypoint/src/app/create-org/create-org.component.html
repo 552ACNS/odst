@@ -1,4 +1,4 @@
-<form [formGroup]="orgForm">
+<form [formGroup]="orgForm" class="m-3 w-2/6 min-w-fit">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Create Organization</mat-card-title>
@@ -36,9 +36,7 @@
           placeholder="Parent Organization"
           formControlName="orgParent"
         >
-        <mat-option>
-          Not Applicable
-        </mat-option>
+          <mat-option> Not Applicable </mat-option>
           <mat-option *ngFor="let org of orgs" [value]="org.id">
             {{ org.name }}
           </mat-option>
@@ -49,22 +47,23 @@
           placeholder="Children Organization"
           formControlName="orgChildren"
         >
-        <mat-option>
-          Not Applicable
-        </mat-option>
+          <mat-option> Not Applicable </mat-option>
           <mat-option *ngFor="let org of orgs" [value]="org.id">
             {{ org.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="OrgSubmit()"
-        [disabled]="!orgForm.valid"
-      >
-        submit
-      </button>
+      <div>
+        <button
+          class="m-2"
+          mat-raised-button
+          color="primary"
+          (click)="OrgSubmit()"
+          [disabled]="!orgForm.valid"
+        >
+          Submit
+        </button>
+      </div>
     </mat-card-content>
   </mat-card>
 </form>

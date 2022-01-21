@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { HairColor, Spec } from '.prisma/client';
 import { EyeColor } from '.prisma/client';
@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './create-person.component.html',
   styleUrls: ['./create-person.component.scss'],
 })
-export class CreatePersonComponent implements OnInit {
+export class CreatePersonComponent implements OnInit, OnDestroy {
   specs: string[] = Object.values(Spec);
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
@@ -27,13 +27,14 @@ export class CreatePersonComponent implements OnInit {
   loading = true;
 
   personForm = this.fb.group({
+    personCACScan: [''],
     personFirstName: ['', Validators.required],
     personLastName: ['', Validators.required],
     personMiddleInitial: ['', Validators.maxLength],
     personEmail: ['', Validators.email],
     personDoDIDNumber: [
       '',
-      [Validators.required, Validators.pattern('^[0-9]*$')],
+      [Validators.required, Validators.pattern('^[0-9]{10}')],
     ],
     personSSN: [
       '',
@@ -70,7 +71,8 @@ export class CreatePersonComponent implements OnInit {
         }
       }
     `;
-    this.querySubscription = this.apollo.watchQuery<any>({
+    this.querySubscription = this.apollo
+      .watchQuery<any>({
         query: GET_ORGS,
       })
       .valueChanges.subscribe(({ data, loading }) => {
@@ -98,7 +100,20 @@ export class CreatePersonComponent implements OnInit {
     return [...Array(5).keys()];
   }
 
-  PersonSubmit(): void {
+  submitCAC() {
+    // ONLY APPLIES FOR M CACs
+    const scannedCard: string = this.personForm.value['personCACScan'];
+    const firstName = scannedCard.substring(16, 37).trim()
+    const lastName = scannedCard.substring(37, 63).trim();
+
+    this.personForm.patchValue({
+      personFirstName: firstName,
+      personLastName: lastName,
+      personCACScan: ''
+    });
+  }
+
+  personSubmit(): void {
     const SUBMIT_PERSON = gql`
       mutation createPerson($personCreateInput: PersonCreateInput!) {
         createPerson(personCreateInput: $personCreateInput) {

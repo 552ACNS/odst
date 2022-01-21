@@ -72,29 +72,29 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
       }
     `;
     this.apollo
-      .mutate({
+      .mutate<any>({
         mutation: SUBMIT_ORG,
         variables: {
           orgCreateInput: {
             name: this.orgForm.value["orgName"],
             orgTier: this.orgForm.get(["orgTier"])?.value,
             aliases: [],
-            parent: {
-              connect: {
-                id: this.orgForm.get(["orgParent"])?.value
-              },
-            },
-            children: {
-              connect: {
-                id: this.orgForm.get(["orgChildren"])?.value
-              },
-            },
+            // parent: {
+            //   connect: {
+            //     id: this.orgForm.get(["orgParent"])?.value
+            //   },
+            // },
+            // children: {
+            //   connect: {
+            //     id: this.orgForm.get(["orgChildren"])?.value
+            //   },
+            // },
           },
         },
       })
       .subscribe(
         ({ data }) => {
-          alert(data);
+          alert("IOrganization Added!")
         },
         (error) => {
           alert('There was an error sending the query: /n' + error);

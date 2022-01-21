@@ -1,4 +1,4 @@
-<form [formGroup]="personForm" class="m-2 h-min">
+<form [formGroup]="personForm" class="m-3 w-2/6 min-w-fit">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Create Person</mat-card-title>
@@ -33,10 +33,13 @@
       <mat-form-field>
         <input
           matInput
-          placeholder="dodID"
+          placeholder="DoDID"
           formControlName="personDoDIDNumber"
           required
         />
+        <mat-error *ngIf="personForm.controls['personDoDIDNumber'].hasError('pattern') && !personForm.controls['personDoDIDNumber'].hasError('required')">
+          Not a valid DoDID
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="PersonInput">
         <input
@@ -139,19 +142,41 @@
         </mat-select>
       </mat-form-field>
       <section>
-        <mat-checkbox formControlName="personInitialTraining">Initial Training</mat-checkbox>
+        <mat-checkbox formControlName="personInitialTraining"
+          >Initial Training</mat-checkbox
+        >
       </section>
       <section>
         <mat-checkbox formControlName="personNDA">NDA</mat-checkbox>
       </section>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="PersonSubmit()"
-        [disabled]="!personForm.valid"
-      >
-        Submit
-      </button>
+      <div>
+        <button
+          class="m-3"
+          mat-raised-button
+          color="primary"
+          (click)="personSubmit()"
+          [disabled]="!personForm.valid"
+        >
+          Submit
+        </button>
+      </div>
+      <div>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Click here to Scan"
+            formControlName="personCACScan"
+          />
+        </mat-form-field>
+        <button
+          class="m-3"
+          mat-raised-button
+          color="primary"
+          (click)="submitCAC()"
+        >
+          Scan CAC
+        </button>
+      </div>
     </mat-card-content>
   </mat-card>
 </form>
