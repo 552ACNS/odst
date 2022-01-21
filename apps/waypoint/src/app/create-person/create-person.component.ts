@@ -121,7 +121,6 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         }
       }
     `;
-    console.log(this.personForm.get(['personBirthState']));
     this.apollo
       .mutate({
         mutation: SUBMIT_PERSON,
