@@ -9,13 +9,13 @@ export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
   @Mutation(() => OrgGQL, { name: 'createOrg' })
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput) {
     return this.orgService.create(orgCreateInput);
   }
 
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async findMany(): Promise<OrgGQL[]> {
     // return this.orgService.findMany();
     return this.orgService.orgs({

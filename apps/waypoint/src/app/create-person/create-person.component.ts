@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormBuilder } from '@angular/forms';
-import { Spec } from '@prisma/client';
-import { HairColor } from '@prisma/client';
-import { EyeColor } from '@prisma/client';
-import { BirthState } from '@prisma/client';
-import { Apollo, gql, Mutation } from 'apollo-angular';
-import { useMutation } from '@apollo/client';
+import { Validators, FormBuilder } from '@angular/forms';
+import { HairColor, Spec } from '.prisma/client';
+import { EyeColor } from '.prisma/client';
+import { BirthState } from '.prisma/client';
+import { Apollo, gql } from 'apollo-angular';
 import { OrgGQL } from '@odst/types';
-import { PersonCreateInput } from '@odst/types';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -22,7 +19,9 @@ export class CreatePersonComponent implements OnInit {
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
-  orgs: OrgGQL[] = [{id: "", name: "", aliases: [], orgTier: "WING", parentId: null}];
+  orgs: OrgGQL[] = [
+    { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
+  ];
   personGrades: number[];
   querySubscription: Subscription;
   loading = true;
@@ -61,22 +60,20 @@ export class CreatePersonComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private apollo: Apollo) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   ngOnInit(): void {
     const GET_ORGS = gql`
-  query {
-    findManyOrgs {
-      id
-      name
-      aliases
-    }
-  }
-`;
+      query {
+        findManyOrgs {
+          id
+          name
+          aliases
+        }
+      }
+    `;
     this.querySubscription = this.apollo.watchQuery<any>({
-      query: GET_ORGS
-    })
-      .valueChanges
-      .subscribe(({ data, loading }) => {
+        query: GET_ORGS,
+      })
+      .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
         this.orgs = data.findManyOrgs;
       });
@@ -84,29 +81,27 @@ export class CreatePersonComponent implements OnInit {
 
   personInitTrngCheck(): boolean {
     if (this.personForm.get(['personInitialTraining'])?.value == true) {
-      return true
-    }
-    else {
-      return false
+      return true;
+    } else {
+      return false;
     }
   }
 
   personNDAcheck(): boolean {
     if (this.personForm.get(['personNDA'])?.value == true) {
-      return true
-    }
-    else {
-      return false
+      return true;
+    } else {
+      return false;
     }
   }
 
   Testing(): void {
-    alert("boom")
+    alert('boom');
   }
 
   counter(n: number): number[] {
     return [...Array(5).keys()];
-}
+  }
 
   PersonSubmit(): void {
     const SUBMIT_PERSON = gql`
@@ -122,15 +117,15 @@ export class CreatePersonComponent implements OnInit {
         mutation: SUBMIT_PERSON,
         variables: {
           personCreateInput: {
-            firstName: this.personForm.value["personFirstName"],
-            lastName: this.personForm.value["personLastName"],
-            middleInitial: this.personForm.value["personMiddleInitial"],
-            email: this.personForm.value["personEmail"],
-            ssn: parseFloat(this.personForm.value["personSSN"]),
-            dodId: parseFloat(this.personForm.value["personDoDIDNumber"]),
-            birthDate: this.personForm.value["personBirthDate"],
-            birthCity: this.personForm.value["personBirthCity"],
-            birthCountry: this.personForm.value["personBirthCountry"],
+            firstName: this.personForm.value['personFirstName'],
+            lastName: this.personForm.value['personLastName'],
+            middleInitial: this.personForm.value['personMiddleInitial'],
+            email: this.personForm.value['personEmail'],
+            ssn: parseFloat(this.personForm.value['personSSN']),
+            dodId: parseFloat(this.personForm.value['personDoDIDNumber']),
+            birthDate: this.personForm.value['personBirthDate'],
+            birthCity: this.personForm.value['personBirthCity'],
+            birthCountry: this.personForm.value['personBirthCountry'],
             citizenshipId: 'Yes',
             initialTraining: this.personInitTrngCheck(),
             NDA: this.personNDAcheck(),
@@ -140,7 +135,7 @@ export class CreatePersonComponent implements OnInit {
             birthState: this.personForm.get(['personBirthState'])?.value,
             role: 'NONE',
             spec: this.personForm.get(['personSpec'])?.value,
-            height: parseFloat(this.personForm.value["personHeight"]),
+            height: parseFloat(this.personForm.value['personHeight']),
             org: {
               connect: {
                 id: this.personForm.get(['personOrg'])?.value,

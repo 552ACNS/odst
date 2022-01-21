@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
-import { Apollo, gql, Mutation } from 'apollo-angular';
-import { OrgCreateInput, OrgGQL } from '@odst/types';
-import { Org, OrgTier } from '@prisma/client';
+import { Apollo, gql } from 'apollo-angular';
+import { Org, OrgTier } from '.prisma/client';
 import { Subscription } from 'rxjs';
-import { subscribe, VariableDefinitionNode } from 'graphql';
 
 @Component({
   selector: 'odst-create-org',
   templateUrl: './create-org.component.html',
   styleUrls: ['./create-org.component.scss'],
 })
-export class CreateOrgComponent implements OnInit {
+export class CreateOrgComponent implements OnInit, OnDestroy {
   orgTiers: string[] = Object.values(OrgTier);
   orgAliases: string[] = [];
   orgs: Partial<Org>[] = [
@@ -61,9 +59,7 @@ export class CreateOrgComponent implements OnInit {
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.orgs = data.findManyOrgs;
-        // this.orgs = (data.findManyOrgs as Partial<Org>[]).sort((org1,org2)=> (org1.name! > org2.name!) ? 1 : -1 );
       });
   }
 

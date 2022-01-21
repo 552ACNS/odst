@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/apps/**/schema.graphql
 
 # dependencies
 /node_modules

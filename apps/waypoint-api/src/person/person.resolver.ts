@@ -11,7 +11,7 @@ export class PersonResolver {
 
   // create a person
   @Mutation(() => PersonGQL, { name: 'createPerson' })
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async create(
     @Args('personCreateInput') personCreateInput: PersonCreateInput,
   ) {
