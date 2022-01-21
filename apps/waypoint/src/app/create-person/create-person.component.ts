@@ -94,11 +94,6 @@ export class CreatePersonComponent implements OnInit {
       return false;
     }
   }
-
-  Testing(): void {
-    alert('boom');
-  }
-
   counter(n: number): number[] {
     return [...Array(5).keys()];
   }

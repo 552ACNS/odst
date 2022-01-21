@@ -6,6 +6,7 @@ module.exports = {
     join(__dirname, 'src/**/*.{html,ts}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
+  important: true,
   theme: {
     extend: {},
   },

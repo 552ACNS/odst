@@ -1,4 +1,4 @@
-<form [formGroup]="personForm">
+<form [formGroup]="personForm" class="m-2 h-min">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Create Person</mat-card-title>
@@ -150,9 +150,8 @@
         (click)="PersonSubmit()"
         [disabled]="!personForm.valid"
       >
-        submit
+        Submit
       </button>
     </mat-card-content>
   </mat-card>
 </form>
-<button mat-raised-button (click)="Testing()" color="primary">Testing</button>

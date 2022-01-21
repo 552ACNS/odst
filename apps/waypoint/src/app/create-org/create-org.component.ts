@@ -63,8 +63,6 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
       });
   }
 
-
-
   OrgSubmit(): void {
     const SUBMIT_ORG = gql`
       mutation createOrg($orgCreateInput: OrgCreateInput!) {
