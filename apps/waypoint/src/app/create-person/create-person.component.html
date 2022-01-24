@@ -1,8 +1,25 @@
-<form [formGroup]="personForm" class="m-3 w-2/6 min-w-fit">
+<form [formGroup]="personForm" class="m-3 w-2/6">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Create Person</mat-card-title>
     </mat-card-header>
+    <div>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Click here to Scan"
+          formControlName="personCACScan"
+        />
+      </mat-form-field>
+      <button
+        class="m-3"
+        mat-raised-button
+        color="primary"
+        (click)="submitCAC()"
+      >
+        Scan CAC
+      </button>
+    </div>
     <mat-card-content>
       <mat-form-field class="PersonInput">
         <input
@@ -159,23 +176,6 @@
           [disabled]="!personForm.valid"
         >
           Submit
-        </button>
-      </div>
-      <div>
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="Click here to Scan"
-            formControlName="personCACScan"
-          />
-        </mat-form-field>
-        <button
-          class="m-3"
-          mat-raised-button
-          color="primary"
-          (click)="submitCAC()"
-        >
-          Scan CAC
         </button>
       </div>
     </mat-card-content>
