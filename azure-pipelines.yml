@@ -47,7 +47,7 @@ jobs:
         displayName: 'Install LTS of Node.js'
       - script: npm install -g yarn
         displayName: Install yarn
-      - script: yarn audit
+      - script: yarn audit --filter high
         displayName: Audit packages
       - script: yarn install --ignore-engines --frozen-lockfile
         displayName: Install dependencies
