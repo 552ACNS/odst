@@ -2,9 +2,9 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
-import { HairColor, Spec } from '.prisma/client';
-import { EyeColor } from '.prisma/client';
-import { BirthState } from '.prisma/client';
+import { HairColor, Spec } from '@prisma/client';
+import { EyeColor } from '@prisma/client';
+import { BirthState } from '@prisma/client';
 import { Apollo, gql } from 'apollo-angular';
 import { OrgGQL } from '@odst/types';
 import { Subscription } from 'rxjs';
