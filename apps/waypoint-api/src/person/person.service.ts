@@ -7,7 +7,7 @@ export class PersonService {
   constructor(private prisma: PrismaService) {}
 
   async person(
-    personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personWhereUniqueInput: Prisma.PersonWhereUniqueInput
   ): Promise<Person | null> {
     return this.prisma.person.findUnique({
       where: personWhereUniqueInput,
@@ -16,7 +16,7 @@ export class PersonService {
 
   // TODO: Reimplement this once we have auth
   async findManyInOrg(
-    personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personWhereUniqueInput: Prisma.PersonWhereUniqueInput
   ): Promise<Person[]> {
     // Creates a person based off of the personWhereUniqueInput
     // if the person does not exist it will be null
@@ -73,7 +73,7 @@ export class PersonService {
   }
 
   async findUnique(
-    personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personWhereUniqueInput: Prisma.PersonWhereUniqueInput
   ): Promise<Person | null> {
     return this.prisma.person.findUnique({
       where: personWhereUniqueInput,
@@ -82,7 +82,7 @@ export class PersonService {
 
   async update(
     personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
-    personUpdateInput: Prisma.PersonUpdateInput,
+    personUpdateInput: Prisma.PersonUpdateInput
   ): Promise<Person> {
     return this.prisma.person.update({
       where: personWhereUniqueInput,
@@ -94,5 +94,56 @@ export class PersonService {
     return this.prisma.person.delete({
       where: personWhereUniqueInput,
     });
+  }
+
+  async createAdminAccount() {
+    // do not do the below if we are in a production environment
+    // this is just for development purposes
+    if (process.env.NODE_ENV === 'production') {
+      return;
+    }
+
+    // create an admin account if one does not exist
+    // look for a person with the unique id "admin_account"
+    // if one does not exist then create one
+    // if one does exist then do nothing
+    const adminAccount = this.prisma.person.findUnique({
+      where: {
+        id: 'admin_account',
+      },
+    });
+
+    // if the admin account does not exist then create one
+    if (!adminAccount) {
+      const account_details: Prisma.PersonCreateInput = {
+        id: 'admin_account',
+        firstName: 'admin',
+        lastName: 'account',
+        dodId: 0,
+        ssn: 0,
+        hairColor: 'BROWN',
+        email: 'admin.account@us.af.mil',
+        middleInitial: 'A',
+        birthDate: new Date('01/01/2001'),
+        birthCity: 'Washington',
+        birthCountry: 'USA',
+        citizenshipId: '1',
+        grade: 1,
+        eyeColor: 'BLUE',
+        birthState: 'CA',
+        role: 'ADMIN',
+        spec: 'ENLISTED',
+        height: 60,
+        org: {
+          connect: {
+            id: undefined,
+          },
+        },
+      };
+
+      this.prisma.person.create({
+        data: account_details,
+      });
+    }
   }
 }

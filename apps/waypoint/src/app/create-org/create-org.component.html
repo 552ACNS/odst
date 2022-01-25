@@ -1,0 +1,69 @@
+<form [formGroup]="orgForm" class="m-3 w-2/6">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Create Organization</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Organization Name"
+          formControlName="orgName"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Organization Tier" formControlName="orgTier">
+          <mat-option *ngFor="let orgTier of orgTiers" [value]="orgTier">
+            {{ orgTier }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Organization Alias"
+          formControlName="orgAlias"
+        />
+      </mat-form-field>
+      <ul>
+        <li *ngFor="let alias of orgAliases" [value]="alias">
+          {{ alias }}
+        </li>
+      </ul>
+      <mat-form-field>
+        <mat-select
+          placeholder="Parent Organization"
+          formControlName="orgParent"
+        >
+          <mat-option> Not Applicable </mat-option>
+          <mat-option *ngFor="let org of orgs" [value]="org.id">
+            {{ org.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select
+          placeholder="Children Organization"
+          formControlName="orgChildren"
+        >
+          <mat-option> Not Applicable </mat-option>
+          <mat-option *ngFor="let org of orgs" [value]="org.id">
+            {{ org.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button
+          class="m-2"
+          mat-raised-button
+          color="primary"
+          (click)="OrgSubmit()"
+          [disabled]="!orgForm.valid"
+        >
+          Submit
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

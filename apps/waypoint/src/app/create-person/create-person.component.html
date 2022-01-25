@@ -1,0 +1,183 @@
+<form [formGroup]="personForm" class="m-3 w-2/6">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Create Person</mat-card-title>
+    </mat-card-header>
+    <div>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Click here to Scan"
+          formControlName="personCACScan"
+        />
+      </mat-form-field>
+      <button
+        class="m-3"
+        mat-raised-button
+        color="primary"
+        (click)="submitCAC()"
+      >
+        Scan CAC
+      </button>
+    </div>
+    <mat-card-content>
+      <mat-form-field class="PersonInput">
+        <input
+          matInput
+          placeholder="First Name"
+          formControlName="personFirstName"
+          value="test"
+          id="testing"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="PersonName">
+        <input
+          matInput
+          placeholder="Middle Initial"
+          formControlName="personMiddleInitial"
+          maxlength="1"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Last Name"
+          formControlName="personLastName"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="DoDID"
+          formControlName="personDoDIDNumber"
+          required
+        />
+        <mat-error *ngIf="personForm.controls['personDoDIDNumber'].hasError('pattern') && !personForm.controls['personDoDIDNumber'].hasError('required')">
+          Not a valid DoDID
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="PersonInput">
+        <input
+          matInput
+          placeholder="SSN"
+          formControlName="personSSN"
+          maxlength="11"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="E-mail"
+          formControlName="personEmail"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Birth Country"
+          formControlName="personBirthCountry"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select
+          placeholder="Birth State"
+          formControlName="personBirthState"
+          required
+        >
+          <mat-option
+            *ngFor="let birthState of birthStates"
+            [value]="birthState"
+          >
+            {{ birthState }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Birth City"
+          formControlName="personBirthCity"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Birth Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="personBirthDate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Hair Color" formControlName="personHairColor">
+          <mat-option *ngFor="let hairColor of hairColors" [value]="hairColor">
+            {{ hairColor }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Eye Color" formControlName="personEyeColor">
+          <mat-option *ngFor="let eyeColor of eyeColors" [value]="eyeColor">
+            {{ eyeColor }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Height in inches"
+          formControlName="personHeight"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Spec" formControlName="personSpec">
+          <mat-option *ngFor="let spec of specs" [value]="spec">
+            {{ spec }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Grade" formControlName="personGrade">
+          <mat-option *ngFor="let in of counter(8); let i = index" [value]="i">
+            {{ i }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Organization" formControlName="personOrg">
+          <mat-option *ngFor="let org of orgs" [value]="org.id">
+            {{ org.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <section>
+        <mat-checkbox formControlName="personInitialTraining"
+          >Initial Training</mat-checkbox
+        >
+      </section>
+      <section>
+        <mat-checkbox formControlName="personNDA">NDA</mat-checkbox>
+      </section>
+      <div>
+        <button
+          class="m-3"
+          mat-raised-button
+          color="primary"
+          (click)="personSubmit()"
+          [disabled]="!personForm.valid"
+        >
+          Submit
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

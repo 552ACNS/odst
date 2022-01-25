@@ -34,7 +34,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(({ data, loading }) => {
         this.loading = loading;
         this.orgs = data.findManyOrgs;
-        console.log("hello")
       });
   }
 
