@@ -97,7 +97,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     }
   }
   counter(n: number): number[] {
-    return [...Array(5).keys()];
+    return [...Array(n).keys()];
   }
 
   submitCAC() {
