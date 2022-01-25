@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { MaterialModule } from '../material.module';
-import { AppModule } from '../app.module';
 import { CreateOrgComponent } from './create-org.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreateOrgComponent', () => {
   let component: CreateOrgComponent;
@@ -11,7 +11,7 @@ describe('CreateOrgComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ApolloTestingModule, MaterialModule],
+      imports: [ReactiveFormsModule, ApolloTestingModule, MaterialModule, BrowserAnimationsModule],
       declarations: [ CreateOrgComponent ]
     })
     .compileComponents();

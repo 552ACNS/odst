@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { CreatePersonComponent } from './create-person.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreatePersonComponent', () => {
   let component: CreatePersonComponent;
@@ -10,7 +11,7 @@ describe('CreatePersonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ApolloTestingModule, MaterialModule],
+      imports: [ReactiveFormsModule, ApolloTestingModule, MaterialModule, BrowserAnimationsModule],
       declarations: [ CreatePersonComponent ]
     })
     .compileComponents();
