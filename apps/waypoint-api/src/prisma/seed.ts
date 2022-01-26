@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { hash} from 'bcrypt';
+import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -9,12 +9,12 @@ async function main() {
       name: 'Scorpion Developers',
     },
     update: {
-      aliases: [ 'scorpions '],
+      aliases: ['scorpions'],
       orgTier: 'OTHER',
     },
     create: {
       name: 'Scorpion Developers',
-      aliases: 'scorpions',
+      aliases: ['scorpions'],
       orgTier: 'OTHER',
     },
   });
@@ -45,9 +45,8 @@ async function main() {
     },
   });
   try {
-    await prisma.user.delete({where:{username: 'admin'}})
-  }
-  catch{
+    await prisma.user.delete({ where: { username: 'admin' } });
+  } catch {
     //console.log("admin account does not exist")
   }
 
@@ -58,8 +57,6 @@ async function main() {
     const pw = await hash(process.env.DEV_ACCOUNT_PASSWORD, 10);
     //console.log({ env, pw, devUserAccount })
 
-
-
     const user = await prisma.user.create({
       data: {
         username: 'admin',
@@ -69,8 +66,7 @@ async function main() {
       },
     });
     console.log({ org, person, user });
-  }
-  else{
+  } else {
     console.log({ org, person });
   }
 }
