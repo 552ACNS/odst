@@ -14,7 +14,7 @@ export class AuthResolver {
   constructor(private authService: AuthService) {}
 
   @Mutation(() => LoginResponse)
-  // @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard)
   login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
     return this.authService.login(loginUserInput);
   }
