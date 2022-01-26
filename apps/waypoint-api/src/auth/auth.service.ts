@@ -2,7 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { LoginResponse, LoginUserInput, SignupUserInput } from '@odst/types';
-import { compare, hash} from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +23,7 @@ export class AuthService {
       const valid = await compare(passwordPlaintextInput, user.password);
 
       if (valid) {
+        // Do we need to destructure the password?
         const { password, ...result } = user;
         return result;
       }

@@ -48,7 +48,7 @@ describe('OrgResolver', () => {
 
   it('should call the method to find all orgs', async () => {
     // TEST PARAMS
-    const methodToSpy = 'findMany';
+    const methodToSpy = 'orgs';
 
     const resolvedOrgs: OrgGQL[] = TestOrgCreateInput.map(
       (org) => org as unknown as OrgGQL,
