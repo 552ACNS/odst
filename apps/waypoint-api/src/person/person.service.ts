@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PersonCreateInput } from '@odst/types';
 import { Prisma, Person } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -96,54 +97,12 @@ export class PersonService {
     });
   }
 
-  async createAdminAccount() {
-    // do not do the below if we are in a production environment
-    // this is just for development purposes
-    if (process.env.NODE_ENV === 'production') {
-      return;
-    }
-
-    // create an admin account if one does not exist
-    // look for a person with the unique id "admin_account"
-    // if one does not exist then create one
-    // if one does exist then do nothing
-    const adminAccount = this.prisma.person.findUnique({
-      where: {
-        id: 'admin_account',
-      },
+  async upsert(personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personUpdateInput: Prisma.PersonUpdateInput, personCreateInput: PersonCreateInput): Promise<Person> {
+    return this.prisma.person.upsert({
+      where: personWhereUniqueInput,
+      update: personUpdateInput,
+      create: personCreateInput
     });
-
-    // if the admin account does not exist then create one
-    if (!adminAccount) {
-      const account_details: Prisma.PersonCreateInput = {
-        id: 'admin_account',
-        firstName: 'admin',
-        lastName: 'account',
-        dodId: 0,
-        ssn: 0,
-        hairColor: 'BROWN',
-        email: 'admin.account@us.af.mil',
-        middleInitial: 'A',
-        birthDate: new Date('01/01/2001'),
-        birthCity: 'Washington',
-        birthCountry: 'USA',
-        citizenshipId: '1',
-        grade: 1,
-        eyeColor: 'BLUE',
-        birthState: 'CA',
-        role: 'ADMIN',
-        spec: 'ENLISTED',
-        height: 60,
-        org: {
-          connect: {
-            id: undefined,
-          },
-        },
-      };
-
-      this.prisma.person.create({
-        data: account_details,
-      });
-    }
   }
 }

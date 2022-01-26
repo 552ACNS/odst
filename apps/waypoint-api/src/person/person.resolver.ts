@@ -11,7 +11,7 @@ export class PersonResolver {
 
   // create a person
   @Mutation(() => PersonGQL, { name: 'createPerson' })
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async create(
     @Args('personCreateInput') personCreateInput: PersonCreateInput,
   ) {
@@ -20,7 +20,7 @@ export class PersonResolver {
 
   // find all persons
   @Query(() => [PersonGQL], { name: 'findManyPersons' })
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async findMany() {
     return await this.personService.findMany();
   }

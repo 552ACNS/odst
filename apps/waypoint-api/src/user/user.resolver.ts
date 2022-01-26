@@ -32,9 +32,10 @@ export class UserResolver {
   //}
 
   // create a user
-  //ths uses the guard because to make an account while unauthenticated you use the signup mutation
+  // ths uses the guard because to make an account while unauthenticated you use the signup mutation
+  // password provided must be the hashed password for user to be able to log in
   @Mutation(() => UserGQL, { name: 'createUser' })
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async create(
     @Args('userCreateInput') userCreateInput: UserCreateInput
   ): Promise<UserGQL> {

@@ -17,7 +17,7 @@ export class AuthService {
   ): Promise<unknown> {
 
     const user = await this.userService.findUnique({ username: username });
-    if (user) {
+    if (user && user.enabled) {
       //first is plaintext, second is hash to compare it to
       const valid = await compare(passwordPlaintextInput, user.password);
 

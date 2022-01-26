@@ -13,8 +13,10 @@ import { JwtStrategy } from './jwt.strategy';
     PassportModule,
     JwtModule.register({
       //TODO implement refresh tokens
-      signOptions: { expiresIn: '60m' },
-      secret: 'this-should-not-be-hardcoded-here', //TODO process.env.JWT_SECRET
+      signOptions: {
+        expiresIn: process.env.NODE_ENV === 'production' ? '15m' : '5d',
+      },
+      secret: process.env.JWT_SECRET,
     }),
   ],
   providers: [AuthService, AuthResolver, LocalStrategy, JwtStrategy],
