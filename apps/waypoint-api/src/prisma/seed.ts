@@ -9,7 +9,7 @@ async function main() {
       name: 'Scorpion Developers',
     },
     update: {
-      aliases: 'scorpions',
+      aliases: [ 'scorpions '],
       orgTier: 'OTHER',
     },
     create: {
