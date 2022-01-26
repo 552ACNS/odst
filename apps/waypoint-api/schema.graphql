@@ -125,6 +125,7 @@ enum Spec {
 enum Role {
   ADMIN
   SM
+  DEV
   NONE
 }
 
@@ -136,6 +137,7 @@ scalar DateTime
 type UserGQL {
   id: String
   personId: String!
+  enabled: Boolean!
   username: String!
 }
 
@@ -187,6 +189,7 @@ input PersonGQLInput {
 input UserGQLInput {
   id: String
   personId: String!
+  enabled: Boolean!
   username: String!
 }
 
@@ -199,7 +202,6 @@ type Query {
   findManyOrgs: [OrgGQL!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  removeOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueIncident(incidentWhereUniqueInput: IncidentWhereUniqueInput!): IncidentGQL!
 }
 
@@ -236,6 +238,7 @@ type Mutation {
   deletePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgUpdateInput: OrgUpdateInput!, OrgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
+  removeOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createIncident(incidentCreateInput: IncidentCreateInput!): IncidentGQL!
 }
 
@@ -263,12 +266,14 @@ input PersonCreateOrConnectWithoutUserInput {
 
 input UserCreateInput {
   person: PersonCreateNestedOneWithoutUserInput!
+  enabled: Boolean
   username: String!
   password: String!
 }
 
 input UserUpdateInput {
   person: PersonUpdateOneRequiredWithoutUserInput
+  enabled: Boolean
   username: String
   password: String
 }

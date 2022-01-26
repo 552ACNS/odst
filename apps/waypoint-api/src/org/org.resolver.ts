@@ -49,7 +49,7 @@ export class OrgResolver {
     return this.orgService.update(orgWhereUniqueInput, orgUpdateInput);
   }
 
-  @Query(() => [OrgGQL], { name: 'removeOrg' })
+  @Mutation(() => OrgGQL, { name: 'removeOrg' })
   @UseGuards(JwtAuthGuard)
   async delete(
     @Args('orgWhereUniqueInput')

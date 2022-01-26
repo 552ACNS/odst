@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Org, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { OrgGQL } from '@odst/types';
+import { OrgCreateInput, OrgGQL } from '@odst/types';
 
 @Injectable()
 export class OrgService {
   constructor(private prisma: PrismaService) {}
 
   async findUnique(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
   ): Promise<Org | null> {
     return this.prisma.org.findUnique({
       where: orgWhereUniqueInput,
@@ -42,7 +42,7 @@ export class OrgService {
   }
 
   async getSubOrgs(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
   ): Promise<OrgGQL[]> {
     const parentOrg = await this.prisma.org.findUnique({
       where: orgWhereUniqueInput,
@@ -70,7 +70,7 @@ export class OrgService {
 
   async update(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
-    orgUpdateInput: Prisma.OrgUpdateInput,
+    orgUpdateInput: Prisma.OrgUpdateInput
   ): Promise<Org> {
     return this.prisma.org.update({
       where: orgWhereUniqueInput,
@@ -78,9 +78,19 @@ export class OrgService {
     });
   }
 
-  async delete(orgWhereUniqueInput: Prisma.PersonWhereUniqueInput) {
+  async delete(orgWhereUniqueInput: Prisma.OrgWhereUniqueInput) {
     return this.prisma.org.delete({
       where: orgWhereUniqueInput,
+    });
+  }
+
+
+  async upsert(orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
+    orgUpdateInput: Prisma.OrgUpdateInput, orgCreateInput: OrgCreateInput): Promise<Org> {
+    return this.prisma.org.upsert({
+      where: orgWhereUniqueInput,
+      update: orgUpdateInput,
+      create: orgCreateInput
     });
   }
 }

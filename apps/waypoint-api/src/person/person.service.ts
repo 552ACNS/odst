@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PersonCreateInput } from '@odst/types';
 import { Prisma, Person } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -93,6 +94,16 @@ export class PersonService {
   async delete(personWhereUniqueInput: Prisma.PersonWhereUniqueInput) {
     return this.prisma.person.delete({
       where: personWhereUniqueInput,
+    });
+  }
+
+
+  async upsert(personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personUpdateInput: Prisma.PersonUpdateInput, personCreateInput: PersonCreateInput): Promise<Person> {
+    return this.prisma.person.upsert({
+      where: personWhereUniqueInput,
+      update: personUpdateInput,
+      create: personCreateInput
     });
   }
 }
