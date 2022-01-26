@@ -46,7 +46,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     ],
     personBirthCountry: ['', Validators.required],
     personBirthCity: ['', Validators.required],
-    personHeight: ['', Validators.required],
+    personHeight: ['', 
+    [Validators.required, Validators.pattern('^[1-9]?[0-9]{1}$|^100')]
+  ],
     personBirthDate: ['', Validators.required],
     personBirthState: ['', Validators.required],
     personHairColor: ['', Validators.required],
