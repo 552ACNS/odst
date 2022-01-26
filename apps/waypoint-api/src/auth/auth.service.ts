@@ -55,4 +55,15 @@ export class AuthService {
       person: signupUserInput.person,
     });
   }
+
+  async generateAccessToken(user : User) : Promise<LoginResponse>{
+    if (user) {
+      const { password, ...result } = user;
+      return {
+        token: this.jwtService.sign({ username: user.username, sub: user.id }),
+        user,
+      };
+    }
+    throw new UnauthorizedException();
+  }
 }

@@ -1,10 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { UserGQL } from '../entity/user.entity';
+import { UserGQL } from './user.entity';
 
 @ObjectType()
-export class LoginResponse {
+export class RefreshToken {
   @Field()
-  token: string;
+  is_revoked: boolean
+
+  @Field()
+  expires: Date
 
   @Field(() => UserGQL)
   user: UserGQL;

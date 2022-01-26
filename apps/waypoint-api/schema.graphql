@@ -125,6 +125,7 @@ enum Spec {
 enum Role {
   ADMIN
   SM
+  DEV
   NONE
 }
 
