@@ -9,6 +9,7 @@ export const TestUserCreateInput: UserCreateInput[] = [
         dodId: 123456789,
       },
     },
+    enabled: true,
   },
   {
     username: "johnny.toes",
@@ -18,6 +19,7 @@ export const TestUserCreateInput: UserCreateInput[] = [
         dodId: 987456789,
       },
     },
+    enabled: true,
   },
   {
     username: "tom.sawyer",
@@ -27,6 +29,7 @@ export const TestUserCreateInput: UserCreateInput[] = [
         dodId: 3269425899,
       },
     },
+    enabled: true,
   },
   {
     username: "imagine.ragon",
@@ -36,5 +39,6 @@ export const TestUserCreateInput: UserCreateInput[] = [
         dodId: 5987654321,
       },
     },
+    enabled: true,
   },
 ];

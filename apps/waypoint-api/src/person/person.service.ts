@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PersonCreateInput } from '@odst/types';
 import { Prisma, Person } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -7,7 +8,7 @@ export class PersonService {
   constructor(private prisma: PrismaService) {}
 
   async person(
-    personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personWhereUniqueInput: Prisma.PersonWhereUniqueInput
   ): Promise<Person | null> {
     return this.prisma.person.findUnique({
       where: personWhereUniqueInput,
@@ -16,7 +17,7 @@ export class PersonService {
 
   // TODO: Reimplement this once we have auth
   async findManyInOrg(
-    personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personWhereUniqueInput: Prisma.PersonWhereUniqueInput
   ): Promise<Person[]> {
     // Creates a person based off of the personWhereUniqueInput
     // if the person does not exist it will be null
@@ -73,7 +74,7 @@ export class PersonService {
   }
 
   async findUnique(
-    personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personWhereUniqueInput: Prisma.PersonWhereUniqueInput
   ): Promise<Person | null> {
     return this.prisma.person.findUnique({
       where: personWhereUniqueInput,
@@ -82,7 +83,7 @@ export class PersonService {
 
   async update(
     personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
-    personUpdateInput: Prisma.PersonUpdateInput,
+    personUpdateInput: Prisma.PersonUpdateInput
   ): Promise<Person> {
     return this.prisma.person.update({
       where: personWhereUniqueInput,
@@ -93,6 +94,15 @@ export class PersonService {
   async delete(personWhereUniqueInput: Prisma.PersonWhereUniqueInput) {
     return this.prisma.person.delete({
       where: personWhereUniqueInput,
+    });
+  }
+
+  async upsert(personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personUpdateInput: Prisma.PersonUpdateInput, personCreateInput: PersonCreateInput): Promise<Person> {
+    return this.prisma.person.upsert({
+      where: personWhereUniqueInput,
+      update: personUpdateInput,
+      create: personCreateInput
     });
   }
 }

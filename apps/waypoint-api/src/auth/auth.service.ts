@@ -2,7 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginResponse, LoginUserInput, SignupUserInput } from '@odst/types';
-import * as bcrypt from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -17,11 +17,12 @@ export class AuthService {
   ): Promise<unknown> {
 
     const user = await this.userService.findUnique({ username: username });
-    if (user) {
+    if (user && user.enabled) {
       //first is plaintext, second is hash to compare it to
-      const valid = await bcrypt.compare(passwordPlaintextInput, user.password);
+      const valid = await compare(passwordPlaintextInput, user.password);
 
       if (valid) {
+        // Do we need to destructure the password?
         const { password, ...result } = user;
         return result;
       }
@@ -45,7 +46,7 @@ export class AuthService {
 
   async signup(signupUserInput: SignupUserInput) {
     //hash plaintext password input
-    const password = await bcrypt.hash(signupUserInput.password, 10);
+    const password = await hash(signupUserInput.password, 10);
 
     //if user exists, database will throw unique error
     return this.userService.create({

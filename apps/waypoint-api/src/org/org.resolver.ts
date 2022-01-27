@@ -17,7 +17,12 @@ export class OrgResolver {
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
   @UseGuards(JwtAuthGuard)
   async findMany(): Promise<OrgGQL[]> {
-    return this.orgService.findMany();
+    // return this.orgService.findMany();
+    return this.orgService.orgs({
+      orderBy: {
+        name: "asc"
+      }
+    })
   }
 
   @Query(() => [OrgGQL], { name: 'getSubOrgs' })
@@ -49,7 +54,7 @@ export class OrgResolver {
     return this.orgService.update(orgWhereUniqueInput, orgUpdateInput);
   }
 
-  @Query(() => [OrgGQL], { name: 'removeOrg' })
+  @Mutation(() => OrgGQL, { name: 'removeOrg' })
   @UseGuards(JwtAuthGuard)
   async delete(
     @Args('orgWhereUniqueInput')

@@ -9,5 +9,8 @@ export class UserGQL {
 
   @Field(() => String)
   personId: string;
+
+  @Field(() => Boolean)
+  enabled: boolean;
 }
 

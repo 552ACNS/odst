@@ -9,6 +9,9 @@
     "build": "nx build",
     "test": "nx test"
   },
+  "prisma": {
+    "seed": "ts-node ./apps/waypoint-api/src/prisma/seed.ts"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.1.0",
@@ -17,11 +20,12 @@
     "@angular/compiler": "~13.1.0",
     "@angular/core": "~13.1.0",
     "@angular/forms": "~13.1.0",
-    "@angular/material": "^13.1.1",
+    "@angular/material": "^13.1.3",
     "@angular/platform-browser": "~13.1.0",
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
-    "@apollo/client": "^3.5.6",
+    "@apollo/client": "^3.5.8",
+    "@babel/core": "^7.16.7",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/graphql": "^9.1.2",
@@ -41,6 +45,7 @@
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.5.1",
+    "safe-buffer": "^5.2.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
   },
@@ -65,9 +70,10 @@
     "@nrwl/workspace": "13.4.4",
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "27.4.0",
-    "@types/node": "17.0.8",
+    "@types/node": "^17.0.12",
     "@typescript-eslint/eslint-plugin": "~5.9.1",
     "@typescript-eslint/parser": "~5.9.1",
+    "autoprefixer": "^10.4.0",
     "cypress": "^9.1.0",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "8.3.0",
@@ -75,13 +81,16 @@
     "jest": "27.4.7",
     "jest-mock-extended": "^2.0.4",
     "jest-preset-angular": "11.0.1",
+    "postcss": "^8.4.5",
     "prettier": "^2.3.1",
     "prisma": "^3.7.0",
+    "tailwindcss": "^3.0.2",
     "ts-jest": "27.1.2",
-    "typescript": "~4.5.4"
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.5"
   },
   "resolutions": {
-    "@angular-devkit/build-angular/**/postcss": "~8.2.13",
-    "@angular-devkit/build-angular/**/**/node-forge": "~1"
+    "@angular-devkit/build-angular/webpack-dev-server/selfsigned/node-forge": "1",
+    "@angular-devkit/build-angular/resolve-url-loader/postcss": "^8.3"
   }
 }

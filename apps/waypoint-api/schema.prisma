@@ -13,9 +13,10 @@ generator client {
 model User {
   id                String   @id @default(uuid())
   username          String   @unique
-  password          String //should be unique?
+  password          String   //should be unique?
   person            Person   @relation(fields: [personId], references: [id])
   personId          String   @unique
+  enabled           Boolean  @default(true)
   refreshToken      RefreshToken?
 }
 
@@ -75,6 +76,7 @@ model Incident {
 enum Role {
   ADMIN
   SM // Security Manager
+  DEV
   NONE // default value
 }
 
