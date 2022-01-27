@@ -35,7 +35,6 @@ export class AuthService {
     });
 
     if (user) {
-      const { password, ...result } = user;
       return {
         token: this.jwtService.sign({ username: user.username, sub: user.id }),
         user,
@@ -56,9 +55,8 @@ export class AuthService {
     });
   }
 
-  async generateAccessToken(user : User) : Promise<LoginResponse>{
+  async generateAccessToken(user) : Promise<LoginResponse>{
     if (user) {
-      const { password, ...result } = user;
       return {
         token: this.jwtService.sign({ username: user.username, sub: user.id }),
         user,
@@ -66,4 +64,21 @@ export class AuthService {
     }
     throw new UnauthorizedException();
   }
+
+
+  const BASE_OPTIONS = {
+    issuer: 'https://my-app.com',
+    audience:'https://my-app.com',
+  }
+
+
+  public async generateRefreshToken (user, expiresIn: number): Promise<string> {
+    const token = await this.tokens.createRefreshToken(user, expiresIn)
+
+    const opts: SignOptions = {
+      ...BASE_OPTIONS,
+      expiresIn,
+      subject: String(user.id),
+      jwtid: String(token.id),
+    }
 }
