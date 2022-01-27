@@ -31,7 +31,7 @@
           required
         />
         <mat-error>
-          Please enter your first name
+          Please enter their first name
         </mat-error>
       </mat-form-field>
       <mat-form-field class="PersonName">
@@ -50,7 +50,7 @@
           required
         />
         <mat-error>
-          Please enter your last name
+          Please enter their last name
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -87,7 +87,7 @@
           Someone@us.af.mil
         </mat-hint>
         <mat-error *ngIf="personForm.controls['personEmail'].hasError('email') && !personForm.controls['personEmail'].hasError('required')">
-          Please enter a valid SSN
+          Please enter a valid Email
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -98,7 +98,7 @@
           required
         />
         <mat-error>
-          Please enter the birth country
+          Please enter their birth country
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -115,7 +115,7 @@
           </mat-option>
         </mat-select>
         <mat-error>
-          Please select the birth state
+          Please select their birth state
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -139,7 +139,7 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error>
-          Please enter the birth date with MM/DD/YYYY format
+          Please enter their birth date with MM/DD/YYYY format
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -149,7 +149,7 @@
           </mat-option>
         </mat-select>
         <mat-error>
-          Please select the hair color
+          Please select their hair color
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -159,7 +159,7 @@
           </mat-option>
         </mat-select>
         <mat-error>
-          Please select the eye color
+          Please select their eye color
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -181,7 +181,7 @@
           </mat-option>
         </mat-select>
         <mat-error>
-          Please select the specification
+          Please select their specification
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -191,7 +191,7 @@
           </mat-option>
         </mat-select>
         <mat-error>
-          Please select the grade
+          Please select their grade
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -201,7 +201,7 @@
           </mat-option>
         </mat-select>
         <mat-error>
-          Please select the organization
+          Please select their organization
         </mat-error>
       </mat-form-field>
       <section>

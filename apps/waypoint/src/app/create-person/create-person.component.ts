@@ -166,7 +166,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         },
         (error) => {
           alert('there was an error sending the query: /n' + error);
-          this.submitSuccess = true;
+          this.submitSuccess = false;
         }
       );
   }
