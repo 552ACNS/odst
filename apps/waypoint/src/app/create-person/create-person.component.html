@@ -83,6 +83,9 @@
           formControlName="personEmail"
           required
         />
+        <mat-hint>
+          Someone@us.af.mil
+        </mat-hint>
         <mat-error *ngIf="personForm.controls['personEmail'].hasError('email') && !personForm.controls['personEmail'].hasError('required')">
           Please enter a valid SSN
         </mat-error>
@@ -219,7 +222,9 @@
         >
           Submit
         </button>
+        <mat-icon [ngClass]="{'text-green-400 align-middle text-[2rem]': submitSuccess === true, 'text-transparent': submitSuccess === false}">check_circle</mat-icon>
       </div>
     </mat-card-content>
   </mat-card>
 </form>
+<button mat-raised-button color="primary" (click)="Testing()">Pain</button>

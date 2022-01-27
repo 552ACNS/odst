@@ -25,6 +25,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   personGrades: number[];
   querySubscription: Subscription;
   loading = true;
+  submitSuccess = false;
 
   personForm = this.fb.group({
     personCACScan: [''],
@@ -114,6 +115,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       personCACScan: ''
     });
   }
+  Testing() {
+    this.submitSuccess = true;
+  }
 
   personSubmit(): void {
     const SUBMIT_PERSON = gql`
@@ -158,9 +162,11 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       .subscribe(
         ({ data }) => {
           alert(data);
+          this.submitSuccess = true;
         },
         (error) => {
           alert('there was an error sending the query: /n' + error);
+          this.submitSuccess = true;
         }
       );
   }
