@@ -36,7 +36,8 @@ export class AuthService {
 
     if (user) {
       return {
-        token: this.jwtService.sign({ username: user.username, sub: user.id }),
+        accessToken: this.jwtService.sign({ username: user.username, sub: user.id }),
+        refreshToken: null,
         user,
       };
     }

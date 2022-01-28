@@ -5,7 +5,7 @@ import {
   HairColor,
   Person,
   Role,
-  Spec
+  Spec,
 } from '@prisma/client';
 
 @ObjectType()

@@ -19,6 +19,6 @@ export class RefreshTokenResolver {
     @Args('refreshTokenCreateInput')
     refreshTokenCreateInput: RefreshTokenCreateInput
   ) {
-    return this.refreshTokenService.create(refreshTokenCreateInput);
+    return null; //this.refreshTokenService.create(refreshTokenCreateInput);
   }
 }
