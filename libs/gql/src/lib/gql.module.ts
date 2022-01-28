@@ -9,7 +9,6 @@ import { HttpLink } from 'apollo-angular/http';
 
 import { setContext } from '@apollo/client/link/context';
 
-//TODO make uri env var
 const uri = process.env['GQL_URI'];
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const basic = setContext((operation, context) => ({
