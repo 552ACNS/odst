@@ -9,7 +9,14 @@ import { hash } from 'bcrypt';
 export class LoginService {
   constructor(private apollo: Apollo) {}
 
-  getJwtToken() {
+  // TODO consider switching to sessionStorage
+  // "What will happen if I'm logged in on multiple tabs?"; won't be authenticated in new tabs
+  // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
+
+  // TODO sessionStorage is not being cleared as expected
+
+  // If SRR is implemented, will need to figure out how SSR plays into all of this
+    getJwtToken() {
     return sessionStorage.getItem('jwt');
   }
 
@@ -17,7 +24,7 @@ export class LoginService {
     sessionStorage.setItem('jwt', token);
   }
 
-  // Longer duration refresh token (30-60 min)
+  // TODO switch storing refreshtoken in localStorage so that session persists across sessions (if that is wanted)
   getRefreshToken() {
     return sessionStorage.getItem('refreshToken');
   }
