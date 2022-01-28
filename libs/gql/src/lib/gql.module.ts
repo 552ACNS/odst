@@ -1,13 +1,38 @@
-import {NgModule} from '@angular/core';
-import {APOLLO_OPTIONS} from 'apollo-angular';
-import {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';
-import {HttpLink} from 'apollo-angular/http';
+import { NgModule } from '@angular/core';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import {
+  ApolloClientOptions,
+  ApolloLink,
+  InMemoryCache,
+} from '@apollo/client/core';
+import { HttpLink } from 'apollo-angular/http';
 
-const uri = 'http://localhost:3333/graphql'; // <-- add the URL of the GraphQL server here
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+import { setContext } from '@apollo/client/link/context';
+
+const uri = process.env['GQL_URI'];
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
+  const basic = setContext((operation, context) => ({
+    headers: {
+      Accept: 'charset=utf-8',
+    },
+  }));
+
+  const auth = setContext((operation, context) => {
+    const token = sessionStorage.getItem('jwt');
+    console.log(token);
+    if (token === null) {
+      return {};
+    } else {
+      return {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+    }
+  });
+
   return {
-    link: httpLink.create({uri}),
+    link: ApolloLink.from([basic, auth, httpLink.create({ uri })]),
     cache: new InMemoryCache(),
   };
 }
