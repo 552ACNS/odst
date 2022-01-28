@@ -60,7 +60,6 @@ export class LoginService {
         ({ data }) => {
           const dataAny = data as any; //TODO make better
           const loginResponse = dataAny.login as LoginResponse;
-          console.log(loginResponse.token)
           this.setJwtToken(loginResponse.token)
         },
         (error) => {
