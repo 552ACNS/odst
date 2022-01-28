@@ -5,23 +5,24 @@ import { LoginService } from './login.service';
 @Component({
   selector: 'odst-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent /*implements OnInit*/ {
-
   hide = true;
   loginForm = this.fb.group({
     userUsername: ['', Validators.required],
     userPassword: ['', Validators.required],
-  })
+  });
 
-  constructor(private fb: FormBuilder, private loginService: LoginService) { }
+  constructor(private fb: FormBuilder, private loginService: LoginService) {}
 
   // ngOnInit(): void {
   // }
 
   submitLoginClick(): void {
-    this.loginService.submitLogin(this.loginForm.value['userUsername'], this.loginForm.value['userPassword']);
+    this.loginService.submitLogin(
+      this.loginForm.value['userUsername'],
+      this.loginForm.value['userPassword']
+    );
   }
-
 }
