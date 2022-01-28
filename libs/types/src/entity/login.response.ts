@@ -1,10 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { RefreshToken } from '@prisma/client';
 import { UserGQL } from './user.entity';
 
 @ObjectType()
-export class LoginResponse {
+export class LoginResponseGQL {
   @Field()
-  token: string;
+  accessToken: string;
+
+  @Field(() => RefreshToken)
+  refreshToken: RefreshToken;
 
   @Field(() => UserGQL)
   user: UserGQL;

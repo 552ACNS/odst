@@ -22,7 +22,7 @@ model User {
 
 model RefreshToken {
   id                String   @id @default(uuid())
-  user              User          @relation(fields: [userId], references: [id])
+  user              User     @relation(fields: [userId], references: [id])
   userId            String   @unique
   is_revoked        Boolean  @default(false)
   expires           DateTime

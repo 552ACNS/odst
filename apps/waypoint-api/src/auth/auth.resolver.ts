@@ -2,7 +2,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import {
   LoginUserInput,
-  LoginResponse,
+  LoginResponseGQL,
   UserGQL,
   SignupUserInput,
 } from '@odst/types';
@@ -13,7 +13,7 @@ import { LocalAuthGuard } from './local.auth-guard';
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
-  @Mutation(() => LoginResponse)
+  @Mutation(() => LoginResponseGQL)
   @UseGuards(LocalAuthGuard)
   login(@Args('loginUserInput') loginUserInput: LoginUserInput) {
     return this.authService.login(loginUserInput);

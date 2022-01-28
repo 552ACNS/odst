@@ -1,6 +1,6 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoginResponse, LoginUserInput, SignupUserInput } from '@odst/types';
+import { LoginResponseGQL, LoginUserInput, SignupUserInput } from '@odst/types';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import { AuthResolver } from './auth.resolver';
@@ -42,7 +42,7 @@ describe('AuthResolver', () => {
     const resolvedLoginResponse = {
       user: user,
       token: 'thisismytoken',
-    } as unknown as LoginResponse;
+    } as unknown as LoginResponseGQL;
 
     const loginUserInput: LoginUserInput = {
       username: 'username',
@@ -50,7 +50,7 @@ describe('AuthResolver', () => {
     };
 
     // Change value of promise
-    const result: Promise<LoginResponse> = Promise.resolve(
+    const result: Promise<LoginResponseGQL> = Promise.resolve(
       resolvedLoginResponse
     );
 

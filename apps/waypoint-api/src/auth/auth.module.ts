@@ -6,6 +6,10 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { JwtRefreshStrategy } from './jwt-refresh.strategy';
+import { RefreshTokenService } from './refreshToken.service'
+import { PrismaService } from '../prisma/prisma.service';
+import { RefreshTokenResolver } from './refreshToken.resolver';
 
 @Module({
   imports: [
@@ -19,7 +23,7 @@ import { JwtStrategy } from './jwt.strategy';
       secret: process.env.JWT_SECRET,
     }),
   ],
-  providers: [AuthService, AuthResolver, LocalStrategy, JwtStrategy],
+  providers: [AuthService, AuthResolver, LocalStrategy, JwtStrategy, JwtRefreshStrategy, RefreshTokenResolver, RefreshTokenService, PrismaService],
   exports: [],
 })
 export class AuthModule {}

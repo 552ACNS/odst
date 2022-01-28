@@ -1,7 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginResponse, LoginUserInput, SignupUserInput } from '@odst/types';
+import { LoginResponseGQL, LoginUserInput, SignupUserInput } from '@odst/types';
 import { compare, hash } from 'bcrypt';
 
 @Injectable()
@@ -15,7 +15,6 @@ export class AuthService {
     username: string,
     passwordPlaintextInput: string
   ): Promise<unknown> {
-
     const user = await this.userService.findUnique({ username: username });
     if (user && user.enabled) {
       //first is plaintext, second is hash to compare it to
@@ -30,7 +29,7 @@ export class AuthService {
     return null;
   }
 
-  async login(loginInput: LoginUserInput) : Promise<LoginResponse>{
+  async login(loginInput: LoginUserInput): Promise<LoginResponseGQL> {
     const user = await this.userService.findUnique({
       username: loginInput.username,
     });
@@ -56,30 +55,13 @@ export class AuthService {
     });
   }
 
-  async generateAccessToken(user) : Promise<LoginResponse>{
-    if (user) {
-      return {
-        token: this.jwtService.sign({ username: user.username, sub: user.id }),
-        user,
-      };
-    }
-    throw new UnauthorizedException();
-  }
-
-
-  const BASE_OPTIONS = {
-    issuer: 'https://my-app.com',
-    audience:'https://my-app.com',
-  }
-
-
-  public async generateRefreshToken (user, expiresIn: number): Promise<string> {
-    const token = await this.tokens.createRefreshToken(user, expiresIn)
-
-    const opts: SignOptions = {
-      ...BASE_OPTIONS,
-      expiresIn,
-      subject: String(user.id),
-      jwtid: String(token.id),
-    }
+  // async generateAccessToken(user) : Promise<LoginResponse>{
+  //   if (user) {
+  //     return {
+  //       token: this.jwtService.sign({ username: user.username, sub: user.id }),
+  //       user,
+  //     };
+  //   }
+  //   throw new UnauthorizedException();
+  // }
 }
