@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { TokensGQL } from '@odst/types';
-import { getRefreshToken, setRefreshToken, getAccessToken, setAccessToken } from '@odst/helpers';
+import {
+  getRefreshToken,
+  setRefreshToken,
+  getAccessToken,
+  setAccessToken,
+} from '@odst/helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +30,7 @@ export class LoginService {
       }
     `;
     this.apollo
-      .mutate({
+      .mutate<TokensGQL>({
         mutation: LOGIN,
         variables: {
           loginUserInput: {
@@ -36,15 +41,9 @@ export class LoginService {
       })
       .subscribe(
         ({ data }) => {
-          data = data.login
-          if (data) {
-            console.log(data);
-            const dataAny = data as any; //TODO make better
-          const loginResponse = dataAny.login as LoginResponse;
-          this.setJwtToken(loginResponse.token)
-            setAccessToken(data.accessToken);
-            setRefreshToken(data.refreshToken);
-          }
+          const tokens = (data as any)?.login as TokensGQL; //TODO make better
+          setAccessToken(tokens.accessToken);
+          setRefreshToken(tokens.refreshToken);
         },
         (error) => {
           alert(error);
@@ -72,10 +71,9 @@ export class LoginService {
       })
       .subscribe(
         ({ data }) => {
-          if (data) {
-            setAccessToken(data.accessToken);
-            setRefreshToken(data.refreshToken);
-          }
+          const tokens = (data as any)?.login as TokensGQL; //TODO make better
+          setAccessToken(tokens.accessToken);
+          setRefreshToken(tokens.refreshToken);
         },
         (error) => {
           alert(error);
