@@ -30,6 +30,9 @@
           id="testing"
           required
         />
+        <mat-error>
+          Please enter their first name
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="PersonName">
         <input
@@ -46,6 +49,9 @@
           formControlName="personLastName"
           required
         />
+        <mat-error>
+          Please enter their last name
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input
@@ -55,7 +61,7 @@
           required
         />
         <mat-error *ngIf="personForm.controls['personDoDIDNumber'].hasError('pattern') && !personForm.controls['personDoDIDNumber'].hasError('required')">
-          Not a valid DoDID
+          Please enter a valid DoDID
         </mat-error>
       </mat-form-field>
       <mat-form-field class="PersonInput">
@@ -66,6 +72,9 @@
           maxlength="11"
           required
         />
+        <mat-error *ngIf="personForm.controls['personSSN'].hasError('pattern') && !personForm.controls['personSSN'].hasError('required')">
+          Please enter a valid SSN
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input
@@ -74,6 +83,12 @@
           formControlName="personEmail"
           required
         />
+        <mat-hint>
+          Someone@us.af.mil
+        </mat-hint>
+        <mat-error *ngIf="personForm.controls['personEmail'].hasError('email') && !personForm.controls['personEmail'].hasError('required')">
+          Please enter a valid Email
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input
@@ -82,6 +97,9 @@
           formControlName="personBirthCountry"
           required
         />
+        <mat-error>
+          Please enter their birth country
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-select
@@ -96,6 +114,9 @@
             {{ birthState }}
           </mat-option>
         </mat-select>
+        <mat-error>
+          Please select their birth state
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input
@@ -104,6 +125,9 @@
           formControlName="personBirthCity"
           required
         />
+        <mat-error>
+          Please select the birth city
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Birth Date</mat-label>
@@ -114,14 +138,19 @@
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-error>
+          Please enter their birth date with MM/DD/YYYY format
+        </mat-error>
       </mat-form-field>
-
       <mat-form-field>
         <mat-select placeholder="Hair Color" formControlName="personHairColor">
           <mat-option *ngFor="let hairColor of hairColors" [value]="hairColor">
             {{ hairColor }}
           </mat-option>
         </mat-select>
+        <mat-error>
+          Please select their hair color
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-select placeholder="Eye Color" formControlName="personEyeColor">
@@ -129,14 +158,21 @@
             {{ eyeColor }}
           </mat-option>
         </mat-select>
+        <mat-error>
+          Please select their eye color
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input
           matInput
           placeholder="Height in inches"
           formControlName="personHeight"
+          maxlength="3"
           required
         />
+        <mat-error *ngIf="personForm.controls['personHeight'].hasError('pattern') && !personForm.controls['personHeight'].hasError('required')">
+          Please enter a height that is less than 100 inches
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-select placeholder="Spec" formControlName="personSpec">
@@ -144,6 +180,9 @@
             {{ spec }}
           </mat-option>
         </mat-select>
+        <mat-error>
+          Please select their specification
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-select placeholder="Grade" formControlName="personGrade">
@@ -151,6 +190,9 @@
             {{ i }}
           </mat-option>
         </mat-select>
+        <mat-error>
+          Please select their grade
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-select placeholder="Organization" formControlName="personOrg">
@@ -158,6 +200,9 @@
             {{ org.name }}
           </mat-option>
         </mat-select>
+        <mat-error>
+          Please select their organization
+        </mat-error>
       </mat-form-field>
       <section>
         <mat-checkbox formControlName="personInitialTraining"
@@ -177,7 +222,9 @@
         >
           Submit
         </button>
+        <mat-icon [ngClass]="{'text-green-400 align-middle text-[2rem]': submitSuccess === true, 'text-transparent': submitSuccess === false}">check_circle</mat-icon>
       </div>
     </mat-card-content>
   </mat-card>
 </form>
+<button mat-raised-button color="primary" (click)="Testing()">Pain</button>

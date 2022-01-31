@@ -11,6 +11,9 @@
           formControlName="orgName"
           required
         />
+        <mat-hint>
+          Please enter organization acronym
+        </mat-hint>
       </mat-form-field>
       <mat-form-field>
         <mat-select placeholder="Organization Tier" formControlName="orgTier">
@@ -18,6 +21,9 @@
             {{ orgTier }}
           </mat-option>
         </mat-select>
+        <mat-hint>
+          Please select organization tier
+        </mat-hint>
       </mat-form-field>
       <mat-form-field>
         <input
@@ -63,6 +69,7 @@
         >
           Submit
         </button>
+        
       </div>
     </mat-card-content>
   </mat-card>
