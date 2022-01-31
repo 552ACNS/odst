@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
-import { Apollo, gql } from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
 import { Org, OrgTier } from '@prisma/client';
 import { Subscription } from 'rxjs';
+import { CreateOrgService } from './create-org.service';
 
 @Component({
   selector: 'odst-create-org',
@@ -26,7 +27,7 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
     orgChildren: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder, private apollo: Apollo) {}
+  constructor(private fb: FormBuilder, private apollo: Apollo, private orgService: CreateOrgService ) {}
   // isString(input: string): null | string{
   //   if(!input){
   //     return null;
@@ -43,34 +44,21 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   //     alert(this.orgAliases);
   //   }
   // }
-  ngOnInit(): void {
-    const GET_ORGS = gql`
-      query {
-        findManyOrgs {
-          id
-          name
-          aliases
-        }
-      }
-    `;
+  async ngOnInit(): Promise<void> {
+    const GET_ORGS = this.orgService.queryOrgs();
     this.querySubscription = this.apollo
-      .watchQuery<any>({
-        query: GET_ORGS,
-      })
-      .valueChanges.subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.orgs = data.findManyOrgs;
-      });
+    .watchQuery<any>({
+      query: GET_ORGS,
+    })
+    .valueChanges.subscribe(({ data, loading }) => {
+      this.loading = loading;
+      this.orgs = data.findManyOrgs;
+    });
   }
 
-  OrgSubmit(): void {
-    const SUBMIT_ORG = gql`
-      mutation createOrg($orgCreateInput: OrgCreateInput!) {
-        createOrg(orgCreateInput: $orgCreateInput) {
-          id
-        }
-      }
-    `;
+   OrgSubmit(): void {
+    const SUBMIT_ORG = this.orgService.mutationCreateOrg();
+
     this.apollo
       .mutate<any>({
         mutation: SUBMIT_ORG,
@@ -79,6 +67,7 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
             name: this.orgForm.value["orgName"],
             orgTier: this.orgForm.get(["orgTier"])?.value,
             aliases: [],
+            //TODO: Functionality with adding a parent or children orgs to an org being created+
             // parent: {
             //   connect: {
             //     id: this.orgForm.get(["orgParent"])?.value
