@@ -6,7 +6,6 @@ import { HairColor, Spec } from '@prisma/client';
 import { EyeColor } from '@prisma/client';
 import { BirthState } from '@prisma/client';
 import { Apollo, gql } from 'apollo-angular';
-import { OrgGQL } from '@odst/types';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,7 +18,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
-  orgs: OrgGQL[] = [
+  orgs = [
     { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
   ];
   personGrades: number[];
