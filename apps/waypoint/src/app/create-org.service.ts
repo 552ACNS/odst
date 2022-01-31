@@ -1,24 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { Subscription } from 'rxjs';
-import { Org, OrgTier } from '@prisma/client';
-import { OrgGQL } from '@odst/types';
+import { Apollo, gql, TypedDocumentNode } from 'apollo-angular';
+import { EmptyObject } from 'apollo-angular/types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CreateOrgService {
-
-  querySubscription: Subscription;
-  loading = true;
-  // orgs: Partial<Org>[] = [
-  //   { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
-  // ];
-
   constructor(private apollo: Apollo) { }
 
-  queryOrg(orgs: Partial<Org>[]): Partial<Org>[] {
-    
+  queryOrg(): TypedDocumentNode<any, EmptyObject> {
     const GET_ORGS = gql`
       query {
         findManyOrgs {
@@ -27,15 +17,7 @@ export class CreateOrgService {
           aliases
         }
       }
-    `;
-    this.querySubscription = this.apollo
-      .watchQuery<any>({
-        query: GET_ORGS,
-      })
-      .valueChanges.subscribe(({ data, loading }) => {
-        this.loading = loading;
-        orgs = data.findManyOrgs;
-      });
-      return orgs;
+      `;
+      return GET_ORGS;
   }
 }

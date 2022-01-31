@@ -2,12 +2,13 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
-import { HairColor, Spec } from '@prisma/client';
+import { HairColor, Org, Spec } from '@prisma/client';
 import { EyeColor } from '@prisma/client';
 import { BirthState } from '@prisma/client';
 import { Apollo, gql } from 'apollo-angular';
 import { OrgGQL } from '@odst/types';
 import { Subscription } from 'rxjs';
+import { CreateOrgService } from '../create-org.service';
 
 @Component({
   selector: 'odst-create-person',
@@ -19,7 +20,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
-  orgs: OrgGQL[] = [
+  orgs: Partial<Org>[] = [
     { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
   ];
   personGrades: number[];
@@ -59,26 +60,19 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     personInitTrngCheck: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder, private apollo: Apollo) {}
+  constructor(private fb: FormBuilder, private apollo: Apollo, private orgService: CreateOrgService) {}
 
-  ngOnInit(): void {
-    const GET_ORGS = gql`
-      query {
-        findManyOrgs {
-          id
-          name
-          aliases
-        }
-      }
-    `;
+  async ngOnInit(): Promise<void> {
+    const GET_ORGS = this.orgService.queryOrg();
     this.querySubscription = this.apollo
-      .watchQuery<any>({
-        query: GET_ORGS,
-      })
-      .valueChanges.subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.orgs = data.findManyOrgs;
-      });
+    //TODO: make query strongly typed instead of any
+    .watchQuery<any>({
+      query: GET_ORGS,
+    })
+    .valueChanges.subscribe(({ data, loading }) => {
+      this.loading = loading;
+      this.orgs = data.findManyOrgs;
+    });
   }
 
   personInitTrngCheck(): boolean {
