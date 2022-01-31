@@ -5,10 +5,9 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { HairColor, Org, Spec } from '@prisma/client';
 import { EyeColor } from '@prisma/client';
 import { BirthState } from '@prisma/client';
-import { Apollo, gql } from 'apollo-angular';
-import { OrgGQL } from '@odst/types';
+import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
-import { CreateOrgService } from '../create-org.service';
+import { CreatePersonService } from './create-person.service';
 
 @Component({
   selector: 'odst-create-person',
@@ -35,7 +34,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     personEmail: ['', Validators.email],
     personDoDIDNumber: [
       '',
-      [Validators.required, Validators.pattern('^[0-9]{10}')],
+      [Validators.required, Validators.pattern('^[0-9]{9,10}'), Validators.maxLength],
     ],
     personSSN: [
       '',
@@ -60,10 +59,10 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     personInitTrngCheck: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder, private apollo: Apollo, private orgService: CreateOrgService) {}
+  constructor(private fb: FormBuilder, private apollo: Apollo, private personService: CreatePersonService) {}
 
   async ngOnInit(): Promise<void> {
-    const GET_ORGS = this.orgService.queryOrg();
+    const GET_ORGS = this.personService.queryOrgs();
     this.querySubscription = this.apollo
     //TODO: make query strongly typed instead of any
     .watchQuery<any>({
@@ -108,13 +107,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   }
 
   personSubmit(): void {
-    const SUBMIT_PERSON = gql`
-      mutation createPerson($personCreateInput: PersonCreateInput!) {
-        createPerson(personCreateInput: $personCreateInput) {
-          id
-        }
-      }
-    `;
+    const SUBMIT_PERSON = this.personService.mutationCreatePerson();
     this.apollo
       .mutate({
         mutation: SUBMIT_PERSON,

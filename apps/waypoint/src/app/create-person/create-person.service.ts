@@ -5,10 +5,10 @@ import { EmptyObject } from 'apollo-angular/types';
 @Injectable({
   providedIn: 'root'
 })
-export class CreateOrgService {
+export class CreatePersonService {
   constructor(private apollo: Apollo) { }
 
-  queryOrg(): TypedDocumentNode<any, EmptyObject> {
+  queryOrgs(): TypedDocumentNode<any, EmptyObject> {
     const GET_ORGS = gql`
       query {
         findManyOrgs {
@@ -19,5 +19,16 @@ export class CreateOrgService {
       }
       `;
       return GET_ORGS;
+  }
+
+  mutationCreatePerson(): TypedDocumentNode<any, EmptyObject> {
+    const SUBMIT_PERSON = gql`
+    mutation createPerson($personCreateInput: PersonCreateInput!) {
+      createPerson(personCreateInput: $personCreateInput) {
+        id
+      }
+    }
+  `;
+  return SUBMIT_PERSON;
   }
 }

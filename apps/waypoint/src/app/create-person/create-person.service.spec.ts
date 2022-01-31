@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CreateOrgService } from './create-org.service';
+import { CreateOrgService } from './create-person.service';
 
 describe('CreateOrgService', () => {
   let service: CreateOrgService;
