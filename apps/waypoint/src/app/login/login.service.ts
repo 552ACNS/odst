@@ -40,7 +40,7 @@ export class LoginService {
       }
     `;
     this.apollo
-      .mutate({
+      .mutate<TokensGQL>({
         mutation: LOGIN,
         variables: {
           loginUserInput: {
@@ -51,11 +51,11 @@ export class LoginService {
       })
       .subscribe(
         ({ data }) => {
-          const dataAny = data as any; //TODO make better
-          const tokens = dataAny.login as TokensGQL;
-          console.log(tokens);
-          this.setAccessToken(tokens.accessToken);
-          this.setRefreshToken(tokens.refreshToken);
+          if (data) {
+            console.log(data);
+            this.setAccessToken(data.accessToken);
+            this.setRefreshToken(data.refreshToken);
+          }
         },
         (error) => {
           alert(error);
@@ -69,25 +69,24 @@ export class LoginService {
         refresh {
           accessToken
           refreshToken
-        },
+        }
       }
     `;
     this.apollo
-      .mutate({
+      .mutate<TokensGQL>({
         mutation: REFRESH,
         context: {
           headers: {
             Authorization: `Bearer ${this.getRefreshToken()}`,
-          }
-        }
+          },
+        },
       })
       .subscribe(
         ({ data }) => {
-          const dataAny = data as any; //TODO make better
-          const tokens = dataAny.login as TokensGQL;
-          console.log(tokens);
-          this.setAccessToken(tokens.accessToken);
-          this.setRefreshToken(tokens.refreshToken);
+          if (data) {
+            this.setAccessToken(data.accessToken);
+            this.setRefreshToken(data.refreshToken);
+          }
         },
         (error) => {
           alert(error);

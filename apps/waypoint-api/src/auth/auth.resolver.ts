@@ -28,7 +28,10 @@ export class AuthResolver {
 
   @Mutation(() => TokensGQL)
   @UseGuards(RefreshTokenAuthGuard)
-  async refresh(@GetCurrentUserId() userId: string): Promise<TokensGQL> {
-    return this.authService.refreshTokens(userId);
+  async refresh(
+    @GetCurrentUserId() userId: string,
+    @Args('refreshToken') refreshToken: string
+  ): Promise<TokensGQL> {
+    return this.authService.refreshTokens(userId, refreshToken);
   }
 }

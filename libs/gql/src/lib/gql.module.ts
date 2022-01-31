@@ -18,13 +18,15 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   }));
 
   const auth = setContext((operation, context) => {
-    const token = sessionStorage.getItem('accessToken');
-    if (token === null) {
+    const accessToken = sessionStorage.getItem('accessToken');
+    const refreshToken = sessionStorage.getItem('refreshToken');
+    if (accessToken === null) {
+      //TODO push to login
       return {};
     } else {
       return {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       };
     }

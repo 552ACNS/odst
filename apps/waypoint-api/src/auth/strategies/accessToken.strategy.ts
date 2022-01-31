@@ -32,7 +32,7 @@ export class AccessTokenStrategy extends PassportStrategy(
     //TODO client fingerprint?
     const user = await this.userService.findUnique({ username: username });
     if (user && user.enabled) {
-      return { userId: payload.sub, username: payload.username };
+      return payload;
     } else {
       throw new UnauthorizedException();
     }
