@@ -7,6 +7,7 @@ import {
 } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { setContext } from '@apollo/client/link/context';
+import authLink from './auth.link';
 
 // TODO Make this an environment variable, make sure this works
 // just setting process.env.GQL_ENDPOINT doesn't work as expected (it will fail
@@ -21,23 +22,10 @@ export function createApollo(httpLink: HttpLink) {
     },
   }));
 
-  const auth = setContext((operation, context) => {
-    const accessToken = sessionStorage.getItem('accessToken');
-    const refreshToken = sessionStorage.getItem('refreshToken');
-    if (accessToken === null) {
-      //TODO push to login
-      return {};
-    } else {
-      return {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-    }
-  });
+
 
   return {
-    link: ApolloLink.from([basic, auth, httpLink.create({ uri })]),
+    link: ApolloLink.from([basic, authLink, httpLink.create({ uri })]),
     cache: new InMemoryCache(),
   };
 }

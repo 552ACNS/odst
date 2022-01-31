@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { OrgGQL } from '@odst/types';
 import { Subscription } from 'rxjs';
+import { getAccessToken } from '@odst/helpers';
 
 const GET_ORGS = gql`
   query {
@@ -27,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
   orgName = 'Haha';
 
   ngOnInit() {
-    console.log(`accessToken: ${sessionStorage.getItem("accessToken")}`)
+    console.log(`accessToken: ${getAccessToken()}`)
     this.querySubscription = this.apollo.watchQuery<any>({
       query: GET_ORGS
     })

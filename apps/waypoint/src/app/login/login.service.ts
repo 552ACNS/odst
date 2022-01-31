@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { TokensGQL } from '@odst/types';
+import { getRefreshToken, setRefreshToken, getAccessToken, setAccessToken } from '@odst/helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -13,22 +14,6 @@ export class LoginService {
   // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
 
   // If SRR is implemented, will need to figure out how SSR plays into all of this
-  getAccessToken() {
-    return sessionStorage.getItem('accessToken');
-  }
-
-  setAccessToken(token) {
-    sessionStorage.setItem('accessToken', token);
-  }
-
-  // TODO switch storing refreshtoken in localStorage so that session persists across sessions (if that is wanted)
-  getRefreshToken() {
-    return sessionStorage.getItem('refreshToken');
-  }
-
-  setRefreshToken(token) {
-    sessionStorage.setItem('refreshToken', token);
-  }
 
   submitLogin(username: string, password: string): void {
     const LOGIN = gql`
@@ -40,7 +25,7 @@ export class LoginService {
       }
     `;
     this.apollo
-      .mutate<TokensGQL>({
+      .mutate({
         mutation: LOGIN,
         variables: {
           loginUserInput: {
@@ -51,10 +36,14 @@ export class LoginService {
       })
       .subscribe(
         ({ data }) => {
+          data = data.login
           if (data) {
             console.log(data);
-            this.setAccessToken(data.accessToken);
-            this.setRefreshToken(data.refreshToken);
+            const dataAny = data as any; //TODO make better
+          const loginResponse = dataAny.login as LoginResponse;
+          this.setJwtToken(loginResponse.token)
+            setAccessToken(data.accessToken);
+            setRefreshToken(data.refreshToken);
           }
         },
         (error) => {
@@ -77,15 +66,15 @@ export class LoginService {
         mutation: REFRESH,
         context: {
           headers: {
-            Authorization: `Bearer ${this.getRefreshToken()}`,
+            Authorization: `Bearer ${getRefreshToken()}`,
           },
         },
       })
       .subscribe(
         ({ data }) => {
           if (data) {
-            this.setAccessToken(data.accessToken);
-            this.setRefreshToken(data.refreshToken);
+            setAccessToken(data.accessToken);
+            setRefreshToken(data.refreshToken);
           }
         },
         (error) => {
