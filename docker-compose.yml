@@ -1,4 +1,5 @@
-version: '3.8'
+# Downgraded to 3.7 to ensure it works with non-docker desktop
+version: '3.7'
 
 services:
     postgres:
