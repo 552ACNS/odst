@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Apollo, gql, TypedDocumentNode } from 'apollo-angular';
+import { gql, TypedDocumentNode } from 'apollo-angular';
 import { EmptyObject } from 'apollo-angular/types';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { EmptyObject } from 'apollo-angular/types';
 })
 export class CreateOrgService {
 
-  constructor(private apollo: Apollo) { }
+  constructor() {}
 
   queryOrgs(): TypedDocumentNode<any, EmptyObject> {
     const GET_ORGS = gql`
