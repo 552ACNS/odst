@@ -19,12 +19,13 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
-  orgs: Partial<Org>[] = [
+  orgs = [
     { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
   ];
   personGrades: number[];
   querySubscription: Subscription;
   loading = true;
+  submitSuccess = false;
 
   personForm = this.fb.group({
     personCACScan: [''],
@@ -46,7 +47,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     ],
     personBirthCountry: ['', Validators.required],
     personBirthCity: ['', Validators.required],
-    personHeight: ['', Validators.required],
+    personHeight: ['', 
+    [Validators.required, Validators.pattern('^[1-9]?[0-9]{1}$|^100')]
+  ],
     personBirthDate: ['', Validators.required],
     personBirthState: ['', Validators.required],
     personHairColor: ['', Validators.required],
@@ -105,6 +108,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       personCACScan: ''
     });
   }
+  Testing() {
+    this.submitSuccess = true;
+  }
 
   personSubmit(): void {
     const SUBMIT_PERSON = this.personService.mutationCreatePerson();
@@ -143,9 +149,11 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       .subscribe(
         ({ data }) => {
           alert(data);
+          this.submitSuccess = true;
         },
         (error) => {
           alert('there was an error sending the query: /n' + error);
+          this.submitSuccess = false;
         }
       );
   }
