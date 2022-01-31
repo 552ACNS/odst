@@ -7,7 +7,9 @@ import { EmptyObject } from 'apollo-angular/types';
 })
 export class CreateOrgService {
 
-  constructor() {}
+  constructor() {
+    // empty
+  }
 
   queryOrgs(): TypedDocumentNode<any, EmptyObject> {
     const GET_ORGS = gql`
