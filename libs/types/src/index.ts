@@ -23,7 +23,6 @@ export * from './entity/person.entity';
 export * from './entity/incident.entity';
 export * from './entity/user.entity';
 export * from './entity/refreshToken.entity'
-export * from './entity/login.response';
 //#endregion
 
 
