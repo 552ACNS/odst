@@ -6,10 +6,10 @@ import {
   InMemoryCache,
 } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
-
 import { setContext } from '@apollo/client/link/context';
 
-const uri = process.env['GQL_URI'];
+//TODO process.env does not work
+const uri = 'http://localhost:3333/graphql';
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const basic = setContext((operation, context) => ({
     headers: {
@@ -18,8 +18,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   }));
 
   const auth = setContext((operation, context) => {
-    const token = sessionStorage.getItem('jwt');
-    console.log(token);
+    const token = sessionStorage.getItem('accessToken');
     if (token === null) {
       return {};
     } else {

@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import {
   PersonWhereUniqueInput,
   PersonWhereInput,
-  PersonUpdateInput
+  PersonUpdateInput,
 } from '@odst/types';
 import { TestPersonCreateInput } from './person.repo';
 import { PersonService } from './person.service';
@@ -42,7 +42,7 @@ describe('PersonsService', () => {
 
   it('Should find all people that share same org as an individual', async () => {
     TestPersonCreateInput.forEach((personCreateInput) =>
-      service.create(personCreateInput),
+      service.create(personCreateInput)
     );
 
     const personInput: PersonWhereUniqueInput = {
@@ -74,10 +74,8 @@ describe('PersonsService', () => {
     const personInput: PersonWhereUniqueInput = {
       dodId: TestPersonCreateInput[0].dodId,
     };
-    
-    await service.findUnique(
-      personInput.dodId as unknown as Person,
-    );
+
+    await service.findUnique(personInput.dodId as unknown as Person);
 
     expect(prismaMock.person.findUnique).toHaveBeenCalled();
   });
@@ -90,11 +88,8 @@ describe('PersonsService', () => {
     const personUpdateInput: PersonUpdateInput = {
       hairColor: 'WHITE',
     };
-    
-    await service.update(
-      personWhereUniqueInput,
-      personUpdateInput,
-    );
+
+    await service.update(personWhereUniqueInput, personUpdateInput);
 
     expect(prismaMock.person.update).toHaveBeenCalled();
   });

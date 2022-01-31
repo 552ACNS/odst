@@ -38,6 +38,8 @@ export class PersonGQL implements Person {
   initialTraining: boolean;
   NDA: boolean;
   grade: number;
+
+  @Field(() => String)
   orgId: string;
 
   @Field(() => EyeColor)

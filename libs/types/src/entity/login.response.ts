@@ -1,5 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { RefreshToken } from '@prisma/client';
 import { RefreshTokenGQL } from '..';
 import { UserGQL } from './user.entity';
 
@@ -9,7 +8,7 @@ export class LoginResponseGQL {
   accessToken: string;
 
   @Field(() => RefreshTokenGQL)
-  refreshToken: RefreshToken;
+  refreshToken: RefreshTokenGQL;
 
   @Field(() => UserGQL)
   user: UserGQL;

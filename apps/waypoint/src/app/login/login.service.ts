@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { LoginResponse } from '@odst/types';
-import { hash } from 'bcrypt';
+import { TokensGQL } from '@odst/types';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +12,13 @@ export class LoginService {
   // "What will happen if I'm logged in on multiple tabs?"; won't be authenticated in new tabs
   // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
 
-  // TODO sessionStorage is not being cleared as expected
-
   // If SRR is implemented, will need to figure out how SSR plays into all of this
-    getJwtToken() {
-    return sessionStorage.getItem('jwt');
+  getAccessToken() {
+    return sessionStorage.getItem('accessToken');
   }
 
-  setJwtToken(token) {
-    sessionStorage.setItem('jwt', token);
+  setAccessToken(token) {
+    sessionStorage.setItem('accessToken', token);
   }
 
   // TODO switch storing refreshtoken in localStorage so that session persists across sessions (if that is wanted)
@@ -37,12 +34,8 @@ export class LoginService {
     const LOGIN = gql`
       mutation Login($loginUserInput: LoginUserInput!) {
         login(loginUserInput: $loginUserInput) {
-          user {
-            id
-            personId
-            username
-          }
-          token
+          accessToken
+          refreshToken
         }
       }
     `;
@@ -59,8 +52,42 @@ export class LoginService {
       .subscribe(
         ({ data }) => {
           const dataAny = data as any; //TODO make better
-          const loginResponse = dataAny.login as LoginResponse;
-          this.setJwtToken(loginResponse.token)
+          const tokens = dataAny.login as TokensGQL;
+          console.log(tokens);
+          this.setAccessToken(tokens.accessToken);
+          this.setRefreshToken(tokens.refreshToken);
+        },
+        (error) => {
+          alert(error);
+        }
+      );
+  }
+
+  submitRefresh(): void {
+    const REFRESH = gql`
+      mutation refresh {
+        refresh {
+          accessToken
+          refreshToken
+        },
+      }
+    `;
+    this.apollo
+      .mutate({
+        mutation: REFRESH,
+        context: {
+          headers: {
+            Authorization: `Bearer ${this.getRefreshToken()}`,
+          }
+        }
+      })
+      .subscribe(
+        ({ data }) => {
+          const dataAny = data as any; //TODO make better
+          const tokens = dataAny.login as TokensGQL;
+          console.log(tokens);
+          this.setAccessToken(tokens.accessToken);
+          this.setRefreshToken(tokens.refreshToken);
         },
         (error) => {
           alert(error);

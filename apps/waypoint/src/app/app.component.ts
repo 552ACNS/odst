@@ -27,6 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   orgName = 'Haha';
 
   ngOnInit() {
+    console.log(`accessToken: ${sessionStorage.getItem("accessToken")}`)
     this.querySubscription = this.apollo.watchQuery<any>({
       query: GET_ORGS
     })
