@@ -1,10 +1,26 @@
 
 
 describe('waypoint', () => {
-  beforeEach(() => cy.visit('/'));
+  beforeEach(() => {
+    cy.visit('/')
+    cy.get('[formcontrolname="userUsername"]').type('admin')
+    cy.get('[formcontrolname="userPassword"]').type('admin')
+    cy.get('odst-login').find('button').contains('Login').click()
+    cy.reload(true)
+  })
 
-  it.only('should create a new person', () => {
+  //need to run this test before create person
+  it('should create a new org', () => {
 
+    cy.get('[formcontrolname="orgName"]').type('552 ACNS')
+    cy.get('[formcontrolname="orgTier"]').click().get('mat-option').contains('OTHER').click();
+    cy.get('odst-create-org').find('button').click()
+    
+  })
+
+  it('should create a new person', () => {
+
+    cy.reload()
     cy.get('[formcontrolname="personFirstName"]').type('FirstName')
     cy.get('[formcontrolname="personLastName"]').type('LastName')
     cy.get('[formcontrolname="personDoDIDNumber"]').type('0123456789')
@@ -24,11 +40,5 @@ describe('waypoint', () => {
 
   });
 
-  it('should create a new org', () => {
-
-    cy.get('[formcontrolname="orgName"]').type('552 ACNS')
-    cy.get('[formcontrolname="orgTier"]').click().get('mat-option').contains('OTHER').click();
-    cy.get('odst-create-org').find('button').click()
-    
-  })
+ 
 });
