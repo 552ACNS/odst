@@ -58,6 +58,7 @@
           matInput
           placeholder="DoDID"
           formControlName="personDoDIDNumber"
+          maxlength="10"
           required
         />
         <mat-error *ngIf="personForm.controls['personDoDIDNumber'].hasError('pattern') && !personForm.controls['personDoDIDNumber'].hasError('required')">
