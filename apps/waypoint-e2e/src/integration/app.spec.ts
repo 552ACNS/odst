@@ -6,7 +6,6 @@ describe('waypoint', () => {
     cy.get('[formcontrolname="userUsername"]').type('admin')
     cy.get('[formcontrolname="userPassword"]').type('admin')
     cy.get('odst-login').find('button').contains('Login').click()
-    cy.reload(true)
   })
 
   //need to run this test before create person
@@ -20,7 +19,6 @@ describe('waypoint', () => {
 
   it('should create a new person', () => {
 
-    cy.reload()
     cy.get('[formcontrolname="personFirstName"]').type('FirstName')
     cy.get('[formcontrolname="personLastName"]').type('LastName')
     cy.get('[formcontrolname="personDoDIDNumber"]').type('0123456789')
