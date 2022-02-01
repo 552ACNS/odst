@@ -108,9 +108,6 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       personCACScan: ''
     });
   }
-  Testing() {
-    this.submitSuccess = true;
-  }
 
   personSubmit(): void {
     const SUBMIT_PERSON = this.personService.mutationCreatePerson();
