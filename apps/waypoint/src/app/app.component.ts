@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { OrgGQL } from '@odst/types';
+import { OrgGQL, PersonGQL } from '@odst/types';
 import { Subscription } from 'rxjs';
+import { parse } from 'path/posix';
 
 export interface PeriodicElement {
   name: string;
@@ -10,12 +11,23 @@ export interface PeriodicElement {
   symbol: string;
 }
 
+ const GET_PERSONS = gql`
+   query {
+     findManyPersons {   
+       firstName   
+       dodId
+       ssn
+     }
+   }
+ `; 
+
 const GET_ORGS = gql`
   query {
     findManyOrgs {
       id
       name
       aliases
+      orgTier
     }
   }
 `;
@@ -29,10 +41,13 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private apollo: Apollo) {}
   loading = true;
   orgs: OrgGQL[] = [{id: "", name: "", aliases: [], orgTier: "WING", parentId: null}];
+  persons: PersonGQL[] = [{id: "", dodId: 0, firstName: "", lastName: "", middleInitial: "",
+  email: "", hairColor: "BROWN", eyeColor: "BLUE", birthCity: "", birthState: "OK",
+  birthCountry: "",  ssn: 0, birthDate: new Date(),
+  citizenshipId: "", height: 0, initialTraining: true, 
+  NDA: true, grade: 0, orgId: "", spec: "OTHER", role: "ADMIN"}];
 
-  querySubscription: Subscription;
-
-  
+  querySubscription: Subscription;  
 dataToDisplay : PeriodicElement[] = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
   {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
@@ -46,24 +61,25 @@ dataToDisplay : PeriodicElement[] = [
   {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
 ];
 
-  tableProps = [
+ tableProps = [
     {
-      columnDef: 'position',
+      columnDef: 'id',
       header: '#',
     },
     {
       columnDef: 'name',
       header: 'Name',
-    },
+    }, 
     {
-      columnDef: 'weight',
+      columnDef: 'aliases',
       header: 'Weight',
     },
     {
-      columnDef: 'symbol',
+      columnDef: 'OrgTier',
       header: 'Symbol',
     },
   ];
+    
   ngOnInit() {
     this.querySubscription = this.apollo.watchQuery<any>({
       query: GET_ORGS
