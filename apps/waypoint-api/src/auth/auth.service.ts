@@ -79,7 +79,7 @@ export class AuthService {
     return true;
   }
 
-  async refreshTokens(userId: string, currentRefreshToken: string): Promise<TokensGQL> {
+  async refreshTokens(userId: string): Promise<TokensGQL> {
     const user = await this.userService.findUnique({
       id: userId,
     });
