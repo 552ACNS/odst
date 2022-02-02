@@ -54,11 +54,9 @@ jobs:
       - run: npx nx run waypoint-api:prisma-generate
       - name: Generate Prisma clients
         run: npx nx run waypoint-api:prisma-generate
-      - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=lint --parallel
       - run: npx nx affected --target=build --parallel
       - run: npx nx affected --target=test --parallel
-      - run: npx nx-cloud stop-all-agents
       - run: dotnet tool update -g dotnet-reportgenerator-globaltool
         continue-on-error: true
       - name: Report Generator
@@ -68,20 +66,3 @@ jobs:
         with:
           name: Cobertura.xml # Artifact name        
           path: ./coverage/merged # Directory containing files to upload
-          
-  agents:
-    runs-on: ubuntu-latest
-    name: Agent 1
-    timeout-minutes: 60
-    strategy:
-      matrix:
-        agent: [ 1, 2, 3 ]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with: 
-          node-version: '16'
-          cache: 'yarn'
-      - run: yarn install --frozen-lockfile
-      - name: Start Nx Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent  
