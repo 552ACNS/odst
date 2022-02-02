@@ -15,7 +15,7 @@ export class OrgResolver {
   }
 
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async findMany(): Promise<OrgGQL[]> {
     // return this.orgService.findMany();
     return this.orgService.orgs({
