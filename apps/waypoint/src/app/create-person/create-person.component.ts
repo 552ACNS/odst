@@ -116,8 +116,8 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   }
   resetPerson(): void {
     this.submitSuccess = false;
-
   }
+  
   personSubmit(): void {
     const SUBMIT_PERSON = this.personService.mutationCreatePerson();
     this.apollo

@@ -10,7 +10,7 @@ describe('LoginService', () => {
       providers: [LoginService],
       imports: [HttpModule],
     }).compile();
-    // getting service modue from main module
+    // getting service module from main module
     service = module.get<LoginService>(LoginService);
   });
   // now checking if service is available
