@@ -54,7 +54,7 @@ export class LoginService {
   submitRefresh(): void {
     const REFRESH = gql`
       mutation refresh {
-        refresh {
+        refreshTokens {
           accessToken
           refreshToken
         }

@@ -4,6 +4,7 @@
   }
 
   export function setAccessToken(token) {
+    console.log(`setting accessToken ${token}`)
     sessionStorage.setItem('accessToken', token);
   }
 
@@ -13,5 +14,6 @@
   }
 
   export function setRefreshToken(token) {
+    console.log(`setting refreshToken ${token}`)
     localStorage.setItem('refreshToken', token);
   }

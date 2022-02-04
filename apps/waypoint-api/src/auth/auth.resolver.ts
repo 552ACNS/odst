@@ -2,7 +2,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { TokensGQL } from '@odst/types';
 import { LoginUserInput, SignupUserInput } from '@odst/types';
-import { UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local.authGuard';
 import { RefreshTokenAuthGuard } from './guards/refreshToken.authGuard';
 import { GetCurrentUserId } from '@odst/types';
@@ -28,7 +28,14 @@ export class AuthResolver {
 
   @Mutation(() => TokensGQL)
   @UseGuards(RefreshTokenAuthGuard)
-  async refresh(@GetCurrentUserId() userId: string): Promise<TokensGQL> {
+  async refreshTokens(@GetCurrentUserId() userId: string): Promise<TokensGQL> {
     return this.authService.refreshTokens(userId);
+  }
+
+  @Mutation(() => TokensGQL)
+  async refreshTokensVar(@Args('refreshToken') refreshToken : string): Promise<TokensGQL> {
+    const tokens = await this.authService.refreshTokensVar(refreshToken);
+    Logger.log({tokens})
+    return this.authService.refreshTokensVar(refreshToken);
   }
 }

@@ -22,18 +22,47 @@ const GET_ORGS = gql`
 export class AppComponent implements OnInit, OnDestroy {
   constructor(private apollo: Apollo) {}
   loading = true;
-  orgs: OrgGQL[] = [{id: "", name: "", aliases: [], orgTier: "WING", parentId: null}];
+  orgs: OrgGQL[] = [
+    { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
+  ];
 
   querySubscription: Subscription;
   orgName = 'Haha';
 
+  testClick() {
+    console.log("Test")
+    const USERS = gql`
+      query FindManyUsers {
+        findManyUsers {
+          personId
+          username
+          id
+          enabled
+        }
+      }
+    `;
+    this.apollo
+      .query({
+        query: USERS,
+      })
+      .subscribe(
+        ({ data }) => {
+          console.log(data)
+        },
+        (error) => {
+          console.log(error)
+          alert(error);
+        }
+      );
+  }
+
   ngOnInit() {
-    console.log(`accessToken: ${getAccessToken()}`)
-    this.querySubscription = this.apollo.watchQuery<any>({
-      query: GET_ORGS
-    })
-      .valueChanges
-      .subscribe(({ data, loading }) => {
+    console.log(`accessToken: ${getAccessToken()}`);
+    this.querySubscription = this.apollo
+      .watchQuery<any>({
+        query: GET_ORGS,
+      })
+      .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
         this.orgs = data.findManyOrgs;
       });
