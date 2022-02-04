@@ -9,7 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule} from '@angular/material/table';
-
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
     imports: [
@@ -22,7 +22,8 @@ import { MatTableModule} from '@angular/material/table';
         MatNativeDateModule,
         MatCheckboxModule,
         MatIconModule,
-        MatTableModule
+        MatTableModule,
+        MatStepperModule
     ],
     exports: [
         MatInputModule,
@@ -34,7 +35,8 @@ import { MatTableModule} from '@angular/material/table';
         MatNativeDateModule,
         MatCheckboxModule,
         MatIconModule,
-        MatTableModule
+        MatTableModule,
+        MatStepperModule
     ]
 })
 export class MaterialModule {}
