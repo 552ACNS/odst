@@ -113,7 +113,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       personSSN: data.rawSSN,
       personCACScan: ''
     });
-    //console.log(data.assignedDoDID);
+    console.log(data.assignedDoDID);
     //console.log(data);
   }
 

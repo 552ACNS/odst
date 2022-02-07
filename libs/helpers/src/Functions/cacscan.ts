@@ -21,9 +21,8 @@ function getCACType(rawScan)
 //Functions to extract information from the raw scans of new CAC formats
 function convertNewRawDoDID()
 {
-    const rawDoDID = newScan.substring(1,8);
     console.log(newScan.substring(1,8));
-    alert(newScan.substring(1,8));
+    const rawDoDID = newScan.substring(1,8);
     return parseInt(rawDoDID,32).toString(10);
 }
 
