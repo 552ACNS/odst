@@ -24,6 +24,6 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {
     // left blank
-    this.displayedColumns = this.tableProps.map(prop => prop.columnDef);
+    this.displayedColumns = this.tableProps?.map(prop => prop.columnDef);
   }
 }
