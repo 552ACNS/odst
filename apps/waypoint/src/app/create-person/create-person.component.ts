@@ -8,6 +8,7 @@ import { BirthState } from '@prisma/client';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import { CreatePersonService } from './create-person.service';
+import { getdata } from '@odst/helpers';
 
 @Component({
   selector: 'odst-create-person',
@@ -75,6 +76,8 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       this.loading = loading;
       this.orgs = data.findManyOrgs;
     });
+    
+    this.submitCAC();
   }
 
   personInitTrngCheck(): boolean {
@@ -97,16 +100,21 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   }
 
   submitCAC() {
-    // ONLY APPLIES FOR M CACs
+    //applies to both CAC inputs
     const scannedCard: string = this.personForm.value['personCACScan'];
-    const firstName = scannedCard.substring(16, 37).trim()
-    const lastName = scannedCard.substring(37, 63).trim();
-
+    const data = getdata("N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D");
+    //code CAC scanner input here^
     this.personForm.patchValue({
-      personFirstName: firstName,
-      personLastName: lastName,
+      personFirstName: data.firstName,
+      personLastName: data.lastName,
+      personMiddleInitial: data.middleInitial,
+      personDoDID: data.assignedDoDID,
+      personDoB: data.rawDoB,
+      personSSN: data.rawSSN,
       personCACScan: ''
     });
+    //console.log(data.assignedDoDID);
+    //console.log(data);
   }
 
   personSubmit(): void {
