@@ -10,6 +10,11 @@ import { Field, InputType } from '@nestjs/graphql';
 import { PersonGQL } from '../entity/person.entity';
 import { OrgCreateNestedOneWithoutPersonsInput } from './org.create.input'
 import { PersonWhereUniqueInput } from './person.unique.input';
+import { Length,
+         Min, 
+         Max,
+         IsDate,
+       } from 'class-validator';
 
 @InputType()
 export class PersonCreateWithoutOrgInput
@@ -22,8 +27,10 @@ export class PersonCreateWithoutOrgInput
   ssn!: number;
   email!: string;
   firstName!: string;
+  @Length(1, 1)
   middleInitial?: string;
   lastName!: string;
+  @IsDate()
   birthDate!: Date;
   birthCity!: string;
   birthCountry!: string;
@@ -44,6 +51,8 @@ export class PersonCreateWithoutOrgInput
   @Field(() => Spec)
   spec!: Spec;
 
+  @Min(1)
+  @Max(100)
   height!: number;
 }
 
