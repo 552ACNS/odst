@@ -13,7 +13,9 @@ import { PersonWhereUniqueInput } from './person.unique.input';
 import { Length,
          Min, 
          Max,
+         IsAlpha,
          IsDate,
+         IsEmail,
        } from 'class-validator';
 
 @InputType()
@@ -22,13 +24,15 @@ export class PersonCreateWithoutOrgInput
 {
   @Field(() => HairColor)
   hairColor!: HairColor;
-
   dodId!: number;
   ssn!: number;
+  @IsEmail()
   email!: string;
+  @IsAlpha()
   firstName!: string;
   @Length(1, 1)
   middleInitial?: string;
+  @IsAlpha()
   lastName!: string;
   @IsDate()
   birthDate!: Date;
