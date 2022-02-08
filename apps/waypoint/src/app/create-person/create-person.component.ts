@@ -2,11 +2,12 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
-import { HairColor, Spec } from '@prisma/client';
+import { HairColor, Org, Spec } from '@prisma/client';
 import { EyeColor } from '@prisma/client';
 import { BirthState } from '@prisma/client';
-import { Apollo, gql } from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
+import { CreatePersonService } from './create-person.service';
 
 @Component({
   selector: 'odst-create-person',
@@ -34,7 +35,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     personEmail: ['', Validators.email],
     personDoDIDNumber: [
       '',
-      [Validators.required, Validators.pattern('^[0-9]{10}')],
+      [Validators.required, Validators.pattern('^[0-9]{9,10}'), Validators.maxLength],
     ],
     personSSN: [
       '',
@@ -61,26 +62,19 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     personInitTrngCheck: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder, private apollo: Apollo) {}
+  constructor(private fb: FormBuilder, private apollo: Apollo, private personService: CreatePersonService) {}
 
-  ngOnInit(): void {
-    const GET_ORGS = gql`
-      query {
-        findManyOrgs {
-          id
-          name
-          aliases
-        }
-      }
-    `;
+  async ngOnInit(): Promise<void> {
+    const GET_ORGS = this.personService.queryOrgs();
     this.querySubscription = this.apollo
-      .watchQuery<any>({
-        query: GET_ORGS,
-      })
-      .valueChanges.subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.orgs = data.findManyOrgs;
-      });
+    //TODO: make query strongly typed instead of any
+    .watchQuery<any>({
+      query: GET_ORGS,
+    })
+    .valueChanges.subscribe(({ data, loading }) => {
+      this.loading = loading;
+      this.orgs = data.findManyOrgs;
+    });
   }
 
   personInitTrngCheck(): boolean {
@@ -114,18 +108,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       personCACScan: ''
     });
   }
-  Testing() {
-    this.submitSuccess = true;
-  }
 
   personSubmit(): void {
-    const SUBMIT_PERSON = gql`
-      mutation createPerson($personCreateInput: PersonCreateInput!) {
-        createPerson(personCreateInput: $personCreateInput) {
-          id
-        }
-      }
-    `;
+    const SUBMIT_PERSON = this.personService.mutationCreatePerson();
     this.apollo
       .mutate({
         mutation: SUBMIT_PERSON,

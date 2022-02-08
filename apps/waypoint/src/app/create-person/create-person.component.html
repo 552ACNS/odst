@@ -58,6 +58,7 @@
           matInput
           placeholder="DoDID"
           formControlName="personDoDIDNumber"
+          maxlength="10"
           required
         />
         <mat-error *ngIf="personForm.controls['personDoDIDNumber'].hasError('pattern') && !personForm.controls['personDoDIDNumber'].hasError('required')">
@@ -227,4 +228,4 @@
     </mat-card-content>
   </mat-card>
 </form>
-<button mat-raised-button color="primary" (click)="Testing()">Pain</button>
+
