@@ -10,13 +10,12 @@ export function getFirstName(scanData) {
   switch (cacType) {
     case 'M':
       firstName = scanData.substring(16, 36).trim();
+      
       break;
     case 'N':
       firstName = scanData.substring(15, 35).trim();
       break;
     default:
-      // return console.log error with the cacType
-      break;
   }
   return firstName;
 }
@@ -34,8 +33,6 @@ export function getMiddleInitial(scanData) {
       middleInitial = scanData.substring(88,89);
       break;
     default:
-      return console.log("error");
-      // return console.log error with the cacType
   }
   return middleInitial;
 }
@@ -53,8 +50,6 @@ export function getLastName(scanData) {
       lastName = scanData.substring(35, 50).trim();
       break;
     default:
-      // return console.log error with the cacType
-      break;
   }
   return lastName;
 }
@@ -74,8 +69,6 @@ export function getDoDID(scanData) {
       parsedDoDID = parseInt(dodID, 32).toString(10);
       break;
     default:
-      return console.log('error')
-      // return console.log error with the cacType
   }
   return parsedDoDID;
 }
@@ -96,18 +89,13 @@ export function getDoB(scanData) {
       dateOfBirth.setDate(dateOfBirth.getDate() + +str);
       break;
     default:
-      return console.log('error')
   }
-  
-  console.log(dateOfBirth)
   return dateOfBirth;
 }
 export function getSSN(scanData) {
   // Depending on the CAC type, get the social security number
   const cacType = getCACType(scanData);
-
   let socialSecurityNumber
-  
   switch (cacType) {
     case 'M':
       socialSecurityNumber = ''
@@ -116,9 +104,7 @@ export function getSSN(scanData) {
       socialSecurityNumber = parseInt(scanData.substring(1, 7), 32).toString(10);
       break;
     default:
-      return console.log('error')
   }
-  console.log(socialSecurityNumber)
   return socialSecurityNumber;
 }
 
