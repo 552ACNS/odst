@@ -77,7 +77,6 @@ export function getDoDID(scanData) {
       return console.log('error')
       // return console.log error with the cacType
   }
-  console.log(parsedDoDID)
   return parsedDoDID;
 }
 export function getDoB(scanData) {
@@ -98,10 +97,10 @@ export function getDoB(scanData) {
       break;
     default:
       return console.log('error')
-      // return console.log error with the cacType
   }
+  
   console.log(dateOfBirth)
-  return dateOfBirth.toDateString();
+  return dateOfBirth;
 }
 export function getSSN(scanData) {
   // Depending on the CAC type, get the social security number
@@ -111,14 +110,13 @@ export function getSSN(scanData) {
   
   switch (cacType) {
     case 'M':
-      socialSecurityNumber = parseInt(scanData.substring(1, 7), 32).toString(10);
+      socialSecurityNumber = ''
       break;
     case 'N':
-      socialSecurityNumber = ''
+      socialSecurityNumber = parseInt(scanData.substring(1, 7), 32).toString(10);
       break;
     default:
       return console.log('error')
-      // return console.log error with the cacType
   }
   console.log(socialSecurityNumber)
   return socialSecurityNumber;

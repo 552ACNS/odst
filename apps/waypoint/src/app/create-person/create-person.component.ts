@@ -113,21 +113,25 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   submitCAC() {
     //applies to both CAC inputs
     const scannedCard: string = this.nameForm.value['personCACScan'];
-    const firstName = getFirstName('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
-    const lastName = getLastName('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
-    const middleInitial = getMiddleInitial('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
-    const assignedDoDID = getDoDID('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
-    const rawDoB = getDoB('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
-    const rawSSN = getSSN('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
+    const firstName = getFirstName(scannedCard);
+    const lastName = getLastName(scannedCard);
+    const middleInitial = getMiddleInitial(scannedCard);
+    const assignedDoDID = getDoDID(scannedCard);
+    // eslint-disable-next-line prefer-const
+    let rawDoB = getDoB(scannedCard);
+    const rawSSN = getSSN(scannedCard);
     //code CAC scanner input here^
     this.nameForm.patchValue({
       personFirstName: firstName,
       personLastName: lastName,
       personMiddleInitial: middleInitial,
-      personDoDID: assignedDoDID,
-      personDoB: rawDoB,
+      personDoDIDNumber: assignedDoDID,
+      personBirthDate: rawDoB,
       personSSN: rawSSN,
       personCACScan: ''
+    });
+    this.birthForm.patchValue({
+      personBirthDate: rawDoB,
     });
   }
   resetPerson(): void {
