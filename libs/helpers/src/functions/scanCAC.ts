@@ -1,130 +1,127 @@
-import { Prisma } from '.prisma/client';
-import { Field, InputType } from '@nestjs/graphql';
-import { LoneAnonymousOperationRule } from 'graphql';
-import { first } from 'rxjs';
-import { isNumberObject } from 'util/types';
-
-const rawScan = '';
-const newScan =
-  'M1F4N00O01IIDECSBrandon             DDerullo                   B464US AF00AMN   ME47BCHLBDJJTOTQNU';
-const oldScan =
-  'N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D';
-
 //returns the first character of the input string to allow the export method to run the correct export code
 function getCACType(rawScan) {
   return rawScan.substring(0, 1);
 }
-//Functions to extract information from the raw scans of new CAC formats
-function convertNewRawDoDID() {
-  console.log(newScan.substring(1, 8));
-  const rawDoDID = newScan.substring(1, 8);
-  return parseInt(rawDoDID, 32).toString(10);
-}
 
-function convertNewFirstName() {
-  const firstName = newScan.substring(16, 36);
-  return firstName.trim();
-}
-function convertNewLastName() {
-  const lastName = newScan.substring(37, 63);
-  return lastName.trim();
-}
-
-function convertNewMiddleInitial() {
-  const middleInitial = newScan.substring(36, 37);
-  return middleInitial;
-}
-
-function convertNewRawDoB() {
-  const str = parseInt(newScan.substring(63, 67), 32).toString(10);
-  console.log(newScan.substring(63, 67));
-  const newDoB = new Date(1000, 1, 1);
-  newDoB.setDate(newDoB.getDate() + +str);
-  console.log(newDoB.toString());
-  return newDoB;
-}
-
-//Functions to extract information from the raw scan data of old CAC formats
-function convertOldRawDoDID() {
-  const rawDoDID = oldScan.substring(9, 7);
-  return parseInt(rawDoDID, 32).toString(10);
-}
-
-function convertOldFirstName() {
-  const firstName = oldScan.substring(15, 35);
-  return firstName.trim();
-}
-
-function convertOldLastName() {
-  const lastName = oldScan.substring(35, 50);
-  return lastName.trim();
-}
-
-function convertOldMiddleInitial() {
-  const middleInitial = oldScan.substring(88, 89);
-  return middleInitial;
-}
-
-function convertOldRawDoB() {
-  const str = parseInt(oldScan.substring(62, 66), 32).toString(10);
-  console.log(str);
-  const newDoB = new Date(1000, 1, 1);
-  newDoB.setDate(newDoB.getDate() + +str);
-  console.log(newDoB.toString());
-  return newDoB;
-}
-function convertOldRawSSN() {
-  const rawSSN = parseInt(oldScan.substring(1, 7), 32).toString(10);
-
-  console.log(rawSSN);
-  return rawSSN;
-}
-//Exports the converted and trimmed strings of data, with room for further different versions of CAC input
-export function getdata(scanData) {
-  const cacType = getCACType(scanData);
-  if (cacType == 'M') {
-    console.log(scanData);
-    return {
-      rawSSN: '',
-      assignedDoDID: convertNewRawDoDID(),
-      firstName: getFirstName(),
-      lastName: convertNewLastName(),
-      middleInitial: convertNewMiddleInitial(),
-      rawDoB: convertNewRawDoB(),
-    };
-  } else if (cacType == 'N') {
-    console.log(scanData);
-    return {
-      rawSSN: convertOldRawSSN(),
-      assignedDoDID: convertOldRawDoDID(),
-      firstName: convertOldFirstName(),
-      lastName: convertOldLastName(),
-      middleInitial: convertOldMiddleInitial(),
-      rawDoB: convertOldRawDoB(),
-    };
-  } else {
-    return {};
-  }
-}
-
-// Get someone's First Name
 export function getFirstName(scanData) {
   // Depending on the CAC type, get the first name
   const cacType = getCACType(scanData);
-
   let firstName = ''
   switch (cacType) {
     case 'M':
-      // insert formula to get first name from M CAC
-      firstName = 'kjsdkjfsdjkdfjkdf'
+      firstName = scanData.substring(16, 36).trim();
       break;
     case 'N':
-      // insert formula to get first name from N CAC
+      firstName = scanData.substring(15, 35).trim();
       break;
     default:
       // return console.log error with the cacType
       break;
   }
-
   return firstName;
 }
+export function getMiddleInitial(scanData) {
+  // Depending on the CAC type, get the middle initial
+  const cacType = getCACType(scanData);
+
+  let middleInitial = ''
+  
+  switch (cacType) {
+    case 'M':
+      middleInitial = scanData.substring(36, 37);
+      break;
+    case 'N':
+      middleInitial = scanData.substring(88,89);
+      break;
+    default:
+      return console.log("error");
+      // return console.log error with the cacType
+  }
+  return middleInitial;
+}
+export function getLastName(scanData) {
+  // Depending on the CAC type, get the last name
+  const cacType = getCACType(scanData);
+
+  let lastName = ''
+  switch (cacType) {
+    case 'M':
+      lastName = scanData.substring(37, 52).trim();
+      
+      break;
+    case 'N':
+      lastName = scanData.substring(35, 50).trim();
+      break;
+    default:
+      // return console.log error with the cacType
+      break;
+  }
+  return lastName;
+}
+export function getDoDID(scanData) {
+  // Depending on the CAC type, get the DoD ID
+  const cacType = getCACType(scanData);
+
+  let dodID = ''
+  let parsedDoDID = ''
+  switch (cacType) {
+    case 'M':
+      dodID = scanData.substring(1, 8);
+      parsedDoDID = parseInt(dodID, 32).toString(10);
+      break;
+    case 'N':
+      dodID = scanData.substring(8, 15);
+      parsedDoDID = parseInt(dodID, 32).toString(10);
+      break;
+    default:
+      return console.log('error')
+      // return console.log error with the cacType
+  }
+  console.log(parsedDoDID)
+  return parsedDoDID;
+}
+export function getDoB(scanData) {
+  // Depending on the CAC type, get the date of birth
+  const cacType = getCACType(scanData);
+
+  let str = ''
+  // eslint-disable-next-line prefer-const
+  let dateOfBirth = new Date(1000, 0, 1);
+  switch (cacType) {
+    case 'M':
+      str = parseInt(scanData.substring(63, 67), 32).toString(10);
+      dateOfBirth.setDate(dateOfBirth.getDate() + +str);
+      break;
+    case 'N':
+      str = parseInt(scanData.substring(61, 65), 32).toString(10);
+      dateOfBirth.setDate(dateOfBirth.getDate() + +str);
+      break;
+    default:
+      return console.log('error')
+      // return console.log error with the cacType
+  }
+  console.log(dateOfBirth)
+  return dateOfBirth.toDateString();
+}
+export function getSSN(scanData) {
+  // Depending on the CAC type, get the social security number
+  const cacType = getCACType(scanData);
+
+  let socialSecurityNumber
+  
+  switch (cacType) {
+    case 'M':
+      socialSecurityNumber = parseInt(scanData.substring(1, 7), 32).toString(10);
+      break;
+    case 'N':
+      socialSecurityNumber = ''
+      break;
+    default:
+      return console.log('error')
+      // return console.log error with the cacType
+  }
+  console.log(socialSecurityNumber)
+  return socialSecurityNumber;
+}
+
+

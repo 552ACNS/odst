@@ -8,7 +8,12 @@ import { BirthState } from '@prisma/client';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import { CreatePersonService } from './create-person.service';
-import { getdata } from '@odst/helpers';
+import { getFirstName,
+         getLastName,
+         getMiddleInitial,
+         getDoDID,
+         getSSN,
+         getDoB, } from '@odst/helpers';
 
 @Component({
   selector: 'odst-create-person',
@@ -102,19 +107,22 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   submitCAC() {
     //applies to both CAC inputs
     const scannedCard: string = this.personForm.value['personCACScan'];
-    const data = getdata("N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D");
+    const firstName = getFirstName('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
+    const lastName = getLastName('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
+    const middleInitial = getMiddleInitial('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
+    const assignedDoDID = getDoDID('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
+    const rawDoB = getDoB('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
+    const rawSSN = getSSN('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
     //code CAC scanner input here^
     this.personForm.patchValue({
-      personFirstName: data.firstName,
-      personLastName: data.lastName,
-      personMiddleInitial: data.middleInitial,
-      personDoDID: data.assignedDoDID,
-      personDoB: data.rawDoB,
-      personSSN: data.rawSSN,
+      personFirstName: firstName,
+      personLastName: lastName,
+      personMiddleInitial: middleInitial,
+      personDoDID: assignedDoDID,
+      personDoB: rawDoB,
+      personSSN: rawSSN,
       personCACScan: ''
     });
-    console.log(data.assignedDoDID);
-    //console.log(data);
   }
 
   personSubmit(): void {
