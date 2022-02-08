@@ -5806,11 +5806,6 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.npmjs.org/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
-g@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/g/-/g-2.0.1.tgz"
-  integrity sha1-C1lj69DKcOO8jGdmk0oCGCHIuFc=
-
 gauge@^3.0.0:
   version "3.0.2"
   resolved "https://registry.npmjs.org/gauge/-/gauge-3.0.2.tgz"
@@ -8814,9 +8809,9 @@ pretty-format@^27.0.0, pretty-format@^27.2.2, pretty-format@^27.4.6:
     ansi-styles "^5.0.0"
     react-is "^17.0.1"
 
-prisma@^3.9.1:
+prisma@^3.7.0:
   version "3.9.1"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-3.9.1.tgz"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-3.9.1.tgz#7510a8bf06018a5313b9427b1127ce4750b1ce5c"
   integrity sha512-IGcJAu5LzlFv+i+NNhOEh1J1xVVttsVdRBxmrMN7eIH+7mRN6L89Hz1npUAiz4jOpNlHC7n9QwaOYZGxTqlwQw==
   dependencies:
     "@prisma/engines" "3.9.0-58.bcc2ff906db47790ee902e7bbc76d7ffb1893009"
