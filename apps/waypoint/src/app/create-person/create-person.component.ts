@@ -2,7 +2,7 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
-import { HairColor, Org, Spec } from '@prisma/client';
+import { HairColor, Spec } from '@prisma/client';
 import { EyeColor } from '@prisma/client';
 import { BirthState } from '@prisma/client';
 import { Apollo } from 'apollo-angular';
@@ -33,7 +33,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   loading = true;
   submitSuccess = false;
 
-  personForm = this.fb.group({
+  nameForm = this.fb.group({
     personCACScan: [''],
     personFirstName: ['', Validators.required],
     personLastName: ['', Validators.required],
@@ -51,13 +51,18 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         Validators.maxLength,
       ],
     ],
+  })
+  birthForm = this.fb.group({
     personBirthCountry: ['', Validators.required],
     personBirthCity: ['', Validators.required],
+    personBirthDate: ['', Validators.required],
+    personBirthState: ['', Validators.required],
+  })
+  identityForm = this.fb.group({
     personHeight: ['', 
     [Validators.required, Validators.pattern('^[1-9]?[0-9]{1}$|^100')]
   ],
-    personBirthDate: ['', Validators.required],
-    personBirthState: ['', Validators.required],
+   
     personHairColor: ['', Validators.required],
     personEyeColor: ['', Validators.required],
     personSpec: ['', Validators.required],
@@ -86,7 +91,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   }
 
   personInitTrngCheck(): boolean {
-    if (this.personForm.get(['personInitialTraining'])?.value == true) {
+    if (this.identityForm.get(['personInitialTraining'])?.value == true) {
       return true;
     } else {
       return false;
@@ -94,19 +99,20 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   }
 
   personNDAcheck(): boolean {
-    if (this.personForm.get(['personNDA'])?.value == true) {
+    if (this.identityForm.get(['personNDA'])?.value == true) {
       return true;
     } else {
       return false;
     }
   }
+  //TODO: Fix Spec and Grade interaction and fix Grade values
   counter(n: number): number[] {
     return [...Array(n).keys()];
   }
 
   submitCAC() {
     //applies to both CAC inputs
-    const scannedCard: string = this.personForm.value['personCACScan'];
+    const scannedCard: string = this.nameForm.value['personCACScan'];
     const firstName = getFirstName('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
     const lastName = getLastName('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
     const middleInitial = getMiddleInitial('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
@@ -114,7 +120,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     const rawDoB = getDoB('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
     const rawSSN = getSSN('N03R6HLS1F4N00OBrandon             Derullo                   B464AF00AMN   ME02BBFEBCHL6D');
     //code CAC scanner input here^
-    this.personForm.patchValue({
+    this.nameForm.patchValue({
       personFirstName: firstName,
       personLastName: lastName,
       personMiddleInitial: middleInitial,
@@ -124,7 +130,10 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       personCACScan: ''
     });
   }
-
+  resetPerson(): void {
+    this.submitSuccess = false;
+  }
+  
   personSubmit(): void {
     const SUBMIT_PERSON = this.personService.mutationCreatePerson();
     this.apollo
@@ -132,28 +141,28 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         mutation: SUBMIT_PERSON,
         variables: {
           personCreateInput: {
-            firstName: this.personForm.value['personFirstName'],
-            lastName: this.personForm.value['personLastName'],
-            middleInitial: this.personForm.value['personMiddleInitial'],
-            email: this.personForm.value['personEmail'],
-            ssn: parseFloat(this.personForm.value['personSSN']),
-            dodId: parseFloat(this.personForm.value['personDoDIDNumber']),
-            birthDate: this.personForm.value['personBirthDate'],
-            birthCity: this.personForm.value['personBirthCity'],
-            birthCountry: this.personForm.value['personBirthCountry'],
+            firstName: this.nameForm.value['personFirstName'],
+            lastName: this.nameForm.value['personLastName'],
+            middleInitial: this.nameForm.value['personMiddleInitial'],
+            email: this.nameForm.value['personEmail'],
+            ssn: parseFloat(this.nameForm.value['personSSN']),
+            dodId: parseFloat(this.nameForm.value['personDoDIDNumber']),
+            birthDate: this.birthForm.value['personBirthDate'],
+            birthCity: this.birthForm.value['personBirthCity'],
+            birthCountry: this.birthForm.value['personBirthCountry'],
+            birthState: this.birthForm.get(['personBirthState'])?.value,
             citizenshipId: 'Yes',
             initialTraining: this.personInitTrngCheck(),
             NDA: this.personNDAcheck(),
-            grade: parseFloat(this.personForm.get(['personGrade'])?.value),
-            eyeColor: this.personForm.get(['personEyeColor'])?.value,
-            hairColor: this.personForm.get(['personHairColor'])?.value,
-            birthState: this.personForm.get(['personBirthState'])?.value,
+            grade: parseFloat(this.identityForm.get(['personGrade'])?.value),
+            eyeColor: this.identityForm.get(['personEyeColor'])?.value,
+            hairColor: this.identityForm.get(['personHairColor'])?.value,
             role: 'NONE',
-            spec: this.personForm.get(['personSpec'])?.value,
-            height: parseFloat(this.personForm.value['personHeight']),
+            spec: this.identityForm.get(['personSpec'])?.value,
+            height: parseFloat(this.identityForm.value['personHeight']),
             org: {
               connect: {
-                id: this.personForm.get(['personOrg'])?.value,
+                id: this.identityForm.get(['personOrg'])?.value,
               },
             },
           },
