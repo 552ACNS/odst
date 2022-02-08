@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { TokensGQL } from '@odst/types';
 import { LoginUserInput, SignupUserInput } from '@odst/types';
 import { UseGuards } from '@nestjs/common';
-import { LocalAuthGuard } from './guards/local.authGuard.ts';
+import { LocalAuthGuard } from './guards/local.authGuard';
 import { RefreshTokenAuthGuard } from './guards/refreshToken.authGuard';
 import { GetCurrentUserId } from '@odst/types';
 
