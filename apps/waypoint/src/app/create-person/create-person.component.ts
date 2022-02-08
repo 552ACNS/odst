@@ -86,8 +86,6 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       this.loading = loading;
       this.orgs = data.findManyOrgs;
     });
-    
-    this.submitCAC();
   }
 
   personInitTrngCheck(): boolean {
@@ -117,16 +115,15 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     const lastName = getLastName(scannedCard);
     const middleInitial = getMiddleInitial(scannedCard);
     const assignedDoDID = getDoDID(scannedCard);
-    // eslint-disable-next-line prefer-const
-    let rawDoB = getDoB(scannedCard);
+    const rawDoB = getDoB(scannedCard);
     const rawSSN = getSSN(scannedCard);
+
     //code CAC scanner input here^
     this.nameForm.patchValue({
       personFirstName: firstName,
       personLastName: lastName,
       personMiddleInitial: middleInitial,
       personDoDIDNumber: assignedDoDID,
-      personBirthDate: rawDoB,
       personSSN: rawSSN,
       personCACScan: ''
     });
