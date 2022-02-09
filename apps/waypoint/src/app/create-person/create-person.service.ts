@@ -3,7 +3,7 @@ import { gql, TypedDocumentNode } from 'apollo-angular';
 import { EmptyObject } from 'apollo-angular/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CreatePersonService {
   constructor() {
@@ -19,18 +19,18 @@ export class CreatePersonService {
           aliases
         }
       }
-      `;
-      return GET_ORGS;
+    `;
+    return GET_ORGS;
   }
 
   mutationCreatePerson(): TypedDocumentNode<any, EmptyObject> {
     const SUBMIT_PERSON = gql`
-    mutation createPerson($personCreateInput: PersonCreateInput!) {
-      createPerson(personCreateInput: $personCreateInput) {
-        id
+      mutation createPerson($personCreateInput: PersonCreateInput!) {
+        createPerson(personCreateInput: $personCreateInput) {
+          id
+        }
       }
-    }
-  `;
-  return SUBMIT_PERSON;
+    `;
+    return SUBMIT_PERSON;
   }
 }

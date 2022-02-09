@@ -14,7 +14,7 @@ import { setContext } from '@apollo/client/link/context';
 // on the frontend)
 
 // Consider undoing this as a component. If not feasible.
-const uri = "http://localhost:3333/graphql";
+const uri = 'http://localhost:3333/graphql';
 export function createApollo(httpLink: HttpLink) {
   const basic = setContext((operation, context) => ({
     headers: {

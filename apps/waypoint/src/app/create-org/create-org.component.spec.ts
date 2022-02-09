@@ -11,10 +11,14 @@ describe('CreateOrgComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ApolloTestingModule, MaterialModule, BrowserAnimationsModule],
-      declarations: [ CreateOrgComponent ]
-    })
-    .compileComponents();
+      imports: [
+        ReactiveFormsModule,
+        ApolloTestingModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+      ],
+      declarations: [CreateOrgComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

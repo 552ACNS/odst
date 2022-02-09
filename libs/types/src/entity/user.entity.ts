@@ -13,4 +13,3 @@ export class UserGQL {
   @Field(() => Boolean)
   enabled: boolean;
 }
-

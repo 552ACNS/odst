@@ -103,7 +103,16 @@
           </mat-error>
         </mat-form-field>
         <div class="m-3">
-          <button class="px-8" mat-button matStepperNext color="accent" mat-raised-button name="next1">Next</button>
+          <button
+            class="px-8"
+            mat-button
+            matStepperNext
+            color="accent"
+            mat-raised-button
+            name="next1"
+          >
+            Next
+          </button>
         </div>
       </form>
     </mat-step>
@@ -160,14 +169,25 @@
           </mat-error>
         </mat-form-field>
         <div class="m-3">
-          <button class="px-8" mat-button matStepperNext color="accent" mat-raised-button name="next2">Next</button>
+          <button
+            class="px-8"
+            mat-button
+            matStepperNext
+            color="accent"
+            mat-raised-button
+            name="next2"
+          >
+            Next
+          </button>
           <button class="px-8" mat-button matStepperPrevious>Back</button>
         </div>
       </form>
     </mat-step>
     <mat-step [stepControl]="identityForm">
       <form [formGroup]="identityForm" class="m-3 w-2/6">
-        <ng-template matStepLabel>Fill out your identifying information</ng-template>
+        <ng-template matStepLabel
+          >Fill out your identifying information</ng-template
+        >
         <mat-form-field>
           <mat-select
             placeholder="Hair Color"
@@ -254,7 +274,7 @@
           >
             Submit
           </button>
-          
+
           <mat-icon
             [ngClass]="{
               'text-green-400 align-middle text-[2rem]': submitSuccess === true,
@@ -262,7 +282,14 @@
             }"
             >check_circle</mat-icon
           >
-          <button class="px-8" mat-button (click)="stepper.reset()" (click)="resetPerson()">Reset</button>
+          <button
+            class="px-8"
+            mat-button
+            (click)="stepper.reset()"
+            (click)="resetPerson()"
+          >
+            Reset
+          </button>
           <button class="px-8" mat-button matStepperPrevious>Back</button>
         </div>
       </form>
