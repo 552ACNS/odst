@@ -1,4 +1,4 @@
-import { UnauthorizedException, ForbiddenException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
@@ -23,7 +23,7 @@ describe('AuthService', () => {
         AuthService,
         UserService,
         { provide: PrismaService, useValue: prismaMock },
-        RefreshTokenService
+        RefreshTokenService,
       ],
     }).compile();
 
@@ -63,11 +63,7 @@ describe('AuthService', () => {
       person: { connect: { dodId: 123456789 } },
     };
 
-    try {
-      await await service.signup(userInput);
-    } catch (error) {
-      expect(error).toBeInstanceOf(ForbiddenException);
-    }
+    await await service.signup(userInput);
 
     expect(prismaMock.user.create).toHaveBeenCalled();
   });

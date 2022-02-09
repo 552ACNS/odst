@@ -25,7 +25,7 @@ export class LoginService {
       }
     `;
     this.apollo
-      .mutate<TokensGQL>({
+      .mutate({
         mutation: LOGIN,
         variables: {
           loginUserInput: {

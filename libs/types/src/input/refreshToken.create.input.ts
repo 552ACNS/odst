@@ -7,7 +7,7 @@ import { RefreshTokenWhereUniqueInput } from './refreshToken.unique.input';
 @InputType()
 export class RefreshTokenCreateInput {
   @Field()
-  is_revoked: boolean
+  isRevoked: boolean
 
   @Field()
   expires: Date

@@ -232,7 +232,7 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "env-cmd -f apps/waypoint-api/.env.local prisma db push --accept-data-loss --force-reset",
+              "env-cmd -f apps/waypoint-api/.env.local prisma db push --accept-data-loss",
               "env-cmd -f apps/waypoint-api/.env.local prisma db seed"
             ],
             "schema": "apps/waypoint-api/schema.prisma",

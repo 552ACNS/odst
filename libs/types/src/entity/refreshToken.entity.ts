@@ -8,7 +8,7 @@ export class RefreshTokenGQL implements RefreshToken {
   id: string;
 
   @Field(() => Boolean)
-  is_revoked: boolean;
+  isRevoked: boolean;
 
   @Field(() => Date)
   issued: Date;

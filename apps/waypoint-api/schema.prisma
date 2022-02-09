@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgres"
-  url      = "postgresql://postgres:H@CK3YITPL3ASE@localhost:5432/spi_local"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -24,7 +24,7 @@ model RefreshToken {
   id         String   @id @default(uuid())
   user       User     @relation(fields: [userId], references: [id])
   userId     String
-  is_revoked Boolean  @default(false)
+  isRevoked Boolean  @default(false)
   issued     DateTime @default(now())
   expires    DateTime
   hash       String

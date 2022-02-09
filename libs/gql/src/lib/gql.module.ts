@@ -98,7 +98,7 @@ export function createApollo() {
           }
         }
       }
-
+      //TODO implement handle other error in frontend
       if (networkError) {
         console.log(`[Network error]: ${networkError}`);
       }

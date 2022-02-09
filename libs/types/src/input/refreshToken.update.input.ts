@@ -4,5 +4,5 @@ import { Prisma } from '.prisma/client';
 @InputType()
 export class RefreshTokenUpdateInput implements Prisma.RefreshTokenUpdateInput{
   @Field()
-  is_revoked?: boolean
+  isRevoked?: boolean
 }

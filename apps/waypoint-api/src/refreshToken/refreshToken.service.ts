@@ -60,22 +60,9 @@ export class RefreshTokenService {
     return this.prisma.refreshToken.findMany();
   }
 
-  //TODO shouldn't be deleting, only invalidating
-  //TODO redo this though, hack to make deleting all tokens easy.
-  async delete(
-    refreshTokenWhereUniqueInput: Prisma.RefreshTokenWhereUniqueInput
-  ) {
-    const tokens = await this.findMany();
-    const token = tokens.pop();
-    const returnVal = await this.prisma.refreshToken.delete({
-      where: { id: token?.id },
+  async delete(refreshTokenWhereUniqueInput: Prisma.RefreshTokenWhereUniqueInput) {
+    return this.prisma.refreshToken.delete({
+      where: refreshTokenWhereUniqueInput,
     });
-    tokens.forEach((token) => {
-      if (token.id !== refreshTokenWhereUniqueInput.id) {
-        this.prisma.refreshToken.delete({ where: { id: token.id } });
-      }
-    });
-
-    return returnVal;
   }
 }

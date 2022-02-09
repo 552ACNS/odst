@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import {
   JwtPayload,
   LoginUserInput,
@@ -74,6 +74,7 @@ export class AuthService {
       userId
     );
 
+    //if user or refreshToken.hash do not exist, throw exception
     if (!user || !refreshToken?.hash) {
       throw new UnauthorizedException();
     }
@@ -94,7 +95,7 @@ export class AuthService {
     const tokens = await this.getTokens(user.id, user.username);
     //TODO do we want to be storing old refresh tokens?
     //If so, what should happen if old one is used?
-    await this.storeRefreshToken(user.id, tokens.refreshToken);
+    this.storeRefreshToken(user.id, tokens.refreshToken);
 
     return tokens;
   }
@@ -110,6 +111,8 @@ export class AuthService {
     ) {
       throw new UnauthorizedException();
     }
+
+    //decodes user id from refreshToken payload
     const userId = (this.jwtService.decode(refreshToken) as JwtPayload).sub;
 
     if (!(await this.validateRefreshToken(userId, refreshToken))) {
@@ -173,13 +176,8 @@ export class AuthService {
       person: signupUserInput.person,
     });
 
-    if(!user){
-      //user was unable to be created. This is mostly to get the unit test to pass
-      throw new ForbiddenException()
-    }
-
-    const tokens = await this.getTokens(user.id, user.username);
-    await this.storeRefreshToken(user.id, tokens.refreshToken);
+    const tokens = await this.getTokens(user?.id, user?.username);
+    await this.storeRefreshToken(user?.id, tokens?.refreshToken);
 
     return tokens;
   }
