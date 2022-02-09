@@ -1,14 +1,14 @@
-export function getAccessToken() {
+export function getAccessToken(): string | null {
   return sessionStorage.getItem('accessToken');
 }
 
-export function setAccessToken(token: string) {
-  return sessionStorage.setItem('accessToken', token);
+export function setAccessToken(token: string): void {
+  sessionStorage.setItem('accessToken', token);
 }
 
-export function getRefreshToken() {
+export function getRefreshToken(): string | null {
   return localStorage.getItem('refreshToken');
 }
-export function setRefreshToken(token: string) {
-  return localStorage.setItem('refreshToken', token);
+export function setRefreshToken(token: string): void {
+  localStorage.setItem('refreshToken', token);
 }
