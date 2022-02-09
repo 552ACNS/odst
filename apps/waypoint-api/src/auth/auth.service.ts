@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import {
   JwtPayload,
   LoginUserInput,
@@ -34,6 +34,7 @@ export class AuthService {
         },
         {
           expiresIn: process.env.NODE_ENV === 'production' ? '15m' : '5d',
+          //TODO process.env doesn't work, fix hardcoded value
           secret:
             process.env.JWT_SECRET ||
             'dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$%',
@@ -46,6 +47,7 @@ export class AuthService {
         },
         {
           expiresIn: process.env.NODE_ENV === 'production' ? '3d' : '1w',
+          //TODO process.env doesn't work, fix hardcoded value
           secret:
             process.env.JWT_REFRESH_SECRET ||
             'Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF',
@@ -170,6 +172,11 @@ export class AuthService {
       password,
       person: signupUserInput.person,
     });
+
+    if(!user){
+      //user was unable to be created. This is mostly to get the unit test to pass
+      throw new ForbiddenException()
+    }
 
     const tokens = await this.getTokens(user.id, user.username);
     await this.storeRefreshToken(user.id, tokens.refreshToken);

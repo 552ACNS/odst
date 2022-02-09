@@ -47,6 +47,7 @@ async function main() {
   try {
     await prisma.user.delete({ where: { username: 'admin' } });
   } catch {
+    //this is now not empty
   }
 
   if (

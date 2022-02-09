@@ -21,7 +21,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     //validates that token is signed and unexpired
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      // TODO JWT_REFRESH_SECRET isn't working
+      //TODO process.env doesn't work, fix hardcoded value
       secretOrKey:
         process.env.JWT_REFRESH_SECRET ||
         'Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF',

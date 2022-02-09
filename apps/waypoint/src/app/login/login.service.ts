@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { TokensGQL } from '@odst/types';
-import {
-  getRefreshToken,
-  setRefreshToken,
-  getAccessToken,
-  setAccessToken,
-} from '@odst/helpers';
+import { setRefreshToken, setAccessToken } from '@odst/helpers';
 
 @Injectable({
   providedIn: 'root',

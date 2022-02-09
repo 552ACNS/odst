@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["**/*.ts", "../../libs/helpers/src/lib/stateManagement.ts"],
+  "include": ["**/*.ts"],
   "compilerOptions": {
     "types": ["jest", "node"]
   }

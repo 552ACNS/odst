@@ -29,32 +29,6 @@ export class AppComponent implements OnInit, OnDestroy {
   querySubscription: Subscription;
   orgName = 'Haha';
 
-  testClick() {
-    const USERS = gql`
-      query FindManyUsers {
-        findManyUsers {
-          personId
-          username
-          id
-          enabled
-        }
-      }
-    `;
-    this.apollo
-      .query({
-        query: USERS,
-      })
-      .subscribe(
-        ({ data }) => {
-          console.log(data)
-        },
-        (error) => {
-          console.log(error)
-          alert(error);
-        }
-      );
-  }
-
   ngOnInit() {
     console.log(`accessToken: ${getAccessToken()}`);
     this.querySubscription = this.apollo

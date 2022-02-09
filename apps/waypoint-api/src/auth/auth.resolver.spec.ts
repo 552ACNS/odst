@@ -7,9 +7,9 @@ import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { User } from '@prisma/client';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
-import { LocalStrategy } from './strategies/local.strategy'
-import { RefreshTokenStrategy } from './strategies/refreshToken.strategy'
-import { AccessTokenStrategy } from './strategies/accessToken.strategy'
+import { LocalStrategy } from './strategies/local.strategy';
+import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
+import { AccessTokenStrategy } from './strategies/accessToken.strategy';
 import { PassportModule } from '@nestjs/passport';
 
 describe('AuthResolver', () => {
@@ -18,9 +18,7 @@ describe('AuthResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        PassportModule, JwtModule.register({})
-      ],
+      imports: [PassportModule, JwtModule.register({})],
       providers: [
         AuthService,
         AuthResolver,
@@ -30,7 +28,6 @@ describe('AuthResolver', () => {
         RefreshTokenStrategy,
         RefreshTokenService,
         PrismaService,
-        JwtModule
       ],
     }).compile();
 
@@ -79,11 +76,10 @@ describe('AuthResolver', () => {
   it('Should call the method to signup', async () => {
     // TEST PARAMS
     const methodToSpy = 'signup';
-    const resolvedUser = {
-      id: 1,
-      username: 'username',
-      password: 'password',
-    } as unknown as User;
+    const resolvedTokens  = {
+      accessToken : "this-is-my-access-token",
+      refreshToken : "this-is-my-refresh-token"
+    } as unknown as TokensGQL;
 
     const resolvedSignupUserInput: SignupUserInput = {
       username: 'username',
@@ -92,7 +88,7 @@ describe('AuthResolver', () => {
     };
 
     // Change value of promise
-    const result: Promise<User> = Promise.resolve(resolvedUser);
+    const result: Promise<TokensGQL> = Promise.resolve(resolvedTokens);
 
     //Make it so that the createPerson method returns the fake person
     const spy = jest
@@ -103,6 +99,6 @@ describe('AuthResolver', () => {
     // Assert that the method was called
     expect(spy).toHaveBeenCalled();
 
-    expect(actual).toStrictEqual(resolvedUser);
+    expect(actual).toStrictEqual(resolvedTokens);
   });
 });
