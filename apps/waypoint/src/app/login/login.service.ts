@@ -50,34 +50,4 @@ export class LoginService {
         }
       );
   }
-
-  submitRefresh(): void {
-    const REFRESH = gql`
-      mutation refresh {
-        refreshTokens {
-          accessToken
-          refreshToken
-        }
-      }
-    `;
-    this.apollo
-      .mutate<TokensGQL>({
-        mutation: REFRESH,
-        context: {
-          headers: {
-            Authorization: `Bearer ${getRefreshToken()}`,
-          },
-        },
-      })
-      .subscribe(
-        ({ data }) => {
-          const tokens = (data as any)?.login as TokensGQL; //TODO make better
-          setAccessToken(tokens.accessToken);
-          setRefreshToken(tokens.refreshToken);
-        },
-        (error) => {
-          alert(error);
-        }
-      );
-  }
 }
