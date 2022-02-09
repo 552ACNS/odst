@@ -29,6 +29,29 @@
       },
       "tags": []
     },
+    "helpers": {
+      "root": "libs/helpers",
+      "sourceRoot": "libs/helpers/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/helpers/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/helpers"],
+          "options": {
+            "jestConfig": "libs/helpers/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "types": {
       "root": "libs/types",
       "sourceRoot": "libs/types/src",
