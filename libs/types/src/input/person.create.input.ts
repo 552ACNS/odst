@@ -13,7 +13,6 @@ import { PersonWhereUniqueInput } from './person.unique.input';
 import { Length,
          Min, 
          Max,
-         IsAlpha,
          IsDate,
          IsEmail,
        } from 'class-validator';
@@ -28,11 +27,9 @@ export class PersonCreateWithoutOrgInput
   ssn!: number;
   @IsEmail()
   email!: string;
-  @IsAlpha()
   firstName!: string;
   @Length(1, 1)
   middleInitial?: string;
-  @IsAlpha()
   lastName!: string;
   @IsDate()
   birthDate!: Date;
@@ -42,19 +39,14 @@ export class PersonCreateWithoutOrgInput
   initialTraining?: boolean;
   NDA?: boolean;
   grade!: number;
-
   @Field(() => EyeColor)
   eyeColor!: EyeColor;
-
   @Field(() => BirthState)
   birthState!: BirthState;
-
   @Field(() => Role)
   role!: Role;
-
   @Field(() => Spec)
   spec!: Spec;
-
   @Min(1)
   @Max(100)
   height!: number;
