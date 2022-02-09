@@ -18,4 +18,3 @@ export class UserGQL implements User {
   @HideField()
   password: string;
 }
-

@@ -12,13 +12,15 @@ import { CreateOrgComponent } from './create-org/create-org.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material.module';
 import { LoginComponent } from './login/login.component';
+import { TableComponent } from './table/table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CreatePersonComponent,
     CreateOrgComponent,
-    LoginComponent
+    LoginComponent,
+    TableComponent,
   ],
   imports: [
     RouterModule.forRoot([]),
@@ -28,7 +30,7 @@ import { LoginComponent } from './login/login.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
   ],
   providers: [Apollo],
   bootstrap: [AppComponent],

@@ -27,7 +27,11 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
     orgChildren: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder, private apollo: Apollo, private orgService: CreateOrgService ) {}
+  constructor(
+    private fb: FormBuilder,
+    private apollo: Apollo,
+    private orgService: CreateOrgService
+  ) {}
   // isString(input: string): null | string{
   //   if(!input){
   //     return null;
@@ -36,7 +40,6 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   //     return input;
   //   }
   // }
-
 
   // addAlias(): void {
   //   if (this.orgForm.get(['orgAlias'])?.value !== null) {
@@ -47,16 +50,16 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     const GET_ORGS = this.orgService.queryOrgs();
     this.querySubscription = this.apollo
-    .watchQuery<any>({
-      query: GET_ORGS,
-    })
-    .valueChanges.subscribe(({ data, loading }) => {
-      this.loading = loading;
-      this.orgs = data.findManyOrgs;
-    });
+      .watchQuery<any>({
+        query: GET_ORGS,
+      })
+      .valueChanges.subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.orgs = data.findManyOrgs;
+      });
   }
 
-   OrgSubmit(): void {
+  OrgSubmit(): void {
     const SUBMIT_ORG = this.orgService.mutationCreateOrg();
 
     this.apollo
@@ -64,8 +67,8 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
         mutation: SUBMIT_ORG,
         variables: {
           orgCreateInput: {
-            name: this.orgForm.value["orgName"],
-            orgTier: this.orgForm.get(["orgTier"])?.value,
+            name: this.orgForm.value['orgName'],
+            orgTier: this.orgForm.get(['orgTier'])?.value,
             aliases: [],
             //TODO: Functionality with adding a parent or children orgs to an org being created+
             // parent: {
@@ -83,7 +86,7 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         ({ data }) => {
-          alert("IOrganization Added!")
+          alert('IOrganization Added!');
         },
         (error) => {
           alert('There was an error sending the query: /n' + error);

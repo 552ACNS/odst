@@ -10,7 +10,6 @@ variables:
   ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
     NX_BRANCH: $(System.PullRequest.PullRequestNumber)
 
-
 jobs:
   - job: master
     pool:
@@ -67,7 +66,7 @@ jobs:
       - script: dotnet tool update -g dotnet-reportgenerator-globaltool
         continueOnError: true
         displayName: Install report generator
-      - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
+      - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:Cobertura"
         displayName: Create code coverage report
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish code coverage'

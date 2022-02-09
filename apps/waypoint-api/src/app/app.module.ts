@@ -4,10 +4,18 @@ import { PersonModule } from '../person/person.module';
 import { UserModule } from '../user/user.module';
 import { OrgModule } from '../org/org.module';
 import { IncidentModule } from '../incident/incident.module';
-import { HairColor, EyeColor, BirthState, Role, Spec, OrgTier } from '@prisma/client';
-import { ApolloServerPluginLandingPageLocalDefault,
-  ApolloServerPluginLandingPageDisabled
-} from "apollo-server-core";
+import {
+  HairColor,
+  EyeColor,
+  BirthState,
+  Role,
+  Spec,
+  OrgTier,
+} from '@prisma/client';
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageDisabled,
+} from 'apollo-server-core';
 import { join } from 'path';
 import { AuthModule } from '../auth/auth.module';
 
@@ -37,7 +45,6 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
     UserModule,
     OrgModule,
     IncidentModule,
-
   ],
 })
 export class AppModule {}
