@@ -2,5 +2,10 @@
   <odst-login></odst-login>
   <odst-create-person></odst-create-person>
   <odst-create-org></odst-create-org>
+  <odst-table [dataSource]="orgs" [tableProps]="tablePropsOrg"></odst-table>
+  <odst-table
+    [dataSource]="persons"
+    [tableProps]="tablePropsPerson"
+  ></odst-table>
   <!-- TODO add /logout route that removes jwt is removed -->
 </div>

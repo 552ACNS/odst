@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { OrgService } from '../org/org.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserCreateInput } from '@odst/types';
-import { UserResolver } from './User.resolver';
-import { UserService } from './User.service';
-import { TestUserCreateInput } from './User.repo';
+import { UserResolver } from './user.resolver';
+import { UserService } from './user.service';
+import { TestUserCreateInput } from './user.repo';
 import { User } from '@prisma/client';
 
 describe('UsersResolver', () => {

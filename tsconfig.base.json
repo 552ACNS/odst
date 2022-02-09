@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@odst/gql": ["libs/gql/src/index.ts"],
+      "@odst/helpers": ["libs/helpers/src/index.ts"],
       "@odst/types": ["libs/types/src/index.ts"]
     },
     "strictNullChecks": true,
