@@ -1,7 +1,12 @@
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { LoginUserInput, SignupUserInput, TokensGQL } from '@odst/types';
+import {
+  JwtPayload,
+  LoginUserInput,
+  SignupUserInput,
+  TokensGQL,
+} from '@odst/types';
 import { compare, hash } from 'bcrypt';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 
@@ -66,20 +71,20 @@ export class AuthService {
     const refreshToken = await this.refreshTokenService.getLastRefreshToken(
       userId
     );
-    Logger.log(`current token: ${refreshToken?.hash}`)
+    Logger.log(`current token: ${refreshToken?.hash}`);
 
-    if (!user || !refreshToken?.hash)
-      throw new UnauthorizedException('Access Denied');
+    if (!user || !refreshToken?.hash) throw new UnauthorizedException();
 
-    Logger.log(`provided token: ${providedRefreshToken}`)
+    Logger.log(`provided token: ${providedRefreshToken}`);
 
     const refreshTokensMatch = refreshToken?.hash === providedRefreshToken;
-    if (!refreshTokensMatch) throw new UnauthorizedException('Access Denied');
+    if (!refreshTokensMatch) throw new UnauthorizedException();
 
     return true;
   }
 
-  async refreshTokens(userId: string, currentRefreshToken: string): Promise<TokensGQL> {
+  async refreshTokens(userId: string): Promise<TokensGQL> {
+    Logger.log('refresh token request');
     const user = await this.userService.findUnique({
       id: userId,
     });
@@ -90,6 +95,39 @@ export class AuthService {
     //If so, what should happen if old one is used?
     await this.storeRefreshToken(user.id, tokens.refreshToken);
 
+    return tokens;
+  }
+
+  async refreshTokensVar(refreshToken: string): Promise<TokensGQL> {
+    Logger.log('refresh token request');
+    console.log(refreshToken);
+    if (
+      !this.jwtService.verify(refreshToken, {
+        secret:
+          process.env.JWT_REFRESH_SECRET ||
+          'Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF',
+      })
+    ) {
+      throw new UnauthorizedException();
+    }
+    const userId = (this.jwtService.decode(refreshToken) as JwtPayload).sub;
+
+    if (!(await this.validateRefreshToken(userId, refreshToken))) {
+      throw new UnauthorizedException();
+    }
+
+    const user = await this.userService.findUnique({
+      id: userId,
+    });
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    const tokens = await this.getTokens(user.id, user.username);
+    //TODO do we want to be storing old refresh tokens?
+    //If so, what should happen if old one is used?
+    await this.storeRefreshToken(user.id, tokens.refreshToken);
+    Logger.log(`returning tokens ${tokens.refreshToken} ${tokens.accessToken}`);
     return tokens;
   }
 
@@ -116,7 +154,8 @@ export class AuthService {
 
   //TODO move to refreshToken Servicer?
   async storeRefreshToken(userId: string, refreshToken: string): Promise<void> {
-    await this.refreshTokenService.create({
+    console.log("STORING NEW REFRESH TOKEN")
+    this.refreshTokenService.create({
       expires: new Date(),
       hash: refreshToken,
       user: { connect: { id: userId } },

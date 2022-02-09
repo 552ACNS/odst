@@ -28,10 +28,14 @@ export class AuthResolver {
 
   @Mutation(() => TokensGQL)
   @UseGuards(RefreshTokenAuthGuard)
-  async refresh(
-    @GetCurrentUserId() userId: string,
-    @Args('refreshToken') refreshToken: string
-  ): Promise<TokensGQL> {
-    return this.authService.refreshTokens(userId, refreshToken);
+  async refreshTokens(@GetCurrentUserId() userId: string): Promise<TokensGQL> {
+    return this.authService.refreshTokens(userId);
+  }
+
+  @Mutation(() => TokensGQL)
+  async refreshTokensVar(@Args('refreshToken') refreshToken : string): Promise<TokensGQL> {
+    const tokens = await this.authService.refreshTokensVar(refreshToken);
+    Logger.log({tokens})
+    return this.authService.refreshTokensVar(refreshToken);
   }
 }

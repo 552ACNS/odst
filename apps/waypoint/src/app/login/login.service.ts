@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { TokensGQL } from '@odst/types';
+import {
+  getRefreshToken,
+  setRefreshToken,
+  getAccessToken,
+  setAccessToken,
+} from '@odst/helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -13,22 +19,6 @@ export class LoginService {
   // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
 
   // If SRR is implemented, will need to figure out how SSR plays into all of this
-  getAccessToken() {
-    return sessionStorage.getItem('accessToken');
-  }
-
-  setAccessToken(token) {
-    sessionStorage.setItem('accessToken', token);
-  }
-
-  // TODO switch storing refreshtoken in localStorage so that session persists across sessions (if that is wanted)
-  getRefreshToken() {
-    return sessionStorage.getItem('refreshToken');
-  }
-
-  setRefreshToken(token) {
-    sessionStorage.setItem('refreshToken', token);
-  }
 
   submitLogin(username: string, password: string): void {
     const LOGIN = gql`
@@ -51,11 +41,9 @@ export class LoginService {
       })
       .subscribe(
         ({ data }) => {
-          if (data) {
-            console.log(data);
-            this.setAccessToken(data.accessToken);
-            this.setRefreshToken(data.refreshToken);
-          }
+          const tokens = (data as any)?.login as TokensGQL; //TODO make better
+          setAccessToken(tokens.accessToken);
+          setRefreshToken(tokens.refreshToken);
         },
         (error) => {
           alert(error);
@@ -66,7 +54,7 @@ export class LoginService {
   submitRefresh(): void {
     const REFRESH = gql`
       mutation refresh {
-        refresh {
+        refreshTokens {
           accessToken
           refreshToken
         }
@@ -77,16 +65,15 @@ export class LoginService {
         mutation: REFRESH,
         context: {
           headers: {
-            Authorization: `Bearer ${this.getRefreshToken()}`,
+            Authorization: `Bearer ${getRefreshToken()}`,
           },
         },
       })
       .subscribe(
         ({ data }) => {
-          if (data) {
-            this.setAccessToken(data.accessToken);
-            this.setRefreshToken(data.refreshToken);
-          }
+          const tokens = (data as any)?.login as TokensGQL; //TODO make better
+          setAccessToken(tokens.accessToken);
+          setRefreshToken(tokens.refreshToken);
         },
         (error) => {
           alert(error);

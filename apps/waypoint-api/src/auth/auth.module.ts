@@ -4,22 +4,25 @@ import { AuthResolver } from './auth.resolver';
 import { LocalStrategy } from './strategies/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '../user/user.module';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AccessTokenStrategy } from './strategies/accessToken.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { UserService } from '../user/user.service';
 
 @Module({
-  imports: [UserModule, PassportModule, JwtModule.register({})],
+  imports: [PassportModule, JwtModule.register({})],
   providers: [
     AuthService,
     AuthResolver,
+    UserService,
     LocalStrategy,
     AccessTokenStrategy,
     RefreshTokenStrategy,
     RefreshTokenService,
-    PrismaService,
+    PrismaService
+
   ],
   exports: [],
 })
