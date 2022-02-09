@@ -47,7 +47,6 @@ async function main() {
   try {
     await prisma.user.delete({ where: { username: 'admin' } });
   } catch {
-    //console.log("admin account does not exist")
   }
 
   if (
@@ -55,7 +54,6 @@ async function main() {
     process.env.DEV_ACCOUNT_PASSWORD
   ) {
     const pw = await hash(process.env.DEV_ACCOUNT_PASSWORD, 10);
-    //console.log({ env, pw, devUserAccount })
 
     const user = await prisma.user.create({
       data: {

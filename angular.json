@@ -221,7 +221,6 @@
             "command": "prisma generate --schema=apps/waypoint-api/schema.prisma"
           }
         },
-
         "prisma-studio": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {

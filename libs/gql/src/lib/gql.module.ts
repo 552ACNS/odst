@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { APOLLO_OPTIONS } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
 import { setContext } from '@apollo/client/link/context';
 import {
   ApolloClient,
@@ -18,6 +17,7 @@ import {
   setRefreshToken,
 } from '@odst/helpers';
 import { REFRESH_TOKEN } from './mutations';
+import { TokensGQL } from '@odst/types';
 
 // TODO Make this an environment variable, make sure this works
 // just setting process.env.GQL_ENDPOINT doesn't work as expected (it will fail
@@ -41,11 +41,16 @@ export function createApollo() {
         for (const err of graphQLErrors) {
           switch (err.extensions?.['code']) {
             case 'UNAUTHENTICATED': {
-              console.log("UNAUTHENTICATED")
+              const refreshToken = getRefreshToken();
+
+              if (!refreshToken) {
+                console.log('No refresh token');
+                //TODO push to login
+                continue;
+              }
               let forward$: Observable<boolean> | Observable<void>;
 
               if (!isRefreshing) {
-                console.log("inside !refreshing")
                 isRefreshing = true;
                 forward$ = fromPromise(
                   client
@@ -55,11 +60,12 @@ export function createApollo() {
                         refreshToken: getRefreshToken(),
                       },
                     })
-                    .then(({ data: { refreshToken, accessToken } }) => {
-                      console.log({refreshToken, accessToken})
-                      if (refreshToken && accessToken) {
-                        setAccessToken(accessToken);
-                        setRefreshToken(refreshToken);
+                    .then(({ data }) => {
+                      const tokens = (data as any)
+                        ?.refreshTokensVar as TokensGQL; //TODO make better
+                      if (tokens) {
+                        setAccessToken(tokens.accessToken);
+                        setRefreshToken(tokens.refreshToken);
                       }
                       return true;
                     })

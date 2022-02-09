@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import {
   JwtPayload,
   LoginUserInput,
@@ -71,20 +71,19 @@ export class AuthService {
     const refreshToken = await this.refreshTokenService.getLastRefreshToken(
       userId
     );
-    Logger.log(`current token: ${refreshToken?.hash}`);
 
-    if (!user || !refreshToken?.hash) throw new UnauthorizedException();
-
-    Logger.log(`provided token: ${providedRefreshToken}`);
+    if (!user || !refreshToken?.hash) {
+      throw new UnauthorizedException();
+    }
 
     const refreshTokensMatch = refreshToken?.hash === providedRefreshToken;
+
     if (!refreshTokensMatch) throw new UnauthorizedException();
 
     return true;
   }
 
   async refreshTokens(userId: string): Promise<TokensGQL> {
-    Logger.log('refresh token request');
     const user = await this.userService.findUnique({
       id: userId,
     });
@@ -98,9 +97,8 @@ export class AuthService {
     return tokens;
   }
 
+  //expects the token as a variable, instead of auth header
   async refreshTokensVar(refreshToken: string): Promise<TokensGQL> {
-    Logger.log('refresh token request');
-    console.log(refreshToken);
     if (
       !this.jwtService.verify(refreshToken, {
         secret:
@@ -119,7 +117,8 @@ export class AuthService {
     const user = await this.userService.findUnique({
       id: userId,
     });
-    if (!user) {
+
+    if (!user || !user.enabled) {
       throw new UnauthorizedException();
     }
 
@@ -127,7 +126,6 @@ export class AuthService {
     //TODO do we want to be storing old refresh tokens?
     //If so, what should happen if old one is used?
     await this.storeRefreshToken(user.id, tokens.refreshToken);
-    Logger.log(`returning tokens ${tokens.refreshToken} ${tokens.accessToken}`);
     return tokens;
   }
 
@@ -154,9 +152,9 @@ export class AuthService {
 
   //TODO move to refreshToken Servicer?
   async storeRefreshToken(userId: string, refreshToken: string): Promise<void> {
-    console.log("STORING NEW REFRESH TOKEN")
     this.refreshTokenService.create({
-      expires: new Date(),
+      expires: new Date(3000, 1, 1), //TODO set expiration
+      //TODO set max life
       hash: refreshToken,
       user: { connect: { id: userId } },
     });
@@ -193,5 +191,7 @@ export class AuthService {
   }
 
   //TODO is it needed?
-  //async logout
+  //async logout(){
+  //  ...
+  //}
 }

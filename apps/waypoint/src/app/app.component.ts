@@ -30,7 +30,6 @@ export class AppComponent implements OnInit, OnDestroy {
   orgName = 'Haha';
 
   testClick() {
-    console.log("Test")
     const USERS = gql`
       query FindManyUsers {
         findManyUsers {

@@ -1,1 +1,1 @@
-export * from './functions/clientStateMangement'
+export * from './functions/clientState';
