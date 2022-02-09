@@ -3,10 +3,9 @@ import { gql, TypedDocumentNode } from 'apollo-angular';
 import { EmptyObject } from 'apollo-angular/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CreateOrgService {
-
   constructor() {
     // empty
   }
@@ -20,18 +19,18 @@ export class CreateOrgService {
           aliases
         }
       }
-      `;
-      return GET_ORGS;
+    `;
+    return GET_ORGS;
   }
 
   mutationCreateOrg(): TypedDocumentNode<any, EmptyObject> {
     const SUBMIT_ORG = gql`
-    mutation createOrg($orgCreateInput: OrgCreateInput!) {
+      mutation createOrg($orgCreateInput: OrgCreateInput!) {
         createOrg(orgCreateInput: $orgCreateInput) {
           id
         }
       }
     `;
     return SUBMIT_ORG;
-  } 
+  }
 }

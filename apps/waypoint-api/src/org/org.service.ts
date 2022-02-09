@@ -84,13 +84,15 @@ export class OrgService {
     });
   }
 
-
-  async upsert(orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
-    orgUpdateInput: Prisma.OrgUpdateInput, orgCreateInput: OrgCreateInput): Promise<Org> {
+  async upsert(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
+    orgUpdateInput: Prisma.OrgUpdateInput,
+    orgCreateInput: OrgCreateInput
+  ): Promise<Org> {
     return this.prisma.org.upsert({
       where: orgWhereUniqueInput,
       update: orgUpdateInput,
-      create: orgCreateInput
+      create: orgCreateInput,
     });
   }
 }

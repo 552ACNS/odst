@@ -15,7 +15,6 @@ export class AuthService {
     username: string,
     passwordPlaintextInput: string
   ): Promise<unknown> {
-
     const user = await this.userService.findUnique({ username: username });
     if (user && user.enabled) {
       //first is plaintext, second is hash to compare it to
@@ -30,7 +29,7 @@ export class AuthService {
     return null;
   }
 
-  async login(loginInput: LoginUserInput) : Promise<LoginResponse>{
+  async login(loginInput: LoginUserInput): Promise<LoginResponse> {
     const user = await this.userService.findUnique({
       username: loginInput.username,
     });

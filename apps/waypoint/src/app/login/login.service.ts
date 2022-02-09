@@ -16,7 +16,7 @@ export class LoginService {
   // TODO sessionStorage is not being cleared as expected
 
   // If SRR is implemented, will need to figure out how SSR plays into all of this
-    getJwtToken() {
+  getJwtToken() {
     return sessionStorage.getItem('jwt');
   }
 
@@ -60,7 +60,7 @@ export class LoginService {
         ({ data }) => {
           const dataAny = data as any; //TODO make better
           const loginResponse = dataAny.login as LoginResponse;
-          this.setJwtToken(loginResponse.token)
+          this.setJwtToken(loginResponse.token);
         },
         (error) => {
           alert(error);

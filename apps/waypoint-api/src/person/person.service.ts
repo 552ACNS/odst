@@ -97,12 +97,15 @@ export class PersonService {
     });
   }
 
-  async upsert(personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
-    personUpdateInput: Prisma.PersonUpdateInput, personCreateInput: PersonCreateInput): Promise<Person> {
+  async upsert(
+    personWhereUniqueInput: Prisma.PersonWhereUniqueInput,
+    personUpdateInput: Prisma.PersonUpdateInput,
+    personCreateInput: PersonCreateInput
+  ): Promise<Person> {
     return this.prisma.person.upsert({
       where: personWhereUniqueInput,
       update: personUpdateInput,
-      create: personCreateInput
+      create: personCreateInput,
     });
   }
 }

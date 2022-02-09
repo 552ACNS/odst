@@ -9,9 +9,7 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/gql"
-          ],
+          "outputs": ["coverage/libs/gql"],
           "options": {
             "jestConfig": "libs/gql/jest.config.js",
             "passWithNoTests": true
@@ -59,13 +57,9 @@
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "libs/types/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/types/**/*.ts"]
           }
         }
       },
@@ -79,9 +73,7 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/waypoint",
             "index": "apps/waypoint/src/index.html",
@@ -164,9 +156,7 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/waypoint"
-          ],
+          "outputs": ["coverage/apps/waypoint"],
           "options": {
             "jestConfig": "apps/waypoint/jest.config.js",
             "passWithNoTests": true
@@ -182,19 +172,13 @@
       "architect": {
         "build": {
           "builder": "@nrwl/node:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/waypoint-api",
             "main": "apps/waypoint-api/src/main.ts",
             "tsConfig": "apps/waypoint-api/tsconfig.app.json",
-            "tsPlugins": [
-              "@nestjs/graphql/plugin"
-            ],
-            "assets": [
-              "apps/waypoint-api/src/assets"
-            ]
+            "tsPlugins": ["@nestjs/graphql/plugin"],
+            "assets": ["apps/waypoint-api/src/assets"]
           },
           "configurations": {
             "production": {
@@ -218,20 +202,14 @@
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/waypoint-api/**/*.ts"
-            ]
+            "lintFilePatterns": ["apps/waypoint-api/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/waypoint-api"
-          ],
+          "outputs": ["coverage/apps/waypoint-api"],
           "options": {
             "jestConfig": "apps/waypoint-api/jest.config.js",
             "passWithNoTests": true
@@ -291,20 +269,14 @@
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/waypoint-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/waypoint-e2e/**/*.{js,ts}"]
           }
         }
       },
       "tags": [],
-      "implicitDependencies": [
-        "waypoint"
-      ]
+      "implicitDependencies": ["waypoint"]
     }
   }
 }

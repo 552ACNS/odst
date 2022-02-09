@@ -4,11 +4,11 @@ import {
   HairColor,
   Prisma,
   Role,
-  Spec
+  Spec,
 } from '.prisma/client';
 import { Field, InputType } from '@nestjs/graphql';
 import { PersonGQL } from '../entity/person.entity';
-import { OrgCreateNestedOneWithoutPersonsInput } from './org.create.input'
+import { OrgCreateNestedOneWithoutPersonsInput } from './org.create.input';
 import { PersonWhereUniqueInput } from './person.unique.input';
 
 @InputType()

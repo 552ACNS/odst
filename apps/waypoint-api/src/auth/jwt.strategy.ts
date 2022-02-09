@@ -5,8 +5,7 @@ import { UserService } from '../user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private userService: UserService){
+  constructor(private userService: UserService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -18,10 +17,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     const username = payload.username;
     const user = await this.userService.findUnique({ username: username });
-    if(user && user.enabled){
+    if (user && user.enabled) {
       return { userId: payload.sub, username: payload.username };
-    }
-    else{
+    } else {
       return null;
     }
   }

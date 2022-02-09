@@ -1,6 +1,11 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { OrgService } from './org.service';
-import { OrgGQL, OrgCreateInput, OrgUpdateInput, OrgWhereUniqueInput } from '@odst/types';
+import {
+  OrgGQL,
+  OrgCreateInput,
+  OrgUpdateInput,
+  OrgWhereUniqueInput,
+} from '@odst/types';
 import { JwtAuthGuard } from '../auth/jwt.auth-guard';
 import { UseGuards } from '@nestjs/common';
 
@@ -20,16 +25,16 @@ export class OrgResolver {
     // return this.orgService.findMany();
     return this.orgService.orgs({
       orderBy: {
-        name: "asc"
-      }
-    })
+        name: 'asc',
+      },
+    });
   }
 
   @Query(() => [OrgGQL], { name: 'getSubOrgs' })
   @UseGuards(JwtAuthGuard)
   async getSubOrgs(
     @Args('orgWhereUniqueInput')
-    orgWhereUniqueInput: OrgWhereUniqueInput,
+    orgWhereUniqueInput: OrgWhereUniqueInput
   ): Promise<OrgGQL[]> {
     return this.orgService.getSubOrgs(orgWhereUniqueInput);
   }
@@ -38,8 +43,8 @@ export class OrgResolver {
   @UseGuards(JwtAuthGuard)
   async findUnique(
     @Args('orgWhereUniqueInput')
-    orgWhereUniqueInput: OrgWhereUniqueInput,
-  ) : Promise<OrgGQL | null > {
+    orgWhereUniqueInput: OrgWhereUniqueInput
+  ): Promise<OrgGQL | null> {
     return this.orgService.findUnique(orgWhereUniqueInput);
   }
 
@@ -49,7 +54,7 @@ export class OrgResolver {
     @Args('OrgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput,
     @Args('OrgUpdateInput')
-    orgUpdateInput: OrgUpdateInput,
+    orgUpdateInput: OrgUpdateInput
   ): Promise<OrgGQL> {
     return this.orgService.update(orgWhereUniqueInput, orgUpdateInput);
   }
@@ -58,7 +63,7 @@ export class OrgResolver {
   @UseGuards(JwtAuthGuard)
   async delete(
     @Args('orgWhereUniqueInput')
-    orgWhereUniqueInput: OrgWhereUniqueInput,
+    orgWhereUniqueInput: OrgWhereUniqueInput
   ): Promise<OrgGQL> {
     return this.orgService.delete(orgWhereUniqueInput);
   }

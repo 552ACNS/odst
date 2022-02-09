@@ -8,12 +8,14 @@ import { BirthState } from '@prisma/client';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import { CreatePersonService } from './create-person.service';
-import { getFirstName,
-         getLastName,
-         getMiddleInitial,
-         getDoDID,
-         getSSN,
-         getDoB, } from '@odst/helpers';
+import {
+  getFirstName,
+  getLastName,
+  getMiddleInitial,
+  getDoDID,
+  getSSN,
+  getDoB,
+} from '@odst/helpers';
 
 @Component({
   selector: 'odst-create-person',
@@ -25,9 +27,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
-  orgs = [
-    { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
-  ];
+  orgs = [{ id: '', name: '', aliases: [], orgTier: 'WING', parentId: null }];
   personGrades: number[];
   querySubscription: Subscription;
   loading = true;
@@ -41,7 +41,11 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     personEmail: ['', Validators.email],
     personDoDIDNumber: [
       '',
-      [Validators.required, Validators.pattern('^[0-9]{9,10}'), Validators.maxLength],
+      [
+        Validators.required,
+        Validators.pattern('^[0-9]{9,10}'),
+        Validators.maxLength,
+      ],
     ],
     personSSN: [
       '',
@@ -51,18 +55,19 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         Validators.maxLength,
       ],
     ],
-  })
+  });
   birthForm = this.fb.group({
     personBirthCountry: ['', Validators.required],
     personBirthCity: ['', Validators.required],
     personBirthDate: ['', Validators.required],
     personBirthState: ['', Validators.required],
-  })
+  });
   identityForm = this.fb.group({
-    personHeight: ['', 
-    [Validators.required, Validators.pattern('^[1-9]?[0-9]{1}$|^100')]
-  ],
-   
+    personHeight: [
+      '',
+      [Validators.required, Validators.pattern('^[1-9]?[0-9]{1}$|^100')],
+    ],
+
     personHairColor: ['', Validators.required],
     personEyeColor: ['', Validators.required],
     personSpec: ['', Validators.required],
@@ -73,19 +78,23 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     personInitTrngCheck: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder, private apollo: Apollo, private personService: CreatePersonService) {}
+  constructor(
+    private fb: FormBuilder,
+    private apollo: Apollo,
+    private personService: CreatePersonService
+  ) {}
 
   async ngOnInit(): Promise<void> {
     const GET_ORGS = this.personService.queryOrgs();
     this.querySubscription = this.apollo
-    //TODO: make query strongly typed instead of any
-    .watchQuery<any>({
-      query: GET_ORGS,
-    })
-    .valueChanges.subscribe(({ data, loading }) => {
-      this.loading = loading;
-      this.orgs = data.findManyOrgs;
-    });
+      //TODO: make query strongly typed instead of any
+      .watchQuery<any>({
+        query: GET_ORGS,
+      })
+      .valueChanges.subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.orgs = data.findManyOrgs;
+      });
   }
 
   personInitTrngCheck(): boolean {
@@ -125,7 +134,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       personMiddleInitial: middleInitial,
       personDoDIDNumber: assignedDoDID,
       personSSN: rawSSN,
-      personCACScan: ''
+      personCACScan: '',
     });
     this.birthForm.patchValue({
       personBirthDate: rawDoB,
@@ -134,7 +143,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   resetPerson(): void {
     this.submitSuccess = false;
   }
-  
+
   personSubmit(): void {
     const SUBMIT_PERSON = this.personService.mutationCreatePerson();
     this.apollo
