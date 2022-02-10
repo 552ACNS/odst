@@ -23,7 +23,7 @@ jobs:
         with: 
           node-version: '16'
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
       - name: Generate Prisma clients
         run: npx nx run waypoint-api:prisma-generate
@@ -44,7 +44,7 @@ jobs:
         with: 
           node-version: '16'
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
       - name: Setup .NET 6.x
         uses: actions/setup-dotnet@v1
