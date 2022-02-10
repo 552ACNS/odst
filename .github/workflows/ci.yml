@@ -55,7 +55,6 @@ jobs:
       - name: Generate Prisma clients
         run: npx nx run waypoint-api:prisma-generate
       - run: npx nx affected --target=lint --parallel
-      - run: npx nx affected --target=build --parallel
       - run: npx nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
       - run: dotnet tool update -g dotnet-reportgenerator-globaltool
         continue-on-error: true
