@@ -59,6 +59,7 @@ jobs:
         continue-on-error: true
       - name: Report Generator
         run: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:HtmlInline_AzurePipelines;"
+        continue-on-error: true
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v2.2.3
         with:
