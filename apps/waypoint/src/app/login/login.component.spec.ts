@@ -11,10 +11,14 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, ApolloTestingModule, MaterialModule, BrowserAnimationsModule],
-      declarations: [ LoginComponent ]
-    })
-    .compileComponents();
+      imports: [
+        ReactiveFormsModule,
+        ApolloTestingModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+      ],
+      declarations: [LoginComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

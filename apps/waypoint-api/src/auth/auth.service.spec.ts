@@ -9,6 +9,7 @@ import {
 import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { prismaMock } from '../prisma/singleton';
+import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 
@@ -17,16 +18,12 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        JwtModule.register({
-          signOptions: { expiresIn: '15m' },
-          secret: 'this-should-not-be-hardcoded-here', //process.env.JWT_SECRET
-        }),
-      ],
+      imports: [JwtModule.register({})],
       providers: [
         AuthService,
         UserService,
         { provide: PrismaService, useValue: prismaMock },
+        RefreshTokenService,
       ],
     }).compile();
 
@@ -66,7 +63,7 @@ describe('AuthService', () => {
       person: { connect: { dodId: 123456789 } },
     };
 
-    await service.signup(userInput);
+    await await service.signup(userInput);
 
     expect(prismaMock.user.create).toHaveBeenCalled();
   });

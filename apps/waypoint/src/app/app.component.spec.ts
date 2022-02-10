@@ -1,9 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import {
-  ApolloTestingModule,
-} from 'apollo-angular/testing';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -11,7 +9,6 @@ describe('AppComponent', () => {
       declarations: [AppComponent],
       imports: [HttpClientModule, ApolloTestingModule],
     }).compileComponents();
-    
   });
 
   it('should create the app', () => {

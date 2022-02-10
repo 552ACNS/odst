@@ -10,7 +10,6 @@ variables:
   ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
     NX_BRANCH: $(System.PullRequest.PullRequestNumber)
 
-
 jobs:
   - job: master
     pool:

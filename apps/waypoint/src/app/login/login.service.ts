@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { LoginResponse } from '@odst/types';
-import { hash } from 'bcrypt';
+import { TokensGQL } from '@odst/types';
+import { setRefreshToken, setAccessToken } from '@odst/helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -13,36 +13,14 @@ export class LoginService {
   // "What will happen if I'm logged in on multiple tabs?"; won't be authenticated in new tabs
   // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
 
-  // TODO sessionStorage is not being cleared as expected
-
   // If SRR is implemented, will need to figure out how SSR plays into all of this
-    getJwtToken() {
-    return sessionStorage.getItem('jwt');
-  }
-
-  setJwtToken(token) {
-    sessionStorage.setItem('jwt', token);
-  }
-
-  // TODO switch storing refreshtoken in localStorage so that session persists across sessions (if that is wanted)
-  getRefreshToken() {
-    return sessionStorage.getItem('refreshToken');
-  }
-
-  setRefreshToken(token) {
-    sessionStorage.setItem('refreshToken', token);
-  }
 
   submitLogin(username: string, password: string): void {
     const LOGIN = gql`
       mutation Login($loginUserInput: LoginUserInput!) {
         login(loginUserInput: $loginUserInput) {
-          user {
-            id
-            personId
-            username
-          }
-          token
+          accessToken
+          refreshToken
         }
       }
     `;
@@ -58,9 +36,9 @@ export class LoginService {
       })
       .subscribe(
         ({ data }) => {
-          const dataAny = data as any; //TODO make better
-          const loginResponse = dataAny.login as LoginResponse;
-          this.setJwtToken(loginResponse.token)
+          const tokens = (data as any)?.login as TokensGQL; //TODO make better
+          setAccessToken(tokens.accessToken);
+          setRefreshToken(tokens.refreshToken);
         },
         (error) => {
           alert(error);

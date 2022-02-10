@@ -53,9 +53,7 @@ describe('UsersService', () => {
       username: TestUserCreateInput[0].username,
     };
 
-    await service.findUnique(
-      userInput.username as unknown as User,
-    );
+    await service.findUnique(userInput.username as unknown as User);
 
     expect(prismaMock.user.findUnique).toHaveBeenCalled();
   });
@@ -69,10 +67,7 @@ describe('UsersService', () => {
       username: 'new.username',
     };
 
-    await service.update(
-      userWhereUniqueInput,
-      userUpdateInput,
-    );
+    await service.update(userWhereUniqueInput, userUpdateInput);
 
     expect(prismaMock.user.update).toHaveBeenCalled();
   });

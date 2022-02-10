@@ -1,15 +1,33 @@
 <div class="flex w-fit m-2 p-0">
   <table mat-table [dataSource]="dataSource" class="w-fit shadow-md">
     <!-- Position Column -->
-    <ng-container *ngFor="let prop of tableProps"
-    [matColumnDef]="prop.columnDef">
-    <!-- Header text characteristics -->
-      <th mat-header-cell *matHeaderCellDef class="px-6 py-4 text-white text-base"> {{ prop.header}} </th>
-      <td mat-cell *matCellDef="let item" class="px-6 py-4 text-xs"> {{item[prop.columnDef]}} </td>
+    <ng-container
+      *ngFor="let prop of tableProps"
+      [matColumnDef]="prop.columnDef"
+    >
+      <!-- Header text characteristics -->
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        class="px-6 py-4 text-white text-base"
+      >
+        {{ prop.header }}
+      </th>
+      <td mat-cell *matCellDef="let item" class="px-6 py-4 text-xs">
+        {{ item[prop.columnDef] }}
+      </td>
     </ng-container>
 
     <!-- Table Characteristics -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-blue-800"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="whitespace-nowrap text-left"></tr>
+    <tr
+      mat-header-row
+      *matHeaderRowDef="displayedColumns"
+      class="bg-blue-800"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      class="whitespace-nowrap text-left"
+    ></tr>
   </table>
 </div>

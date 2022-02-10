@@ -11,12 +11,23 @@ generator client {
 }
 
 model User {
-  id                String   @id @default(uuid())
-  username          String   @unique
-  password          String   //should be unique?
-  person            Person   @relation(fields: [personId], references: [id])
-  personId          String   @unique
-  enabled           Boolean  @default(true)
+  id            String         @id @default(uuid())
+  username      String         @unique
+  password      String
+  person        Person         @relation(fields: [personId], references: [id])
+  personId      String         @unique
+  enabled       Boolean        @default(true)
+  refreshTokens RefreshToken[] //many RefreshToken to user
+}
+
+model RefreshToken {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  isRevoked Boolean  @default(false)
+  issued     DateTime @default(now())
+  expires    DateTime
+  hash       String
 }
 
 model Person {
@@ -52,8 +63,8 @@ model Org {
   orgTier  OrgTier
   persons  Person[] // an org can have many different people
   parentId String? // a parent org can have many child orgs
-  parent   Org?     @relation("ParentChild", fields: [parentId], references: [id])
-  children Org[]    @relation("ParentChild") // This is a self relation
+  parent   Org?     @relation(name: "ParentChild", fields: [parentId], references: [id])
+  children Org[]    @relation(name: "ParentChild") // This is a self relation
 }
 
 model Incident {

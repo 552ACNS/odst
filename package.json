@@ -41,6 +41,7 @@
     "env-cmd": "^10.1.0",
     "graphql": "15",
     "graphql-config": "^4.1.0",
+    "jwt-decode": "^3.1.2",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -95,4 +96,3 @@
     "@angular-devkit/build-angular/resolve-url-loader/postcss": "^8.3"
   }
 }
-

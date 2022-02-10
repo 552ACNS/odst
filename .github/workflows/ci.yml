@@ -19,8 +19,8 @@ jobs:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v2
-      - uses: actions/setup-node@v2 
-        with: 
+      - uses: actions/setup-node@v2
+        with:
           node-version: '16'
           cache: 'yarn'
       - run: yarn install --frozen-lockfile --prefer-offline
@@ -41,7 +41,7 @@ jobs:
         with:
           main-branch-name: master
       - uses: actions/setup-node@v2
-        with: 
+        with:
           node-version: '16'
           cache: 'yarn'
       - run: yarn install --frozen-lockfile --prefer-offline

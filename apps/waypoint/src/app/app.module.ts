@@ -20,7 +20,7 @@ import { TableComponent } from './table/table.component';
     CreatePersonComponent,
     CreateOrgComponent,
     LoginComponent,
-    TableComponent
+    TableComponent,
   ],
   imports: [
     RouterModule.forRoot([]),
@@ -30,7 +30,7 @@ import { TableComponent } from './table/table.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
   ],
   providers: [Apollo],
   bootstrap: [AppComponent],

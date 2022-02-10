@@ -2,17 +2,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { OrgGQL, PersonGQL } from '@odst/types';
 import { Subscription } from 'rxjs';
+import { getAccessToken } from '@odst/helpers';
 
- const GET_PERSONS = gql`
-   query {
-     findManyPersons {   
-       firstName  
-       lastName 
-       dodId
-       ssn
-     }
-   }
- `; 
+const GET_PERSONS = gql`
+  query {
+    findManyPersons {
+      firstName
+      lastName
+      dodId
+      ssn
+    }
+  }
+`;
 
 const GET_ORGS = gql`
   query {
@@ -33,14 +34,36 @@ const GET_ORGS = gql`
 export class AppComponent implements OnInit, OnDestroy {
   constructor(private apollo: Apollo) {}
   loading = true;
-  orgs: OrgGQL[] = [{id: "", name: "", aliases: [], orgTier: "WING", parentId: null}];
-  persons: PersonGQL[] = [{id: "", dodId: 0, firstName: "", lastName: "", middleInitial: "",
-  email: "", hairColor: "BROWN", eyeColor: "BLUE", birthCity: "", birthState: "OK",
-  birthCountry: "",  ssn: 0, birthDate: new Date(),
-  citizenshipId: "", height: 0, initialTraining: true, 
-  NDA: true, grade: 0, orgId: "", spec: "OTHER", role: "ADMIN"}];
-  querySubscription: Subscription; 
- tablePropsOrg = [
+  orgs: OrgGQL[] = [
+    { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
+  ];
+  persons: PersonGQL[] = [
+    {
+      id: '',
+      dodId: 0,
+      firstName: '',
+      lastName: '',
+      middleInitial: '',
+      email: '',
+      hairColor: 'BROWN',
+      eyeColor: 'BLUE',
+      birthCity: '',
+      birthState: 'OK',
+      birthCountry: '',
+      ssn: 0,
+      birthDate: new Date(),
+      citizenshipId: '',
+      height: 0,
+      initialTraining: true,
+      NDA: true,
+      grade: 0,
+      orgId: '',
+      spec: 'OTHER',
+      role: 'ADMIN',
+    },
+  ];
+  querySubscription: Subscription;
+  tablePropsOrg = [
     {
       columnDef: 'id',
       header: '#',
@@ -48,7 +71,7 @@ export class AppComponent implements OnInit, OnDestroy {
     {
       columnDef: 'name',
       header: 'Name',
-    }, 
+    },
     {
       columnDef: 'aliases',
       header: 'Aliases',
@@ -59,11 +82,11 @@ export class AppComponent implements OnInit, OnDestroy {
     },
   ];
 
-  tablePropsPerson = [    
+  tablePropsPerson = [
     {
       columnDef: 'firstName',
       header: 'First Name',
-    }, 
+    },
     {
       columnDef: 'lastName',
       header: 'Last Name',
@@ -77,25 +100,25 @@ export class AppComponent implements OnInit, OnDestroy {
       header: 'SSN',
     },
   ];
-    
+
   ngOnInit() {
-    this.querySubscription = this.apollo.watchQuery<any>({
-      query: GET_ORGS
-    })
-      .valueChanges
-      .subscribe(({ data, loading }) => {
+    this.querySubscription = this.apollo
+      .watchQuery<any>({
+        query: GET_ORGS,
+      })
+      .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
         this.orgs = data.findManyOrgs;
       });
 
-      this.querySubscription = this.apollo.watchQuery<any>({
-        query: GET_PERSONS
+    this.querySubscription = this.apollo
+      .watchQuery<any>({
+        query: GET_PERSONS,
       })
-        .valueChanges
-        .subscribe(({ data, loading }) => {
-          this.loading = loading;
-          this.persons = data.findManyPersons;
-        });
+      .valueChanges.subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.persons = data.findManyPersons;
+      });
   }
 
   ngOnDestroy() {

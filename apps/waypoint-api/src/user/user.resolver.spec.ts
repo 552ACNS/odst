@@ -55,7 +55,7 @@ describe('UsersResolver', () => {
     const methodToSpy = 'findMany';
 
     const resolvedUsers: User[] = testUsers.map(
-      (User) => User as unknown as User,
+      (User) => User as unknown as User
     );
 
     // Change value of promise
@@ -99,7 +99,7 @@ describe('UsersResolver', () => {
   it('Should update a User', async () => {
     // TEST PARAMS
     const methodToSpy = 'update';
-    const newUsername = "new.username";
+    const newUsername = 'new.username';
     //Create a GQL definition of the User to update
     const updatedUser: User = testUsers[2] as unknown as User;
 
@@ -112,7 +112,10 @@ describe('UsersResolver', () => {
       .mockImplementation(() => result);
 
     // Call the update service and get the actual to be compared to result
-    const actual = await resolver.update({ username: updatedUser.username }, { username: newUsername });
+    const actual = await resolver.update(
+      { username: updatedUser.username },
+      { username: newUsername }
+    );
     // Assert that the method was called
     expect(spy).toHaveBeenCalled();
     //Determine if the actual and result are the same
