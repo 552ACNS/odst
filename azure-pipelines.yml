@@ -47,9 +47,9 @@ jobs:
         displayName: 'Install LTS of Node.js'
       - script: npm install -g yarn
         displayName: Install yarn
-      - script: yarn audit --filter high
+      - script: yarn audit
         displayName: Audit packages
-      - script: yarn install --ignore-engines --frozen-lockfile
+      - script: yarn install --frozen-lockfile --prefer-offline
         displayName: Install dependencies
       - task: UseDotNet@2
         displayName: 'Use .NET Core 6.0 sdk'
@@ -69,6 +69,7 @@ jobs:
         displayName: Install report generator
       - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:Cobertura"
         displayName: Create code coverage report
+        continueOnError: true
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish code coverage'
         inputs:
