@@ -24,10 +24,11 @@ jobs:
           node-version: '16'
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
-      - run: npx nx-cloud start-ci-run    
+      - run: yarn audit
+      - name: Generate Prisma clients
+        run: npx nx run waypoint-api:prisma-generate
       - run: npx nx affected --target=build --parallel
       - run: npx nx affected --target=test --parallel
-      - run: npx nx-cloud stop-all-agents
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
