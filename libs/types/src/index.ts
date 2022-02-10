@@ -28,7 +28,6 @@ export * from './entity/refreshToken.entity'
 
 //#region Types
 export * from './types/jwtPayload.type'
-export * from './types/jwtPayloadWithRefreshToken.type'
 //#endregion
 
 //#region Decorators

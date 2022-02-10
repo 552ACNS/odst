@@ -13,11 +13,13 @@ import { onError } from '@apollo/client/link/error';
 import {
   getAccessToken,
   getRefreshToken,
+  isJwtChainExpired,
   setAccessToken,
   setRefreshToken,
 } from '@odst/helpers';
 import { REFRESH_TOKEN } from './mutations';
 import { TokensGQL } from '@odst/types';
+import { isJwtExpired } from '@odst/helpers';
 
 // TODO Make this an environment variable, make sure this works
 // just setting process.env.GQL_ENDPOINT doesn't work as expected (it will fail
@@ -42,9 +44,13 @@ export function createApollo() {
           switch (err.extensions?.['code']) {
             case 'UNAUTHENTICATED': {
               const refreshToken = getRefreshToken();
-
-              if (!refreshToken) {
-                console.log('No refresh token');
+              //TODO 16 check if refresh token is expired before getting an error from api request?
+              //TODO check if access token is expired before getting an error from api request?
+              //TODO check if refresh token chain is expired before getting an error from api request?
+              //TODO user is logged out if they havn't made api calls recently
+              //So need to make it so if theyre active but not making calls, they arent needlessly logged out
+              if (!refreshToken || isJwtExpired(refreshToken) || isJwtChainExpired(refreshToken)) {
+                console.log('No valid refresh token');
                 //TODO push to login
                 continue;
               }
@@ -114,12 +120,12 @@ export function createApollo() {
   });
 
   const authLink = setContext(async (operation, { headers }) => {
-    const token = getAccessToken();
+    const accessToken = getAccessToken();
 
     return {
       headers: {
         ...headers,
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${accessToken}`,
       },
     };
   });

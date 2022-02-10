@@ -2,11 +2,13 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import {
-  JwtPayload,
   LoginUserInput,
+  RefreshTokenPayload,
   SignupUserInput,
   TokensGQL,
+  JwtPayloadCreateInput,
 } from '@odst/types';
+import { isJwtChainExpired } from '@odst/helpers';
 import { compare, hash } from 'bcrypt';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 
@@ -24,40 +26,41 @@ export class AuthService {
 
   async getTokens(userId: string, username: string): Promise<TokensGQL> {
     //builds payload of tokens. will be encoded, not encrypted.
-    //Do not put anything sensitive
+    //Do not put anything sensitive in payload
 
-    const [at, rt] = await Promise.all([
-      this.jwtService.signAsync(
-        {
-          username: username,
-          sub: userId,
-        },
-        {
-          expiresIn: process.env.NODE_ENV === 'production' ? '15m' : '5d',
-          //TODO process.env doesn't work, fix hardcoded value
-          secret:
-            process.env.JWT_SECRET ||
-            'dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$%',
-        }
-      ),
-      await this.jwtService.signAsync(
-        {
-          username: username,
-          sub: userId,
-        },
-        {
-          expiresIn: process.env.NODE_ENV === 'production' ? '3d' : '1w',
-          //TODO process.env doesn't work, fix hardcoded value
-          secret:
-            process.env.JWT_REFRESH_SECRET ||
-            'Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF',
-        }
-      ),
-    ]);
+    const accessTokenPayload: JwtPayloadCreateInput = {
+      username: username,
+      sub: userId,
+    };
+
+    const accessToken = await this.jwtService.signAsync(accessTokenPayload, {
+      expiresIn: process.env.NODE_ENV === 'production' ? '15m' : '5d',
+      //TODO process.env doesn't work, fix hardcoded value
+      secret:
+        process.env.JWT_SECRET ||
+        'dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$%',
+    });
+
+    const refreshToken = await this.jwtService.signAsync(
+      {
+        username: username,
+        sub: userId,
+        //TODO move the chain_exp value to env variable (the 3)
+        chain_exp: Math.floor(Date.now() / 1000 + 3 * 3600),
+
+      },
+      {
+        expiresIn: process.env.NODE_ENV === 'production' ? '30m' : '1w',
+        //TODO process.env doesn't work, fix hardcoded value
+        secret:
+          process.env.JWT_REFRESH_SECRET ||
+          'Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF',
+      }
+    );
 
     return {
-      accessToken: at,
-      refreshToken: rt,
+      accessToken,
+      refreshToken,
     };
   }
 
@@ -65,6 +68,11 @@ export class AuthService {
     userId: string,
     providedRefreshToken: string
   ): Promise<boolean> {
+    if (isJwtChainExpired(providedRefreshToken)) {
+      console.log('jwt refresh chain expired');
+      throw new UnauthorizedException();
+    }
+
     //TODO cut down on so many user lookups during auth pipeline
     const user = await this.userService.findUnique({
       id: userId,
@@ -79,10 +87,14 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const refreshTokensMatch = refreshToken?.hash === providedRefreshToken;
+    const refreshTokensMatch = refreshToken.hash === providedRefreshToken;
 
-    if (!refreshTokensMatch) throw new UnauthorizedException();
-
+    if (!refreshTokensMatch) {
+      //invalidating existing refresh token, since someone is using an outdated token (either maliciously or it's from an old session)
+      // TODO this.refreshTokenService.update({ id: userId }, { isRevoked: false });
+      //TODO need to return an error to indicate that FE needs to login, no way to reauthorize
+      throw new UnauthorizedException();
+    }
     return true;
   }
 
@@ -112,16 +124,17 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    //decodes user id from refreshToken payload
-    const userId = (this.jwtService.decode(refreshToken) as JwtPayload).sub;
+    const refreshTokenPayload = this.jwtService.decode(
+      refreshToken
+    ) as RefreshTokenPayload;
+
+    const userId = refreshTokenPayload.sub;
 
     if (!(await this.validateRefreshToken(userId, refreshToken))) {
       throw new UnauthorizedException();
     }
 
-    const user = await this.userService.findUnique({
-      id: userId,
-    });
+    const user = await this.userService.findUnique({ id: userId });
 
     if (!user || !user.enabled) {
       throw new UnauthorizedException();
@@ -157,8 +170,13 @@ export class AuthService {
 
   //TODO move to refreshToken Servicer?
   async storeRefreshToken(userId: string, refreshToken: string): Promise<void> {
+    const refreshTokenPayload = this.jwtService.decode(
+      refreshToken
+    ) as RefreshTokenPayload;
     this.refreshTokenService.create({
-      expires: new Date(3000, 1, 1), //TODO set expiration
+      expires: refreshTokenPayload.exp
+        ? new Date(refreshTokenPayload.exp * 1000)
+        : new Date(),
       //TODO set max life
       hash: refreshToken,
       user: { connect: { id: userId } },

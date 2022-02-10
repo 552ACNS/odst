@@ -6,6 +6,3 @@ export class UserWhereUniqueInput implements Prisma.UserWhereUniqueInput {
   username?: string;
   personId?: string;
 }
-
-@InputType()
-export class UserWhereInput extends UserWhereUniqueInput {}

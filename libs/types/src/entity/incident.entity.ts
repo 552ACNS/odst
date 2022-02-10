@@ -9,5 +9,4 @@ export class IncidentGQL implements Incident {
     closeDate: Date;
     reportedDate: Date;
     selfReported: boolean;
-
 }

@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { JwtPayload } from '@odst/types';
+import { AccessTokenPayload } from '@odst/types';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserService } from '../../user/user.service';
 
@@ -22,7 +22,7 @@ export class AccessTokenStrategy extends PassportStrategy(
   }
 
   //callback after validation is complete
-  async validate(payload: JwtPayload) {
+  async validate(payload: AccessTokenPayload) {
     const username = payload.username;
     //this centralizes auth flow
 
