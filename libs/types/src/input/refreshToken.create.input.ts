@@ -1,23 +1,22 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { RefreshTokenGQL } from '../entity/refreshToken.entity';
-import { UserGQL } from '../entity/user.entity'
+import { UserGQL } from '../entity/user.entity';
 import { RefreshTokenWhereUniqueInput } from './refreshToken.unique.input';
 
 @InputType()
 export class RefreshTokenCreateInput {
   @Field()
-  isRevoked: boolean
+  isRevoked: boolean;
 
   @Field()
-  expires: Date
+  expires: Date;
 
   @Field(() => UserGQL)
   user: UserGQL;
 
-  token: string
+  token: string;
 }
-
 
 @InputType()
 export class RefreshTokenCreateNestedManyWithoutUserInput
@@ -29,7 +28,6 @@ export class RefreshTokenCreateNestedManyWithoutUserInput
   @Field(() => RefreshTokenCreateOrConnectWithoutUserInput, { nullable: true })
   connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutUserInput;
 }
-
 
 @InputType()
 export class RefreshTokenCreateOrConnectWithoutUserInput
