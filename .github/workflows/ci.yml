@@ -23,11 +23,11 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile
-      - run: npx nx-cloud start-ci-run
-      - run: npx nx affected --target=build --parallel
+      - run: yarn install --frozen-lockfile --prefer-offline
+      - run: yarn audit
+      - name: Generate Prisma clients
+        run: npx nx run waypoint-api:prisma-generate
       - run: npx nx affected --target=test --parallel
-      - run: npx nx-cloud stop-all-agents
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -44,7 +44,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
       - name: Setup .NET 6.x
         uses: actions/setup-dotnet@v1
@@ -54,12 +54,12 @@ jobs:
       - name: Generate Prisma clients
         run: npx nx run waypoint-api:prisma-generate
       - run: npx nx affected --target=lint --parallel
-      - run: npx nx affected --target=build --parallel
       - run: npx nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
       - run: dotnet tool update -g dotnet-reportgenerator-globaltool
         continue-on-error: true
       - name: Report Generator
         run: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:HtmlInline_AzurePipelines;"
+        continue-on-error: true
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v2.2.3
         with:

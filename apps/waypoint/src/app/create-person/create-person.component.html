@@ -4,7 +4,7 @@
   </mat-card-header>
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
     <mat-step [stepControl]="nameForm">
-      <form [formGroup]="nameForm" class="m-3 w-2/6">
+      <form [formGroup]="nameForm" class="m-2">
         <ng-template matStepLabel>Fill out your name</ng-template>
         <div>
           <mat-form-field>
@@ -103,21 +103,12 @@
           </mat-error>
         </mat-form-field>
         <div class="m-3">
-          <button
-            class="px-8"
-            mat-button
-            matStepperNext
-            color="accent"
-            mat-raised-button
-            name="next1"
-          >
-            Next
-          </button>
+          <button mat-button matStepperNext color="primary" mat-raised-button name="next1">Next</button>
         </div>
       </form>
     </mat-step>
     <mat-step [stepControl]="birthForm">
-      <form [formGroup]="birthForm" class="m-3 w-2/6">
+      <form [formGroup]="birthForm" class="m-2">
         <ng-template matStepLabel>Fill out birth information</ng-template>
         <mat-form-field>
           <input
@@ -169,25 +160,14 @@
           </mat-error>
         </mat-form-field>
         <div class="m-3">
-          <button
-            class="px-8"
-            mat-button
-            matStepperNext
-            color="accent"
-            mat-raised-button
-            name="next2"
-          >
-            Next
-          </button>
-          <button class="px-8" mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext color="primary" mat-raised-button name="next2">Next</button>
+          <button mat-button matStepperPrevious>Back</button>
         </div>
       </form>
     </mat-step>
     <mat-step [stepControl]="identityForm">
-      <form [formGroup]="identityForm" class="m-3 w-2/6">
-        <ng-template matStepLabel
-          >Fill out your identifying information</ng-template
-        >
+      <form [formGroup]="identityForm" class="m-2">
+        <ng-template matStepLabel>Fill out your identifying information</ng-template>
         <mat-form-field>
           <mat-select
             placeholder="Hair Color"
@@ -282,15 +262,8 @@
             }"
             >check_circle</mat-icon
           >
-          <button
-            class="px-8"
-            mat-button
-            (click)="stepper.reset()"
-            (click)="resetPerson()"
-          >
-            Reset
-          </button>
-          <button class="px-8" mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()" (click)="resetPerson()">Reset</button>
+          <button mat-button matStepperPrevious>Back</button>
         </div>
       </form>
     </mat-step>
