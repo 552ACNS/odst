@@ -4,7 +4,7 @@ module.exports = {
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
-    },
+    }
   },
   testEnvironment: 'node',
   transform: {
@@ -12,4 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/waypoint-api',
+  setupFiles: ['./jest.setup.ts'],
 };
