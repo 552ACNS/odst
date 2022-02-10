@@ -27,7 +27,6 @@ describe('OrgResolver', () => {
     const createdOrg: OrgCreateInput = TestOrgCreateInput[0];
     const methodToSpy = 'create';
 
-    // TODO: Seems awkward to cast the org here, but I don't know how to do it otherwise
     const resolvedOrg: OrgGQL = createdOrg as unknown as OrgGQL;
 
     // Change value of promise
@@ -75,8 +74,7 @@ describe('OrgResolver', () => {
     const orgToFind: OrgCreateInput = TestOrgCreateInput[0];
     const methodToSpy = 'findUnique';
 
-    // TODO: Seems awkward to cast the Org here, but I don't know how to do it otherwise
-    const resolvedOrg: OrgGQL = orgToFind as unknown as OrgGQL;
+   const resolvedOrg: OrgGQL = orgToFind as unknown as OrgGQL;
 
     // Change value of promise
     const result: Promise<OrgGQL> = Promise.resolve(resolvedOrg);
@@ -126,7 +124,6 @@ describe('OrgResolver', () => {
     const updatedOrg: OrgUpdateInput = TestOrgCreateInput[1];
     const methodToSpy = 'update';
 
-    // TODO: Seems awkward to cast the org here, but I don't know how to do it otherwise
     const resolvedOrg: OrgGQL = originalOrg as unknown as OrgGQL;
 
     // Change value of promise

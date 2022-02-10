@@ -10,12 +10,13 @@ export interface JwtPayload extends JwtPayloadCreateInput{
   //expiration
   exp: number;
   //TODO implement aud (short fo' audience) which is client id
-  //TODO implement keyid
+  //TODO 21 implement keyid
 }
 
 //export interface AccessTokenPayload extends JwtPayload {};
 export type AccessTokenPayload = JwtPayload;
 
 export interface RefreshTokenPayload extends JwtPayload {
-  chain_exp: number; //expiration of the refresh token chain
+  //expiration of the refresh token chain
+  chain_exp: number;
 }

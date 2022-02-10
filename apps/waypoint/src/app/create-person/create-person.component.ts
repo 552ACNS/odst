@@ -87,7 +87,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     const GET_ORGS = this.personService.queryOrgs();
     this.querySubscription = this.apollo
-      //TODO: make query strongly typed instead of any
+      //TODO 19 make query strongly typed instead of any
       .watchQuery<any>({
         query: GET_ORGS,
       })
@@ -112,7 +112,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       return false;
     }
   }
-  //TODO: Fix Spec and Grade interaction and fix Grade values
+  //TODO Fix Spec and Grade interaction and fix Grade values
   counter(n: number): number[] {
     return [...Array(n).keys()];
   }

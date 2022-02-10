@@ -31,7 +31,6 @@ describe('UsersResolver', () => {
     const createdUser: UserCreateInput = testUsers[0];
     const methodToSpy = 'create';
 
-    // TODO: Seems awkward to cast the User here, but I don't know how to do it otherwise
     const resolvedUser: User = createdUser as unknown as User;
 
     // Change value of promise
@@ -78,7 +77,6 @@ describe('UsersResolver', () => {
     const userToFind: UserCreateInput = testUsers[0];
     const methodToSpy = 'findUnique';
 
-    // TODO: Seems awkward to cast the User here, but I don't know how to do it otherwise
     const resolvedUser: User = userToFind as unknown as User;
 
     // Change value of promise

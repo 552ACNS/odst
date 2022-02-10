@@ -33,5 +33,3 @@ export * from './types/jwtPayload.type'
 //#region Decorators
 export * from './decorators/getCurrentUserID.decorator'
 //#endregion
-
-//TODO decide if this is organized properly

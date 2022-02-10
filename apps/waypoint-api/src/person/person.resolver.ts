@@ -42,7 +42,7 @@ export class PersonResolver {
   @Query(() => [PersonGQL], { name: 'findManyPersonsInOrg' })
   @UseGuards(AccessTokenAuthGuard)
   async findManyInOrg(
-    // TODO: REDO THIS After authentication is completed
+    // TODO REDO THIS After authentication is completed
     @Args('personWhereUniqueInput')
     personWhereUniqueInput: PersonWhereUniqueInput
   ): Promise<PersonGQL[]> {

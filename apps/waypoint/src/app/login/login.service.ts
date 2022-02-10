@@ -9,7 +9,6 @@ import { setRefreshToken, setAccessToken } from '@odst/helpers';
 export class LoginService {
   constructor(private apollo: Apollo) {}
 
-  // TODO consider switching to sessionStorage
   // "What will happen if I'm logged in on multiple tabs?"; won't be authenticated in new tabs
   // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
 
@@ -36,7 +35,7 @@ export class LoginService {
       })
       .subscribe(
         ({ data }) => {
-          const tokens = (data as any)?.login as TokensGQL; //TODO make better
+          const tokens = (data as any)?.login as TokensGQL; //TODO 19 make better
           setAccessToken(tokens.accessToken);
           setRefreshToken(tokens.refreshToken);
         },

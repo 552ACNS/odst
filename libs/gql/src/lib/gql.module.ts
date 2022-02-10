@@ -21,7 +21,7 @@ import { REFRESH_TOKEN } from './mutations';
 import { TokensGQL } from '@odst/types';
 import { isJwtExpired } from '@odst/helpers';
 
-// TODO Make this an environment variable, make sure this works
+// TODO 17 Make this an environment variable, make sure this works
 // just setting process.env.GQL_ENDPOINT doesn't work as expected (it will fail
 // on the frontend)
 
@@ -44,14 +44,14 @@ export function createApollo() {
           switch (err.extensions?.['code']) {
             case 'UNAUTHENTICATED': {
               const refreshToken = getRefreshToken();
-              //TODO 16 check if refresh token is expired before getting an error from api request?
+              //TODO check if refresh token is expired before getting an error from api request?
               //TODO check if access token is expired before getting an error from api request?
               //TODO check if refresh token chain is expired before getting an error from api request?
               //TODO user is logged out if they havn't made api calls recently
               //So need to make it so if theyre active but not making calls, they arent needlessly logged out
               if (!refreshToken || isJwtExpired(refreshToken) || isJwtChainExpired(refreshToken)) {
                 console.log('No valid refresh token');
-                //TODO push to login
+                //TODO 18 push to login
                 continue;
               }
               let forward$: Observable<boolean> | Observable<void>;
@@ -68,7 +68,7 @@ export function createApollo() {
                     })
                     .then(({ data }) => {
                       const tokens = (data as any)
-                        ?.refreshTokensVar as TokensGQL; //TODO make better
+                        ?.refreshTokensVar as TokensGQL; //TODO 19 make better
                       if (tokens) {
                         setAccessToken(tokens.accessToken);
                         setRefreshToken(tokens.refreshToken);
@@ -104,7 +104,7 @@ export function createApollo() {
           }
         }
       }
-      //TODO implement handle other error in frontend
+      //TODO 20 implement handle other error in frontend
       if (networkError) {
         console.log(`[Network error]: ${networkError}`);
       }

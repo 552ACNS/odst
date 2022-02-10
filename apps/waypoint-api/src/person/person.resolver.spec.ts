@@ -30,7 +30,6 @@ describe('PersonsResolver', () => {
     const createdPerson: PersonCreateInput = testPersons[0];
     const methodToSpy = 'create';
 
-    // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
     const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
 
     // Change value of promise
@@ -77,7 +76,6 @@ describe('PersonsResolver', () => {
     const personToFind: PersonCreateInput = testPersons[0];
     const methodToSpy = 'findUnique';
 
-    // TODO: Seems awkward to cast the Person here, but I don't know how to do it otherwise
     const resolvedPerson: PersonGQL = personToFind as unknown as PersonGQL;
 
     // Change value of promise

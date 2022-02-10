@@ -21,7 +21,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     //validates that token is signed and unexpired
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      //TODO process.env doesn't work, fix hardcoded value
+      //TODO 17 process.env doesn't work, fix hardcoded value
       secretOrKey:
         process.env.JWT_REFRESH_SECRET ||
         'Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF',
@@ -35,7 +35,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     //this probably is pointless, since we're in the callback
     if (!refreshToken) throw new BadRequestException();
 
-    //TODO should this be done/happening here?
+    //TODO 23 should this be done/happening here?
     const user = await this.userService.findUnique({
       username: payload.username,
     });

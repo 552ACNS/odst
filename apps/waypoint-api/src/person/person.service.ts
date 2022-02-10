@@ -15,7 +15,7 @@ export class PersonService {
     });
   }
 
-  // TODO: Reimplement this once we have auth
+  // TODO Reimplement this once we have auth
   async findManyInOrg(
     personWhereUniqueInput: Prisma.PersonWhereUniqueInput
   ): Promise<Person[]> {

@@ -70,7 +70,7 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
             name: this.orgForm.value['orgName'],
             orgTier: this.orgForm.get(['orgTier'])?.value,
             aliases: [],
-            //TODO: Functionality with adding a parent or children orgs to an org being created+
+            //TODO Functionality with adding a parent or children orgs to an org being created+
             // parent: {
             //   connect: {
             //     id: this.orgForm.get(["orgParent"])?.value

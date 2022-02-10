@@ -20,7 +20,6 @@ export class PersonWhereUniqueInput implements Prisma.PersonWhereUniqueInput {
   email?: string;
 }
 
-//TODO not sure where to put this
 @InputType()
 export class PersonWhereInput implements Prisma.PersonWhereInput {
   id?: string;

@@ -14,7 +14,7 @@ export class AccessTokenStrategy extends PassportStrategy(
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      //TODO process.env doesn't work, fix hardcoded value
+      //TODO 17 process.env doesn't work, fix hardcoded value
       secretOrKey:
         process.env.JWT_SECRET ||
         'dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$%',
@@ -29,7 +29,7 @@ export class AccessTokenStrategy extends PassportStrategy(
     //TODO sign tokens with user's password hash, to invalidate all tokens on password change
     // but again, this centralizes it
 
-    //TODO client fingerprint?
+    //TODO 22 client fingerprint?
     const user = await this.userService.findUnique({ username: username });
     if (user && user.enabled) {
       return payload;
