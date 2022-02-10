@@ -27,7 +27,6 @@ jobs:
       - run: yarn audit
       - name: Generate Prisma clients
         run: npx nx run waypoint-api:prisma-generate
-      - run: npx nx affected --target=build --parallel
       - run: npx nx affected --target=test --parallel
   pr:
     runs-on: ubuntu-latest
