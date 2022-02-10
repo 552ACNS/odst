@@ -240,7 +240,7 @@
         "prisma-generate": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "prisma generate --schema=apps/waypoint-api/schema.prisma"
+            "command": "npx prisma generate --schema=apps/waypoint-api/schema.prisma"
           }
         },
         "prisma-studio": {
@@ -254,15 +254,15 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "env-cmd -f apps/waypoint-api/.env.local prisma db push --accept-data-loss",
-              "env-cmd -f apps/waypoint-api/.env.local prisma db seed"
+              "env-cmd -f apps/waypoint-api/.env.local npx prisma db push --accept-data-loss",
+              "env-cmd -f apps/waypoint-api/.env.local npx prisma db seed"
             ],
             "schema": "apps/waypoint-api/schema.prisma",
             "parallel": false
           },
           "configurations": {
             "test": {
-              "command": "env-cmd -f apps/waypoint-api/.env.test prisma db push --accept-data-loss"
+              "command": "env-cmd -f apps/waypoint-api/.env.test npx prisma db push --accept-data-loss"
             },
             "production": {
               "command": "env-cmd -f apps/waypoint-api/.env.prod prisma migrate dev"
