@@ -69,6 +69,7 @@ jobs:
         displayName: Install report generator
       - script: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:Cobertura"
         displayName: Create code coverage report
+        continueOnError: true
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish code coverage'
         inputs:
