@@ -103,7 +103,15 @@
           </mat-error>
         </mat-form-field>
         <div class="m-3">
-          <button mat-button matStepperNext color="primary" mat-raised-button name="next1">Next</button>
+          <button
+            mat-button
+            matStepperNext
+            color="primary"
+            mat-raised-button
+            name="next1"
+          >
+            Next
+          </button>
         </div>
       </form>
     </mat-step>
@@ -160,14 +168,24 @@
           </mat-error>
         </mat-form-field>
         <div class="m-3">
-          <button mat-button matStepperNext color="primary" mat-raised-button name="next2">Next</button>
+          <button
+            mat-button
+            matStepperNext
+            color="primary"
+            mat-raised-button
+            name="next2"
+          >
+            Next
+          </button>
           <button mat-button matStepperPrevious>Back</button>
         </div>
       </form>
     </mat-step>
     <mat-step [stepControl]="identityForm">
       <form [formGroup]="identityForm" class="m-2">
-        <ng-template matStepLabel>Fill out your identifying information</ng-template>
+        <ng-template matStepLabel
+          >Fill out your identifying information</ng-template
+        >
         <mat-form-field>
           <mat-select
             placeholder="Hair Color"
@@ -262,7 +280,9 @@
             }"
             >check_circle</mat-icon
           >
-          <button mat-button (click)="stepper.reset()" (click)="resetPerson()">Reset</button>
+          <button mat-button (click)="stepper.reset()" (click)="resetPerson()">
+            Reset
+          </button>
           <button mat-button matStepperPrevious>Back</button>
         </div>
       </form>
