@@ -9,7 +9,7 @@
     "pkief.material-icon-theme",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
-    "ms-azuretools.vscode-docker",
-    "ms-azure-devops.azure-pipelines"
+    "github.vscode-pull-request-github",
+    "bradlc.vscode-tailwindcss"
   ]
 }
