@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -45,16 +46,22 @@ async function main() {
     },
   });
   try {
+    await prisma.refreshToken.deleteMany({
+      where: { user: { username: 'admin' } },
+    });
     await prisma.user.delete({ where: { username: 'admin' } });
-  } catch {
-    //this is now not empty
+  } catch (e) {
+    //delete can fail if no entities are found. Ignore that
+    if (!(e instanceof PrismaClientKnownRequestError)) {
+      throw e;
+    }
   }
 
   if (
     process.env.NODE_ENV !== 'PRODUCTION' &&
-    process.env.DEV_ACCOUNT_PASSWORD
+    process.env.NX_DEV_ACCOUNT_PASSWORD
   ) {
-    const pw = await hash(process.env.DEV_ACCOUNT_PASSWORD, 10);
+    const pw = await hash(process.env.NX_DEV_ACCOUNT_PASSWORD, 10);
 
     const user = await prisma.user.create({
       data: {
