@@ -9,5 +9,11 @@
   "editor.guides.bracketPairs": "active",
   "workbench.iconTheme": "material-icon-theme",
   "angular.enable-strict-mode-prompt": false,
-  "css.customData": [".vscode/css_custom_data.json"]
+  "css.customData": [
+    ".vscode/css_custom_data.json"
+  ],
+  "githubPullRequests.remotes": [
+    "github",
+    "origin"
+  ]
 }

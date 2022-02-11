@@ -47,7 +47,6 @@ export class AuthService {
         sub: userId,
         //TODO move the chain_exp value to env variable (the 3)
         chain_exp: Math.floor(Date.now() / 1000 + 3 * 3600),
-
       },
       {
         expiresIn: process.env.NODE_ENV === 'production' ? '30m' : '1w',
