@@ -46,7 +46,17 @@ jobs:
           cache: 'yarn'
       - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
+      - name: Setup .NET 6.x
+        uses: actions/setup-dotnet@v1
+        with:
+          # Semantic version range syntax or exact version of a dotnet version
+          dotnet-version: '6.x'
       - name: Generate Prisma clients
         run: yarn nx run waypoint-api:prisma-generate
       - run: yarn nx affected --target=lint --parallel
-      - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=text --parallel
+      - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
+      - run: dotnet tool update -g dotnet-reportgenerator-globaltool
+        continue-on-error: true
+      - name: Merge Test Coverage Results
+        run: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:TextSummary;"
+        continue-on-error: true
