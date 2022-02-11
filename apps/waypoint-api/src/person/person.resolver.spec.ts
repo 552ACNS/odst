@@ -151,6 +151,8 @@ describe('PersonsResolver', () => {
     expect(spy).toHaveBeenCalled();
     //Determine if the actual and result are the same
     expect(actual).toEqual(updatedPerson);
+
+    expect(true).toBeTruthy();
   });
 
   it('Should delete a person', async () => {
