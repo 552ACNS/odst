@@ -1,9 +1,8 @@
-import { Person } from '.prisma/client';
+import { Person, Prisma } from '.prisma/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   PersonWhereUniqueInput,
-  PersonWhereInput,
   PersonUpdateInput,
 } from '@odst/types';
 import { TestPersonCreateInput } from './person.repo';
@@ -123,7 +122,7 @@ describe('PersonsService', () => {
   });
 
   it('Should find a list of people skipiing 3, taking 1, with matching dodId', async () => {
-    const personWhereInput: PersonWhereInput = {
+    const personWhereInput: Prisma.PersonWhereInput = {
       birthCountry: 'USA',
     };
 
