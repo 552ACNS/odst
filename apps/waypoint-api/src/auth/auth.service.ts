@@ -32,13 +32,9 @@ export class AuthService {
       username: username,
       sub: userId,
     };
-
     const accessToken = await this.jwtService.signAsync(accessTokenPayload, {
       expiresIn: process.env.NODE_ENV === 'production' ? '15m' : '5d',
-      //TODO process.env doesn't work, fix hardcoded value
-      secret:
-        process.env.JWT_SECRET ||
-        'dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$%',
+      secret: process.env.NX_JWT_SECRET,
     });
 
     const refreshToken = await this.jwtService.signAsync(
@@ -50,10 +46,7 @@ export class AuthService {
       },
       {
         expiresIn: process.env.NODE_ENV === 'production' ? '30m' : '1w',
-        //TODO process.env doesn't work, fix hardcoded value
-        secret:
-          process.env.JWT_REFRESH_SECRET ||
-          'Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF',
+        secret: process.env.NX_JWT_REFRESH_SECRET,
       }
     );
 
@@ -115,9 +108,7 @@ export class AuthService {
   async refreshTokensVar(refreshToken: string): Promise<TokensGQL> {
     if (
       !this.jwtService.verify(refreshToken, {
-        secret:
-          process.env.JWT_REFRESH_SECRET ||
-          'Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF',
+        secret: process.env.NX_JWT_REFRESH_SECRET,
       })
     ) {
       throw new UnauthorizedException();
@@ -173,6 +164,7 @@ export class AuthService {
       refreshToken
     ) as RefreshTokenPayload;
     this.refreshTokenService.create({
+      //unable to get exp from payload, set to now() so that it will look expired
       expires: refreshTokenPayload.exp
         ? new Date(refreshTokenPayload.exp * 1000)
         : new Date(),

@@ -14,10 +14,7 @@ export class AccessTokenStrategy extends PassportStrategy(
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      //TODO process.env doesn't work, fix hardcoded value
-      secretOrKey:
-        process.env.JWT_SECRET ||
-        'dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$%',
+      secretOrKey: process.env.NX_JWT_SECRET,
     });
   }
 

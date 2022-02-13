@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { JwtPayload, RefreshTokenPayload } from '@odst/types';
+import { JwtPayload } from '@odst/types';
 import { UserService } from '../../user/user.service';
 import { AuthService } from '../auth.service';
 
@@ -21,10 +21,8 @@ export class RefreshTokenStrategy extends PassportStrategy(
     //validates that token is signed and unexpired
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      //TODO process.env doesn't work, fix hardcoded value
-      secretOrKey:
-        process.env.JWT_REFRESH_SECRET ||
-        'Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF',
+      //TODO 17 process.env doesn't work, fix hardcoded value
+      secretOrKey: process.env.NX_JWT_REFRESH_SECRET,
       passReqToCallback: true,
     });
   }
