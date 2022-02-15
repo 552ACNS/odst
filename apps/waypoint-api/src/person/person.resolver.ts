@@ -24,7 +24,7 @@ export class PersonResolver {
 
   // find all persons
   @Query(() => [PersonGQL], { name: 'findManyPersons' })
-  @UseGuards(AccessTokenAuthGuard)
+  //@UseGuards(AccessTokenAuthGuard)
   async findMany() {
     return await this.personService.findMany();
   }

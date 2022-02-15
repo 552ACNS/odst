@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material.module';
 import { LoginComponent } from './login/login.component';
 import { TableComponent } from './table/table.component';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TableComponent } from './table/table.component';
     CreateOrgComponent,
     LoginComponent,
     TableComponent,
+    NavigationBarComponent,
   ],
   imports: [
     RouterModule.forRoot([]),
