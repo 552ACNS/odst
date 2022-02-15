@@ -272,14 +272,9 @@
           >
             Submit
           </button>
-
-          <mat-icon
-            [ngClass]="{
-              'text-green-400 align-middle text-[2rem]': submitSuccess === true,
-              'text-transparent': submitSuccess === false
-            }"
-            >check_circle</mat-icon
-          >
+          <p *ngIf="submitSuccess">
+            <mat-icon class="text-green-500 inline">check_circle</mat-icon>
+          </p>
           <button mat-button (click)="stepper.reset()" (click)="resetPerson()">
             Reset
           </button>
