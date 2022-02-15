@@ -1,17 +1,26 @@
-<mat-card class="flex w-2/6 m-2">
-  <form [formGroup]="loginForm">
-    <mat-form-field appearance="fill">
+<form [formGroup]="loginForm" class="flex w-2/6 m-2">
+  <mat-card>
+  <mat-card-header>
+    <mat-card-title>Sign In</mat-card-title>
+  </mat-card-header>
+  <div>
+  <mat-label>Don't have an account?</mat-label>
+  <mat-label class="p-8 text-blue-300">Find your way</mat-label>
+  </div>
+  <!-- <form [formGroup]="loginForm"> -->
+     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
       <input matInput placeholder="Username" formControlName="userUsername" />
       <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
     </mat-form-field>
+    <br>
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
       <input
         matInput
         [type]="hide ? 'password' : 'text'"
         formControlName="userPassword"
-      />
+      />      
       <button
         mat-icon-button
         matSuffix
@@ -23,9 +32,24 @@
       </button>
     </mat-form-field>
     <div>
+      <mat-checkbox formControlName="rememberMe">remember me</mat-checkbox>
+      <mat-label class="p-8 text-blue-300"> Forgot Password?</mat-label>
+    </div>
+    <div class="flex mt-8 justify-center">
       <button mat-raised-button color="primary" (click)="submitLoginClick()">
-        Login
+        Sign In
       </button>
     </div>
-  </form>
+    <div class="flex mt-4 justify-center">
+      <mat-label>
+        -------- OR --------
+      </mat-label>
+    </div>
+    <div class="flex mt-4 justify-center">
+      <button mat-raised-button color="primary">
+        SSO CAC
+      </button>
+    </div>
+  <!-- </form> -->
 </mat-card>
+</form>
