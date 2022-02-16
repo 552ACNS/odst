@@ -28,8 +28,6 @@
             matInput
             placeholder="First Name"
             formControlName="personFirstName"
-            value="test"
-            id="testing"
             required
           />
           <mat-error> Please enter their first name </mat-error>
@@ -271,15 +269,9 @@
             "
           >
             Submit
+            <mat-icon class="ml-1" *ngIf="submitSuccess">check</mat-icon>
           </button>
 
-          <mat-icon
-            [ngClass]="{
-              'text-green-400 align-middle text-[2rem]': submitSuccess === true,
-              'text-transparent': submitSuccess === false
-            }"
-            >check_circle</mat-icon
-          >
           <button mat-button (click)="stepper.reset()" (click)="resetPerson()">
             Reset
           </button>
