@@ -1,2 +1,7 @@
-process.env.NX_DATABASE_URL =
-  'postgresql://postgres:H@CK3YITPL3ASE@localhost:5432/spi_local';
+// This file ensures that jest uses the correct environment variables
+// mainly important for wallaby
+
+import path = require("path");
+import * as dotenv from "dotenv";
+
+dotenv.config({ path: path.resolve(__dirname, "./.env.test") });
