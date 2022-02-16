@@ -269,10 +269,9 @@
             "
           >
             Submit
+            <mat-icon class="ml-1" *ngIf="submitSuccess">check</mat-icon>
           </button>
-          <span *ngIf="submitSuccess">
-            <mat-icon class="text-green-500 ">check_circle</mat-icon>
-          </span>
+
           <button mat-button (click)="stepper.reset()" (click)="resetPerson()">
             Reset
           </button>
