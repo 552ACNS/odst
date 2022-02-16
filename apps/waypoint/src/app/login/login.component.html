@@ -4,17 +4,19 @@
     <mat-card-title>Sign In</mat-card-title>
   </mat-card-header>
   <div>
-  <mat-label>Don't have an account?</mat-label>
+  <mat-label class="sectionOne">Don't have an account?</mat-label>
   <mat-label class="p-8 text-blue-300">Find your way</mat-label>
+  <!-- TODO: replace above label with href to recover username page when available -->
   </div>
-  <!-- <form [formGroup]="loginForm"> -->
-     <mat-form-field appearance="fill">
+  <div class="mt-4">
+     <mat-form-field appearance="outline">
       <mat-label>Username</mat-label>
-      <input matInput placeholder="Username" formControlName="userUsername" />
+      <input type="text" matInput placeholder="Username" formControlName="userUsername" />
       <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
     </mat-form-field>
-    <br>
-    <mat-form-field appearance="fill">
+  </div>
+  <div class="mt-4">
+    <mat-form-field appearance="outline">
       <mat-label>Password</mat-label>
       <input
         matInput
@@ -31,12 +33,14 @@
         <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
     </mat-form-field>
-    <div>
-      <mat-checkbox formControlName="rememberMe">remember me</mat-checkbox>
-      <mat-label class="p-8 text-blue-300"> Forgot Password?</mat-label>
     </div>
-    <div class="flex mt-8 justify-center">
-      <button mat-raised-button color="primary" (click)="submitLoginClick()">
+    <div>
+      <mat-checkbox class="sectionOne" formControlName="rememberMe">remember me</mat-checkbox>
+      <mat-label class="p-8 text-blue-300"> Forgot Password?</mat-label>
+      <!-- TODO: replace above label with href to forgot password page when available -->
+    </div>
+     <div class="flex mt-8 justify-center">
+      <button  mat-raised-button color="primary" (click)="submitLoginClick()">
         Sign In
       </button>
     </div>
@@ -47,9 +51,9 @@
     </div>
     <div class="flex mt-4 justify-center">
       <button mat-raised-button color="primary">
+      <!-- TODO: add on click event to login with a CAC -->  
         SSO CAC
       </button>
     </div>
-  <!-- </form> -->
 </mat-card>
 </form>
