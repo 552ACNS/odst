@@ -14,6 +14,7 @@ import { MaterialModule } from './material.module';
 import { LoginComponent } from './login/login.component';
 import { TableComponent } from './table/table.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    AppRoutingModule,
   ],
   providers: [Apollo],
   bootstrap: [AppComponent],
