@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material.module';
 import { LoginComponent } from './login/login.component';
 import { TableComponent } from './table/table.component';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { TableComponent } from './table/table.component';
     RouterModule.forRoot([]),
     BrowserModule,
     HttpClientModule,
-    GQLModule.forRoot({apiUrl: process.env['NX_GQL_ENDPOINT']}),
+    GQLModule.forRoot({apiUrl: environment.NX_GQL_ENDPOINT}),
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -36,4 +37,5 @@ import { TableComponent } from './table/table.component';
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {}
+export class AppModule {
+}
