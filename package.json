@@ -93,9 +93,5 @@
     "ts-jest": "27.1.2",
     "ts-node": "^10.4.0",
     "typescript": "4.5.5"
-  },
-  "resolutions": {
-    "@angular-devkit/build-angular/webpack-dev-server/selfsigned/node-forge": "1",
-    "@angular-devkit/build-angular/resolve-url-loader/postcss": "^8.3"
   }
 }
