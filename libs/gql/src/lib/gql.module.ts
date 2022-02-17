@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { APOLLO_OPTIONS } from 'apollo-angular';
 import { setContext } from '@apollo/client/link/context';
 import {
@@ -20,13 +20,14 @@ import {
 import { REFRESH_TOKEN } from './mutations';
 import { TokensGQL } from '@odst/types';
 import { isJwtExpired } from '@odst/helpers';
+import { Config } from './gql.config';
 
 // TODO Make this an environment variable, make sure this works
 // just setting process.env.GQL_ENDPOINT doesn't work as expected (it will fail
 // on the frontend)
 
 // Consider undoing this as a component. If not feasible.
-const uri = 'http://localhost:3333/graphql';
+const gqlUrl = 'http://localhost:3333/graphql';
 
 export function createApollo() {
   let isRefreshing = false;
@@ -115,8 +116,7 @@ export function createApollo() {
   );
 
   const httpLink = createHttpLink({
-    uri: uri,
-    //credentials: 'include',
+    uri: gqlUrl,
   });
 
   const authLink = setContext(async (operation, { headers }) => {
@@ -142,11 +142,21 @@ export function createApollo() {
 
 @NgModule({
   providers: [
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory: createApollo,
-      deps: [],
-    },
   ],
 })
-export class GQLModule {}
+export class GQLModule {
+    // Create this static method in the library module.
+    public static forRoot(gqlUrl: Config): ModuleWithProviders<GQLModule> {
+      return {
+        ngModule: GQLModule,
+        providers: [
+          { provide: 'env', useValue: gqlUrl },
+          {
+            provide: APOLLO_OPTIONS,
+            useFactory: createApollo,
+            deps: [],
+          },
+        ]
+      };
+    }
+}

@@ -26,7 +26,7 @@ import { TableComponent } from './table/table.component';
     RouterModule.forRoot([]),
     BrowserModule,
     HttpClientModule,
-    GQLModule,
+    GQLModule.forRoot({apiUrl: process.env['NX_GQL_ENDPOINT']}),
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
