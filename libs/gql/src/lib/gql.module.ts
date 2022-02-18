@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Inject, NgModule } from '@angular/core';
 import { APOLLO_OPTIONS } from 'apollo-angular';
 import { setContext } from '@apollo/client/link/context';
 import {
@@ -26,7 +26,24 @@ import { isJwtExpired } from '@odst/helpers';
 // on the frontend)
 
 // Consider undoing this as a component. If not feasible.
-const uri = 'http://localhost:3333/graphql';
+// const uri = 'http://localhost:3333/graphql';
+let environment: { NX_GQL_ENDPOINT: string; };
+
+@NgModule({
+  providers: [
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory: createApollo,
+      deps: [],
+    },
+  ],
+})
+export class GQLModule {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(@Inject('environment') incomingEnv) {
+    environment = incomingEnv;
+  }
+}
 
 export function createApollo() {
   let isRefreshing = false;
@@ -115,7 +132,7 @@ export function createApollo() {
   );
 
   const httpLink = createHttpLink({
-    uri: uri,
+    uri: environment.NX_GQL_ENDPOINT,
     //credentials: 'include',
   });
 
@@ -139,14 +156,3 @@ export function createApollo() {
 
   return client;
 }
-
-@NgModule({
-  providers: [
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory: createApollo,
-      deps: [],
-    },
-  ],
-})
-export class GQLModule {}
