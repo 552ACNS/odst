@@ -3,10 +3,10 @@ import { UserService } from '../user/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import {
   LoginUserInput,
-  RefreshTokenPayload,
+  JwtPayloadRefresh,
   SignupUserInput,
   TokensGQL,
-  JwtPayloadCreateInput,
+  JwtPayloadInit,
 } from '@odst/types';
 import { isJwtChainExpired } from '@odst/helpers';
 import { compare, hash } from 'bcrypt';
@@ -28,7 +28,7 @@ export class AuthService {
     //builds payload of tokens. will be encoded, not encrypted.
     //Do not put anything sensitive in payload
 
-    const accessTokenPayload: JwtPayloadCreateInput = {
+    const accessTokenPayload: JwtPayloadInit = {
       username: username,
       sub: userId,
     };
@@ -116,7 +116,7 @@ export class AuthService {
 
     const refreshTokenPayload = this.jwtService.decode(
       refreshToken
-    ) as RefreshTokenPayload;
+    ) as JwtPayloadRefresh;
 
     const userId = refreshTokenPayload.sub;
 
@@ -162,7 +162,7 @@ export class AuthService {
   async storeRefreshToken(userId: string, refreshToken: string): Promise<void> {
     const refreshTokenPayload = this.jwtService.decode(
       refreshToken
-    ) as RefreshTokenPayload;
+    ) as JwtPayloadRefresh;
     this.refreshTokenService.create({
       //unable to get exp from payload, set to now() so that it will look expired
       expires: refreshTokenPayload.exp
