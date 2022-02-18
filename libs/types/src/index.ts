@@ -35,4 +35,3 @@ export * from './decorators/getCurrentUserID.decorator'
 //#endregion
 
 //TODO decide if this is organized properly
-export * from './misc/config.type';
