@@ -28,7 +28,7 @@ import { Inject } from '@angular/core';
 // on the frontend)
 
 // Consider undoing this as a component. If not feasible.
-// const gqlUrl = 'http://localhost:3333/graphql';
+// const config = 'http://localhost:3333/graphql';
 
 @NgModule({
   providers: [
@@ -41,15 +41,15 @@ import { Inject } from '@angular/core';
 })
 export class GQLModule {
   // Create this static method in the library module.
-  public static forRoot(gqlUrl: Config): ModuleWithProviders<GQLModule> {
+  public static forRoot(config: Config): ModuleWithProviders<GQLModule> {
 
     return {
       ngModule: GQLModule,
       providers: [
-        { provide: 'config', useValue: gqlUrl },
+        { provide: 'config', useValue: config },
         {
           provide: APOLLO_OPTIONS,
-          useFactory: new ApolloFactory(gqlUrl).createApollo,
+          useFactory: new ApolloFactory(config).createApollo,
           deps: [],
         },
       ],
@@ -271,7 +271,7 @@ class ApolloFactory {
 //     }
 //   );
 //   const httpLink = createHttpLink({
-//     uri: gqlUrl,
+//     uri: config,
 //   });
 
 //   const authLink = setContext(async (operation, { headers }) => {

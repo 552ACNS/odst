@@ -47,10 +47,6 @@
  */
 import 'zone.js'; // Included with Angular CLI.
 
-// TODO: Figure out what this is doing. Current required to inject environment variables into the
-// apollo client.
-(window as any).process = { env: { DEBUG: undefined } };
-
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */

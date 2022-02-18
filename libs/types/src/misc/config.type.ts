@@ -1,3 +1,3 @@
 export class Config {
-    apiUrl: string;
-  }
+  apiUrl: string;
+}
