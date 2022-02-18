@@ -1,59 +1,135 @@
-<form [formGroup]="loginForm" class="flex w-2/6 m-2">
-  <mat-card>
-  <mat-card-header>
-    <mat-card-title>Sign In</mat-card-title>
-  </mat-card-header>
-  <div>
-  <mat-label class="sectionOne">Don't have an account?</mat-label>
-  <mat-label class="p-8 text-blue-300">Find your way</mat-label>
-  <!-- TODO: replace above label with href to recover username page when available -->
+<div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
+  <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
+    <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+      <!-- Title -->
+      <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign in</div>
+      <div class="flex items-baseline mt-0.5 font-medium">
+        <div>Don't have an account?</div>
+        <!-- TODO: replace below label with href to recover username page when available -->
+        <div class="p-8 text-blue-300">Find your way</div>
+      </div>
+
+      <!-- Sign in form -->
+      <form
+        class="mt-8"
+        [formGroup]="loginForm">
+
+        <!-- Email field -->
+        <mat-form-field class="w-full ml-0" appearance="outline">
+            <mat-label>Username</mat-label>
+            <input
+                id="userName"
+                formcontrolname="userUsername"
+                type="text"
+                matInput
+                placeholder="Username"
+                [formControlName]="'userUsername'" />
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>    
+        </mat-form-field>
+
+        <!-- Password field -->
+        <mat-form-field class="w-full ml-0" appearance="outline" >
+          <mat-label>Password</mat-label>
+          <input
+              id="password"
+              formcontrolname="userPassword"
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              [formControlName]="'userPassword'" />
+          <button
+            mat-icon-button
+            type="button"
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide" >
+
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+
+          </button>
+        </mat-form-field>    
+
+        <!-- Actions -->
+        <div class="inline-flex items-end justify-between w-full mt-1.5">
+          <mat-checkbox
+              [color]="'primary'"
+              [formControlName]="'rememberMe'">
+              Remember me
+          </mat-checkbox>
+          <!-- TODO: replace below label with href to recover username page when available -->
+          <div class="text-blue-300"> Forgot Password?</div>
+        </div>
+
+        <!-- Submit button -->
+        <div class="flex justify-center mt-6">
+          <button  
+            class="w-full"
+            mat-flat-button 
+            [color]="'primary'" 
+            (click)="submitLoginClick()">
+            Sign In
+          </button>
+        </div>
+
+        <!-- Separator -->
+        <div class="flex items-center mt-8">
+          <div class="flex-auto mt-px border-t"></div>
+          <div class="mx-2 text-secondary">Or</div>
+          <div class="flex-auto mt-px border-t"></div>
+        </div>
+
+        <!-- Single sign-on buttons -->
+        <div class="flex justify-center mt-8">
+          <button 
+            class="w-full disabled:opacity-80"
+            disabled 
+            mat-raised-button 
+            [color]="'primary'">
+            <!-- TODO: add on click event to login with a CAC -->  
+              SSO CAC
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="mt-4">
-     <mat-form-field appearance="outline">
-      <mat-label>Username</mat-label>
-      <input type="text" matInput placeholder="Username" formControlName="userUsername" />
-      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-    </mat-form-field>
+  <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
+    <!-- Content -->
+    <div class="ml-20 z-10 relative w-full max-w-2xl">
+      <div class="text-7xl font-bold leading-none text-gray-100 mt-10">
+        <div>Anticipate</div>
+        <div class="mt-8">
+          <label>the </label><label class="underline">FUTURE</label>
+        </div>
+        <div class="mt-8 italic">FASTER</div>
+      </div>
+      <div class="mt-20 text-lg tracking-tight leading-6 text-gray-100">
+        <label>Get </label><label class="italic">Ready</label><label>. Stay </label><label class="underline">Ready.</label>
+      </div>
+      <div class="mt-6 text-lg tracking-tight leading-6 text-gray-100">
+        Dashboards & widgets help you keep<br>
+        track of readiness & requirements.
+      </div>
+      <div class="flex mt-12">
+        <div class="w-32">
+          <img src="./assets/images/ScorpionCamp5.png">
+        </div>
+        <div class="p-8 text-lg tracking-tight leading-6 text-gray-100">
+          <label>Made by the <br>
+                 552 ACNS @ <br>
+                 Scorpion CAMP
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="flex ml-20 rotate-90 text-gray-100 text-8xl opacity-40">
+      <div class="flex-auto w-72">
+        WAYPOINT
+      </div>
+      
+    </div>
+
+
+
+
   </div>
-  <div class="mt-4">
-    <mat-form-field appearance="outline">
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        [type]="hide ? 'password' : 'text'"
-        formControlName="userPassword"
-      />      
-      <button
-        mat-icon-button
-        matSuffix
-        (click)="hide = !hide"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide"
-      >
-        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
-    </mat-form-field>
-    </div>
-    <div>
-      <mat-checkbox class="sectionOne" formControlName="rememberMe">remember me</mat-checkbox>
-      <mat-label class="p-8 text-blue-300"> Forgot Password?</mat-label>
-      <!-- TODO: replace above label with href to forgot password page when available -->
-    </div>
-     <div class="flex mt-8 justify-center">
-      <button  mat-raised-button color="primary" (click)="submitLoginClick()">
-        Sign In
-      </button>
-    </div>
-    <div class="flex mt-4 justify-center">
-      <mat-label>
-        -------- OR --------
-      </mat-label>
-    </div>
-    <div class="flex mt-4 justify-center">
-      <button mat-raised-button color="primary">
-      <!-- TODO: add on click event to login with a CAC -->  
-        SSO CAC
-      </button>
-    </div>
-</mat-card>
-</form>
+</div>

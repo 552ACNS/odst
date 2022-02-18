@@ -3,7 +3,7 @@ describe('waypoint', () => {
     cy.visit('/');
     cy.get('[formcontrolname="userUsername"]').type('admin');
     cy.get('[formcontrolname="userPassword"]').type('admin');
-    cy.get('odst-login').find('button').contains('Login').click();
+    cy.get('odst-login').find('button').contains('Sign In').click();
   });
 
   //need to run this test before create person
