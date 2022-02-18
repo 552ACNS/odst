@@ -27,7 +27,7 @@ export * from './entity/refreshToken.entity'
 
 
 //#region Types
-export * from './types/jwtPayload.type'
+export * from './misc/jwtPayload.type'
 //#endregion
 
 //#region Decorators
@@ -35,3 +35,4 @@ export * from './decorators/getCurrentUserID.decorator'
 //#endregion
 
 //TODO decide if this is organized properly
+export * from './misc/config.type';

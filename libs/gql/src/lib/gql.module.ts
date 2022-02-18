@@ -20,7 +20,7 @@ import {
 import { REFRESH_TOKEN } from './mutations';
 import { TokensGQL } from '@odst/types';
 import { isJwtExpired } from '@odst/helpers';
-import { Config } from './gql.config';
+import { Config } from '@odst/types';
 import { Inject } from '@angular/core';
 
 // TODO Make this an environment variable, make sure this works
@@ -28,7 +28,7 @@ import { Inject } from '@angular/core';
 // on the frontend)
 
 // Consider undoing this as a component. If not feasible.
-const gqlUrl = 'http://localhost:3333/graphql';
+// const gqlUrl = 'http://localhost:3333/graphql';
 
 @NgModule({
   providers: [
@@ -42,13 +42,14 @@ const gqlUrl = 'http://localhost:3333/graphql';
 export class GQLModule {
   // Create this static method in the library module.
   public static forRoot(gqlUrl: Config): ModuleWithProviders<GQLModule> {
+
     return {
       ngModule: GQLModule,
       providers: [
         { provide: 'config', useValue: gqlUrl },
         {
           provide: APOLLO_OPTIONS,
-          useFactory: ApolloFactory.createApollo,
+          useFactory: new ApolloFactory(gqlUrl).createApollo,
           deps: [],
         },
       ],
@@ -60,12 +61,12 @@ class ApolloFactory {
   config: Config;
 
   constructor(
-    @Inject('env') config: Config
+    @Inject('config') config: Config
   ) {
     this.config = config;
   }
 
-  static createApollo() {
+  createApollo() {
     let isRefreshing = false;
     let pendingRequests: any = [];
   
@@ -156,8 +157,7 @@ class ApolloFactory {
     );
 
     const httpLink = createHttpLink({
-      // uri: env['gqlUrl'],
-      uri: config.apiUrl
+      uri: this.config.apiUrl,
     });
   
     const authLink = setContext(async (operation, { headers }) => {
