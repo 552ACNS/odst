@@ -16,6 +16,7 @@ import { TableComponent } from './table/table.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NavigationBarLinksComponent } from './navigation-bar-links/navigation-bar-links.component';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { NavigationBarLinksComponent } from './navigation-bar-links/navigation-b
     MaterialModule,
     AppRoutingModule,
   ],
-  providers: [Apollo],
+  providers: [Apollo, { provide: 'environment', useValue: environment }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
