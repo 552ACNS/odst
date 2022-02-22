@@ -23,6 +23,7 @@ export class PersonCreateWithoutOrgInput
 {
   @Field(() => HairColor)
   hairColor!: HairColor;
+  @Max(9999999999)
   dodId!: number;
   ssn!: number;
   @IsEmail()
