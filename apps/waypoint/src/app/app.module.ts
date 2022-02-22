@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { TableComponent } from './table/table.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { AppRoutingModule } from './app-routing.module';
+import { NavigationBarLinksComponent } from './navigation-bar-links/navigation-bar-links.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AppRoutingModule } from './app-routing.module';
     LoginComponent,
     TableComponent,
     NavigationBarComponent,
+    NavigationBarLinksComponent,
   ],
   imports: [
     RouterModule.forRoot([]),

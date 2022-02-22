@@ -1,5 +1,5 @@
 
-    import { Component } from '@angular/core';    
+    import { Component, Input } from '@angular/core';    
         
     @Component({    
         selector:'odst-navigation-bar',    
@@ -8,6 +8,6 @@
         })    
 
 export class NavigationBarComponent    
-{      
-
+{
+    navLinks = [];
 }
