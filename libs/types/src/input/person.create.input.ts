@@ -13,8 +13,10 @@ import { PersonWhereUniqueInput } from './person.unique.input';
 import { Length,
          Min, 
          Max,
+         MinDate,
          IsDate,
          IsEmail,
+         minDate,
        } from 'class-validator';
 
 @InputType()
@@ -33,6 +35,7 @@ export class PersonCreateWithoutOrgInput
   middleInitial?: string;
   lastName!: string;
   @IsDate()
+  @MinDate(new Date(1899, 12, 31))
   birthDate!: Date;
   birthCity!: string;
   birthCountry!: string;
