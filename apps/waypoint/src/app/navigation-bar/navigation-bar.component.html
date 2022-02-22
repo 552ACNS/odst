@@ -1,33 +1,16 @@
-<div class="w-60 h-full bg-blue-900"> 
+<div class="w-56 h-full bg-dark-blue"> 
         <ul> 
             <div class="text-white font-bold text-6x1 py-4 flex justify-center">
-                <a href="#" routerLink="/login" class="px-4 flex text-5xl hover:text-black space-x-2">                  
+                <a href="#" routerLink="/login" class="px-4 text-5xl inline-block border border-white space-x-2">                  
                      <span>WP</span>            
                 </a> 
             </div>  
-            <li class="text-white font-bold py-2 flex justify-center">
-                <a href="#" routerLink="/login" class="px-4 flex text-2xl hover:text-black space-x-2">
-                <mat-icon>home</mat-icon>
-                <span>Home</span>            
-                </a>          
-            </li>
-            <!-- <li class="text-white font-bold py-2 flex justify-center">
-                <a href="#" routerLink="/create-person" class="px-4 flex text-2xl hover:text-black space-x-2">
-                <mat-icon>build</mat-icon>
-                <span>Create</span>
+            <li class="text-white py-2 flex justify-left"
+            *ngFor="let link of navLinks">            
+                <a href="#" routerLink={{link.path}} class="mx-3 py-0.5 w-full text-base rounded-md hover:bg-gray-400 hover:text-white space-x-2"> 
+                    <mat-icon class="align-middle ml-2">{{link.icon}}</mat-icon>
+                    <span class="align-middle">{{link.name}}</span>
                 </a>
             </li>
-            <li class="text-white font-bold py-2 flex justify-center">
-                <a href="#"  routerLink="/create-org" class="px-4 flex justify-end text-2xl hover:text-black space-x-2">
-                <mat-icon>update</mat-icon>
-                <span>Update</span>
-                </a>
-            </li>
-            <li class="text-white font-bold py-2 flex justify-center">
-                <a href="#" routerLink="/table-view" class="px-4 flex justify-end text-2xl hover:text-black space-x-2">
-                <mat-icon>visibility</mat-icon>
-                <span>View</span> 
-                </a>
-            </li>           -->
         </ul>   
 </div>  
