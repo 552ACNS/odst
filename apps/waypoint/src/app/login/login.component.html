@@ -1,12 +1,8 @@
-<mat-card class="flex w-2/6">
+<mat-card class="flex w-2/6 m-2">
   <form [formGroup]="loginForm">
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input
-        matInput
-        placeholder="Username"
-        formControlName="userUsername"
-      />
+      <input matInput placeholder="Username" formControlName="userUsername" />
       <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
     </mat-form-field>
     <mat-form-field appearance="fill">
@@ -27,9 +23,9 @@
       </button>
     </mat-form-field>
     <div>
-    <button mat-raised-button color="primary" (click)="submitLoginClick()">
-      Login
-    </button>
-  </div>
+      <button mat-raised-button color="primary" (click)="submitLoginClick()">
+        Login
+      </button>
+    </div>
   </form>
 </mat-card>

@@ -1,11 +1,16 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoginResponse, LoginUserInput, SignupUserInput } from '@odst/types';
+import { TokensGQL, LoginUserInput, SignupUserInput } from '@odst/types';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { User } from '@prisma/client';
+import { RefreshTokenService } from '../refreshToken/refreshToken.service';
+import { LocalStrategy } from './strategies/local.strategy';
+import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
+import { AccessTokenStrategy } from './strategies/accessToken.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 describe('AuthResolver', () => {
   let resolver: AuthResolver;
@@ -13,13 +18,17 @@ describe('AuthResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        JwtModule.register({
-          signOptions: { expiresIn: '15m' },
-          secret: 'this-should-not-be-hardcoded-here', //process.env.JWT_SECRET
-        }),
+      imports: [PassportModule, JwtModule.register({})],
+      providers: [
+        AuthService,
+        AuthResolver,
+        UserService,
+        LocalStrategy,
+        AccessTokenStrategy,
+        RefreshTokenStrategy,
+        RefreshTokenService,
+        PrismaService,
       ],
-      providers: [AuthResolver, AuthService, UserService, PrismaService],
     }).compile();
 
     resolver = module.get<AuthResolver>(AuthResolver);
@@ -42,7 +51,7 @@ describe('AuthResolver', () => {
     const resolvedLoginResponse = {
       user: user,
       token: 'thisismytoken',
-    } as unknown as LoginResponse;
+    } as unknown as TokensGQL;
 
     const loginUserInput: LoginUserInput = {
       username: 'username',
@@ -50,9 +59,7 @@ describe('AuthResolver', () => {
     };
 
     // Change value of promise
-    const result: Promise<LoginResponse> = Promise.resolve(
-      resolvedLoginResponse
-    );
+    const result: Promise<TokensGQL> = Promise.resolve(resolvedLoginResponse);
 
     //Make it so that the createPerson method returns the fake person
     const spy = jest
@@ -69,11 +76,10 @@ describe('AuthResolver', () => {
   it('Should call the method to signup', async () => {
     // TEST PARAMS
     const methodToSpy = 'signup';
-    const resolvedUser = {
-      id: 1,
-      username: 'username',
-      password: 'password',
-    } as unknown as User;
+    const resolvedTokens  = {
+      accessToken : "this-is-my-access-token",
+      refreshToken : "this-is-my-refresh-token"
+    } as unknown as TokensGQL;
 
     const resolvedSignupUserInput: SignupUserInput = {
       username: 'username',
@@ -82,7 +88,7 @@ describe('AuthResolver', () => {
     };
 
     // Change value of promise
-    const result: Promise<User> = Promise.resolve(resolvedUser);
+    const result: Promise<TokensGQL> = Promise.resolve(resolvedTokens);
 
     //Make it so that the createPerson method returns the fake person
     const spy = jest
@@ -93,6 +99,6 @@ describe('AuthResolver', () => {
     // Assert that the method was called
     expect(spy).toHaveBeenCalled();
 
-    expect(actual).toStrictEqual(resolvedUser);
+    expect(actual).toStrictEqual(resolvedTokens);
   });
 });

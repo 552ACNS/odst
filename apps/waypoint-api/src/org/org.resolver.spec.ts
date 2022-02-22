@@ -51,7 +51,7 @@ describe('OrgResolver', () => {
     const methodToSpy = 'orgs';
 
     const resolvedOrgs: OrgGQL[] = TestOrgCreateInput.map(
-      (org) => org as unknown as OrgGQL,
+      (org) => org as unknown as OrgGQL
     );
 
     // Change value of promise
@@ -97,7 +97,7 @@ describe('OrgResolver', () => {
     const methodToSpy = 'getSubOrgs';
 
     const resolvedOrgs: OrgGQL[] = TestOrgCreateInput.map(
-      (org) => org as unknown as OrgGQL,
+      (org) => org as unknown as OrgGQL
     );
 
     const parentOrg: OrgGQL = TestOrgCreateInput[0] as unknown as OrgGQL;

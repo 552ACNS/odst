@@ -8,7 +8,7 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async user(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
@@ -43,7 +43,7 @@ export class UserService {
   }
 
   async findUnique(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
@@ -52,7 +52,7 @@ export class UserService {
 
   async update(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-    userUpdateInput: Prisma.UserUpdateInput,
+    userUpdateInput: Prisma.UserUpdateInput
   ): Promise<User> {
     return this.prisma.user.update({
       where: userWhereUniqueInput,
@@ -66,13 +66,15 @@ export class UserService {
     });
   }
 
-
-  async upsert(userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-    userUpdateInput: Prisma.UserUpdateInput, userCreateInput: UserCreateInput): Promise<User> {
+  async upsert(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    userUpdateInput: Prisma.UserUpdateInput,
+    userCreateInput: UserCreateInput
+  ): Promise<User> {
     return this.prisma.user.upsert({
       where: userWhereUniqueInput,
       update: userUpdateInput,
-      create: userCreateInput
+      create: userCreateInput,
     });
   }
 }

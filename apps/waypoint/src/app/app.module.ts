@@ -12,13 +12,16 @@ import { CreateOrgComponent } from './create-org/create-org.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material.module';
 import { LoginComponent } from './login/login.component';
+import { TableComponent } from './table/table.component';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
     AppComponent,
     CreatePersonComponent,
     CreateOrgComponent,
-    LoginComponent
+    LoginComponent,
+    TableComponent,
   ],
   imports: [
     RouterModule.forRoot([]),
@@ -28,9 +31,9 @@ import { LoginComponent } from './login/login.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
   ],
-  providers: [Apollo],
+  providers: [Apollo, { provide: 'environment', useValue: environment }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
