@@ -16,7 +16,6 @@ import { Length,
          MinDate,
          IsDate,
          IsEmail,
-         minDate,
        } from 'class-validator';
 
 @InputType()
