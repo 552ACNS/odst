@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { gql, TypedDocumentNode } from 'apollo-angular';
-import { EmptyObject } from 'apollo-angular/types';
+import { gql } from 'apollo-angular';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +9,7 @@ export class CreatePersonService {
     //empty
   }
 
-  queryOrgs(): TypedDocumentNode<any, EmptyObject> {
+  queryOrgs() {
     const GET_ORGS = gql`
       query {
         findManyOrgs {
@@ -23,7 +22,7 @@ export class CreatePersonService {
     return GET_ORGS;
   }
 
-  mutationCreatePerson(): TypedDocumentNode<any, EmptyObject> {
+  mutationCreatePerson() {
     const SUBMIT_PERSON = gql`
       mutation createPerson($personCreateInput: PersonCreateInput!) {
         createPerson(personCreateInput: $personCreateInput) {
