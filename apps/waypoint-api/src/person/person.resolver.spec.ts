@@ -231,4 +231,80 @@ describe('PersonsResolver', () => {
       expect(error).toBeInstanceOf(BadRequestException);
     }
   });
+
+  it('should throw error on the method to create a person with incorrect birth date', async () => {
+    // TEST PARAMS
+    const createdPerson: PersonCreateInput = testPersons[0];
+    createdPerson.birthDate = new Date('1800-01-01');
+    const methodToSpy = 'create';
+
+    // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
+    const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
+
+    // Change value of promise
+    const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
+
+    //Make it so that the createPerson method returns the fake person
+    const spy = jest
+      .spyOn(servicer, methodToSpy)
+      .mockImplementation(() => result);
+
+    // Call the createPerson method by calling the controller
+    try {
+      const actual = await resolver.create(createdPerson);
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestException);
+    }
+  });
+
+  it('should throw error on the method to create a person with incorrect middle initial', async () => {
+    // TEST PARAMS
+    const createdPerson: PersonCreateInput = testPersons[0];
+    createdPerson.middleInitial = 'NO';
+    const methodToSpy = 'create';
+
+    // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
+    const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
+
+    // Change value of promise
+    const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
+
+    //Make it so that the createPerson method returns the fake person
+    const spy = jest
+      .spyOn(servicer, methodToSpy)
+      .mockImplementation(() => result);
+
+    // Call the createPerson method by calling the controller
+    try {
+      const actual = await resolver.create(createdPerson);
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestException);
+    }
+  });
+
+  it('should throw error on the method to create a person with incorrect email', async () => {
+    // TEST PARAMS
+    const createdPerson: PersonCreateInput = testPersons[0];
+    createdPerson.email = 'MyEmail@Somewhere';
+    const methodToSpy = 'create';
+
+    // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
+    const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
+
+    // Change value of promise
+    const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
+
+    //Make it so that the createPerson method returns the fake person
+    const spy = jest
+      .spyOn(servicer, methodToSpy)
+      .mockImplementation(() => result);
+
+    // Call the createPerson method by calling the controller
+    try {
+      const actual = await resolver.create(createdPerson);
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestException);
+    }
+  });
+
 });
