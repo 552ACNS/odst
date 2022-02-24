@@ -2,20 +2,20 @@
   <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
     <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
       <!-- Title -->
-      <div class="mt-8 ml-0 text-4xl font-extrabold tracking-tight leading-tight">Sign in</div>
+      <div class="mt-8 ml-0 text-6xl font-extrabold tracking-tight leading-tight">Sign In</div>
       <div class="flex items-baseline mt-0.5 font-medium">
         <div>Don't have an account?</div>
         <!-- TODO: replace below label with href to recover username page when available -->
-        <div class="p-8 ml-2 text-blue-300">Find your way</div>
+        <div class="p-9 ml-2 font-medium text-blue-300">Find your way.</div>
       </div>
 
       <!-- Sign in form -->
       <form
-        class="mt-8"
+        class="mt-2"
         [formGroup]="loginForm">
 
         <!-- Email field -->
-        <mat-form-field class="w-full ml-0" appearance="outline">
+        <mat-form-field class="w-72 ml-0" appearance="outline">
             <mat-label>Username</mat-label>
             <input
                 id="userName"
@@ -28,7 +28,7 @@
         </mat-form-field>
 
         <!-- Password field -->
-        <mat-form-field class="w-full ml-0" appearance="outline" >
+        <mat-form-field class="w-72 ml-0" appearance="outline" >
           <mat-label>Password</mat-label>
           <input
               id="password"
@@ -50,38 +50,37 @@
         </mat-form-field>    
 
         <!-- Actions -->
-        <div class="inline-flex items-end justify-between w-full mt-1.5">
+        <div class="inline-flex items-end justify-between w-72 mt-1.5">
           <mat-checkbox
               [color]="'primary'"
               [formControlName]="'rememberMe'">
-              Remember me
+              Remember Me
           </mat-checkbox>
           <!-- TODO: replace below label with href to recover username page when available -->
-          <div class="text-blue-300"> Forgot Password?</div>
+          <div class="font-medium text-blue-300" p="0"> Forgot Password?</div>
         </div>
 
         <!-- Submit button -->
-        <div class="flex justify-center mt-6">
+        <div class="flex justify-start mt-6">
           <button  
-            class="w-full"
-            mat-flat-button 
-            [color]="'primary'" 
+            class="w-72 bg-[#0D153F] text-white"
+            mat-flat-button            
             (click)="submitLoginClick()">
             Sign In
           </button>
         </div>
 
         <!-- Separator -->
-        <div class="flex items-center mt-8">
+        <div class="flex items-center w-72 mt-8">
           <div class="flex-auto mt-px border-t"></div>
-          <div class="mx-2 text-secondary">Or</div>
+          <div class="mx-2 text-secondary">OR</div>
           <div class="flex-auto mt-px border-t"></div>
         </div>
 
         <!-- Single sign-on buttons -->
-        <div class="flex justify-center mt-8">
+        <div class="flex justify-start mt-8">
           <button 
-            class="w-full disabled:opacity-80"
+            class="w-72 disabled:opacity-80 outline"
             disabled 
             mat-raised-button 
             [color]="'primary'">
@@ -92,18 +91,18 @@
       </form>
     </div>
   </div>
-  <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
+  <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-[#0D153F] dark:border-l">
     <!-- Content -->
     <div class="ml-20 z-10 relative w-full max-w-2xl">
-      <div class="text-7xl font-bold leading-none text-gray-100 mt-10">
+      <div class="text-6xl font-bold leading-none text-gray-100 mt-10 w-72">
         <div>Anticipate</div>
-        <div class="mt-8">
+        <div class="mt-8 text-5xl tracking-wide">
           <label>the </label><label class="underline">FUTURE</label>
         </div>
-        <div class="mt-8 italic">FASTER</div>
+        <div class="mt-8 text-7xl italic tracking-wide">FASTER</div>
       </div>
       <div class="mt-20 text-lg tracking-tight leading-6 text-gray-100">
-        <label>Get </label><label class="italic">Ready</label><label>. Stay </label><label class="underline">Ready.</label>
+        <label>Get </label><label class="italic">Ready</label><label>. Stay </label><label class="underline font-bold">Ready.</label>
       </div>
       <div class="mt-6 text-lg tracking-tight leading-6 text-gray-100">
         Dashboards & widgets help you keep<br>
@@ -113,7 +112,7 @@
         <div class="w-32">
           <img src="./assets/images/ScorpionCamp5.png">
         </div>
-        <div class="p-8 text-lg tracking-tight leading-6 text-gray-100">
+        <div class="text-lg tracking-wide leading-6 text-gray-100">
           <label>Made by the <br>
                  552 ACNS @ <br>
                  Scorpion CAMP
