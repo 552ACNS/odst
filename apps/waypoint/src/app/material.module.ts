@@ -10,6 +10,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatStepperModule } from '@angular/material/stepper';
+import {MatSidenavModule} from '@angular/material/sidenav';
+
 
 @NgModule({
   imports: [
@@ -24,8 +26,10 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatIconModule,
     MatTableModule,
     MatStepperModule,
+    MatSidenavModule,
   ],
   exports: [
+    MatSidenavModule,
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
