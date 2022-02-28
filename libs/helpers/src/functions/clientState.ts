@@ -12,3 +12,9 @@ export function getRefreshToken(): string | null {
 export function setRefreshToken(token: string): void {
   localStorage.setItem('refreshToken', token);
 }
+
+//TODO: reconsider this when we figure out pushing user login
+export function isLoggedIn(): boolean {
+  return !!getRefreshToken();
+}
+

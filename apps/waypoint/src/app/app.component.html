@@ -1,4 +1,7 @@
-<mat-sidenav-container>
+<odst-login></odst-login>
+<!-- TODO: Create another routing module and place it withing navigation bar and 
+move mat-sidenav-container code over to navigation-bar.component.html -->
+<mat-sidenav-container  *ngIf="loggedInCheck()" ng-cloak>
   <mat-sidenav-content>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
