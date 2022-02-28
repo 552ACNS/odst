@@ -1,31 +1,137 @@
-<mat-card class="flex w-2/6 m-2">
-  <form [formGroup]="loginForm">
-    <mat-form-field appearance="fill">
-      <mat-label>Username</mat-label>
-      <input matInput placeholder="Username" formControlName="userUsername" />
-      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        [type]="hide ? 'password' : 'text'"
-        formControlName="userPassword"
-      />
-      <button
-        mat-icon-button
-        matSuffix
-        (click)="hide = !hide"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide"
+<div
+  class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0"
+>
+  <div
+    class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card"
+  >
+    <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+      <!-- Title -->
+      <div
+        class="mt-8 ml-0 text-7xl font-extrabold tracking-tight leading-tight"
       >
-        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
-    </mat-form-field>
-    <div>
-      <button mat-raised-button color="primary" (click)="submitLoginClick()">
-        Login
-      </button>
+        Sign In
+      </div>
+      <div class="mt-2 flex justify-between font-medium h-fit">
+        <div>Don't have an account?</div>
+
+        <p class="underline text-right text-blue-300">Request one.</p>
+      </div>
+
+      <!-- Sign in form -->
+      <form [formGroup]="loginForm">
+        <!-- Email field -->
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Username</mat-label>
+          <input
+            id="userName"
+            formcontrolname="userUsername"
+            type="text"
+            matInput
+            placeholder="Username"
+            [formControlName]="'userUsername'"
+          />
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        </mat-form-field>
+
+        <!-- Password field -->
+        <mat-form-field class="w-full mx-0" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            id="password"
+            formcontrolname="userPassword"
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            [formControlName]="'userPassword'"
+          />
+          <button
+            mat-icon-button
+            type="button"
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <!-- Actions -->
+        <div class="flex justify-between">
+          <mat-checkbox
+            class="align-middle"
+            [color]="'primary'"
+            [formControlName]="'rememberMe'"
+          >
+            Remember Me
+          </mat-checkbox>
+          <div class="font-medium underline text-blue-300" p="0">
+            Forgot Password?
+          </div>
+        </div>
+
+        <!-- Sign In button -->
+        <button
+          class="w-full mt-5 px-0 bg-[#0D153F] text-white rounded-3xl"
+          mat-flat-button
+          (click)="submitLoginClick()"
+        >
+          Sign In
+        </button>
+
+        <!-- Separator -->
+        <div class="flex mt-5 items-center w-full">
+          <div class="flex-auto mt-1 border-t"></div>
+          <div class="mx-2 text-secondary">OR</div>
+          <div class="flex-auto mt-px border-t"></div>
+        </div>
+
+        <!-- Single sign-on buttons -->
+        <button
+          class="w-full mt-5 rounded-3xl"
+          mat-stroked-button
+          [color]="'primary'"
+        >
+          <!-- TODO: add on click event to login with a CAC -->
+          SSO CAC
+        </button>
+      </form>
     </div>
-  </form>
-</mat-card>
+  </div>
+  <div
+    class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-[#0D153F] dark:border-l"
+  >
+    <!-- Content -->
+    <div class="ml-20 z-10 relative w-full max-w-2xl">
+      <div class="text-6xl font-bold leading-none text-gray-100 mt-10 w-72">
+        <div>Anticipate</div>
+        <div class="my-2 text-5xl tracking-wide">
+          <label>the </label><label class="underline">FUTURE</label>
+        </div>
+        <div class="my-2 text-7xl italic tracking-wide">FASTER</div>
+      </div>
+      <div class="mt-5 text-lg text-gray-100">
+        <label>Get </label><label class="italic">Ready. </label
+        ><label>Stay </label><label class="underline font-bold">Ready</label>
+      </div>
+      <div class="mt-6 text-lg tracking-tight leading-6 text-gray-100">
+        Dashboards & widgets help you keep<br />
+        track of readiness & requirements.
+      </div>
+      <div class="flex mt-12">
+        <img class="w-32" src="./assets/images/ScorpionCamp5.png" />
+        <div
+          class="text-lg ml-3 text-gray-100 flex justify-center content-center flex-col"
+        >
+          Made by the <br />
+          552 ACNS @ <br />
+          Scorpion CAMP
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex flex-auto w-full rotate-90 text-gray-100 text-8xl opacity-40"
+    >
+      WAYPOINT
+    </div>
+  </div>
+</div>
