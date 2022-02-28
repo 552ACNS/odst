@@ -1,11 +1,7 @@
 
-    import { Component, Input } from '@angular/core';    
-        
-    export interface NavProps {
-        path: string;
-        icon: string;
-        name: string;
-      }
+    import { Component, Input } from '@angular/core';  
+    import { NavProps } from '@odst/types' 
+
     @Component({    
         selector:'odst-navigation-bar',    
         templateUrl:'./navigation-bar.component.html',    
