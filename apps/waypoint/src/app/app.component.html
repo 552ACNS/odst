@@ -1,14 +1,6 @@
+<!-- TODO: add lazy loading which should fix issue with login page staying whole time -->
 <odst-login></odst-login>
-<!-- TODO: Create another routing module and place it withing navigation bar and 
-move mat-sidenav-container code over to navigation-bar.component.html -->
-<mat-sidenav-container  *ngIf="loggedInCheck()" ng-cloak>
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-  <mat-sidenav mode="side" opened [fixedInViewport]="true">
-    <odst-navigation-bar></odst-navigation-bar>
-  </mat-sidenav>
-</mat-sidenav-container>
+<odst-navigation-bar></odst-navigation-bar>
 
 
 

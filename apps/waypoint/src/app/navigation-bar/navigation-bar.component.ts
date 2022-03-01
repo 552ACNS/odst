@@ -1,6 +1,7 @@
 
     import { Component, Input } from '@angular/core';  
     import { NavProps } from '@odst/types' 
+    import { isLoggedIn } from '@odst/helpers';
 
     @Component({    
         selector:'odst-navigation-bar',    
@@ -16,4 +17,8 @@ export class NavigationBarComponent
         {path: '/create-org', icon: 'update', name: 'Update'},
         {path: '/table-view', icon: 'visibility', name: 'View'}
     ];
+    loggedInCheck() {
+        console.log(isLoggedIn())
+        return isLoggedIn();
+      }
 }
