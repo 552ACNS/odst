@@ -1,11 +1,36 @@
-<div class="bg-slate-50">
-  <odst-login></odst-login>
-  <odst-create-person></odst-create-person>
+<odst-login></odst-login>
+<!-- TODO: Create another routing module and place it withing navigation bar and 
+move mat-sidenav-container code over to navigation-bar.component.html -->
+<mat-sidenav-container  *ngIf="loggedInCheck()" ng-cloak>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+  <mat-sidenav mode="side" opened [fixedInViewport]="true">
+    <odst-navigation-bar></odst-navigation-bar>
+  </mat-sidenav>
+</mat-sidenav-container>
+
+
+
+<!-- <div class="bg-slate-50"> -->
+<!-- <router-outlet></router-outlet> -->
+<!-- <nav>
+    <a routerLink="/navigation-bar">Successfull Login</a>
+  </nav>
+  <nav>
+    <a routerLink="/create-person">Create Person</a>
+  </nav>
+  <nav>
+    <a routerLink="/create-org">Create Org</a>
+  </nav> -->
+<!-- <odst-navigation-bar></odst-navigation-bar>     -->
+<!-- <odst-login></odst-login> -->
+<!-- <odst-create-person></odst-create-person>
   <odst-create-org></odst-create-org>
   <odst-table [dataSource]="orgs" [tableProps]="tablePropsOrg"></odst-table>
   <odst-table
     [dataSource]="persons"
     [tableProps]="tablePropsPerson"
-  ></odst-table>
-  <!-- TODO add /logout route that removes jwt is removed -->
-</div>
+  ></odst-table> -->
+<!-- TODO add /logout route that removes jwt is removed -->
+<!-- </div> -->

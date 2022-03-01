@@ -1,8 +1,10 @@
 <div
-  class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0"
+  class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center 
+         md:justify-start flex-auto min-w-0"
 >
   <div
-    class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card"
+    class="md:flex md:items-center md:justify-end w-full min-h-screen sm:w-auto md:h-full md:w-1/2 
+           py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card"
   >
     <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
       <!-- Title -->
@@ -71,7 +73,7 @@
 
         <!-- Sign In button -->
         <button
-          class="w-full mt-5 px-0 bg-[#0D153F] text-white rounded-3xl"
+          class="w-full mt-5 px-0 bg-dark-blue text-white rounded-3xl"
           mat-flat-button
           (click)="submitLoginClick()"
         >
@@ -98,7 +100,8 @@
     </div>
   </div>
   <div
-    class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-[#0D153F] dark:border-l"
+    class="relative hidden md:flex flex-auto items-center 
+    justify-center w-1/2 h-full p-16 lg:px-28 min-h-screen overflow-hidden bg-dark-blue dark:border-l"
   >
     <!-- Content -->
     <div class="ml-20 z-10 relative w-full max-w-2xl">
