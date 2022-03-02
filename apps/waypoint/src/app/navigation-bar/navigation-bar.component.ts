@@ -12,7 +12,7 @@
 export class NavigationBarComponent    
 {
     navLinks: NavProps[] = [
-        {path:'/login', icon:'home', name:'Home'},
+        // {path:'/login', icon:'home', name:'Home'},
         {path: '/create-person', icon: 'build', name: 'Create'},
         {path: '/create-org', icon: 'update', name: 'Update'},
         {path: '/table-view', icon: 'visibility', name: 'View'}
