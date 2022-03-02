@@ -17,8 +17,8 @@ export class NavigationBarComponent
         {path: '/create-org', icon: 'update', name: 'Update'},
         {path: '/table-view', icon: 'visibility', name: 'View'}
     ];
-    loggedInCheck() {
-        console.log(isLoggedIn())
-        return isLoggedIn();
-      }
+    // loggedInCheck() {
+    //     console.log(isLoggedIn())
+    //     return isLoggedIn();
+    //   }
 }
