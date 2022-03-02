@@ -27,9 +27,11 @@ export class LoginService {
       })
       .subscribe(
         ({ data }) => {
-          const tokens = (data as any)?.login as TokensGQL; //TODO make better
-          setAccessToken(tokens.accessToken);
-          setRefreshToken(tokens.refreshToken);
+          console.log(data)
+          if (data) {
+            setAccessToken(data.accessToken);
+            setRefreshToken(data.refreshToken);
+          }
         },
         (error) => {
           alert(error);

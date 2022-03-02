@@ -1,30 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
 import { OrgGQL, PersonGQL } from '@odst/types';
 import { Subscription } from 'rxjs';
-import { getAccessToken } from '@odst/helpers';
-
-const GET_PERSONS = gql`
-  query {
-    findManyPersons {
-      firstName
-      lastName
-      dodId
-      ssn
-    }
-  }
-`;
-
-const GET_ORGS = gql`
-  query {
-    findManyOrgs {
-      id
-      name
-      aliases
-      orgTier
-    }
-  }
-`;
+import { GET_ORGS, GET_PERSONS } from '../graphql/queries';
 
 @Component({
   selector: 'odst-root',
@@ -103,21 +81,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.querySubscription = this.apollo
-      .watchQuery<any>({
+      .watchQuery({
         query: GET_ORGS,
       })
       .valueChanges.subscribe(({ data, loading }) => {
+        console.log(data);
         this.loading = loading;
-        this.orgs = data.findManyOrgs;
+        this.orgs = data;
       });
 
     this.querySubscription = this.apollo
-      .watchQuery<any>({
+      .watchQuery({
         query: GET_PERSONS,
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
-        this.persons = data.findManyPersons;
+        this.persons = data;
       });
   }
 

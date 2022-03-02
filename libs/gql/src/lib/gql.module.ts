@@ -84,11 +84,9 @@ export function createApollo() {
                       },
                     })
                     .then(({ data }) => {
-                      const tokens = (data as any)
-                        ?.refreshTokensVar as TokensGQL; //TODO make better
-                      if (tokens) {
-                        setAccessToken(tokens.accessToken);
-                        setRefreshToken(tokens.refreshToken);
+                      if (data) {
+                        setAccessToken(data.accessToken);
+                        setRefreshToken(data.refreshToken);
                       }
                       return true;
                     })
