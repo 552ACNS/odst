@@ -1,16 +1,16 @@
+<!-- TODO: add lazy loading which should fix issue with login page staying whole time -->
 <odst-login></odst-login>
-<!-- TODO: Create another routing module and place it withing navigation bar and 
-move mat-sidenav-container code over to navigation-bar.component.html -->
-<mat-sidenav-container  *ngIf="loggedInCheck()" ng-cloak>
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-  <mat-sidenav mode="side" opened [fixedInViewport]="true">
-    <odst-navigation-bar></odst-navigation-bar>
-  </mat-sidenav>
-</mat-sidenav-container>
-
-
+<odst-navigation-bar></odst-navigation-bar>
+<odst-table
+  class="flex justify-center"
+  [dataSource]="orgs"
+  [tableProps]="tablePropsOrg"
+></odst-table>
+<odst-table
+  class="flex justify-center"
+  [dataSource]="persons"
+  [tableProps]="tablePropsPerson"
+></odst-table>
 
 <!-- <div class="bg-slate-50"> -->
 <!-- <router-outlet></router-outlet> -->
@@ -27,10 +27,6 @@ move mat-sidenav-container code over to navigation-bar.component.html -->
 <!-- <odst-login></odst-login> -->
 <!-- <odst-create-person></odst-create-person>
   <odst-create-org></odst-create-org>
-  <odst-table [dataSource]="orgs" [tableProps]="tablePropsOrg"></odst-table>
-  <odst-table
-    [dataSource]="persons"
-    [tableProps]="tablePropsPerson"
-  ></odst-table> -->
+-->
 <!-- TODO add /logout route that removes jwt is removed -->
 <!-- </div> -->

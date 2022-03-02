@@ -15,8 +15,8 @@ import { LoginComponent } from './login/login.component';
 import { TableComponent } from './table/table.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { AppRoutingModule } from './app-routing.module';
-import { NavigationBarLinksComponent } from './navigation-bar-links/navigation-bar-links.component';
 import { environment } from '../environments/environment';
+import { NavigationBarRoutingModule } from './navigation-bar/navigation-bar-routing.module';
 
 @NgModule({
   declarations: [
@@ -25,8 +25,7 @@ import { environment } from '../environments/environment';
     CreateOrgComponent,
     LoginComponent,
     TableComponent,
-    NavigationBarComponent,
-    NavigationBarLinksComponent,
+    NavigationBarComponent
   ],
   imports: [
     RouterModule.forRoot([]),
@@ -38,6 +37,7 @@ import { environment } from '../environments/environment';
     ReactiveFormsModule,
     MaterialModule,
     AppRoutingModule,
+    NavigationBarRoutingModule,
   ],
   providers: [Apollo, { provide: 'environment', useValue: environment }],
   bootstrap: [AppComponent],

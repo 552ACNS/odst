@@ -1,16 +1,24 @@
-<div class="w-56 h-full bg-dark-blue"> 
-        <ul> 
-            <div class="text-white font-bold text-6x1 py-4 flex justify-center">
-                <a href="#" routerLink="''" class="px-4 text-5xl inline-block border border-white space-x-2">                  
-                     <span>WP</span>            
-                </a> 
-            </div>  
-            <li class="text-white py-2 flex justify-left"
-            *ngFor="let link of navLinks">            
-                <a href="#" routerLink={{link.path}} class="mx-3 py-0.5 w-full text-base rounded-md hover:bg-gray-400 hover:text-white space-x-2"> 
-                    <mat-icon class="align-middle ml-2">{{link.icon}}</mat-icon>
-                    <span class="align-middle">{{link.name}}</span>
-                </a>
-            </li>
-        </ul>   
-</div>  
+
+<mat-sidenav-container *ngIf="loggedInCheck()" ng-cloak>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+    <mat-sidenav mode="side" opened [fixedInViewport]="true">
+        <div class="w-56 h-full bg-dark-blue"> 
+            <ul> 
+                <div class="text-white font-bold text-6x1 py-4 flex justify-center">
+                    <a href="#" routerLink="''" class="px-4 text-5xl inline-block border border-white space-x-2">                  
+                         <span>WP</span>            
+                    </a> 
+                </div>  
+                <li class="text-white py-2 flex justify-left"
+                *ngFor="let link of navLinks">            
+                    <a href="#" routerLink={{link.path}} class="mx-3 py-0.5 w-full text-base rounded-md hover:bg-gray-400 hover:text-white space-x-2"> 
+                        <mat-icon class="align-middle ml-2">{{link.icon}}</mat-icon>
+                        <span class="align-middle">{{link.name}}</span>
+                    </a>
+                </li>
+            </ul>   
+    </div>  
+    </mat-sidenav>
+  </mat-sidenav-container>
