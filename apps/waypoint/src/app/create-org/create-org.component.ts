@@ -13,7 +13,7 @@ import { CreateOrgService } from './create-org.service';
 export class CreateOrgComponent implements OnInit, OnDestroy {
   orgTiers: string[] = Object.values(OrgTier);
   orgAliases: string[] = [];
-  orgs = []
+  orgs: Org[] = []
   querySubscription: Subscription;
   loading = true;
 
