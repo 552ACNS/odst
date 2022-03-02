@@ -16,10 +16,10 @@ import {
   isJwtChainExpired,
   setAccessToken,
   setRefreshToken,
+  isJwtExpired
 } from '@odst/helpers';
-import { REFRESH_TOKEN } from './mutations';
+import { REFRESH_TOKEN } from '../graphql/mutations';
 import { TokensGQL } from '@odst/types';
-import { isJwtExpired } from '@odst/helpers';
 
 // TODO Make this an environment variable, make sure this works
 // just setting process.env.GQL_ENDPOINT doesn't work as expected (it will fail
@@ -80,7 +80,7 @@ export function createApollo() {
                     .mutate({
                       mutation: REFRESH_TOKEN,
                       variables: {
-                        refreshToken: getRefreshToken(),
+                        refreshToken,
                       },
                     })
                     .then(({ data }) => {

@@ -4,6 +4,8 @@ import { Apollo } from 'apollo-angular';
 import { Org, OrgTier } from '@prisma/client';
 import { Subscription } from 'rxjs';
 import { CreateOrgService } from './create-org.service';
+import { SUBMIT_ORG } from '../../graphql/mutations';
+import { GET_ORGS } from '../../graphql/queries';
 
 @Component({
   selector: 'odst-create-org',
@@ -48,7 +50,6 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   //   }
   // }
   async ngOnInit(): Promise<void> {
-    const GET_ORGS = this.orgService.queryOrgs();
     this.querySubscription = this.apollo
       .watchQuery<any>({
         query: GET_ORGS,
@@ -60,8 +61,6 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   }
 
   OrgSubmit(): void {
-    const SUBMIT_ORG = this.orgService.mutationCreateOrg();
-
     this.apollo
       .mutate<any>({
         mutation: SUBMIT_ORG,

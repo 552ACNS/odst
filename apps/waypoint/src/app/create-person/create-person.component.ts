@@ -16,6 +16,8 @@ import {
   getSSN,
   getDoB,
 } from '@odst/helpers';
+import { GET_ORGS } from '../../graphql/queries';
+import { SUBMIT_PERSON } from '../../graphql/mutations';
 
 @Component({
   selector: 'odst-create-person',
@@ -85,7 +87,6 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    const GET_ORGS = this.personService.queryOrgs();
     this.querySubscription = this.apollo
       //TODO: make query strongly typed instead of any
       .watchQuery<any>({
@@ -145,35 +146,32 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   }
 
   personSubmit(): void {
-    const SUBMIT_PERSON = this.personService.mutationCreatePerson();
     this.apollo
       .mutate({
         mutation: SUBMIT_PERSON,
         variables: {
-          personCreateInput: {
-            firstName: this.nameForm.value['personFirstName'],
-            lastName: this.nameForm.value['personLastName'],
-            middleInitial: this.nameForm.value['personMiddleInitial'],
-            email: this.nameForm.value['personEmail'],
-            ssn: parseFloat(this.nameForm.value['personSSN']),
-            dodId: parseFloat(this.nameForm.value['personDoDIDNumber']),
-            birthDate: this.birthForm.value['personBirthDate'],
-            birthCity: this.birthForm.value['personBirthCity'],
-            birthCountry: this.birthForm.value['personBirthCountry'],
-            birthState: this.birthForm.get(['personBirthState'])?.value,
-            citizenshipId: 'Yes',
-            initialTraining: this.personInitTrngCheck(),
-            NDA: this.personNDAcheck(),
-            grade: parseFloat(this.identityForm.get(['personGrade'])?.value),
-            eyeColor: this.identityForm.get(['personEyeColor'])?.value,
-            hairColor: this.identityForm.get(['personHairColor'])?.value,
-            role: 'NONE',
-            spec: this.identityForm.get(['personSpec'])?.value,
-            height: parseFloat(this.identityForm.value['personHeight']),
-            org: {
-              connect: {
-                id: this.identityForm.get(['personOrg'])?.value,
-              },
+          firstName: this.nameForm.value['personFirstName'],
+          lastName: this.nameForm.value['personLastName'],
+          middleInitial: this.nameForm.value['personMiddleInitial'],
+          email: this.nameForm.value['personEmail'],
+          ssn: parseFloat(this.nameForm.value['personSSN']),
+          dodId: parseFloat(this.nameForm.value['personDoDIDNumber']),
+          birthDate: this.birthForm.value['personBirthDate'],
+          birthCity: this.birthForm.value['personBirthCity'],
+          birthCountry: this.birthForm.value['personBirthCountry'],
+          birthState: this.birthForm.get(['personBirthState'])?.value,
+          citizenshipId: 'Yes',
+          initialTraining: this.personInitTrngCheck(),
+          NDA: this.personNDAcheck(),
+          grade: parseFloat(this.identityForm.get(['personGrade'])?.value),
+          eyeColor: this.identityForm.get(['personEyeColor'])?.value,
+          hairColor: this.identityForm.get(['personHairColor'])?.value,
+          role: 'NONE',
+          spec: this.identityForm.get(['personSpec'])?.value,
+          height: parseFloat(this.identityForm.value['personHeight']),
+          org: {
+            connect: {
+              id: this.identityForm.get(['personOrg'])?.value,
             },
           },
         },
@@ -194,5 +192,4 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       this.querySubscription.unsubscribe();
     }
   }
-
 }

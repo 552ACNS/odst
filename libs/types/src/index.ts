@@ -14,7 +14,7 @@ export * from './input/login.input';
 export * from './input/refreshToken.create.input';
 export * from './input/refreshToken.update.input';
 export * from './input/refreshToken.unique.input';
-export * from './entity/tokens.entity'
+export * from './entity/tokens.entity';
 //#endregion
 
 //#region Entities
@@ -22,16 +22,15 @@ export * from './entity/org.entity';
 export * from './entity/person.entity';
 export * from './entity/incident.entity';
 export * from './entity/user.entity';
-export * from './entity/refreshToken.entity'
+export * from './entity/refreshToken.entity';
 //#endregion
 
-
 //#region Types
-export * from './misc/jwtPayload.type'
+export * from './misc/jwtPayload.type';
 //#endregion
 
 //#region Decorators
-export * from './decorators/getCurrentUserID.decorator'
+export * from './decorators/getCurrentUserID.decorator';
 //#endregion
 
 //TODO decide if this is organized properly
