@@ -100,7 +100,6 @@ export class AppComponent implements OnInit, OnDestroy {
     },
   ];
   loggedInCheck() {
-    console.log(isLoggedIn())
     return isLoggedIn();
   }
   ngOnInit() {
