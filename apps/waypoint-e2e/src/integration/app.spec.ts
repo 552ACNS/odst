@@ -4,6 +4,8 @@ describe('waypoint', () => {
     cy.get('[formcontrolname="userUsername"]').type('admin');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('odst-login').find('button').contains('Sign In').click();
+    //TODO change to something that is directly correlated to a successful login
+    cy.get('#logo', { timeout: 10000 }).should('be.visible');
   });
 
   //need to run this test before create person
