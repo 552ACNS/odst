@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateOrgComponent } from './create-org/create-org.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material.module';
-import { LoginComponent } from './login/login.component';
 import { TableComponent } from './table/table.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,7 +22,6 @@ import { NavigationBarRoutingModule } from './navigation-bar/navigation-bar-rout
     AppComponent,
     CreatePersonComponent,
     CreateOrgComponent,
-    LoginComponent,
     TableComponent,
     NavigationBarComponent
   ],
