@@ -21,4 +21,4 @@ import { CreateOrgComponent } from './create-org.component';
     ],
     exports: []
   })
-  export class LoginModule {}
+  export class CreateOrgModule {}

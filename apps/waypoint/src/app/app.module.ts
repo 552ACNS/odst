@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
 import { GQLModule } from '@odst/gql';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CreatePersonComponent } from './create-person/create-person.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -19,7 +18,6 @@ import { NavigationBarRoutingModule } from './navigation-bar/navigation-bar-rout
 @NgModule({
   declarations: [
     AppComponent,
-    CreatePersonComponent,
     TableComponent,
     NavigationBarComponent
   ],
