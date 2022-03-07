@@ -19,6 +19,7 @@ export class CreateOrgService {
           id
           name
           aliases
+          orgTier
         }
       }
     `;
