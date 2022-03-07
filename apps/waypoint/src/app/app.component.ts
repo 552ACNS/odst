@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { OrgGQL, PersonGQL } from '@odst/types';
 import { Subscription } from 'rxjs';
-import { getAccessToken } from '@odst/helpers';
+import { getAccessToken, isLoggedIn } from '@odst/helpers';
 
 const GET_PERSONS = gql`
   query {
@@ -99,7 +99,9 @@ export class AppComponent implements OnInit, OnDestroy {
       header: 'SSN',
     },
   ];
-
+  loggedInCheck() {
+    return isLoggedIn();
+  }
   ngOnInit() {
     this.querySubscription = this.apollo
       .watchQuery<any>({

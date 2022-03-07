@@ -18,7 +18,6 @@ export class NavigationBarComponent
         {path: '/table-view', icon: 'visibility', name: 'View'}
     ];
     loggedInCheck() {
-        console.log(isLoggedIn())
         return isLoggedIn();
       }
 }

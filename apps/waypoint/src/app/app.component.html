@@ -1,5 +1,5 @@
 <!-- TODO: add lazy loading which should fix issue with login page staying whole time -->
-<odst-login></odst-login>
+<odst-login *ngIf="!loggedInCheck()" ng-cloak></odst-login>
 <odst-navigation-bar></odst-navigation-bar>
 <odst-table
   class="flex justify-center"
