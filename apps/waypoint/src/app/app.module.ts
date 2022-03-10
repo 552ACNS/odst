@@ -8,18 +8,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from './material.module';
-import { TableComponent } from './table/table.component';
+//import { MaterialModule } from './material.module';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { NavigationBarRoutingModule } from './navigation-bar/navigation-bar-routing.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    TableComponent,
-    NavigationBarComponent
+    NavigationBarComponent,
   ],
   imports: [
     RouterModule.forRoot([]),
@@ -29,9 +30,11 @@ import { NavigationBarRoutingModule } from './navigation-bar/navigation-bar-rout
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule,
+    //MaterialModule,
     AppRoutingModule,
     NavigationBarRoutingModule,
+    MatSidenavModule,
+    MatIconModule,
   ],
   providers: [Apollo, { provide: 'environment', useValue: environment }],
   bootstrap: [AppComponent],

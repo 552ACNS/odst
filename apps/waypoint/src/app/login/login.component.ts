@@ -19,7 +19,6 @@ export class LoginComponent /*implements OnInit*/ {
 
   // ngOnInit(): void {
   // }
-
   submitLoginClick(): void {
     this.loginService.submitLogin(
       this.loginForm.value['userUsername'],
