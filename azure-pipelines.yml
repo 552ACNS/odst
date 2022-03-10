@@ -28,6 +28,7 @@ jobs:
       - script: npm install --global yarn
       - script: yarn
       - script: yarn nx run waypoint-api:prisma-generate
+      - script: yarn nx run waypoint:graphql-generate
       - script: npx nx affected --base=HEAD~1 --target=test --parallel
 
   - job: pr
@@ -57,6 +58,8 @@ jobs:
           version: 6.x
       - script: npx nx run waypoint-api:prisma-generate
         displayName: Generate Prisma clients
+      - script: npx nx run waypoint:graphql-generate
+        displayName: Generate graphql types/quries
       - script: npx nx affected --target=lint --base=origin/master --head=HEAD --parallel
         displayName: Run linter
       - script: npx nx affected --target=build --base=origin/master --head=HEAD --parallel
