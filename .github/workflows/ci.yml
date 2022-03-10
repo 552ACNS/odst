@@ -27,6 +27,8 @@ jobs:
       - run: yarn audit
       - name: Generate Prisma clients
         run: npx nx run waypoint-api:prisma-generate
+      - name: Generate Graphql types
+        run: npx nx run waypoint:graphql-generate
       - run: npx nx affected --target=test --parallel
   pr:
     runs-on: ubuntu-latest
@@ -53,6 +55,8 @@ jobs:
           dotnet-version: '6.x'
       - name: Generate Prisma clients
         run: yarn nx run waypoint-api:prisma-generate
+      - name: Generate Graphql types
+        run: yarn nx run waypoint:graphql-generate
       - run: yarn nx affected --target=lint --parallel
       - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
       - run: dotnet tool update -g dotnet-reportgenerator-globaltool
