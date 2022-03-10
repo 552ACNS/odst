@@ -1,8 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { OrgGQL, PersonGQL } from '@odst/types';
 import { Subscription } from 'rxjs';
-import { GET_ORGS, GET_PERSONS } from '../graphql/queries';
+import {
+  OrgGql,
+  PersonGql,
+  FindManyOrgsDocument,
+  FindManyOrgsQuery,
+  FindManyOrgsQueryVariables,
+  FindManyPersonsQuery,
+  FindManyPersonsDocument,
+  FindManyPersonsQueryVariables,
+} from '../operations-types';
 
 @Component({
   selector: 'odst-root',
@@ -12,34 +20,8 @@ import { GET_ORGS, GET_PERSONS } from '../graphql/queries';
 export class AppComponent implements OnInit, OnDestroy {
   constructor(private apollo: Apollo) {}
   loading = true;
-  orgs: OrgGQL[] = [
-    { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
-  ];
-  persons: PersonGQL[] = [
-    {
-      id: '',
-      dodId: 0,
-      firstName: '',
-      lastName: '',
-      middleInitial: '',
-      email: '',
-      hairColor: 'BROWN',
-      eyeColor: 'BLUE',
-      birthCity: '',
-      birthState: 'OK',
-      birthCountry: '',
-      ssn: 0,
-      birthDate: new Date(),
-      citizenshipId: '',
-      height: 0,
-      initialTraining: true,
-      NDA: true,
-      grade: 0,
-      orgId: '',
-      spec: 'OTHER',
-      role: 'ADMIN',
-    },
-  ];
+  orgs: Partial<OrgGql>[];
+  persons: Partial<PersonGql>[];
   querySubscription: Subscription;
   tablePropsOrg = [
     {
@@ -81,22 +63,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.querySubscription = this.apollo
-      .watchQuery({
-        query: GET_ORGS,
+      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+        query: FindManyOrgsDocument,
       })
       .valueChanges.subscribe(({ data, loading }) => {
         console.log(data);
         this.loading = loading;
-        this.orgs = data;
+        this.orgs = data.findManyOrgs;
       });
 
     this.querySubscription = this.apollo
-      .watchQuery({
-        query: GET_PERSONS,
+      .watchQuery<FindManyPersonsQuery, FindManyPersonsQueryVariables>({
+        query: FindManyPersonsDocument,
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
-        this.persons = data;
+        this.persons = data.findManyPersons;
       });
   }
 

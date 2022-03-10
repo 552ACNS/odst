@@ -1,0 +1,56 @@
+query findUniquePerson($personWhereUniqueInput: PersonWhereUniqueInput!) {
+  findUniquePerson(personWhereUniqueInput: $personWhereUniqueInput) {
+    ...personFields
+  }
+}
+
+mutation createPerson($personCreateInput: PersonCreateInput!) {
+  createPerson(personCreateInput: $personCreateInput) {
+    ...personFields
+  }
+}
+
+mutation createOrg($orgCreateInput: OrgCreateInput!) {
+  createOrg(orgCreateInput: $orgCreateInput) {
+    ...orgFields
+  }
+}
+
+query findManyPersons {
+  findManyPersons {
+    ...personFields
+  }
+}
+
+query findManyOrgs {
+  findManyOrgs {
+    ...orgFields
+  }
+}
+
+mutation login($loginUserInput: LoginUserInput!) {
+  login(loginUserInput: $loginUserInput) {
+    ...tokenFields
+  }
+}
+
+fragment orgFields on OrgGQL {
+  id
+  name
+  aliases
+  orgTier
+  parentId
+}
+
+fragment personFields on PersonGQL {
+  id
+  firstName
+  lastName
+  dodId
+  ssn
+}
+
+fragment tokenFields on TokensGQL {
+  accessToken
+  refreshToken
+}

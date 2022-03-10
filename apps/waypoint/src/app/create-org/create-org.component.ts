@@ -1,11 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
-import { Org, OrgTier } from '@prisma/client';
 import { Subscription } from 'rxjs';
 import { CreateOrgService } from './create-org.service';
-import { SUBMIT_ORG } from '../../graphql/mutations';
-import { GET_ORGS } from '../../graphql/queries';
+import {
+  CreateOrgDocument,
+  CreateOrgMutation,
+  CreateOrgMutationVariables,
+  FindManyOrgsDocument,
+  FindManyOrgsQuery,
+  FindManyOrgsQueryVariables,
+  OrgGql,
+  OrgTier,
+} from '../../operations-types';
 
 @Component({
   selector: 'odst-create-org',
@@ -15,9 +22,7 @@ import { GET_ORGS } from '../../graphql/queries';
 export class CreateOrgComponent implements OnInit, OnDestroy {
   orgTiers: string[] = Object.values(OrgTier);
   orgAliases: string[] = [];
-  orgs: Partial<Org>[] = [
-    { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
-  ];
+  orgs: Partial<OrgGql>[];
   querySubscription: Subscription;
   loading = true;
 
@@ -51,8 +56,8 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   // }
   async ngOnInit(): Promise<void> {
     this.querySubscription = this.apollo
-      .watchQuery<any>({
-        query: GET_ORGS,
+      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+        query: FindManyOrgsDocument,
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
@@ -62,8 +67,8 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
 
   OrgSubmit(): void {
     this.apollo
-      .mutate<any>({
-        mutation: SUBMIT_ORG,
+      .mutate<CreateOrgMutation, CreateOrgMutationVariables>({
+        mutation: CreateOrgDocument,
         variables: {
           orgCreateInput: {
             name: this.orgForm.value['orgName'],

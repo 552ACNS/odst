@@ -16,8 +16,16 @@ import {
   getSSN,
   getDoB,
 } from '@odst/helpers';
-import { GET_ORGS } from '../../graphql/queries';
-import { SUBMIT_PERSON } from '../../graphql/mutations';
+import {
+  CreatePersonDocument,
+  CreatePersonMutation,
+  CreatePersonMutationVariables,
+  FindManyOrgsDocument,
+  FindManyOrgsQuery,
+  FindManyOrgsQueryVariables,
+  OrgGql,
+  Role,
+} from '../../operations-types';
 
 @Component({
   selector: 'odst-create-person',
@@ -29,7 +37,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
-  orgs = [{ id: '', name: '', aliases: [], orgTier: 'WING', parentId: null }];
+  orgs: Partial<OrgGql>[];
   personGrades: number[];
   querySubscription: Subscription;
   loading = true;
@@ -58,12 +66,14 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       ],
     ],
   });
+
   birthForm = this.fb.group({
     personBirthCountry: ['', Validators.required],
     personBirthCity: ['', Validators.required],
     personBirthDate: ['', Validators.required],
     personBirthState: ['', Validators.required],
   });
+
   identityForm = this.fb.group({
     personHeight: [
       '',
@@ -88,9 +98,8 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     this.querySubscription = this.apollo
-      //TODO: make query strongly typed instead of any
-      .watchQuery<any>({
-        query: GET_ORGS,
+      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+        query: FindManyOrgsDocument,
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
@@ -141,37 +150,40 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       personBirthDate: rawDoB,
     });
   }
+
   resetPerson(): void {
     this.submitSuccess = false;
   }
 
   personSubmit(): void {
     this.apollo
-      .mutate({
-        mutation: SUBMIT_PERSON,
+      .mutate<CreatePersonMutation, CreatePersonMutationVariables>({
+        mutation: CreatePersonDocument,
         variables: {
-          firstName: this.nameForm.value['personFirstName'],
-          lastName: this.nameForm.value['personLastName'],
-          middleInitial: this.nameForm.value['personMiddleInitial'],
-          email: this.nameForm.value['personEmail'],
-          ssn: parseFloat(this.nameForm.value['personSSN']),
-          dodId: parseFloat(this.nameForm.value['personDoDIDNumber']),
-          birthDate: this.birthForm.value['personBirthDate'],
-          birthCity: this.birthForm.value['personBirthCity'],
-          birthCountry: this.birthForm.value['personBirthCountry'],
-          birthState: this.birthForm.get(['personBirthState'])?.value,
-          citizenshipId: 'Yes',
-          initialTraining: this.personInitTrngCheck(),
-          NDA: this.personNDAcheck(),
-          grade: parseFloat(this.identityForm.get(['personGrade'])?.value),
-          eyeColor: this.identityForm.get(['personEyeColor'])?.value,
-          hairColor: this.identityForm.get(['personHairColor'])?.value,
-          role: 'NONE',
-          spec: this.identityForm.get(['personSpec'])?.value,
-          height: parseFloat(this.identityForm.value['personHeight']),
-          org: {
-            connect: {
-              id: this.identityForm.get(['personOrg'])?.value,
+          personCreateInput: {
+            firstName: this.nameForm.value['personFirstName'],
+            lastName: this.nameForm.value['personLastName'],
+            middleInitial: this.nameForm.value['personMiddleInitial'],
+            email: this.nameForm.value['personEmail'],
+            ssn: parseFloat(this.nameForm.value['personSSN']),
+            dodId: parseFloat(this.nameForm.value['personDoDIDNumber']),
+            birthDate: this.birthForm.value['personBirthDate'],
+            birthCity: this.birthForm.value['personBirthCity'],
+            birthCountry: this.birthForm.value['personBirthCountry'],
+            birthState: this.birthForm.get(['personBirthState'])?.value,
+            citizenshipId: 'Yes',
+            initialTraining: this.personInitTrngCheck(),
+            NDA: this.personNDAcheck(),
+            grade: parseFloat(this.identityForm.get(['personGrade'])?.value),
+            eyeColor: this.identityForm.get(['personEyeColor'])?.value,
+            hairColor: this.identityForm.get(['personHairColor'])?.value,
+            role: Role.None,
+            spec: this.identityForm.get(['personSpec'])?.value,
+            height: parseFloat(this.identityForm.value['personHeight']),
+            org: {
+              connect: {
+                id: this.identityForm.get(['personOrg'])?.value,
+              },
             },
           },
         },

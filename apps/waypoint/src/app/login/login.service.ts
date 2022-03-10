@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { TokensGQL } from '@odst/types';
+import { Apollo } from 'apollo-angular';
 import { setRefreshToken, setAccessToken } from '@odst/helpers';
-import { LOGIN } from '../../graphql/mutations';
+import {
+  LoginMutationVariables,
+  LoginMutation,
+  LoginDocument,
+} from '../../operations-types';
 
 @Injectable({
   providedIn: 'root',
@@ -18,19 +21,21 @@ export class LoginService {
 
   submitLogin(username: string, password: string): void {
     this.apollo
-      .mutate({
-        mutation: LOGIN,
+      .mutate<LoginMutation, LoginMutationVariables>({
+        mutation: LoginDocument,
         variables: {
-          username: username,
-          password: password, //TODO hash password first, need to change backend too
+          loginUserInput: {
+            username: username,
+            password: password, //TODO hash password first, need to change backend too
+          },
         },
       })
       .subscribe(
         ({ data }) => {
-          console.log(data)
+          console.log(data);
           if (data) {
-            setAccessToken(data.accessToken);
-            setRefreshToken(data.refreshToken);
+            setAccessToken(data.login.accessToken);
+            setRefreshToken(data.login.refreshToken);
           }
         },
         (error) => {

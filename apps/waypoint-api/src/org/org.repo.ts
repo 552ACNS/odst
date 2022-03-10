@@ -1,20 +1,21 @@
+import { OrgTier } from '../operations-types';
 import { OrgCreateInput } from '@odst/types';
 
 export const TestOrgCreateInput: OrgCreateInput[] = [
   {
     name: '552 ACW',
     aliases: [],
-    orgTier: 'WING',
+    orgTier: OrgTier.Wing,
   },
   {
     name: '72 ABW',
     aliases: [],
-    orgTier: 'WING',
+    orgTier: OrgTier.Wing,
   },
   {
     name: '552 ACG',
     aliases: [],
-    orgTier: 'GROUP',
+    orgTier: OrgTier.Group,
     parent: {
       connect: {
         name: '552 ACW',
@@ -24,7 +25,7 @@ export const TestOrgCreateInput: OrgCreateInput[] = [
   {
     name: '552 ACNS',
     aliases: [],
-    orgTier: 'SQUADRON',
+    orgTier: OrgTier.Squadron,
     parent: {
       connect: {
         name: '552 ACG',
@@ -33,7 +34,7 @@ export const TestOrgCreateInput: OrgCreateInput[] = [
   },
   {
     name: '552 ACS',
-    orgTier: 'SQUADRON',
+    orgTier: OrgTier.Squadron,
     aliases: [],
     parent: {
       connect: {
@@ -43,7 +44,7 @@ export const TestOrgCreateInput: OrgCreateInput[] = [
   },
   {
     name: '552 TRG',
-    orgTier: 'GROUP',
+    orgTier: OrgTier.Group,
     aliases: [],
     parent: {
       connect: {
@@ -53,7 +54,7 @@ export const TestOrgCreateInput: OrgCreateInput[] = [
   },
   {
     name: '552 TRS',
-    orgTier: 'SQUADRON',
+    orgTier: OrgTier.Squadron,
     aliases: [],
     parent: {
       connect: {

@@ -161,6 +161,16 @@
             "jestConfig": "apps/waypoint/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "graphql-generate": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "npx graphql-codegen --config graphql.codegen.yml"
+              }
+            ]
+          }
         }
       },
       "tags": []
