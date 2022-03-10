@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+//import { isLoggedIn } from '@odst/helpers';
 import { LoginService } from './login.service';
 
 @Component({
@@ -8,21 +10,32 @@ import { LoginService } from './login.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent /*implements OnInit*/ {
+  wrongCredentials = false;
   hide = true;
   loginForm = this.fb.group({
     userUsername: ['', Validators.required],
     userPassword: ['', Validators.required],
-    rememberMe:   ['', Validators.nullValidator],
+    rememberMe: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder, private loginService: LoginService) {}
+  constructor(
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private router: Router
+  ) {}
 
   // ngOnInit(): void {
   // }
-  submitLoginClick(): void {
+  //TODO: Fix maybe if AuthGuards are required in front end login routing
+  submitLoginClick() {
     this.loginService.submitLogin(
       this.loginForm.value['userUsername'],
       this.loginForm.value['userPassword']
     );
   }
+
+  // loggedInCheck() {
+  //   if(isLoggedIn() == false)
+  //     this.wrongCredentials = true;
+  // }
 }
