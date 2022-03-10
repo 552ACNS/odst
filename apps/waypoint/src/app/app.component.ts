@@ -11,6 +11,7 @@ import {
   FindManyPersonsDocument,
   FindManyPersonsQueryVariables,
 } from '../operations-types';
+import { isLoggedIn } from '@odst/helpers';
 
 @Component({
   selector: 'odst-root',
@@ -41,7 +42,6 @@ export class AppComponent implements OnInit, OnDestroy {
       header: 'OrgTier',
     },
   ];
-
   tablePropsPerson = [
     {
       columnDef: 'firstName',
@@ -60,7 +60,9 @@ export class AppComponent implements OnInit, OnDestroy {
       header: 'SSN',
     },
   ];
-
+  loggedInCheck() {
+    return isLoggedIn();
+  }
   ngOnInit() {
     this.querySubscription = this.apollo
       .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
