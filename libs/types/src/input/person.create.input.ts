@@ -32,7 +32,7 @@ export class PersonCreateWithoutOrgInput
 
   @Field(() => String)
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true})
   middleInitial?: string;
 
   @Field(() => String)
@@ -53,7 +53,7 @@ export class PersonCreateWithoutOrgInput
   @Field(() => Boolean)
   initialTraining?: boolean;
 
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true})
   NDA?: boolean;
 
   @Field(() => Number)
@@ -91,7 +91,7 @@ export class PersonCreateManyOrgInputEnvelope
   @Field(() => [PersonCreateInput])
   data!: Prisma.PersonCreateInput[];
 
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true})
   skipDuplicates?: boolean;
 }
 

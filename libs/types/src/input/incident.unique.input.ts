@@ -6,6 +6,6 @@ import { Field, InputType } from '@nestjs/graphql';
 export class IncidentWhereUniqueInput
   implements Prisma.IncidentWhereUniqueInput
 {
-  @Field(() => String)
+  @Field(() => String, { nullable: true})
   id?: string;
 }

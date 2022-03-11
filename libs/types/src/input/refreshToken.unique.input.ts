@@ -6,10 +6,10 @@ import { Prisma } from '@prisma/client';
 export class RefreshTokenWhereUniqueInput
   implements Prisma.RefreshTokenWhereUniqueInput
 {
-  @Field(() => String)
+  @Field(() => String, { nullable: true})
   id?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true})
   hash?: string;
 }
 
