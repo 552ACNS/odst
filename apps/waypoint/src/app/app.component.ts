@@ -69,7 +69,6 @@ export class AppComponent implements OnInit, OnDestroy {
         query: FindManyOrgsDocument,
       })
       .valueChanges.subscribe(({ data, loading }) => {
-        console.log(data);
         this.loading = loading;
         this.orgs = data.findManyOrgs;
       });

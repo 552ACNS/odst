@@ -30,9 +30,8 @@ export class LoginService {
           },
         },
       })
-      .subscribe(
+      .subscribe( //TODO deprecated
         ({ data }) => {
-          console.log(data);
           if (data) {
             setAccessToken(data.login.accessToken);
             setRefreshToken(data.login.refreshToken);

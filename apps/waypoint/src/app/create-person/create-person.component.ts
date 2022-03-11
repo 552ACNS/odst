@@ -189,7 +189,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           },
         },
       })
-      .subscribe(
+      .subscribe( //TODO deprecated
         ({ data }) => {
           alert(data);
           this.submitSuccess = true;
