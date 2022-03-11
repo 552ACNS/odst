@@ -199,7 +199,7 @@
           "options": {
             "parallel": false,
             "commands": [
-              "ts-node -r tsconfig-paths/register --project apps/waypoint-api/tsconfig.app.json apps/waypoint-api/generate-schema.ts",
+              "ts-node -r tsconfig-paths/register --project apps/waypoint-api/tsconfig.app.json apps/waypoint-api/src/graphql/generate-schema.ts",
               "npx graphql-codegen --config graphql.codegen.yml"
             ]
           }
