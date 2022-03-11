@@ -1,7 +1,7 @@
 schema: 'apps/waypoint-api/schema.graphql'
 documents: ['apps/waypoint/src/**/*.graphql']
 generates:
-  apps/waypoinT/src/operations-types.ts:
+  apps/waypoint/src/operations-types.ts:
     - typescript
     - typescript-operations
     - typed-document-node

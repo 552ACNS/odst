@@ -42,11 +42,8 @@ export async function generateSchema(): Promise<void> {
 
   const gqlSchemaFactory = app.get(GraphQLSchemaFactory);
 
-  const schema = await gqlSchemaFactory.create(resolvers, {
-    // skipCheck: true,
-  });
+  const schema = await gqlSchemaFactory.create(resolvers);
 
-  console.log(printSchema(schema));
   writeFileSync(
     join(process.cwd(), 'apps/waypoint-api/schema.graphql'),
     printSchema(schema)
