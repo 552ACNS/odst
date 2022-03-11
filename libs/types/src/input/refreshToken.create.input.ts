@@ -15,6 +15,7 @@ export class RefreshTokenCreateInput {
   @Field(() => UserGQL)
   user: UserGQL;
 
+  @Field(() => String)
   token: string;
 }
 

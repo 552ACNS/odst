@@ -47,6 +47,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     personCACScan: [''],
     personFirstName: ['', Validators.required],
     personLastName: ['', Validators.required],
+    //TODO no space, space bad, ajax get rid of spaces or whatever good catch actually
     personMiddleInitial: ['', Validators.maxLength],
     personEmail: ['', Validators.email],
     personDoDIDNumber: [

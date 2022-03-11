@@ -18,18 +18,45 @@ export class PersonCreateWithoutOrgInput
   @Field(() => HairColor)
   hairColor!: HairColor;
 
+  @Field(() => Number)
   dodId!: number;
+
+  @Field(() => Number)
   ssn!: number;
+
+  @Field(() => String)
   email!: string;
+
+  @Field(() => String)
   firstName!: string;
+
+  @Field(() => String)
+
+  @Field(() => String)
   middleInitial?: string;
+
+  @Field(() => String)
   lastName!: string;
+
+  @Field(() => Date)
   birthDate!: Date;
+
+  @Field(() => String)
   birthCity!: string;
+
+  @Field(() => String)
   birthCountry!: string;
+
+  @Field(() => String)
   citizenshipId!: string;
+
+  @Field(() => Boolean)
   initialTraining?: boolean;
+
+  @Field(() => Boolean)
   NDA?: boolean;
+
+  @Field(() => Number)
   grade!: number;
 
   @Field(() => EyeColor)
@@ -44,6 +71,7 @@ export class PersonCreateWithoutOrgInput
   @Field(() => Spec)
   spec!: Spec;
 
+  @Field(() => Number)
   height!: number;
 }
 
@@ -62,6 +90,8 @@ export class PersonCreateManyOrgInputEnvelope
 {
   @Field(() => [PersonCreateInput])
   data!: Prisma.PersonCreateInput[];
+
+  @Field(() => Boolean)
   skipDuplicates?: boolean;
 }
 

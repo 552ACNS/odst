@@ -7,11 +7,13 @@ import { OrgWhereUniqueInput } from './org.unique.input';
 // When we create the org there's initially no one in it
 @InputType()
 export class OrgCreateInput implements Prisma.OrgCreateInput {
+  @Field(() => String)
   name: string;
 
   @Field(() => OrgTier)
   orgTier: OrgTier;
 
+  @Field(() =>[String])
   aliases: string[];
 
   @Field(() => PersonCreateNestedManyWithoutOrgInput)

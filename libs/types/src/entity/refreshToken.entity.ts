@@ -19,5 +19,6 @@ export class RefreshTokenGQL implements RefreshToken {
   @Field(() => String)
   userId: string;
 
+  @Field(() => String)
   hash: string;
 }

@@ -5,7 +5,10 @@ import { RefreshTokenCreateNestedManyWithoutUserInput } from './refreshToken.cre
 
 @InputType()
 export class UserCreateInput implements Prisma.UserCreateInput {
+  @Field(() => String)
   username: string;
+
+  @Field(() => String)
   password: string;
 
   @Field(() => PersonCreateNestedOneWithoutUserInput)

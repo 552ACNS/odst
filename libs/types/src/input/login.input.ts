@@ -21,5 +21,6 @@ export class SignupUserInput extends LoginUserInput {
 //not sure about the name/location but it needs to be separated from stuff that deals with the refreshToken DB
 @InputType()
 export class RefreshLoginInput {
+  @Field(() => String)
   refreshToken: string;
 }
