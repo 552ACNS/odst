@@ -7,11 +7,11 @@ import {
 import { writeFileSync } from 'fs';
 import { printSchema } from 'graphql';
 import { join } from 'path';
-import { AuthResolver } from 'src/auth/auth.resolver';
-import { IncidentResolver } from 'src/incident/incident.resolver';
-import { OrgResolver } from 'src/org/org.resolver';
-import { PersonResolver } from 'src/person/person.resolver';
-import { UserResolver } from 'src/user/user.resolver';
+import { AuthResolver } from '../auth/auth.resolver';
+import { IncidentResolver } from '../incident/incident.resolver';
+import { OrgResolver } from '../org/org.resolver';
+import { PersonResolver } from '../person/person.resolver';
+import { UserResolver } from '../user/user.resolver';
 import {
   HairColor,
   EyeColor,
