@@ -11,7 +11,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CreatePersonComponent } from './create-person.component';
-import { CreatePersonRoutingModule } from './create-person-routing.module';
+import { CreatePersonRoutingModule } from './create-person.routing';
 
 
 @NgModule({

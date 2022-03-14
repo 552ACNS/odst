@@ -10,12 +10,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 //import { MaterialModule } from './material.module';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app.routing';
 import { environment } from '../environments/environment';
-import { NavigationBarRoutingModule } from './navigation-bar/navigation-bar-routing.module';
+import { NavigationBarRoutingModule } from './navigation-bar/navigation-bar.routing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
-
 
 @NgModule({
   declarations: [
