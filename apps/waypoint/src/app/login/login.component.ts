@@ -10,7 +10,6 @@ import { LoginService } from './login.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent /*implements OnInit*/ {
-  wrongCredentials = false;
   hide = true;
   loginForm = this.fb.group({
     userUsername: ['', Validators.required],
@@ -33,9 +32,4 @@ export class LoginComponent /*implements OnInit*/ {
       this.loginForm.value['userPassword']
     );
   }
-
-  // loggedInCheck() {
-  //   if(isLoggedIn() == false)
-  //     this.wrongCredentials = true;
-  // }
 }

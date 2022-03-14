@@ -4,7 +4,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
 
 const routes: Routes = [
 
-   { path: 'login', 
+  { path: 'login', 
       loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
   { path: 'home', component: NavigationBarComponent }, 
 ];

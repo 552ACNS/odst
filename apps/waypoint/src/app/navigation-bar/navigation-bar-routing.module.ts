@@ -7,7 +7,6 @@ const routes: Routes = [
   { path: '', component: NavigationBarComponent, children: [
     { path: 'login', 
       loadChildren: () => import('../login/login.module').then(m => m.LoginModule) },
-    //{ path: 'navigation-bar', component: NavigationBarComponent },
     { path: 'create-person', 
       loadChildren: () => import('../create-person/create-person.module').then(m => m.CreatePersonModule) },
     { path: 'create-org', 
