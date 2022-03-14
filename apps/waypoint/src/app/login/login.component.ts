@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-//import { isLoggedIn } from '@odst/helpers';
 import { LoginService } from './login.service';
 
 @Component({
@@ -20,7 +18,6 @@ export class LoginComponent /*implements OnInit*/ {
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
-    private router: Router
   ) {}
 
   // ngOnInit(): void {

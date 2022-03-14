@@ -42,7 +42,7 @@ export class LoginService {
           setRefreshToken(tokens.refreshToken);
           this.router.navigate(['home'])
         },
-        (error) => {
+        () => {
           //alert(error);
           //this.router.navigate(['login'])
           alert("Username or Password was incorrect")
