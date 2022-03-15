@@ -24,7 +24,7 @@ describe('waypoint', () => {
       .get('mat-option')
       .contains('OTHER')
       .click();
-    cy.get('#orgSubmit').click();
+    cy.get('#btnOrgSubmit').click();
     // cy.get('#orgCheck', { timeout: 10000 }).should('be.visible');
   });
 
@@ -71,7 +71,7 @@ describe('waypoint', () => {
       .contains('Scorpion Developers')
       .click();
     cy.get('[formcontrolname="personHeight"]').type('68');
-    cy.get('#personSubmit').click();
+    cy.get('#btnPersonSubmit').click();
     // cy.get('#personCheck', { timeout: 10000 }).should('be.visible');
   });
 });
