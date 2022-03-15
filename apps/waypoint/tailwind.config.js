@@ -8,7 +8,12 @@ module.exports = {
   ],
   important: true,
   theme: {
-    extend: {},
+    extend: {    
+      colors: {
+      'dark-blue': '#0D153F'
+    },
+  },
+
   },
   variants: {
     extend: {},

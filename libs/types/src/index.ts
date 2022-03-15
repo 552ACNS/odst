@@ -28,6 +28,7 @@ export * from './entity/refreshToken.entity'
 
 //#region Types
 export * from './misc/jwtPayload.type'
+export * from './misc/navProps.type'
 //#endregion
 
 //#region Decorators

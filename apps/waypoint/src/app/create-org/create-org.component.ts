@@ -13,9 +13,7 @@ import { CreateOrgService } from './create-org.service';
 export class CreateOrgComponent implements OnInit, OnDestroy {
   orgTiers: string[] = Object.values(OrgTier);
   orgAliases: string[] = [];
-  orgs: Partial<Org>[] = [
-    { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
-  ];
+  orgs: Org[] = []
   querySubscription: Subscription;
   loading = true;
 

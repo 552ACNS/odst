@@ -4,7 +4,6 @@ export interface TableProps {
   columnDef: string;
   header: string;
 }
-
 @Component({
   selector: 'odst-table',
   templateUrl: './table.component.html',
@@ -16,11 +15,9 @@ export class TableComponent implements OnInit {
 
   // get the column defs of the tableProps
   displayedColumns: string[];
-
   constructor() {
     // left blank
   }
-
   ngOnInit(): void {
     // left blank
     this.displayedColumns = this.tableProps?.map((prop) => prop.columnDef);

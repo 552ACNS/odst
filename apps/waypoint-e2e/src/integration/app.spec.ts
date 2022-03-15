@@ -1,13 +1,15 @@
 describe('waypoint', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('/login');
     cy.get('[formcontrolname="userUsername"]').type('admin');
     cy.get('[formcontrolname="userPassword"]').type('admin');
-    cy.get('odst-login').find('button').contains('Login').click();
+    cy.get('odst-login').find('button').contains('Sign In').click();
+    cy.location("pathname").should("include", "/home");
   });
 
   //need to run this test before create person
   it('should create a new org', () => {
+    cy.visit('/create-org');
     cy.get('[formcontrolname="orgName"]').type('552 ACNS');
     cy.get('[formcontrolname="orgTier"]')
       .click()
@@ -18,6 +20,7 @@ describe('waypoint', () => {
   });
 
   it('should create a new person', () => {
+    cy.visit('/create-person');
     cy.get('[formcontrolname="personFirstName"]').type('FirstName');
     cy.get('[formcontrolname="personLastName"]').type('LastName');
     cy.get('[formcontrolname="personDoDIDNumber"]').type('0123456789');
