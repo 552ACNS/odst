@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CreateOrgComponent } from './create-org.component';
 import { RouterModule } from '@angular/router';
 import { createOrgRoutes } from './create-org.routing'
+import { MatIconModule } from '@angular/material/icon';
 @NgModule({
     declarations: [CreateOrgComponent],
     imports: [
@@ -17,7 +18,8 @@ import { createOrgRoutes } from './create-org.routing'
         MatButtonModule,
         MatSelectModule,
         MatCardModule,
-        RouterModule.forChild(createOrgRoutes)
+        RouterModule.forChild(createOrgRoutes),
+        MatIconModule
     ],
     exports: []
   })

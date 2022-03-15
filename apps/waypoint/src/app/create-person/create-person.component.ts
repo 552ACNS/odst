@@ -180,7 +180,6 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         ({ data }) => {
-          alert(data);
           this.submitSuccess = true;
         },
         (error) => {

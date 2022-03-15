@@ -64,6 +64,7 @@
           [disabled]="!orgForm.valid"
         >
           Submit
+          <mat-icon class="ml-1" *ngIf="submitSuccess">check</mat-icon>
         </button>
       </div>
     </mat-card-content>
