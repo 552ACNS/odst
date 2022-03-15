@@ -1,11 +1,19 @@
+
 describe('waypoint', () => {
   beforeEach(() => {
     cy.visit('/login');
     cy.get('[formcontrolname="userUsername"]').type('admin');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('odst-login').find('button').contains('Sign In').click();
-    cy.location("pathname").should("include", "/home");
+    cy.location('pathname').should('include', '/home');
   });
+  // after(() => {
+  //   cy.visit('/login');
+  //   cy.get('[formcontrolname="userUsername"]').type('admin');
+  //   cy.get('[formcontrolname="userPassword"]').type('admin');
+  //   cy.get('odst-login').find('button').contains('Sign In').click();
+  //   cy.location('pathname').should('include', '/home');
+  // });
 
   //need to run this test before create person
   it('should create a new org', () => {
@@ -16,7 +24,8 @@ describe('waypoint', () => {
       .get('mat-option')
       .contains('OTHER')
       .click();
-    cy.get('odst-create-org').find('button').click();
+    cy.get('#btnOrgSubmit').click();
+    // cy.get('#orgCheck', { timeout: 10000 }).should('be.visible');
   });
 
   it('should create a new person', () => {
@@ -62,6 +71,7 @@ describe('waypoint', () => {
       .contains('Scorpion Developers')
       .click();
     cy.get('[formcontrolname="personHeight"]').type('68');
-    cy.get('odst-create-person').find('button').contains('Submit').click();
+    cy.get('#btnPersonSubmit').click();
+    // cy.get('#personCheck', { timeout: 10000 }).should('be.visible');
   });
 });
