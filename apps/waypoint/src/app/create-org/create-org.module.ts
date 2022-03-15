@@ -5,19 +5,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
-import { CreateOrgRoutingModule } from './create-org.routing';
 import { CreateOrgComponent } from './create-org.component';
-
+import { RouterModule } from '@angular/router';
+import { createOrgRoutes } from './create-org.routing'
 @NgModule({
     declarations: [CreateOrgComponent],
     imports: [
         CommonModule, 
-        CreateOrgRoutingModule,
         ReactiveFormsModule,
         MatInputModule,
         MatButtonModule,
         MatSelectModule,
         MatCardModule,
+        RouterModule.forChild(createOrgRoutes)
     ],
     exports: []
   })

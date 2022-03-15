@@ -11,14 +11,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CreatePersonComponent } from './create-person.component';
-import { CreatePersonRoutingModule } from './create-person.routing';
-
-
+import { RouterModule } from '@angular/router';
+import { createPersonRoutes } from './create-person.routing';
 @NgModule({
     declarations: [CreatePersonComponent],
     imports: [
         CommonModule, 
-        CreatePersonRoutingModule,
         ReactiveFormsModule,
         MatInputModule,
         MatButtonModule,
@@ -29,6 +27,7 @@ import { CreatePersonRoutingModule } from './create-person.routing';
         MatCheckboxModule,
         MatIconModule,
         MatStepperModule,
+        RouterModule.forChild(createPersonRoutes)
     ],
     exports: []
   })
