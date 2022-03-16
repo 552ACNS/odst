@@ -1,13 +1,17 @@
 import { PersonCreateInput } from '@odst/types';
 
+function randomIntFromInterval(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 export const TestPersonCreateInput: PersonCreateInput[] = [
   {
     firstName: 'John',
     lastName: 'Doe',
-    dodId: 123456789,
-    ssn: 123456789,
+    dodId: randomIntFromInterval(1,9999999999),
+    ssn: randomIntFromInterval(1,999999999),
     hairColor: 'BROWN',
-    email: 'john.doe@us.af.mil',
+    email: String(randomIntFromInterval(1,99999999999)) + '@us.af.mil',
     middleInitial: 'J',
     birthDate: new Date('01/01/2000'),
     birthCity: 'Washington',
@@ -21,7 +25,7 @@ export const TestPersonCreateInput: PersonCreateInput[] = [
     height: 69,
     org: {
       connect: {
-        id: 'hfgjhfjhfmhjfhjmfhfv',
+        name: 'Scorpion Developers',
       },
     },
   },
