@@ -1,8 +1,8 @@
 {
   "testFiles": [
-    "../integration/deleteTestData.spec.ts",
-    "../integration/createOrg.spec.ts",
-    "../integration/createPerson.spec.ts"
+    "../highPriorityTests/*.ts",
+    "../mediumPriorityTests/*.ts",
+    "../lowPriorityTests/*.ts"
   ],
   "fileServerFolder": ".",
   "fixturesFolder": "./src/fixtures",
