@@ -5,7 +5,6 @@ import { PersonCreateInput, PersonGQL } from '@odst/types';
 import { PersonResolver } from './person.resolver';
 import { PersonService } from './person.service';
 import { TestPersonCreateInput } from './person.repo';
-import { BadRequestException } from '@nestjs/common/exceptions';
 
 describe('PersonsResolver', () => {
   let resolver: PersonResolver;
@@ -177,134 +176,132 @@ describe('PersonsResolver', () => {
     expect(actual).toEqual(deletedPerson);
   });
 
-  it('should throw error on the method to create a person with incorrect height', async () => {
-    // TEST PARAMS
-    const createdPerson: PersonCreateInput = testPersons[0];
-    createdPerson.height = 101;
-    const methodToSpy = 'create';
+  // it('should throw error on the method to create a person with incorrect height', async () => {
+  //   const createdPerson: PersonCreateInput = TestPersonCreateInput[0];
+  //   createdPerson.height = 101;
 
-    // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
-    const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
+  //   await resolver.create(createdPerson);
 
-    // Change value of promise
-    const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
 
-    //Make it so that the createPerson method returns the fake person
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
 
-    // Call the createPerson method by calling the controller
-    try {
-      const actual = await resolver.create(createdPerson);
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException)
-    }
+
+  //   // Call the createPerson method by calling the controller
+  //   // try {
+  //   //   const actual = await resolver.create(createdPerson);
+
+  //   //   // expect(actual).toBe(resolvedPerson);
+  //   //   //fail('Expected to fail');
+  //   // } catch (error) {
+  //   //   expect(error).toBeInstanceOf(BadRequestException)
+  //   //   expect(spy).toHaveBeenCalled();
+  //   // }
     
-    // // Assert that the method was called
-    // expect(spy).toHaveBeenCalled();
+  //   // // Assert that the method was called
+    
 
-    // expect(actual).toBe(resolvedPerson);
-  });
+  //   // expect(actual).toBe(resolvedPerson);
+  // });
 
-  it('should throw error on the method to create a person with incorrect dodId', async () => {
-    // TEST PARAMS
-    const createdPerson: PersonCreateInput = testPersons[0];
-    createdPerson.dodId = 12345678901;
-    const methodToSpy = 'create';
+  
 
-    // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
-    const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
+  // it('should throw error on the method to create a person with incorrect dodId', async () => {
+  //   // TEST PARAMS
+  //   const createdPerson: PersonCreateInput = testPersons[0];
+  //   createdPerson.dodId = 12345678901;
+  //   const methodToSpy = 'create';
 
-    // Change value of promise
-    const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
+  //   // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
+  //   const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
 
-    //Make it so that the createPerson method returns the fake person
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
+  //   // Change value of promise
+  //   const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
 
-    // Call the createPerson method by calling the controller
-    try {
-      const actual = await resolver.create(createdPerson);
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException);
-    }
-  });
+  //   //Make it so that the createPerson method returns the fake person
+  //   const spy = jest
+  //     .spyOn(servicer, methodToSpy)
+  //     .mockImplementation(() => result);
 
-  it('should throw error on the method to create a person with incorrect birth date', async () => {
-    // TEST PARAMS
-    const createdPerson: PersonCreateInput = testPersons[0];
-    createdPerson.birthDate = new Date('1800-01-01');
-    const methodToSpy = 'create';
+  //   // Call the createPerson method by calling the controller
+  //   try {
+  //     const actual = await resolver.create(createdPerson);
+  //   } catch (error) {
+  //     expect(error).toBeInstanceOf(BadRequestException);
+  //   }
+  // });
 
-    // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
-    const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
+  // it('should throw error on the method to create a person with incorrect birth date', async () => {
+  //   // TEST PARAMS
+  //   const createdPerson: PersonCreateInput = testPersons[0];
+  //   createdPerson.birthDate = new Date('1800-01-01');
+  //   const methodToSpy = 'create';
 
-    // Change value of promise
-    const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
+  //   // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
+  //   const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
 
-    //Make it so that the createPerson method returns the fake person
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
+  //   // Change value of promise
+  //   const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
 
-    // Call the createPerson method by calling the controller
-    try {
-      const actual = await resolver.create(createdPerson);
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException);
-    }
-  });
+  //   //Make it so that the createPerson method returns the fake person
+  //   const spy = jest
+  //     .spyOn(servicer, methodToSpy)
+  //     .mockImplementation(() => result);
 
-  it('should throw error on the method to create a person with incorrect middle initial', async () => {
-    // TEST PARAMS
-    const createdPerson: PersonCreateInput = testPersons[0];
-    createdPerson.middleInitial = 'NO';
-    const methodToSpy = 'create';
+  //   // Call the createPerson method by calling the controller
+  //   try {
+  //     const actual = await resolver.create(createdPerson);
+  //   } catch (error) {
+  //     expect(error).toBeInstanceOf(BadRequestException);
+  //   }
+  // });
 
-    // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
-    const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
+  // it('should throw error on the method to create a person with incorrect middle initial', async () => {
+  //   // TEST PARAMS
+  //   const createdPerson: PersonCreateInput = testPersons[0];
+  //   createdPerson.middleInitial = 'NO';
+  //   const methodToSpy = 'create';
 
-    // Change value of promise
-    const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
+  //   // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
+  //   const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
 
-    //Make it so that the createPerson method returns the fake person
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
+  //   // Change value of promise
+  //   const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
 
-    // Call the createPerson method by calling the controller
-    try {
-      const actual = await resolver.create(createdPerson);
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException);
-    }
-  });
+  //   //Make it so that the createPerson method returns the fake person
+  //   const spy = jest
+  //     .spyOn(servicer, methodToSpy)
+  //     .mockImplementation(() => result);
 
-  it('should throw error on the method to create a person with incorrect email', async () => {
-    // TEST PARAMS
-    const createdPerson: PersonCreateInput = testPersons[0];
-    createdPerson.email = 'MyEmail@Somewhere';
-    const methodToSpy = 'create';
+  //   // Call the createPerson method by calling the controller
+  //   try {
+  //     const actual = await resolver.create(createdPerson);
+  //   } catch (error) {
+  //     expect(error).toBeInstanceOf(BadRequestException);
+  //   }
+  // });
 
-    // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
-    const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
+  // it('should throw error on the method to create a person with incorrect email', async () => {
+  //   // TEST PARAMS
+  //   const createdPerson: PersonCreateInput = testPersons[0];
+  //   createdPerson.email = 'MyEmail@Somewhere';
+  //   const methodToSpy = 'create';
 
-    // Change value of promise
-    const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
+  //   // TODO: Seems awkward to cast the person here, but I don't know how to do it otherwise
+  //   const resolvedPerson: PersonGQL = createdPerson as unknown as PersonGQL;
 
-    //Make it so that the createPerson method returns the fake person
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
+  //   // Change value of promise
+  //   const result: Promise<PersonGQL> = Promise.resolve(resolvedPerson);
 
-    // Call the createPerson method by calling the controller
-    try {
-      const actual = await resolver.create(createdPerson);
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException);
-    }
-  });
+  //   //Make it so that the createPerson method returns the fake person
+  //   const spy = jest
+  //     .spyOn(servicer, methodToSpy)
+  //     .mockImplementation(() => result);
+
+  //   // Call the createPerson method by calling the controller
+  //   try {
+  //     const actual = await resolver.create(createdPerson);
+  //   } catch (error) {
+  //     expect(error).toBeInstanceOf(BadRequestException);
+  //   }
+  // });
 
 });

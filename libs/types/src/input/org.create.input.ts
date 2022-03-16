@@ -8,7 +8,7 @@ import { Matches } from 'class-validator';
 // When we create the org there's initially no one in it
 @InputType()
 export class OrgCreateInput implements Prisma.OrgCreateInput {
-  @Matches(/^(([0-9]{1,3})\s([A-Z0-9/\s]{2,9}))+$/)
+  @Matches(/^(([0-9]{1,3})\s([A-Z0-9/\s]{2,15}))+$/)
   name: string;
 
   @Field(() => OrgTier)
