@@ -1,4 +1,9 @@
 {
+  "testFiles": [
+    "../highPriorityTests/*.ts",
+    "../mediumPriorityTests/*.ts",
+    "../lowPriorityTests/*.ts"
+  ],
   "fileServerFolder": ".",
   "fixturesFolder": "./src/fixtures",
   "integrationFolder": "./src/integration",
