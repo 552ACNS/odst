@@ -11,7 +11,7 @@ export const TestPersonCreateInput: PersonCreateInput[] = [
     dodId: randomIntFromInterval(1,9999999999),
     ssn: randomIntFromInterval(1,999999999),
     hairColor: 'BROWN',
-    email: randomIntFromInterval(1,99999999999).toString + '@us.af.mil',
+    email: String(randomIntFromInterval(1,99999999999)) + '@us.af.mil',
     middleInitial: 'J',
     birthDate: new Date('01/01/2000'),
     birthCity: 'Washington',
