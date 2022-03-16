@@ -1,4 +1,9 @@
 {
+  "testFiles": [
+    "../integration/deleteTestData.spec.ts",
+    "../integration/createOrg.spec.ts",
+    "../integration/createPerson.spec.ts"
+  ],
   "fileServerFolder": ".",
   "fixturesFolder": "./src/fixtures",
   "integrationFolder": "./src/integration",
