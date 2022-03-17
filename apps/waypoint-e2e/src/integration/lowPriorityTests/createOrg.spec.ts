@@ -9,7 +9,7 @@ describe('waypoint', () => {
     it('should create a new org', () => {
         cy.visit('/create-org');
         cy.location('pathname').should('include', '/create-org');
-        cy.get('[formcontrolname="orgName"]').type('552 ACNS');
+        cy.get('[formcontrolname="orgName"]').type('552 FakeOrg');
         cy.get('[formcontrolname="orgTier"]')
         .click()
         .get('mat-option')
