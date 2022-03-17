@@ -50,6 +50,181 @@
       },
       "tags": []
     },
+    "ods": {
+      "projectType": "application",
+      "root": "apps/ods",
+      "sourceRoot": "apps/ods/src",
+      "prefix": "odst",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/ods",
+            "index": "apps/ods/src/index.html",
+            "main": "apps/ods/src/main.ts",
+            "polyfills": "apps/ods/src/polyfills.ts",
+            "tsConfig": "apps/ods/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["apps/ods/src/favicon.ico", "apps/ods/src/assets"],
+            "styles": ["apps/ods/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/ods/src/environments/environment.ts",
+                  "with": "apps/ods/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ods:build:production"
+            },
+            "development": {
+              "browserTarget": "ods:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4210,
+            "proxyConfig": "apps/ods/proxy.conf.json"
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ods:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/ods/src/**/*.ts",
+              "apps/ods/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ods"],
+          "options": {
+            "jestConfig": "apps/ods/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "ods-api": {
+      "root": "apps/ods-api",
+      "sourceRoot": "apps/ods-api/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/ods-api",
+            "main": "apps/ods-api/src/main.ts",
+            "tsConfig": "apps/ods-api/tsconfig.app.json",
+            "assets": ["apps/ods-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/ods-api/src/environments/environment.ts",
+                  "with": "apps/ods-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "ods-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/ods-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ods-api"],
+          "options": {
+            "jestConfig": "apps/ods-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "ods-e2e": {
+      "root": "apps/ods-e2e",
+      "sourceRoot": "apps/ods-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ods-e2e/cypress.json",
+            "devServerTarget": "ods:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ods:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/ods-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["ods"]
+    },
     "types": {
       "root": "libs/types",
       "sourceRoot": "libs/types/src",
