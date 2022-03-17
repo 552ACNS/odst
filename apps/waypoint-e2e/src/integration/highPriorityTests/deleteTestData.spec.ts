@@ -47,7 +47,7 @@ it('deletes an org', () => {
       operationName: 'removeOrg',
       variables: {
         orgWhereUniqueInput: {
-          name: '552 ACNS',
+          name: '552 FakeOrg',
         },
       },
       query: `
