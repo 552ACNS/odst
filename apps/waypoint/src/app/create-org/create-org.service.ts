@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OrgCreateInput } from '@odst/types';
-import { Org } from '@prisma/client';
+import { Org } from '.prisma/waypoint/client';
 import { gql, TypedDocumentNode } from 'apollo-angular';
 import { EmptyObject } from 'apollo-angular/build/types';
 

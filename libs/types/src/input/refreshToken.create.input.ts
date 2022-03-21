@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '.prisma/waypoint/client';
 import { RefreshTokenGQL } from '../entity/refreshToken.entity';
 import { UserGQL } from '../entity/user.entity';
 import { RefreshTokenWhereUniqueInput } from './refreshToken.unique.input';

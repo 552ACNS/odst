@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
-import { Org, OrgTier } from '@prisma/client';
+import { Org, OrgTier } from '.prisma/waypoint/client';
 import { Subscription } from 'rxjs';
 import { CreateOrgService } from './create-org.service';
 

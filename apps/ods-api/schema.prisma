@@ -8,7 +8,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../../node_modules/.prisma/waypoint/client"
+  output   = "../../node_modules/.prisma/ods/client"
 }
 
 model User {
