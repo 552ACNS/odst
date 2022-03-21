@@ -7,22 +7,19 @@ import { OrgWhereUniqueInput } from './org.unique.input';
 // When we create the org there's initially no one in it
 @InputType()
 export class OrgCreateInput implements Prisma.OrgCreateInput {
-  @Field(() => String)
   name: string;
 
   @Field(() => OrgTier)
   orgTier: OrgTier;
-
-  @Field(() =>[String])
   aliases: string[];
 
-  @Field(() => PersonCreateNestedManyWithoutOrgInput, { nullable: true})
+  @Field(() => PersonCreateNestedManyWithoutOrgInput, { nullable: true })
   persons?: Prisma.PersonCreateNestedManyWithoutOrgInput;
 
-  @Field(() => OrgCreateNestedOneWithoutChildrenInput, { nullable: true})
+  @Field(() => OrgCreateNestedOneWithoutChildrenInput, { nullable: true })
   parent?: Prisma.OrgCreateNestedOneWithoutChildrenInput;
 
-  @Field(() => OrgCreateNestedManyWithoutParentInput, { nullable: true})
+  @Field(() => OrgCreateNestedManyWithoutParentInput, { nullable: true })
   children?: Prisma.OrgCreateNestedManyWithoutParentInput;
 }
 
@@ -94,8 +91,3 @@ export class OrgCreateOrConnectWithoutParentInput
   @Field(() => OrgGQL)
   create: OrgGQL;
 }
-
-@InputType()
-export class OrgCreateWithoutPersonsInput
-  extends OrgCreateInput
-  implements Prisma.OrgCreateWithoutPersonsInput {}

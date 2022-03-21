@@ -5,7 +5,7 @@ import {
   Prisma,
   Role,
   Spec,
-} from '.prisma/client';
+} from '@prisma/client';
 import { Field, InputType } from '@nestjs/graphql';
 import { PersonGQL } from '../entity/person.entity';
 import { OrgCreateNestedOneWithoutPersonsInput } from './org.create.input';
@@ -17,46 +17,18 @@ export class PersonCreateWithoutOrgInput
 {
   @Field(() => HairColor)
   hairColor!: HairColor;
-
-  @Field(() => Number)
   dodId!: number;
-
-  @Field(() => Number)
   ssn!: number;
-
-  @Field(() => String)
   email!: string;
-
-  @Field(() => String)
   firstName!: string;
-
-  @Field(() => String)
-
-  @Field(() => String, { nullable: true})
   middleInitial?: string;
-
-  @Field(() => String)
   lastName!: string;
-
-  @Field(() => Date)
   birthDate!: Date;
-
-  @Field(() => String)
   birthCity!: string;
-
-  @Field(() => String)
   birthCountry!: string;
-
-  @Field(() => String)
   citizenshipId!: string;
-
-  @Field(() => Boolean)
   initialTraining?: boolean;
-
-  @Field(() => Boolean, { nullable: true})
   NDA?: boolean;
-
-  @Field(() => Number)
   grade!: number;
 
   @Field(() => EyeColor)
@@ -70,8 +42,6 @@ export class PersonCreateWithoutOrgInput
 
   @Field(() => Spec)
   spec!: Spec;
-
-  @Field(() => Number)
   height!: number;
 }
 
@@ -90,8 +60,6 @@ export class PersonCreateManyOrgInputEnvelope
 {
   @Field(() => [PersonCreateInput])
   data!: Prisma.PersonCreateInput[];
-
-  @Field(() => Boolean, { nullable: true})
   skipDuplicates?: boolean;
 }
 
