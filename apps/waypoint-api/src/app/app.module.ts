@@ -33,7 +33,7 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      autoSchemaFile: join(process.cwd(), 'apps/waypoint-api/src/graphql/schema.graphql'),
+      autoSchemaFile: join(process.cwd(), 'apps/waypoint-api/schema.graphql'),
       playground: false,
       introspection: process.env.NODE_ENV !== 'production',
       driver: ApolloDriver,

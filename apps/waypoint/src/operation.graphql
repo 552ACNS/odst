@@ -1,3 +1,5 @@
+#TODO split up into multiple files. Possibly colocate generated files with operation.graphql files
+
 query findUniquePerson($personWhereUniqueInput: PersonWhereUniqueInput!) {
   findUniquePerson(personWhereUniqueInput: $personWhereUniqueInput) {
     ...personFields

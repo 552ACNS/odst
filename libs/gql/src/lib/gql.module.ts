@@ -16,10 +16,9 @@ import {
   isJwtChainExpired,
   setAccessToken,
   setRefreshToken,
-  isJwtExpired
+  isJwtExpired,
 } from '@odst/helpers';
-import { REFRESH_TOKEN } from '../graphql/mutations';
-import { TokensGQL } from '@odst/types';
+import { RefreshDocument, RefreshMutation, RefreshMutationVariables } from '../../graphql-generated';
 
 // TODO Make this an environment variable, make sure this works
 // just setting process.env.GQL_ENDPOINT doesn't work as expected (it will fail
@@ -27,7 +26,7 @@ import { TokensGQL } from '@odst/types';
 
 // Consider undoing this as a component. If not feasible.
 // const uri = 'http://localhost:3333/graphql';
-let environment: { NX_GQL_ENDPOINT: string; };
+let environment: { NX_GQL_ENDPOINT: string };
 
 @NgModule({
   providers: [
@@ -66,7 +65,11 @@ export function createApollo() {
               //TODO check if refresh token chain is expired before getting an error from api request?
               //TODO user is logged out if they havn't made api calls recently
               //So need to make it so if theyre active but not making calls, they arent needlessly logged out
-              if (!refreshToken || isJwtExpired(refreshToken) || isJwtChainExpired(refreshToken)) {
+              if (
+                !refreshToken ||
+                isJwtExpired(refreshToken) ||
+                isJwtChainExpired(refreshToken)
+              ) {
                 console.log('No valid refresh token');
                 //TODO push to login
                 continue;
@@ -77,16 +80,18 @@ export function createApollo() {
                 isRefreshing = true;
                 forward$ = fromPromise(
                   client
-                    .mutate({
-                      mutation: REFRESH_TOKEN,
+                    .mutate<RefreshMutation, RefreshMutationVariables>({
+                      mutation: RefreshDocument,
                       variables: {
-                        refreshToken,
+                        refreshLoginInput: {
+                          refreshToken,
+                        },
                       },
                     })
                     .then(({ data }) => {
                       if (data) {
-                        setAccessToken(data.accessToken);
-                        setRefreshToken(data.refreshToken);
+                        setAccessToken(data.refreshTokensVar.accessToken);
+                        setRefreshToken(data.refreshTokensVar.refreshToken);
                       }
                       return true;
                     })

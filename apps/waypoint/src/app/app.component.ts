@@ -10,7 +10,7 @@ import {
   FindManyPersonsQuery,
   FindManyPersonsDocument,
   FindManyPersonsQueryVariables,
-} from '../operations-types';
+} from '../../graphql-generated';
 import { isLoggedIn } from '@odst/helpers';
 
 @Component({

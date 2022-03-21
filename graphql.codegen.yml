@@ -1,8 +1,15 @@
-documents: ['apps/waypoint/src/**/*.graphql']
 generates:
-  apps/waypoint/src/operations-types.ts:
-    schema: apps/waypoint-api/src/graphql/schema.graphql
+  apps/waypoint/src/graphql-generated.ts:
+    schema: apps/waypoint-api/schema.graphql
+    documents: ['apps/waypoint/**/*.graphql']
     plugins:
-    - typescript
-    - typescript-operations
-    - typed-document-node
+      - typescript
+      - typescript-operations
+      - typed-document-node
+  libs/gql/src/graphql-generated.ts:
+    schema: apps/waypoint-api/schema.graphql
+    documents: ['libs/gql/**/*.graphql']
+    plugins:
+      - typescript
+      - typescript-operations
+      - typed-document-node

@@ -5,7 +5,7 @@ import {
   LoginMutationVariables,
   LoginMutation,
   LoginDocument,
-} from '../../operations-types';
+} from '../../../graphql-generated';
 
 @Injectable({
   providedIn: 'root',

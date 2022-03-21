@@ -1,0 +1,10 @@
+mutation Refresh ($refreshLoginInput: RefreshLoginInput!) {
+  refreshTokensVar(refreshLoginInput: $refreshLoginInput) {
+    ...tokens
+  }
+}
+
+fragment tokens on TokensGQL {
+  accessToken
+  refreshToken
+}

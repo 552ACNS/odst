@@ -91,6 +91,8 @@ export class AuthService {
     return true;
   }
 
+  //this method expects refresh token in auth header. That is the ideal way, but not sure how to full implement the auth guard for it
+  //TODO in the mean time, get rid of this method, rename refreshTokensVar to refreshTokens
   async refreshTokens(userId: string): Promise<TokensGQL> {
     const user = await this.userService.findUnique({
       id: userId,
