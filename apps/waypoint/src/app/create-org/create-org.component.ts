@@ -12,7 +12,7 @@ import {
   FindManyOrgsQueryVariables,
   OrgGql,
   OrgTier,
-} from '../../../graphql-generated';
+} from '../../graphql-generated';
 
 @Component({
   selector: 'odst-create-org',

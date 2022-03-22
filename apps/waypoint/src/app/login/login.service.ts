@@ -5,7 +5,7 @@ import {
   LoginMutationVariables,
   LoginMutation,
   LoginDocument,
-} from '../../../graphql-generated';
+} from '../../graphql-generated';
 import { Router } from '@angular/router';
 
 @Injectable({

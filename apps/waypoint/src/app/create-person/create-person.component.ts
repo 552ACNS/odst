@@ -25,7 +25,7 @@ import {
   FindManyOrgsQueryVariables,
   OrgGql,
   Role,
-} from '../../../graphql-generated';
+} from '../../graphql-generated';
 
 @Component({
   selector: 'odst-create-person',
