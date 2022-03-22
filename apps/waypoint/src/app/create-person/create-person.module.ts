@@ -14,21 +14,21 @@ import { CreatePersonComponent } from './create-person.component';
 import { RouterModule } from '@angular/router';
 import { createPersonRoutes } from './create-person.routing';
 @NgModule({
-    declarations: [CreatePersonComponent],
-    imports: [
-        CommonModule, 
-        ReactiveFormsModule,
-        MatInputModule,
-        MatButtonModule,
-        MatSelectModule,
-        MatCardModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatCheckboxModule,
-        MatIconModule,
-        MatStepperModule,
-        RouterModule.forChild(createPersonRoutes)
-    ],
-    exports: []
-  })
-  export class CreatePersonModule {}
+  declarations: [CreatePersonComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatStepperModule,
+    RouterModule.forChild(createPersonRoutes),
+  ],
+  exports: [],
+})
+export class CreatePersonModule {}

@@ -11,7 +11,6 @@ export class UserCreateInput implements Prisma.UserCreateInput {
   @Field(() => PersonCreateNestedOneWithoutUserInput)
   person!: Prisma.PersonCreateNestedOneWithoutUserInput;
 
-  @Field(() => Boolean)
   enabled?: boolean;
 
   @Field(() => RefreshTokenCreateNestedManyWithoutUserInput)

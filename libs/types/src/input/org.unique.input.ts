@@ -12,7 +12,7 @@ export class OrgWhereUniqueInput implements Prisma.OrgWhereUniqueInput {
 export class OrgWhereInput implements Prisma.OrgWhereInput {
   id?: string;
   name?: string;
-
+  
   @Field(() => OrgTier)
   orgTier?: OrgTier;
   parentId?: string;

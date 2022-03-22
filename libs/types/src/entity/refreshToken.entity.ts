@@ -4,20 +4,11 @@ import { RefreshToken } from '@prisma/client';
 @ObjectType()
 @InputType('RefreshTokenGQLInput')
 export class RefreshTokenGQL implements RefreshToken {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   id: string;
-
-  @Field(() => Boolean)
   isRevoked: boolean;
-
-  @Field(() => Date)
   issued: Date;
-
-  @Field(() => Date)
   expires: Date;
-
-  @Field(() => String)
   userId: string;
-
   hash: string;
 }

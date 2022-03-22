@@ -6,15 +6,11 @@ import { RefreshTokenWhereUniqueInput } from './refreshToken.unique.input';
 
 @InputType()
 export class RefreshTokenCreateInput {
-  @Field()
   isRevoked: boolean;
-
-  @Field()
   expires: Date;
 
   @Field(() => UserGQL)
   user: UserGQL;
-
   token: string;
 }
 
