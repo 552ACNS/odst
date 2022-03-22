@@ -11,8 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     MatButtonModule,
     BrowserModule,
-    RouterModule.forRoot([], { initialNavigation: 'enabledBlocking' }),
     BrowserAnimationsModule,
+    RouterModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent],
