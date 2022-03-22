@@ -16,6 +16,16 @@ import {
   getSSN,
   getDoB,
 } from '@odst/helpers';
+import {
+  CreatePersonDocument,
+  CreatePersonMutation,
+  CreatePersonMutationVariables,
+  FindManyOrgsDocument,
+  FindManyOrgsQuery,
+  FindManyOrgsQueryVariables,
+  OrgGql,
+  Role,
+} from '../../graphql-generated';
 
 @Component({
   selector: 'odst-create-person',
@@ -27,7 +37,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
-  orgs = [{ id: '', name: '', aliases: [], orgTier: 'WING', parentId: null }];
+  orgs: Partial<OrgGql>[];
   personGrades: number[];
   querySubscription: Subscription;
   loading = true;
@@ -37,6 +47,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     personCACScan: [''],
     personFirstName: ['', Validators.required],
     personLastName: ['', Validators.required],
+    //TODO no space, space bad, ajax get rid of spaces or whatever good catch actually
     personMiddleInitial: ['', Validators.maxLength],
     personEmail: ['', Validators.email],
     personDoDIDNumber: [
@@ -56,12 +67,14 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       ],
     ],
   });
+
   birthForm = this.fb.group({
     personBirthCountry: ['', Validators.required],
     personBirthCity: ['', Validators.required],
     personBirthDate: ['', Validators.required],
     personBirthState: ['', Validators.required],
   });
+
   identityForm = this.fb.group({
     personHeight: [
       '',
@@ -85,11 +98,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    const GET_ORGS = this.personService.queryOrgs();
     this.querySubscription = this.apollo
-      //TODO: make query strongly typed instead of any
-      .watchQuery<any>({
-        query: GET_ORGS,
+      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+        query: FindManyOrgsDocument,
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
@@ -140,15 +151,15 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       personBirthDate: rawDoB,
     });
   }
+
   resetPerson(): void {
     this.submitSuccess = false;
   }
 
   personSubmit(): void {
-    const SUBMIT_PERSON = this.personService.mutationCreatePerson();
     this.apollo
-      .mutate({
-        mutation: SUBMIT_PERSON,
+      .mutate<CreatePersonMutation, CreatePersonMutationVariables>({
+        mutation: CreatePersonDocument,
         variables: {
           personCreateInput: {
             firstName: this.nameForm.value['personFirstName'],
@@ -167,7 +178,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
             grade: parseFloat(this.identityForm.get(['personGrade'])?.value),
             eyeColor: this.identityForm.get(['personEyeColor'])?.value,
             hairColor: this.identityForm.get(['personHairColor'])?.value,
-            role: 'NONE',
+            role: Role.None,
             spec: this.identityForm.get(['personSpec'])?.value,
             height: parseFloat(this.identityForm.value['personHeight']),
             org: {
@@ -178,7 +189,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           },
         },
       })
-      .subscribe(
+      .subscribe( //TODO deprecated
         ({ data }) => {
           this.submitSuccess = true;
         },
@@ -193,5 +204,4 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       this.querySubscription.unsubscribe();
     }
   }
-
 }

@@ -5,6 +5,7 @@ import {
   PersonCreateManyOrgInputEnvelope,
   PersonCreateWithoutOrgInput,
 } from './person.create.input';
+import { PersonWhereUniqueInput } from './person.unique.input';
 
 @InputType()
 export class PersonUncheckedUpdateWithoutOrgInput
@@ -43,7 +44,7 @@ export class PersonUpdateWithWhereUniqueWithoutOrgInput
   @Field(() => PersonUpdateInput)
   data: PersonUpdateInput;
 
-  @Field(() => String)
+  @Field(() => PersonWhereUniqueInput)
   where: Prisma.PersonWhereUniqueInput;
 }
 

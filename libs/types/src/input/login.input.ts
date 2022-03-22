@@ -4,11 +4,9 @@ import { PersonCreateNestedOneWithoutUserInput } from './person.create.input';
 
 @InputType()
 export class LoginUserInput {
-  @Field()
   username: string;
 
   //user's plaintext password
-  @Field(() => String)
   password: string;
 }
 
@@ -16,4 +14,9 @@ export class LoginUserInput {
 export class SignupUserInput extends LoginUserInput {
   @Field(() => PersonCreateNestedOneWithoutUserInput)
   person: Prisma.PersonCreateNestedOneWithoutUserInput;
+}
+
+@InputType()
+export class RefreshLoginInput {
+  refreshToken: string;
 }

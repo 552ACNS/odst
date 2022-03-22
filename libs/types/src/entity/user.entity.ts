@@ -8,11 +8,7 @@ export class UserGQL implements User {
   @Field(() => String, { nullable: true })
   id: string;
   username: string;
-
-  @Field(() => String)
   personId: string;
-
-  @Field(() => Boolean)
   enabled: boolean;
 
   @HideField()

@@ -14,8 +14,6 @@ export class OrgUpdateInput
   override persons?: Prisma.PersonUpdateManyWithoutOrgInput;
 }
 
-// Think yall forgot to finish this....
-
 @InputType()
 export class OrgUpdateOneRequiredWithoutPersonsInput
   implements Prisma.OrgUpdateOneRequiredWithoutPersonsInput

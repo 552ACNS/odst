@@ -35,14 +35,14 @@ it('will sign someone in', function () {
 // to prove we have a session
 
 it('deletes an org', () => {
-  const authorization = `bearer ${ accessToken }`;
+  const authorization = `bearer ${accessToken}`;
   cy.request({
     method: 'POST',
     url: 'http://localhost:3333/graphql',
     form: true,
     headers: {
       authorization,
-    },   
+    },
     body: {
       operationName: 'removeOrg',
       variables: {
@@ -62,14 +62,14 @@ it('deletes an org', () => {
 });
 
 it('deletes a person', () => {
-  const authorization = `bearer ${ accessToken }`;
+  const authorization = `bearer ${accessToken}`;
   cy.request({
     method: 'POST',
     url: 'http://localhost:3333/graphql',
     form: true,
     headers: {
       authorization,
-    },   
+    },
     body: {
       operationName: 'deletePerson',
       variables: {

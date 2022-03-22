@@ -1,0 +1,463 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type OrgGQL {
+  id: String
+  orgTier: OrgTier!
+  name: String!
+  aliases: [String!]!
+  parentId: String
+}
+
+enum OrgTier {
+  WING
+  GROUP
+  SQUADRON
+  OTHER
+}
+
+type PersonGQL {
+  id: String
+  hairColor: HairColor!
+  middleInitial: String
+  birthState: BirthState!
+  eyeColor: EyeColor!
+  spec: Spec!
+  role: Role!
+  dodId: Float!
+  ssn: Float!
+  email: String!
+  firstName: String!
+  lastName: String!
+  birthDate: DateTime!
+  birthCity: String!
+  birthCountry: String!
+  height: Float!
+  citizenshipId: String!
+  initialTraining: Boolean!
+  NDA: Boolean!
+  grade: Float!
+  orgId: String!
+}
+
+enum HairColor {
+  BLACK
+  BLONDE
+  BROWN
+  GRAY
+  RED
+  WHITE
+  BALD
+}
+
+enum BirthState {
+  OTHER
+  AL
+  AK
+  AZ
+  AR
+  CA
+  CO
+  CT
+  DE
+  FL
+  GA
+  HI
+  ID
+  IL
+  IN
+  IA
+  KS
+  KY
+  LA
+  ME
+  MD
+  MA
+  MI
+  MN
+  MS
+  MO
+  MT
+  NE
+  NV
+  NH
+  NJ
+  NM
+  NY
+  NC
+  ND
+  OH
+  OK
+  OR
+  PA
+  RI
+  SC
+  SD
+  TN
+  TX
+  UT
+  VT
+  VA
+  WA
+  WV
+  WI
+  WY
+}
+
+enum EyeColor {
+  BLUE
+  GREEN
+  BROWN
+  BLACK
+  HAZEL
+}
+
+enum Spec {
+  ENLISTED
+  OFFICER
+  CIVILIAN
+  CONTRACTOR
+  WARRANT
+  OTHER
+}
+
+enum Role {
+  ADMIN
+  SM
+  DEV
+  NONE
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type UserGQL {
+  id: String
+  username: String!
+  personId: String!
+  enabled: Boolean!
+}
+
+type TokensGQL {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type IncidentGQL {
+  id: String
+  openDate: DateTime!
+  closeDate: DateTime!
+  reportedDate: DateTime!
+  selfReported: Boolean!
+}
+
+input OrgGQLInput {
+  id: String
+  orgTier: OrgTier!
+  name: String!
+  aliases: [String!]!
+  parentId: String
+}
+
+input PersonGQLInput {
+  id: String
+  hairColor: HairColor!
+  middleInitial: String
+  birthState: BirthState!
+  eyeColor: EyeColor!
+  spec: Spec!
+  role: Role!
+  dodId: Float!
+  ssn: Float!
+  email: String!
+  firstName: String!
+  lastName: String!
+  birthDate: DateTime!
+  birthCity: String!
+  birthCountry: String!
+  height: Float!
+  citizenshipId: String!
+  initialTraining: Boolean!
+  NDA: Boolean!
+  grade: Float!
+  orgId: String!
+}
+
+input UserGQLInput {
+  id: String
+  username: String!
+  personId: String!
+  enabled: Boolean!
+}
+
+type Query {
+  findManyPersons: [PersonGQL!]!
+  findUniquePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
+  findManyPersonsInOrg(personWhereUniqueInput: PersonWhereUniqueInput!): [PersonGQL!]!
+  findManyOrgs: [OrgGQL!]!
+  getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
+  findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
+  findManyUsers: [UserGQL!]!
+  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
+  findUniqueIncident(incidentWhereUniqueInput: IncidentWhereUniqueInput!): IncidentGQL!
+}
+
+input PersonWhereUniqueInput {
+  id: String
+  dodId: Float
+  ssn: Float
+  email: String
+}
+
+input OrgWhereUniqueInput {
+  id: String
+  name: String
+}
+
+input UserWhereUniqueInput {
+  id: String
+  username: String
+  personId: String
+}
+
+input IncidentWhereUniqueInput {
+  id: String
+}
+
+type Mutation {
+  login(loginUserInput: LoginUserInput!): TokensGQL!
+  signup(signupUserInput: SignupUserInput!): TokensGQL!
+  refreshTokens: TokensGQL!
+  refreshTokensVar(refreshLoginInput: RefreshLoginInput!): TokensGQL!
+  createPerson(personCreateInput: PersonCreateInput!): PersonGQL!
+  updatePerson(personWhereUniqueInput: PersonWhereUniqueInput!, PersonUpdateInput: PersonUpdateInput!): PersonGQL!
+  deletePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
+  createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
+  updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
+  removeOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
+  createUser(userCreateInput: UserCreateInput!): UserGQL!
+  updateUser(userWhereUniqueInput: UserWhereUniqueInput!, UserUpdateInput: UserUpdateInput!): UserGQL!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
+  createIncident(incidentCreateInput: IncidentCreateInput!): IncidentGQL!
+}
+
+input LoginUserInput {
+  username: String!
+  password: String!
+}
+
+input SignupUserInput {
+  username: String!
+  password: String!
+  person: PersonCreateNestedOneWithoutUserInput!
+}
+
+input PersonCreateNestedOneWithoutUserInput {
+  connect: PersonWhereUniqueInput
+  create: PersonGQLInput
+  connectOrCreate: PersonCreateOrConnectWithoutUserInput
+}
+
+input PersonCreateOrConnectWithoutUserInput {
+  where: PersonWhereUniqueInput!
+  create: PersonGQLInput!
+}
+
+input RefreshLoginInput {
+  refreshToken: String!
+}
+
+input PersonCreateInput {
+  hairColor: HairColor!
+  eyeColor: EyeColor!
+  birthState: BirthState!
+  role: Role!
+  spec: Spec!
+  dodId: Float!
+  ssn: Float!
+  email: String!
+  firstName: String!
+  middleInitial: String
+  lastName: String!
+  birthDate: DateTime!
+  birthCity: String!
+  birthCountry: String!
+  citizenshipId: String!
+  initialTraining: Boolean
+  NDA: Boolean
+  grade: Float!
+  height: Float!
+  org: OrgCreateNestedOneWithoutPersonsInput!
+}
+
+input OrgCreateNestedOneWithoutPersonsInput {
+  connect: OrgWhereUniqueInput
+  create: OrgGQLInput
+  connectOrCreate: OrgCreateOrConnectWithoutPersonsInput
+}
+
+input OrgCreateOrConnectWithoutPersonsInput {
+  where: OrgWhereUniqueInput!
+  create: OrgGQLInput!
+}
+
+input PersonUpdateInput {
+  hairColor: HairColor
+  eyeColor: EyeColor
+  birthState: BirthState
+  role: Role
+  spec: Spec
+  dodId: Float
+  ssn: Float
+  email: String
+  firstName: String
+  middleInitial: String
+  lastName: String
+  birthDate: DateTime
+  birthCity: String
+  birthCountry: String
+  citizenshipId: String
+  initialTraining: Boolean
+  NDA: Boolean
+  grade: Float
+  height: Float
+  org: [OrgUpdateOneRequiredWithoutPersonsInput!]
+}
+
+input OrgUpdateOneRequiredWithoutPersonsInput {
+  connect: [OrgWhereUniqueInput!]
+}
+
+input OrgCreateInput {
+  orgTier: OrgTier!
+  persons: PersonCreateNestedManyWithoutOrgInput
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  children: OrgCreateNestedManyWithoutParentInput
+  name: String!
+  aliases: [String!]!
+}
+
+input PersonCreateNestedManyWithoutOrgInput {
+  connect: PersonWhereUniqueInput
+  connectOrCreate: PersonCreateNestedManyWithoutOrgInput
+}
+
+input OrgCreateNestedOneWithoutChildrenInput {
+  connect: OrgWhereUniqueInput
+  connectOrCreate: OrgCreateOrConnectWithoutChildrenInput
+}
+
+input OrgCreateOrConnectWithoutChildrenInput {
+  where: OrgWhereUniqueInput!
+  create: OrgGQLInput!
+}
+
+input OrgCreateNestedManyWithoutParentInput {
+  connect: OrgWhereUniqueInput
+  connectOrCreate: OrgCreateOrConnectWithoutParentInput
+}
+
+input OrgCreateOrConnectWithoutParentInput {
+  where: OrgWhereUniqueInput!
+  create: OrgGQLInput!
+}
+
+input OrgUpdateInput {
+  orgTier: OrgTier
+  persons: [PersonUpdateManyWithoutOrgInput!]
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  children: OrgCreateNestedManyWithoutParentInput
+  name: String
+  aliases: [String!]
+}
+
+input PersonUpdateManyWithoutOrgInput {
+  create: [PersonCreateWithoutOrgInput!]
+  createMany: PersonCreateManyOrgInputEnvelope
+  update: [PersonUpdateWithWhereUniqueWithoutOrgInput!]
+}
+
+input PersonCreateWithoutOrgInput {
+  hairColor: HairColor!
+  eyeColor: EyeColor!
+  birthState: BirthState!
+  role: Role!
+  spec: Spec!
+  dodId: Float!
+  ssn: Float!
+  email: String!
+  firstName: String!
+  middleInitial: String
+  lastName: String!
+  birthDate: DateTime!
+  birthCity: String!
+  birthCountry: String!
+  citizenshipId: String!
+  initialTraining: Boolean
+  NDA: Boolean
+  grade: Float!
+  height: Float!
+}
+
+input PersonCreateManyOrgInputEnvelope {
+  data: [PersonCreateInput!]!
+  skipDuplicates: Boolean
+}
+
+input PersonUpdateWithWhereUniqueWithoutOrgInput {
+  data: PersonUpdateInput!
+  where: PersonWhereUniqueInput!
+}
+
+input UserCreateInput {
+  person: PersonCreateNestedOneWithoutUserInput!
+  refreshTokens: RefreshTokenCreateNestedManyWithoutUserInput
+  username: String!
+  password: String!
+  enabled: Boolean
+}
+
+input RefreshTokenCreateNestedManyWithoutUserInput {
+  connect: RefreshTokenWhereUniqueInput
+  connectOrCreate: RefreshTokenCreateOrConnectWithoutUserInput
+}
+
+input RefreshTokenWhereUniqueInput {
+  id: String
+  hash: String
+}
+
+input RefreshTokenCreateOrConnectWithoutUserInput {
+  where: RefreshTokenWhereUniqueInput!
+  create: RefreshTokenGQLInput!
+}
+
+input RefreshTokenGQLInput {
+  id: String
+  isRevoked: Boolean!
+  issued: DateTime!
+  expires: DateTime!
+  userId: String!
+  hash: String!
+}
+
+input UserUpdateInput {
+  person: PersonUpdateOneRequiredWithoutUserInput
+  username: String
+  password: String
+  enabled: Boolean
+}
+
+input PersonUpdateOneRequiredWithoutUserInput {
+  connect: PersonWhereUniqueInput
+}
+
+input IncidentCreateInput {
+  openDate: DateTime!
+  closeDate: DateTime!
+  reportedDate: DateTime!
+  selfReported: Boolean!
+}

@@ -9,7 +9,5 @@ export class UserUpdateInput implements Prisma.UserUpdateInput {
 
   @Field(() => PersonUpdateOneRequiredWithoutUserInput)
   person?: Prisma.PersonUpdateOneRequiredWithoutUserInput;
-
-  @Field(() => Boolean)
   enabled?: boolean;
 }

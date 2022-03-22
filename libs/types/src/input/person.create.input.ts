@@ -11,7 +11,7 @@ import { PersonGQL } from '../entity/person.entity';
 import { OrgCreateNestedOneWithoutPersonsInput } from './org.create.input';
 import { PersonWhereUniqueInput } from './person.unique.input';
 import { MaxLength,
-         Min, 
+         Min,
          Max,
          MinDate,
          IsDate,

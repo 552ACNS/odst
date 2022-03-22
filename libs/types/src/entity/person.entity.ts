@@ -23,23 +23,18 @@ export class PersonGQL implements Person {
 
   @Field(() => String, { nullable: true })
   middleInitial: string | null;
-
   lastName: string;
   birthDate: Date;
   birthCity: string;
   birthCountry: string;
-
   height: number;
 
   @Field(() => BirthState)
   birthState: BirthState;
-
   citizenshipId: string;
   initialTraining: boolean;
   NDA: boolean;
   grade: number;
-
-  @Field(() => String)
   orgId: string;
 
   @Field(() => EyeColor)
