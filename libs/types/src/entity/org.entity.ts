@@ -9,8 +9,7 @@ export class OrgGQL implements Org {
   name: string;
   aliases: string[];
 
-  @Field(() => OrgTier, { nullable: true })
+  @Field(() => OrgTier)
   orgTier: OrgTier;
-
   parentId: string | null;
 }

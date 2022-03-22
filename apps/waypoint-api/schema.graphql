@@ -4,7 +4,7 @@
 
 type OrgGQL {
   id: String
-  orgTier: OrgTier
+  orgTier: OrgTier!
   name: String!
   aliases: [String!]!
   parentId: String
@@ -156,7 +156,7 @@ type IncidentGQL {
 
 input OrgGQLInput {
   id: String
-  orgTier: OrgTier
+  orgTier: OrgTier!
   name: String!
   aliases: [String!]!
   parentId: String

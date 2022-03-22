@@ -15,13 +15,13 @@ export class OrgCreateInput implements Prisma.OrgCreateInput {
   orgTier: OrgTier;
   aliases: string[];
 
-  @Field(() => PersonCreateNestedManyWithoutOrgInput, { nullable: true })
+  @Field(() => PersonCreateNestedManyWithoutOrgInput)
   persons?: Prisma.PersonCreateNestedManyWithoutOrgInput;
 
-  @Field(() => OrgCreateNestedOneWithoutChildrenInput, { nullable: true })
+  @Field(() => OrgCreateNestedOneWithoutChildrenInput)
   parent?: Prisma.OrgCreateNestedOneWithoutChildrenInput;
 
-  @Field(() => OrgCreateNestedManyWithoutParentInput, { nullable: true })
+  @Field(() => OrgCreateNestedManyWithoutParentInput)
   children?: Prisma.OrgCreateNestedManyWithoutParentInput;
 }
 
