@@ -18,7 +18,7 @@ import {
   setRefreshToken,
   isJwtExpired,
 } from '@odst/helpers';
-import { RefreshDocument, RefreshMutation, RefreshMutationVariables } from '../../graphql-generated';
+import { RefreshDocument, RefreshMutation, RefreshMutationVariables } from '../graphql-generated';
 
 // TODO Make this an environment variable, make sure this works
 // just setting process.env.GQL_ENDPOINT doesn't work as expected (it will fail
