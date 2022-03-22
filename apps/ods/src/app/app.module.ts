@@ -5,14 +5,20 @@ import {MatButtonModule} from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AppRoutingModule } from './app.routing';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    MatButtonModule,
-    BrowserModule,
+    BrowserModule,    
+    RouterModule.forRoot([]),
     BrowserAnimationsModule,
-    RouterModule.forRoot([])
+    MatCheckboxModule,
+    AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
