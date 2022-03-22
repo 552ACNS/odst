@@ -11,7 +11,7 @@ import {
   Role,
   Spec,
   OrgTier,
-} from '@prisma/client';
+} from '.prisma/waypoint/client';
 import {
   ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageDisabled,

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Org } from '@prisma/client';
+import { Org } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { TestOrgCreateInput } from './org.repo';
 import { OrgService } from './org.service';

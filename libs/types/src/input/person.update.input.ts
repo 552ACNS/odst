@@ -1,4 +1,4 @@
-import { Prisma } from '.prisma/client';
+import { Prisma } from '.prisma/waypoint/client';
 import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { OrgUpdateOneRequiredWithoutPersonsInput } from './org.update.input';
 import {

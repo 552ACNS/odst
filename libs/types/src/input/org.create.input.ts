@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { OrgTier, Prisma } from '@prisma/client';
+import { OrgTier, Prisma } from '.prisma/waypoint/client';
 import { OrgGQL } from '../entity/org.entity';
 import { PersonCreateNestedManyWithoutOrgInput } from './person.create.input';
 import { OrgWhereUniqueInput } from './org.unique.input';

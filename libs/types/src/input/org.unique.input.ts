@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { OrgTier, Prisma } from '@prisma/client';
+import { OrgTier, Prisma } from '.prisma/waypoint/client';
 
 @InputType()
 export class OrgWhereUniqueInput implements Prisma.OrgWhereUniqueInput {

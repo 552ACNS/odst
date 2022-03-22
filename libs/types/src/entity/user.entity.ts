@@ -1,5 +1,5 @@
 import { ObjectType, Field, InputType, HideField } from '@nestjs/graphql';
-import { User } from '@prisma/client';
+import { User } from '.prisma/waypoint/client';
 
 @ObjectType()
 @InputType('UserGQLInput')
