@@ -10,14 +10,15 @@ import { Field, InputType } from '@nestjs/graphql';
 import { PersonGQL } from '../entity/person.entity';
 import { OrgCreateNestedOneWithoutPersonsInput } from './org.create.input';
 import { PersonWhereUniqueInput } from './person.unique.input';
-import { MaxLength,
-         Min,
-         Max,
-         MinDate,
-         IsDate,
-         IsEmail,
-         IsOptional,
-       } from 'class-validator';
+import {
+  MaxLength,
+  Min,
+  Max,
+  MinDate,
+  IsDate,
+  IsEmail,
+  IsOptional,
+} from 'class-validator';
 
 @InputType()
 export class PersonCreateWithoutOrgInput
@@ -52,8 +53,8 @@ export class PersonCreateWithoutOrgInput
   role!: Role;
   @Field(() => Spec)
   spec!: Spec;
- @Min(1)
- @Max(100)
+  @Min(1)
+  @Max(100)
   height!: number;
 }
 

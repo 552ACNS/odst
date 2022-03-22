@@ -33,9 +33,11 @@ export class AuthResolver {
   }
 
   @Mutation(() => TokensGQL)
-  async refreshTokensVar(@Args('refreshLoginInput') refreshLoginInput : RefreshLoginInput): Promise<TokensGQL> {
+  async refreshTokensVar(
+    @Args('refreshLoginInput') refreshLoginInput: RefreshLoginInput
+  ): Promise<TokensGQL> {
     const tokens = await this.authService.refreshTokensVar(refreshLoginInput);
-    Logger.log({tokens})
+    Logger.log({ tokens });
     return this.authService.refreshTokensVar(refreshLoginInput);
   }
 }

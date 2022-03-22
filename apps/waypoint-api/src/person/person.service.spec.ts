@@ -1,10 +1,7 @@
 import { Person, Prisma } from '.prisma/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  PersonWhereUniqueInput,
-  PersonUpdateInput,
-} from '@odst/types';
+import { PersonWhereUniqueInput, PersonUpdateInput } from '@odst/types';
 import { TestPersonCreateInput } from './person.repo';
 import { PersonService } from './person.service';
 import { prismaMock } from '../prisma/singleton';

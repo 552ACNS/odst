@@ -20,7 +20,6 @@ import { join } from 'path';
 import { AuthModule } from '../auth/auth.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
-
 // Register enum types here, if they are used in multiple places, make sure that they are registered
 // only once and that the resource module that is imported first is the one that registers them
 registerEnumType(HairColor, { name: 'HairColor' });

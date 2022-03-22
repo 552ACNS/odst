@@ -108,7 +108,9 @@ export class AuthService {
   }
 
   //expects the token as a variable, instead of auth header
-  async refreshTokensVar(refreshLoginInput: RefreshLoginInput): Promise<TokensGQL> {
+  async refreshTokensVar(
+    refreshLoginInput: RefreshLoginInput
+  ): Promise<TokensGQL> {
     if (
       !this.jwtService.verify(refreshLoginInput.refreshToken, {
         secret: process.env.NX_JWT_REFRESH_SECRET,
@@ -123,7 +125,9 @@ export class AuthService {
 
     const userId = refreshTokenPayload.sub;
 
-    if (!(await this.validateRefreshToken(userId, refreshLoginInput.refreshToken))) {
+    if (
+      !(await this.validateRefreshToken(userId, refreshLoginInput.refreshToken))
+    ) {
       throw new UnauthorizedException();
     }
 

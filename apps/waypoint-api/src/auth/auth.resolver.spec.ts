@@ -76,9 +76,9 @@ describe('AuthResolver', () => {
   it('Should call the method to signup', async () => {
     // TEST PARAMS
     const methodToSpy = 'signup';
-    const resolvedTokens  = {
-      accessToken : "this-is-my-access-token",
-      refreshToken : "this-is-my-refresh-token"
+    const resolvedTokens = {
+      accessToken: 'this-is-my-access-token',
+      refreshToken: 'this-is-my-refresh-token',
     } as unknown as TokensGQL;
 
     const resolvedSignupUserInput: SignupUserInput = {
