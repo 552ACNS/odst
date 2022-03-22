@@ -5,9 +5,9 @@
 type OrgGQL {
   id: String
   orgTier: OrgTier
-  parentId: String
   name: String!
   aliases: [String!]!
+  parentId: String
 }
 
 enum OrgTier {
@@ -22,7 +22,6 @@ type PersonGQL {
   hairColor: HairColor!
   middleInitial: String
   birthState: BirthState!
-  orgId: String!
   eyeColor: EyeColor!
   spec: Spec!
   role: Role!
@@ -39,6 +38,7 @@ type PersonGQL {
   initialTraining: Boolean!
   NDA: Boolean!
   grade: Float!
+  orgId: String!
 }
 
 enum HairColor {
@@ -136,9 +136,9 @@ scalar DateTime
 
 type UserGQL {
   id: String
+  username: String!
   personId: String!
   enabled: Boolean!
-  username: String!
 }
 
 type TokensGQL {
@@ -157,9 +157,9 @@ type IncidentGQL {
 input OrgGQLInput {
   id: String
   orgTier: OrgTier
-  parentId: String
   name: String!
   aliases: [String!]!
+  parentId: String
 }
 
 input PersonGQLInput {
@@ -167,7 +167,6 @@ input PersonGQLInput {
   hairColor: HairColor!
   middleInitial: String
   birthState: BirthState!
-  orgId: String!
   eyeColor: EyeColor!
   spec: Spec!
   role: Role!
@@ -184,13 +183,14 @@ input PersonGQLInput {
   initialTraining: Boolean!
   NDA: Boolean!
   grade: Float!
+  orgId: String!
 }
 
 input UserGQLInput {
   id: String
+  username: String!
   personId: String!
   enabled: Boolean!
-  username: String!
 }
 
 type Query {
@@ -231,7 +231,7 @@ type Mutation {
   login(loginUserInput: LoginUserInput!): TokensGQL!
   signup(signupUserInput: SignupUserInput!): TokensGQL!
   refreshTokens: TokensGQL!
-  refreshTokensVar(refreshToken: String!): TokensGQL!
+  refreshTokensVar(refreshLoginInput: RefreshLoginInput!): TokensGQL!
   createPerson(personCreateInput: PersonCreateInput!): PersonGQL!
   updatePerson(personWhereUniqueInput: PersonWhereUniqueInput!, PersonUpdateInput: PersonUpdateInput!): PersonGQL!
   deletePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
@@ -264,6 +264,10 @@ input PersonCreateNestedOneWithoutUserInput {
 input PersonCreateOrConnectWithoutUserInput {
   where: PersonWhereUniqueInput!
   create: PersonGQLInput!
+}
+
+input RefreshLoginInput {
+  refreshToken: String!
 }
 
 input PersonCreateInput {
@@ -405,15 +409,15 @@ input PersonCreateManyOrgInputEnvelope {
 
 input PersonUpdateWithWhereUniqueWithoutOrgInput {
   data: PersonUpdateInput!
-  where: String!
+  where: PersonWhereUniqueInput!
 }
 
 input UserCreateInput {
   person: PersonCreateNestedOneWithoutUserInput!
-  enabled: Boolean
   refreshTokens: RefreshTokenCreateNestedManyWithoutUserInput
   username: String!
   password: String!
+  enabled: Boolean
 }
 
 input RefreshTokenCreateNestedManyWithoutUserInput {
@@ -432,7 +436,7 @@ input RefreshTokenCreateOrConnectWithoutUserInput {
 }
 
 input RefreshTokenGQLInput {
-  id: String!
+  id: String
   isRevoked: Boolean!
   issued: DateTime!
   expires: DateTime!
@@ -442,9 +446,9 @@ input RefreshTokenGQLInput {
 
 input UserUpdateInput {
   person: PersonUpdateOneRequiredWithoutUserInput
-  enabled: Boolean
   username: String
   password: String
+  enabled: Boolean
 }
 
 input PersonUpdateOneRequiredWithoutUserInput {
