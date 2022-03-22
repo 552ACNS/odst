@@ -1,4 +1,4 @@
-import { Person, Prisma } from '.prisma/client';
+import { Person, Prisma } from '.prisma/waypoint/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { PersonWhereUniqueInput, PersonUpdateInput } from '@odst/types';

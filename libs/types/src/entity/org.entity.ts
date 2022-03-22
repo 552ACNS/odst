@@ -1,5 +1,5 @@
 import { ObjectType, Field, InputType } from '@nestjs/graphql';
-import { Org, OrgTier } from '@prisma/client';
+import { Org, OrgTier } from '.prisma/waypoint/client';
 
 @ObjectType()
 @InputType('OrgGQLInput')

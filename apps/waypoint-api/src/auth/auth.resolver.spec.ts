@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { User } from '@prisma/client';
+import { User } from '.prisma/waypoint/client';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';

@@ -5,7 +5,7 @@ import {
   Prisma,
   Role,
   Spec,
-} from '.prisma/client';
+} from '.prisma/waypoint/client';
 import { Field, InputType } from '@nestjs/graphql';
 import { PersonGQL } from '../entity/person.entity';
 import { OrgCreateNestedOneWithoutPersonsInput } from './org.create.input';

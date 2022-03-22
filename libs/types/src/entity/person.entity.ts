@@ -6,7 +6,7 @@ import {
   Person,
   Role,
   Spec,
-} from '@prisma/client';
+} from '.prisma/waypoint/client';
 
 @ObjectType()
 @InputType('PersonGQLInput')

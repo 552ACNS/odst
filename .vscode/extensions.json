@@ -10,7 +10,6 @@
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "github.vscode-pull-request-github",
-    "bradlc.vscode-tailwindcss",
-    "firsttris.vscode-jest-runner"
+    "bradlc.vscode-tailwindcss"
   ]
 }
