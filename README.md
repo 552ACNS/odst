@@ -97,3 +97,6 @@ username: `admin`
 This could be because you've made changes to the schema and not rerun the backend. Serving the backend, running `yarn` again will ensure graphql schema and types will be generated properly.
 ### - Webpack config errors on frontend
 Need to remove prisma references from frontend and only use the generated graphQL files.
+
+### - New prisma database
+when creating a new prisma database, you need to specify what project it is made for.
