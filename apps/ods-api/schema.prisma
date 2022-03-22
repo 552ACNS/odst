@@ -46,18 +46,18 @@ model SurveyResponse {
   id           String   @id @default(uuid())
   survey       Survey   @relation(fields: [surveyId], references: [id])
   surveyId     String
-  openedDate   DateTime
-  closedDate   DateTime
+  openedDate   DateTime @default(now())
+  closedDate   DateTime?
   answers      String[]
   routeOutside Boolean  @default(false)
-  resolution   String
+  resolution   String?
 }
 
 enum Role {
   ADMIN
-  SM // Security Manager
-  DEV
-  NONE // default value
+  DEI // Diversity, Equity, Inclusion
+  EO // Equal Opportunity
+  CC // Commander
 }
 
 model Survey {
@@ -68,12 +68,10 @@ model Survey {
 }
 
 enum Spec {
-  ENLISTED
-  OFFICER
+  AD
   CIVILIAN
   CONTRACTOR
-  WARRANT
-  OTHER
+  RESERVE_GUARD
 }
 
 model Question {
