@@ -6,12 +6,13 @@ import {
   LoginMutation,
   LoginDocument,
 } from '../../../graphql-generated';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private router: Router) {}
 
   // TODO consider switching to sessionStorage
   // "What will happen if I'm logged in on multiple tabs?"; won't be authenticated in new tabs
@@ -32,13 +33,16 @@ export class LoginService {
       })
       .subscribe( //TODO deprecated
         ({ data }) => {
-          if (data) {
+          if(data){
             setAccessToken(data.login.accessToken);
             setRefreshToken(data.login.refreshToken);
+            this.router.navigate(['home'])
           }
         },
-        (error) => {
-          alert(error);
+        () => {
+          //alert(error);
+          //this.router.navigate(['login'])
+          alert("Username or Password was incorrect")
         }
       );
   }

@@ -175,4 +175,30 @@ describe('PersonsResolver', () => {
     //Determine if the actual and result are the same
     expect(actual).toEqual(deletedPerson);
   });
+
+  // it('should throw error on the method to create a person with incorrect height', async () => {
+  //   const createdPerson: PersonCreateInput = TestPersonCreateInput[0];
+  //   createdPerson.height = 101;
+
+  //   await resolver.create(createdPerson);
+
+
+
+
+  //   // Call the createPerson method by calling the controller
+  //   // try {
+  //   //   const actual = await resolver.create(createdPerson);
+
+  //   //   // expect(actual).toBe(resolvedPerson);
+  //   //   //fail('Expected to fail');
+  //   // } catch (error) {
+  //   //   expect(error).toBeInstanceOf(BadRequestException)
+  //   //   expect(spy).toHaveBeenCalled();
+  //   // }
+    
+  //   // // Assert that the method was called
+    
+
+  //   // expect(actual).toBe(resolvedPerson);
+  // });
 });

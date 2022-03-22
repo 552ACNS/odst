@@ -57,6 +57,7 @@
       </mat-form-field>
       <div>
         <button
+          id="btnOrgSubmit"
           class="m-2"
           mat-raised-button
           color="primary"
@@ -64,6 +65,7 @@
           [disabled]="!orgForm.valid"
         >
           Submit
+          <mat-icon class="ml-1" *ngIf="submitSuccess" id="orgCheck">check</mat-icon>
         </button>
       </div>
     </mat-card-content>

@@ -25,6 +25,7 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   orgs: Partial<OrgGql>[];
   querySubscription: Subscription;
   loading = true;
+  submitSuccess = false;
 
   orgForm = this.fb.group({
     orgName: ['', Validators.required],
@@ -90,7 +91,7 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
       })
       .subscribe( //TODO deprecated
         ({ data }) => {
-          alert('IOrganization Added!');
+          this.submitSuccess = true;
         },
         (error) => {
           alert('There was an error sending the query: /n' + error);
