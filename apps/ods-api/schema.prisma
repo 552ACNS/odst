@@ -13,67 +13,44 @@ generator client {
 
 model User {
   id            String         @id @default(uuid())
-  username      String         @unique
+  email         String         @unique
   password      String
-  person        Person         @relation(fields: [personId], references: [id])
-  personId      String         @unique
   enabled       Boolean        @default(true)
+  roles         Role
   refreshTokens RefreshToken[] //many RefreshToken to user
+  orgs          Org[] // MANY TO MANY
 }
 
 model RefreshToken {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  isRevoked Boolean  @default(false)
-  issued    DateTime @default(now())
-  expires   DateTime
-  hash      String
-}
-
-model Person {
-  id              String     @id @default(uuid()) // Prisma uses @id to mark the primary key
-  dodId           Float      @unique // @unique is equivalent to UNIQUE
-  ssn             Int        @unique
-  email           String     @unique
-  user            User?
-  firstName       String
-  middleInitial   String?    @db.Char(1) // @db.Char(1) is equivalent to VARCHAR(1)
-  lastName        String
-  hairColor       HairColor
-  eyeColor        EyeColor
-  birthDate       DateTime
-  birthCity       String
-  birthState      BirthState
-  birthCountry    String
-  citizenshipId   String
-  initialTraining Boolean    @default(false)
-  NDA             Boolean    @default(false)
-  spec            Spec       @default(value: OTHER) // Example
-  grade           Int
-  org             Org        @relation(fields: [orgId], references: [id]) // @relation(fields: [orgId], references: [id]) is equivalent to FOREIGN KEY
-  orgId           String
-  role            Role       @default(value: NONE)
-  height          Int // This is in inches
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  isRevoked   Boolean  @default(false)
+  issuedDate  DateTime @default(now())
+  expiredDate DateTime
+  hash        String
 }
 
 model Org {
-  id       String   @id @default(uuid())
-  name     String   @unique // Example "552 ACNS"
-  aliases  String[]
-  orgTier  OrgTier
-  persons  Person[] // an org can have many different people
-  parentId String? // a parent org can have many child orgs
-  parent   Org?     @relation(name: "ParentChild", fields: [parentId], references: [id])
-  children Org[]    @relation(name: "ParentChild") // This is a self relation
+  id         String   @id @default(uuid())
+  name       String   @unique // Example "552 ACNS"
+  orgTier    OrgTier
+  commanders User[]
+  parentId   String? // a parent org can have many child orgs
+  parent     Org?     @relation(name: "ParentChild", fields: [parentId], references: [id])
+  children   Org[]    @relation(name: "ParentChild") // This is a self relation
+  surveys    Survey[] // TODO Add many to many relationship between Org and Survey
 }
 
-model Incident {
+model SurveyResponse {
   id           String   @id @default(uuid())
-  openDate     DateTime
-  closeDate    DateTime
-  reportedDate DateTime
-  selfReported Boolean
+  survey       Survey   @relation(fields: [surveyId], references: [id])
+  surveyId     String
+  openedDate   DateTime
+  closedDate   DateTime
+  answers      String[]
+  routeOutside Boolean  @default(false)
+  resolution   String
 }
 
 enum Role {
@@ -83,14 +60,11 @@ enum Role {
   NONE // default value
 }
 
-enum HairColor {
-  BLACK // haircolors
-  BLONDE
-  BROWN
-  GRAY
-  RED
-  WHITE
-  BALD
+model Survey {
+  id              String           @id @default(uuid())
+  orgs            Org[]
+  questions       Question[]
+  surveyResponses SurveyResponse[]
 }
 
 enum Spec {
@@ -102,12 +76,11 @@ enum Spec {
   OTHER
 }
 
-enum EyeColor {
-  BLUE
-  GREEN
-  BROWN
-  BLACK
-  HAZEL
+model Question {
+  id       String  @id @default(uuid())
+  prompt   String
+  survey   Survey? @relation(fields: [surveyId], references: [id])
+  surveyId String?
 }
 
 enum OrgTier {
@@ -115,58 +88,4 @@ enum OrgTier {
   GROUP
   SQUADRON
   OTHER
-}
-
-enum BirthState {
-  OTHER
-  AL // Alabama
-  AK // Alaska
-  AZ // Arizona
-  AR // Arkansas
-  CA // California
-  CO // Colorado
-  CT // Connecticut
-  DE // Delaware
-  FL // Florida
-  GA // Georgia
-  HI // Hawaii
-  ID // Idaho
-  IL // Illinois
-  IN // Indiana
-  IA // Iowa
-  KS // Kansas
-  KY // Kentucky
-  LA // Louisiana
-  ME // Maine
-  MD // Maryland
-  MA // Massachusetts
-  MI // Michigan
-  MN // Minnesota
-  MS // Mississippi
-  MO // Missouri
-  MT // Montana
-  NE // Nebraska
-  NV // Nevada
-  NH // New Hampshire
-  NJ // New Jersey
-  NM // New Mexico
-  NY // New York
-  NC // North Carolina
-  ND // North Dakota
-  OH // Ohio
-  OK // Oklahoma
-  OR // Oregon
-  PA // Pennsylvania
-  RI // Rhode Island
-  SC // South Carolina
-  SD // South Dakota
-  TN // Tennessee
-  TX // Texas
-  UT // Utah
-  VT // Vermont
-  VA // Virginia
-  WA // Washington
-  WV // West Virginia
-  WI // Wisconsin
-  WY // Wyoming
 }

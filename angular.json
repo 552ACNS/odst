@@ -173,6 +173,32 @@
             }
           }
         },
+        "prisma-studio": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "env-cmd -f apps/ods-api/.env.local npx prisma studio",
+            "schema": "apps/ods-api/schema.prisma"
+          }
+        },
+        "prisma-migrate": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss",
+              "env-cmd -f apps/ods-api/.env.local npx prisma db seed"
+            ],
+            "schema": "apps/ods-api/schema.prisma",
+            "parallel": false
+          },
+          "configurations": {
+            "test": {
+              "command": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
+            },
+            "production": {
+              "command": "env-cmd -f apps/ods-api/.env.prod prisma migrate dev"
+            }
+          }
+        },
         "serve": {
           "builder": "@nrwl/node:execute",
           "options": {
@@ -408,7 +434,7 @@
           "options": {
             "commands": [
               "env-cmd -f apps/waypoint-api/.env.local npx prisma db push --accept-data-loss",
-              "env-cmd -f apps/waypoint-api/.env.local npx prisma db seed"
+              "env-cmd -f apps/waypoint-api/.env.local yarn prisma db seed"
             ],
             "schema": "apps/waypoint-api/schema.prisma",
             "parallel": false

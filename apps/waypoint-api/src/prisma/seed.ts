@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { PrismaClient } from '.prisma/waypoint/client';
+import { PrismaClientKnownRequestError } from '.prisma/waypoint/client/runtime';
 import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
