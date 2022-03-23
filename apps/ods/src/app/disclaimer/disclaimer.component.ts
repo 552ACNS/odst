@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'odst-disclaimer',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DisclaimerComponent{
 
-  constructor() { }
+  //constructor() { }
   // ngOnInit(): void {
   //   throw new Error('Method not implemented.');
   // }
