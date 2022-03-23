@@ -14,7 +14,7 @@ import { loginRoutes } from './login.routing';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatInputModule, 
+    MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,

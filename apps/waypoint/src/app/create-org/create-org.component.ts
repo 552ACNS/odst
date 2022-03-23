@@ -89,7 +89,8 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
           },
         },
       })
-      .subscribe( //TODO deprecated
+      .subscribe(
+        //TODO deprecated
         ({ data }) => {
           this.submitSuccess = true;
         },

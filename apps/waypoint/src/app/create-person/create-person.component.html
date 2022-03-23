@@ -270,14 +270,29 @@
             "
           >
             Submit
-            <mat-icon id="personCheck" class="ml-1" *ngIf="submitSuccess">check</mat-icon>
+            <mat-icon id="personCheck" class="ml-1" *ngIf="submitSuccess"
+              >check</mat-icon
+            >
           </button>
 
-          <button class="m-3" mat-raised-button color="primary" (click)="stepper.reset()" (click)="resetPerson()">
+          <button
+            class="m-3"
+            mat-raised-button
+            color="primary"
+            (click)="stepper.reset()"
+            (click)="resetPerson()"
+          >
             Reset
           </button>
 
-          <button class="m-3" mat-raised-button color="primary" matStepperPrevious>Back</button>
+          <button
+            class="m-3"
+            mat-raised-button
+            color="primary"
+            matStepperPrevious
+          >
+            Back
+          </button>
         </div>
       </form>
     </mat-step>

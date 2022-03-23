@@ -21,7 +21,7 @@ export class TableDataComponent implements OnInit, OnDestroy {
   constructor(private apollo: Apollo) {}
   loading = true;
   orgs: Partial<OrgGql>[];
-  persons: Partial<PersonGql>[]
+  persons: Partial<PersonGql>[];
   querySubscription: Subscription;
   tablePropsOrg = [
     {

@@ -4,7 +4,6 @@ import { User } from '.prisma/waypoint/client';
 @ObjectType()
 @InputType('UserGQLInput')
 export class UserGQL implements User {
-
   @Field(() => String, { nullable: true })
   id: string;
   username: string;

@@ -60,7 +60,9 @@ export class RefreshTokenService {
     return this.prisma.refreshToken.findMany();
   }
 
-  async delete(refreshTokenWhereUniqueInput: Prisma.RefreshTokenWhereUniqueInput) {
+  async delete(
+    refreshTokenWhereUniqueInput: Prisma.RefreshTokenWhereUniqueInput
+  ) {
     return this.prisma.refreshToken.delete({
       where: refreshTokenWhereUniqueInput,
     });

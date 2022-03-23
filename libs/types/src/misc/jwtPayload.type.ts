@@ -3,7 +3,7 @@ export interface JwtPayloadInit {
   sub: string;
 }
 
-export interface JwtPayload extends JwtPayloadInit{
+export interface JwtPayload extends JwtPayloadInit {
   //issued at
   iat: number;
 

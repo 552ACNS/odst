@@ -31,18 +31,19 @@ export class LoginService {
           },
         },
       })
-      .subscribe( //TODO deprecated
+      .subscribe(
+        //TODO deprecated
         ({ data }) => {
-          if(data){
+          if (data) {
             setAccessToken(data.login.accessToken);
             setRefreshToken(data.login.refreshToken);
-            this.router.navigate(['home'])
+            this.router.navigate(['home']);
           }
         },
         () => {
           //alert(error);
           //this.router.navigate(['login'])
-          alert("Username or Password was incorrect")
+          alert('Username or Password was incorrect');
         }
       );
   }
