@@ -99,4 +99,8 @@ This could be because you've made changes to the schema and not rerun the backen
 Need to remove prisma references from frontend and only use the generated graphQL files.
 
 ### - New prisma database
-when creating a new prisma database, you need to specify what project it is made for.
+When creating a new prisma database, you need to specify what project it is made for in the prisma.schema under outputs.
+
+### - Tailwind isn't working w/ Material
+Ensure that you marked Tailwind as "Important" under tailwind config.
+
