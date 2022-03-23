@@ -3,6 +3,7 @@ import { Prisma } from '.prisma/ods/client';
 import { OrgCreateInput } from './org.create.input';
 import { OrgWhereUniqueInput } from './org.unique.input';
 import { OrgGQL } from '../entity/org.entity';
+import { OrgCreateWithoutSurveysInput } from './org.create.input'
 
 @InputType()
 export class OrgUpdateInput
@@ -30,4 +31,15 @@ export class OrgUpdateWithWhereUniqueWithoutSurveysInput
 
   @Field(() => OrgWhereUniqueInput)
   data: OrgWhereUniqueInput;
+}
+
+@InputType()
+export class OrgUpdateManyWithoutSurveysInput
+  implements Prisma.OrgUpdateManyWithoutSurveysInput
+{
+  @Field(() => [OrgCreateWithoutSurveysInput])
+  create?: Prisma.OrgCreateWithoutSurveysInput[];
+
+  @Field(() => [OrgUpdateWithWhereUniqueWithoutSurveysInput])
+  update?: Prisma.OrgUpdateWithWhereUniqueWithoutSurveysInput[];
 }

@@ -31,6 +31,7 @@ export class OrgService {
       orderBy,
     });
   }
+
   async create(data: Prisma.OrgCreateInput): Promise<OrgGQL> {
     return this.prisma.org.create({
       data,
@@ -78,21 +79,16 @@ export class OrgService {
     });
   }
 
-  async delete(orgWhereUniqueInput: Prisma.OrgWhereUniqueInput) {
-    return this.prisma.org.delete({
-      where: orgWhereUniqueInput,
-    });
-  }
-
-  async upsert(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
-    orgUpdateInput: Prisma.OrgUpdateInput,
-    orgCreateInput: OrgCreateInput
-  ): Promise<Org> {
-    return this.prisma.org.upsert({
-      where: orgWhereUniqueInput,
-      update: orgUpdateInput,
-      create: orgCreateInput,
-    });
+  async delete(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<{ deleted: boolean; message?: string }> {
+    try {
+      await this.prisma.org.delete({
+        where: orgWhereUniqueInput,
+      });
+      return { deleted: true };
+    } catch (err) {
+      return { deleted: false, message: err.message };
+    }
   }
 }

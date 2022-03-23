@@ -64,7 +64,7 @@ export class OrgResolver {
   async delete(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<OrgGQL> {
+  ): Promise<{ deleted: boolean }> {
     return this.orgService.delete(orgWhereUniqueInput);
   }
 }

@@ -1,134 +1,119 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Org } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { TestOrgCreateInput } from './org.repo';
 import { OrgService } from './org.service';
-import { prismaMock } from '../prisma/singleton';
-import {
-  OrgWhereInput,
-  OrgWhereUniqueInput,
-  OrgUpdateInput,
-} from '@odst/types/ods';
+import { v4 as uuidv4 } from 'uuid';
+import { TestOrgCreateInput } from './org.repo';
+import { OrgGQL } from '@odst/types/ods';
+
+const orgArray: OrgGQL[] = [];
+
+TestOrgCreateInput.forEach((orgCreateInput) => {
+  const org: OrgGQL = ((orgCreateInput as OrgGQL).id = uuidv4());
+  orgArray.push(org);
+});
+
+const oneOrg = orgArray[0];
+
+const db = {
+  org: {
+    findMany: jest.fn().mockReturnValue(orgArray),
+    findUnique: jest.fn().mockResolvedValue(oneOrg),
+    update: jest.fn().mockResolvedValue(oneOrg),
+    create: jest.fn().mockResolvedValue(oneOrg),
+    delete: jest.fn().mockResolvedValue(oneOrg),
+    orgs: jest.fn().mockResolvedValue(orgArray),
+    getSubOrgs: jest.fn().mockReturnValue(orgArray),
+  },
+};
 
 describe('OrgService', () => {
   let service: OrgService;
+  let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [OrgService, { provide: PrismaService, useValue: prismaMock }],
+      providers: [
+        OrgService,
+        {
+          provide: PrismaService,
+          useValue: db,
+        },
+      ],
     }).compile();
 
     service = module.get<OrgService>(OrgService);
+    prisma = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('Should find an org', async () => {
-    const orgInput = TestOrgCreateInput[0];
-    const orgWhereUniqueInput: OrgWhereUniqueInput = {
-      name: orgInput.name,
-    };
-
-    await service.findUnique(orgWhereUniqueInput);
-
-    expect(prismaMock.org.findUnique).toHaveBeenCalled();
+  describe('findMany', () => {
+    it('should return an array of orgs', async () => {
+      const orgs = await service.findMany();
+      expect(orgs).toEqual(orgArray);
+    });
   });
 
-  it('Should create a new org', async () => {
-    await service.create(TestOrgCreateInput[0]);
-    expect(prismaMock.org.create).toHaveBeenCalled();
+  describe('findUnique', () => {
+    it('should get a single org', () => {
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(oneOrg);
+    });
   });
 
-  it('Should find multiple people', async () => {
-    await service.findMany();
-
-    expect(prismaMock.org.findMany).toHaveBeenCalled();
+  describe('update', () => {
+    it('should call the update method', async () => {
+      const org = await service.update(
+        { id: 'a uuid' },
+        {
+          orgTier: 'WING',
+        }
+      );
+      expect(org).toEqual(oneOrg);
+    });
   });
 
-  it('Should find a unique org', async () => {
-    const orgInput: OrgWhereUniqueInput = {
-      name: TestOrgCreateInput[0].name,
-    };
-    await service.findUnique(orgInput.name as unknown as Org);
-
-    expect(prismaMock.org.findUnique).toHaveBeenCalled();
+  describe('create', () => {
+    it('should call the create method', async () => {
+      const org = await service.create(TestOrgCreateInput[0]);
+      expect(org).toEqual(oneOrg);
+    });
   });
 
-  it('Should update a org', async () => {
-    const orgInput = TestOrgCreateInput[0];
-    const orgWhereUniqueInput: OrgWhereUniqueInput = {
-      name: orgInput.name,
-    };
-    const orgUpdateInput: OrgUpdateInput = {
-      orgTier: 'SQUADRON',
-    };
+  describe('delete', () => {
+    it('should return {deleted: true}', () => {
+      expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
+        deleted: true,
+      });
+    });
 
-    await service.update(orgWhereUniqueInput, orgUpdateInput);
-    expect(prismaMock.org.update).toHaveBeenCalled();
+    it('should return {deleted: false, message: err.message}', () => {
+      const dbSpy = jest
+        .spyOn(prisma.org, 'delete')
+        .mockRejectedValueOnce(new Error('Bad Delete Method.'));
+      expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
+        deleted: false,
+        message: 'Bad Delete Method.',
+      });
+    });
   });
 
-  it('Should delete a org', async () => {
-    const orgInput = TestOrgCreateInput[0];
-    const orgWhereUniqueInput: OrgWhereUniqueInput = {
-      name: orgInput.name,
-    };
-    await service.delete(orgWhereUniqueInput);
-    //expect(result).toEqual(orgInput as unknown as Org);
-
-    expect(prismaMock.org.delete).toHaveBeenCalled();
+  describe('orgs', () => {
+    it('should call the orgs method', async () => {
+      const org = await service.orgs({
+        where: { id: 'a uuid' },
+        take: 3,
+        skip: 1,
+      });
+      expect(org).toEqual(orgArray);
+    });
   });
 
-  it('Should find all orgs that are a sub org to the given org', async () => {
-    TestOrgCreateInput.forEach((orgCreateInput) =>
-      service.create(orgCreateInput)
-    );
-
-    const orgInput: OrgWhereUniqueInput = {
-      name: TestOrgCreateInput[0].name,
-    };
-
-    await service.findUnique(orgInput.name as unknown as Org);
-    await service.getSubOrgs(orgInput);
-
-    expect(prismaMock.org.findUnique).toHaveBeenCalled();
-    //expect(prismaMock.org.findMany).toHaveBeenCalled();
-
-    // TODO test the second half ot getSubOrgs method.
-    // Right now, only the part where no sub orgs exist is tested
-  });
-
-  it('Should find a list of people skipiing 1, taking 3, with matching name', async () => {
-    const orgInput = TestOrgCreateInput[3];
-    const orgWhereUniqueInput: OrgWhereUniqueInput = {
-      name: orgInput.name,
-    };
-
-    const params = {
-      skip: 1,
-      take: 3,
-      cursor: orgWhereUniqueInput,
-    };
-
-    await service.orgs(params);
-
-    expect(prismaMock.org.findMany).toHaveBeenCalled();
-  });
-
-  it('Should find a list of people skipiing 3, taking 1, with matching name', async () => {
-    const orgWhereInput: OrgWhereInput = {
-      orgTier: 'WING',
-    };
-
-    const params = {
-      skip: 1,
-      take: 3,
-      where: orgWhereInput,
-    };
-
-    await service.orgs(params);
-
-    expect(prismaMock.org.findMany).toHaveBeenCalled();
+  describe('getSubOrgs', () => {
+    it('should call the getSubOrgs method', async () => {
+      const org = await service.getSubOrgs({ id: 'a uuid' });
+      expect(org).toEqual(orgArray);
+    });
   });
 });
