@@ -54,9 +54,16 @@ export class SurveyService {
     });
   }
 
-  async delete(surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput) {
-    return this.prisma.survey.delete({
-      where: surveyWhereUniqueInput,
-    });
+  async delete(
+    orgWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  ): Promise<{ deleted: boolean; message?: string }> {
+    try {
+      await this.prisma.survey.delete({
+        where: orgWhereUniqueInput,
+      });
+      return { deleted: true };
+    } catch (err) {
+      return { deleted: false, message: err.message };
+    }
   }
 }

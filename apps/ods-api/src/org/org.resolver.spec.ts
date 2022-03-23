@@ -4,10 +4,8 @@ import { OrgService } from './org.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestOrgCreateInput } from './org.repo';
 import { OrgGQL } from '@odst/types/ods';
-import { OrgWhereUniqueInput } from '@odst/types/ods';
 
 const orgArray: OrgGQL[] = [];
-const orgId = uuidv4();
 
 TestOrgCreateInput.forEach((orgCreateInput) => {
   const org: OrgGQL = ((orgCreateInput as OrgGQL).id = uuidv4());
@@ -33,8 +31,12 @@ describe('Org Resolver', () => {
           useValue: {
             findMany: jest.fn().mockResolvedValue(orgArray),
             orgs: jest.fn().mockResolvedValue(() => Promise.resolve(orgArray)),
-            getSubOrgs: jest.fn().mockResolvedValue(() => Promise.resolve(orgArray)),
-            findUnique: jest.fn().mockImplementation(() => Promise.resolve(oneOrg)),
+            getSubOrgs: jest
+              .fn()
+              .mockResolvedValue(() => Promise.resolve(orgArray)),
+            findUnique: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneOrg)),
             create: jest.fn().mockImplementation(() => Promise.resolve(oneOrg)),
             update: jest.fn().mockImplementation(() => Promise.resolve(oneOrg)),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
@@ -51,6 +53,7 @@ describe('Org Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
+  //TODO returns [Function anonymous] instead of orgGQL[]
   describe('findMany', () => {
     it('should get an array of orgs', async () => {
       await expect(resolver.findMany()).resolves.toEqual(orgArray);

@@ -46,12 +46,12 @@ export class SurveyResolver {
     return this.surveyService.update(surveyWhereUniqueInput, surveyUpdateInput);
   }
 
-  @Mutation(() => SurveyGQL, { name: 'removeSurvey' })
+  @Mutation(() => SurveyGQL, { name: 'removeOrg' })
   // @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ): Promise<SurveyGQL> {
+  ): Promise<{ deleted: boolean }> {
     return this.surveyService.delete(surveyWhereUniqueInput);
   }
 }

@@ -1,117 +1,111 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Survey } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { TestSurveyCreateInput } from './survey.repo';
 import { SurveyService } from './survey.service';
-import { prismaMock } from '../prisma/singleton';
-import {
-  SurveyWhereUniqueInput,
-  SurveyUpdateInput,
-} from '@odst/types/ods';
+import { v4 as uuidv4 } from 'uuid';
+import { TestSurveyCreateInput } from './survey.repo';
+import { SurveyGQL } from '@odst/types/ods';
+
+const surveyArray: SurveyGQL[] = [];
+
+TestSurveyCreateInput.forEach((surveyCreateInput) => {
+  const survey: SurveyGQL = ((surveyCreateInput as SurveyGQL).id = uuidv4());
+  surveyArray.push(survey);
+});
+
+const oneSurvey = surveyArray[0];
+
+const db = {
+  survey: {
+    findMany: jest.fn().mockReturnValue(surveyArray),
+    findUnique: jest.fn().mockResolvedValue(oneSurvey),
+    update: jest.fn().mockResolvedValue(oneSurvey),
+    create: jest.fn().mockResolvedValue(oneSurvey),
+    delete: jest.fn().mockResolvedValue(oneSurvey),
+    surveys: jest.fn().mockResolvedValue(surveyArray),
+  },
+};
 
 describe('SurveyService', () => {
   let service: SurveyService;
+  let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SurveyService, { provide: PrismaService, useValue: prismaMock }],
+      providers: [
+        SurveyService,
+        {
+          provide: PrismaService,
+          useValue: db,
+        },
+      ],
     }).compile();
 
     service = module.get<SurveyService>(SurveyService);
+    prisma = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('Should find an survey', async () => {
-    const surveyInput = TestSurveyCreateInput[0];
-    const surveyWhereUniqueInput: SurveyWhereUniqueInput = {
-      id: surveyInput.id,
-    };
-
-    await service.findUnique(surveyWhereUniqueInput);
-
-    expect(prismaMock.survey.findUnique).toHaveBeenCalled();
+  describe('findMany', () => {
+    it('should return an array of surveys', async () => {
+      const surveys = await service.findMany();
+      expect(surveys).toEqual(surveyArray);
+    });
   });
 
-  it('Should create a new survey', async () => {
-    await service.create(TestSurveyCreateInput[0]);
-    expect(prismaMock.survey.create).toHaveBeenCalled();
+  describe('findUnique', () => {
+    it('should get a single survey', () => {
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(oneSurvey);
+    });
   });
 
-  it('Should find multiple people', async () => {
-    await service.findMany();
-
-    expect(prismaMock.survey.findMany).toHaveBeenCalled();
+  describe('update', () => {
+    it('should call the update method', async () => {
+      const survey = await service.update(
+        { id: 'a uuid' },
+        {
+          surveyResponses: { connect: { id: 'surveyResponse id' } },
+        }
+      );
+      expect(survey).toEqual(oneSurvey);
+    });
   });
 
-  it('Should find a unique survey', async () => {
-    const surveyInput: SurveyWhereUniqueInput = {
-      id: TestSurveyCreateInput[0].id,
-    };
-    await service.findUnique(surveyInput.id as unknown as Survey);
-
-    expect(prismaMock.survey.findUnique).toHaveBeenCalled();
+  describe('create', () => {
+    it('should call the create method', async () => {
+      const survey = await service.create(TestSurveyCreateInput[0]);
+      expect(survey).toEqual(oneSurvey);
+    });
   });
 
-  it('Should update a survey', async () => {
-    const surveyInput = TestSurveyCreateInput[0];
-    const surveyWhereUniqueInput: SurveyWhereUniqueInput = {
-      id: surveyInput.id,
-    };
-    const surveyUpdateInput: SurveyUpdateInput = {
-      orgs: { connect : { id: "org-id"}},
-    };
+  describe('delete', () => {
+    it('should return {deleted: true}', () => {
+      expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
+        deleted: true,
+      });
+    });
 
-    await service.update(surveyWhereUniqueInput, surveyUpdateInput);
-    expect(prismaMock.survey.update).toHaveBeenCalled();
+    it('should return {deleted: false, message: err.message}', () => {
+      const dbSpy = jest
+        .spyOn(prisma.survey, 'delete')
+        .mockRejectedValueOnce(new Error('Bad Delete Method.'));
+      expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
+        deleted: false,
+        message: 'Bad Delete Method.',
+      });
+    });
   });
 
-  it('Should delete a survey', async () => {
-    const surveyInput = TestSurveyCreateInput[0];
-    const surveyWhereUniqueInput: SurveyWhereUniqueInput = {
-      id: surveyInput.id,
-    };
-    await service.delete(surveyWhereUniqueInput);
-    //expect(result).toEqual(surveyInput as unknown as Survey);
-
-    expect(prismaMock.survey.delete).toHaveBeenCalled();
-  });
-
-  it('Should find all surveys that are a sub survey to the given survey', async () => {
-    TestSurveyCreateInput.forEach((surveyCreateInput) =>
-      service.create(surveyCreateInput)
-    );
-
-    const surveyInput: SurveyWhereUniqueInput = {
-      id: TestSurveyCreateInput[0].id,
-    };
-
-    await service.findUnique(surveyInput.id as unknown as Survey);
-    await service.getSubSurveys(surveyInput);
-
-    expect(prismaMock.survey.findUnique).toHaveBeenCalled();
-    //expect(prismaMock.survey.findMany).toHaveBeenCalled();
-
-    // TODO test the second half ot getSubSurveys method.
-    // Right now, only the part where no sub surveys exist is tested
-  });
-
-  it('Should find a list of people skipiing 1, taking 3, with matching id', async () => {
-    const surveyInput = TestSurveyCreateInput[3];
-    const surveyWhereUniqueInput: SurveyWhereUniqueInput = {
-      id: surveyInput.id,
-    };
-
-    const params = {
-      skip: 1,
-      take: 3,
-      cursor: surveyWhereUniqueInput,
-    };
-
-    await service.surveys(params);
-
-    expect(prismaMock.survey.findMany).toHaveBeenCalled();
+  describe('surveys', () => {
+    it('should call the surveys method', async () => {
+      const survey = await service.surveys({
+        where: { id: 'a uuid' },
+        take: 3,
+        skip: 1,
+      });
+      expect(survey).toEqual(surveyArray);
+    });
   });
 });

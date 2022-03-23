@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
 
 @InputType()
