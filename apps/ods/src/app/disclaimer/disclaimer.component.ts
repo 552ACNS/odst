@@ -7,12 +7,4 @@ import { Component } from '@angular/core';
 })
 export class DisclaimerComponent{
 
-  //constructor() { }
-  // ngOnInit(): void {
-  //   throw new Error('Method not implemented.');
-  // }
-
-  // ngOnInit(): void {
-  // }
-
 }
