@@ -7,7 +7,6 @@ import { OrgCreateOrConnectWithoutSurveysInput } from './org.create.input';
 export class SurveyCreateInput implements Prisma.SurveyCreateInput {
   @Field(() => OrgCreateNestedManyWithoutSurveysInput)
   orgs?: Prisma.OrgCreateNestedManyWithoutSurveysInput;
-  name: any;
 
   // @Field(() => QuestionCreateNestedManyWithoutSurveyInput)
   // questions?: Prisma.QuestionCreateNestedManyWithoutSurveyInput;
