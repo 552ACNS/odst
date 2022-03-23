@@ -85,19 +85,22 @@ Run `nx dep-graph` to see a diagram of the dependencies of your projects.
 
 Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
 
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
-
 ## Admin user account for graphql API access
 
 password: `admin`<br/>
 username: `admin`
+
+## Common Troubleshooting steps
+
+### - `yarn` throws graphql error
+
+This could be because you've made changes to the schema and not rerun the backend. Serving the backend, running `yarn` again will ensure graphql schema and types will be generated properly.
+### - Webpack config errors on frontend
+Need to remove prisma references from frontend and only use the generated graphQL files.
+
+### - New prisma database
+When creating a new prisma database, you need to specify what project it is made for in the prisma.schema under outputs.
+
+### - Tailwind isn't working w/ Material
+Ensure that you marked Tailwind as "Important" under tailwind config.
+

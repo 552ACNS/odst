@@ -20,8 +20,7 @@ import { UserService } from '../user/user.service';
     AccessTokenStrategy,
     RefreshTokenStrategy,
     RefreshTokenService,
-    PrismaService
-
+    PrismaService,
   ],
   exports: [],
 })

@@ -10,8 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatStepperModule } from '@angular/material/stepper';
-import {MatSidenavModule} from '@angular/material/sidenav';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   imports: [

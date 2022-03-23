@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { Prisma } from '.prisma/client';
+import { Prisma } from '.prisma/waypoint/client';
 import { PersonUpdateOneRequiredWithoutUserInput } from './org.update.input';
 
 @InputType()
@@ -9,7 +9,5 @@ export class UserUpdateInput implements Prisma.UserUpdateInput {
 
   @Field(() => PersonUpdateOneRequiredWithoutUserInput)
   person?: Prisma.PersonUpdateOneRequiredWithoutUserInput;
-
-  @Field(() => Boolean)
   enabled?: boolean;
 }

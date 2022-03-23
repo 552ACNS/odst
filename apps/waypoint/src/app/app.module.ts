@@ -17,10 +17,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavigationBarComponent,
-  ],
+  declarations: [AppComponent, NavigationBarComponent],
   imports: [
     RouterModule.forRoot([]),
     BrowserModule,

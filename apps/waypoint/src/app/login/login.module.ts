@@ -10,16 +10,16 @@ import { RouterModule } from '@angular/router';
 import { loginRoutes } from './login.routing';
 
 @NgModule({
-    declarations: [LoginComponent],
-    imports: [
-        CommonModule, 
-        ReactiveFormsModule, 
-        MatInputModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatIconModule,
-        RouterModule.forChild(loginRoutes)
-    ],
-    exports: []
-  })
-  export class LoginModule {}
+  declarations: [LoginComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    RouterModule.forChild(loginRoutes),
+  ],
+  exports: [],
+})
+export class LoginModule {}

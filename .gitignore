@@ -4,7 +4,9 @@
 /dist
 /tmp
 /out-tsc
-/apps/**/schema.graphql
+
+#generated files
+graphql-generated.ts
 
 # dependencies
 /node_modules
@@ -25,7 +27,6 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/css_custom_data.json
-
 
 # misc
 /.sass-cache
