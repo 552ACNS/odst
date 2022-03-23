@@ -1,12 +1,12 @@
-<mat-card class="w-2/6 m-2">
+<mat-card class="w-1/5 m-2">
     <mat-card-header>
       <label>Observations of Discrimination in Squadron</label>      
     </mat-card-header>    
 </mat-card> 
-<mat-card class="w-2/6 m-2">
+<mat-card class="w-1/5 m-2">
 <form [formGroup]="form" class="m-2">
-    
-        <label>What squadron did the event occur in? 
+        <label>
+            What squadron did the event occur in? 
             <span class="text-red-500">
                 *
             </span>
@@ -19,7 +19,7 @@
                     {{ org.name }}
                   </mat-option>
                 </mat-select> -->
-                <mat-select [(value)]="selected">
+                <mat-select [(value)]="selected"  placeholder="Organization" formControlName="personOrg">
                     <mat-option>None</mat-option>
                     <mat-option value="option1">Option 1</mat-option>
                     <mat-option value="option2">Option 2</mat-option>
@@ -29,7 +29,7 @@
               </mat-form-field>
         </div>
         <label>
-            Please describe the event of a mircroaggression or 
+            Please describe the event of a microaggression or 
             discrimination that took place in your squadron.
             Please refrain from using names or identifying information. 
             <span class="text-red-500">
@@ -37,34 +37,42 @@
             </span>
         </label>
         <div>
-            <mat-form-field>
-                <input
+            <mat-form-field appearance="outline" class="w-full"> 
+                <mat-label>Event impact</mat-label>
+                <textarea
                 matInput
                 placeholder="Event description"
                 formControlName="event"
                 required
-              />
-              <mat-error> Please describe the mircro-aggression or discrimination that took place </mat-error>
+                class=""
+              >
+                </textarea>
+              <mat-error> Please describe the mircroaggression or discrimination that took place </mat-error>
             </mat-form-field>
         </div>
-        <label>Was the person perfomring the microaggression or discrimination
+        <label>Was the person performing the microaggression or discrimination
             active duty, civilian, guard/reserve or a contractor?
             <span class="text-red-500">
                 *
             </span>
         </label>
         <div>
+            <br>
             <!-- TODO pull data into a mutation to the back end when that is set up-->
+            <!-- TODO maybe use ng if once we have spec available -->
             <mat-radio-group
-            formControlName="violatorSpec" class="">
+            formControlName="violatorSpec" class="">                
                 <mat-radio-button value="1">Active Duty</mat-radio-button>
                 <br>
+                <br>                
                 <mat-radio-button value="2">Civilian</mat-radio-button>
                 <br>
+                <br>   
                 <mat-radio-button value="3">Contractor</mat-radio-button>
                 <br>
+                <br>   
                 <mat-radio-button value="4">Guard/Reserve</mat-radio-button>
-                <br>
+                <br> 
                 <mat-radio-button value="5">
                     <mat-form-field>
                         <!-- <input matInput placeholder="Other" [(ngModel)]="customGoalName" (ngModelChange)="goalOption = 'other'" name="something"> -->
@@ -73,6 +81,113 @@
                 </mat-radio-button>
             </mat-radio-group> 
         </div>
+        <label>
+        Who is your SQ/CC?
+            <span class="text-red-500">
+                *
+            </span>
+        </label>
+        <div>
+            <mat-form-field>
+                <!-- TODO implement commented out code to select SQ/CC -->
+                <!-- <mat-select placeholder="Organization" formControlName="personOrg">
+                  <mat-option *ngFor="let org of orgs" [value]="org.id">
+                    {{ org.name }}
+                  </mat-option>
+                </mat-select> -->
+                <mat-select [(value)]="selected" formControlName="CC">
+                    <mat-option>None</mat-option>
+                    <mat-option value="option1">Option 1</mat-option>
+                    <mat-option value="option2">Option 2</mat-option>
+                    <mat-option value="option3">Option 3</mat-option>
+                </mat-select>
+                <mat-error> Please select their organization </mat-error>
+              </mat-form-field>
+        </div>
+        <label>
+            Are you active duty, a civilian, guard/reserve or contractor?
+            <span class="text-red-500">
+                *
+            </span>
+        </label>
+        <div>
+            <br>
+            <!-- TODO pull data into a mutation to the back end when that is set up-->
+            <!-- TODO maybe use ng if once we have spec available -->
+            <mat-radio-group
+            formControlName="personSpec" class="">                
+                <mat-radio-button value="1">Active Duty</mat-radio-button>
+                <br>
+                <br>                
+                <mat-radio-button value="2">Civilian</mat-radio-button>
+                <br>
+                <br>   
+                <mat-radio-button value="3">Contractor</mat-radio-button>
+                <br>
+                <br>   
+                <mat-radio-button value="4">Guard/Reserve</mat-radio-button>
+                <br> 
+                <mat-radio-button value="5">
+                    <mat-form-field>
+                        <!-- <input matInput placeholder="Other" [(ngModel)]="customGoalName" (ngModelChange)="goalOption = 'other'" name="something"> -->
+                        <input matInput placeholder="Other" formControlName="personOtherSpec">
+                    </mat-form-field>
+                </mat-radio-button>
+            </mat-radio-group> 
+        </div>
+        <label>
+            What impacts did this event have on you or your work environment
+            <span class="text-red-500">
+                *
+            </span>
+        </label>
+        <div>
+            <mat-form-field  appearance="outline" class="w-full border-solid">
+                <mat-label>Event impact</mat-label>
+                <textarea
+                matInput
+                placeholder="Event impact"
+                formControlName="impact"
+                required
+              >
+                </textarea>
+              <mat-error> Please describe the events impact </mat-error>
+            </mat-form-field>
+        </div>
+        <label>
+            Click the box below if your Squadron Commander was involved in the event
+            (this will route the submission to a representative outside of your chain of command).
+        </label>
+        <section>
+            <br>
+            <mat-checkbox formControlName="outsideRouting"
+              >My Squadron Commander was involved</mat-checkbox
+            >
+          </section>
     </form>
 </mat-card> 
+<!-- TODO align buttons to the right of form -->
+<div  class="w-1/3 flex justify-center" >
+<button   
+id="btnBack"
+class="m-3"
+mat-raised-button
+color=""
+(click)="back()"
+>
+Back
+</button>
+<button
+id="btnSubmit"
+class="m-3"
+mat-raised-button
+color="primary"
+(click)="submit()"
+[disabled]="
+  !form.valid
+"
+>
+Submit
+</button>
+</div>
 

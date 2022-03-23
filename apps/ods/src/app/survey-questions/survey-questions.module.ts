@@ -6,26 +6,24 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
 import { SurveyQuestionsComponent } from './survey-questions.component';
 import { SurveyQuestionsRoutes } from './survey-questions.routing';
-import { MatRadioModule } from '@angular/material/radio';
 import { RouterModule } from '@angular/router';
 
 
 @NgModule({
     declarations: [SurveyQuestionsComponent],
     imports: [
+        RouterModule.forChild(SurveyQuestionsRoutes),
         CommonModule, 
         ReactiveFormsModule,
         MatInputModule,
         MatButtonModule,
         MatSelectModule,
-        MatCardModule,      
-        MatCheckboxModule,
-        MatIconModule,       
         MatRadioModule,
-        RouterModule.forChild(SurveyQuestionsRoutes)
+        MatCardModule,
+        MatCheckboxModule
     ],
     exports: []
   })
