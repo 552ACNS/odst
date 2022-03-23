@@ -1,7 +1,11 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, InputType } from '@nestjs/graphql';
+import { Question } from '.prisma/ods/client';
 
 @ObjectType()
-export class Question {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+@InputType('QuestionGQLInput')
+export class QuestionGQL implements Question {
+  
+  @Field(() => String, { nullable: true })
+  id: string;
+  prompt: string;
 }

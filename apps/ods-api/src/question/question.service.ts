@@ -5,7 +5,7 @@ import { UpdateQuestionInput } from './dto/update-question.input';
 
 @Injectable()
 export class QuestionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Prisma.QuestionCreateInput): Promise<Question> {
     return await this.prisma.question.create({
