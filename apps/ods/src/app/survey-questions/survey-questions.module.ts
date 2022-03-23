@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { SurveyQuestionsComponent } from './survey-questions.component';
 import { SurveyQuestionsRoutes } from './survey-questions.routing';
+import { MatRadioModule } from '@angular/material/radio';
 import { RouterModule } from '@angular/router';
 
 
@@ -23,6 +24,7 @@ import { RouterModule } from '@angular/router';
         MatCardModule,      
         MatCheckboxModule,
         MatIconModule,       
+        MatRadioModule,
         RouterModule.forChild(SurveyQuestionsRoutes)
     ],
     exports: []

@@ -1,2 +1,78 @@
-<p>survey-questions works!</p>
+<mat-card class="w-2/6 m-2">
+    <mat-card-header>
+      <label>Observations of Discrimination in Squadron</label>      
+    </mat-card-header>    
+</mat-card> 
+<mat-card class="w-2/6 m-2">
+<form [formGroup]="form" class="m-2">
+    
+        <label>What squadron did the event occur in? 
+            <span class="text-red-500">
+                *
+            </span>
+        </label>
+        <div>
+            <mat-form-field>
+                <!-- TODO implement commented out code to select organization -->
+                <!-- <mat-select placeholder="Organization" formControlName="personOrg">
+                  <mat-option *ngFor="let org of orgs" [value]="org.id">
+                    {{ org.name }}
+                  </mat-option>
+                </mat-select> -->
+                <mat-select [(value)]="selected">
+                    <mat-option>None</mat-option>
+                    <mat-option value="option1">Option 1</mat-option>
+                    <mat-option value="option2">Option 2</mat-option>
+                    <mat-option value="option3">Option 3</mat-option>
+                </mat-select>
+                <mat-error> Please select their organization </mat-error>
+              </mat-form-field>
+        </div>
+        <label>
+            Please describe the event of a mircroaggression or 
+            discrimination that took place in your squadron.
+            Please refrain from using names or identifying information. 
+            <span class="text-red-500">
+                *
+            </span>
+        </label>
+        <div>
+            <mat-form-field>
+                <input
+                matInput
+                placeholder="Event description"
+                formControlName="event"
+                required
+              />
+              <mat-error> Please describe the mircro-aggression or discrimination that took place </mat-error>
+            </mat-form-field>
+        </div>
+        <label>Was the person perfomring the microaggression or discrimination
+            active duty, civilian, guard/reserve or a contractor?
+            <span class="text-red-500">
+                *
+            </span>
+        </label>
+        <div>
+            <!-- TODO pull data into a mutation to the back end when that is set up-->
+            <mat-radio-group
+            formControlName="violatorSpec" class="">
+                <mat-radio-button value="1">Active Duty</mat-radio-button>
+                <br>
+                <mat-radio-button value="2">Civilian</mat-radio-button>
+                <br>
+                <mat-radio-button value="3">Contractor</mat-radio-button>
+                <br>
+                <mat-radio-button value="4">Guard/Reserve</mat-radio-button>
+                <br>
+                <mat-radio-button value="5">
+                    <mat-form-field>
+                        <!-- <input matInput placeholder="Other" [(ngModel)]="customGoalName" (ngModelChange)="goalOption = 'other'" name="something"> -->
+                        <input matInput placeholder="Other" formControlName="otherSpec">
+                    </mat-form-field>
+                </mat-radio-button>
+            </mat-radio-group> 
+        </div>
+    </form>
+</mat-card> 
 

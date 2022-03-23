@@ -67,7 +67,10 @@
             "tsConfig": "apps/ods/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["apps/ods/src/favicon.ico", "apps/ods/src/assets"],
-            "styles": ["apps/ods/src/styles.scss"],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/ods/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -262,8 +265,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "apps/waypoint/src/styles.scss",
-              "apps/ods/src/styles.scss"
+              "apps/waypoint/src/styles.scss"
             ],
             "scripts": []
           },
