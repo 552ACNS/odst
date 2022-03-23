@@ -318,8 +318,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "apps/waypoint/src/styles.scss",
-              "apps/ods/src/styles.scss"
+              "apps/waypoint/src/styles.scss"
             ],
             "scripts": []
           },
