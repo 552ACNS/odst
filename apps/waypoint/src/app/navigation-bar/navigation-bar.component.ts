@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavProps } from '@odst/types';
+import { NavProps } from '@odst/types/waypoint';
 import { isLoggedIn } from '@odst/helpers';
 
 @Component({

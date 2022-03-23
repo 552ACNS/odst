@@ -8,7 +8,7 @@ import {
   OrgWhereInput,
   OrgWhereUniqueInput,
   OrgUpdateInput,
-} from '@odst/types';
+} from '@odst/types/waypoint';
 
 describe('OrgService', () => {
   let service: OrgService;
