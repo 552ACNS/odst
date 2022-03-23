@@ -1,5 +1,5 @@
 import { ObjectType, Field, InputType } from '@nestjs/graphql';
-import { Org, OrgTier } from '@prisma/client';
+import { Org, OrgTier } from '.prisma/waypoint/client';
 
 @ObjectType()
 @InputType('OrgGQLInput')
@@ -9,9 +9,7 @@ export class OrgGQL implements Org {
   name: string;
   aliases: string[];
 
-  @Field(() => OrgTier, { nullable: true })
+  @Field(() => OrgTier)
   orgTier: OrgTier;
-
-  @Field(() => String, { nullable: true })
   parentId: string | null;
 }

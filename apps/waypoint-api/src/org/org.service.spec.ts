@@ -1,10 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Org } from '@prisma/client';
+import { Org } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { TestOrgCreateInput } from './org.repo';
 import { OrgService } from './org.service';
 import { prismaMock } from '../prisma/singleton';
-import { OrgWhereInput, OrgWhereUniqueInput, OrgUpdateInput } from '@odst/types';
+import {
+  OrgWhereInput,
+  OrgWhereUniqueInput,
+  OrgUpdateInput,
+} from '@odst/types';
 
 describe('OrgService', () => {
   let service: OrgService;
@@ -77,7 +81,9 @@ describe('OrgService', () => {
   });
 
   it('Should find all orgs that are a sub org to the given org', async () => {
-    TestOrgCreateInput.forEach((orgCreateInput) => service.create(orgCreateInput));
+    TestOrgCreateInput.forEach((orgCreateInput) =>
+      service.create(orgCreateInput)
+    );
 
     const orgInput: OrgWhereUniqueInput = {
       name: TestOrgCreateInput[0].name,

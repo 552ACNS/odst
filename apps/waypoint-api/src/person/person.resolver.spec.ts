@@ -182,9 +182,6 @@ describe('PersonsResolver', () => {
 
   //   await resolver.create(createdPerson);
 
-
-
-
   //   // Call the createPerson method by calling the controller
   //   // try {
   //   //   const actual = await resolver.create(createdPerson);
@@ -195,9 +192,8 @@ describe('PersonsResolver', () => {
   //   //   expect(error).toBeInstanceOf(BadRequestException)
   //   //   expect(spy).toHaveBeenCalled();
   //   // }
-    
+
   //   // // Assert that the method was called
-    
 
   //   // expect(actual).toBe(resolvedPerson);
   // });

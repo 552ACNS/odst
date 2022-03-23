@@ -17,4 +17,3 @@ export function setRefreshToken(token: string): void {
 export function isLoggedIn(): boolean {
   return !!getRefreshToken();
 }
-

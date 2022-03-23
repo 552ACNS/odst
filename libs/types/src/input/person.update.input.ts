@@ -1,10 +1,11 @@
-import { Prisma } from '.prisma/client';
+import { Prisma } from '.prisma/waypoint/client';
 import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { OrgUpdateOneRequiredWithoutPersonsInput } from './org.update.input';
 import {
   PersonCreateManyOrgInputEnvelope,
   PersonCreateWithoutOrgInput,
 } from './person.create.input';
+import { PersonWhereUniqueInput } from './person.unique.input';
 
 @InputType()
 export class PersonUncheckedUpdateWithoutOrgInput
@@ -43,7 +44,7 @@ export class PersonUpdateWithWhereUniqueWithoutOrgInput
   @Field(() => PersonUpdateInput)
   data: PersonUpdateInput;
 
-  @Field(() => String)
+  @Field(() => PersonWhereUniqueInput)
   where: Prisma.PersonWhereUniqueInput;
 }
 

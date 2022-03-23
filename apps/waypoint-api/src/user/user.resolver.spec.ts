@@ -5,7 +5,7 @@ import { UserCreateInput } from '@odst/types';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { TestUserCreateInput } from './user.repo';
-import { User } from '@prisma/client';
+import { User } from '.prisma/waypoint/client';
 
 describe('UsersResolver', () => {
   let resolver: UserResolver;

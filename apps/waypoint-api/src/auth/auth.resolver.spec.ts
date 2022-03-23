@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { User } from '@prisma/client';
+import { User } from '.prisma/waypoint/client';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
@@ -76,9 +76,9 @@ describe('AuthResolver', () => {
   it('Should call the method to signup', async () => {
     // TEST PARAMS
     const methodToSpy = 'signup';
-    const resolvedTokens  = {
-      accessToken : "this-is-my-access-token",
-      refreshToken : "this-is-my-refresh-token"
+    const resolvedTokens = {
+      accessToken: 'this-is-my-access-token',
+      refreshToken: 'this-is-my-refresh-token',
     } as unknown as TokensGQL;
 
     const resolvedSignupUserInput: SignupUserInput = {

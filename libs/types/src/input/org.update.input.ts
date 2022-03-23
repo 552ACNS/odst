@@ -1,5 +1,5 @@
 import { InputType, Field, PartialType } from '@nestjs/graphql';
-import { Prisma } from '.prisma/client';
+import { Prisma } from '.prisma/waypoint/client';
 import { PersonUpdateManyWithoutOrgInput } from './person.update.input';
 import { OrgCreateInput } from './org.create.input';
 import { OrgWhereUniqueInput } from './org.unique.input';
@@ -13,8 +13,6 @@ export class OrgUpdateInput
   @Field(() => [PersonUpdateManyWithoutOrgInput], { nullable: true })
   override persons?: Prisma.PersonUpdateManyWithoutOrgInput;
 }
-
-// Think yall forgot to finish this....
 
 @InputType()
 export class OrgUpdateOneRequiredWithoutPersonsInput

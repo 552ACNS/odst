@@ -1,9 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
-import { Org, OrgTier } from '@prisma/client';
 import { Subscription } from 'rxjs';
 import { CreateOrgService } from './create-org.service';
+import {
+  CreateOrgDocument,
+  CreateOrgMutation,
+  CreateOrgMutationVariables,
+  FindManyOrgsDocument,
+  FindManyOrgsQuery,
+  FindManyOrgsQueryVariables,
+  OrgGql,
+  OrgTier
+} from '../../graphql-generated';
 
 @Component({
   selector: 'odst-create-org',
@@ -13,7 +22,7 @@ import { CreateOrgService } from './create-org.service';
 export class CreateOrgComponent implements OnInit, OnDestroy {
   orgTiers: string[] = Object.values(OrgTier);
   orgAliases: string[] = [];
-  orgs: Org[] = []
+  orgs: Partial<OrgGql>[];
   querySubscription: Subscription;
   loading = true;
   submitSuccess = false;
@@ -47,10 +56,9 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   //   }
   // }
   async ngOnInit(): Promise<void> {
-    const GET_ORGS = this.orgService.queryOrgs();
     this.querySubscription = this.apollo
-      .watchQuery<any>({
-        query: GET_ORGS,
+      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+        query: FindManyOrgsDocument,
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
@@ -59,11 +67,9 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   }
 
   OrgSubmit(): void {
-    const SUBMIT_ORG = this.orgService.mutationCreateOrg();
-
     this.apollo
-      .mutate<any>({
-        mutation: SUBMIT_ORG,
+      .mutate<CreateOrgMutation, CreateOrgMutationVariables>({
+        mutation: CreateOrgDocument,
         variables: {
           orgCreateInput: {
             name: this.orgForm.value['orgName'],
@@ -84,6 +90,7 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
         },
       })
       .subscribe(
+        //TODO deprecated
         ({ data }) => {
           this.submitSuccess = true;
         },

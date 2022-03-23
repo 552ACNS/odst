@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 
@@ -15,10 +15,7 @@ export class LoginComponent /*implements OnInit*/ {
     rememberMe: ['', Validators.nullValidator],
   });
 
-  constructor(
-    private fb: FormBuilder,
-    private loginService: LoginService,
-  ) {}
+  constructor(private fb: FormBuilder, private loginService: LoginService) {}
 
   // ngOnInit(): void {
   // }

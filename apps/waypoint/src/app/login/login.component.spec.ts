@@ -17,7 +17,7 @@ describe('LoginComponent', () => {
         ApolloTestingModule,
         MaterialModule,
         BrowserAnimationsModule,
-        RouterTestingModule
+        RouterTestingModule,
       ],
       declarations: [LoginComponent],
     }).compileComponents();

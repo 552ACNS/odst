@@ -7,6 +7,7 @@ import {
   SignupUserInput,
   TokensGQL,
   JwtPayloadInit,
+  RefreshLoginInput,
 } from '@odst/types';
 import { isJwtChainExpired } from '@odst/helpers';
 import { compare, hash } from 'bcrypt';
@@ -90,6 +91,8 @@ export class AuthService {
     return true;
   }
 
+  //this method expects refresh token in auth header. That is the ideal way, but not sure how to full implement the auth guard for it
+  //TODO in the mean time, get rid of this method, rename refreshTokensVar to refreshTokens
   async refreshTokens(userId: string): Promise<TokensGQL> {
     const user = await this.userService.findUnique({
       id: userId,
@@ -105,9 +108,11 @@ export class AuthService {
   }
 
   //expects the token as a variable, instead of auth header
-  async refreshTokensVar(refreshToken: string): Promise<TokensGQL> {
+  async refreshTokensVar(
+    refreshLoginInput: RefreshLoginInput
+  ): Promise<TokensGQL> {
     if (
-      !this.jwtService.verify(refreshToken, {
+      !this.jwtService.verify(refreshLoginInput.refreshToken, {
         secret: process.env.NX_JWT_REFRESH_SECRET,
       })
     ) {
@@ -115,12 +120,14 @@ export class AuthService {
     }
 
     const refreshTokenPayload = this.jwtService.decode(
-      refreshToken
+      refreshLoginInput.refreshToken
     ) as JwtPayloadRefresh;
 
     const userId = refreshTokenPayload.sub;
 
-    if (!(await this.validateRefreshToken(userId, refreshToken))) {
+    if (
+      !(await this.validateRefreshToken(userId, refreshLoginInput.refreshToken))
+    ) {
       throw new UnauthorizedException();
     }
 

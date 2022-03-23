@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { Prisma } from '.prisma/client';
+import { Prisma } from '.prisma/waypoint/client';
 import { PersonCreateNestedOneWithoutUserInput } from './person.create.input';
 import { RefreshTokenCreateNestedManyWithoutUserInput } from './refreshToken.create.input';
 
@@ -11,7 +11,6 @@ export class UserCreateInput implements Prisma.UserCreateInput {
   @Field(() => PersonCreateNestedOneWithoutUserInput)
   person!: Prisma.PersonCreateNestedOneWithoutUserInput;
 
-  @Field(() => Boolean)
   enabled?: boolean;
 
   @Field(() => RefreshTokenCreateNestedManyWithoutUserInput)
