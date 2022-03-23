@@ -53,13 +53,6 @@ model SurveyResponse {
   resolution   String?
 }
 
-enum Role {
-  ADMIN
-  DEI // Diversity, Equity, Inclusion
-  EO // Equal Opportunity
-  CC // Commander
-}
-
 model Survey {
   id              String           @id @default(uuid())
   orgs            Org[]
@@ -67,18 +60,25 @@ model Survey {
   surveyResponses SurveyResponse[]
 }
 
-enum Spec {
-  AD
-  CIVILIAN
-  CONTRACTOR
-  RESERVE_GUARD
-}
-
 model Question {
   id       String  @id @default(uuid())
   prompt   String
   survey   Survey? @relation(fields: [surveyId], references: [id])
   surveyId String?
+}
+
+enum Role {
+  ADMIN
+  DEI // Diversity, Equity, Inclusion
+  EO // Equal Opportunity
+  CC // Commander
+}
+
+enum Spec {
+  AD
+  CIVILIAN
+  CONTRACTOR
+  RESERVE_GUARD
 }
 
 enum OrgTier {

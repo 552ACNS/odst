@@ -1,6 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { OrgTier, Prisma } from '.prisma/ods/client';
-import { OrgGQL } from '../entity/org.entity';
 import { OrgWhereUniqueInput } from './org.unique.input';
 import { OrgCreateOrConnectWithoutSurveysInput } from './org.create.input';
 
@@ -8,6 +7,7 @@ import { OrgCreateOrConnectWithoutSurveysInput } from './org.create.input';
 export class SurveyCreateInput implements Prisma.SurveyCreateInput {
   @Field(() => OrgCreateNestedManyWithoutSurveysInput)
   orgs?: Prisma.OrgCreateNestedManyWithoutSurveysInput;
+  name: any;
 
   // @Field(() => QuestionCreateNestedManyWithoutSurveyInput)
   // questions?: Prisma.QuestionCreateNestedManyWithoutSurveyInput;
