@@ -8,7 +8,7 @@ import {
   TokensGQL,
   JwtPayloadInit,
   RefreshLoginInput,
-} from '@odst/types';
+} from '@odst/types/waypoint';
 import { isJwtChainExpired } from '@odst/helpers';
 import { compare, hash } from 'bcrypt';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';

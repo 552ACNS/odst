@@ -5,7 +5,7 @@ import {
   OrgCreateInput,
   OrgUpdateInput,
   OrgWhereUniqueInput,
-} from '@odst/types';
+} from '@odst/types/waypoint';
 import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 import { UseGuards } from '@nestjs/common';
 

@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from './user.service';
 import { prismaMock } from '../prisma/singleton';
-import { UserUpdateInput, UserWhereUniqueInput } from '@odst/types';
+import { UserUpdateInput, UserWhereUniqueInput } from '@odst/types/waypoint';
 import { TestUserCreateInput } from './user.repo';
 
 describe('UsersService', () => {

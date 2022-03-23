@@ -1,4 +1,4 @@
-import { PersonCreateInput } from '@odst/types';
+import { PersonCreateInput } from '@odst/types/waypoint';
 
 function randomIntFromInterval(min, max) {
   // min and max included

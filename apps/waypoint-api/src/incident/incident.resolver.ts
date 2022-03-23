@@ -4,7 +4,7 @@ import {
   IncidentCreateInput,
   IncidentGQL,
   IncidentWhereUniqueInput,
-} from '@odst/types';
+} from '@odst/types/waypoint';
 import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 import { IncidentService } from './incident.service';
 

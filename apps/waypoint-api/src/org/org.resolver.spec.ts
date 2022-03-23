@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { OrgResolver } from './org.resolver';
 import { OrgService } from './org.service';
-import { OrgCreateInput, OrgGQL, OrgUpdateInput } from '@odst/types';
+import { OrgCreateInput, OrgGQL, OrgUpdateInput } from '@odst/types/waypoint';
 import { TestOrgCreateInput } from './org.repo';
 
 describe('OrgResolver', () => {

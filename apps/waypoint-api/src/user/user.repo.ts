@@ -1,4 +1,4 @@
-import { UserCreateInput } from '@odst/types';
+import { UserCreateInput } from '@odst/types/waypoint';
 
 export const TestUserCreateInput: UserCreateInput[] = [
   {

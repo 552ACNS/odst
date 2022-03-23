@@ -5,7 +5,7 @@ import {
   LoginUserInput,
   SignupUserInput,
   UserWhereUniqueInput,
-} from '@odst/types';
+} from '@odst/types/waypoint';
 import { User } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { prismaMock } from '../prisma/singleton';

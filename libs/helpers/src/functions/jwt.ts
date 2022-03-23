@@ -1,5 +1,5 @@
 import jwt_decode from 'jwt-decode';
-import { JwtPayload, JwtPayloadRefresh } from '@odst/types';
+import { JwtPayload, JwtPayloadRefresh } from '@odst/types/waypoint';
 
 //These are used in gql.module, which is not async, so made these not async
 

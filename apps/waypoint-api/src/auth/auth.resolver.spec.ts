@@ -1,6 +1,6 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TokensGQL, LoginUserInput, SignupUserInput } from '@odst/types';
+import { TokensGQL, LoginUserInput, SignupUserInput } from '@odst/types/waypoint';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import { AuthResolver } from './auth.resolver';
