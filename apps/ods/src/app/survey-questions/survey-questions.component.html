@@ -4,7 +4,7 @@
     </mat-card-header>    
 </mat-card> 
 <mat-card class="w-1/5 m-2">
-<form [formGroup]="form" class="m-2">
+    <form [formGroup]="form" class="m-2">
         <label>
             What squadron did the event occur in? 
             <span class="text-red-500">
@@ -14,16 +14,14 @@
         <div>
             <mat-form-field>
                 <!-- TODO implement commented out code to select organization -->
-                <!-- <mat-select placeholder="Organization" formControlName="personOrg">
-                  <mat-option *ngFor="let org of orgs" [value]="org.id">
-                    {{ org.name }}
+                <mat-select 
+                placeholder="Organization" 
+                formControlName="personOrg"
+                required
+                >
+                  <mat-option *ngFor="let org of orgs" [value]="org">
+                    {{ org }}
                   </mat-option>
-                </mat-select> -->
-                <mat-select [(value)]="selected"  placeholder="Organization" formControlName="personOrg">
-                    <mat-option>None</mat-option>
-                    <mat-option value="option1">Option 1</mat-option>
-                    <mat-option value="option2">Option 2</mat-option>
-                    <mat-option value="option3">Option 3</mat-option>
                 </mat-select>
                 <mat-error> Please select their organization </mat-error>
               </mat-form-field>
@@ -43,8 +41,8 @@
                 matInput
                 placeholder="Event description"
                 formControlName="event"
-                required
                 class=""
+                required
               >
                 </textarea>
               <mat-error> Please describe the mircroaggression or discrimination that took place </mat-error>
@@ -61,7 +59,9 @@
             <!-- TODO pull data into a mutation to the back end when that is set up-->
             <!-- TODO maybe use ng if once we have spec available -->
             <mat-radio-group
-            formControlName="violatorSpec" class="">                
+            formControlName="violatorSpec" 
+            class=""
+            required>                
                 <mat-radio-button value="1">Active Duty</mat-radio-button>
                 <br>
                 <br>                
@@ -90,18 +90,15 @@
         <div>
             <mat-form-field>
                 <!-- TODO implement commented out code to select SQ/CC -->
-                <!-- <mat-select placeholder="Organization" formControlName="personOrg">
-                  <mat-option *ngFor="let org of orgs" [value]="org.id">
-                    {{ org.name }}
+                <mat-select 
+                placeholder="Doe, John Lt. Col." 
+                formControlName="personOrg"
+                required>
+                <mat-option *ngFor="let CC of CCs" [value]="CC">
+                    {{ CC }}
                   </mat-option>
-                </mat-select> -->
-                <mat-select [(value)]="selected" formControlName="CC">
-                    <mat-option>None</mat-option>
-                    <mat-option value="option1">Option 1</mat-option>
-                    <mat-option value="option2">Option 2</mat-option>
-                    <mat-option value="option3">Option 3</mat-option>
                 </mat-select>
-                <mat-error> Please select their organization </mat-error>
+                <mat-error>Please select your Squadron Commander</mat-error>
               </mat-form-field>
         </div>
         <label>
@@ -115,7 +112,9 @@
             <!-- TODO pull data into a mutation to the back end when that is set up-->
             <!-- TODO maybe use ng if once we have spec available -->
             <mat-radio-group
-            formControlName="personSpec" class="">                
+            formControlName="personSpec" 
+            class="" 
+            required>                
                 <mat-radio-button value="1">Active Duty</mat-radio-button>
                 <br>
                 <br>                
@@ -160,8 +159,10 @@
         </label>
         <section>
             <br>
-            <mat-checkbox formControlName="outsideRouting"
-              >My Squadron Commander was involved</mat-checkbox
+            <mat-checkbox 
+            formControlName="outsideRouting"
+              >
+              My Squadron Commander was involved</mat-checkbox
             >
           </section>
     </form>
