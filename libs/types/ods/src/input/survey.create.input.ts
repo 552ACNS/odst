@@ -12,6 +12,7 @@ export class SurveyCreateInput implements Prisma.SurveyCreateInput {
   // questions?: Prisma.QuestionCreateNestedManyWithoutSurveyInput;
 }
 
+@InputType()
 export class SurveyCreateNestedManyWithoutOrgsInput implements Prisma.SurveyCreateNestedManyWithoutOrgsInput {
   @Field(() => SurveyWhereUniqueInput, { nullable: true })
   connect?: Prisma.SurveyWhereUniqueInput;

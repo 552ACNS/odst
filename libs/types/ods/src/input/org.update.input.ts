@@ -23,6 +23,7 @@ export class OrgUpdateManyWithoutSurveyInput
   update?: Prisma.OrgUpdateWithWhereUniqueWithoutSurveysInput[];
 }
 
+@InputType()
 export class OrgUpdateWithWhereUniqueWithoutSurveysInput
   implements Prisma.OrgUpdateWithWhereUniqueWithoutSurveysInput
 {
