@@ -25,7 +25,7 @@ describe('Org Resolver', () => {
         {
           provide: OrgService,
           useValue: {
-            orgs: jest.fn().mockResolvedValue(orgArray),
+            findMany: jest.fn().mockResolvedValue(orgArray),
             getSubOrgs: jest
               .fn()
               .mockResolvedValue(orgArray),

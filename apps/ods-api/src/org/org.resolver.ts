@@ -13,17 +13,11 @@ import {
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
-  @Mutation(() => OrgGQL, { name: 'createOrg' })
-  // @UseGuards(AccessTokenAuthGuard)
-  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput) {
-    return this.orgService.create(orgCreateInput);
-  }
-
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
   // @UseGuards(AccessTokenAuthGuard)
   async findMany(): Promise<OrgGQL[]> {
     // return this.orgService.findMany();
-    return this.orgService.orgs({
+    return this.orgService.findMany({
       orderBy: {
         name: 'asc',
       },
@@ -46,6 +40,12 @@ export class OrgResolver {
     orgWhereUniqueInput: OrgWhereUniqueInput
   ): Promise<OrgGQL | null> {
     return this.orgService.findUnique(orgWhereUniqueInput);
+  }
+
+  @Mutation(() => OrgGQL, { name: 'createOrg' })
+  // @UseGuards(AccessTokenAuthGuard)
+  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput) {
+    return this.orgService.create(orgCreateInput);
   }
 
   @Mutation(() => OrgGQL, { name: 'updateOrg' })

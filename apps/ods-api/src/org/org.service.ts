@@ -7,15 +7,7 @@ import { OrgCreateInput, OrgGQL } from '@odst/types/ods';
 export class OrgService {
   constructor(private prisma: PrismaService) {}
 
-  async findUnique(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Org | null> {
-    return this.prisma.org.findUnique({
-      where: orgWhereUniqueInput,
-    });
-  }
-
-  async orgs(params: {
+  async findMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.OrgWhereUniqueInput;
@@ -30,16 +22,6 @@ export class OrgService {
       where,
       orderBy,
     });
-  }
-
-  async create(data: Prisma.OrgCreateInput): Promise<OrgGQL> {
-    return this.prisma.org.create({
-      data,
-    });
-  }
-
-  async findMany(): Promise<OrgGQL[]> {
-    return this.prisma.org.findMany();
   }
 
   async getSubOrgs(
@@ -67,6 +49,20 @@ export class OrgService {
     }
 
     return orgs as OrgGQL[];
+  }
+
+  async findUnique(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<Org | null> {
+    return this.prisma.org.findUnique({
+      where: orgWhereUniqueInput,
+    });
+  }
+
+  async create(data: Prisma.OrgCreateInput): Promise<OrgGQL> {
+    return this.prisma.org.create({
+      data,
+    });
   }
 
   async update(

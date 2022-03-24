@@ -17,12 +17,11 @@ const oneOrg = orgArray[0];
 const db = {
   org: {
     findMany: jest.fn().mockReturnValue(orgArray),
-    findUnique: jest.fn().mockResolvedValue(oneOrg),
-    update: jest.fn().mockResolvedValue(oneOrg),
-    create: jest.fn().mockResolvedValue(oneOrg),
-    delete: jest.fn().mockResolvedValue(oneOrg),
-    orgs: jest.fn().mockResolvedValue(orgArray),
     getSubOrgs: jest.fn().mockReturnValue(orgArray),
+    findUnique: jest.fn().mockResolvedValue(oneOrg),
+    create: jest.fn().mockResolvedValue(oneOrg),
+    update: jest.fn().mockResolvedValue(oneOrg),
+    delete: jest.fn().mockResolvedValue(oneOrg),
   },
 };
 
@@ -56,9 +55,23 @@ describe('OrgService', () => {
     });
   });
 
+  describe('getSubOrgs', () => {
+    it('should call the getSubOrgs method', async () => {
+      const org = await service.getSubOrgs({ id: 'a uuid' });
+      expect(org).toEqual(orgArray);
+    });
+  });
+
   describe('findUnique', () => {
     it('should get a single org', () => {
       expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(oneOrg);
+    });
+  });
+
+  describe('create', () => {
+    it('should call the create method', async () => {
+      const org = await service.create(TestOrgCreateInput[0]);
+      expect(org).toEqual(oneOrg);
     });
   });
 
@@ -70,13 +83,6 @@ describe('OrgService', () => {
           orgTier: 'WING',
         }
       );
-      expect(org).toEqual(oneOrg);
-    });
-  });
-
-  describe('create', () => {
-    it('should call the create method', async () => {
-      const org = await service.create(TestOrgCreateInput[0]);
       expect(org).toEqual(oneOrg);
     });
   });
@@ -96,24 +102,6 @@ describe('OrgService', () => {
         deleted: false,
         message: 'Bad Delete Method.',
       });
-    });
-  });
-
-  describe('orgs', () => {
-    it('should call the orgs method', async () => {
-      const org = await service.orgs({
-        where: { id: 'a uuid' },
-        take: 3,
-        skip: 1,
-      });
-      expect(org).toEqual(orgArray);
-    });
-  });
-
-  describe('getSubOrgs', () => {
-    it('should call the getSubOrgs method', async () => {
-      const org = await service.getSubOrgs({ id: 'a uuid' });
-      expect(org).toEqual(orgArray);
     });
   });
 });
