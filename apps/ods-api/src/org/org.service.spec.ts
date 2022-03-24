@@ -50,7 +50,7 @@ describe('OrgService', () => {
 
   describe('findMany', () => {
     it('should return an array of orgs', async () => {
-      const orgs = await service.findMany();
+      const orgs = await service.findMany({});
       expect(orgs).toEqual(orgArray);
     });
   });
