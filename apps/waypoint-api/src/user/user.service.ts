@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { UserCreateInput } from '@odst/types/waypoint';
 import { Prisma, User } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -7,15 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async user(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<User | null> {
-    return this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
-    });
-  }
-
-  async users(params: {
+  async findMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;
@@ -32,21 +23,17 @@ export class UserService {
     });
   }
 
-  async create(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({
-      data,
-    });
-  }
-
-  async findMany(): Promise<User[]> {
-    return this.prisma.user.findMany();
-  }
-
   async findUnique(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
+    });
+  }
+
+  async create(data: Prisma.UserCreateInput): Promise<User> {
+    return this.prisma.user.create({
+      data,
     });
   }
 
@@ -60,21 +47,16 @@ export class UserService {
     });
   }
 
-  async delete(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
-    return this.prisma.user.delete({
-      where: userWhereUniqueInput,
-    });
-  }
-
-  async upsert(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-    userUpdateInput: Prisma.UserUpdateInput,
-    userCreateInput: UserCreateInput
-  ): Promise<User> {
-    return this.prisma.user.upsert({
-      where: userWhereUniqueInput,
-      update: userUpdateInput,
-      create: userCreateInput,
-    });
+  async delete(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<{ deleted: boolean; message?: string }> {
+    try {
+      await this.prisma.user.delete({
+        where: userWhereUniqueInput,
+      });
+      return { deleted: true };
+    } catch (err) {
+      return { deleted: false, message: err.message };
+    }
   }
 }

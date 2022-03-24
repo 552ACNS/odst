@@ -1,102 +1,99 @@
-import { User } from '.prisma/waypoint/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from './user.service';
-import { prismaMock } from '../prisma/singleton';
-import { UserUpdateInput, UserWhereUniqueInput } from '@odst/types/waypoint';
+import { v4 as uuidv4 } from 'uuid';
 import { TestUserCreateInput } from './user.repo';
+import { UserGQL } from '@odst/types/waypoint';
 
-describe('UsersService', () => {
+const userArray: UserGQL[] = [];
+
+TestUserCreateInput.forEach((userCreateInput) => {
+  const user: UserGQL = ((userCreateInput as unknown as UserGQL).id = uuidv4());
+  userArray.push(user);
+});
+
+const oneUser = userArray[0];
+
+const db = {
+  user: {
+    findMany: jest.fn().mockReturnValue(userArray),
+    findUnique: jest.fn().mockResolvedValue(oneUser),
+    create: jest.fn().mockResolvedValue(oneUser),
+    update: jest.fn().mockResolvedValue(oneUser),
+    delete: jest.fn().mockResolvedValue(oneUser),
+  },
+};
+
+describe('UserService', () => {
   let service: UserService;
+  let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
-        { provide: PrismaService, useValue: prismaMock },
+        {
+          provide: PrismaService,
+          useValue: db,
+        },
       ],
     }).compile();
 
     service = module.get<UserService>(UserService);
+    prisma = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('Should find a user', async () => {
-    const userInput = TestUserCreateInput[0];
-    const userWhereUniqueInput: UserWhereUniqueInput = {
-      username: userInput.username,
-    };
-
-    const resolvedUser: User = userWhereUniqueInput as unknown as User;
-    await service.findUnique(resolvedUser);
-
-    expect(prismaMock.user.findUnique).toHaveBeenCalled();
+  describe('findMany', () => {
+    it('should return an array of users', async () => {
+      const users = await service.findMany({});
+      expect(users).toEqual(userArray);
+    });
   });
 
-  it('Should create a new user', async () => {
-    await service.create(TestUserCreateInput[0]);
-
-    expect(prismaMock.user.create).toHaveBeenCalled();
+  describe('findUnique', () => {
+    it('should get a single user', () => {
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(oneUser);
+    });
   });
 
-  it('Should find multiple people', async () => {
-    await service.findMany();
-
-    expect(prismaMock.user.findMany).toHaveBeenCalled();
+  describe('create', () => {
+    it('should call the create method', async () => {
+      const user = await service.create(TestUserCreateInput[0]);
+      expect(user).toEqual(oneUser);
+    });
   });
 
-  it('Should find a unique user', async () => {
-    const userInput: UserWhereUniqueInput = {
-      username: TestUserCreateInput[0].username,
-    };
-
-    await service.findUnique(userInput.username as unknown as User);
-
-    expect(prismaMock.user.findUnique).toHaveBeenCalled();
+  describe('update', () => {
+    it('should call the update method', async () => {
+      const user = await service.update(
+        { id: 'a uuid' },
+        {
+          enabled: false,
+        }
+      );
+      expect(user).toEqual(oneUser);
+    });
   });
 
-  it('Should update a user', async () => {
-    const userInput = TestUserCreateInput[0];
-    const userWhereUniqueInput: UserWhereUniqueInput = {
-      username: userInput.username,
-    };
-    const userUpdateInput: UserUpdateInput = {
-      username: 'new.username',
-    };
+  describe('delete', () => {
+    it('should return {deleted: true}', () => {
+      expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
+        deleted: true,
+      });
+    });
 
-    await service.update(userWhereUniqueInput, userUpdateInput);
-
-    expect(prismaMock.user.update).toHaveBeenCalled();
-  });
-
-  it('Should delete a user', async () => {
-    const userInput = TestUserCreateInput[0];
-    const userWhereUniqueInput: UserWhereUniqueInput = {
-      username: userInput.username,
-    };
-    await service.delete(userWhereUniqueInput);
-    //expect(result).toEqual(userInput as unknown as User);
-
-    expect(prismaMock.user.delete).toHaveBeenCalled();
-  });
-
-  it('Should find a list of people skipiing 1, taking 3, with matching username', async () => {
-    const userInput = TestUserCreateInput[3];
-    const userWhereUniqueInput: UserWhereUniqueInput = {
-      username: userInput.username,
-    };
-
-    const params = {
-      skip: 1,
-      take: 3,
-      cursor: userWhereUniqueInput,
-    };
-
-    await service.users(params);
-
-    expect(prismaMock.user.findMany).toHaveBeenCalled();
+    it('should return {deleted: false, message: err.message}', () => {
+      const dbSpy = jest
+        .spyOn(prisma.user, 'delete')
+        .mockRejectedValueOnce(new Error('Bad Delete Method.'));
+      expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
+        deleted: false,
+        message: 'Bad Delete Method.',
+      });
+    });
   });
 });

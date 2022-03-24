@@ -13,23 +13,21 @@ import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  // @Mutation(() => AuthPayloadGQL)
-  // async signup(parent, args, context, info) {
-  //   // 1
-  //   const password = await hash(args.password, 10)
+  // find all users
+  @Query(() => [UserGQL], { name: 'findManyUsers' })
+  @UseGuards(AccessTokenAuthGuard)
+  async findMany(): Promise<UserGQL[]> {
+    return this.userService.findMany({});
+  }
 
-  //   // 2
-  //   const user = await this.userService.create({ data: { ...args, password } })
-
-  //   // 3
-  //   const token = jwt.sign({ userId: user.id }, APP_SECRET)
-
-  //   // 4
-  //   return {
-  //     token,
-  //     user,
-  //   }
-  //}
+  @Query(() => UserGQL, { name: 'findUniqueUser' })
+  @UseGuards(AccessTokenAuthGuard)
+  async findUnique(
+    @Args('userWhereUniqueInput')
+    userWhereUniqueInput: UserWhereUniqueInput
+  ) {
+    return this.userService.findUnique(userWhereUniqueInput);
+  }
 
   // create a user
   // ths uses the guard because to make an account while unauthenticated you use the signup mutation
@@ -40,22 +38,6 @@ export class UserResolver {
     @Args('userCreateInput') userCreateInput: UserCreateInput
   ): Promise<UserGQL> {
     return await this.userService.create(userCreateInput);
-  }
-
-  // find all users
-  @Query(() => [UserGQL], { name: 'findManyUsers' })
-  @UseGuards(AccessTokenAuthGuard)
-  async findMany(): Promise<UserGQL[]> {
-    return this.userService.findMany();
-  }
-
-  @Query(() => UserGQL, { name: 'findUniqueUser' })
-  @UseGuards(AccessTokenAuthGuard)
-  async findUnique(
-    @Args('userWhereUniqueInput')
-    userWhereUniqueInput: UserWhereUniqueInput
-  ) {
-    return this.userService.findUnique(userWhereUniqueInput);
   }
 
   @Mutation(() => UserGQL, { name: 'updateUser' })
@@ -77,7 +59,7 @@ export class UserResolver {
   async delete(
     @Args('userWhereUniqueInput')
     userWhereUniqueInput: UserWhereUniqueInput
-  ): Promise<UserGQL> {
+  ): Promise<{ deleted: boolean }> {
     return this.userService.delete(userWhereUniqueInput);
   }
 }

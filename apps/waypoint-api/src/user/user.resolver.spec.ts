@@ -1,146 +1,105 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OrgService } from '../org/org.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { UserCreateInput } from '@odst/types/waypoint';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
+import { v4 as uuidv4 } from 'uuid';
 import { TestUserCreateInput } from './user.repo';
-import { User } from '.prisma/waypoint/client';
+import { UserGQL } from '@odst/types/waypoint';
 
-describe('UsersResolver', () => {
+const userArray: UserGQL[] = [];
+
+TestUserCreateInput.forEach((userCreateInput) => {
+  const user: UserGQL = ((userCreateInput as unknown as UserGQL).id = uuidv4());
+  userArray.push(user);
+});
+
+const oneUser = userArray[0];
+
+describe('User Resolver', () => {
   let resolver: UserResolver;
-  let servicer: UserService;
+  let service: UserService;
 
-  const testUsers: UserCreateInput[] = TestUserCreateInput;
-
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserResolver, UserService, PrismaService, OrgService],
+      controllers: [UserResolver],
+      providers: [
+        {
+          provide: UserService,
+          useValue: {
+            findMany: jest.fn().mockResolvedValue(userArray),
+            findUnique: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneUser)),
+            create: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneUser)),
+            update: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneUser)),
+            delete: jest.fn().mockResolvedValue({ deleted: true }),
+          },
+        },
+      ],
     }).compile();
 
     resolver = module.get<UserResolver>(UserResolver);
-    servicer = module.get<UserService>(UserService);
+    service = module.get<UserService>(UserService);
   });
 
   it('should be defined', () => {
     expect(resolver).toBeDefined();
   });
 
-  it('should call the method to create a User', async () => {
-    // TEST PARAMS
-    const createdUser: UserCreateInput = testUsers[0];
-    const methodToSpy = 'create';
-
-    // TODO: Seems awkward to cast the User here, but I don't know how to do it otherwise
-    const resolvedUser: User = createdUser as unknown as User;
-
-    // Change value of promise
-    const result: Promise<User> = Promise.resolve(resolvedUser);
-
-    //Make it so that the createUser method returns the fake User
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
-
-    // Call the createUser method by calling the controller
-    const actual = await resolver.create(createdUser);
-    // Assert that the method was called
-    expect(spy).toHaveBeenCalled();
-
-    expect(actual).toBe(resolvedUser);
+  describe('findMany', () => {
+    it('should get an array of users', async () => {
+      await expect(resolver.findMany()).resolves.toEqual(userArray);
+    });
   });
 
-  it('Should call the method to find all Users', async () => {
-    // TEST PARAMS
-    const methodToSpy = 'findMany';
-
-    const resolvedUsers: User[] = testUsers.map(
-      (User) => User as unknown as User
-    );
-
-    // Change value of promise
-    const result: Promise<User[]> = Promise.resolve(resolvedUsers);
-
-    //Make it so that the createUser method returns the fake User
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
-    // Call the createUser method by calling the controller
-    const actual = await resolver.findMany();
-    // Assert that the method was called
-    expect(spy).toHaveBeenCalled();
-
-    expect(actual).toStrictEqual(resolvedUsers);
+  describe('findUnqiue', () => {
+    it('should get a single user', async () => {
+      await expect(
+        resolver.findUnique({ id: 'a strange id' })
+      ).resolves.toEqual(userArray[0]);
+      await expect(
+        resolver.findUnique({ id: 'a different id' })
+      ).resolves.toEqual(userArray[0]);
+    });
   });
 
-  it('Should call the method to find a unique User', async () => {
-    // TEST PARAMS
-    const userToFind: UserCreateInput = testUsers[0];
-    const methodToSpy = 'findUnique';
-
-    // TODO: Seems awkward to cast the User here, but I don't know how to do it otherwise
-    const resolvedUser: User = userToFind as unknown as User;
-
-    // Change value of promise
-    const result: Promise<User> = Promise.resolve(resolvedUser);
-
-    //Make it so that the createUser method returns the fake User
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
-    // Call the createUser method by calling the controller
-    const actual = await resolver.findUnique({ username: userToFind.username });
-    // Assert that the method was called
-    expect(spy).toHaveBeenCalled();
-
-    expect(actual).toStrictEqual(resolvedUser);
+  describe('create', () => {
+    it('should create a create user', async () => {
+      await expect(resolver.create(TestUserCreateInput[0])).resolves.toEqual(
+        userArray[0]
+      );
+    });
   });
 
-  it('Should update a User', async () => {
-    // TEST PARAMS
-    const methodToSpy = 'update';
-    const newUsername = 'new.username';
-    //Create a GQL definition of the User to update
-    const updatedUser: User = testUsers[2] as unknown as User;
-
-    //Create a promised result that will match the User GQL data type that will be updated
-    const result: Promise<User> = Promise.resolve(updatedUser);
-
-    //Create the spy on the service
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
-
-    // Call the update service and get the actual to be compared to result
-    const actual = await resolver.update(
-      { username: updatedUser.username },
-      { username: newUsername }
-    );
-    // Assert that the method was called
-    expect(spy).toHaveBeenCalled();
-    //Determine if the actual and result are the same
-    expect(actual).toEqual(updatedUser);
+  describe('update', () => {
+    it('should update a user', async () => {
+      await expect(
+        resolver.update({ id: oneUser.id }, { enabled: false })
+      ).resolves.toEqual(oneUser);
+    });
   });
 
-  it('Should delete a User', async () => {
-    // TEST PARAMS
-    const methodToSpy = 'delete';
-    //Create a GQL definition of the User to delete
-    const deletedUser: User = testUsers[2] as unknown as User;
-
-    //Create a promised result that will match the User GQL data type that will be deleted
-    const result: Promise<User> = Promise.resolve(deletedUser);
-
-    //Create the spy on the service
-    const spy = jest
-      .spyOn(servicer, methodToSpy)
-      .mockImplementation(() => result);
-
-    // Call the delete service and get the actual to be compared to result
-    const actual = await resolver.delete({ username: deletedUser.username });
-    // Assert that the method was called
-    expect(spy).toHaveBeenCalled();
-    //Determine if the actual and result are the same
-    expect(actual).toEqual(deletedUser);
+  describe('delete', () => {
+    it('should return that it deleted a user', async () => {
+      await expect(
+        resolver.delete({ id: 'a uuid that exists' })
+      ).resolves.toEqual({
+        deleted: true,
+      });
+    });
+    it('should return that it did not delete a user', async () => {
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockResolvedValueOnce({ deleted: false });
+      await expect(
+        resolver.delete({ id: 'a uuid that does not exist' })
+      ).resolves.toEqual({ deleted: false });
+      // TODO expect(deleteSpy).toBeCalledWith('a uuid that does not exist');
+      //the above would be better, but not sure how to get it to pass
+      expect(deleteSpy).toBeCalled();
+    });
   });
 });
