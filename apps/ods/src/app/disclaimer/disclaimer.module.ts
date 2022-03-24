@@ -10,20 +10,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { DisclaimerRoutes } from './disclaimer.routing';
 
-
 @NgModule({
-  declarations: [
-    DisclaimerComponent
-  ],
+  declarations: [DisclaimerComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(DisclaimerRoutes),
-    ReactiveFormsModule,
-        MatCardModule,
-        MatInputModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatIconModule
-  ]
+    // TODO: Make shared module for common routes.
+    MatCardModule,
+    MatButtonModule,
+  ],
 })
-export class DisclaimerModule { }
+export class DisclaimerModule {}
