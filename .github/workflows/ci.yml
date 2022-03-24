@@ -26,7 +26,7 @@ jobs:
       - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
       - name: Generate Prisma clients
-        run: npx nx run waypoint-api:prisma-generate
+        run: yarn nx run-many --target=prisma-generate --all
       - name: Generate Graphql types
         run: npx graphql-codegen --config graphql.codegen.yml
       - run: npx nx affected --target=test --parallel
@@ -54,7 +54,7 @@ jobs:
           # Semantic version range syntax or exact version of a dotnet version
           dotnet-version: '6.x'
       - name: Generate Prisma clients
-        run: yarn nx run waypoint-api:prisma-generate
+        run: yarn nx run-many --target=prisma-generate --all
       - name: Generate Graphql types
         run: npx graphql-codegen --config graphql.codegen.yml
       - run: yarn nx affected --target=lint --parallel
