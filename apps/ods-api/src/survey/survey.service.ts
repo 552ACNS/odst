@@ -5,9 +5,6 @@ import { SurveyGQL, SurveyWhereUniqueInput } from '@odst/types/ods';
 
 @Injectable()
 export class SurveyService {
-  getSubSurveys(surveyInput: SurveyWhereUniqueInput) {
-    throw new Error('Method not implemented.');
-  }
   constructor(private prisma: PrismaService) {}
 
   async findUnique(

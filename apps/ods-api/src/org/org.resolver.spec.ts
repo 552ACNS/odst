@@ -21,19 +21,14 @@ describe('Org Resolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [OrgResolver],
-      // If you've looked at the complex sample you'll notice that these functions
-      // are a little bit more in depth using mock implementation
-      // to give us a little bit more control and flexibility in our tests
-      // this is not necessary, but can sometimes be helpful in a test scenario
       providers: [
         {
           provide: OrgService,
           useValue: {
-            findMany: jest.fn().mockResolvedValue(orgArray),
-            orgs: jest.fn().mockResolvedValue(() => Promise.resolve(orgArray)),
+            orgs: jest.fn().mockResolvedValue(orgArray),
             getSubOrgs: jest
               .fn()
-              .mockResolvedValue(() => Promise.resolve(orgArray)),
+              .mockResolvedValue(orgArray),
             findUnique: jest
               .fn()
               .mockImplementation(() => Promise.resolve(oneOrg)),
@@ -53,21 +48,19 @@ describe('Org Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
-  //TODO returns [Function anonymous] instead of orgGQL[]
   describe('findMany', () => {
     it('should get an array of orgs', async () => {
       await expect(resolver.findMany()).resolves.toEqual(orgArray);
     });
   });
 
-  //TODO returns [Function anonymous] instead of orgGQL[]
-  // describe('orgs', () => {
-  //   it('should get an array of orgs', async () => {
-  //     await expect(
-  //       resolver.getSubOrgs({ id: orgArray[0].id })
-  //     ).resolves.toEqual(orgArray);
-  //   });
-  // });
+  describe('getSubOrgs', () => {
+    it('should get an array of orgs', async () => {
+      await expect(
+        resolver.getSubOrgs({ id: orgArray[0].id })
+      ).resolves.toEqual(orgArray);
+    });
+  });
 
   describe('findUnqiue', () => {
     it('should get a single org', async () => {
