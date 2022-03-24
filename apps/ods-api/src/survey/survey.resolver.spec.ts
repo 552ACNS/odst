@@ -26,10 +26,6 @@ describe('Survey Resolver', () => {
           provide: SurveyService,
           useValue: {
             findMany: jest.fn().mockResolvedValue(surveyArray),
-            surveys: jest.fn().mockResolvedValue(surveyArray),
-            getSubSurveys: jest
-              .fn()
-              .mockResolvedValue(() => Promise.resolve(surveyArray)),
             findUnique: jest
               .fn()
               .mockImplementation(() => Promise.resolve(oneSurvey)),
