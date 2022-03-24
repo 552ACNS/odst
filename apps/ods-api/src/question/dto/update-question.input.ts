@@ -1,8 +1,9 @@
-import { CreateQuestionInput } from './create-question.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { QuestionCreateInput } from './create-question.input';
+import { InputType, PartialType } from '@nestjs/graphql';
+import { Prisma } from '.prisma/ods/client';
+
 
 @InputType()
-export class UpdateQuestionInput extends PartialType(CreateQuestionInput) {
-  @Field(() => Int)
-  id: number;
-}
+export class QuestionUpdateInput
+  extends PartialType(QuestionCreateInput)
+  implements Prisma.QuestionUpdateInput {}

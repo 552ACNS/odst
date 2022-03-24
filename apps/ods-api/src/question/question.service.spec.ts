@@ -42,12 +42,6 @@ describe('QuestionService', () => {
   });
 
   it('should find all questions from a specific survey', async () => {
-    const result = service.findQuestionsInSurvey('survey1')
-
-    const expected = mockQuestionCreateInputs.
-
-    expect(result).resolves.toEqual(
-      mockQuestions
-    );
+    const result = service.findQuestionsInSurvey('survey1');
   });
 });
