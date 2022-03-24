@@ -11,6 +11,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 export class SurveyQuestionsComponent {
 
+  answers: string[]
   orgs: string[] = ['552 ACNS', 'Astolfo Gang', 'Random'];
   CCs: string[] = ['Matos, Emmanuel Lt. Col.', 'God Emperer Astolfo', 'MaGoo'];
   //querySubscription: Subscription;
@@ -31,14 +32,70 @@ export class SurveyQuestionsComponent {
     impact: [],
     outsideRouting: []
   });
+  //TODO find out a way to fix without this
+  outsideRoutingWorking(): boolean {
+    if (this.form.get(['outsideRouting'])?.value == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   submit(){
-    return;
+    if(this.form.value['violatorSpec']=='5' && this.form.value['personSpec']=='5')
+    {
+      this.answers = [
+        this.form.value['personOrg'],
+        this.form.value['event'],
+        this.form.value['violatorOtherSpec'],
+        this.form.value['CC'],
+        this.form.value['personOtherSpec'],
+        this.form.value['impact'],
+        this.outsideRoutingWorking()
+      ]
+      return alert(this.answers)
+    }
+    else if(this.form.value['violatorSpec']=='5' && this.form.value['personSpec']!='5')
+    {
+      this.answers = [
+        this.form.value['personOrg'],
+        this.form.value['event'],
+        this.form.value['violatorOtherSpec'],
+        this.form.value['CC'],
+        this.form.value['personSpec'],
+        this.form.value['impact'],
+        this.outsideRoutingWorking()
+      ]
+      return alert(this.answers)
+    }
+    else if(this.form.value['violatorSpec']!='5' && this.form.value['personSpec']=='5')
+    {
+      this.answers = [
+        this.form.value['personOrg'],
+        this.form.value['event'],
+        this.form.value['violatorSpec'],
+        this.form.value['CC'],
+        this.form.value['personOtherSpec'],
+        this.form.value['impact'],
+        this.outsideRoutingWorking()
+      ]
+      return alert(this.answers)
+    }
+    else
+    {
+      this.answers = [
+        this.form.value['personOrg'],
+        this.form.value['event'],
+        this.form.value['violatorSpec'],
+        this.form.value['CC'],
+        this.form.value['personSpec'],
+        this.form.value['impact'],
+        this.outsideRoutingWorking()
+      ]
+      return alert(this.answers)
+    }
+    //return alert(this.answers)
   }
   back(){
     return;
   }
-  // answers: string[] = [
-  //   this.form.value['personOrg'],
-  //   this.form.value['event'],
-  // ]
 }
