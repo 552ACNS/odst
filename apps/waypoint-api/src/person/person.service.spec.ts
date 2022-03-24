@@ -1,136 +1,107 @@
-import { Person, Prisma } from '.prisma/waypoint/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
-import { PersonWhereUniqueInput, PersonUpdateInput } from '@odst/types/waypoint';
-import { TestPersonCreateInput } from './person.repo';
 import { PersonService } from './person.service';
-import { prismaMock } from '../prisma/singleton';
+import { v4 as uuidv4 } from 'uuid';
+import { TestPersonCreateInput } from './person.repo';
+import { PersonGQL } from '@odst/types/waypoint';
 
-describe('PersonsService', () => {
+const personArray: PersonGQL[] = [];
+
+TestPersonCreateInput.forEach((personCreateInput) => {
+  const person: PersonGQL = ((personCreateInput as unknown as PersonGQL).id =
+    uuidv4());
+  personArray.push(person);
+});
+
+const onePerson = personArray[0];
+
+const db = {
+  person: {
+    findMany: jest.fn().mockReturnValue(personArray),
+    findUnique: jest.fn().mockResolvedValue(onePerson),
+    create: jest.fn().mockResolvedValue(onePerson),
+    update: jest.fn().mockResolvedValue(onePerson),
+    delete: jest.fn().mockResolvedValue(onePerson),
+  },
+};
+
+describe('PersonService', () => {
   let service: PersonService;
+  let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PersonService,
-        { provide: PrismaService, useValue: prismaMock },
+        {
+          provide: PrismaService,
+          useValue: db,
+        },
       ],
     }).compile();
 
     service = module.get<PersonService>(PersonService);
+    prisma = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('Should find a person', async () => {
-    const personInput = TestPersonCreateInput[0];
-    const personWhereUniqueInput: PersonWhereUniqueInput = {
-      dodId: personInput.dodId,
-    };
-
-    const resolvedPerson: Person = personWhereUniqueInput as unknown as Person;
-    await service.findUnique(resolvedPerson);
-
-    expect(prismaMock.person.findUnique).toHaveBeenCalled();
+  describe('findMany', () => {
+    it('should return an array of persons', async () => {
+      const persons = await service.findMany({});
+      expect(persons).toEqual(personArray);
+    });
   });
 
-  it('Should find all people that share same org as an individual', async () => {
-    TestPersonCreateInput.forEach((personCreateInput) =>
-      service.create(personCreateInput)
-    );
-
-    const personInput: PersonWhereUniqueInput = {
-      dodId: TestPersonCreateInput[0].dodId,
-    };
-
-    await service.findManyInOrg(personInput);
-
-    expect(prismaMock.person.findUnique).toHaveBeenCalled();
-    // expect(prismaMock.person.findMany).toHaveBeenCalled();
-
-    // TODO test the second half ot getPersonsInOrg method.
-    // Right now, only the part where no sub sub peeps exist is tested
+  describe('findManyInOrg', () => {
+    it('should return an array of persons', async () => {
+      const persons = await service.findManyInOrg({ id: 'a uuid' });
+      expect(persons).toEqual(personArray);
+    });
   });
 
-  it('Should create a new person', async () => {
-    await service.create(TestPersonCreateInput[0]);
-
-    expect(prismaMock.person.create).toHaveBeenCalled();
+  describe('findUnique', () => {
+    it('should get a single person', () => {
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(onePerson);
+    });
   });
 
-  it('Should find multiple people', async () => {
-    await service.findMany();
-
-    expect(prismaMock.person.findMany).toHaveBeenCalled();
+  describe('create', () => {
+    it('should call the create method', async () => {
+      const person = await service.create(TestPersonCreateInput[0]);
+      expect(person).toEqual(onePerson);
+    });
   });
 
-  it('Should find a unique person', async () => {
-    const personInput: PersonWhereUniqueInput = {
-      dodId: TestPersonCreateInput[0].dodId,
-    };
-
-    await service.findUnique(personInput.dodId as unknown as Person);
-
-    expect(prismaMock.person.findUnique).toHaveBeenCalled();
+  describe('update', () => {
+    it('should call the update method', async () => {
+      const person = await service.update(
+        { id: 'a uuid' },
+        {
+          role: 'NONE',
+        }
+      );
+      expect(person).toEqual(onePerson);
+    });
   });
 
-  it('Should update a person', async () => {
-    const personInput = TestPersonCreateInput[0];
-    const personWhereUniqueInput: PersonWhereUniqueInput = {
-      dodId: personInput.dodId,
-    };
-    const personUpdateInput: PersonUpdateInput = {
-      hairColor: 'WHITE',
-    };
+  describe('delete', () => {
+    it('should return {deleted: true}', () => {
+      expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
+        deleted: true,
+      });
+    });
 
-    await service.update(personWhereUniqueInput, personUpdateInput);
-
-    expect(prismaMock.person.update).toHaveBeenCalled();
-  });
-
-  it('Should delete a person', async () => {
-    const personInput = TestPersonCreateInput[0];
-    const personWhereUniqueInput: PersonWhereUniqueInput = {
-      dodId: personInput.dodId,
-    };
-    await service.delete(personWhereUniqueInput);
-    //expect(result).toEqual(personInput as unknown as Person);
-
-    expect(prismaMock.person.delete).toHaveBeenCalled();
-  });
-
-  it('Should find a list of people skipiing 1, taking 3, with matching dodId', async () => {
-    const personInput = TestPersonCreateInput[3];
-    const personWhereUniqueInput: PersonWhereUniqueInput = {
-      dodId: personInput.dodId,
-    };
-
-    const params = {
-      skip: 1,
-      take: 3,
-      cursor: personWhereUniqueInput,
-    };
-
-    await service.persons(params);
-
-    expect(prismaMock.person.findMany).toHaveBeenCalled();
-  });
-
-  it('Should find a list of people skipiing 3, taking 1, with matching dodId', async () => {
-    const personWhereInput: Prisma.PersonWhereInput = {
-      birthCountry: 'USA',
-    };
-
-    const params = {
-      skip: 1,
-      take: 3,
-      where: personWhereInput,
-    };
-
-    await service.persons(params);
-
-    expect(prismaMock.person.findMany).toHaveBeenCalled();
+    it('should return {deleted: false, message: err.message}', () => {
+      const dbSpy = jest
+        .spyOn(prisma.person, 'delete')
+        .mockRejectedValueOnce(new Error('Bad Delete Method.'));
+      expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
+        deleted: false,
+        message: 'Bad Delete Method.',
+      });
+    });
   });
 });
