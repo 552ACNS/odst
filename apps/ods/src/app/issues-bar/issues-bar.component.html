@@ -1,1 +1,17 @@
 <p>issues-bar works!</p>
+
+<mat-paginator
+  [length]="length"
+  [hidePageSize]="true"
+  [pageSize]="pageSize"
+  (page)="pageEvent = $event"
+  aria-label="Select page"
+>
+</mat-paginator>
+
+<div *ngIf="pageEvent">
+  <h5>Page Change Event Properties</h5>
+  <div>List length: {{ pageEvent.length }}</div>
+  <div>Page size: {{ pageEvent.pageSize }}</div>
+  <div>Page index: {{ pageEvent.pageIndex }}</div>
+</div>
