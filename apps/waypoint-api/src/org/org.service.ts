@@ -1,21 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Org, Prisma } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { OrgCreateInput, OrgGQL } from '@odst/types/waypoint';
+import { OrgGQL } from '@odst/types/waypoint';
 
 @Injectable()
 export class OrgService {
   constructor(private prisma: PrismaService) {}
 
-  async findUnique(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Org | null> {
-    return this.prisma.org.findUnique({
-      where: orgWhereUniqueInput,
-    });
-  }
-
-  async orgs(params: {
+  async findMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.OrgWhereUniqueInput;
@@ -30,15 +22,6 @@ export class OrgService {
       where,
       orderBy,
     });
-  }
-  async create(data: Prisma.OrgCreateInput): Promise<OrgGQL> {
-    return this.prisma.org.create({
-      data,
-    });
-  }
-
-  async findMany(): Promise<OrgGQL[]> {
-    return this.prisma.org.findMany();
   }
 
   async getSubOrgs(
@@ -68,6 +51,20 @@ export class OrgService {
     return orgs as OrgGQL[];
   }
 
+  async findUnique(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<Org | null> {
+    return this.prisma.org.findUnique({
+      where: orgWhereUniqueInput,
+    });
+  }
+
+  async create(data: Prisma.OrgCreateInput): Promise<OrgGQL> {
+    return this.prisma.org.create({
+      data,
+    });
+  }
+
   async update(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
     orgUpdateInput: Prisma.OrgUpdateInput
@@ -78,21 +75,16 @@ export class OrgService {
     });
   }
 
-  async delete(orgWhereUniqueInput: Prisma.OrgWhereUniqueInput) {
-    return this.prisma.org.delete({
-      where: orgWhereUniqueInput,
-    });
-  }
-
-  async upsert(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
-    orgUpdateInput: Prisma.OrgUpdateInput,
-    orgCreateInput: OrgCreateInput
-  ): Promise<Org> {
-    return this.prisma.org.upsert({
-      where: orgWhereUniqueInput,
-      update: orgUpdateInput,
-      create: orgCreateInput,
-    });
+  async delete(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<{ deleted: boolean; message?: string }> {
+    try {
+      await this.prisma.org.delete({
+        where: orgWhereUniqueInput,
+      });
+      return { deleted: true };
+    } catch (err) {
+      return { deleted: false, message: err.message };
+    }
   }
 }

@@ -13,17 +13,11 @@ import { UseGuards } from '@nestjs/common';
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
-  @Mutation(() => OrgGQL, { name: 'createOrg' })
-  @UseGuards(AccessTokenAuthGuard)
-  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput) {
-    return this.orgService.create(orgCreateInput);
-  }
-
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
   @UseGuards(AccessTokenAuthGuard)
   async findMany(): Promise<OrgGQL[]> {
     // return this.orgService.findMany();
-    return this.orgService.orgs({
+    return this.orgService.findMany({
       orderBy: {
         name: 'asc',
       },
@@ -48,6 +42,12 @@ export class OrgResolver {
     return this.orgService.findUnique(orgWhereUniqueInput);
   }
 
+  @Mutation(() => OrgGQL, { name: 'createOrg' })
+  @UseGuards(AccessTokenAuthGuard)
+  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput) {
+    return this.orgService.create(orgCreateInput);
+  }
+
   @Mutation(() => OrgGQL, { name: 'updateOrg' })
   @UseGuards(AccessTokenAuthGuard)
   async update(
@@ -64,7 +64,7 @@ export class OrgResolver {
   async delete(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<OrgGQL> {
+  ): Promise<{ deleted: boolean }> {
     return this.orgService.delete(orgWhereUniqueInput);
   }
 }
