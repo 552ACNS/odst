@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
 
+  { path: 'disclaimer', 
+  loadChildren: () => import('./disclaimer/disclaimer.module').then(m => m.DisclaimerModule) },
+  { path: '', redirectTo: '/disclaimer', pathMatch: 'full' },
   { path: 'form', 
       loadChildren: () => import('./survey-questions/survey-questions.module').then(m => m.SurveryQuestionsModule) },
   //TODO: add functionality to auto redirect to login if refresh token not found
@@ -12,3 +15,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
