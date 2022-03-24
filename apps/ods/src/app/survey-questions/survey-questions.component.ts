@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+// import { Apollo } from 'apollo-angular';
+// import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'odst-survey-questions',
@@ -11,7 +13,9 @@ export class SurveyQuestionsComponent {
 
   orgs: string[] = ['552 ACNS', 'Astolfo Gang', 'Random'];
   CCs: string[] = ['Matos, Emmanuel Lt. Col.', 'God Emperer Astolfo', 'MaGoo'];
-  constructor(private fb: FormBuilder) { } 
+  //querySubscription: Subscription;
+
+  constructor(private fb: FormBuilder, ) { } //private apollo: Apollo
   
   //validators didnt need to be inside the formControlName and caused it to break, so i removed
   //them. Also, all form controls need to be specificed in their or else they all will not

@@ -1,0 +1,21 @@
+#TODO split up into multiple files. Possibly colocate generated files with operation.graphql files
+mutation createOrg($orgCreateInput: OrgCreateInput!) {
+  createOrg(orgCreateInput: $orgCreateInput) {
+    ...orgFields
+  }
+}
+
+query findManyOrgs {
+  findManyOrgs {
+    ...orgFields
+  }
+}
+
+fragment orgFields on OrgGQL {
+  id
+  name
+  aliases
+  orgTier
+  parentId
+}
+
