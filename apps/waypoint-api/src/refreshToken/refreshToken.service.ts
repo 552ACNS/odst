@@ -5,25 +5,8 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class RefreshTokenService {
   constructor(private prisma: PrismaService) {}
-  async findUnique(
-    refreshTokenWhereUnique: Prisma.RefreshTokenCreateInput
-  ): Promise<RefreshToken | null> {
-    return this.prisma.refreshToken.findUnique({
-      where: refreshTokenWhereUnique,
-    });
-  }
 
-  async getLastRefreshToken(userId: string): Promise<RefreshToken> {
-    const tokens = await this.refreshTokens({
-      where: { userId },
-      orderBy: { issued: 'desc' },
-    });
-    //could use `take : 1` but it'd still be returning an array
-    const token = tokens[0];
-    return token;
-  }
-
-  async refreshTokens(params: {
+  async findMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.RefreshTokenWhereUniqueInput;
@@ -37,6 +20,14 @@ export class RefreshTokenService {
       cursor,
       where,
       orderBy,
+    });
+  }
+
+  async findUnique(
+    refreshTokenWhereUnique: Prisma.RefreshTokenWhereUniqueInput
+  ): Promise<RefreshToken | null> {
+    return this.prisma.refreshToken.findUnique({
+      where: refreshTokenWhereUnique,
     });
   }
 
@@ -56,15 +47,26 @@ export class RefreshTokenService {
     });
   }
 
-  async findMany(): Promise<RefreshToken[]> {
-    return this.prisma.refreshToken.findMany();
-  }
-
   async delete(
     refreshTokenWhereUniqueInput: Prisma.RefreshTokenWhereUniqueInput
-  ) {
-    return this.prisma.refreshToken.delete({
-      where: refreshTokenWhereUniqueInput,
+  ): Promise<{ deleted: boolean; message?: string }> {
+    try {
+      await this.prisma.refreshToken.delete({
+        where: refreshTokenWhereUniqueInput,
+      });
+      return { deleted: true };
+    } catch (err) {
+      return { deleted: false, message: err.message };
+    }
+  }
+
+  async getLastRefreshToken(userId: string): Promise<RefreshToken> {
+    const tokens = await this.findMany({
+      where: { userId },
+      orderBy: { issued: 'desc' },
     });
+    //could use `take : 1` but it'd still be returning an array
+    const token = tokens[0];
+    return token;
   }
 }

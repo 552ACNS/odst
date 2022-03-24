@@ -1,17 +1,17 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/waypoint/client';
 import { RefreshTokenGQL } from '../entity/refreshToken.entity';
-import { UserGQL } from '../entity/user.entity';
 import { RefreshTokenWhereUniqueInput } from './refreshToken.unique.input';
+import { UserCreateNestedOneWithoutRefreshTokensInput } from './user.create.input';
 
 @InputType()
-export class RefreshTokenCreateInput {
-  isRevoked: boolean;
+export class RefreshTokenCreateInput implements Prisma.RefreshTokenCreateInput {
+  isRevoked?: boolean;
   expires: Date;
 
-  @Field(() => UserGQL)
-  user: UserGQL;
-  token: string;
+  @Field(() => UserCreateNestedOneWithoutRefreshTokensInput)
+  user: Prisma.UserCreateNestedOneWithoutRefreshTokensInput;
+  hash: string;
 }
 
 @InputType()
