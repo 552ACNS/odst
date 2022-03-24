@@ -4,8 +4,6 @@ import { RefreshLoginInput, TokensGQL } from '@odst/types/waypoint';
 import { LoginUserInput, SignupUserInput } from '@odst/types/waypoint';
 import { Logger, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local.authGuard';
-import { RefreshTokenAuthGuard } from './guards/refreshToken.authGuard';
-import { GetCurrentUserId } from '@odst/types/waypoint';
 
 @Resolver()
 export class AuthResolver {
@@ -27,17 +25,11 @@ export class AuthResolver {
   }
 
   @Mutation(() => TokensGQL)
-  @UseGuards(RefreshTokenAuthGuard)
-  async refreshTokens(@GetCurrentUserId() userId: string): Promise<TokensGQL> {
-    return this.authService.refreshTokens(userId);
-  }
-
-  @Mutation(() => TokensGQL)
-  async refreshTokensVar(
+  async refreshTokens(
     @Args('refreshLoginInput') refreshLoginInput: RefreshLoginInput
   ): Promise<TokensGQL> {
-    const tokens = await this.authService.refreshTokensVar(refreshLoginInput);
+    const tokens = await this.authService.refreshTokens(refreshLoginInput);
     Logger.log({ tokens });
-    return this.authService.refreshTokensVar(refreshLoginInput);
+    return this.authService.refreshTokens(refreshLoginInput);
   }
 }

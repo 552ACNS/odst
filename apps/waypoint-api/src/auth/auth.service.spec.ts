@@ -13,6 +13,8 @@ import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 
+//TODO fix these tests. AuthService doesn't touch prisma directly
+
 describe('AuthService', () => {
   let service: AuthService;
 

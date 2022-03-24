@@ -25,7 +25,10 @@ export class AuthService {
     return await hash(data, 10);
   }
 
-  async getTokens(userId: string, username: string): Promise<TokensGQL> {
+  private async getTokens(
+    userId: string,
+    username: string
+  ): Promise<TokensGQL> {
     //builds payload of tokens. will be encoded, not encrypted.
     //Do not put anything sensitive in payload
 
@@ -91,24 +94,9 @@ export class AuthService {
     return true;
   }
 
-  //this method expects refresh token in auth header. That is the ideal way, but not sure how to full implement the auth guard for it
-  //TODO in the mean time, get rid of this method, rename refreshTokensVar to refreshTokens
-  async refreshTokens(userId: string): Promise<TokensGQL> {
-    const user = await this.userService.findUnique({
-      id: userId,
-    });
-    if (!user) throw new UnauthorizedException();
-
-    const tokens = await this.getTokens(user.id, user.username);
-    //TODO do we want to be storing old refresh tokens?
-    //If so, what should happen if old one is used?
-    this.storeRefreshToken(user.id, tokens.refreshToken);
-
-    return tokens;
-  }
-
   //expects the token as a variable, instead of auth header
-  async refreshTokensVar(
+  //refreshes user's current tokens
+  async refreshTokens(
     refreshLoginInput: RefreshLoginInput
   ): Promise<TokensGQL> {
     if (
@@ -166,7 +154,10 @@ export class AuthService {
   }
 
   //TODO move to refreshToken Servicer?
-  async storeRefreshToken(userId: string, refreshToken: string): Promise<void> {
+  private async storeRefreshToken(
+    userId: string,
+    refreshToken: string
+  ): Promise<void> {
     const refreshTokenPayload = this.jwtService.decode(
       refreshToken
     ) as JwtPayloadRefresh;
