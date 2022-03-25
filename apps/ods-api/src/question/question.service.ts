@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Question } from '.prisma/ods/client';
-import { UpdateQuestionInput } from './dto/update-question.input';
+import { QuestionUpdateInput } from '@odst/types/ods';
 
 @Injectable()
 export class QuestionService {
@@ -12,7 +12,7 @@ export class QuestionService {
       data,
     });
   }
-  
+
   //Find all the questions that are in a survey
   async findQuestionsInSurvey(surveyId: string): Promise<Question[]> {
     return await this.prisma.question.findMany({
@@ -27,15 +27,15 @@ export class QuestionService {
   }
 
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} question`;
   }
 
-  update(id: number, updateQuestionInput: UpdateQuestionInput) {
+  update(id: string, updateQuestionInput: QuestionUpdateInput) {
     return `This action updates a #${id} question`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} question`;
   }
 }

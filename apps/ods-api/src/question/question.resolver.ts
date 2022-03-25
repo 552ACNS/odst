@@ -1,33 +1,33 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { QuestionService } from './question.service';
-import { Question } from './entities/question.entity';
-import { CreateQuestionInput } from './dto/create-question.input';
-import { UpdateQuestionInput } from './dto/update-question.input';
+import { QuestionGQL } from '@odst/types/ods';
+import { QuestionCreateInput } from '@odst/types/ods';
+import { QuestionUpdateInput } from '@odst/types/ods';
 
-@Resolver(() => Question)
+@Resolver(() => QuestionGQL)
 export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Mutation(() => Question)
+  @Mutation(() => QuestionGQL)
   createQuestion(
-    @Args('createQuestionInput') createQuestionInput: CreateQuestionInput
+    @Args('createQuestionInput') createQuestionInput: QuestionCreateInput
   ) {
     return this.questionService.create(createQuestionInput);
   }
 
-  @Query(() => [Question], { name: 'question' })
+  @Query(() => [QuestionGQL], { name: 'question' })
   findAll() {
     return this.questionService.findAll();
   }
 
-  @Query(() => Question, { name: 'question' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => QuestionGQL, { name: 'question' })
+  findOne(@Args('id', { type: () => Int }) id: string) {
     return this.questionService.findOne(id);
   }
 
-  @Mutation(() => Question)
+  @Mutation(() => QuestionGQL)
   updateQuestion(
-    @Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput
+    @Args('updateQuestionInput') updateQuestionInput: QuestionUpdateInput
   ) {
     return this.questionService.update(
       updateQuestionInput.id,
@@ -35,8 +35,8 @@ export class QuestionResolver {
     );
   }
 
-  @Mutation(() => Question)
-  removeQuestion(@Args('id', { type: () => Int }) id: number) {
+  @Mutation(() => QuestionGQL)
+  removeQuestion(@Args('id', { type: () => Int }) id: string) {
     return this.questionService.remove(id);
   }
 }

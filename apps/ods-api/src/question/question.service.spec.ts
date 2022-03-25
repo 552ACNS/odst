@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { QuestionService } from './question.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { mockQuestions, mockQuestionCreateInputs } from './question.repo';
+import { mockQuestions, TestQuestionCreateInput } from './question.repo';
 
 //Mock the db
 const prismaDB = {
@@ -35,7 +35,7 @@ describe('QuestionService', () => {
   });
 
   it('should create new question ', async () => {
-    const result = service.create(mockQuestionCreateInputs[0]);
+    const result = service.create(TestQuestionCreateInput[0]);
     const expected = mockQuestions[0];
 
     expect(result).resolves.toEqual(expected);
