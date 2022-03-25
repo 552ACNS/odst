@@ -3,14 +3,12 @@ import { Prisma } from '.prisma/ods/client';
 import { OrgCreateInput } from './org.create.input';
 import { OrgWhereUniqueInput } from './org.unique.input';
 import { OrgGQL } from '../entity/org.entity';
-import { OrgCreateWithoutSurveysInput } from './org.create.input'
+import { OrgCreateWithoutSurveysInput } from './org.create.input';
 
 @InputType()
 export class OrgUpdateInput
   extends PartialType(OrgCreateInput)
-  implements Prisma.OrgUpdateInput {
-  //TODO
-}
+  implements Prisma.OrgUpdateInput {}
 
 @InputType()
 export class OrgUpdateManyWithoutSurveyInput
