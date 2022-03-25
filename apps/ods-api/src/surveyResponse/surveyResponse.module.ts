@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { SurveyResponseService } from './surveyresponse.service';
-import { SurveyResponseResolver } from './surveyresponse.resolver';
+import { SurveyResponseService } from './surveyResponse.service';
+import { SurveyResponseResolver } from './surveyResponse.resolver';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Module({

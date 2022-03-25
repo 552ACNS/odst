@@ -10,8 +10,3 @@ export class SurveyResponseUpdateInput
   routeOutside?: boolean;
   resolution?: string;
 }
-
-@InputType()
-export class SurveyResponseUpdateManyWithoutSurveyInput {
-  //TODO stubbed
-}

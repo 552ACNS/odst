@@ -2,7 +2,7 @@ import { ObjectType, Field, InputType } from '@nestjs/graphql';
 import { SurveyResponse } from '.prisma/ods/client';
 
 @ObjectType()
-@InputType('SurveyGQLInput')
+@InputType('SurveyResponseGQLInput')
 export class SurveyResponseGQL implements SurveyResponse {
   @Field(() => String, { nullable: true })
   id: string;
@@ -12,5 +12,4 @@ export class SurveyResponseGQL implements SurveyResponse {
   answers: string[];
   routeOutside: boolean;
   resolution: string | null;
-
 }

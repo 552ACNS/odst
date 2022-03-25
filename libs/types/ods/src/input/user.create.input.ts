@@ -1,5 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { Prisma, Role } from '.prisma/ods/client';
+import { OrgWhereUniqueInput } from './org.unique.input';
 
 @InputType()
 export class UserCreateInput implements Prisma.UserCreateInput {
@@ -18,10 +19,10 @@ export class UserCreateInput implements Prisma.UserCreateInput {
   // refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
 }
 
-
-
 @InputType()
 export class UserCreateNestedManyWithoutOrgsInput
-  implements Prisma.UserCreateNestedManyWithoutOrgsInput {
-  //TODO stubbed
+  implements Prisma.UserCreateNestedManyWithoutOrgsInput
+{
+  @Field(() => OrgWhereUniqueInput, { nullable: true })
+  connect?: OrgWhereUniqueInput;
 }

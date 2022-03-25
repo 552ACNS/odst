@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import {
   Role,
-  //Spec,
+  // Spec,
   OrgTier,
 } from '.prisma/ods/client';
 import { SurveyModule } from '../survey/survey.module';
@@ -13,11 +13,12 @@ import {
 import { join } from 'path';
 import { GraphQLModule, registerEnumType } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { SurveyResponseModule } from '../surveyResponse/surveyResponse.module';
 
 // Register enum types here, if they are used in multiple places, make sure that they are registered
 // only once and that the resource module that is imported first is the one that registers them
 registerEnumType(Role, { name: 'Role' });
-//registerEnumType(Spec, { name: 'Spec' });
+// registerEnumType(Spec, { name: 'Spec' });
 registerEnumType(OrgTier, { name: 'OrgTier' });
 
 @Module({
@@ -33,8 +34,9 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
           : ApolloServerPluginLandingPageLocalDefault(),
       ],
     }),
-    SurveyModule,
     OrgModule,
+    SurveyModule,
+    SurveyResponseModule,
   ],
 })
 export class AppModule {}

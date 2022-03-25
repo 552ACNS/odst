@@ -11,7 +11,7 @@ export * from './input/org.create.input';
 export * from './input/org.update.input';
 export * from './input/org.unique.input';
 export * from './input/question.create.input';
-export * from './input/question.update.input';
+// export * from './input/question.update.input';
 export * from './input/question.unique.input';
 export * from './input/survey.create.input';
 export * from './input/survey.update.input';

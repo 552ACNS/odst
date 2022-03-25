@@ -8,7 +8,4 @@ export class QuestionCreateNestedManyWithoutSurveyInput
 {
   @Field(() => QuestionWhereUniqueInput, { nullable: true })
   connect?: Prisma.QuestionWhereUniqueInput;
-
-  @Field(() => QuestionCreateNestedManyWithoutSurveyInput, { nullable: true })
-  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutSurveyInput;
 }
