@@ -13,4 +13,7 @@ export * from './input/org.unique.input';
 export * from './input/survey.create.input';
 export * from './input/survey.update.input';
 export * from './input/survey.unique.input';
+export * from './input/surveyResponse.create.input';
+export * from './input/surveyResponse.update.input';
+export * from './input/surveyResponse.unique.input';
 //#endregion
