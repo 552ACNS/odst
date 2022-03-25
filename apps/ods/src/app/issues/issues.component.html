@@ -1,1 +1,27 @@
-<p>issues works!</p>
+<div class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-3">
+  <p class="text-center">Date Submitted: {{ dateOfIssue }}</p>
+  <mat-paginator
+    class="flex justify-center border-1 border-solid border-dark-blue rounded-2xl mb-4 shadow-md"
+    [length]="numberOfIssues"
+    [pageIndex]="displayedIssue"
+    [pageSize]="issuesPerPage"
+    [hidePageSize]="true"
+    [showFirstLastButtons]="true"
+    (page)="pageEvent = displayIssue($event)"
+  >
+  </mat-paginator>
+  <p *ngIf="pageEvent" class="text-center">
+    Actual Paginator Value: {{ pageEvent.pageIndex + 1 }}
+    <br />
+    Event Displayed Value: {{ displayedIssue + 1 }}
+    <br />
+    Issue Data: {{ issueData }}
+  </p>
+  <mat-card class="border-1 border-solid border-dark-blue rounded-2xl shadow-md">
+    <mat-card-content *ngFor="let qa of qas" class="text-sm">
+      <p class="text-center">{{ qa[0] }}</p>
+      <p class="text-center">{{ qa[1] }}</p>
+    </mat-card-content>
+  </mat-card>
+
+</div>

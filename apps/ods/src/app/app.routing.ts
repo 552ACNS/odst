@@ -9,7 +9,7 @@ const routes: Routes = [
   },
   { path: '', redirectTo: '/disclaimer', pathMatch: 'full' },
   {
-  path: 'issues',
+    path: 'issues',
     loadChildren: () =>
       import('./issues/issues.module').then((m) => m.IssuesModule),
   },

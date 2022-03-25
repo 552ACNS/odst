@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IssuesComponent } from './issues.component';
 import { IssuesRoutes } from './issues.routing';
+import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
@@ -12,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     CommonModule,
     RouterModule.forChild(IssuesRoutes),
     MatPaginatorModule,
+    MatCardModule,
     //temporary
     MatFormFieldModule,
   ],
