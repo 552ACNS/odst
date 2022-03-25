@@ -19,6 +19,15 @@ export class QuestionResolver {
     return this.questionService.findMany({});
   }
 
+  @Query(() => [QuestionGQL], { name: 'getSubQuestions' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async getSubQuestions(
+    @Args('surveyWhereUniqueInput')
+    surveyWhereUniqueInput: SurveyWhereUniqueInput
+  ): Promise<QuestionGQL[]> {
+    return this.questionService.findQuestionsInSurvey(surveyWhereUniqueInput);
+  }
+
   @Query(() => QuestionGQL, { name: 'findUniqueQuestion' })
   // @UseGuards(AccessTokenAuthGuard)
   async findUnique(

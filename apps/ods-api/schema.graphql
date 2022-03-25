@@ -16,6 +16,12 @@ enum OrgTier {
   OTHER
 }
 
+type QuestionGQL {
+  id: String
+  prompt: String!
+  surveyId: String
+}
+
 type SurveyGQL {
   id: String
 }
@@ -42,6 +48,12 @@ input OrgGQLInput {
   parentId: String
 }
 
+input QuestionGQLInput {
+  id: String
+  prompt: String!
+  surveyId: String
+}
+
 input SurveyGQLInput {
   id: String
 }
@@ -60,6 +72,9 @@ type Query {
   findManyOrgs: [OrgGQL!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
+  findManyQuestions: [QuestionGQL!]!
+  getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
+  findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   findManySurveys: [SurveyGQL!]!
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   findManySurveyResponses: [SurveyResponseGQL!]!
@@ -75,6 +90,10 @@ input SurveyWhereUniqueInput {
   id: String
 }
 
+input QuestionWhereUniqueInput {
+  id: String
+}
+
 input SurveyResponseWhereUniqueInput {
   id: String
 }
@@ -83,6 +102,9 @@ type Mutation {
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
   removeOrg(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
+  updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
+  removeQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   createSurveyResponse(surveyResponseCreateInput: SurveyResponseCreateInput!): SurveyResponseGQL!
@@ -123,6 +145,22 @@ input OrgUpdateInput {
   surveys: SurveyCreateNestedManyWithoutOrgsInput
 }
 
+input QuestionCreateInput {
+  survey: SurveyCreateNestedOneWithoutQuestionsInput
+  id: String
+  prompt: String!
+}
+
+input SurveyCreateNestedOneWithoutQuestionsInput {
+  connect: SurveyWhereUniqueInput
+}
+
+input QuestionUpdateInput {
+  survey: SurveyCreateNestedOneWithoutQuestionsInput
+  id: String
+  prompt: String
+}
+
 input SurveyCreateInput {
   orgs: OrgCreateNestedManyWithoutSurveysInput
   questions: QuestionCreateNestedManyWithoutSurveyInput
@@ -135,10 +173,6 @@ input OrgCreateNestedManyWithoutSurveysInput {
 
 input QuestionCreateNestedManyWithoutSurveyInput {
   connect: QuestionWhereUniqueInput
-}
-
-input QuestionWhereUniqueInput {
-  id: String
 }
 
 input SurveyResponseCreateNestedManyWithoutSurveyInput {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Question, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { QuestionCreateInput, QuestionGQL } from '@odst/types/ods';
+import { QuestionCreateInput, QuestionGQL, SurveyWhereUniqueInput } from '@odst/types/ods';
 
 @Injectable()
 export class QuestionService {
@@ -23,7 +23,16 @@ export class QuestionService {
       orderBy,
     });
   }
-  
+
+  //Find all the questions that are in a survey
+  async findQuestionsInSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput): Promise<Question[]> {
+    return await this.prisma.question.findMany({
+      where: {
+        survey: surveyWhereUniqueInput,
+      },
+    });
+  }
+
   async findUnique(
     questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput
   ): Promise<Question | null> {
