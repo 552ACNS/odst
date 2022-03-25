@@ -12,6 +12,3 @@ export class QuestionCreateNestedManyWithoutSurveyInput
   @Field(() => QuestionCreateNestedManyWithoutSurveyInput, { nullable: true })
   connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutSurveyInput;
 }
-
-
-QuestionCreateNestedManyWithoutSurveyInput
