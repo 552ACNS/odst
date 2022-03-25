@@ -49,11 +49,11 @@ export class SurveyService {
   }
 
   async delete(
-    orgWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
   ): Promise<{ deleted: boolean; message?: string }> {
     try {
       await this.prisma.survey.delete({
-        where: orgWhereUniqueInput,
+        where: surveyWhereUniqueInput,
       });
       return { deleted: true };
     } catch (err) {
