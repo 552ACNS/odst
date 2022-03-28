@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrgService } from '../org/org.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { UserCreateInput } from '@odst/types';
+import { UserCreateInput } from '@odst/types/waypoint';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { TestUserCreateInput } from './user.repo';

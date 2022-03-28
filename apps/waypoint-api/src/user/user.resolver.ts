@@ -5,7 +5,7 @@ import {
   UserUpdateInput,
   UserGQL,
   UserWhereUniqueInput,
-} from '@odst/types';
+} from '@odst/types/waypoint';
 import { UseGuards } from '@nestjs/common';
 import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 

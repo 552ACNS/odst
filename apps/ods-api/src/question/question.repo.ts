@@ -1,12 +1,12 @@
-import { QuestionCreateInput } from './dto/create-question.input';
+import { QuestionCreateInput } from '@odst/types/ods';
 import { Question } from '.prisma/ods/client';
 import { cloneDeep } from '@apollo/client/utilities';
 
-export const mockQuestionCreateInputs: QuestionCreateInput[] = [
+export const TestQuestionCreateInput: QuestionCreateInput[] = [
   {
     id: '1',
     prompt: 'Question 1',
-    survey: {
+    surveys: {
       connect: {
         id: 'survey1',
       },
@@ -15,7 +15,7 @@ export const mockQuestionCreateInputs: QuestionCreateInput[] = [
   {
     id: '2',
     prompt: 'Question 2',
-    survey: {
+    surveys: {
       connect: {
         id: 'survey1',
       },
@@ -24,7 +24,7 @@ export const mockQuestionCreateInputs: QuestionCreateInput[] = [
   {
     id: '3',
     prompt: 'Question 3',
-    survey: {
+    surveys: {
       connect: {
         id: 'survey2',
       },
@@ -35,9 +35,9 @@ export const mockQuestionCreateInputs: QuestionCreateInput[] = [
 // Need to clone deep because of reference types. We delete the survey field
 // from the mockQuestionInputs because the Question type does not have a survey
 // field
-export const mockQuestions: Question[] = cloneDeep(mockQuestionCreateInputs).map(
+export const mockQuestions: Question[] = cloneDeep(TestQuestionCreateInput).map(
   (questionInputs) => {
-    delete questionInputs.survey;
+    delete questionInputs.surveys;
     return questionInputs as Question;
   }
 );
