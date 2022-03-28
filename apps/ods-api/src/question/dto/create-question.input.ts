@@ -10,10 +10,11 @@ export class QuestionCreateInput implements Prisma.QuestionCreateInput {
 
 // TODO: Move to right place
 @InputType()
-export class SurveyCreateNestedManyWithoutQuestionsInput implements Prisma.SurveyCreateNestedManyWithoutQuestionsInput {
-
+export class SurveyCreateNestedManyWithoutQuestionsInput
+  implements Prisma.SurveyCreateNestedManyWithoutQuestionsInput
+{
   @Field(() => SurveyWhereUniqueInput, { nullable: true })
-  connect: Prisma.SurveyWhereUniqueInput
+  connect: Prisma.SurveyWhereUniqueInput;
 }
 
 @InputType()

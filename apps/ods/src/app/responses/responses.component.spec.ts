@@ -10,10 +10,9 @@ describe('ResponsesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResponsesComponent ],
-      imports: [ResponsesModule, BrowserAnimationsModule], 
-    })
-    .compileComponents();
+      declarations: [ResponsesComponent],
+      imports: [ResponsesModule, BrowserAnimationsModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

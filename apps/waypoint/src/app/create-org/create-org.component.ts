@@ -11,7 +11,7 @@ import {
   FindManyOrgsQuery,
   FindManyOrgsQueryVariables,
   OrgGql,
-  OrgTier
+  OrgTier,
 } from '../../graphql-generated';
 
 @Component({
