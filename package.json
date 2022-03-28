@@ -4,7 +4,6 @@
   "license": "MIT",
   "scripts": {
     "ng": "nx",
-    "generate": "nx run-many --target=prisma-generate --all=true --parallel=false",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main && npx graphql-codegen --config graphql.codegen.yml",
     "start": "nx serve",
     "build": "nx build",
