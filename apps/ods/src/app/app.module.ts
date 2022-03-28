@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
     RouterModule.forRoot([]),
     BrowserAnimationsModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
