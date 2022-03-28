@@ -44,7 +44,7 @@ it('deletes an org', () => {
       authorization,
     },
     body: {
-      operationName: 'removeOrg',
+      operationName: 'deleteOrg',
       variables: {
         orgWhereUniqueInput: {
           name: '552 FakeOrg',
