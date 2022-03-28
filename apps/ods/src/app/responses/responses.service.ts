@@ -3,15 +3,15 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class IssuesService {
+export class ResponsesService {
 
   constructor() { 
-    console.log('IssuesService constructor');
+    console.log('ResponsesService constructor');
   }
 
-  getIssuesIds(): string[] {
-    // query GQL server for the commander's issues
-    // return the number of issues
+  getResponsesIds(): string[] {
+    // query GQL server for the commander's responses
+    // return the number of responses
     return ['issueId_1', 'issueId_2', 'issueId_3'];
   }
 

@@ -1,23 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { IssuesComponent } from './issues.component';
-import { IssuesModule } from './issues.module';
+import { ResponsesComponent } from './responses.component';
+import { ResponsesModule } from './responses.module';
 
-describe('IssuesComponent', () => {
-  let component: IssuesComponent;
-  let fixture: ComponentFixture<IssuesComponent>;
+describe('ResponsesComponent', () => {
+  let component: ResponsesComponent;
+  let fixture: ComponentFixture<ResponsesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ IssuesComponent ],
-      imports: [IssuesModule, BrowserAnimationsModule], 
+      declarations: [ ResponsesComponent ],
+      imports: [ResponsesModule, BrowserAnimationsModule], 
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IssuesComponent);
+    fixture = TestBed.createComponent(ResponsesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

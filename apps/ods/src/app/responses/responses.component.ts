@@ -1,15 +1,15 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { IssuesService } from './issues.service';
+import { ResponsesService } from './responses.service';
 
 @Component({
-  selector: 'odst-issues',
-  templateUrl: './issues.component.html',
-  styleUrls: ['./issues.component.scss'],
+  selector: 'odst-responses',
+  templateUrl: './responses.component.html',
+  styleUrls: ['./responses.component.scss'],
 })
-export class IssuesComponent implements OnInit {
-  constructor(private issuesService: IssuesService) {}
+export class ResponsesComponent implements OnInit {
+  constructor(private responsesService: ResponsesService) {}
 
   prompts: string[];
   responses: string[];
@@ -17,8 +17,8 @@ export class IssuesComponent implements OnInit {
   qas: [string, string][] = [];
 
   dateOfIssue = formatDate(Date.now(), 'MMMM d, yyyy', 'en-US');
-  numberOfIssues = 3;
-  issuesPerPage = 1;
+  numberOfResponses = 3;
+  responsesPerPage = 1;
   displayedIssue = 0;
 
   issueData = '';
@@ -27,10 +27,10 @@ export class IssuesComponent implements OnInit {
   pageEvent: PageEvent;
 
   ngOnInit(): void {
-    this.issueIds = this.issuesService.getIssuesIds();
-    this.numberOfIssues = this.issueIds.length;
-    this.prompts = this.issuesService.getPrompts('surveyId');
-    this.responses = this.issuesService.getAnswers('surveyResponseId');
+    this.issueIds = this.responsesService.getResponsesIds();
+    this.numberOfResponses = this.issueIds.length;
+    this.prompts = this.responsesService.getPrompts('surveyId');
+    this.responses = this.responsesService.getAnswers('surveyResponseId');
 
     // combine the prompts and responses into a QA array
     for (let i = 0; i < this.prompts.length; i++) {
@@ -41,11 +41,11 @@ export class IssuesComponent implements OnInit {
   // display the issue data for the selected issue from the paginator
   displayIssue(pageEvent: PageEvent) {
     if (pageEvent) {
-      this.issueData = this.issuesService.getIssueData(
+      this.issueData = this.responsesService.getIssueData(
         this.issueIds[pageEvent.pageIndex]
       );
       this.displayedIssue = pageEvent.pageIndex;
-      //this.prompts = this.issuesService.getPrompts("surveyId");
+      //this.prompts = this.responsesService.getPrompts("surveyId");
     }
     return pageEvent;
   }
