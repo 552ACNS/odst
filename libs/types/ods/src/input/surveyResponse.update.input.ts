@@ -6,7 +6,9 @@ export class SurveyResponseUpdateInput
   implements Prisma.SurveyResponseUpdateInput
 {
   closedDate?: Date;
-  answers?: string[];
+
+  // If this is included in update, make sure not anyone can change it,
+  // so a CC can't come in and route something to themself that they shouldn't be seen
   routeOutside?: boolean;
   resolution?: string;
 }

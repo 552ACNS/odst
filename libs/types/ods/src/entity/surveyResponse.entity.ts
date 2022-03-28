@@ -9,7 +9,6 @@ export class SurveyResponseGQL implements SurveyResponse {
   surveyId: string;
   openedDate: Date;
   closedDate: Date | null;
-  answers: string[];
   routeOutside: boolean;
   resolution: string | null;
 }
