@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Question } from '.prisma/ods/client';
-import { UpdateQuestionInput } from './dto/update-question.input';
 
 @Injectable()
 export class QuestionService {
@@ -27,15 +26,21 @@ export class QuestionService {
   }
 
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
+  // findOne(id: number) {
+  //   return `This action returns a #${id} question`;
+  // }
+
+  async update(
+    questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput,
+    questionUpdateInput: Prisma.QuestionUpdateInput
+  ): Promise<Question> {
+    return this.prisma.question.update({
+      where: questionWhereUniqueInput,
+      data: questionUpdateInput,
+    });
   }
 
-  update(id: number, updateQuestionInput: UpdateQuestionInput) {
-    return `This action updates a #${id} question`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} question`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} question`;
+  // }
 }

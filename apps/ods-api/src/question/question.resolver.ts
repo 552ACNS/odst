@@ -1,42 +1,47 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { QuestionService } from './question.service';
-import { Question } from './entities/question.entity';
-import { CreateQuestionInput } from './dto/create-question.input';
-import { UpdateQuestionInput } from './dto/update-question.input';
+import {
+  QuestionGQL,
+  QuestionWhereUniqueInput,
+} from './entities/question.entity';
+import { QuestionCreateInput } from './dto/create-question.input';
+import { QuestionUpdateInput } from './dto/update-question.input';
 
-@Resolver(() => Question)
+@Resolver(() => QuestionGQL)
 export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Mutation(() => Question)
+  @Mutation(() => QuestionGQL, { name: 'createQuestion' })
   createQuestion(
-    @Args('createQuestionInput') createQuestionInput: CreateQuestionInput
+    @Args('createQuestionInput') createQuestionInput: QuestionCreateInput
   ) {
     return this.questionService.create(createQuestionInput);
   }
 
-  @Query(() => [Question], { name: 'question' })
-  findAll() {
-    return this.questionService.findAll();
+  @Query(() => [QuestionGQL], { name: 'findQuestionsInSurvey' })
+  findQuestionsInSurvey(surveyId: string) {
+    return this.questionService.findQuestionsInSurvey(surveyId);
   }
 
-  @Query(() => Question, { name: 'question' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.questionService.findOne(id);
-  }
+  // @Query(() => QuestionGQL, { name: 'question' })
+  // findOne(@Args('id', { type: () => Int }) id: number) {
+  //   return this.questionService.findOne(id);
+  // }
 
-  @Mutation(() => Question)
+  @Mutation(() => QuestionGQL)
   updateQuestion(
-    @Args('updateQuestionInput') updateQuestionInput: UpdateQuestionInput
+    @Args('questionWhereUniqueInput')
+    questionWhereUniqueInput: QuestionWhereUniqueInput,
+    @Args('updateQuestionInput') questionUpdateInput: QuestionUpdateInput
   ) {
     return this.questionService.update(
-      updateQuestionInput.id,
-      updateQuestionInput
+      questionWhereUniqueInput,
+      questionUpdateInput
     );
   }
 
-  @Mutation(() => Question)
-  removeQuestion(@Args('id', { type: () => Int }) id: number) {
-    return this.questionService.remove(id);
-  }
+  // @Mutation(() => QuestionGQL)
+  // removeQuestion(@Args('id', { type: () => Int }) id: number) {
+  //   return this.questionService.remove(id);
+  // }
 }

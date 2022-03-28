@@ -13,7 +13,7 @@ export class IssuesComponent implements OnInit {
 
   prompts: string[];
   responses: string[];
-  
+
   qas: [string, string][] = [];
 
   dateOfIssue = formatDate(Date.now(), 'MMMM d, yyyy', 'en-US');
