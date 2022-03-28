@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Question, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  QuestionCreateInput,
-  QuestionGQL,
-  SurveyWhereUniqueInput,
-} from '@odst/types/ods';
+import { QuestionGQL, SurveyWhereUniqueInput } from '@odst/types/ods';
 
 @Injectable()
 export class QuestionService {

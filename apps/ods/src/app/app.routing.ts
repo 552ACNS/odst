@@ -9,9 +9,9 @@ const routes: Routes = [
   },
   { path: '', redirectTo: '/disclaimer', pathMatch: 'full' },
   {
-  path: 'issues',
+    path: 'responses',
     loadChildren: () =>
-      import('./issues/issues.module').then((m) => m.IssuesModule),
+      import('./responses/responses.module').then((m) => m.ResponsesModule),
   },
 ];
 @NgModule({
