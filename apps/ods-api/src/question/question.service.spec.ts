@@ -75,7 +75,7 @@ describe('QuestionService', () => {
       const question = await service.update(
         { id: 'a uuid' },
         {
-          survey: { connect: { id: 'survey id' } },
+          surveys: { connect: { id: 'survey id' } },
         }
       );
       expect(question).toEqual(oneQuestion);

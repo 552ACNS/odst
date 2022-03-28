@@ -9,8 +9,3 @@ export class QuestionGQL implements Question {
   id: string;
   prompt: string;
 }
-
-@InputType('QuestionWhereUniqueInput')
-export class QuestionWhereUniqueInput implements Prisma.QuestionWhereUniqueInput {
-  id: string;
-}
