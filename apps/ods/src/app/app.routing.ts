@@ -8,6 +8,11 @@ const routes: Routes = [
       import('./disclaimer/disclaimer.module').then((m) => m.DisclaimerModule),
   },
   { path: '', redirectTo: '/disclaimer', pathMatch: 'full' },
+  {
+    path: 'responses',
+    loadChildren: () =>
+      import('./responses/responses.module').then((m) => m.ResponsesModule),
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

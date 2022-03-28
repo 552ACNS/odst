@@ -77,8 +77,7 @@ enum Spec {
 model Question {
   id       String  @id @default(uuid())
   prompt   String
-  survey   Survey? @relation(fields: [surveyId], references: [id])
-  surveyId String?
+  survey   Survey[]
 }
 
 enum OrgTier {

@@ -12,4 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/ods-api',
+  setupFiles: ['./jest.setup.ts'],
 };
