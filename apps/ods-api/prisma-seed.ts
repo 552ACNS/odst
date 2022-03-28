@@ -84,4 +84,4 @@
 //     await prisma.$disconnect();
 //   });
 
-console.log("Please update this file when you want to seed something bruh")
+console.log('Please update this file when you want to seed something bruh');
