@@ -196,13 +196,17 @@ input UserGQLInput {
 type Query {
   findManyPersons: [PersonGQL!]!
   findUniquePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
-  findManyPersonsInOrg(personWhereUniqueInput: PersonWhereUniqueInput!): [PersonGQL!]!
+  findManyPersonsInOrg(
+    personWhereUniqueInput: PersonWhereUniqueInput!
+  ): [PersonGQL!]!
   findManyOrgs: [OrgGQL!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   findManyUsers: [UserGQL!]!
   findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
-  findUniqueIncident(incidentWhereUniqueInput: IncidentWhereUniqueInput!): IncidentGQL!
+  findUniqueIncident(
+    incidentWhereUniqueInput: IncidentWhereUniqueInput!
+  ): IncidentGQL!
 }
 
 input PersonWhereUniqueInput {
@@ -233,13 +237,22 @@ type Mutation {
   refreshTokens: TokensGQL!
   refreshTokensVar(refreshLoginInput: RefreshLoginInput!): TokensGQL!
   createPerson(personCreateInput: PersonCreateInput!): PersonGQL!
-  updatePerson(personWhereUniqueInput: PersonWhereUniqueInput!, PersonUpdateInput: PersonUpdateInput!): PersonGQL!
+  updatePerson(
+    personWhereUniqueInput: PersonWhereUniqueInput!
+    PersonUpdateInput: PersonUpdateInput!
+  ): PersonGQL!
   deletePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
-  updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
+  updateOrg(
+    OrgWhereUniqueInput: OrgWhereUniqueInput!
+    OrgUpdateInput: OrgUpdateInput!
+  ): OrgGQL!
   removeOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createUser(userCreateInput: UserCreateInput!): UserGQL!
-  updateUser(userWhereUniqueInput: UserWhereUniqueInput!, UserUpdateInput: UserUpdateInput!): UserGQL!
+  updateUser(
+    userWhereUniqueInput: UserWhereUniqueInput!
+    UserUpdateInput: UserUpdateInput!
+  ): UserGQL!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   createIncident(incidentCreateInput: IncidentCreateInput!): IncidentGQL!
 }
