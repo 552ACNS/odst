@@ -11,12 +11,12 @@ export class QuestionService {
       data,
     });
   }
-  
+
   //Find all the questions that are in a survey
   async findQuestionsInSurvey(surveyId: string): Promise<Question[]> {
     return await this.prisma.question.findMany({
       where: {
-       survey: {
+        survey: {
           every: {
             id: surveyId,
           },
@@ -24,7 +24,6 @@ export class QuestionService {
       },
     });
   }
-
 
   // findOne(id: number) {
   //   return `This action returns a #${id} question`;

@@ -35,9 +35,9 @@ export const mockQuestionCreateInputs: QuestionCreateInput[] = [
 // Need to clone deep because of reference types. We delete the survey field
 // from the mockQuestionInputs because the Question type does not have a survey
 // field
-export const mockQuestions: Question[] = cloneDeep(mockQuestionCreateInputs).map(
-  (questionInputs) => {
-    delete questionInputs.survey;
-    return questionInputs as Question;
-  }
-);
+export const mockQuestions: Question[] = cloneDeep(
+  mockQuestionCreateInputs
+).map((questionInputs) => {
+  delete questionInputs.survey;
+  return questionInputs as Question;
+});
