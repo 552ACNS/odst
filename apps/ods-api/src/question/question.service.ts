@@ -1,41 +1,78 @@
 import { Injectable } from '@nestjs/common';
+import { Question, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Question } from '.prisma/ods/client';
-import { QuestionUpdateInput } from '@odst/types/ods';
+import {
+  QuestionCreateInput,
+  QuestionGQL,
+  SurveyWhereUniqueInput,
+} from '@odst/types/ods';
 
 @Injectable()
 export class QuestionService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
-  async create(data: Prisma.QuestionCreateInput): Promise<Question> {
-    return await this.prisma.question.create({
-      data,
+  async findMany(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.QuestionWhereUniqueInput;
+    where?: Prisma.QuestionWhereUniqueInput;
+    orderBy?: Prisma.QuestionOrderByWithRelationInput;
+  }): Promise<Question[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.question.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
     });
   }
 
   //Find all the questions that are in a survey
-  async findQuestionsInSurvey(surveyId: string): Promise<Question[]> {
+  async findQuestionsInSurvey(
+    surveyWhereUniqueInput: SurveyWhereUniqueInput
+  ): Promise<Question[]> {
     return await this.prisma.question.findMany({
       where: {
-       surveys: {
-          every: {
-            id: surveyId,
-          },
-        },
+        surveys: { every: surveyWhereUniqueInput },
       },
     });
   }
 
-
-  findOne(id: string) {
-    return `This action returns a #${id} question`;
+  async findUnique(
+    questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput
+  ): Promise<Question | null> {
+    return this.prisma.question.findUnique({
+      where: questionWhereUniqueInput,
+    });
   }
 
-  update(id: string, updateQuestionInput: QuestionUpdateInput) {
-    return `This action updates a #${id} question`;
+  async create(data: Prisma.QuestionCreateInput): Promise<QuestionGQL> {
+    return this.prisma.question.create({
+      data,
+    });
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} question`;
+  async update(
+    questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput,
+    questionUpdateInput: Prisma.QuestionUpdateInput
+  ): Promise<Question> {
+    return this.prisma.question.update({
+      where: questionWhereUniqueInput,
+      data: questionUpdateInput,
+    });
+  }
+
+  async delete(
+    questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput
+  ): Promise<{ deleted: boolean; message?: string }> {
+    try {
+      await this.prisma.question.delete({
+        where: questionWhereUniqueInput,
+      });
+      return { deleted: true };
+    } catch (err) {
+      return { deleted: false, message: err.message };
+    }
   }
 }

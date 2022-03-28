@@ -16,6 +16,11 @@ enum OrgTier {
   OTHER
 }
 
+type QuestionGQL {
+  id: String
+  prompt: String!
+}
+
 type SurveyGQL {
   id: String
 }
@@ -25,7 +30,6 @@ type SurveyResponseGQL {
   surveyId: String!
   openedDate: DateTime!
   closedDate: DateTime
-  answers: [String!]!
   routeOutside: Boolean!
   resolution: String
 }
@@ -42,6 +46,11 @@ input OrgGQLInput {
   parentId: String
 }
 
+input QuestionGQLInput {
+  id: String
+  prompt: String!
+}
+
 input SurveyGQLInput {
   id: String
 }
@@ -51,7 +60,6 @@ input SurveyResponseGQLInput {
   surveyId: String!
   openedDate: DateTime!
   closedDate: DateTime
-  answers: [String!]!
   routeOutside: Boolean!
   resolution: String
 }
@@ -60,6 +68,9 @@ type Query {
   findManyOrgs: [OrgGQL!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
+  findManyQuestions: [QuestionGQL!]!
+  getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
+  findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   findManySurveys: [SurveyGQL!]!
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   findManySurveyResponses: [SurveyResponseGQL!]!
@@ -75,6 +86,10 @@ input SurveyWhereUniqueInput {
   id: String
 }
 
+input QuestionWhereUniqueInput {
+  id: String
+}
+
 input SurveyResponseWhereUniqueInput {
   id: String
 }
@@ -83,6 +98,9 @@ type Mutation {
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
   removeOrg(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
+  updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
+  removeQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   createSurveyResponse(surveyResponseCreateInput: SurveyResponseCreateInput!): SurveyResponseGQL!
@@ -123,9 +141,25 @@ input OrgUpdateInput {
   surveys: SurveyCreateNestedManyWithoutOrgsInput
 }
 
+input QuestionCreateInput {
+  surveys: SurveyCreateNestedManyWithoutQuestionsInput
+  id: String
+  prompt: String!
+}
+
+input SurveyCreateNestedManyWithoutQuestionsInput {
+  connect: SurveyWhereUniqueInput
+}
+
+input QuestionUpdateInput {
+  surveys: SurveyCreateNestedManyWithoutQuestionsInput
+  id: String
+  prompt: String
+}
+
 input SurveyCreateInput {
   orgs: OrgCreateNestedManyWithoutSurveysInput
-  questions: QuestionCreateNestedManyWithoutSurveyInput
+  questions: QuestionCreateNestedManyWithoutSurveysInput
   surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
 }
 
@@ -133,29 +167,26 @@ input OrgCreateNestedManyWithoutSurveysInput {
   connect: OrgWhereUniqueInput
 }
 
-input QuestionCreateNestedManyWithoutSurveyInput {
+input QuestionCreateNestedManyWithoutSurveysInput {
   connect: QuestionWhereUniqueInput
-}
-
-input QuestionWhereUniqueInput {
-  id: String
 }
 
 input SurveyResponseCreateNestedManyWithoutSurveyInput {
   connect: SurveyResponseWhereUniqueInput
+  create: SurveyResponseGQLInput
 }
 
 input SurveyUpdateInput {
   orgs: OrgCreateNestedManyWithoutSurveysInput
-  questions: QuestionCreateNestedManyWithoutSurveyInput
+  questions: QuestionCreateNestedManyWithoutSurveysInput
   surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
 }
 
 input SurveyResponseCreateInput {
   survey: SurveyCreateNestedOneWithoutSurveyResponsesInput!
+  answers: AnswerCreateNestedManyWithoutSurveyResponseInput
   openedDate: DateTime
   closedDate: DateTime
-  answers: [String!]
   routeOutside: Boolean
   resolution: String
 }
@@ -164,9 +195,20 @@ input SurveyCreateNestedOneWithoutSurveyResponsesInput {
   connect: SurveyWhereUniqueInput
 }
 
+input AnswerCreateNestedManyWithoutSurveyResponseInput {
+  connect: AnswerGQLInput
+  create: AnswerGQLInput
+}
+
+input AnswerGQLInput {
+  id: String
+  value: String!
+  questionId: String!
+  surveyResponseId: String!
+}
+
 input SurveyResponseUpdateInput {
   closedDate: DateTime
-  answers: [String!]
   routeOutside: Boolean
   resolution: String
 }

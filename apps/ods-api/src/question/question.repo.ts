@@ -6,7 +6,7 @@ export const TestQuestionCreateInput: QuestionCreateInput[] = [
   {
     id: '1',
     prompt: 'Question 1',
-    survey: {
+    surveys: {
       connect: {
         id: 'survey1',
       },
@@ -15,7 +15,7 @@ export const TestQuestionCreateInput: QuestionCreateInput[] = [
   {
     id: '2',
     prompt: 'Question 2',
-    survey: {
+    surveys: {
       connect: {
         id: 'survey1',
       },
@@ -24,7 +24,7 @@ export const TestQuestionCreateInput: QuestionCreateInput[] = [
   {
     id: '3',
     prompt: 'Question 3',
-    survey: {
+    surveys: {
       connect: {
         id: 'survey2',
       },
@@ -37,7 +37,7 @@ export const TestQuestionCreateInput: QuestionCreateInput[] = [
 // field
 export const mockQuestions: Question[] = cloneDeep(TestQuestionCreateInput).map(
   (questionInputs) => {
-    delete questionInputs.survey;
+    delete questionInputs.surveys;
     return questionInputs as Question;
   }
 );

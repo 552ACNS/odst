@@ -1,42 +1,70 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { QuestionService } from './question.service';
-import { QuestionGQL } from '@odst/types/ods';
-import { QuestionCreateInput } from '@odst/types/ods';
-import { QuestionUpdateInput } from '@odst/types/ods';
+import {
+  QuestionGQL,
+  QuestionCreateInput,
+  QuestionUpdateInput,
+  QuestionWhereUniqueInput,
+  SurveyWhereUniqueInput,
+} from '@odst/types/ods';
+//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
+// import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => QuestionGQL)
 export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Mutation(() => QuestionGQL)
-  createQuestion(
-    @Args('createQuestionInput') createQuestionInput: QuestionCreateInput
+  @Query(() => [QuestionGQL], { name: 'findManyQuestions' })
+  async findMany(): Promise<QuestionGQL[]> {
+    return this.questionService.findMany({});
+  }
+
+  @Query(() => [QuestionGQL], { name: 'getSubQuestions' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async getSubQuestions(
+    @Args('surveyWhereUniqueInput')
+    surveyWhereUniqueInput: SurveyWhereUniqueInput
+  ): Promise<QuestionGQL[]> {
+    return this.questionService.findQuestionsInSurvey(surveyWhereUniqueInput);
+  }
+
+  @Query(() => QuestionGQL, { name: 'findUniqueQuestion' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async findUnique(
+    @Args('questionWhereUniqueInput')
+    questionWhereUniqueInput: QuestionWhereUniqueInput
+  ): Promise<QuestionGQL | null> {
+    return this.questionService.findUnique(questionWhereUniqueInput);
+  }
+
+  @Mutation(() => QuestionGQL, { name: 'createQuestion' })
+  // @UseGuards(AccessTokenAuthGuard)
+  create(
+    @Args('questionCreateInput') questionCreateInput: QuestionCreateInput
   ) {
-    return this.questionService.create(createQuestionInput);
+    return this.questionService.create(questionCreateInput);
   }
 
-  @Query(() => [QuestionGQL], { name: 'question' })
-  findAll() {
-    return this.questionService.findAll();
-  }
-
-  @Query(() => QuestionGQL, { name: 'question' })
-  findOne(@Args('id', { type: () => Int }) id: string) {
-    return this.questionService.findOne(id);
-  }
-
-  @Mutation(() => QuestionGQL)
-  updateQuestion(
-    @Args('updateQuestionInput') updateQuestionInput: QuestionUpdateInput
-  ) {
+  @Mutation(() => QuestionGQL, { name: 'updateQuestion' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async update(
+    @Args('QuestionWhereUniqueInput')
+    questionWhereUniqueInput: QuestionWhereUniqueInput,
+    @Args('QuestionUpdateInput')
+    questionUpdateInput: QuestionUpdateInput
+  ): Promise<QuestionGQL> {
     return this.questionService.update(
-      updateQuestionInput.id,
-      updateQuestionInput
+      questionWhereUniqueInput,
+      questionUpdateInput
     );
   }
 
-  @Mutation(() => QuestionGQL)
-  removeQuestion(@Args('id', { type: () => Int }) id: string) {
-    return this.questionService.remove(id);
+  @Mutation(() => QuestionGQL, { name: 'removeQuestion' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async delete(
+    @Args('questionWhereUniqueInput')
+    questionWhereUniqueInput: QuestionWhereUniqueInput
+  ): Promise<{ deleted: boolean }> {
+    return this.questionService.delete(questionWhereUniqueInput);
   }
 }
