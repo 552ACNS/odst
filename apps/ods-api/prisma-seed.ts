@@ -67,7 +67,7 @@ async function main() {
 
   const survey = await prisma.survey.create({
     data: {
-      orgs: { connect: { id: 'Scorpion Developers' } },
+      orgs: { connect: { name: 'Scorpion Developers' } },
       questions: {
         createMany: {
           data: [
