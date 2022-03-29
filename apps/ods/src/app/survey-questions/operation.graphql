@@ -1,0 +1,19 @@
+# mutation createOrg($orgCreateInput: OrgCreateInput!) {
+#   createOrg(orgCreateInput: $orgCreateInput) {
+#     ...orgFields
+#   }
+# }
+
+query findManyOrgs {
+  findManyOrgs {
+    ...orgFields
+  }
+}
+
+fragment orgFields on OrgGQL {
+  id
+  name
+  orgTier
+  parentId
+}
+
