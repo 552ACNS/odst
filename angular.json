@@ -278,24 +278,6 @@
       },
       "tags": []
     },
-    "types-ods": {
-      "root": "libs/types/ods",
-      "sourceRoot": "libs/types/ods/src",
-      "projectType": "library",
-      "prefix": "odst",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/types/ods/src/**/*.ts",
-              "libs/types/ods/src/**/*.html"
-            ]
-          }
-        }
-      },
-      "tags": []
-    },
     "waypoint": {
       "projectType": "application",
       "root": "apps/waypoint",
