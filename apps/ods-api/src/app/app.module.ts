@@ -1,20 +1,36 @@
 import { Module } from '@nestjs/common';
 import {
   Role,
-  //Spec,
+  // Spec,
   OrgTier,
 } from '.prisma/ods/client';
-import { registerEnumType } from '@nestjs/graphql';
-import { SurveyModule } from '../survey/survey.module';
-import { OrgModule } from '../org/org.module';
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageDisabled,
+} from 'apollo-server-core';
+import { join } from 'path';
+import { GraphQLModule, registerEnumType } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 // Register enum types here, if they are used in multiple places, make sure that they are registered
 // only once and that the resource module that is imported first is the one that registers them
 registerEnumType(Role, { name: 'Role' });
-//registerEnumType(Spec, { name: 'Spec' });
+// registerEnumType(Spec, { name: 'Spec' });
 registerEnumType(OrgTier, { name: 'OrgTier' });
 
 @Module({
-  imports: [SurveyModule, OrgModule],
+  imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      autoSchemaFile: join(process.cwd(), 'apps/ods-api/schema.graphql'),
+      playground: false,
+      introspection: process.env.NODE_ENV !== 'production',
+      driver: ApolloDriver,
+      plugins: [
+        process.env.NODE_ENV === 'production'
+          ? ApolloServerPluginLandingPageDisabled()
+          : ApolloServerPluginLandingPageLocalDefault(),
+      ],
+    }),
+  ],
 })
 export class AppModule {}

@@ -2,7 +2,7 @@ import { InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
 
 @InputType()
-export class OrgWhereUniqueInput implements Prisma.OrgWhereUniqueInput {
+export class UserWhereUniqueInput implements Prisma.UserWhereUniqueInput {
   id?: string;
-  name?: string;
+  email?: string;
 }

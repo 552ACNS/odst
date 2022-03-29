@@ -7,7 +7,6 @@ export class UserGQL implements User {
   @Field(() => String, { nullable: true })
   id: string;
   email: string;
-  personId: string;
   enabled: boolean;
   roles: Role;
 
