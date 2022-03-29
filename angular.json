@@ -160,6 +160,7 @@
             "outputPath": "dist/apps/ods-api",
             "main": "apps/ods-api/src/main.ts",
             "tsConfig": "apps/ods-api/tsconfig.app.json",
+            "tsPlugins": ["@nestjs/graphql/plugin"],
             "assets": ["apps/ods-api/src/assets"]
           },
           "configurations": {
@@ -272,6 +273,24 @@
             "lintFilePatterns": [
               "libs/types/waypoint/src/**/*.ts",
               "libs/types/waypoint/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "types-ods": {
+      "root": "libs/types/ods",
+      "sourceRoot": "libs/types/ods/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "libs/types/ods/src/**/*.ts",
+              "libs/types/ods/src/**/*.html"
             ]
           }
         }
