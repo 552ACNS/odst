@@ -10,9 +10,6 @@
     "test": "nx run-many --target=test --all",
     "generate": "nx run-many --target=prisma-generate --all"
   },
-  "prisma": {
-    "seed": "ts-node ./apps/waypoint-api/src/prisma/seed.ts"
-  },
   "private": true,
   "dependencies": {
     "@angular/animations": "13.3.0",
