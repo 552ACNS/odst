@@ -8,13 +8,17 @@ const routes: Routes = [
     loadChildren: () =>
       import('./disclaimer/disclaimer.module').then((m) => m.DisclaimerModule),
   },
-  { path: '', redirectTo: '/disclaimer', pathMatch: 'full' },
+  {path: '', redirectTo: '/disclaimer', pathMatch: 'full'},
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+  },
+  {path: 'dashboard', component: DashboardComponent},
   {
     path: 'responses',
     loadChildren: () =>
       import('./responses/responses.module').then((m) => m.ResponsesModule),
   },
-  {path: 'dashboard', component: DashboardComponent}
 ];
 
 @NgModule({
