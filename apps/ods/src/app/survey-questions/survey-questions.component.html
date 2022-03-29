@@ -1,9 +1,9 @@
-<mat-card class="w-1/5 m-2">
+<mat-card class="w-1/5 m-2 rounded-2xl shadow-md">
   <mat-card-header class="font-medium">
     <label>Observations of Discrimination in Squadron</label>
   </mat-card-header>
 </mat-card>
-<mat-card class="w-1/5 m-2">
+<mat-card class="w-1/5 m-2 rounded-2xl shadow-md">
   <form [formGroup]="form" class="flex flex-col flex-wrap">
     <label class="mb-1">
       What squadron did the event occur in?
@@ -159,12 +159,16 @@
 </mat-card>
 <!-- TODO align buttons to the right of form -->
 <div class="w-1/3 flex justify-center">
-  <button id="btnBack" class="m-3" mat-raised-button color="" (click)="back()">
+  <button 
+  id="btnBack" 
+  class="m-2 border-1 border-dark-blue shadow-md rounded-full" 
+  mat-raised-button
+  (click)="back()">
     Back
   </button>
   <button
     id="btnSubmit"
-    class="m-3"
+    class="m-2 text-white rounded-full"
     mat-raised-button
     color="primary"
     (click)="submit()"
