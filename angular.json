@@ -261,6 +261,7 @@
       "tags": [],
       "implicitDependencies": ["ods"]
     },
+    "shared-nest": "libs/shared/nest",
     "types-waypoint": {
       "root": "libs/types/waypoint",
       "sourceRoot": "libs/types/waypoint/src",
