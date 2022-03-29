@@ -12,6 +12,7 @@ import { join } from 'path';
 import { GraphQLModule, registerEnumType } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AnswerModule } from '../answer/answer.module';
+import { OrgModule } from '../org/org.module';
 
 // Register enum types here, if they are used in multiple places, make sure that they are registered
 // only once and that the resource module that is imported first is the one that registers them
@@ -33,6 +34,7 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
       ],
     }),
     AnswerModule,
+    OrgModule,
   ],
 })
 export class AppModule {}
