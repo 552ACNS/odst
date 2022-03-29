@@ -3,6 +3,7 @@ import { SurveyResponse, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { SurveyResponseGQL } from '@odst/types/ods';
 import { GetCurrentUserId } from '@odst/shared/nest';
+import { stringify } from 'querystring';
 
 @Injectable()
 export class SurveyResponseService {
@@ -58,6 +59,21 @@ export class SurveyResponseService {
 
     return responsesIDs;
   }
+
+async getIssueData(issueId: string): Promise<string[]>{
+  const issueIDs = await this.prisma.surveyResponse
+  .findUnique({
+    where: {
+      id: issueId,
+    },
+    select : {
+      id: true,
+    }
+  })
+    
+  return [];
+} 
+
   async create(
     data: Prisma.SurveyResponseCreateInput
   ): Promise<SurveyResponseGQL> {
