@@ -15,10 +15,7 @@ export class SurveyResponseCreateInput
   @Field(() => AnswerCreateNestedManyWithoutSurveyResponseInput)
   answers?: Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput;
 
-  openedDate?: Date;
-  closedDate?: Date;
   routeOutside?: boolean;
-  resolution?: string;
 }
 
 @InputType()
