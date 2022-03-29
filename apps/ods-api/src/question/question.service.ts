@@ -16,7 +16,7 @@ export class QuestionService {
   async findQuestionsInSurvey(surveyId: string): Promise<Question[]> {
     return await this.prisma.question.findMany({
       where: {
-        survey: {
+        surveys: {
           every: {
             id: surveyId,
           },
