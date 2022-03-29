@@ -6,6 +6,7 @@ import {
   SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
 } from '@odst/types/ods';
+import { GetCurrentUserId } from '@odst/shared/nest';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
@@ -53,5 +54,11 @@ export class SurveyResponseResolver {
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
   ): Promise<{ deleted: boolean }> {
     return this.surveyResponseService.delete(surveyResponseWhereUniqueInput);
+  }
+
+  @Query(() => [String], { name: 'getUnresolvedIssues' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async getUnresolvedIssues(@GetCurrentUserId() userId: string): Promise<string[]> {
+    return this.surveyResponseService.getUnresolvedIssues(userId);
   }
 }

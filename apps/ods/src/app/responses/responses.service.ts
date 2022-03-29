@@ -11,6 +11,8 @@ export class ResponsesService {
   getResponsesIds(): string[] {
     // query GQL server for the commander's responses
     // return the number of responses
+
+    
     return ['issueId_1', 'issueId_2', 'issueId_3'];
   }
 
