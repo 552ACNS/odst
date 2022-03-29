@@ -14,13 +14,58 @@ export class SurveyQuestionsComponent {
   answers: string[]
   orgs: string[] = ['552 ACNS', 'Astolfo Gang', 'Random'];
   CCs: string[] = ['Matos, Emmanuel Lt. Col.', 'God Emperer Astolfo', 'MaGoo'];
+  radioNames = ['Active Duty', 'Civilian', 'Contractor', 'Guard/Reserve'];
+  violatorSpec = { name: "" };
+  personSpec = { name: ""}
+  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+  private _violatorOption: string = "";
+  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+  private _customViolator: string = "";
   //querySubscription: Subscription;
-
+  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+  private _personOption: string = "";
+  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+  private _customPerson: string = "";
+  //querySubscription: Subscription;
   constructor(private fb: FormBuilder, ) { } //private apollo: Apollo
+
+  get violatorOption(): string {
+    return this._violatorOption;
+  }
+  set violatorOption(value: string) {
+    this._violatorOption = value;
+    this.updateRadioName();
+  }
+  get customViolator(): string {
+    return this._customViolator;
+  }
+  set customViolator(value: string) {
+    this._customViolator = value;
+    this.updateRadioName();
+  }
+  get personOption(): string {
+    return this._personOption;
+  }
+  set personOption(value: string) {
+    this._personOption = value;
+    this.updateRadioName();
+  }
+  get customPerson(): string {
+    return this._customPerson;
+  }
+  set customPerson(value: string) {
+    this._customPerson = value;
+    this.updateRadioName();
+  }
+  private updateRadioName(): void {
+    this.violatorSpec.name = this._violatorOption === "other" ? this.form.value['violatorOtherSpec'] : this._violatorOption;
+    this.personSpec.name = this._personOption === "other" ? this.form.value['personOtherSpec'] : this._personOption;
+  }
   
   //validators didnt need to be inside the formControlName and caused it to break, so i removed
   //them. Also, all form controls need to be specificed in their or else they all will not
   //load properly.
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group({
     personOrg: [],
     event: [],
@@ -41,59 +86,16 @@ export class SurveyQuestionsComponent {
     }
   }
   submit(){
-    if(this.form.value['violatorSpec']=='5' && this.form.value['personSpec']=='5')
-    {
       this.answers = [
         this.form.value['personOrg'],
         this.form.value['event'],
-        this.form.value['violatorOtherSpec'],
+        this.violatorSpec.name,
         this.form.value['CC'],
-        this.form.value['personOtherSpec'],
+        this.personSpec.name,
         this.form.value['impact'],
         this.outsideRoutingWorking()
       ]
       return alert(this.answers)
-    }
-    else if(this.form.value['violatorSpec']=='5' && this.form.value['personSpec']!='5')
-    {
-      this.answers = [
-        this.form.value['personOrg'],
-        this.form.value['event'],
-        this.form.value['violatorOtherSpec'],
-        this.form.value['CC'],
-        this.form.value['personSpec'],
-        this.form.value['impact'],
-        this.outsideRoutingWorking()
-      ]
-      return alert(this.answers)
-    }
-    else if(this.form.value['violatorSpec']!='5' && this.form.value['personSpec']=='5')
-    {
-      this.answers = [
-        this.form.value['personOrg'],
-        this.form.value['event'],
-        this.form.value['violatorSpec'],
-        this.form.value['CC'],
-        this.form.value['personOtherSpec'],
-        this.form.value['impact'],
-        this.outsideRoutingWorking()
-      ]
-      return alert(this.answers)
-    }
-    else
-    {
-      this.answers = [
-        this.form.value['personOrg'],
-        this.form.value['event'],
-        this.form.value['violatorSpec'],
-        this.form.value['CC'],
-        this.form.value['personSpec'],
-        this.form.value['impact'],
-        this.outsideRoutingWorking()
-      ]
-      return alert(this.answers)
-    }
-    //return alert(this.answers)
   }
   back(){
     return;

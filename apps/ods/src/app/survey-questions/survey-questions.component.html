@@ -22,119 +22,128 @@
       </mat-select>
       <mat-error> Please select their organization </mat-error>
     </mat-form-field>
-
     <label class="mt-6 mb-1">
       Please describe the event of a microaggression or discrimination that took
       place in your squadron. Please refrain from using names or identifying
       information.
       <span class="text-red-500"> * </span>
     </label>
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Event description</mat-label>
-        <textarea
-          matInput
-          placeholder="Event description"
-          formControlName="event"
-          class=""
-          required
-        >
-        </textarea>
-        <mat-error>
-          Please describe the mircroaggression or discrimination that took place
-        </mat-error>
-      </mat-form-field>
-    <label class="mt-6 mb-1">
-        Was the person performing the microaggression or discrimination active
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Event description</mat-label>
+      <textarea
+        matInput
+        placeholder="Event description"
+        formControlName="event"
+        class=""
+        required
+      >
+      </textarea>
+      <mat-error>
+        Please describe the mircroaggression or discrimination that took place
+      </mat-error>
+    </mat-form-field>
+    <label class="mt-6 mb-2">
+      Was the person performing the microaggression or discrimination active
       duty, civilian, guard/reserve or a contractor?
       <span class="text-red-500"> * </span>
     </label>
-      <!-- TODO pull data into a mutation to the back end when that is set up-->
-      <!-- TODO maybe use ng if once we have spec available -->
-      <mat-radio-group formControlName="violatorSpec" class="" required>
-        <mat-radio-button value="AD">Active Duty</mat-radio-button>
-        <br />
-        <br />
-        <mat-radio-button value="CIVILIAN">Civilian</mat-radio-button>
-        <br />
-        <br />
-        <mat-radio-button value="CONTRACTOR">Contractor</mat-radio-button>
-        <br />
-        <br />
-        <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
-        <br />
-        <mat-radio-button value="5">
-          <mat-form-field>
-            <input
-              matInput
-              placeholder="Other"
-              formControlName="violatorOtherSpec"
-            />
-          </mat-form-field>
-        </mat-radio-button>
-      </mat-radio-group>
+    <!-- TODO pull data into a mutation to the back end when that is set up-->
+    <!-- TODO maybe use ng if once we have spec available -->
+    <mat-radio-group
+      name="violator_spec"
+      [(ngModel)]="violatorOption"
+      formControlName="violatorSpec"
+    >
+      <mat-radio-button value="AD">Active Duty</mat-radio-button>
+      <br />
+      <br />
+      <mat-radio-button value="CIVILIAN">Civilian</mat-radio-button>
+      <br />
+      <br />
+      <mat-radio-button value="CONTRACTOR">Contractor</mat-radio-button>
+      <br />
+      <br />
+      <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
+      <br />
+      <mat-radio-button value="other">
+        <mat-form-field>
+          <input
+            matInput
+            formControlName="violatorOtherSpec"
+            placeholder="Other"
+            [(ngModel)]="customViolator"
+            (ngModelChange)="violatorOption = 'other'"
+          />
+        </mat-form-field>
+      </mat-radio-button>
+    </mat-radio-group>
     <label class="mt-6 mb-1">
       Who is your SQ/CC?
       <span class="text-red-500"> * </span>
     </label>
-      <mat-form-field>
-        <!-- TODO implement commented out code to select SQ/CC -->
-        <!-- TODO make placeholder not stay when CC is selected -->
-        <mat-select
-          placeholder="Doe, John Lt. Col."
-          formControlName="CC"
-          required
-        >
-          <mat-option *ngFor="let CC of CCs" [value]="CC">
-            {{ CC }}
-          </mat-option>
-        </mat-select>
-        <mat-error>Please select your Squadron Commander</mat-error>
-      </mat-form-field>
-    <label class="mt-6 mb-1">
+    <mat-form-field>
+      <!-- TODO implement commented out code to select SQ/CC -->
+      <!-- TODO make placeholder not stay when CC is selected -->
+      <mat-select
+        placeholder="Doe, John Lt. Col."
+        formControlName="CC"
+        required
+      >
+        <mat-option *ngFor="let CC of CCs" [value]="CC">
+          {{ CC }}
+        </mat-option>
+      </mat-select>
+      <mat-error>Please select your Squadron Commander</mat-error>
+    </mat-form-field>
+    <label class="mt-6 mb-2">
       Are you active duty, a civilian, guard/reserve or contractor?
       <span class="text-red-500"> * </span>
     </label>
+    <!-- TODO pull data into a mutation to the back end when that is set up-->
+    <!-- TODO maybe use ng if once we have spec available -->
+    <mat-radio-group
+      name="person_spec"
+      [(ngModel)]="personOption"
+      formControlName="personSpec"
+    >
+      <mat-radio-button value="AD">Active Duty</mat-radio-button>
       <br />
-      <!-- TODO pull data into a mutation to the back end when that is set up-->
-      <!-- TODO maybe use ng if once we have spec available -->
-      <mat-radio-group formControlName="personSpec" class="" required>
-        <mat-radio-button value="AD">Active Duty</mat-radio-button>
-        <br />
-        <br />
-        <mat-radio-button value="CIVILIAN">Civilian</mat-radio-button>
-        <br />
-        <br />
-        <mat-radio-button value="CONTRACTOR">Contractor</mat-radio-button>
-        <br />
-        <br />
-        <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
-        <br />
-        <mat-radio-button value="5">
-          <mat-form-field>
-            <!-- <input matInput placeholder="Other" [(ngModel)]="customGoalName" (ngModelChange)="goalOption = 'other'" name="something"> -->
-            <input
-              matInput
-              placeholder="Other"
-              formControlName="personOtherSpec"
-            />
-          </mat-form-field>
-        </mat-radio-button>
-      </mat-radio-group>
+      <br />
+      <mat-radio-button value="CIVILIAN">Civilian</mat-radio-button>
+      <br />
+      <br />
+      <mat-radio-button value="CONTRACTOR">Contractor</mat-radio-button>
+      <br />
+      <br />
+      <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
+      <br />
+      <mat-radio-button value="other">
+        <mat-form-field>
+          <input
+            matInput
+            formControlName="personOtherSpec"
+            placeholder="Other"
+            [(ngModel)]="customPerson"
+            (ngModelChange)="personOption = 'other'"
+          />
+        </mat-form-field>
+      </mat-radio-button>
+    </mat-radio-group>
     <label class="mt-6 mb-1">
       What impacts did this event have on you or your work environment
       <span class="text-red-500"> * </span>
     </label>
-      <mat-form-field appearance="outline" class="w-full border-solid">
-        <mat-label>Event impact</mat-label>
-        <textarea
-          matInput
-          placeholder="Event impact"
-          formControlName="impact"
-          required
-        >
-        </textarea>
-        <mat-error> Please describe the events impact </mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline" class="w-full border-solid">
+      <mat-label>Event impact</mat-label>
+      <textarea
+        matInput
+        placeholder="Event impact"
+        formControlName="impact"
+        required
+      >
+      </textarea>
+      <mat-error> Please describe the events impact </mat-error>
+    </mat-form-field>
     <label class="mt-6 mb-1">
       Click the box below if your Squadron Commander was involved in the event
       (this will route the submission to a representative outside of your chain

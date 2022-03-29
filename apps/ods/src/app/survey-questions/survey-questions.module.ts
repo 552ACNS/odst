@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
@@ -10,8 +10,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { SurveyQuestionsComponent } from './survey-questions.component';
 import { SurveyQuestionsRoutes } from './survey-questions.routing';
 import { RouterModule } from '@angular/router';
-
-
 @NgModule({
     declarations: [SurveyQuestionsComponent],
     imports: [
@@ -23,7 +21,8 @@ import { RouterModule } from '@angular/router';
         MatSelectModule,
         MatRadioModule,
         MatCardModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        FormsModule
     ],
     exports: []
   })
