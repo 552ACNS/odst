@@ -95,12 +95,15 @@ username: `admin`
 ### - `yarn` throws graphql error
 
 This could be because you've made changes to the schema and not rerun the backend. Serving the backend, running `yarn` again will ensure graphql schema and types will be generated properly.
+
 ### - Webpack config errors on frontend
+
 Need to remove prisma references from frontend and only use the generated graphQL files.
 
 ### - New prisma database
+
 When creating a new prisma database, you need to specify what project it is made for in the prisma.schema under outputs.
 
 ### - Tailwind isn't working w/ Material
-Ensure that you marked Tailwind as "Important" under tailwind config.
 
+Ensure that you marked Tailwind as "Important" under tailwind config.

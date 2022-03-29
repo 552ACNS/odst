@@ -1,0 +1,51 @@
+<div
+  class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-2 space-y-2"
+>
+  <p class="text-center">Date Submitted: {{ dateOfIssue }}</p>
+  <mat-paginator
+    class="flex justify-center border-1 border-solid border-dark-blue rounded-2xl shadow-md"
+    [length]="numberOfResponses"
+    [pageIndex]="displayedIssue"
+    [pageSize]="responsesPerPage"
+    [hidePageSize]="true"
+    [showFirstLastButtons]="true"
+    (page)="pageEvent = displayIssue($event)"
+  >
+  </mat-paginator>
+  <p *ngIf="pageEvent" class="text-center">
+    Actual Paginator Value: {{ pageEvent.pageIndex + 1 }}
+    <br />
+    Event Displayed Value: {{ displayedIssue + 1 }}
+    <br />
+    Issue Data: {{ issueData }}
+  </p>
+  <mat-card *ngFor="let qa of qas" class="rounded-2xl shadow-md">
+    <mat-card-content class="text-sm text-left">
+      <p class="text-base font-medium">{{ qa[0] }}</p>
+      <p>{{ qa[1] }}</p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="rounded-2xl shadow-md">
+    <mat-card-content class="text-sm text-left">
+      <form>
+        <p class="text-base font-medium">How were these responses resolved?</p>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Resolution</mat-label>
+          <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+        </mat-form-field>
+      </form>
+      <mat-card-actions class="flex h-8 space-x-2 mb-0 py-0 mx-1">
+        <button
+          mat-stroked-button
+          class="w-full border-1 border-dark-blue shadow-md rounded-full"
+        >
+          Decline
+        </button>
+        <button mat-button class="w-full bg-dark-blue text-white rounded-full">
+          Accept
+        </button>
+      </mat-card-actions>
+      <!--  TODO: Where to put form tag? -->
+    </mat-card-content>
+  </mat-card>
+</div>
