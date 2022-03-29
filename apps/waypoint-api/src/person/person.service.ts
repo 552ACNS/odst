@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PersonCreateInput } from '@odst/types';
+import { PersonCreateInput } from '@odst/types/waypoint';
 import { Prisma, Person } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 

@@ -260,16 +260,19 @@
       "tags": [],
       "implicitDependencies": ["ods"]
     },
-    "types": {
-      "root": "libs/types",
-      "sourceRoot": "libs/types/src",
+    "types-waypoint": {
+      "root": "libs/types/waypoint",
+      "sourceRoot": "libs/types/waypoint/src",
       "projectType": "library",
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": ["libs/types/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/types/waypoint/src/**/*.ts",
+              "libs/types/waypoint/src/**/*.html"
+            ]
           }
         }
       },

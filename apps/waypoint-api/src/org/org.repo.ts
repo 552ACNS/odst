@@ -1,4 +1,4 @@
-import { OrgCreateInput } from '@odst/types';
+import { OrgCreateInput } from '@odst/types/waypoint';
 
 export const TestOrgCreateInput: OrgCreateInput[] = [
   {
