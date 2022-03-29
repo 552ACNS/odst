@@ -237,7 +237,7 @@ type Mutation {
   deletePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
-  removeOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
+  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createUser(userCreateInput: UserCreateInput!): UserGQL!
   updateUser(userWhereUniqueInput: UserWhereUniqueInput!, UserUpdateInput: UserUpdateInput!): UserGQL!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!

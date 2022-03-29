@@ -75,6 +75,7 @@ type Query {
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   findManySurveyResponses: [SurveyResponseGQL!]!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  getUnresolvedIssues: [String!]!
 }
 
 input OrgWhereUniqueInput {
@@ -97,14 +98,16 @@ input SurveyResponseWhereUniqueInput {
 type Mutation {
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
-  removeOrg(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
   removeQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
+  deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   createSurveyResponse(surveyResponseCreateInput: SurveyResponseCreateInput!): SurveyResponseGQL!
   updateSurveyResponse(SurveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!, SurveyResponseUpdateInput: SurveyResponseUpdateInput!): SurveyResponseGQL!
+  deleteSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
 }
 
 input OrgCreateInput {
