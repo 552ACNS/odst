@@ -1,6 +1,6 @@
 import { InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
-import { SurveyCreateInput } from '..';
+import { SurveyCreateInput } from './survey.create.input';
 
 @InputType()
 export class SurveyUpdateInput

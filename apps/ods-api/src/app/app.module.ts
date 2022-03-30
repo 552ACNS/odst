@@ -4,8 +4,6 @@ import {
   // Spec,
   OrgTier,
 } from '.prisma/ods/client';
-import { SurveyModule } from '../survey/survey.module';
-import { OrgModule } from '../org/org.module';
 import {
   ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageDisabled,
@@ -13,7 +11,10 @@ import {
 import { join } from 'path';
 import { GraphQLModule, registerEnumType } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { SurveyModule } from '../survey/survey.module';
 import { SurveyResponseModule } from '../surveyResponse/surveyResponse.module';
+import { AnswerModule } from '../answer/answer.module';
+import { OrgModule } from '../org/org.module';
 import { QuestionModule } from '../question/question.module';
 
 // Register enum types here, if they are used in multiple places, make sure that they are registered
@@ -35,10 +36,11 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
           : ApolloServerPluginLandingPageLocalDefault(),
       ],
     }),
-    OrgModule,
-    QuestionModule,
     SurveyModule,
     SurveyResponseModule,
+    AnswerModule,
+    OrgModule,
+    QuestionModule,
   ],
 })
 export class AppModule {}
