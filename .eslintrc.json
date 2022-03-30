@@ -30,6 +30,28 @@
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
       "rules": {}
+    },
+    {
+      "files": ["*.resolver.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [".prisma/*/client"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.service.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["@odst/types/*"]
+          }
+        ]
+      }
     }
   ]
 }
