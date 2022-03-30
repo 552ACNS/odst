@@ -16,8 +16,8 @@
         formControlName="personOrg"
         required
       >
-        <mat-option *ngFor="let org of orgs" [value]="org">
-          {{ org }}
+        <mat-option *ngFor="let org of orgs" [value]="org.id">
+          {{ org.name }}
         </mat-option>
       </mat-select>
       <mat-error> Please select their organization </mat-error>
@@ -159,11 +159,12 @@
 </mat-card>
 <!-- TODO align buttons to the right of form -->
 <div class="w-1/3 flex justify-center">
-  <button 
-  id="btnBack" 
-  class="m-2 border-1 border-dark-blue shadow-md rounded-full" 
-  mat-raised-button
-  (click)="back()">
+  <button
+    id="btnBack"
+    class="m-2 border-1 border-dark-blue shadow-md rounded-full"
+    mat-raised-button
+    (click)="back()"
+  >
     Back
   </button>
   <button
@@ -177,3 +178,4 @@
     Submit
   </button>
 </div>
+

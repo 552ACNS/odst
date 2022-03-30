@@ -1,18 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-// import {
-//   CreateOrgDocument,
-//   CreateOrgMutation,
-//   CreateOrgMutationVariables,
-//   FindManyOrgsDocument,
-//   FindManyOrgsQuery,
-//   FindManyOrgsQueryVariables,
-//   OrgGql,
-//   OrgTier,
-// } from '../../graphql-generated';
+import { Apollo } from 'apollo-angular';
+import { Subscription } from 'rxjs';
+import { 
+  FindManyOrgsDocument, 
+  FindManyOrgsQuery, 
+  FindManyOrgsQueryVariables, 
+  OrgGql
+} from '../../graphql-generated';
 
-// import { Apollo } from 'apollo-angular';
-// import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'odst-survey-questions',
@@ -20,12 +16,15 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./survey-questions.component.scss']
 })
 
-export class SurveyQuestionsComponent {
+export class SurveyQuestionsComponent implements OnInit {
 
   answers: string[]
-  orgs: string[] = ['552 ACNS', 'Astolfo Gang', 'Random'];
+  //orgs: string[] = ['552 ACNS', 'Astolfo Gang', 'Random'];
+  orgs: Partial<OrgGql>[];
   CCs: string[] = ['Matos, Emmanuel Lt. Col.', 'God Emperer Astolfo', 'MaGoo'];
   radioNames = ['Active Duty', 'Civilian', 'Contractor', 'Guard/Reserve'];
+  querySubscription: Subscription;
+  loading = true;
   violatorSpec = { name: "" };
   personSpec = { name: ""}
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
@@ -38,7 +37,10 @@ export class SurveyQuestionsComponent {
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
   private _customPerson: string = "";
   //querySubscription: Subscription;
-  constructor(private fb: FormBuilder, ) { } //private apollo: Apollo
+  constructor(
+    private fb: FormBuilder, 
+    private apollo: Apollo
+    ) { }
 
   get violatorOption(): string {
     return this._violatorOption;
@@ -88,7 +90,19 @@ export class SurveyQuestionsComponent {
     impact: [],
     outsideRouting: []
   });
-  //TODO find out a way to fix without this
+
+  async ngOnInit(): Promise<void> {
+    this.querySubscription = this.apollo
+      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+        query: FindManyOrgsDocument,
+      })
+      .valueChanges.subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.orgs = data.findManyOrgs;
+        alert(this.orgs);
+      });
+  }
+   //TODO find out a way to fix without this
   outsideRoutingWorking(): boolean {
     if (this.form.get(['outsideRouting'])?.value == true) {
       return true;
