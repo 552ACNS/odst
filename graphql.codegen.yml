@@ -6,6 +6,13 @@ generates:
       - typescript
       - typescript-operations
       - typed-document-node
+  apps/ods/src/graphql-generated.ts:
+    schema: apps/ods-api/schema.graphql
+    documents: [ 'apps/ods/**/*.graphql' ]
+    plugins:
+      - typescript
+      - typescript-operations
+      - typed-document-node
   libs/gql/src/graphql-generated.ts:
     schema: apps/waypoint-api/schema.graphql
     documents: ['libs/gql/**/*.graphql']

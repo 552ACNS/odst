@@ -1,0 +1,8 @@
+query FindManySurveyResponses {
+  findManySurveyResponses {
+    surveyId
+    openedDate
+    resolution
+    routeOutside
+  }
+}
