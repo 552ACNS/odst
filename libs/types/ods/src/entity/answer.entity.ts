@@ -1,5 +1,6 @@
 import { ObjectType, Field, InputType } from '@nestjs/graphql';
 import { Answer } from '.prisma/ods/client';
+import { QuestionGQL } from './question.entity';
 
 @ObjectType()
 @InputType('AnswerGQLInput')
@@ -9,4 +10,6 @@ export class AnswerGQL implements Answer {
   value: string;
   questionId: string;
   surveyResponseId: string;
+
+  question: QuestionGQL;
 }
