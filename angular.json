@@ -220,6 +220,12 @@
             },
             "production": {
               "command": "env-cmd -f apps/ods-api/.env.prod prisma migrate dev"
+            },
+            "development": {
+              "commands": [
+                "env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss",
+                "env-cmd -f apps/ods-api/.env.local yarn ts-node ./apps/ods-api/prisma-seed-dev.ts"
+              ]
             }
           }
         },

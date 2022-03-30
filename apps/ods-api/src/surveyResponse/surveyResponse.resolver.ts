@@ -14,19 +14,12 @@ import { GetCurrentUserId } from '@odst/shared/nest';
 export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
 
-  @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async findMany(): Promise<SurveyResponseGQL[]> {
-    // return this.surveyResponseService.findMany();
-    return this.surveyResponseService.findMany({});
-  }
-
   @Query(() => SurveyResponseGQL, { name: 'findUniqueSurveyResponse' })
   // @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ): Promise<SurveyResponseGQL | null> {
+  ) {
     return this.surveyResponseService.findUnique(surveyResponseWhereUniqueInput);
   }
 
@@ -43,7 +36,7 @@ export class SurveyResponseResolver {
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput,
     @Args('SurveyResponseUpdateInput')
     surveyResponseUpdateInput: SurveyResponseUpdateInput
-  ): Promise<SurveyResponseGQL> {
+  ) {
     return this.surveyResponseService.update(surveyResponseWhereUniqueInput, surveyResponseUpdateInput);
   }
 
@@ -58,7 +51,22 @@ export class SurveyResponseResolver {
 
   @Query(() => [String], { name: 'getUnresolvedIssues' })
   // @UseGuards(AccessTokenAuthGuard)
-  async getUnresolvedIssues(@GetCurrentUserId() userId: string): Promise<string[]> {
-    return this.surveyResponseService.getUnresolvedIssues(userId);
+
+  // TODO This line gets the current user ID but it requires a login system to exist first.
+  // async getUnresolvedIssues(@GetCurrentUserId() userId: string): Promise<string[]> {
+
+  async getUnresolvedIssues(): Promise<string[]> {
+    // return this.surveyResponseService.getUnresolvedIssues(userId);
+    return await this.surveyResponseService.getIssues(false);
+
+  }
+
+  @Query(() => SurveyResponseGQL, { name: 'getSurveyResponseData' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async getSurveyResponseData(
+    @Args('surveyResponseWhereUniqueInput')
+    surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
+  ) {
+    return this.surveyResponseService.getSurveyResponseData(surveyResponseWhereUniqueInput);
   }
 }
