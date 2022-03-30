@@ -1,0 +1,18 @@
+query GetSurveyResponseData($surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!) {
+  getSurveyResponseData(surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput) {
+    id
+    resolution
+    answers {
+      id
+      value
+      question {
+        prompt
+      }
+    }
+  }
+}
+
+query getIssuesByStatus($resolved: Boolean!) {
+  getIssuesByStatus(resolved: $resolved)
+}
+

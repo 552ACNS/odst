@@ -34,7 +34,7 @@ export class SurveyResponseService {
 
   // Get the string IDs of all the issues that are unresolved that the commander
   // has responsibility over
-  async getIssues(resolved: boolean): Promise<string[]> {
+  async getIssuesByStatus(resolved: boolean): Promise<string[]> {
     const responsesIDs = await this.prisma.surveyResponse
       .findMany({
         where: {

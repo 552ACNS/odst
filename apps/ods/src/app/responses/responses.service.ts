@@ -1,25 +1,37 @@
 import { Injectable } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import {
+  GetIssuesByStatusDocument,
+  GetIssuesByStatusQuery,
+  GetIssuesByStatusQueryVariables,
+  GetSurveyResponseDataDocument,
+  GetSurveyResponseDataQuery,
+  GetSurveyResponseDataQueryVariables,
+} from '../../graphql-generated';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ResponsesService {
-  constructor() {
-    console.log('ResponsesService constructor');
-  }
+  constructor(private apollo: Apollo) {}
 
-  getResponsesIds(): string[] {
-    // query GQL server for the commander's responses
-    // return the number of responses
+  // async getResponseIDsByStatus(resolved: boolean): Promise<string[]> {
+  //   let responseIds: string[] = [];
 
-    
-    return ['issueId_1', 'issueId_2', 'issueId_3'];
-  }
+  //   this.apollo
+  //     .query<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
+  //       query: GetIssuesByStatusDocument,
+  //       variables: {
+  //         resolved: resolved,
+  //       },
+  //     })
+  //     .subscribe(({ data }) => {
+  //       responseIds = data.getIssuesByStatus;
+  //     });
 
-  getIssueData(issueId: string) {
-    //given an issue id, return the issue data
-    return `${issueId} issue data`;
-  }
+  //   return responseIds;
+  // }
+
 
   getPrompts(surveyId: string): string[] {
     console.log(surveyId);

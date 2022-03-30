@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 
 import { ResponsesComponent } from './responses.component';
 import { ResponsesModule } from './responses.module';
@@ -11,7 +12,7 @@ describe('ResponsesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ResponsesComponent],
-      imports: [ResponsesModule, BrowserAnimationsModule],
+      imports: [ResponsesModule, ApolloTestingModule, BrowserAnimationsModule],
     }).compileComponents();
   });
 

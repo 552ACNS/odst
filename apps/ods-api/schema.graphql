@@ -9,6 +9,7 @@ type QuestionGQL {
 
 type AnswerGQL {
   id: String
+  question: QuestionGQL
   value: String!
   questionId: String!
   surveyResponseId: String!
@@ -54,6 +55,7 @@ input QuestionGQLInput {
 
 input AnswerGQLInput {
   id: String
+  question: QuestionGQLInput
   value: String!
   questionId: String!
   surveyResponseId: String!
@@ -84,7 +86,7 @@ type Query {
   findManySurveys: [SurveyGQL!]!
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
-  getUnresolvedIssues: [String!]!
+  getIssuesByStatus(resolved: Boolean!): [String!]!
   getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   findManyAnswers: [AnswerGQL!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!

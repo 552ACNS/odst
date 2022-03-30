@@ -49,15 +49,15 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.delete(surveyResponseWhereUniqueInput);
   }
 
-  @Query(() => [String], { name: 'getUnresolvedIssues' })
+  @Query(() => [String], { name: 'getIssuesByStatus' })
   // @UseGuards(AccessTokenAuthGuard)
 
   // TODO This line gets the current user ID but it requires a login system to exist first.
   // async getUnresolvedIssues(@GetCurrentUserId() userId: string): Promise<string[]> {
 
-  async getUnresolvedIssues(): Promise<string[]> {
+  async getIssuesByStatus(@Args('resolved') resolved: boolean): Promise<string[]> {
     // return this.surveyResponseService.getUnresolvedIssues(userId);
-    return await this.surveyResponseService.getIssues(false);
+    return await this.surveyResponseService.getIssuesByStatus(resolved);
 
   }
 

@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  NX_GQL_ENDPOINT: 'http://localhost:3343/graphql',
 };
 
 /*

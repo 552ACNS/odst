@@ -49,11 +49,11 @@ describe('SurveyResponse Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
-  describe('findMany', () => {
-    it('should get an array of surveyResponses', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(surveyResponseArray);
-    });
-  });
+  // describe('findMany', () => {
+  //   it('should get an array of surveyResponses', async () => {
+  //     await expect(resolver.findMany()).resolves.toEqual(surveyResponseArray);
+  //   });
+  // });
 
   describe('findUnqiue', () => {
     it('should get a single surveyResponse', async () => {
