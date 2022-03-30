@@ -1,7 +1,7 @@
 {
   "npmScope": "odst",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "origin/master"
   },
   "cli": {
     "defaultCollection": "@nrwl/angular",
