@@ -1,37 +1,38 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
-import { SurveyService } from './survey.service';
+import { AnswerService } from './answer.service';
 import { v4 as uuidv4 } from 'uuid';
-import { TestSurveyCreateInput } from './survey.repo';
-import { SurveyGQL } from '@odst/types/ods';
+import { TestAnswerCreateInput } from './answer.repo';
+import { AnswerGQL } from '@odst/types/ods';
 
-const surveyArray: SurveyGQL[] = [];
+const answerArray: AnswerGQL[] = [];
 
-TestSurveyCreateInput.forEach((surveyCreateInput) => {
-  const survey: SurveyGQL = ((surveyCreateInput as SurveyGQL).id = uuidv4());
-  surveyArray.push(survey);
+TestAnswerCreateInput.forEach((answerCreateInput) => {
+  const answer: AnswerGQL = ((answerCreateInput as unknown as AnswerGQL).id =
+    uuidv4());
+  answerArray.push(answer);
 });
 
-const oneSurvey = surveyArray[0];
+const oneAnswer = answerArray[0];
 
 const db = {
-  survey: {
-    findMany: jest.fn().mockReturnValue(surveyArray),
-    findUnique: jest.fn().mockResolvedValue(oneSurvey),
-    create: jest.fn().mockResolvedValue(oneSurvey),
-    update: jest.fn().mockResolvedValue(oneSurvey),
-    delete: jest.fn().mockResolvedValue(oneSurvey),
+  answer: {
+    findMany: jest.fn().mockReturnValue(answerArray),
+    findUnique: jest.fn().mockResolvedValue(oneAnswer),
+    create: jest.fn().mockResolvedValue(oneAnswer),
+    update: jest.fn().mockResolvedValue(oneAnswer),
+    delete: jest.fn().mockResolvedValue(oneAnswer),
   },
 };
 
-describe('SurveyService', () => {
-  let service: SurveyService;
+describe('AnswerService', () => {
+  let service: AnswerService;
   let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        SurveyService,
+        AnswerService,
         {
           provide: PrismaService,
           useValue: db,
@@ -39,7 +40,7 @@ describe('SurveyService', () => {
       ],
     }).compile();
 
-    service = module.get<SurveyService>(SurveyService);
+    service = module.get<AnswerService>(AnswerService);
     prisma = module.get<PrismaService>(PrismaService);
   });
 
@@ -48,34 +49,36 @@ describe('SurveyService', () => {
   });
 
   describe('findMany', () => {
-    it('should return an array of surveys', async () => {
-      const surveys = await service.findMany({});
-      expect(surveys).toEqual(surveyArray);
+    it('should return an array of answers', async () => {
+      const answers = await service.findMany({});
+      expect(answers).toEqual(answerArray);
     });
   });
 
   describe('findUnique', () => {
-    it('should get a single survey', () => {
-      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(oneSurvey);
+    it('should get a single answer', () => {
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
+        oneAnswer
+      );
     });
   });
 
   describe('create', () => {
     it('should call the create method', async () => {
-      const survey = await service.create(TestSurveyCreateInput[0]);
-      expect(survey).toEqual(oneSurvey);
+      const answer = await service.create(TestAnswerCreateInput[0]);
+      expect(answer).toEqual(oneAnswer);
     });
   });
 
   describe('update', () => {
     it('should call the update method', async () => {
-      const survey = await service.update(
+      const answer = await service.update(
         { id: 'a uuid' },
         {
-          surveyResponses: { connect: { id: 'surveyResponse id' } },
+          question: { connect: { id: 'question id' } },
         }
       );
-      expect(survey).toEqual(oneSurvey);
+      expect(answer).toEqual(oneAnswer);
     });
   });
 
@@ -88,7 +91,7 @@ describe('SurveyService', () => {
 
     it('should return {deleted: false, message: err.message}', () => {
       const dbSpy = jest
-        .spyOn(prisma.survey, 'delete')
+        .spyOn(prisma.answer, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
         deleted: false,

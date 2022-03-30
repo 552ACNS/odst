@@ -21,19 +21,11 @@ describe('Survey Resolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SurveyResolver],
-      // If you've looked at the complex sample you'll notice that these functions
-      // are a little bit more in depth using mock implementation
-      // to give us a little bit more control and flexibility in our tests
-      // this is not necessary, but can sometimes be helpful in a test scenario
       providers: [
         {
           provide: SurveyService,
           useValue: {
             findMany: jest.fn().mockResolvedValue(surveyArray),
-            surveys: jest.fn().mockResolvedValue(surveyArray),
-            getSubSurveys: jest
-              .fn()
-              .mockResolvedValue(() => Promise.resolve(surveyArray)),
             findUnique: jest
               .fn()
               .mockImplementation(() => Promise.resolve(oneSurvey)),
