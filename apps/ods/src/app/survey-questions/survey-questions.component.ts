@@ -18,10 +18,19 @@ import {
 
 export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
+  questions:["What squadron did the event occur in?",
+    "Please describe the event of a microaggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.",
+    "Please describe the mircroaggression or discrimination that took place.",
+    "Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?",
+    "Are you active duty, a civilian, guard/reserve or contractor?",
+    "What impacts did this event have on you or your work environment",
+  ]
+  
+  outsideRouting = false;
   answers: string[]
+  openDate = new Date();
   orgs: Partial<OrgGql>[];
   CCs: string[] = ['Matos, Emmanuel Lt. Col.', 'God Emperer Astolfo', 'MaGoo'];
-  radioNames = ['Active Duty', 'Civilian', 'Contractor', 'Guard/Reserve'];
   querySubscription: Subscription;
   loading = true;
   violatorSpec = { name: "" };
@@ -30,12 +39,10 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   private _violatorOption: string = "";
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
   private _customViolator: string = "";
-  //querySubscription: Subscription;
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
   private _personOption: string = "";
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
   private _customPerson: string = "";
-  //querySubscription: Subscription;
   constructor(
     private fb: FormBuilder, 
     private apollo: Apollo
@@ -92,6 +99,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
 
   async ngOnInit(): Promise<void> {
+    alert(this.openDate);
     this.querySubscription = this.apollo.watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
         query: FindManyOrgsDocument,
       }).valueChanges.subscribe(({ data, loading }) => {
