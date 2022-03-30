@@ -11,7 +11,6 @@ import { DashboardRoutes } from './dashboard.routing';
   imports: [
     CommonModule,
     RouterModule.forChild(DashboardRoutes),
-    // TODO: Make shared module for common routes.
     MatCardModule,
     MatButtonModule,
   ],
