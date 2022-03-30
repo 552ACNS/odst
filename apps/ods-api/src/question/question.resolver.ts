@@ -67,4 +67,20 @@ export class QuestionResolver {
   ): Promise<{ deleted: boolean }> {
     return this.questionService.delete(questionWhereUniqueInput);
   }
+
+  @Mutation(() => QuestionGQL, { name: 'upsertQuestion' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async upsert(
+    @Args('questionWhereUniqueInput')
+    questionWhereUniqueInput: QuestionWhereUniqueInput,
+    @Args('questionUpdateInput')
+    questionUpdateInput: QuestionUpdateInput,
+    @Args('questionCreateInput') questionCreateInput: QuestionCreateInput
+  ) {
+    return this.questionService.upsert(
+      questionWhereUniqueInput,
+      questionUpdateInput,
+      questionCreateInput
+    );
+  }
 }

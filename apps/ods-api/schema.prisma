@@ -71,7 +71,7 @@ model Survey {
 
 model Question {
   id      String   @id @default(uuid())
-  prompt  String
+  prompt  String   @unique
   surveys Survey[]
   answers Answer[]
 }

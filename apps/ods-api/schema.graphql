@@ -112,6 +112,7 @@ input OrgWhereUniqueInput {
 
 input QuestionWhereUniqueInput {
   id: String
+  prompt: String
 }
 
 type Mutation {
@@ -130,6 +131,7 @@ type Mutation {
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
   deleteQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
+  upsertQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!, questionUpdateInput: QuestionUpdateInput!, questionCreateInput: QuestionCreateInput!): QuestionGQL!
 }
 
 input SurveyCreateInput {
