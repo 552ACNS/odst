@@ -35,6 +35,7 @@ describe('Question Resolver', () => {
             create: jest.fn().mockImplementation(() => Promise.resolve(oneQuestion)),
             update: jest.fn().mockImplementation(() => Promise.resolve(oneQuestion)),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
+            upsert: jest.fn().mockImplementation(() => Promise.resolve(oneQuestion)),
           },
         },
       ],
@@ -99,6 +100,22 @@ describe('Question Resolver', () => {
       // TODO expect(deleteSpy).toBeCalledWith('a uuid that does not exist');
       //the above would be better, but not sure how to get it to pass
       expect(deleteSpy).toBeCalled();
+    });
+  });
+
+  describe('upsert', () => {
+    it('should call the upsert method', async () => {
+      const question = await resolver.upsert(
+        { id: 'a uuid' },
+        {
+          prompt: 'a prompt',
+          surveys: { connect: { id: 'survey id' } },
+        },
+        {
+          prompt: 'a new prompt',
+        }
+      );
+      expect(question).toEqual(oneQuestion);
     });
   });
 });

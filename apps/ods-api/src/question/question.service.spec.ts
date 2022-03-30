@@ -22,6 +22,7 @@ const db = {
     create: jest.fn().mockResolvedValue(oneQuestion),
     update: jest.fn().mockResolvedValue(oneQuestion),
     delete: jest.fn().mockResolvedValue(oneQuestion),
+    upsert: jest.fn().mockResolvedValue(oneQuestion),
   },
 };
 
@@ -97,6 +98,22 @@ describe('QuestionService', () => {
         deleted: false,
         message: 'Bad Delete Method.',
       });
+    });
+  });
+
+  describe('upsert', () => {
+    it('should call the upsert method', async () => {
+      const question = await service.upsert(
+        { id: 'a uuid' },
+        {
+          prompt: 'a prompt',
+          surveys: { connect: { id: 'survey id' } },
+        },
+        {
+          prompt: 'a new prompt',
+        }
+      );
+      expect(question).toEqual(oneQuestion);
     });
   });
 });
