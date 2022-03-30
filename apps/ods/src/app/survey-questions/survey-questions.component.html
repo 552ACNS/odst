@@ -9,13 +9,8 @@
       What squadron did the event occur in?
       <span class="text-red-500"> * </span>
     </label>
-    <mat-form-field class="">
-      <!-- TODO implement commented out code to select organization -->
-      <mat-select
-        placeholder="Organization"
-        formControlName="personOrg"
-        required
-      >
+    <mat-form-field>
+      <mat-select placeholder="Organization" formControlName="personOrg">
         <mat-option *ngFor="let org of orgs" [value]="org.id">
           {{ org.name }}
         </mat-option>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
@@ -16,10 +16,9 @@ import {
   styleUrls: ['./survey-questions.component.scss']
 })
 
-export class SurveyQuestionsComponent implements OnInit {
+export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
   answers: string[]
-  //orgs: string[] = ['552 ACNS', 'Astolfo Gang', 'Random'];
   orgs: Partial<OrgGql>[];
   CCs: string[] = ['Matos, Emmanuel Lt. Col.', 'God Emperer Astolfo', 'MaGoo'];
   radioNames = ['Active Duty', 'Civilian', 'Contractor', 'Guard/Reserve'];
@@ -91,15 +90,13 @@ export class SurveyQuestionsComponent implements OnInit {
     outsideRouting: []
   });
 
+
   async ngOnInit(): Promise<void> {
-    this.querySubscription = this.apollo
-      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+    this.querySubscription = this.apollo.watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
         query: FindManyOrgsDocument,
-      })
-      .valueChanges.subscribe(({ data, loading }) => {
+      }).valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
         this.orgs = data.findManyOrgs;
-        alert(this.orgs);
       });
   }
    //TODO find out a way to fix without this
@@ -112,7 +109,7 @@ export class SurveyQuestionsComponent implements OnInit {
   }
   submit(){
       this.answers = [
-        this.form.value['personOrg'],
+        this.form.get(['personOrg'])?.value,
         this.form.value['event'],
         this.violatorSpec.name,
         this.form.value['CC'],
@@ -124,5 +121,10 @@ export class SurveyQuestionsComponent implements OnInit {
   }
   back(){
     return;
+  }
+  ngOnDestroy() {
+    if (this.querySubscription) {
+      this.querySubscription.unsubscribe();
+    }
   }
 }
