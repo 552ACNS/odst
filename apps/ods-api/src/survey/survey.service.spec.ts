@@ -18,10 +18,9 @@ const db = {
   survey: {
     findMany: jest.fn().mockReturnValue(surveyArray),
     findUnique: jest.fn().mockResolvedValue(oneSurvey),
-    update: jest.fn().mockResolvedValue(oneSurvey),
     create: jest.fn().mockResolvedValue(oneSurvey),
+    update: jest.fn().mockResolvedValue(oneSurvey),
     delete: jest.fn().mockResolvedValue(oneSurvey),
-    surveys: jest.fn().mockResolvedValue(surveyArray),
   },
 };
 
@@ -50,7 +49,7 @@ describe('SurveyService', () => {
 
   describe('findMany', () => {
     it('should return an array of surveys', async () => {
-      const surveys = await service.findMany();
+      const surveys = await service.findMany({});
       expect(surveys).toEqual(surveyArray);
     });
   });
@@ -58,6 +57,13 @@ describe('SurveyService', () => {
   describe('findUnique', () => {
     it('should get a single survey', () => {
       expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(oneSurvey);
+    });
+  });
+
+  describe('create', () => {
+    it('should call the create method', async () => {
+      const survey = await service.create(TestSurveyCreateInput[0]);
+      expect(survey).toEqual(oneSurvey);
     });
   });
 
@@ -69,13 +75,6 @@ describe('SurveyService', () => {
           surveyResponses: { connect: { id: 'surveyResponse id' } },
         }
       );
-      expect(survey).toEqual(oneSurvey);
-    });
-  });
-
-  describe('create', () => {
-    it('should call the create method', async () => {
-      const survey = await service.create(TestSurveyCreateInput[0]);
       expect(survey).toEqual(oneSurvey);
     });
   });
@@ -95,17 +94,6 @@ describe('SurveyService', () => {
         deleted: false,
         message: 'Bad Delete Method.',
       });
-    });
-  });
-
-  describe('surveys', () => {
-    it('should call the surveys method', async () => {
-      const survey = await service.surveys({
-        where: { id: 'a uuid' },
-        take: 3,
-        skip: 1,
-      });
-      expect(survey).toEqual(surveyArray);
     });
   });
 });

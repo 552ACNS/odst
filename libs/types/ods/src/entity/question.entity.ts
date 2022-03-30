@@ -7,5 +7,4 @@ export class QuestionGQL implements Question {
   @Field(() => String, { nullable: true })
   id: string;
   prompt: string;
-  surveyId: string | null;
 }

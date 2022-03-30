@@ -7,15 +7,7 @@ import { SurveyGQL, SurveyWhereUniqueInput } from '@odst/types/ods';
 export class SurveyService {
   constructor(private prisma: PrismaService) {}
 
-  async findUnique(
-    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
-  ): Promise<Survey | null> {
-    return this.prisma.survey.findUnique({
-      where: surveyWhereUniqueInput,
-    });
-  }
-
-  async surveys(params: {
+  async findMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.SurveyWhereUniqueInput;
@@ -31,14 +23,19 @@ export class SurveyService {
       orderBy,
     });
   }
+
+  async findUnique(
+    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  ): Promise<Survey | null> {
+    return this.prisma.survey.findUnique({
+      where: surveyWhereUniqueInput,
+    });
+  }
+
   async create(data: Prisma.SurveyCreateInput): Promise<SurveyGQL> {
     return this.prisma.survey.create({
       data,
     });
-  }
-
-  async findMany(): Promise<SurveyGQL[]> {
-    return this.prisma.survey.findMany();
   }
 
   async update(

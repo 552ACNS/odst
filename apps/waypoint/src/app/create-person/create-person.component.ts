@@ -25,7 +25,7 @@ import {
   EyeColor,
   BirthState,
   HairColor,
-  Spec
+  Spec,
 } from '../../graphql-generated';
 
 @Component({

@@ -13,17 +13,11 @@ import {
 export class SurveyResolver {
   constructor(private readonly surveyService: SurveyService) {}
 
-  @Mutation(() => SurveyGQL, { name: 'createSurvey' })
-  // @UseGuards(AccessTokenAuthGuard)
-  create(@Args('surveyCreateInput') surveyCreateInput: SurveyCreateInput) {
-    return this.surveyService.create(surveyCreateInput);
-  }
-
   @Query(() => [SurveyGQL], { name: 'findManySurveys' })
   // @UseGuards(AccessTokenAuthGuard)
   async findMany(): Promise<SurveyGQL[]> {
     // return this.surveyService.findMany();
-    return this.surveyService.surveys({});
+    return this.surveyService.findMany({});
   }
 
   @Query(() => SurveyGQL, { name: 'findUniqueSurvey' })
@@ -33,6 +27,12 @@ export class SurveyResolver {
     surveyWhereUniqueInput: SurveyWhereUniqueInput
   ): Promise<SurveyGQL | null> {
     return this.surveyService.findUnique(surveyWhereUniqueInput);
+  }
+
+  @Mutation(() => SurveyGQL, { name: 'createSurvey' })
+  // @UseGuards(AccessTokenAuthGuard)
+  create(@Args('surveyCreateInput') surveyCreateInput: SurveyCreateInput) {
+    return this.surveyService.create(surveyCreateInput);
   }
 
   @Mutation(() => SurveyGQL, { name: 'updateSurvey' })
@@ -46,7 +46,7 @@ export class SurveyResolver {
     return this.surveyService.update(surveyWhereUniqueInput, surveyUpdateInput);
   }
 
-  @Mutation(() => SurveyGQL, { name: 'removeOrg' })
+  @Mutation(() => SurveyGQL, { name: 'deleteSurvey' })
   // @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('surveyWhereUniqueInput')

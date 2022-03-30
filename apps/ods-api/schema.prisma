@@ -43,14 +43,23 @@ model Org {
 }
 
 model SurveyResponse {
-  id           String   @id @default(uuid())
-  survey       Survey   @relation(fields: [surveyId], references: [id])
+  id           String    @id @default(uuid())
+  survey       Survey    @relation(fields: [surveyId], references: [id])
   surveyId     String
-  openedDate   DateTime @default(now())
+  openedDate   DateTime  @default(now())
   closedDate   DateTime?
-  answers      String[]
-  routeOutside Boolean  @default(false)
+  answers      Answer[]
+  routeOutside Boolean   @default(false)
   resolution   String?
+}
+
+model Answer {
+  id               String         @id @default(uuid())
+  value            String
+  question         Question       @relation(fields: [questionId], references: [id])
+  questionId       String
+  surveyResponse   SurveyResponse @relation(fields: [surveyResponseId], references: [id])
+  surveyResponseId String
 }
 
 model Survey {
@@ -61,10 +70,10 @@ model Survey {
 }
 
 model Question {
-  id       String  @id @default(uuid())
-  prompt   String
-  survey   Survey? @relation(fields: [surveyId], references: [id])
-  surveyId String?
+  id      String   @id @default(uuid())
+  prompt  String
+  surveys Survey[]
+  answers Answer[]
 }
 
 enum Role {
