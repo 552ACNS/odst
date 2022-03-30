@@ -6,7 +6,6 @@ import {
 import { PassportStrategy } from '@nestjs/passport';
 import { JwtPayload } from '@odst/shared/nest';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-
 import { UserService } from '../../user/user.service';
 import { AuthService } from '../auth.service';
 

@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { SurveyResponse, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { SurveyResponseGQL } from '@odst/types/ods';
-import { GetCurrentUserId } from '@odst/shared/nest';
-import { stringify } from 'querystring';
 
 @Injectable()
 export class SurveyResponseService {

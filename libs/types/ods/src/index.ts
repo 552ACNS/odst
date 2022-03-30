@@ -1,4 +1,5 @@
 //#region Entities
+export * from './entity/answer.entity';
 export * from './entity/org.entity';
 export * from './entity/question.entity';
 export * from './entity/survey.entity';
@@ -7,6 +8,9 @@ export * from './entity/user.entity';
 //#endregion
 
 //#region Input InputTypes
+export * from './input/answer.create.input';
+export * from './input/answer.update.input';
+export * from './input/answer.unique.input';
 export * from './input/org.create.input';
 export * from './input/org.update.input';
 export * from './input/org.unique.input';
