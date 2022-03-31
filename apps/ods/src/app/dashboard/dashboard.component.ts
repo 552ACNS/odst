@@ -23,9 +23,9 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  unresolvedReports = 21;
-  overdueReports = 5;
-  resolvedReports = 9;
+  unresolvedReports: number;
+  overdueReports: number;
+  resolvedReports: number;
 
   ngOnInit(): void {
     this.querySubscription = this.apollo
@@ -34,7 +34,15 @@ export class DashboardComponent implements OnInit {
       })
       .valueChanges.subscribe(({data}) => {
         this.responses = data.findManySurveyResponses;
+        this.unresolvedReports = this.responses.filter(issue => issue.resolution == null).length;
+        this.resolvedReports = this.responses.filter(issue => issue.resolution != null).length;
+        this.overdueReports = this.responses.filter(issue => dateIsMoreThan30DaysAgo(new Date(issue.openedDate))).length;
       });
-  }
 
+    function dateIsMoreThan30DaysAgo(responseDate : Date) {
+      const _difference = new Date().getTime() - responseDate.getTime();
+      const _30DaysInMilliseconds = 2592000000;
+      return _30DaysInMilliseconds < _difference;
+    }
+  }
 }
