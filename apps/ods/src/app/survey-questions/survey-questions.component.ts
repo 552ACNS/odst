@@ -6,8 +6,10 @@ import {
   FindManyOrgsDocument, 
   FindManyOrgsQuery, 
   FindManyOrgsQueryVariables, 
-  OrgGql
+  OrgGql,
 } from '../../graphql-generated';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const shajs = require('sha.js')
 
 
 @Component({
@@ -97,9 +99,9 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     outsideRouting: []
   });
 
-
   async ngOnInit(): Promise<void> {
     alert(this.openDate);
+    alert(shajs('sha256').update('What squadron did the event occur in?').digest('hex'));
     this.querySubscription = this.apollo.watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
         query: FindManyOrgsDocument,
       }).valueChanges.subscribe(({ data, loading }) => {
@@ -116,6 +118,28 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     }
   }
   submit(){
+    // this.apollo
+    // .mutate<MutationUpsertQuestionArgs, QuestionCreateInput>({
+    //   mutation: CreatePersonDocument,
+    //   variables: {
+    //     personCreateInput: {
+
+    //       org: {
+    //         connect: {
+    //           id: this.form.get(['personOrg'])?.value,
+    //         },
+    //       },
+    //     },
+    //   },
+    // })
+    // .subscribe(
+    //   //TODO deprecated
+    //   ({ data }) => {
+    //   },
+    //   (error) => {
+    //     alert('there was an error sending the query: /n' + error);
+    //   }
+    // );
       this.answers = [
         this.form.get(['personOrg'])?.value,
         this.form.value['event'],

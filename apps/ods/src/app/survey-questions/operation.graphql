@@ -1,13 +1,41 @@
-# mutation createOrg($orgCreateInput: OrgCreateInput!) {
-#   createOrg(orgCreateInput: $orgCreateInput) {
-#     ...orgFields
-#   }
-# }
+mutation createOrg($orgCreateInput: OrgCreateInput!) {
+  createOrg(orgCreateInput: $orgCreateInput) {
+    ...orgFields
+  }
+}
+
+mutation upsertQuestion($questionWhereUniqueInput: QuestionWhereUniqueInput!,
+  $questionUpdateInput: QuestionUpdateInput!, 
+  $questionCreateInput: QuestionCreateInput!) {
+    upsertQuestion(questionWhereUniqueInput: $questionWhereUniqueInput,
+    questionUpdateInput: $questionUpdateInput, 
+    questionCreateInput: $questionCreateInput){
+      ...questionFields
+    }
+}
+
+mutation createAnswer($answerCreateInput: AnswerCreateInput!) {
+  createAnswer(answerCreateInput: $answerCreateInput) {
+    ...answerField
+  }
+}
+
+mutation CreateSurveyResponse($surveyResponseCreateInput: SurveyResponseCreateInput!) {
+  createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
+    ...surveyResponseFields
+  }
+}
 
 query findManyOrgs {
   findManyOrgs {
     ...orgFields
   }
+}
+fragment answerField on AnswerGQL{
+    id
+    value
+    questionId
+    surveyResponseId
 }
 
 fragment orgFields on OrgGQL {
@@ -15,6 +43,18 @@ fragment orgFields on OrgGQL {
   name
   orgTier
   parentId
+}
+fragment questionFields on QuestionGQL {
+  id
+  prompt
+}
 
+fragment surveyResponseFields on SurveyResponseGQL {
+  id
+  surveyId
+  openedDate
+  closedDate
+  routeOutside
+  resolution
 }
 
