@@ -5,7 +5,6 @@ import { AnswerGQL } from './answer.entity';
 @ObjectType()
 @InputType('SurveyResponseGQLInput')
 export class SurveyResponseGQL implements SurveyResponse {
-  @Field(() => String, { nullable: true })
   id: string;
   surveyId: string;
   openedDate: Date;
@@ -13,6 +12,6 @@ export class SurveyResponseGQL implements SurveyResponse {
   routeOutside: boolean;
   resolution: string | null;
 
-  @Field(() => [AnswerGQL])
+  @Field(() => AnswerGQL, {nullable: true})
   answers: AnswerGQL[];
 }

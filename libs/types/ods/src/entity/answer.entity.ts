@@ -11,6 +11,6 @@ export class AnswerGQL implements Answer {
   questionId: string;
   surveyResponseId: string;
 
-  @Field(() => QuestionGQL)
+  @Field(() => QuestionGQL, { nullable: true })
   question?: QuestionGQL;
 }

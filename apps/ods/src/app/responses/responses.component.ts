@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { map, Observable, Subscription } from 'rxjs';
 import { ResponsesService } from './responses.service';
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+import { Apollo, gql } from 'apollo-angular';
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
@@ -13,6 +13,8 @@ import {
   GetSurveyResponseDataQuery,
   GetSurveyResponseDataQueryVariables,
 } from '../../graphql-generated';
+import { SurveyResponseGQL } from '@odst/types/ods';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 @Component({
   selector: 'odst-responses',
@@ -22,9 +24,9 @@ import {
 export class ResponsesComponent implements OnInit, OnDestroy {
   constructor(
     private apollo: Apollo,
-    private responsesService: ResponsesService
   ) {}
 
+  // Prompts are the 
   prompts: string[];
   responseID$: Observable<string[]>;
 
@@ -32,10 +34,10 @@ export class ResponsesComponent implements OnInit, OnDestroy {
 
   dateOfIssue = formatDate(Date.now(), 'MMMM d, yyyy', 'en-US');
   numberOfResponses: number;
-  responsesPerPage = 1;
-  displayedIssue = 0;
+  displayedIssueIndex: number;
 
-  issueData;
+  issueData$: Observable<ApolloQueryResult<GetSurveyResponseDataQuery>>;
+
   // MatPaginator Output
   pageEvent: PageEvent;
 
@@ -44,6 +46,7 @@ export class ResponsesComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // Fetch the issue ids to be displayed...
     await this.getResponseIDsByStatus(false);
+    this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
   }
 
   async getResponseIDsByStatus(resolved: boolean) {
@@ -59,32 +62,42 @@ export class ResponsesComponent implements OnInit, OnDestroy {
     // get the number of issues from the number of responseID$
     this.responseID$.subscribe((ids) => {
       this.numberOfResponses = ids.length;
+      console.log(ids);
     });
   }
 
   async getResponseData(issueId: string) {
-    this.issueData = this.apollo
-      .watchQuery<
-        GetSurveyResponseDataQuery,
-        GetSurveyResponseDataQueryVariables
-      >({
-        query: GetIssuesByStatusDocument,
+    this.issueData$ = this.apollo
+      .watchQuery<GetSurveyResponseDataQuery, GetSurveyResponseDataQueryVariables>({
+        query: GetSurveyResponseDataDocument,
         variables: {
           surveyResponseWhereUniqueInput: {
             id: issueId,
           },
         },
       })
-      .valueChanges.pipe(map((result) => result.data.getSurveyResponseData));
+      .valueChanges.pipe(map((result) => result));
 
-    console.log(this.issueData);
+    this.issueData$.subscribe((data) => {
+      console.log(data.data.getSurveyResponseData);
+    });
   }
 
   // display the issue data for the selected issue from the paginator
-  displayIssue(pageEvent: PageEvent) {
+  displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
-      this.getResponseData(this.responseID$[pageEvent.pageIndex]);
-      this.displayedIssue = pageEvent.pageIndex;
+      this.responseID$.subscribe((ids) => {
+        this.displayedIssueIndex = pageEvent.pageIndex;
+        console.log(pageEvent.pageIndex);
+        console.log(this.displayedIssueIndex);
+        this.getResponseData(ids[this.displayedIssueIndex]);
+      });
+
+      // this.getResponseData("e66c6fb1-cc11-4e11-9cd8-d127e43443911");
+      // this.getResponseData(this.responseID$[pageEvent.pageIndex]);
+
+      // console.log(this.displayedIssue)
+      // this.displayedIssue = pageEvent.pageIndex;
       //this.prompts = this.responsesService.getPrompts("surveyId");
     }
     return pageEvent;

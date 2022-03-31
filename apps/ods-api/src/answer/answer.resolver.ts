@@ -14,7 +14,7 @@ export class AnswerResolver {
   constructor(private readonly answerService: AnswerService) {}
 
   @Query(() => [AnswerGQL], { name: 'findManyAnswers' })
-  async findMany(): Promise<AnswerGQL[]> {
+  async findMany() {
     return this.answerService.findMany({});
   }
 
@@ -23,7 +23,7 @@ export class AnswerResolver {
   async findUnique(
     @Args('answerWhereUniqueInput')
     answerWhereUniqueInput: AnswerWhereUniqueInput
-  ): Promise<AnswerGQL | null> {
+  ) {
     return this.answerService.findUnique(answerWhereUniqueInput);
   }
 
@@ -42,7 +42,7 @@ export class AnswerResolver {
     answerWhereUniqueInput: AnswerWhereUniqueInput,
     @Args('AnswerUpdateInput')
     answerUpdateInput: AnswerUpdateInput
-  ): Promise<AnswerGQL> {
+  ){
     return this.answerService.update(
       answerWhereUniqueInput,
       answerUpdateInput

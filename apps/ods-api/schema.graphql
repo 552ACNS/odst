@@ -34,8 +34,8 @@ type SurveyGQL {
 }
 
 type SurveyResponseGQL {
-  id: String
-  answers: [AnswerGQL!]!
+  answers: AnswerGQL
+  id: String!
   surveyId: String!
   openedDate: DateTime!
   closedDate: DateTime
@@ -73,8 +73,8 @@ input SurveyGQLInput {
 }
 
 input SurveyResponseGQLInput {
-  id: String
-  answers: [AnswerGQLInput!]!
+  answers: AnswerGQLInput
+  id: String!
   surveyId: String!
   openedDate: DateTime!
   closedDate: DateTime

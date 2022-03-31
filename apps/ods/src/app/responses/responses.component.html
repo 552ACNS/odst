@@ -5,8 +5,8 @@
   <mat-paginator
     class="flex justify-center border-1 border-solid border-dark-blue rounded-2xl shadow-md"
     [length]="numberOfResponses"
-    [pageIndex]="displayedIssue"
-    [pageSize]="responsesPerPage"
+    [pageIndex]="displayedIssueIndex"
+    [pageSize]=1
     [hidePageSize]="true"
     [showFirstLastButtons]="true"
     (page)="pageEvent = displayIssue($event)"
@@ -19,9 +19,9 @@
   <p *ngIf="pageEvent" class="text-center">
     Actual Paginator Value: {{ pageEvent.pageIndex + 1 }}
     <br />
-    Event Displayed Value: {{ displayedIssue + 1 }}
+    Event Displayed Value: {{ displayedIssueIndex + 1 }}
     <br />
-    Issue Data: {{ issueData }}
+    Issue Data: {{ issueData$ }}
   </p>
   <mat-card *ngFor="let qa of qas" class="rounded-2xl shadow-md">
     <mat-card-content class="text-sm text-left">

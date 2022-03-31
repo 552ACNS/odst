@@ -7,6 +7,7 @@ import {
   SurveyResponseWhereUniqueInput,
 } from '@odst/types/ods';
 import { GetCurrentUserId } from '@odst/shared/nest';
+import { Logger } from '@nestjs/common';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
@@ -20,12 +21,17 @@ export class SurveyResponseResolver {
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
   ) {
-    return this.surveyResponseService.findUnique(surveyResponseWhereUniqueInput);
+    return this.surveyResponseService.findUnique(
+      surveyResponseWhereUniqueInput
+    );
   }
 
   @Mutation(() => SurveyResponseGQL, { name: 'createSurveyResponse' })
   // @UseGuards(AccessTokenAuthGuard)
-  create(@Args('surveyResponseCreateInput') surveyResponseCreateInput: SurveyResponseCreateInput) {
+  async create(
+    @Args('surveyResponseCreateInput')
+    surveyResponseCreateInput: SurveyResponseCreateInput
+  ) {
     return this.surveyResponseService.create(surveyResponseCreateInput);
   }
 
@@ -37,7 +43,10 @@ export class SurveyResponseResolver {
     @Args('SurveyResponseUpdateInput')
     surveyResponseUpdateInput: SurveyResponseUpdateInput
   ) {
-    return this.surveyResponseService.update(surveyResponseWhereUniqueInput, surveyResponseUpdateInput);
+    return this.surveyResponseService.update(
+      surveyResponseWhereUniqueInput,
+      surveyResponseUpdateInput
+    );
   }
 
   @Mutation(() => SurveyResponseGQL, { name: 'deleteSurveyResponse' })
@@ -46,7 +55,9 @@ export class SurveyResponseResolver {
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
   ): Promise<{ deleted: boolean }> {
-    return this.surveyResponseService.delete(surveyResponseWhereUniqueInput);
+    return await this.surveyResponseService.delete(
+      surveyResponseWhereUniqueInput
+    );
   }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
@@ -54,11 +65,11 @@ export class SurveyResponseResolver {
 
   // TODO This line gets the current user ID but it requires a login system to exist first.
   // async getUnresolvedIssues(@GetCurrentUserId() userId: string): Promise<string[]> {
-
-  async getIssuesByStatus(@Args('resolved') resolved: boolean): Promise<string[]> {
+  async getIssuesByStatus(
+    @Args('resolved') resolved: boolean
+  ): Promise<string[]> {
     // return this.surveyResponseService.getUnresolvedIssues(userId);
     return await this.surveyResponseService.getIssuesByStatus(resolved);
-
   }
 
   @Query(() => SurveyResponseGQL, { name: 'getSurveyResponseData' })
@@ -66,7 +77,10 @@ export class SurveyResponseResolver {
   async getSurveyResponseData(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ) {
-    return this.surveyResponseService.getSurveyResponseData(surveyResponseWhereUniqueInput);
+  ): Promise<SurveyResponseGQL> {
+    const data = await this.surveyResponseService.getSurveyResponseData(
+      surveyResponseWhereUniqueInput
+    );
+    return data;
   }
 }
