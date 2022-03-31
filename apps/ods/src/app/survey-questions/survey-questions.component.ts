@@ -35,6 +35,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   CCs: string[] = ['Matos, Emmanuel Lt. Col.', 'God Emperer Astolfo', 'MaGoo'];
   querySubscription: Subscription;
   loading = true;
+  submitSuccess = false;
   violatorSpec = { name: "" };
   personSpec = { name: ""}
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
@@ -149,6 +150,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
         this.form.value['impact'],
         this.outsideRoutingWorking()
       ]
+      this.submitSuccess=true;
       return alert(this.answers)
   }
   back(){
