@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { ResponsesService } from './responses.service';
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
@@ -26,17 +26,16 @@ export class ResponsesComponent implements OnInit, OnDestroy {
   ) {}
 
   prompts: string[];
-  responseIDs: string[];
+  responseID$: Observable<string[]>;
 
   qas: [string, string][] = [];
 
   dateOfIssue = formatDate(Date.now(), 'MMMM d, yyyy', 'en-US');
-  numberOfResponses = 5;
+  numberOfResponses: number;
   responsesPerPage = 1;
   displayedIssue = 0;
 
   issueData;
-  issueIds: string[];
   // MatPaginator Output
   pageEvent: PageEvent;
 
@@ -44,67 +43,47 @@ export class ResponsesComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     // Fetch the issue ids to be displayed...
-    await this.getResponseIDsByStatus(false)
-      .then(async () => {
-        // update the number of responses to be displayed
-        if (this.responseIDs !== undefined) {
-          this.numberOfResponses = this.responseIDs.length;
-
-          console.log(this.numberOfResponses);
-
-          await this.getResponseData(this.issueIds[0]).then(
-            () => {
-              console.log(this.issueData);
-            }
-          );
-
-          this.displayedIssue = 0;
-        }
-      })
-
-    // this.prompts = this.responsesService.getPrompts('surveyId');
-    // this.responsesID = this.responsesService.getAnswers('surveyResponseId');
-
-    // // combine the prompts and responses into a QA array
-    // for (let i = 0; i < this.prompts.length; i++) {
-    //   this.qas.push([this.prompts[i], this.responsesID[i]]);
-    // }
+    await this.getResponseIDsByStatus(false);
   }
 
   async getResponseIDsByStatus(resolved: boolean) {
-    this.querySubscription = this.apollo
-      .query<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
+    this.responseID$ = this.apollo
+      .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
         query: GetIssuesByStatusDocument,
         variables: {
           resolved: resolved,
         },
       })
-      .subscribe(({ data }) => {
-        this.responseIDs = data.getIssuesByStatus;
-      });
+      .valueChanges.pipe(map((result) => result.data.getIssuesByStatus));
+
+    // get the number of issues from the number of responseID$
+    this.responseID$.subscribe((ids) => {
+      this.numberOfResponses = ids.length;
+    });
   }
 
   async getResponseData(issueId: string) {
-    this.querySubscription = this.apollo
-      .query<GetSurveyResponseDataQuery, GetSurveyResponseDataQueryVariables>({
-        query: GetSurveyResponseDataDocument,
+    this.issueData = this.apollo
+      .watchQuery<
+        GetSurveyResponseDataQuery,
+        GetSurveyResponseDataQueryVariables
+      >({
+        query: GetIssuesByStatusDocument,
         variables: {
           surveyResponseWhereUniqueInput: {
             id: issueId,
           },
         },
       })
-      .subscribe(({ data }) => {
-        this.issueData = data.getSurveyResponseData;
-      });
+      .valueChanges.pipe(map((result) => result.data.getSurveyResponseData));
+
+    console.log(this.issueData);
   }
 
   // display the issue data for the selected issue from the paginator
   displayIssue(pageEvent: PageEvent) {
     if (pageEvent) {
-      this.issueData = this.getResponseData(
-        this.issueIds[pageEvent.pageIndex]
-      );
+      this.getResponseData(this.responseID$[pageEvent.pageIndex]);
       this.displayedIssue = pageEvent.pageIndex;
       //this.prompts = this.responsesService.getPrompts("surveyId");
     }
@@ -114,7 +93,7 @@ export class ResponsesComponent implements OnInit, OnDestroy {
   // TODO IMPORTANT: set to first page on load
 
   ngOnDestroy(): void {
-    this.querySubscription.unsubscribe();
+    this.querySubscription?.unsubscribe();
   }
 }
 

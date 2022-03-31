@@ -12,6 +12,10 @@
     (page)="pageEvent = displayIssue($event)"
   >
   </mat-paginator>
+  <!-- for each responseID, print it -->
+  <div *ngFor="let responseID of responseID$ | async; let i = index">
+    responseID: {{i + 1}} {{ responseID }}
+  </div>
   <p *ngIf="pageEvent" class="text-center">
     Actual Paginator Value: {{ pageEvent.pageIndex + 1 }}
     <br />

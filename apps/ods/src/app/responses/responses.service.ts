@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+import { Apollo, Query } from 'apollo-angular';
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
@@ -12,8 +12,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class ResponsesService {
-  constructor(private apollo: Apollo) {}
+export class ResponsesService{
 
   // async getResponseIDsByStatus(resolved: boolean): Promise<string[]> {
   //   let responseIds: string[] = [];
@@ -32,15 +31,16 @@ export class ResponsesService {
   //   return responseIds;
   // }
 
+  // override document = GetSurveyResponseDataDocument;
 
-  getPrompts(surveyId: string): string[] {
-    console.log(surveyId);
-    // query GQL server for the commander's prompts
-    return ['prompt_1', 'prompt_2', 'prompt_3'];
-  }
-  getAnswers(surveyResponseId: string): string[] {
-    console.log(surveyResponseId);
-    // query GQL server for the commander's answers
-    return ['answer_1', 'answer_2', 'answer_3'];
-  }
+  // getPrompts(surveyId: string): string[] {
+  //   console.log(surveyId);
+  //   // query GQL server for the commander's prompts
+  //   return ['prompt_1', 'prompt_2', 'prompt_3'];
+  // }
+  // getAnswers(surveyResponseId: string): string[] {
+  //   console.log(surveyResponseId);
+  //   // query GQL server for the commander's answers
+  //   return ['answer_1', 'answer_2', 'answer_3'];
+  // }
 }
