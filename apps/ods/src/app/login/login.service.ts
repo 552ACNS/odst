@@ -11,5 +11,9 @@ export class LoginService {
   constructor(private apollo: Apollo, private router: Router) {}
   submitLogin(username: string, password: string): void {}
 
+  goBack(): void {
+    this.router.navigate(['disclaimer']);
+  }
+
   
 }

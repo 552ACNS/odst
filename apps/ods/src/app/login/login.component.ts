@@ -25,6 +25,10 @@ export class LoginComponent /*implements OnInit*/ {
       this.loginForm.value['userUsername'],
       this.loginForm.value['userPassword']
     );
-  } 
+  }
+  
+  goBackClick() {
+    this.loginService.goBack();
+  }
 
 }

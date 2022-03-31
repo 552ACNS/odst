@@ -63,10 +63,14 @@
 
         <!-- Buttons -->
         <mat-card-actions class="text-sm mt-4 mb-0.5 h-8 space-x-4 pt-0 w-full">
-            <button mat-stroked-button class="min-w-40 shadow-md rounded-full">
+            <button mat-stroked-button class="min-w-40 shadow-md rounded-full"
+            (click)="goBackClick()"
+            >
                 Back
               </button>
-              <button mat-button class="min-w-40 bg-dark-blue text-white shadow-md rounded-full">
+              <button mat-button class="min-w-40 bg-dark-blue text-white shadow-md rounded-full"
+                (click)="submitLoginClick()"
+              >
                 Sign In
               </button>
         </mat-card-actions>
