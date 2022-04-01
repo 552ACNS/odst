@@ -1,9 +1,8 @@
 query GetSurveyResponseData($surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!) {
   getSurveyResponseData(surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput) {
     id
-    resolution
+    openedDate
     answers {
-      id
       value
       question {
         prompt

@@ -12,6 +12,6 @@ export class SurveyResponseGQL implements SurveyResponse {
   routeOutside: boolean;
   resolution: string | null;
 
-  @Field(() => AnswerGQL, {nullable: true})
+  @Field(() => [AnswerGQL], {nullable: true})
   answers: AnswerGQL[];
 }

@@ -77,10 +77,9 @@ export class SurveyResponseResolver {
   async getSurveyResponseData(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ): Promise<SurveyResponseGQL> {
-    const data = await this.surveyResponseService.getSurveyResponseData(
+  ) {
+    return await this.surveyResponseService.getSurveyResponseData(
       surveyResponseWhereUniqueInput
-    );
-    return data;
+    );;
   }
 }

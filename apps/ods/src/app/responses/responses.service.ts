@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Apollo, Query } from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
+import { filter, map } from 'rxjs';
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
@@ -12,35 +13,32 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class ResponsesService{
+export class ResponsesService {
+  constructor(private apollo: Apollo) {}
+  async getResponseIDsByStatus(resolved: boolean) {
+    return this.apollo
+      .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
+        query: GetIssuesByStatusDocument,
+        variables: {
+          resolved: resolved,
+        },
+      })
+      .valueChanges.pipe(map((result) => result.data.getIssuesByStatus));
+  }
 
-  // async getResponseIDsByStatus(resolved: boolean): Promise<string[]> {
-  //   let responseIds: string[] = [];
-
-  //   this.apollo
-  //     .query<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
-  //       query: GetIssuesByStatusDocument,
+  // async getResponseData(issueId: string) {
+  //   return this.apollo
+  //     .watchQuery<
+  //       GetSurveyResponseDataQuery,
+  //       GetSurveyResponseDataQueryVariables
+  //     >({
+  //       query: GetSurveyResponseDataDocument,
   //       variables: {
-  //         resolved: resolved,
+  //         surveyResponseWhereUniqueInput: {
+  //           id: issueId,
+  //         },
   //       },
   //     })
-  //     .subscribe(({ data }) => {
-  //       responseIds = data.getIssuesByStatus;
-  //     });
-
-  //   return responseIds;
-  // }
-
-  // override document = GetSurveyResponseDataDocument;
-
-  // getPrompts(surveyId: string): string[] {
-  //   console.log(surveyId);
-  //   // query GQL server for the commander's prompts
-  //   return ['prompt_1', 'prompt_2', 'prompt_3'];
-  // }
-  // getAnswers(surveyResponseId: string): string[] {
-  //   console.log(surveyResponseId);
-  //   // query GQL server for the commander's answers
-  //   return ['answer_1', 'answer_2', 'answer_3'];
+  //     .valueChanges.pipe(map((result) => result.data.getSurveyResponseData));
   // }
 }

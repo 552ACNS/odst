@@ -15,98 +15,97 @@ import {
 } from '../../graphql-generated';
 import { SurveyResponseGQL } from '@odst/types/ods';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { subscribe } from 'graphql';
 
 @Component({
   selector: 'odst-responses',
   templateUrl: './responses.component.html',
   styleUrls: ['./responses.component.scss'],
 })
-export class ResponsesComponent implements OnInit, OnDestroy {
+export class ResponsesComponent implements OnInit {
   constructor(
     private apollo: Apollo,
+    private responsesService: ResponsesService
   ) {}
 
-  // Prompts are the 
+  // Prompts are the
   prompts: string[];
-  responseID$: Observable<string[]>;
 
   qas: [string, string][] = [];
 
-  dateOfIssue = formatDate(Date.now(), 'MMMM d, yyyy', 'en-US');
+  openedDate: string;
   numberOfResponses: number;
-  displayedIssueIndex: number;
+  displayedIndex: number;
 
-  issueData$: Observable<ApolloQueryResult<GetSurveyResponseDataQuery>>;
+  responseID$: Observable<string[]>;
 
   // MatPaginator Output
   pageEvent: PageEvent;
 
-  private querySubscription: Subscription;
-
   async ngOnInit() {
-    // Fetch the issue ids to be displayed...
-    await this.getResponseIDsByStatus(false);
-    this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+    // get the response IDs by status then...
+    await this.getResponseIDsByStatus(false).then(() => {
+      // page event to display the first issue
+      this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+
+      // navigate to that issue
+      this.displayIssue(this.pageEvent);
+    });
   }
 
   async getResponseIDsByStatus(resolved: boolean) {
-    this.responseID$ = this.apollo
-      .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
-        query: GetIssuesByStatusDocument,
-        variables: {
-          resolved: resolved,
-        },
-      })
-      .valueChanges.pipe(map((result) => result.data.getIssuesByStatus));
+    // get response IDs by status
+    this.responseID$ = await this.responsesService.getResponseIDsByStatus(
+      resolved
+    );
 
-    // get the number of issues from the number of responseID$
+    // set number of responses
     this.responseID$.subscribe((ids) => {
       this.numberOfResponses = ids.length;
-      console.log(ids);
     });
   }
 
-  async getResponseData(issueId: string) {
-    this.issueData$ = this.apollo
-      .watchQuery<GetSurveyResponseDataQuery, GetSurveyResponseDataQueryVariables>({
+  async getResponseData(responseID: string) {
+    this.apollo
+      .watchQuery<
+        GetSurveyResponseDataQuery,
+        GetSurveyResponseDataQueryVariables
+      >({
         query: GetSurveyResponseDataDocument,
         variables: {
           surveyResponseWhereUniqueInput: {
-            id: issueId,
+            id: responseID,
           },
         },
       })
-      .valueChanges.pipe(map((result) => result));
+      .valueChanges.subscribe((result) => {
+        this.openedDate = formatDate(
+          result.data.getSurveyResponseData.openedDate,
+          'MMM d yy, h:mm a',
+          'en-US'
+        );
 
-    this.issueData$.subscribe((data) => {
-      console.log(data.data.getSurveyResponseData);
-    });
+        // Clear contents of QA array
+        this.qas = [];
+
+        // Handle the Questions & Answers
+        result.data.getSurveyResponseData.answers?.forEach((answer) => {
+          // Clear contents of QA array
+
+          // Create the Question/Answer Array
+          this.qas.push([String(answer?.question?.prompt), answer.value]);
+        });
+      });
   }
 
-  // display the issue data for the selected issue from the paginator
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
       this.responseID$.subscribe((ids) => {
-        this.displayedIssueIndex = pageEvent.pageIndex;
-        console.log(pageEvent.pageIndex);
-        console.log(this.displayedIssueIndex);
-        this.getResponseData(ids[this.displayedIssueIndex]);
+        this.displayedIndex = pageEvent.pageIndex;
+        this.getResponseData(ids[this.displayedIndex]);
       });
-
-      // this.getResponseData("e66c6fb1-cc11-4e11-9cd8-d127e43443911");
-      // this.getResponseData(this.responseID$[pageEvent.pageIndex]);
-
-      // console.log(this.displayedIssue)
-      // this.displayedIssue = pageEvent.pageIndex;
-      //this.prompts = this.responsesService.getPrompts("surveyId");
     }
     return pageEvent;
-  }
-
-  // TODO IMPORTANT: set to first page on load
-
-  ngOnDestroy(): void {
-    this.querySubscription?.unsubscribe();
   }
 }
 

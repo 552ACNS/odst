@@ -75,13 +75,28 @@ async function main() {
   });
   //#endregion survey
 
-  //#region answer
-  const question = await prisma.question.create({
+  //#region question
+  const question1 = await prisma.question.create({
     data: {
       prompt: 'Which squadron did the event occur in?',
       surveys: { connect: { id: survey.id } },
     },
   });
+
+  const question2 = await prisma.question.create({
+    data: {
+      prompt: 'Please describe the event of a micro-aggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.',
+      surveys: { connect: { id: survey.id } },
+    },
+  });
+
+  const question3 = await prisma.question.create({
+    data: {
+      prompt: 'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?',
+      surveys: { connect: { id: survey.id } },
+    },
+  });
+  
   //#endregion answer
 
   //#region answer
@@ -93,16 +108,31 @@ async function main() {
   //#endregion answer
 
   //#region answer
-  const answer = await prisma.answer.create({
+  await prisma.answer.create({
     data: {
       value: orgName,
-      question: { connect: { id: question.id } },
+      question: { connect: { id: question1.id } },
+      surveyResponse: { connect: { id: surveyResponse.id } },
+    },
+  });
+
+  await prisma.answer.create({
+    data: {
+      value: 'Someone said I was "pretty good at Hockey even though Im from Minnesota". Does he think Minnesotans are normally bad at Hockey?',
+      question: { connect: { id: question2.id } },
+      surveyResponse: { connect: { id: surveyResponse.id } },
+    },
+  });
+
+  await prisma.answer.create({
+    data: {
+      value: 'Active Duty',
+      question: { connect: { id: question3.id } },
       surveyResponse: { connect: { id: surveyResponse.id } },
     },
   });
   //#endregion answer
 
-  console.log({ org, survey, surveyResponse, question, answer });
 }
 
 main()

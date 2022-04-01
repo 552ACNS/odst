@@ -78,30 +78,21 @@ export class SurveyResponseService {
   async getSurveyResponseData(
     surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
   ) {
-    const data = await this.prisma.surveyResponse.findUnique({
+    return await this.prisma.surveyResponse.findUnique({
       where: {
         id: surveyResponseWhereUniqueInput.id,
       },
       include: {
         answers: {
           include: {
-            question: {
-              select: {
-                prompt: true,
-              },
-            },
+            question: true,
           },
         },
       },
-    });
-
-    Logger.log(data)
-    return data;
+    });;
   }
 
-  async create(
-    data: Prisma.SurveyResponseCreateInput
-  ) {
+  async create(data: Prisma.SurveyResponseCreateInput) {
     return await this.prisma.surveyResponse.create({
       data,
     });
