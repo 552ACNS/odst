@@ -1,38 +1,39 @@
-mutation createOrg($orgCreateInput: OrgCreateInput!) {
+mutation createOrg_form($orgCreateInput: OrgCreateInput!) {
   createOrg(orgCreateInput: $orgCreateInput) {
     ...orgFields
   }
 }
 
-mutation createAnswer($answerCreateInput: AnswerCreateInput!) {
+mutation createAnswer_form($answerCreateInput: AnswerCreateInput!) {
   createAnswer(answerCreateInput: $answerCreateInput) {
     ...answerField
   }
 }
 
-mutation CreateSurveyResponse($surveyResponseCreateInput: SurveyResponseCreateInput!) {
+mutation createSurveyResponse_form($surveyResponseCreateInput: SurveyResponseCreateInput!) {
   createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
     ...surveyResponseFields
   }
 }
 
-mutation CreateSurvey($surveyCreateInput: SurveyCreateInput!) {
+mutation createSurvey_form($surveyCreateInput: SurveyCreateInput!) {
   createSurvey(surveyCreateInput: $surveyCreateInput) {
     id
   }
 }
 
-mutation CreateSurveyWithQuestions($questionPrompts: [String!]!) {
+mutation createSurveyWithQuestions_form($questionPrompts: [String!]!) {
   createSurveyWithQuestions(questionPrompts: $questionPrompts) {
     ...surveyFields
   }
 }
 
-query findManyOrgs {
+query findManyOrgs_form {
   findManyOrgs {
     ...orgFields
   }
 }
+
 fragment answerField on AnswerGQL{
     id
     value

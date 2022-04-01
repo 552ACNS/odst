@@ -3,12 +3,12 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import {
-  CreateSurveyWithQuestionsDocument,
-  CreateSurveyWithQuestionsMutation,
-  CreateSurveyWithQuestionsMutationVariables,
-  FindManyOrgsDocument,
-  FindManyOrgsQuery,
-  FindManyOrgsQueryVariables,
+  CreateSurveyWithQuestions_FormDocument,
+  CreateSurveyWithQuestions_FormMutation,
+  CreateSurveyWithQuestions_FormMutationVariables,
+  FindManyOrgs_FormDocument,
+  FindManyOrgs_FormQuery,
+  FindManyOrgs_FormQueryVariables,
   OrgGql,
 } from '../../graphql-generated';
 
@@ -104,8 +104,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     this.querySubscription = this.apollo
-      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
-        query: FindManyOrgsDocument,
+      .watchQuery<FindManyOrgs_FormQuery, FindManyOrgs_FormQueryVariables>({
+        query: FindManyOrgs_FormDocument,
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
@@ -123,10 +123,10 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   submit() {
     this.apollo
       .mutate<
-        CreateSurveyWithQuestionsMutation,
-        CreateSurveyWithQuestionsMutationVariables
+        CreateSurveyWithQuestions_FormMutation,
+        CreateSurveyWithQuestions_FormMutationVariables
       >({
-        mutation: CreateSurveyWithQuestionsDocument,
+        mutation: CreateSurveyWithQuestions_FormDocument,
         variables: {
           questionPrompts: this.questions,
         },
