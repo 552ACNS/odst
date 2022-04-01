@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { map, Observable, Subscription } from 'rxjs';
 import { ResponsesService } from './responses.service';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import {
@@ -22,8 +23,15 @@ import { subscribe } from 'graphql';
   templateUrl: './responses.component.html',
   styleUrls: ['./responses.component.scss'],
 })
+
+
 export class ResponsesComponent implements OnInit {
+
+  resolutionForm = this.fb.group({
+    resolution: ['', Validators.required],
+  });
   constructor(
+    private fb: FormBuilder,
     private apollo: Apollo,
     private responsesService: ResponsesService
   ) {}
@@ -39,6 +47,8 @@ export class ResponsesComponent implements OnInit {
 
   responseID$: Observable<string[]>;
 
+  resolution = '';
+
   // MatPaginator Output
   pageEvent: PageEvent;
 
@@ -51,6 +61,11 @@ export class ResponsesComponent implements OnInit {
       // navigate to that issue
       this.displayIssue(this.pageEvent);
     });
+
+    await this.responsesService.updateResolution(
+      '81145756-f57d-400a-b9c4-1eb3d220c7f3',
+      'Hickey is currently pooping right now'
+    );
   }
 
   async getResponseIDsByStatus(resolved: boolean) {
@@ -62,6 +77,17 @@ export class ResponsesComponent implements OnInit {
     // set number of responses
     this.responseID$.subscribe((ids) => {
       this.numberOfResponses = ids.length;
+    });
+  }
+
+  submitResolutionClick() {
+    this.responseID$.subscribe((ids) => {
+      console.log(ids[this.displayedIndex]);
+
+      this.responsesService.updateResolution(
+        ids[this.displayedIndex],
+        this.resolutionForm.value['resolution']
+      );
     });
   }
 
@@ -100,6 +126,8 @@ export class ResponsesComponent implements OnInit {
 
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
+      // Set the resolution
+      this.resolution = '';
       this.responseID$.subscribe((ids) => {
         this.displayedIndex = pageEvent.pageIndex;
         this.getResponseData(ids[this.displayedIndex]);

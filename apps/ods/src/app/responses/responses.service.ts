@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+import { Apollo, gql } from 'apollo-angular';
 import { filter, map } from 'rxjs';
 import {
   GetIssuesByStatusDocument,
@@ -8,6 +8,9 @@ import {
   GetSurveyResponseDataDocument,
   GetSurveyResponseDataQuery,
   GetSurveyResponseDataQueryVariables,
+  UpdateSurveyResponse_ResolutionDocument,
+  UpdateSurveyResponse_ResolutionMutation,
+  UpdateSurveyResponse_ResolutionMutationVariables,
 } from '../../graphql-generated';
 
 @Injectable({
@@ -26,19 +29,23 @@ export class ResponsesService {
       .valueChanges.pipe(map((result) => result.data.getIssuesByStatus));
   }
 
-  // async getResponseData(issueId: string) {
-  //   return this.apollo
-  //     .watchQuery<
-  //       GetSurveyResponseDataQuery,
-  //       GetSurveyResponseDataQueryVariables
-  //     >({
-  //       query: GetSurveyResponseDataDocument,
-  //       variables: {
-  //         surveyResponseWhereUniqueInput: {
-  //           id: issueId,
-  //         },
-  //       },
-  //     })
-  //     .valueChanges.pipe(map((result) => result.data.getSurveyResponseData));
-  // }
+  async updateResolution(id: string, resolution: string) {
+    this.apollo
+      .mutate<
+        UpdateSurveyResponse_ResolutionMutation,
+        UpdateSurveyResponse_ResolutionMutationVariables
+      >({
+        mutation: UpdateSurveyResponse_ResolutionDocument,
+        variables: {
+          surveyResponseWhereUniqueInput: {
+            id: id,
+          },
+          surveyResponseUpdateInput: {
+            closedDate: Date.now(),
+            resolution: resolution,
+          },
+        },
+      })
+      .subscribe();
+  }
 }

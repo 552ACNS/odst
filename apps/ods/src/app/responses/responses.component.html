@@ -1,7 +1,7 @@
 <div
   class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-2 space-y-2"
 >
-<p class="text-center">Date Submitted: {{ openedDate }}</p>
+  <p class="text-center">Date Submitted: {{ openedDate }}</p>
   <mat-paginator
     class="flex justify-center border-1 border-solid border-dark-blue rounded-2xl shadow-md"
     [length]="numberOfResponses"
@@ -21,14 +21,14 @@
   </mat-card>
   <mat-card class="rounded-2xl shadow-md">
     <mat-card-content class="text-sm text-left">
-      <form>
-        <p class="text-base font-medium">How was this resolved?</p>
-        <mat-form-field appearance="outline" class="w-full">
+      <form [formGroup]="resolutionForm">
+        <p>Resolution: </p>
+        <p class="text-base font-medium">How was this addressed?</p>
+        <mat-form-field appearance="outline" class="w-full" [formControlName]="'resolution'">
           <mat-label>Resolution</mat-label>
-          <textarea
-            matInput
-            placeholder="I took the following actions..."
-          ></textarea>
+          <textarea matInput placeholder="I took the following actions...">
+          </textarea
+          >
         </mat-form-field>
       </form>
       <mat-card-actions class="flex h-8 space-x-2 mb-0 py-0 mx-1">
@@ -38,7 +38,11 @@
         >
           Back
         </button>
-        <button mat-button class="w-full bg-dark-blue text-white shadow-md rounded-full">
+        <button
+          mat-button
+          class="w-full bg-dark-blue text-white shadow-md rounded-full"
+          (click)="submitResolutionClick()"
+        >
           Submit
         </button>
       </mat-card-actions>

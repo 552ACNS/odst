@@ -43,6 +43,8 @@ export class SurveyResponseResolver {
     @Args('SurveyResponseUpdateInput')
     surveyResponseUpdateInput: SurveyResponseUpdateInput
   ) {
+    Logger.log(surveyResponseUpdateInput.resolution, 'SurveyResponseResolver.update');
+
     return this.surveyResponseService.update(
       surveyResponseWhereUniqueInput,
       surveyResponseUpdateInput
@@ -78,8 +80,9 @@ export class SurveyResponseResolver {
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
   ) {
+
     return await this.surveyResponseService.getSurveyResponseData(
       surveyResponseWhereUniqueInput
-    );;
+    );
   }
 }
