@@ -31,7 +31,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   answers: string[];
   openDate = new Date();
   orgs: Partial<OrgGql>[];
-  CCs: string[] = ['Matos, Emmanuel Lt. Col.', 'God Emperer Astolfo', 'MaGoo'];
+  CCs: string[] = ['Matos, Emmanuel Lt. Col.',];
   querySubscription: Subscription;
   loading = true;
   submitSuccess = false;

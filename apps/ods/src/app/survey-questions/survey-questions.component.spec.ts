@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { SurveyQuestionsComponent } from './survey-questions.component';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 
 describe('SurveyQuestionsComponent', () => {
   let component: SurveyQuestionsComponent;
@@ -10,7 +10,7 @@ describe('SurveyQuestionsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ SurveyQuestionsComponent ],
-      imports: [ReactiveFormsModule]
+      imports: [ReactiveFormsModule, ApolloTestingModule]
     })
     .compileComponents();
   });
