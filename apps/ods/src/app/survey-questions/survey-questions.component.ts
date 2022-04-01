@@ -3,13 +3,17 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import { 
+  CreateSurveyDocument,
+  CreateSurveyMutation,
+  CreateSurveyMutationVariables,
+  CreateSurveyWithQuestionsDocument,
+  CreateSurveyWithQuestionsMutation,
+  CreateSurveyWithQuestionsMutationVariables,
   FindManyOrgsDocument, 
   FindManyOrgsQuery, 
   FindManyOrgsQueryVariables, 
   OrgGql,
 } from '../../graphql-generated';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const shajs = require('sha.js')
 
 
 @Component({
@@ -20,7 +24,7 @@ const shajs = require('sha.js')
 
 export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
-  questions:["What squadron did the event occur in?",
+  questions = ["What squadron did the event occur in?",
     "Please describe the event of a microaggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.",
     "Please describe the mircroaggression or discrimination that took place.",
     "Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?",
@@ -101,8 +105,6 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   });
 
   async ngOnInit(): Promise<void> {
-    alert(this.openDate);
-    alert(shajs('sha256').update('What squadron did the event occur in?').digest('hex'));
     this.querySubscription = this.apollo.watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
         query: FindManyOrgsDocument,
       }).valueChanges.subscribe(({ data, loading }) => {
@@ -119,39 +121,75 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     }
   }
   submit(){
-    // this.apollo
-    // .mutate<MutationUpsertQuestionArgs, QuestionCreateInput>({
-    //   mutation: CreatePersonDocument,
-    //   variables: {
-    //     personCreateInput: {
+    this.apollo
+    .mutate<CreateSurveyWithQuestionsMutation, CreateSurveyWithQuestionsMutationVariables>({
+      mutation: CreateSurveyWithQuestionsDocument,
+      variables: {
+        questionPrompts: this.questions
+      }
+    })
+    .subscribe(
+      //TODO deprecated
+      ({ data }) => {
+        this.submitSuccess = true;
+      },
+      (error) => {
+        alert('there was an error sending the mutation: /n' + error);
+        this.submitSuccess = false;
+      }
+    );
+      alert(this.submitSuccess);
 
-    //       org: {
-    //         connect: {
-    //           id: this.form.get(['personOrg'])?.value,
+    // this.apollo
+    //   .mutate<CreateSurveyMutation, CreateSurveyMutationVariables>({
+    //     mutation: CreateSurveyDocument,
+    //     variables: {
+    //       surveyCreateInput: {
+    //         orgs: {
+    //           connect: {
+    //             id: null
+    //           }
     //         },
-    //       },
+    //         questions: {
+    //           connect: {
+    //             prompt: this.questions
+    //           }
+    //         },
+    //         surveyResponses: {
+    //           connect: {
+    //             id: null
+    //           },
+    //           create: {
+    //             surveyId: "hi",
+    //             openedDate: this.openDate,
+    //             routeOutside: this.outsideRoutingWorking()
+    //           }
+    //         }
+    //       }
+
     //     },
-    //   },
-    // })
-    // .subscribe(
-    //   //TODO deprecated
-    //   ({ data }) => {
-    //   },
-    //   (error) => {
-    //     alert('there was an error sending the query: /n' + error);
-    //   }
-    // );
-      this.answers = [
-        this.form.get(['personOrg'])?.value,
-        this.form.value['event'],
-        this.violatorSpec.name,
-        this.form.value['CC'],
-        this.personSpec.name,
-        this.form.value['impact'],
-        this.outsideRoutingWorking()
-      ]
-      this.submitSuccess=true;
-      return alert(this.answers)
+    //   })
+    //   .subscribe(
+    //     //TODO deprecated
+    //     ({ data }) => {
+    //       this.submitSuccess = true;
+    //     },
+    //     (error) => {
+    //       alert('there was an error sending the mutation: /n' + error);
+    //       this.submitSuccess = false;
+    //     }
+    //   );
+      // this.answers = [
+      //   this.form.get(['personOrg'])?.value,
+      //   this.form.value['event'],
+      //   this.violatorSpec.name,
+      //   this.form.value['CC'],
+      //   this.personSpec.name,
+      //   this.form.value['impact'],
+      //   this.outsideRoutingWorking()
+      // ]
+      // this.submitSuccess=true;
+      // return alert(this.answers)
   }
   back(){
     return;

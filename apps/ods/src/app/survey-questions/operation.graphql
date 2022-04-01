@@ -4,16 +4,6 @@ mutation createOrg($orgCreateInput: OrgCreateInput!) {
   }
 }
 
-mutation upsertQuestion($questionWhereUniqueInput: QuestionWhereUniqueInput!,
-  $questionUpdateInput: QuestionUpdateInput!, 
-  $questionCreateInput: QuestionCreateInput!) {
-    upsertQuestion(questionWhereUniqueInput: $questionWhereUniqueInput,
-    questionUpdateInput: $questionUpdateInput, 
-    questionCreateInput: $questionCreateInput){
-      ...questionFields
-    }
-}
-
 mutation createAnswer($answerCreateInput: AnswerCreateInput!) {
   createAnswer(answerCreateInput: $answerCreateInput) {
     ...answerField
@@ -23,6 +13,18 @@ mutation createAnswer($answerCreateInput: AnswerCreateInput!) {
 mutation CreateSurveyResponse($surveyResponseCreateInput: SurveyResponseCreateInput!) {
   createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
     ...surveyResponseFields
+  }
+}
+
+mutation CreateSurvey($surveyCreateInput: SurveyCreateInput!) {
+  createSurvey(surveyCreateInput: $surveyCreateInput) {
+    id
+  }
+}
+
+mutation CreateSurveyWithQuestions($questionPrompts: [String!]!) {
+  createSurveyWithQuestions(questionPrompts: $questionPrompts) {
+    ...surveyFields
   }
 }
 
@@ -56,5 +58,11 @@ fragment surveyResponseFields on SurveyResponseGQL {
   closedDate
   routeOutside
   resolution
+}
+
+fragment surveyFields on SurveyGQL
+{
+  id
+  questionsHash
 }
 
