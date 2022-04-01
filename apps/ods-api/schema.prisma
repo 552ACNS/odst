@@ -66,6 +66,7 @@ model Survey {
   id              String           @id @default(uuid())
   orgs            Org[]
   questions       Question[]
+  questionsHash   String?           @unique
   surveyResponses SurveyResponse[]
 }
 

@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { Survey, Prisma } from '.prisma/ods/client';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { Prisma, Survey } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { SurveyGQL } from '@odst/types/ods';
+import { Md5 as md5 } from 'ts-md5/dist/md5';
 
 @Injectable()
 export class SurveyService {
@@ -32,20 +33,65 @@ export class SurveyService {
     });
   }
 
+  async createWithQuestions(questionPrompts: string[]) {
+    if (questionPrompts.length <= 0) {
+      throw new BadRequestException('No question prompts provided');
+    }
+    const questionIds: string[] = [];
+
+    //Could not resolve questions and only hash by string, since it's unique also
+    for (const prompt of questionPrompts) {
+      //don't use forEach,etc. awaits won't act as expected
+      questionIds.push(
+        (
+          await this.prisma.question.upsert({
+            where: { prompt },
+            create: { prompt },
+            update: {},
+          })
+        ).id
+      );
+    }
+
+    const questionsHash = await this.getQuestionsHash(questionIds);
+
+    return this.prisma.survey.upsert({
+      where: { questionsHash },
+      create: {
+        questionsHash,
+        questions: { connect: questionIds.map((id) => ({ id })) },
+      },
+      update: {},
+    });
+  }
+
   async create(data: Prisma.SurveyCreateInput): Promise<SurveyGQL> {
-    return this.prisma.survey.create({
+    const survey = await this.prisma.survey.create({
       data,
     });
+
+    await this.updateQuestionsHash({ id: survey.id });
+
+    return survey;
   }
 
   async update(
     surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput,
     surveyUpdateInput: Prisma.SurveyUpdateInput
   ): Promise<Survey> {
-    return this.prisma.survey.update({
+    Logger.log(surveyUpdateInput)
+
+
+    const survey = this.prisma.survey.update({
       where: surveyWhereUniqueInput,
       data: surveyUpdateInput,
     });
+
+    Logger.log(survey)
+
+    await this.updateQuestionsHash(surveyWhereUniqueInput);
+
+    return survey;
   }
 
   async delete(
@@ -60,4 +106,40 @@ export class SurveyService {
       return { deleted: false, message: err.message };
     }
   }
+
+  //TODO optimize database calls. each survey create/update requires 3 database calls.
+  //TODO only call if questions is being updated
+  private async updateQuestionsHash(
+    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  ): Promise<void> {
+    const questions = await this.prisma.question.findMany({
+      where: { surveys: { every: surveyWhereUniqueInput } },
+    });
+
+    const questionStr = questions
+      .map((question) => question.id)
+      .sort()
+      .join();
+
+    Logger.log(questions);
+
+    const questionsHash =
+      questionStr.length > 0 ? md5.hashStr(questionStr) : null;
+
+    await this.prisma.survey.update({
+      where: surveyWhereUniqueInput,
+      data: { questionsHash },
+    });
+  }
+
+  private async getQuestionsHash(questionIds: string[]): Promise<string> {
+    if (questionIds.length <= 0) {
+      throw new BadRequestException('No question prompts provided');
+    }
+    const questionStr = questionIds.sort().join();
+
+    return md5.hashStr(questionStr);
+  }
+
+  //TODO tests for new methods
 }
