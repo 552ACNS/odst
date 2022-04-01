@@ -14,6 +14,7 @@ import { join } from 'path';
 import { GraphQLModule, registerEnumType } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SurveyResponseModule } from '../surveyResponse/surveyResponse.module';
+import { AnswerModule } from '../answer/answer.module';
 import { QuestionModule } from '../question/question.module';
 
 // Register enum types here, if they are used in multiple places, make sure that they are registered
@@ -35,10 +36,11 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
           : ApolloServerPluginLandingPageLocalDefault(),
       ],
     }),
-    OrgModule,
-    QuestionModule,
     SurveyModule,
     SurveyResponseModule,
+    AnswerModule,
+    OrgModule,
+    QuestionModule,
   ],
 })
 export class AppModule {}
