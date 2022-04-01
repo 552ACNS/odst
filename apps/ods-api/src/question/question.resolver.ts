@@ -58,7 +58,7 @@ export class QuestionResolver {
       questionUpdateInput
     );
   }
-
+  
   @Mutation(() => QuestionGQL, { name: 'removeQuestion' })
   // @UseGuards(AccessTokenAuthGuard)
   async delete(
