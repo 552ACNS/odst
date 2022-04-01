@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma, Survey } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { SurveyGQL } from '@odst/types/ods';
@@ -79,15 +79,10 @@ export class SurveyService {
     surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput,
     surveyUpdateInput: Prisma.SurveyUpdateInput
   ): Promise<Survey> {
-    Logger.log(surveyUpdateInput)
-
-
-    const survey = this.prisma.survey.update({
+    const survey = await this.prisma.survey.update({
       where: surveyWhereUniqueInput,
       data: surveyUpdateInput,
     });
-
-    Logger.log(survey)
 
     await this.updateQuestionsHash(surveyWhereUniqueInput);
 
@@ -121,8 +116,6 @@ export class SurveyService {
       .sort()
       .join();
 
-    Logger.log(questions);
-
     const questionsHash =
       questionStr.length > 0 ? md5.hashStr(questionStr) : null;
 
@@ -143,3 +136,4 @@ export class SurveyService {
 
   //TODO tests for new methods
 }
+
