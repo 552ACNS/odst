@@ -184,6 +184,12 @@ input SurveyCreateNestedOneWithoutSurveyResponsesInput {
 input AnswerCreateNestedManyWithoutSurveyResponseInput {
   connect: AnswerGQLInput
   create: AnswerGQLInput
+  createMany: AnswerCreateManySurveyResponseInputEnvelope
+}
+
+input AnswerCreateManySurveyResponseInputEnvelope {
+  data: [AnswerGQLInput!]
+  skipDuplicates: Boolean
 }
 
 input SurveyResponseUpdateInput {
