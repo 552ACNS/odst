@@ -2,58 +2,50 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
-import { 
-  CreateSurveyDocument,
-  CreateSurveyMutation,
-  CreateSurveyMutationVariables,
+import {
   CreateSurveyWithQuestionsDocument,
   CreateSurveyWithQuestionsMutation,
   CreateSurveyWithQuestionsMutationVariables,
-  FindManyOrgsDocument, 
-  FindManyOrgsQuery, 
-  FindManyOrgsQueryVariables, 
+  FindManyOrgsDocument,
+  FindManyOrgsQuery,
+  FindManyOrgsQueryVariables,
   OrgGql,
 } from '../../graphql-generated';
-
 
 @Component({
   selector: 'odst-survey-questions',
   templateUrl: './survey-questions.component.html',
-  styleUrls: ['./survey-questions.component.scss']
+  styleUrls: ['./survey-questions.component.scss'],
 })
-
 export class SurveyQuestionsComponent implements OnInit, OnDestroy {
+  questions = [
+    'What squadron did the event occur in?',
+    'Please describe the event of a microaggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.',
+    'Please describe the mircroaggression or discrimination that took place.',
+    'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?',
+    'Are you active duty, a civilian, guard/reserve or contractor?',
+    'What impacts did this event have on you or your work environment',
+  ];
 
-  questions = ["What squadron did the event occur in?",
-    "Please describe the event of a microaggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.",
-    "Please describe the mircroaggression or discrimination that took place.",
-    "Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?",
-    "Are you active duty, a civilian, guard/reserve or contractor?",
-    "What impacts did this event have on you or your work environment",
-  ]
-  
   outsideRouting = false;
-  answers: string[]
+  answers: string[];
   openDate = new Date();
   orgs: Partial<OrgGql>[];
   CCs: string[] = ['Matos, Emmanuel Lt. Col.', 'God Emperer Astolfo', 'MaGoo'];
   querySubscription: Subscription;
   loading = true;
   submitSuccess = false;
-  violatorSpec = { name: "" };
-  personSpec = { name: ""}
+  violatorSpec = { name: '' };
+  personSpec = { name: '' };
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-  private _violatorOption: string = "";
+  private _violatorOption: string = '';
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-  private _customViolator: string = "";
+  private _customViolator: string = '';
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-  private _personOption: string = "";
+  private _personOption: string = '';
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-  private _customPerson: string = "";
-  constructor(
-    private fb: FormBuilder, 
-    private apollo: Apollo
-    ) { }
+  private _customPerson: string = '';
+  constructor(private fb: FormBuilder, private apollo: Apollo) {}
 
   get violatorOption(): string {
     return this._violatorOption;
@@ -84,10 +76,16 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     this.updateRadioName();
   }
   private updateRadioName(): void {
-    this.violatorSpec.name = this._violatorOption === "other" ? this.form.value['violatorOtherSpec'] : this._violatorOption;
-    this.personSpec.name = this._personOption === "other" ? this.form.value['personOtherSpec'] : this._personOption;
+    this.violatorSpec.name =
+      this._violatorOption === 'other'
+        ? this.form.value['violatorOtherSpec']
+        : this._violatorOption;
+    this.personSpec.name =
+      this._personOption === 'other'
+        ? this.form.value['personOtherSpec']
+        : this._personOption;
   }
-  
+
   //validators didnt need to be inside the formControlName and caused it to break, so i removed
   //them. Also, all form controls need to be specificed in their or else they all will not
   //load properly.
@@ -101,18 +99,20 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     personSpec: [],
     personOtherSpec: [],
     impact: [],
-    outsideRouting: []
+    outsideRouting: [],
   });
 
   async ngOnInit(): Promise<void> {
-    this.querySubscription = this.apollo.watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+    this.querySubscription = this.apollo
+      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
         query: FindManyOrgsDocument,
-      }).valueChanges.subscribe(({ data, loading }) => {
+      })
+      .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
         this.orgs = data.findManyOrgs;
       });
   }
-   //TODO find out a way to fix without this
+  //TODO find out a way to fix without this
   outsideRoutingWorking(): boolean {
     if (this.form.get(['outsideRouting'])?.value == true) {
       return true;
@@ -120,78 +120,35 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
       return false;
     }
   }
-  submit(){
+  submit() {
     this.apollo
-    .mutate<CreateSurveyWithQuestionsMutation, CreateSurveyWithQuestionsMutationVariables>({
-      mutation: CreateSurveyWithQuestionsDocument,
-      variables: {
-        questionPrompts: this.questions
-      }
-    })
-    .subscribe(
-      //TODO deprecated
-      ({ data }) => {
-        this.submitSuccess = true;
-      },
-      (error) => {
-        alert('there was an error sending the mutation: /n' + error);
-        this.submitSuccess = false;
-      }
-    );
-      alert(this.submitSuccess);
-
-    // this.apollo
-    //   .mutate<CreateSurveyMutation, CreateSurveyMutationVariables>({
-    //     mutation: CreateSurveyDocument,
-    //     variables: {
-    //       surveyCreateInput: {
-    //         orgs: {
-    //           connect: {
-    //             id: null
-    //           }
-    //         },
-    //         questions: {
-    //           connect: {
-    //             prompt: this.questions
-    //           }
-    //         },
-    //         surveyResponses: {
-    //           connect: {
-    //             id: null
-    //           },
-    //           create: {
-    //             surveyId: "hi",
-    //             openedDate: this.openDate,
-    //             routeOutside: this.outsideRoutingWorking()
-    //           }
-    //         }
-    //       }
-
-    //     },
-    //   })
-    //   .subscribe(
-    //     //TODO deprecated
-    //     ({ data }) => {
-    //       this.submitSuccess = true;
-    //     },
-    //     (error) => {
-    //       alert('there was an error sending the mutation: /n' + error);
-    //       this.submitSuccess = false;
-    //     }
-    //   );
-      // this.answers = [
-      //   this.form.get(['personOrg'])?.value,
-      //   this.form.value['event'],
-      //   this.violatorSpec.name,
-      //   this.form.value['CC'],
-      //   this.personSpec.name,
-      //   this.form.value['impact'],
-      //   this.outsideRoutingWorking()
-      // ]
-      // this.submitSuccess=true;
-      // return alert(this.answers)
+      .mutate<
+        CreateSurveyWithQuestionsMutation,
+        CreateSurveyWithQuestionsMutationVariables
+      >({
+        mutation: CreateSurveyWithQuestionsDocument,
+        variables: {
+          questionPrompts: this.questions,
+        },
+      })
+      .subscribe(
+        ({ data, errors }) => {
+          this.submitSuccess = !(!errors);
+        },
+      );
+    // this.answers = [
+    //   this.form.get(['personOrg'])?.value,
+    //   this.form.value['event'],
+    //   this.violatorSpec.name,
+    //   this.form.value['CC'],
+    //   this.personSpec.name,
+    //   this.form.value['impact'],
+    //   this.outsideRoutingWorking()
+    // ]
+    // this.submitSuccess=true;
+    // return alert(this.answers)
   }
-  back(){
+  back() {
     return;
   }
   ngOnDestroy() {
@@ -200,3 +157,4 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     }
   }
 }
+

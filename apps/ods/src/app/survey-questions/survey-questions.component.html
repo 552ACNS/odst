@@ -42,8 +42,7 @@
       duty, civilian, guard/reserve or a contractor?
       <span class="text-red-500"> * </span>
     </label>
-    <!-- TODO pull data into a mutation to the back end when that is set up-->
-    <!-- TODO maybe use ng if once we have spec available -->
+    <!-- TODO Fix to use tailwind for spacing in future -->
     <!-- TODO Fix autoselecting other when page loads -->
     <mat-radio-group
       name="violator_spec"
@@ -78,10 +77,10 @@
       <span class="text-red-500"> * </span>
     </label>
     <mat-form-field>
-      <!-- TODO implement commented out code to select SQ/CC -->
-      <!-- TODO make placeholder not stay when CC is selected -->
+      <!-- TODO make placeholder not stay when CC is selected and add back placeholder when fixed -->
+      <!-- TODO Implement query to backend to find commanders to populate selector -->
       <mat-select
-        placeholder="Doe, John Lt. Col."
+        placeholder="Squadron Commander"
         formControlName="CC"
         required
       >
@@ -95,8 +94,8 @@
       Are you active duty, a civilian, guard/reserve or contractor?
       <span class="text-red-500"> * </span>
     </label>
-    <!-- TODO pull data into a mutation to the back end when that is set up-->
-    <!-- TODO maybe use ng if once we have spec available -->
+    <!-- TODO Fix to use tailwind for spacing in future -->
+    <!-- TODO Fix autoselecting other when page loads -->
     <mat-radio-group
       name="person_spec"
       [(ngModel)]="personOption"
@@ -172,7 +171,9 @@
     [disabled]="!form.valid"
   >
     Submit
-    <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess">check</mat-icon>
+    <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess"
+      >check</mat-icon
+    >
   </button>
 </div>
 
