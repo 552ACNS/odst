@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import {
@@ -91,7 +91,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   //load properly.
   // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group({
-    personOrg: [],
+    eventOrg: [],
     event: [],
     violatorSpec: [],
     violatorOtherSpec: [],
@@ -138,7 +138,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
         },
       );
     // this.answers = [
-    //   this.form.get(['personOrg'])?.value,
+    //   this.form.get(['eventOrg'])?.value,
     //   this.form.value['event'],
     //   this.violatorSpec.name,
     //   this.form.value['CC'],
