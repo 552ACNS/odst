@@ -30,6 +30,7 @@ type QuestionGQL {
 
 type SurveyGQL {
   id: String
+  questionsHash: String
 }
 
 type SurveyResponseGQL {
@@ -67,6 +68,7 @@ input QuestionGQLInput {
 
 input SurveyGQLInput {
   id: String
+  questionsHash: String
 }
 
 input SurveyResponseGQLInput {
@@ -95,6 +97,7 @@ type Query {
 
 input SurveyWhereUniqueInput {
   id: String
+  questionsHash: String
 }
 
 input SurveyResponseWhereUniqueInput {
@@ -116,6 +119,7 @@ input QuestionWhereUniqueInput {
 }
 
 type Mutation {
+  createSurveyWithQuestions(questionPrompts: [String!]!): SurveyGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
@@ -131,7 +135,6 @@ type Mutation {
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
   deleteQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
-  upsertQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!, questionUpdateInput: QuestionUpdateInput!, questionCreateInput: QuestionCreateInput!): QuestionGQL!
 }
 
 input SurveyCreateInput {
@@ -145,7 +148,7 @@ input OrgCreateNestedManyWithoutSurveysInput {
 }
 
 input QuestionCreateNestedManyWithoutSurveysInput {
-  connect: QuestionWhereUniqueInput
+  connect: [QuestionWhereUniqueInput!]
 }
 
 input SurveyResponseCreateNestedManyWithoutSurveyInput {
@@ -154,9 +157,17 @@ input SurveyResponseCreateNestedManyWithoutSurveyInput {
 }
 
 input SurveyUpdateInput {
-  orgs: OrgCreateNestedManyWithoutSurveysInput
-  questions: QuestionCreateNestedManyWithoutSurveysInput
-  surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
+  questions: QuestionUpdateManyWithoutSurveysInput
+}
+
+input QuestionUpdateManyWithoutSurveysInput {
+  connect: [QuestionWhereUniqueInput!]
+  connectOrCreate: [QuestionCreateOrConnectWithoutSurveysInput!]
+}
+
+input QuestionCreateOrConnectWithoutSurveysInput {
+  where: QuestionWhereUniqueInput!
+  create: QuestionGQLInput!
 }
 
 input SurveyResponseCreateInput {

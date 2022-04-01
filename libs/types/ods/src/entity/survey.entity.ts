@@ -6,4 +6,5 @@ import { Survey } from '.prisma/ods/client';
 export class SurveyGQL implements Survey {
   @Field(() => String, { nullable: true })
   id: string;
+  questionsHash: string | null;
 }

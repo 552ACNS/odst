@@ -53,6 +53,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.5.1",
     "safe-buffer": "^5.2.1",
+    "ts-md5": "^1.2.11",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
   },
