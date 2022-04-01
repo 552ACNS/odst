@@ -9,7 +9,7 @@ import { Apollo } from 'apollo-angular';
 export class LoginService {
 
   constructor(private apollo: Apollo, private router: Router) {}
-  submitLogin(username: string, password: string): void {}
+  //submitLogin(username: string, password: string): void {}
 
   goBack(): void {
     this.router.navigate(['disclaimer']);

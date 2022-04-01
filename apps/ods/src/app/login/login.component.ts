@@ -20,12 +20,13 @@ export class LoginComponent /*implements OnInit*/ {
   // ngOnInit(): void {
   // }
   //TODO: Fix maybe if AuthGuards are required in front end login routing
-  submitLoginClick() {
-    this.loginService.submitLogin(
-      this.loginForm.value['userUsername'],
-      this.loginForm.value['userPassword']
-    );
-  }
+  
+  // submitLoginClick() {
+  //   this.loginService.submitLogin(
+  //     this.loginForm.value['userUsername'],
+  //     this.loginForm.value['userPassword']
+  //   );
+  // }
   
   goBackClick() {
     this.loginService.goBack();
