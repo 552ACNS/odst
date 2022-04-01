@@ -159,6 +159,7 @@ input SurveyResponseCreateNestedManyWithoutSurveyInput {
 
 input SurveyUpdateInput {
   questions: QuestionUpdateManyWithoutSurveysInput
+  surveyResponses: SurveyResponseUpdateManyWithoutSurveyInput
 }
 
 input QuestionUpdateManyWithoutSurveysInput {
@@ -169,6 +170,15 @@ input QuestionUpdateManyWithoutSurveysInput {
 input QuestionCreateOrConnectWithoutSurveysInput {
   where: QuestionWhereUniqueInput!
   create: QuestionGQLInput!
+}
+
+input SurveyResponseUpdateManyWithoutSurveyInput {
+  createMany: SurveyResponseCreateManySurveyInputEnvelope
+}
+
+input SurveyResponseCreateManySurveyInputEnvelope {
+  data: [SurveyResponseGQLInput!]
+  skipDuplicates: Boolean
 }
 
 input SurveyResponseCreateInput {

@@ -133,7 +133,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         ({ data, errors }) => {
-          this.submitSuccess = !(!errors);
+          this.submitSuccess = (!errors);
+          alert(this.submitSuccess);
         },
       );
     // this.answers = [
