@@ -47,7 +47,7 @@ export class ResponsesComponent implements OnInit {
 
   responseID$: Observable<string[]>;
 
-  resolution = '';
+  // resolution = '';
 
   // MatPaginator Output
   pageEvent: PageEvent;
@@ -61,11 +61,6 @@ export class ResponsesComponent implements OnInit {
       // navigate to that issue
       this.displayIssue(this.pageEvent);
     });
-
-    await this.responsesService.updateResolution(
-      '81145756-f57d-400a-b9c4-1eb3d220c7f3',
-      'Hickey is currently pooping right now'
-    );
   }
 
   async getResponseIDsByStatus(resolved: boolean) {
@@ -88,6 +83,8 @@ export class ResponsesComponent implements OnInit {
         ids[this.displayedIndex],
         this.resolutionForm.value['resolution']
       );
+        //refresh the page
+        window.location.reload();
     });
   }
 
@@ -127,7 +124,9 @@ export class ResponsesComponent implements OnInit {
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
       // Set the resolution
-      this.resolution = '';
+      this.resolutionForm.setValue({
+        resolution: '',
+      });
       this.responseID$.subscribe((ids) => {
         this.displayedIndex = pageEvent.pageIndex;
         this.getResponseData(ids[this.displayedIndex]);

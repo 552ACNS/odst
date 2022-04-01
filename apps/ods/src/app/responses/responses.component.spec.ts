@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 
@@ -12,7 +13,7 @@ describe('ResponsesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ResponsesComponent],
-      imports: [ResponsesModule, ApolloTestingModule, BrowserAnimationsModule],
+      imports: [ResponsesModule, ApolloTestingModule, BrowserAnimationsModule, ReactiveFormsModule],
     }).compileComponents();
   });
 

@@ -1,6 +1,8 @@
+
 <div
   class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-2 space-y-2"
 >
+<h1 class="text-center">Unresolved Responses</h1>
   <p class="text-center">Date Submitted: {{ openedDate }}</p>
   <mat-paginator
     class="flex justify-center border-1 border-solid border-dark-blue rounded-2xl shadow-md"
@@ -24,9 +26,9 @@
       <form [formGroup]="resolutionForm">
         <p>Resolution: </p>
         <p class="text-base font-medium">How was this addressed?</p>
-        <mat-form-field appearance="outline" class="w-full" [formControlName]="'resolution'">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Resolution</mat-label>
-          <textarea matInput placeholder="I took the following actions...">
+          <textarea matInput placeholder="I took the following actions..." [formControlName]="'resolution'">
           </textarea
           >
         </mat-form-field>
