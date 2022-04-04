@@ -119,4 +119,8 @@ export class SurveyResponseService {
       return { deleted: false, message: err.message };
     }
   }
+
+  async findManySurveyResponses() {
+    return await this.prisma.surveyResponse.findMany();
+  }
 }

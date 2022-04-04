@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
   {
@@ -7,7 +7,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./disclaimer/disclaimer.module').then((m) => m.DisclaimerModule),
   },
-  { path: '', redirectTo: '/disclaimer', pathMatch: 'full' },
+  {path: '', redirectTo: '/disclaimer', pathMatch: 'full'},
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+  },
   {
     path: 'responses',
     loadChildren: () =>
@@ -19,6 +23,7 @@ const routes: Routes = [
       import('./login/login.module').then((m) => m.LoginModule),
   },
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

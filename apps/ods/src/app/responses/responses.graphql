@@ -2,6 +2,7 @@ query GetSurveyResponseData($surveyResponseWhereUniqueInput: SurveyResponseWhere
   getSurveyResponseData(surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput) {
     id
     openedDate
+    resolution
     answers {
       value
       question {

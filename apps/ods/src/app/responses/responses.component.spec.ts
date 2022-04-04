@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
 
 import { ResponsesComponent } from './responses.component';
@@ -14,7 +15,7 @@ describe('ResponsesComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ResponsesComponent],
       providers: [ResponsesService],
-      imports: [ResponsesModule, ApolloTestingModule, BrowserAnimationsModule, ReactiveFormsModule],
+      imports: [ResponsesModule, ApolloTestingModule, BrowserAnimationsModule, ReactiveFormsModule, RouterTestingModule],
     }).compileComponents()
 
 
