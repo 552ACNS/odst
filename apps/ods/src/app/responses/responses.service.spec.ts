@@ -3,12 +3,9 @@ import {
   ApolloTestingController,
   ApolloTestingModule,
 } from 'apollo-angular/testing';
-import { ResponsesComponent } from './responses.component';
-import { ResponsesService } from './responses.service';
 
 describe('ResponsesService', () => {
   let controller: ApolloTestingController;
-  let service: ResponsesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
