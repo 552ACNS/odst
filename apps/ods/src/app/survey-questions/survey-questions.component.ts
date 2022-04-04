@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import {
@@ -11,6 +11,7 @@ import {
   FindManyOrgs_FormQueryVariables,
   OrgGql,
 } from '../../graphql-generated';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'odst-survey-questions',
@@ -45,7 +46,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   private _personOption: string = '';
   // eslint-disable-next-line @typescript-eslint/no-inferrable-types
   private _customPerson: string = '';
-  constructor(private fb: FormBuilder, private apollo: Apollo) {}
+  constructor(private fb: FormBuilder, private apollo: Apollo, private router: Router) {}
 
   get violatorOption(): string {
     return this._violatorOption;
@@ -77,7 +78,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   }
   private updateRadioName(): void {
     this.violatorSpec.name =
-      this._violatorOption === 'other'
+      this._violatorOption === 'other' 
         ? this.form.value['violatorOtherSpec']
         : this._violatorOption;
     this.personSpec.name =
@@ -137,20 +138,20 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
           alert(this.submitSuccess);
         },
       );
-    // this.answers = [
-    //   this.form.get(['eventOrg'])?.value,
-    //   this.form.value['event'],
-    //   this.violatorSpec.name,
-    //   this.form.value['CC'],
-    //   this.personSpec.name,
-    //   this.form.value['impact'],
-    //   this.outsideRoutingWorking()
-    // ]
-    // this.submitSuccess=true;
-    // return alert(this.answers)
+    this.answers = [
+      this.form.get(['eventOrg'])?.value,
+      this.form.value['event'].trim(),
+      this.violatorSpec.name,
+      this.form.value['CC'],
+      this.personSpec.name,
+      this.form.value['impact'].trim(),
+      this.outsideRoutingWorking()
+    ]
+    this.submitSuccess=true;
+    return alert(this.answers)
   }
   back() {
-    return;
+    this.router.navigate(['disclaimer']);
   }
   ngOnDestroy() {
     if (this.querySubscription) {
