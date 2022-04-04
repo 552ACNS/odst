@@ -1,5 +1,5 @@
 projects:
   waypoint:
-    schema: http://localhost:3343/graphql
+    schema: http://localhost:3333/graphql
   ods:
     schema: http://localhost:3343/graphql
