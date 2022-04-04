@@ -18,7 +18,7 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  getResponseIDsByStatus(resolved: boolean) {
+  async getResponseIDsByStatus(resolved: boolean) {
     return this.apollo
       .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
         query: GetIssuesByStatusDocument,

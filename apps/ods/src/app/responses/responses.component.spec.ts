@@ -8,9 +8,6 @@ import { ResponsesModule } from './responses.module';
 import { ResponsesService } from './responses.service';
 
 describe('ResponsesComponent', () => {
-  let service: ResponsesService;
-  let controller: ApolloTestingController;
-  let component: ResponsesComponent;
   let fixture: ComponentFixture<ResponsesComponent>;
 
   beforeEach(async () => {
@@ -20,10 +17,8 @@ describe('ResponsesComponent', () => {
       imports: [ResponsesModule, ApolloTestingModule, BrowserAnimationsModule, ReactiveFormsModule],
     }).compileComponents()
 
-    service = TestBed.inject(ResponsesService);
-    controller = TestBed.inject(ApolloTestingController);
+
     fixture = TestBed.createComponent(ResponsesComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 

@@ -1,11 +1,8 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Observable } from 'rxjs';
 import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Apollo } from 'apollo-angular';
-import { SurveyResponseGQL } from '@odst/types/ods';
 
 @Component({
   selector: 'odst-responses',
@@ -14,11 +11,10 @@ import { SurveyResponseGQL } from '@odst/types/ods';
 })
 export class ResponsesComponent implements OnInit {
   resolutionForm = this.fb.group({
-    resolution: ['', Validators.required],
+    resolution: ['', [Validators.required]],
   });
   constructor(
     private fb: FormBuilder,
-    private apollo: Apollo,
     private responsesService: ResponsesService
   ) {}
 
@@ -33,7 +29,7 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   async ngOnInit() {
-    (this.responsesService.getResponseIDsByStatus(false)).subscribe(
+    (await this.responsesService.getResponseIDsByStatus(false)).subscribe(
       (data) => {
         this.responseIDs = data;
         this.numberOfResponses = data.length;
@@ -47,13 +43,16 @@ export class ResponsesComponent implements OnInit {
   }
 
   submitResolutionClick() {
-    this.responsesService.updateResolution(
-      this.responseIDs[this.displayedIndex],
-      this.resolutionForm.value['resolution']
-    );
+    // if the resolution field is not empty after a trim
+    if (this.resolutionForm.value.resolution.trim() !== '') {
+      this.responsesService.updateResolution(
+        this.responseIDs[this.displayedIndex],
+        this.resolutionForm.value['resolution']
+      );
 
-    //refresh the page
-    window.location.reload();
+      //refresh the page
+      window.location.reload();
+    }
   }
 
   async getResponseData(responseID: string) {
