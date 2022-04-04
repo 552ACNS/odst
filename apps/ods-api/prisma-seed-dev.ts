@@ -51,7 +51,6 @@ async function main() {
         roles: 'CC',
       },
     });
-    console.log({ user });
   }
   //#endregion user admin
 

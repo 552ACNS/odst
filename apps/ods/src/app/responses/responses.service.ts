@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { map } from 'rxjs';
+import { map, pluck, take } from 'rxjs';
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
   GetIssuesByStatusQueryVariables,
+  GetSurveyResponseDataDocument,
+  GetSurveyResponseDataQuery,
+  GetSurveyResponseDataQueryVariables,
   UpdateSurveyResponse_ResolutionDocument,
   UpdateSurveyResponse_ResolutionMutation,
   UpdateSurveyResponse_ResolutionMutationVariables,
@@ -15,7 +18,7 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getResponseIDsByStatus(resolved: boolean) {
+  getResponseIDsByStatus(resolved: boolean) {
     return this.apollo
       .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
         query: GetIssuesByStatusDocument,
@@ -23,11 +26,13 @@ export class ResponsesService {
           resolved: resolved,
         },
       })
-      .valueChanges.pipe(map((result) => result.data.getIssuesByStatus));
+      .valueChanges.pipe(map(result => result.data.getIssuesByStatus), take(1));
+
+      // pluck lets me retrieve nested data.
   }
 
-  async updateResolution(id: string, resolution: string) {
-    this.apollo
+  updateResolution(id: string, resolution: string) {
+    return this.apollo
       .mutate<
         UpdateSurveyResponse_ResolutionMutation,
         UpdateSurveyResponse_ResolutionMutationVariables
@@ -47,5 +52,21 @@ export class ResponsesService {
         },
       })
       .subscribe();
+  }
+
+  async getResponseData(responseID: string) {
+    return this.apollo
+      .watchQuery<
+        GetSurveyResponseDataQuery,
+        GetSurveyResponseDataQueryVariables
+      >({
+        query: GetSurveyResponseDataDocument,
+        variables: {
+          surveyResponseWhereUniqueInput: {
+            id: responseID,
+          },
+        },
+      })
+      .valueChanges.pipe(pluck('data', 'getSurveyResponseData'));
   }
 }
