@@ -57,7 +57,7 @@
       </mat-card-content>
 
       <!-- Buttons -->
-      <mat-card-actions class="text-sm mt-4 mb-0 flex h-9 space-x-4 py-0">
+      <mat-card-actions class="text-sm mt-4 mb-0 flex h-9 space-x-4 py-0 mx-1">
         <button
           mat-stroked-button
           class="w-full shadow-md rounded-full"
@@ -69,6 +69,7 @@
         <button
           mat-button
           class="w-full bg-dark-blue text-white shadow-md rounded-full"
+          [routerLink]="['/dashboard']"
         >
           Sign In
         </button>

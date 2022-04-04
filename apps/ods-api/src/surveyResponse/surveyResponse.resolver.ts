@@ -25,6 +25,12 @@ export class SurveyResponseResolver {
     );
   }
 
+
+  @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
+  async findManySurveyResponses() {
+    return await this.surveyResponseService.findManySurveyResponses();
+  }
+
   @Mutation(() => SurveyResponseGQL, { name: 'createSurveyResponse' })
   // @UseGuards(AccessTokenAuthGuard)
   async create(

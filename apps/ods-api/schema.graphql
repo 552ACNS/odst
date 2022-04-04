@@ -86,6 +86,7 @@ type Query {
   findManySurveys: [SurveyGQL!]!
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  findManySurveyResponses: [SurveyResponseGQL!]!
   getIssuesByStatus(resolved: Boolean!): [String!]!
   getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   findManyAnswers: [AnswerGQL!]!

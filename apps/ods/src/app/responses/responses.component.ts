@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'odst-responses',
@@ -15,10 +16,13 @@ export class ResponsesComponent implements OnInit {
   });
   constructor(
     private fb: FormBuilder,
-    private responsesService: ResponsesService
+    private responsesService: ResponsesService,
+    private route: ActivatedRoute
   ) {}
 
   questionsAnswers: [string, string][] = [];
+
+  resolved: boolean;
 
   openedDate: string;
   numberOfResponses: number;
@@ -29,8 +33,16 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   async ngOnInit() {
-    (await this.responsesService.getResponseIDsByStatus(false)).subscribe(
-      (data) => {
+    // Get resolved value form route params
+    this.route.queryParams.subscribe(async (params) => {
+      // For some weird ass reason, the resolved value is a string and !! or a Boolean cast doesn't work
+      // TODO: PLease resolve @ericcater
+      this.resolved = params['resolved'] === 'true';
+    });
+
+    this.responsesService
+      .getResponseIDsByStatus(Boolean(this.resolved))
+      .subscribe((data) => {
         this.responseIDs = data;
         this.numberOfResponses = data.length;
 
@@ -38,8 +50,7 @@ export class ResponsesComponent implements OnInit {
 
         // navigate to that issue
         this.displayIssue(this.pageEvent);
-      }
-    );
+      });
   }
 
   submitResolutionClick() {
@@ -63,6 +74,12 @@ export class ResponsesComponent implements OnInit {
           'MMM d yy, h:mm a',
           'en-US'
         );
+
+        if (this.resolved) {
+          this.resolutionForm.setValue({
+            resolution: data.resolution,
+          });
+        }
 
         // Clear contents of QA array
         this.questionsAnswers = [];
