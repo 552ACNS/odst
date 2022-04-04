@@ -10,9 +10,16 @@ import { LoginService } from './login.service';
 export class LoginComponent /*implements OnInit*/ {
   hide = true;
   loginForm = this.fb.group({
-    userUsername: ['', Validators.required],
-    userPassword: ['', Validators.required],
-    rememberMe: ['', Validators.nullValidator],
+
+    // TODO: Reenable once password is implemented
+    
+    // userUsername: ['', Validators.required],
+    // userPassword: ['', Validators.required],
+    // rememberMe: ['', Validators.nullValidator],
+
+    userUsername: [''],
+    userPassword: [''],
+    rememberMe: [''],
   });
 
   constructor(private fb: FormBuilder, private loginService: LoginService) {}
