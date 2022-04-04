@@ -48,7 +48,12 @@
         "no-restricted-imports": [
           "error",
           {
-            "patterns": ["@odst/types/*"]
+            "patterns": [
+              {
+                "group": ["@odst/types/*"],
+                "message": "Do not import types from @odst/types, use prisma types instead"
+              }
+            ]
           }
         ]
       }
