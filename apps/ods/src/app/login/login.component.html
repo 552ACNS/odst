@@ -1,14 +1,14 @@
 <div
-  class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] m-3 text-center"
+  class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] text-center"
 >
   <mat-card>
-    <mat-card-title class="mt-8 ml-0 text-7xl font-extrabold tracking-tight leading-tight">
+    <mat-card-title class="mt-8 ml-0 text-4xl font-extrabold tracking-tight leading-tight">
         Sign In
     </mat-card-title>
       <mat-card-content class="mt-2 flex justify-center font-medium h-fit space-x-2">
         <div>Don't have an account?</div>
 
-        <p class="underline text-right text-blue-300">Get one.</p>
+        <p class="underline text-right text-blue-300">Get one!</p>
       </mat-card-content>
 
       <!-- Sign in form -->
@@ -48,28 +48,28 @@
             <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
         </mat-form-field>
-        <mat-card-content class="mt-2 flex justify-center font-medium h-fit space-x-2 w-full">
+        <mat-card-content class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full">
           <mat-checkbox
-            class="align-middle"
+            class="align-middle float-left"
             [color]="'primary'"
             [formControlName]="'rememberMe'"
           >
             Remember Me
           </mat-checkbox>
-          <div class="font-medium underline text-blue-300">
+          <div class="pt-0.5 float-right font-medium underline text-blue-300">
             Forgot Password?
           </div>
         </mat-card-content>
 
         <!-- Buttons -->
-        <mat-card-actions class="text-sm mt-4 mb-0.5 h-8 space-x-4 pt-0 w-full">
-            <button mat-stroked-button class="min-w-40 shadow-md rounded-full"
+        <mat-card-actions class="flex h-8 space-x-2 mb-0 py-0 mx-1">
+            <button mat-stroked-button class="w-full shadow-md rounded-full"
             (click)="goBackClick()"
             >
                 Back
             </button>
             <!-- TODO: insert (click)="submitLoginClick()" into below button -->
-            <button mat-button class="min-w-40 bg-dark-blue text-white shadow-md rounded-full"
+            <button mat-button class="w-full bg-dark-blue text-white shadow-md rounded-full"
             
             >
                 Sign In
