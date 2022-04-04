@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type QuestionGQL {
+  id: String
+  prompt: String!
+}
+
 type AnswerGQL {
   id: String
   value: String!
@@ -23,11 +28,6 @@ enum OrgTier {
   OTHER
 }
 
-type QuestionGQL {
-  id: String
-  prompt: String!
-}
-
 type SurveyGQL {
   id: String
   questionsHash: String
@@ -47,6 +47,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input QuestionGQLInput {
+  id: String
+  prompt: String!
+}
+
 input AnswerGQLInput {
   id: String
   value: String!
@@ -59,11 +64,6 @@ input OrgGQLInput {
   orgTier: OrgTier!
   name: String!
   parentId: String
-}
-
-input QuestionGQLInput {
-  id: String
-  prompt: String!
 }
 
 input SurveyGQLInput {
