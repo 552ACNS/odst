@@ -28,4 +28,4 @@ import { RouterModule } from '@angular/router';
     ],
     exports: []
   })
-  export class SurveryQuestionsModule {}
+  export class SurveyQuestionsModule {}
