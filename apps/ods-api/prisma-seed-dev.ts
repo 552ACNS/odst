@@ -75,27 +75,32 @@ async function main() {
   //#endregion survey
 
   //#region question
-  const question1 = await prisma.question.create({
-    data: {
+
+  const question1 = await prisma.question.upsert({
+    where: { prompt: 'Which squadron did the event occur in?' },
+    create: {
       prompt: 'Which squadron did the event occur in?',
       surveys: { connect: { id: survey.id } },
     },
+    update: {},
   });
 
-  const question2 = await prisma.question.create({
-    data: {
-      prompt:
-        'Please describe the event of a micro-aggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.',
+  const question2 = await prisma.question.upsert({
+    where: { prompt: 'Please describe the event of a micro-aggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.' },
+    create: {
+      prompt: 'Please describe the event of a micro-aggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.',
       surveys: { connect: { id: survey.id } },
     },
+    update: {},
   });
 
-  const question3 = await prisma.question.create({
-    data: {
-      prompt:
-        'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?',
+  const question3 = await prisma.question.upsert({
+    where: { prompt: 'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?' },
+    create: {
+      prompt: 'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?',
       surveys: { connect: { id: survey.id } },
     },
+    update: {},
   });
 
   //#endregion question

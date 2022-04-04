@@ -65,7 +65,7 @@ export class SurveyService {
     });
   }
 
-  async create(data: Prisma.SurveyCreateInput): Promise<SurveyGQL> {
+  async create(data: Prisma.SurveyCreateInput) {
     const survey = await this.prisma.survey.create({
       data,
     });

@@ -11,21 +11,27 @@ import { MatRadioModule } from '@angular/material/radio';
 import { SurveyQuestionsComponent } from './survey-questions.component';
 import { SurveyQuestionsRoutes } from './survey-questions.routing';
 import { RouterModule } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { ApolloTestingModule } from 'apollo-angular/build/testing';
 @NgModule({
-    declarations: [SurveyQuestionsComponent],
-    imports: [
-        RouterModule.forChild(SurveyQuestionsRoutes),
-        CommonModule, 
-        ReactiveFormsModule,
-        MatInputModule,
-        MatIconModule,
-        MatButtonModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatCardModule,
-        MatCheckboxModule,
-        FormsModule
-    ],
-    exports: []
-  })
-  export class SurveryQuestionsModule {}
+  declarations: [SurveyQuestionsComponent],
+  imports: [
+    RouterModule.forChild(SurveyQuestionsRoutes),
+    CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    FormsModule,
+    ApolloTestingModule,
+    MatOptionModule,
+  ],
+  exports: [],
+})
+export class SurveryQuestionsModule {}

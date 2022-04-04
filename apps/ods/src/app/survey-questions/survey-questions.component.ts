@@ -31,7 +31,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   answers: string[];
   openDate = new Date();
   orgs: Partial<OrgGql>[];
-  CCs: string[] = ['Matos, Emmanuel Lt. Col.',];
+  CCs: string[] = ['Matos, Emmanuel Lt Col', 'Baker, John Lt Col'];
   querySubscription: Subscription;
   loading = true;
   submitSuccess = false;
@@ -93,7 +93,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   form = this.fb.group({
     eventOrg: [],
     event: [],
-    violatorSpec: [],
+    violatorSpec: ['AD'],
     violatorOtherSpec: [],
     CC: [],
     personSpec: [],
@@ -131,12 +131,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
           questionPrompts: this.questions,
         },
       })
-      .subscribe(
-        ({ data, errors }) => {
-          this.submitSuccess = (!errors);
-          alert(this.submitSuccess);
-        },
-      );
+      .subscribe();
     // this.answers = [
     //   this.form.get(['eventOrg'])?.value,
     //   this.form.value['event'],
