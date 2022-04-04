@@ -66,12 +66,13 @@ model Survey {
   id              String           @id @default(uuid())
   orgs            Org[]
   questions       Question[]
+  questionsHash   String?           @unique
   surveyResponses SurveyResponse[]
 }
 
 model Question {
   id      String   @id @default(uuid())
-  prompt  String
+  prompt  String   @unique
   surveys Survey[]
   answers Answer[]
 }

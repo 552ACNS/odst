@@ -25,5 +25,7 @@ export class QuestionCreateNestedOneWithoutAnswersInput
 
 @InputType()
 export class QuestionCreateNestedManyWithoutSurveysInput
-  extends QuestionCreateNested
-  implements Prisma.QuestionCreateNestedManyWithoutSurveysInput {}
+  implements Prisma.QuestionCreateNestedManyWithoutSurveysInput {
+    @Field(() => [QuestionWhereUniqueInput], { nullable: true })
+    connect?: Prisma.Enumerable<Prisma.QuestionWhereUniqueInput>;
+  }
