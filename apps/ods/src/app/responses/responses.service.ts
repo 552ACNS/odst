@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { filter, map } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import { map } from 'rxjs';
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
   GetIssuesByStatusQueryVariables,
-  GetSurveyResponseDataDocument,
-  GetSurveyResponseDataQuery,
-  GetSurveyResponseDataQueryVariables,
   UpdateSurveyResponse_ResolutionDocument,
   UpdateSurveyResponse_ResolutionMutation,
   UpdateSurveyResponse_ResolutionMutationVariables,
@@ -41,6 +38,9 @@ export class ResponsesService {
             id: id,
           },
           surveyResponseUpdateInput: {
+            // We can opt to not send date now and instead just do it in the
+            // back end, but that would mean having to make another
+            // UpdateSurveyResponse method
             closedDate: Date.now(),
             resolution: resolution,
           },

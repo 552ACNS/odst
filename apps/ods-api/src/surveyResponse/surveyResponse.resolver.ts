@@ -6,9 +6,8 @@ import {
   SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
 } from '@odst/types/ods';
-import { GetCurrentUserId } from '@odst/shared/nest';
-import { Logger } from '@nestjs/common';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
+// import { GetCurrentUserId } from '@odst/shared/nest';
+// import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => SurveyResponseGQL)
@@ -43,8 +42,6 @@ export class SurveyResponseResolver {
     @Args('SurveyResponseUpdateInput')
     surveyResponseUpdateInput: SurveyResponseUpdateInput
   ) {
-    Logger.log(surveyResponseUpdateInput.resolution, 'SurveyResponseResolver.update');
-
     return this.surveyResponseService.update(
       surveyResponseWhereUniqueInput,
       surveyResponseUpdateInput
@@ -80,7 +77,6 @@ export class SurveyResponseResolver {
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
   ) {
-
     return await this.surveyResponseService.getSurveyResponseData(
       surveyResponseWhereUniqueInput
     );

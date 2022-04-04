@@ -9,7 +9,7 @@ const CCEmail = 'john.doe@us.af.mil';
 
 async function main() {
   //#region org
-  const org = await prisma.org.upsert({
+  await prisma.org.upsert({
     where: {
       name: orgName,
     },
@@ -85,27 +85,29 @@ async function main() {
 
   const question2 = await prisma.question.create({
     data: {
-      prompt: 'Please describe the event of a micro-aggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.',
+      prompt:
+        'Please describe the event of a micro-aggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.',
       surveys: { connect: { id: survey.id } },
     },
   });
 
   const question3 = await prisma.question.create({
     data: {
-      prompt: 'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?',
+      prompt:
+        'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?',
       surveys: { connect: { id: survey.id } },
     },
   });
-  
-  //#endregion answer
 
-  //#region answer
+  //#endregion question
+
+  //#region surveyResponse
   const surveyResponse = await prisma.surveyResponse.create({
     data: {
       survey: { connect: { id: survey.id } },
     },
   });
-  //#endregion answer
+  //#endregion surveyResponse
 
   //#region answer
   await prisma.answer.create({
@@ -118,7 +120,8 @@ async function main() {
 
   await prisma.answer.create({
     data: {
-      value: 'Someone said I was "pretty good at Hockey even though Im from Minnesota". Does he think Minnesotans are normally bad at Hockey?',
+      value:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
       question: { connect: { id: question2.id } },
       surveyResponse: { connect: { id: surveyResponse.id } },
     },
@@ -132,7 +135,6 @@ async function main() {
     },
   });
   //#endregion answer
-
 }
 
 main()

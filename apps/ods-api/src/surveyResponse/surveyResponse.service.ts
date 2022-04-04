@@ -1,7 +1,6 @@
-import { ConsoleLogger, Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { SurveyResponse, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { SurveyResponseGQL } from '@odst/types/ods';
 
 @Injectable()
 export class SurveyResponseService {
