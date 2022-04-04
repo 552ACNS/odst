@@ -3,7 +3,6 @@ import { Prisma } from '.prisma/ods/client';
 import { QuestionCreateNestedOneWithoutAnswersInput } from './question.create.input';
 import { SurveyResponseCreateNestedOneWithoutAnswersInput } from './surveyResponse.create.input';
 import { AnswerWhereUniqueInput } from './answer.unique.input';
-import { AnswerGQL } from '../entity/answer.entity';
 
 @InputType()
 export class AnswerCreateInput implements Prisma.AnswerCreateInput {
@@ -20,9 +19,9 @@ export class AnswerCreateInput implements Prisma.AnswerCreateInput {
 export class AnswerCreateNestedManyWithoutSurveyResponseInput
   implements Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput
 {
-  @Field(() => AnswerGQL, { nullable: true })
+  @Field(() => AnswerWhereUniqueInput, { nullable: true })
   connect?: AnswerWhereUniqueInput;
 
-  @Field(() => AnswerGQL, { nullable: true })
+  @Field(() => AnswerCreateInput, { nullable: true })
   create?: Prisma.AnswerCreateWithoutSurveyResponseInput;
 }

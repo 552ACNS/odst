@@ -32,14 +32,14 @@ model RefreshToken {
 }
 
 model Org {
-  id         String   @id @default(uuid())
-  name       String   @unique // Example "552 ACNS"
-  orgTier    OrgTier
-  commanders User[]
-  parentId   String? // a parent org can have many child orgs
-  parent     Org?     @relation(name: "ParentChild", fields: [parentId], references: [id])
-  children   Org[]    @relation(name: "ParentChild") // This is a self relation
-  surveys    Survey[] // TODO Add many to many relationship between Org and Survey
+  id       String   @id @default(uuid())
+  name     String   @unique // Example "552 ACNS"
+  orgTier  OrgTier
+  users    User[]
+  parentId String? // a parent org can have many child orgs
+  parent   Org?     @relation(name: "ParentChild", fields: [parentId], references: [id])
+  children Org[]    @relation(name: "ParentChild") // This is a self relation
+  surveys  Survey[] // TODO Add many to many relationship between Org and Survey
 }
 
 model SurveyResponse {

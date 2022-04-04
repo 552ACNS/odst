@@ -19,3 +19,17 @@ async function bootstrap() {
 }
 
 bootstrap();
+
+
+
+//Things to do to get waypoint updated to "better practices":
+//TODO add resolvers for relations
+//TODO hide foreign key fields
+//TODO any EntityWhereInput input types
+//TODO add where field to findMany
+//TODO update order to be consistent
+//TODO update servicer/resolver tests to mirror ODS
+//TODO move auth/refreshToken to a separate library
+//TODO user parent interface?
+//TODO refactor delete to return boolean
+//TODO refactor old resolver/servicer methods that should go through findMany({ where })

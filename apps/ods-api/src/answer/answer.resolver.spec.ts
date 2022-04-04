@@ -4,11 +4,13 @@ import { AnswerService } from './answer.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestAnswerCreateInput } from './answer.repo';
 import { AnswerGQL } from '@odst/types/ods';
+import { QuestionService } from '../question/question.service';
 
 const answerArray: AnswerGQL[] = [];
 
 TestAnswerCreateInput.forEach((answerCreateInput) => {
-  const answer: AnswerGQL = ((answerCreateInput as unknown as AnswerGQL).id = uuidv4());
+  const answer: AnswerGQL = ((answerCreateInput as unknown as AnswerGQL).id =
+    uuidv4());
   answerArray.push(answer);
 });
 
@@ -26,15 +28,23 @@ describe('Answer Resolver', () => {
           provide: AnswerService,
           useValue: {
             findMany: jest.fn().mockResolvedValue(answerArray),
-            getSubAnswers: jest
-              .fn()
-              .mockResolvedValue(answerArray),
+            getSubAnswers: jest.fn().mockResolvedValue(answerArray),
             findUnique: jest
               .fn()
               .mockImplementation(() => Promise.resolve(oneAnswer)),
-            create: jest.fn().mockImplementation(() => Promise.resolve(oneAnswer)),
-            update: jest.fn().mockImplementation(() => Promise.resolve(oneAnswer)),
+            create: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneAnswer)),
+            update: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneAnswer)),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
+          },
+        },
+        {
+          provide: QuestionService,
+          useValue: {
+            findMany: jest.fn().mockResolvedValue(answerArray),
           },
         },
       ],
@@ -50,7 +60,7 @@ describe('Answer Resolver', () => {
 
   describe('findMany', () => {
     it('should get an array of answers', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(answerArray);
+      await expect(resolver.findMany({})).resolves.toEqual(answerArray);
     });
   });
 

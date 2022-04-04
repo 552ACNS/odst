@@ -6,7 +6,6 @@ import { OrgWhereUniqueInput } from './org.unique.input';
 export class UserCreateInput implements Prisma.UserCreateInput {
   email: string;
   password: string;
-
   enabled?: boolean;
 
   @Field(() => Role)

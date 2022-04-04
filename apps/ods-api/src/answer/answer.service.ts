@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Answer, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { AnswerGQL } from '@odst/types/ods';
 
 @Injectable()
 export class AnswerService {
@@ -11,7 +10,7 @@ export class AnswerService {
     skip?: number;
     take?: number;
     cursor?: Prisma.AnswerWhereUniqueInput;
-    where?: Prisma.AnswerWhereUniqueInput;
+    where?: Prisma.AnswerWhereInput;
     orderBy?: Prisma.AnswerOrderByWithRelationInput;
   }): Promise<Answer[]> {
     const { skip, take, cursor, where, orderBy } = params;
@@ -32,7 +31,7 @@ export class AnswerService {
     });
   }
 
-  async create(data: Prisma.AnswerCreateInput): Promise<AnswerGQL> {
+  async create(data: Prisma.AnswerCreateInput): Promise<Answer> {
     return this.prisma.answer.create({
       data,
     });
