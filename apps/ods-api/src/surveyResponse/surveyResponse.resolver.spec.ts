@@ -2,17 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SurveyResponseResolver } from './surveyResponse.resolver';
 import { SurveyResponseService } from './surveyResponse.service';
 import { v4 as uuidv4 } from 'uuid';
-import { TestSurveyResponseCreateInput } from './surveyResponse.repo';
+import { MockSurveyResponses, MockSurveyResponseCreateInput } from './surveyResponse.repo';
 import { SurveyResponseGQL } from '@odst/types/ods';
-
-const surveyResponseArray: SurveyResponseGQL[] = [];
-
-TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
-  const surveyResponse: SurveyResponseGQL = ((surveyResponseCreateInput as unknown as SurveyResponseGQL).id = uuidv4());
-  surveyResponseArray.push(surveyResponse);
-});
-
-const oneSurveyResponse = surveyResponseArray[0];
+import { AnswerService } from '../answer/answer.service';
+import { SurveyService } from '../survey/survey.service';
 
 describe('SurveyResponse Resolver', () => {
   let resolver: SurveyResponseResolver;
@@ -25,17 +18,29 @@ describe('SurveyResponse Resolver', () => {
         {
           provide: SurveyResponseService,
           useValue: {
-            findMany: jest.fn().mockResolvedValue(surveyResponseArray),
+            findMany: jest.fn().mockResolvedValue(MockSurveyResponses),
             findUnique: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneSurveyResponse)),
+              .mockImplementation(() => Promise.resolve(MockSurveyResponses[0])),
             create: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneSurveyResponse)),
+              .mockImplementation(() => Promise.resolve(MockSurveyResponses[0])),
             update: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneSurveyResponse)),
+              .mockImplementation(() => Promise.resolve(MockSurveyResponses[0])),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
+          },
+        },
+        {
+          provide: SurveyService,
+          useValue: {
+            findUnique: jest.fn().mockResolvedValue({}),
+          },
+        },
+        {
+          provide: AnswerService,
+          useValue: {
+            findMany: jest.fn().mockResolvedValue({}),
           },
         },
       ],
@@ -51,7 +56,7 @@ describe('SurveyResponse Resolver', () => {
 
   describe('findMany', () => {
     it('should get an array of surveyResponses', async () => {
-      await expect(resolver.findMany({})).resolves.toEqual(surveyResponseArray);
+      await expect(resolver.findMany({})).resolves.toEqual(MockSurveyResponses);
     });
   });
 
@@ -59,17 +64,17 @@ describe('SurveyResponse Resolver', () => {
     it('should get a single surveyResponse', async () => {
       await expect(
         resolver.findUnique({ id: 'a strange id' })
-      ).resolves.toEqual(surveyResponseArray[0]);
+      ).resolves.toEqual(MockSurveyResponses[0]);
       await expect(
         resolver.findUnique({ id: 'a different id' })
-      ).resolves.toEqual(surveyResponseArray[0]);
+      ).resolves.toEqual(MockSurveyResponses[0]);
     });
   });
 
   describe('create', () => {
     it('should create a create surveyResponse', async () => {
-      await expect(resolver.create(TestSurveyResponseCreateInput[0])).resolves.toEqual(
-        surveyResponseArray[0]
+      await expect(resolver.create(MockSurveyResponseCreateInput[0])).resolves.toEqual(
+        MockSurveyResponses[0]
       );
     });
   });
@@ -78,10 +83,10 @@ describe('SurveyResponse Resolver', () => {
     it('should update a surveyResponse', async () => {
       await expect(
         resolver.update(
-          { id: oneSurveyResponse.id },
+          { id: MockSurveyResponses[0].id },
           { routeOutside : true }
         )
-      ).resolves.toEqual(oneSurveyResponse);
+      ).resolves.toEqual(MockSurveyResponses[0]);
     });
   });
 

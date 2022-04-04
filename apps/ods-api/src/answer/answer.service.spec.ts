@@ -1,27 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { AnswerService } from './answer.service';
-import { v4 as uuidv4 } from 'uuid';
-import { TestAnswerCreateInput } from './answer.repo';
-import { AnswerGQL } from '@odst/types/ods';
+import { MockAnswers, MockAnswerCreateInput } from './answer.repo';
 
-const answerArray: AnswerGQL[] = [];
-
-TestAnswerCreateInput.forEach((answerCreateInput) => {
-  const answer: AnswerGQL = ((answerCreateInput as unknown as AnswerGQL).id =
-    uuidv4());
-  answerArray.push(answer);
-});
-
-const oneAnswer = answerArray[0];
+const MockAnswer = MockAnswers[0];
 
 const db = {
   answer: {
-    findMany: jest.fn().mockReturnValue(answerArray),
-    findUnique: jest.fn().mockResolvedValue(oneAnswer),
-    create: jest.fn().mockResolvedValue(oneAnswer),
-    update: jest.fn().mockResolvedValue(oneAnswer),
-    delete: jest.fn().mockResolvedValue(oneAnswer),
+    findMany: jest.fn().mockReturnValue(MockAnswers),
+    findUnique: jest.fn().mockResolvedValue(MockAnswer),
+    create: jest.fn().mockResolvedValue(MockAnswer),
+    update: jest.fn().mockResolvedValue(MockAnswer),
+    delete: jest.fn().mockResolvedValue(MockAnswer),
   },
 };
 
@@ -51,22 +41,20 @@ describe('AnswerService', () => {
   describe('findMany', () => {
     it('should return an array of answers', async () => {
       const answers = await service.findMany({});
-      expect(answers).toEqual(answerArray);
+      expect(answers).toEqual(MockAnswers);
     });
   });
 
   describe('findUnique', () => {
     it('should get a single answer', () => {
-      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
-        oneAnswer
-      );
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(MockAnswer);
     });
   });
 
   describe('create', () => {
     it('should call the create method', async () => {
-      const answer = await service.create(TestAnswerCreateInput[0]);
-      expect(answer).toEqual(oneAnswer);
+      const answer = await service.create(MockAnswerCreateInput[0]);
+      expect(answer).toEqual(MockAnswer);
     });
   });
 
@@ -78,7 +66,7 @@ describe('AnswerService', () => {
           question: { connect: { id: 'question id' } },
         }
       );
-      expect(answer).toEqual(oneAnswer);
+      expect(answer).toEqual(MockAnswer);
     });
   });
 
@@ -90,7 +78,7 @@ describe('AnswerService', () => {
     });
 
     it('should return {deleted: false, message: err.message}', () => {
-      const dbSpy = jest
+      jest
         .spyOn(prisma.answer, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({

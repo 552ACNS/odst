@@ -1,26 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { SurveyService } from './survey.service';
-import { v4 as uuidv4 } from 'uuid';
-import { TestSurveyCreateInput } from './survey.repo';
-import { SurveyGQL } from '@odst/types/ods';
-
-const surveyArray: SurveyGQL[] = [];
-
-TestSurveyCreateInput.forEach((surveyCreateInput) => {
-  const survey: SurveyGQL = ((surveyCreateInput as SurveyGQL).id = uuidv4());
-  surveyArray.push(survey);
-});
-
-const oneSurvey = surveyArray[0];
+import { MockSurveyCreateInput, MockSurveys } from './survey.repo';
 
 const db = {
   survey: {
-    findMany: jest.fn().mockReturnValue(surveyArray),
-    findUnique: jest.fn().mockResolvedValue(oneSurvey),
-    create: jest.fn().mockResolvedValue(oneSurvey),
-    update: jest.fn().mockResolvedValue(oneSurvey),
-    delete: jest.fn().mockResolvedValue(oneSurvey),
+    findMany: jest.fn().mockReturnValue(MockSurveys),
+    findUnique: jest.fn().mockResolvedValue(MockSurveys[0]),
+    create: jest.fn().mockResolvedValue(MockSurveys[0]),
+    update: jest.fn().mockResolvedValue(MockSurveys[0]),
+    delete: jest.fn().mockResolvedValue(MockSurveys[0]),
   },
 };
 
@@ -50,20 +39,20 @@ describe('SurveyService', () => {
   describe('findMany', () => {
     it('should return an array of surveys', async () => {
       const surveys = await service.findMany({});
-      expect(surveys).toEqual(surveyArray);
+      expect(surveys).toEqual(MockSurveys);
     });
   });
 
   describe('findUnique', () => {
     it('should get a single survey', () => {
-      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(oneSurvey);
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(MockSurveys[0]);
     });
   });
 
   describe('create', () => {
     it('should call the create method', async () => {
-      const survey = await service.create(TestSurveyCreateInput[0]);
-      expect(survey).toEqual(oneSurvey);
+      const survey = await service.create(MockSurveyCreateInput[0]);
+      expect(survey).toEqual(MockSurveys[0]);
     });
   });
 
@@ -75,7 +64,7 @@ describe('SurveyService', () => {
           surveyResponses: { connect: { id: 'surveyResponse id' } },
         }
       );
-      expect(survey).toEqual(oneSurvey);
+      expect(survey).toEqual(MockSurveys[0]);
     });
   });
 
