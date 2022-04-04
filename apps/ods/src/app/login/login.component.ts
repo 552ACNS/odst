@@ -27,7 +27,6 @@ export class LoginComponent /*implements OnInit*/ {
   //     this.loginForm.value['userPassword']
   //   );
   // }
-  //This is temporary until we can implement a login
   submitLoginClick() {
     this.loginService.submitLogin();
   }

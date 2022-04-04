@@ -10,7 +10,7 @@ export class LoginService {
 
   constructor(private apollo: Apollo, private router: Router) {}
   //submitLogin(username: string, password: string): void {}
-  //This is temporary until we can implement a login
+  //TODO: route to the dashboard
   submitLogin(): void {
     this.router.navigate(['responses']);
   }
