@@ -8,7 +8,8 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx run-many --target=test --all",
-    "generate": "nx run-many --target=prisma-generate --all"
+    "gen-prisma": "nx run-many --target=prisma-generate --all",
+    "gen-gql": "npx graphql-codegen --config graphql.codegen.yml"
   },
   "private": true,
   "dependencies": {

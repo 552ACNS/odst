@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Answer, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { AnswerGQL } from '@odst/types/ods';
 
 @Injectable()
 export class AnswerService {
@@ -32,7 +31,7 @@ export class AnswerService {
     });
   }
 
-  async create(data: Prisma.AnswerCreateInput): Promise<AnswerGQL> {
+  async create(data: Prisma.AnswerCreateInput): Promise<Answer> {
     return this.prisma.answer.create({
       data,
     });

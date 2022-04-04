@@ -6,4 +6,11 @@ describe('ods', () => {
       'Observations of Discrimination in the Squadron'
     );
   });
+
+  it('should display the login page', () => {
+    // get the I want to login button
+    cy.get('button').contains('I want to login').click();
+    // get the login form
+    cy.get('mat-card-title').contains('Sign In');
+  });
 });

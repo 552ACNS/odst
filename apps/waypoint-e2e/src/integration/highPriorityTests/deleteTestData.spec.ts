@@ -44,15 +44,15 @@ it('deletes an org', () => {
       authorization,
     },
     body: {
-      operationName: 'removeOrg',
+      operationName: 'deleteOrg',
       variables: {
         orgWhereUniqueInput: {
           name: '552 FakeOrg',
         },
       },
       query: `
-        mutation removeOrg($orgWhereUniqueInput: OrgWhereUniqueInput!) {
-          removeOrg(orgWhereUniqueInput: $orgWhereUniqueInput) {
+        mutation deleteOrg($orgWhereUniqueInput: OrgWhereUniqueInput!) {
+          deleteOrg(orgWhereUniqueInput: $orgWhereUniqueInput) {
             name
           }
         }
