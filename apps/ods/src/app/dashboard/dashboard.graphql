@@ -1,0 +1,8 @@
+query GetSurveyDataDashboard {
+  findManySurveyResponses {
+    surveyId
+    openedDate
+    resolution
+    routeOutside
+  }
+}

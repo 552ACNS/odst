@@ -14,6 +14,7 @@ import { environment } from '../environments/environment';
   imports: [
     BrowserModule,
     RouterModule.forRoot([]),
+    GQLModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,

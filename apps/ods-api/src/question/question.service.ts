@@ -29,9 +29,7 @@ export class QuestionService {
   ): Promise<Question[]> {
     return await this.prisma.question.findMany({
       where: {
-        surveys: {
-          every: surveyWhereUniqueInput
-        },
+        surveys: { every: surveyWhereUniqueInput },
       },
     });
   }

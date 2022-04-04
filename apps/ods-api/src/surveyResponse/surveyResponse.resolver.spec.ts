@@ -49,13 +49,8 @@ describe('SurveyResponse Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
-  describe('findMany', () => {
-    it('should get an array of surveyResponses', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(surveyResponseArray);
-    });
-  });
 
-  describe('findUnqiue', () => {
+  describe('findUnique', () => {
     it('should get a single surveyResponse', async () => {
       await expect(
         resolver.findUnique({ id: 'a strange id' })

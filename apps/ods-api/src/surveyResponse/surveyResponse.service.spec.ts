@@ -87,9 +87,10 @@ describe('SurveyResponseService', () => {
     });
 
     it('should return {deleted: false, message: err.message}', () => {
-      const dbSpy = jest
+      jest
         .spyOn(prisma.surveyResponse, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
+        
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
         deleted: false,
         message: 'Bad Delete Method.',

@@ -5,4 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './disclaimer.component.html',
   styleUrls: ['./disclaimer.component.scss'],
 })
-export class DisclaimerComponent {}
+export class DisclaimerComponent {
+
+  navigateToLogin() {
+    window.location.href = '/login';
+  }
+}
+

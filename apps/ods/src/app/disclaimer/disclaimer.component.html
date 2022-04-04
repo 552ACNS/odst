@@ -1,6 +1,8 @@
-<div class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] m-3">
-  <mat-card class="border-1 border-dark-blue rounded-2xl shadow-md">
-    <mat-card-title class="font-medium text-black text-sm">
+<div
+  class="mx-auto min-w-[340px] w-[95%] max-w-[500px] mt-2 space-y-3 flex flex-col"
+>
+  <mat-card class="rounded-2xl shadow-md">
+    <mat-card-title class="text-xl font-medium text-black">
       Observations of Discrimination in the Squadron
     </mat-card-title>
     <mat-card-content class="text-sm">
@@ -19,20 +21,20 @@
       False reporting may result in disciplinary actions.
     </mat-card-content>
     <mat-card-actions class="text-sm mt-4 mb-0.5 flex h-8 space-x-4 pt-0">
-      <button
-        mat-stroked-button
-        class="w-full border-1 border-dark-blue shadow-md rounded-full"
-      >
+      <button mat-stroked-button class="w-full shadow-md rounded-full">
         Decline
       </button>
-      <button mat-button class="w-full bg-dark-blue text-white rounded-full">
+      <button
+        mat-button
+        class="w-full bg-dark-blue text-white shadow-md rounded-full"
+      >
         Accept
       </button>
     </mat-card-actions>
   </mat-card>
 
   <!-- this lies outside the box -->
-  <div class="mt-2 items-end font-medium">
-    <p class="underline text-right text-dark-blue">I want to login</p>
-  </div>
+  <button mat-button class="underline ml-auto" [routerLink]="['/login']">
+    I want to login
+  </button>
 </div>

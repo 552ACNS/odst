@@ -1,0 +1,79 @@
+<div
+  class="mx-auto min-w-[340px] w-[95%] max-w-[500px] mt-2 -space-y-24 text-center"
+>
+  <mat-card class="rounded-2xl shadow-md">
+    <mat-card-title class="text-4xl font-extrabold"> Sign In </mat-card-title>
+    <mat-card-content
+      class="mt-2 flex font-medium space-x-2 items-center justify-center"
+    >
+      <div>Don't have an account?</div>
+      <p class="underline text-right text-blue-300">Get one!</p>
+    </mat-card-content>
+
+    <!-- Sign in form -->
+    <form [formGroup]="loginForm">
+      <!-- User Name field -->
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input
+          id="userName"
+          formcontrolname="userUsername"
+          type="text"
+          matInput
+          placeholder="Username"
+          [formControlName]="'userUsername'"
+        />
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      </mat-form-field>
+      <br />
+      <!-- Password field -->
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          id="password"
+          formcontrolname="userPassword"
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          [formControlName]="'userPassword'"
+        />
+        <button
+          mat-icon-button
+          type="button"
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-card-content
+        class="flex justify-between space-x-2 w-full"
+      >
+        <mat-checkbox [color]="'primary'" [formControlName]="'rememberMe'">
+          Remember Me
+        </mat-checkbox>
+        <div class="underline text-blue-300">Forgot Password?</div>
+      </mat-card-content>
+
+      <!-- Buttons -->
+      <mat-card-actions class="text-sm mt-4 mb-0 flex h-9 space-x-4 py-0 mx-1">
+        <button
+          mat-stroked-button
+          class="w-full shadow-md rounded-full"
+          (click)="goBackClick()"
+        >
+          Back
+        </button>
+        <!-- TODO: insert (click)="submitLoginClick()" into below button -->
+        <button
+          mat-button
+          class="w-full bg-dark-blue text-white shadow-md rounded-full"
+          [routerLink]="['/dashboard']"
+        >
+          Sign In
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

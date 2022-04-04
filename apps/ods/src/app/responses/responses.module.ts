@@ -7,6 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [ResponsesComponent],
@@ -14,8 +16,10 @@ import { MatInputModule } from '@angular/material/input';
     CommonModule,
     RouterModule.forChild(ResponsesRoutes),
     MatPaginatorModule,
+    ReactiveFormsModule,
     MatCardModule,
     MatInputModule,
+    MatButtonModule,
     //temporary
     MatFormFieldModule,
   ],
