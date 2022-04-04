@@ -14,6 +14,4 @@ export class LoginService {
   goBack(): void {
     this.router.navigate(['disclaimer']);
   }
-
-  
 }
