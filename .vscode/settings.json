@@ -10,9 +10,5 @@
   "workbench.iconTheme": "material-icon-theme",
   "angular.enable-strict-mode-prompt": false,
   "css.customData": [".vscode/css_custom_data.json"],
-  "githubPullRequests.remotes": [
-    "github",
-    "origin"
-  ],
-  "eslint.lintTask.enable": true
+  "githubPullRequests.remotes": ["github", "origin"]
 }
