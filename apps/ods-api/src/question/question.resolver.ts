@@ -68,6 +68,7 @@ export class QuestionResolver {
     return this.questionService.delete(questionWhereUniqueInput);
   }
 
+  //TODO: Delete mutation if ends up never getting used.
   @Mutation(() => QuestionGQL, { name: 'upsertQuestion' })
   // @UseGuards(AccessTokenAuthGuard)
   async upsert(

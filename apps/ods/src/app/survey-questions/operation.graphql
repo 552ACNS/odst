@@ -1,26 +1,26 @@
-mutation createOrg_form($orgCreateInput: OrgCreateInput!) {
-  createOrg(orgCreateInput: $orgCreateInput) {
-    ...orgFields
-  }
-}
+# mutation createOrg_form($orgCreateInput: OrgCreateInput!) {
+#   createOrg(orgCreateInput: $orgCreateInput) {
+#     ...orgFields
+#   }
+# }
 
-mutation createAnswer_form($answerCreateInput: AnswerCreateInput!) {
-  createAnswer(answerCreateInput: $answerCreateInput) {
-    ...answerField
-  }
-}
+# mutation createAnswer_form($answerCreateInput: AnswerCreateInput!) {
+#   createAnswer(answerCreateInput: $answerCreateInput) {
+#     ...answerField
+#   }
+# }
 
-mutation createSurveyResponse_form($surveyResponseCreateInput: SurveyResponseCreateInput!) {
-  createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
-    ...surveyResponseFields
-  }
-}
+# mutation createSurveyResponse_form($surveyResponseCreateInput: SurveyResponseCreateInput!) {
+#   createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
+#     ...surveyResponseFields
+#   }
+# }
 
-mutation createSurvey_form($surveyCreateInput: SurveyCreateInput!) {
-  createSurvey(surveyCreateInput: $surveyCreateInput) {
-    id
-  }
-}
+# mutation createSurvey_form($surveyCreateInput: SurveyCreateInput!) {
+#   createSurvey(surveyCreateInput: $surveyCreateInput) {
+#     id
+#   }
+# }
 
 mutation createSurveyWithQuestions_form($questionPrompts: [String!]!) {
   createSurveyWithQuestions(questionPrompts: $questionPrompts) {
@@ -34,12 +34,12 @@ query findManyOrgs_form {
   }
 }
 
-fragment answerField on AnswerGQL{
-    id
-    value
-    questionId
-    surveyResponseId
-}
+# fragment answerField on AnswerGQL{
+#     id
+#     value
+#     questionId
+#     surveyResponseId
+# }
 
 fragment orgFields on OrgGQL {
   id
@@ -47,19 +47,19 @@ fragment orgFields on OrgGQL {
   orgTier
   parentId
 }
-fragment questionFields on QuestionGQL {
-  id
-  prompt
-}
+# fragment questionFields on QuestionGQL {
+#   id
+#   prompt
+# }
 
-fragment surveyResponseFields on SurveyResponseGQL {
-  id
-  surveyId
-  openedDate
-  closedDate
-  routeOutside
-  resolution
-}
+# fragment surveyResponseFields on SurveyResponseGQL {
+#   id
+#   surveyId
+#   openedDate
+#   closedDate
+#   routeOutside
+#   resolution
+# }
 
 fragment surveyFields on SurveyGQL
 {
