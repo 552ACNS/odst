@@ -2,13 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { AnswerService } from './answer.service';
 import { v4 as uuidv4 } from 'uuid';
-import { TestAnswerCreateInput } from './answer.repo';
-import { AnswerGQL } from '@odst/types/ods';
+import { TestAnswerCreateInput } from './answer.repo'
+import { Answer} from '.prisma/ods/client';
 
-const answerArray: AnswerGQL[] = [];
+const answerArray: Answer[] = [];
 
 TestAnswerCreateInput.forEach((answerCreateInput) => {
-  const answer: AnswerGQL = ((answerCreateInput as unknown as AnswerGQL).id =
+  const answer: Answer = ((answerCreateInput as unknown as Answer).id =
     uuidv4());
   answerArray.push(answer);
 });

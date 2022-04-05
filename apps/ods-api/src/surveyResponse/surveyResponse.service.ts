@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SurveyResponse, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { SurveyResponseGQL } from '@odst/types/ods';
 
 @Injectable()
 export class SurveyResponseService {
@@ -32,7 +31,7 @@ export class SurveyResponseService {
     });
   }
 
-  async create(data: Prisma.SurveyResponseCreateInput): Promise<SurveyResponseGQL> {
+  async create(data: Prisma.SurveyResponseCreateInput): Promise<SurveyResponse> {
     return this.prisma.surveyResponse.create({
       data,
     });
