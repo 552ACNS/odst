@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SurveyResponse, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { SurveyResponseGQL } from '@odst/types/ods';
-import { GetCurrentUserId } from '@odst/shared/nest';
-import { stringify } from 'querystring';
 
 @Injectable()
 export class SurveyResponseService {
@@ -76,7 +73,7 @@ async getIssueData(issueId: string): Promise<string[]>{
 
   async create(
     data: Prisma.SurveyResponseCreateInput
-  ): Promise<SurveyResponseGQL> {
+  ): Promise<SurveyResponse> {
     return this.prisma.surveyResponse.create({
       data,
     });
