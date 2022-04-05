@@ -10,11 +10,7 @@
 #   }
 # }
 
-# mutation createSurveyResponse_form($surveyResponseCreateInput: SurveyResponseCreateInput!) {
-#   createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
-#     ...surveyResponseFields
-#   }
-# }
+
 
 # mutation createSurvey_form($surveyCreateInput: SurveyCreateInput!) {
 #   createSurvey(surveyCreateInput: $surveyCreateInput) {
@@ -22,17 +18,26 @@
 #   }
 # }
 
+mutation createSurveyResponse_form($surveyResponseCreateInput: SurveyResponseCreateInput!) {
+  createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
+    ...surveyResponseFields
+  }
+}
+
 mutation createSurveyWithQuestions_form($questionPrompts: [String!]!) {
   createSurveyWithQuestions(questionPrompts: $questionPrompts) {
     ...surveyFields
   }
 }
 
+
 query findManyOrgs_form {
   findManyOrgs {
     ...orgFields
   }
 }
+
+
 
 # fragment answerField on AnswerGQL{
 #     id
@@ -52,14 +57,14 @@ fragment orgFields on OrgGQL {
 #   prompt
 # }
 
-# fragment surveyResponseFields on SurveyResponseGQL {
-#   id
-#   surveyId
-#   openedDate
-#   closedDate
-#   routeOutside
-#   resolution
-# }
+fragment surveyResponseFields on SurveyResponseGQL {
+  id
+  surveyId
+  openedDate
+  closedDate
+  routeOutside
+  resolution
+}
 
 fragment surveyFields on SurveyGQL
 {

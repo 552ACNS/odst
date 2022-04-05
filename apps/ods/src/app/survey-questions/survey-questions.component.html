@@ -46,10 +46,10 @@
         <span class="text-red-500"> * </span>
       </label>
       <!-- TODO Fix to use tailwind for spacing in future -->
-      <!-- TODO Fix autoselecting other when page loads -->
+      <!-- TODO Fix autoselecting other when page loads   [(ngModel)]="violatorOption" -->
       <mat-radio-group
         name="violator_spec"
-        [(ngModel)]="violatorOption"
+       
         formControlName="violatorSpec"
         color="primary"
         required
@@ -65,14 +65,15 @@
         <br />
         <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
         <br />
+        <!-- [(ngModel)]="customViolator" (ngModelChange)="violatorOption = 'other'" -->
         <mat-radio-button value="other">
           <mat-form-field>
             <input
               matInput
               formControlName="violatorOtherSpec"
               placeholder="Other"
-              [(ngModel)]="customViolator"
-              (ngModelChange)="violatorOption = 'other'"
+              
+              
             />
           </mat-form-field>
         </mat-radio-button>
@@ -100,10 +101,10 @@
         <span class="text-red-500"> * </span>
       </label>
       <!-- TODO Fix to use tailwind for spacing in future -->
-      <!-- TODO Fix autoselecting other when page loads -->
+      <!-- TODO Fix autoselecting other when page loads  [(ngModel)]="personOption"-->
       <mat-radio-group
         name="person_spec"
-        [(ngModel)]="personOption"
+        
         formControlName="personSpec"
         color="primary"
         required
@@ -119,20 +120,21 @@
         <br />
         <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
         <br />
+        <!-- [(ngModel)]="customPerson" (ngModelChange)="personOption = 'other'"-->
         <mat-radio-button value="other">
           <mat-form-field>
             <input
               matInput
               formControlName="personOtherSpec"
               placeholder="Other"
-              [(ngModel)]="customPerson"
-              (ngModelChange)="personOption = 'other'"
+              
+              
             />
           </mat-form-field>
         </mat-radio-button>
       </mat-radio-group>
       <label class="mt-6 mb-1">
-        What impacts did this event have on you or your work environment
+        What impacts did this event have on you or your work environment?
         <span class="text-red-500"> * </span>
       </label>
       <mat-form-field appearance="outline" class="w-full border-solid">

@@ -9,6 +9,9 @@ import {
   FindManyOrgs_FormDocument,
   FindManyOrgs_FormQuery,
   FindManyOrgs_FormQueryVariables,
+  CreateSurveyResponse_FormMutation,
+  CreateSurveyResponse_FormMutationVariables,
+  CreateSurveyResponse_FormDocument,
   OrgGql,
 } from '../../graphql-generated';
 import { Router } from '@angular/router';
@@ -22,8 +25,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   questions = [
     'What squadron did the event occur in?',
     'Please describe the event of a microaggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.',
-    'Please describe the mircroaggression or discrimination that took place.',
     'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?',
+    'Who is your SQ/CC?',
     'Are you active duty, a civilian, guard/reserve or contractor?',
     'What impacts did this event have on you or your work environment',
   ];
@@ -38,53 +41,28 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   submitSuccess = false;
   violatorSpec = { name: '' };
   personSpec = { name: '' };
-  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-  private _violatorOption: string = '';
-  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-  private _customViolator: string = '';
-  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-  private _personOption: string = '';
-  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-  private _customPerson: string = '';
+
   constructor(private fb: FormBuilder, private apollo: Apollo, private router: Router) {}
 
-  get violatorOption(): string {
-    return this._violatorOption;
+  private violatorRank(): string {
+    if(this.form.value['violatorSpec'] === 'other')
+    {
+      return this.form.value['violatorOtherSpec']
+    }
+    else
+    {
+      return this.form.value['violatorSpec'];
+    }
   }
-  set violatorOption(value: string) {
-    this._violatorOption = value;
-    this.updateRadioName();
-  }
-  get customViolator(): string {
-    return this._customViolator;
-  }
-  set customViolator(value: string) {
-    this._customViolator = value;
-    this.updateRadioName();
-  }
-  get personOption(): string {
-    return this._personOption;
-  }
-  set personOption(value: string) {
-    this._personOption = value;
-    this.updateRadioName();
-  }
-  get customPerson(): string {
-    return this._customPerson;
-  }
-  set customPerson(value: string) {
-    this._customPerson = value;
-    this.updateRadioName();
-  }
-  private updateRadioName(): void {
-    this.violatorSpec.name =
-      this._violatorOption === 'other' 
-        ? this.form.value['violatorOtherSpec']
-        : this._violatorOption;
-    this.personSpec.name =
-      this._personOption === 'other'
-        ? this.form.value['personOtherSpec']
-        : this._personOption;
+  private personRank(): string {
+    if(this.form.value['personSpec'] === 'other')
+    {
+      return this.form.value['personOtherSpec']
+    }
+    else
+    {
+      return this.form.value['personSpec'];
+    }
   }
 
   //validators didnt need to be inside the formControlName and caused it to break, so i removed
@@ -92,14 +70,14 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   //load properly.
   // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group({
-    eventOrg: [],
-    event: [],
-    violatorSpec: [],
+    eventOrg: ['', [Validators.required]],
+    event: ['', [Validators.required]],
+    violatorSpec: ['', [Validators.required]],
     violatorOtherSpec: [],
-    CC: [],
-    personSpec: [],
+    CC: ['', [Validators.required]],
+    personSpec: ['', [Validators.required]],
     personOtherSpec: [],
-    impact: [],
+    impact: ['', [Validators.required]],
     outsideRouting: [],
   });
 
@@ -138,17 +116,74 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
           alert(this.submitSuccess);
         },
       );
+
+      // this.apollo
+      // .mutate<CreateSurveyResponse_FormMutation,
+      // CreateSurveyResponse_FormMutationVariables
+      // >({
+      //   mutation: CreateSurveyResponse_FormDocument,
+      //   variables: {
+      //     surveyResponseCreateInput: {
+      //       routeOutside: this.outsideRoutingWorking(),
+      //       answers: {
+      //         createMany: {
+      //           data: [
+      //             {
+      //               value: this.form.get(['eventOrg'])?.value,
+      //               questionId: "a092c178-2055-4bb6-af4a-413f405ec069",
+      //             },
+      //             {
+      //               value: this.form.value['event'].trim(),
+      //               questionId: "d545c7e5-2c92-44cc-8c31-d7df3a5d1774",
+      //             },
+      //             {
+      //               value: this.violatorSpec.name,
+      //               questionId: "309735b4-8a76-42f1-bf74-889f1ddb85cd",
+      //             },
+      //             {
+      //               value: this.form.get(['CC'])?.value,
+      //               questionId: "1128de41-93c6-40d4-9698-db51ef38058b",
+      //             },
+      //             {
+      //               value: this.personSpec.name,
+      //               questionId: "4128de11-b4dc-44ed-8bd4-1352c7b59bfc",
+      //             },
+      //             {
+      //               value: this.form.value['impact'].trim(),
+      //               questionId: "ed0ff38e-5e63-45da-8a09-3289b0467c8e",
+      //             }
+      //           ]
+      //         }
+      //       },
+      //       survey: {
+      //         connect: {
+      //           id: "3230ed3d-edb0-418b-8ee0-e91d36309523"
+      //         }
+      //       }
+      //     }
+      //   },
+      // })
+      // .subscribe(
+      //   ({ data, errors }) => {
+      //     this.submitSuccess = (!errors);
+      //     alert(this.submitSuccess);
+      //   },
+      // );
+
+    
+    
+    
+
     this.answers = [
       this.form.get(['eventOrg'])?.value,
       this.form.value['event'].trim(),
-      this.violatorSpec.name,
+      this.violatorRank(),
       this.form.value['CC'],
-      this.personSpec.name,
+      this.personRank(),
       this.form.value['impact'].trim(),
       this.outsideRoutingWorking()
     ]
-    this.submitSuccess=true;
-    return alert(this.answers)
+     return alert(this.answers)
   }
   back() {
     this.router.navigate(['disclaimer']);
