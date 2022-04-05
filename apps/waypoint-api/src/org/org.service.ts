@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Org, Prisma } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { OrgCreateInput, OrgGQL } from '@odst/types/waypoint';
 
 @Injectable()
 export class OrgService {
@@ -31,19 +30,19 @@ export class OrgService {
       orderBy,
     });
   }
-  async create(data: Prisma.OrgCreateInput): Promise<OrgGQL> {
+  async create(data: Prisma.OrgCreateInput): Promise<Org> {
     return this.prisma.org.create({
       data,
     });
   }
 
-  async findMany(): Promise<OrgGQL[]> {
+  async findMany(): Promise<Org[]> {
     return this.prisma.org.findMany();
   }
 
   async getSubOrgs(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<OrgGQL[]> {
+  ): Promise<Org[]> {
     const parentOrg = await this.prisma.org.findUnique({
       where: orgWhereUniqueInput,
     });
@@ -65,7 +64,7 @@ export class OrgService {
       orgs.push(parentOrg);
     }
 
-    return orgs as OrgGQL[];
+    return orgs as Org[];
   }
 
   async update(
@@ -87,7 +86,7 @@ export class OrgService {
   async upsert(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
     orgUpdateInput: Prisma.OrgUpdateInput,
-    orgCreateInput: OrgCreateInput
+    orgCreateInput: Prisma.OrgCreateInput
   ): Promise<Org> {
     return this.prisma.org.upsert({
       where: orgWhereUniqueInput,
