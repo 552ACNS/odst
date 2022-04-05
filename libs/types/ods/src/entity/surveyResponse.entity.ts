@@ -1,4 +1,4 @@
-import { ObjectType, InputType } from '@nestjs/graphql';
+import { ObjectType, InputType, Field } from '@nestjs/graphql';
 import { SurveyResponse } from '.prisma/ods/client';
 import { AnswerGQL } from './answer.entity';
 
@@ -12,6 +12,6 @@ export class SurveyResponseGQL implements SurveyResponse {
   routeOutside: boolean;
   resolution: string | null;
 
-  @Field(() => [AnswerGQL], {nullable: true})
+  @Field(() => [AnswerGQL], { nullable: true })
   answers: AnswerGQL[];
 }

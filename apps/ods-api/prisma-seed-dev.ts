@@ -43,7 +43,7 @@ async function main() {
   ) {
     const pw = await hash(process.env.NX_DEV_ACCOUNT_PASSWORD, 10);
 
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         email: CCEmail,
         password: pw,

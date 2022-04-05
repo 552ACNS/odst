@@ -1,4 +1,4 @@
-import { ObjectType, InputType } from '@nestjs/graphql';
+import { ObjectType, InputType, Field } from '@nestjs/graphql';
 import { Answer } from '.prisma/ods/client';
 import { QuestionGQL } from './question.entity';
 
