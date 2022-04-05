@@ -7,8 +7,5 @@ import { Component } from '@angular/core';
 })
 export class DisclaimerComponent {
 
-  navigateToLogin() {
-    window.location.href = '/login';
-  }
 }
 

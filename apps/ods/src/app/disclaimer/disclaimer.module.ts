@@ -11,7 +11,7 @@ import { DisclaimerRoutes } from './disclaimer.routing';
   imports: [
     CommonModule,
     RouterModule.forChild(DisclaimerRoutes),
-    // TODO: Make shared module for common routes.
+   // TODO: [ODST-127] Make shared module for common routes. 
     MatCardModule,
     MatButtonModule,
   ],

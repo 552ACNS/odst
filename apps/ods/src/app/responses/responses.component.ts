@@ -41,7 +41,7 @@ export class ResponsesComponent implements OnInit {
     });
 
     this.responsesService
-      .getResponseIDsByStatus(Boolean(this.resolved))
+      .getResponseIDsByStatus(this.resolved)
       .subscribe((data) => {
         this.responseIDs = data;
         this.numberOfResponses = data.length;

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import {
@@ -31,6 +31,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   answers: string[];
   openDate = new Date();
   orgs: Partial<OrgGql>[];
+  //TODO: [ODST-129] Add roles to lucidchart and make query for finding user based on role
   CCs: string[] = ['Matos, Emmanuel Lt Col', 'Baker, John Lt Col'];
   querySubscription: Subscription;
   loading = true;
@@ -91,7 +92,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   //load properly.
   // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group({
-    eventOrg: [],
+    eventOrg: ['', Validators.required],
     event: [],
     violatorSpec: ['AD'],
     violatorOtherSpec: [],
