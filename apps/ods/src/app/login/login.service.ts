@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Apollo } from 'apollo-angular';
+//TODO: Add Apollo references back when implemented
+//import { Apollo } from 'apollo-angular';
 
 
 @Injectable({
@@ -8,7 +9,8 @@ import { Apollo } from 'apollo-angular';
 })
 export class LoginService {
 
-  constructor(private apollo: Apollo, private router: Router) {}
+  //constructor(private apollo: Apollo, private router: Router) {}
+  constructor(private router: Router) {}
   //submitLogin(username: string, password: string): void {}
   //TODO: route to the dashboard
   submitLogin(): void {
