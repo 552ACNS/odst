@@ -125,7 +125,7 @@ async function main() {
   await prisma.answer.create({
     data: {
       value:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
+        'Different response text',
       question: { connect: { id: question2.id } },
       surveyResponse: { connect: { id: surveyResponse.id } },
     },
@@ -133,7 +133,7 @@ async function main() {
 
   await prisma.answer.create({
     data: {
-      value: 'Active Duty',
+      value: 'Civilian',
       question: { connect: { id: question3.id } },
       surveyResponse: { connect: { id: surveyResponse.id } },
     },
