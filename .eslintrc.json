@@ -48,6 +48,7 @@
       }
     },
     {
+      //Bug: does not run against frontend files, which isn't desired but it is expected
       "files": ["*.service.ts"],
       "rules": {
         "no-restricted-imports": [
@@ -56,7 +57,7 @@
             "patterns": [
               {
                 "group": ["@odst/types/*"],
-                "message": "Do not import types from @odst/types in servicer, use prisma types instead"
+                "message": "Do not import types from @odst/types in servicer, use prisma types instead (or greneted gql if in frontend)"
               }
             ]
           }
