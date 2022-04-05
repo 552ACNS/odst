@@ -7,7 +7,6 @@ export class OrgWhereUniqueInput implements Prisma.OrgWhereUniqueInput {
   name?: string;
 }
 
-//TODO not sure where to put this
 @InputType()
 export class OrgWhereInput implements Prisma.OrgWhereInput {
   id?: string;

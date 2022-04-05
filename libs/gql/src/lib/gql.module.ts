@@ -75,7 +75,7 @@ export function createApollo() {
                 isJwtChainExpired(refreshToken)
               ) {
                 console.log('No valid refresh token');
-                //TODO push to login
+                //TODO [ODST-134] push to login
                 continue;
               }
               let forward$: Observable<boolean> | Observable<void>;
