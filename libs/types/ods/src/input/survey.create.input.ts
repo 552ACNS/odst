@@ -19,7 +19,7 @@ export class SurveyCreateInput implements Prisma.SurveyCreateInput {
 
 @InputType()
 export class SurveyCreateNested {
-  @Field(() => SurveyWhereUniqueInput, { nullable: true })
+  @Field(() => SurveyWhereUniqueInput)
   connect?: Prisma.SurveyWhereUniqueInput;
 }
 

@@ -29,10 +29,10 @@ export class OrgCreateInput implements Prisma.OrgCreateInput {
 export class OrgCreateNestedManyWithoutParentInput
   implements Prisma.OrgCreateNestedManyWithoutParentInput
 {
-  @Field(() => OrgWhereUniqueInput, { nullable: true })
+  @Field(() => OrgWhereUniqueInput)
   connect?: Prisma.OrgWhereUniqueInput;
 
-  @Field(() => OrgCreateOrConnectWithoutParentInput, { nullable: true })
+  @Field(() => OrgCreateOrConnectWithoutParentInput)
   connectOrCreate?: Prisma.OrgCreateOrConnectWithoutParentInput;
 }
 
@@ -40,10 +40,10 @@ export class OrgCreateNestedManyWithoutParentInput
 export class OrgCreateNestedOneWithoutChildrenInput
   implements Prisma.OrgCreateNestedOneWithoutChildrenInput
 {
-  @Field(() => OrgWhereUniqueInput, { nullable: true })
+  @Field(() => OrgWhereUniqueInput)
   connect?: Prisma.OrgWhereUniqueInput;
 
-  @Field(() => OrgCreateOrConnectWithoutChildrenInput, { nullable: true })
+  @Field(() => OrgCreateOrConnectWithoutChildrenInput)
   connectOrCreate?: Prisma.OrgCreateOrConnectWithoutChildrenInput;
 }
 
@@ -51,13 +51,13 @@ export class OrgCreateNestedOneWithoutChildrenInput
 export class OrgCreateNestedOneWithoutPersonsInput
   implements Prisma.OrgCreateNestedOneWithoutPersonsInput
 {
-  @Field(() => OrgWhereUniqueInput, { nullable: true })
+  @Field(() => OrgWhereUniqueInput)
   connect?: Prisma.OrgWhereUniqueInput;
 
-  @Field(() => OrgGQL, { nullable: true })
+  @Field(() => OrgGQL)
   create?: Prisma.OrgCreateWithoutPersonsInput;
 
-  @Field(() => OrgCreateOrConnectWithoutPersonsInput, { nullable: true })
+  @Field(() => OrgCreateOrConnectWithoutPersonsInput)
   connectOrCreate?: Prisma.OrgCreateOrConnectWithoutPersonsInput;
 }
 
