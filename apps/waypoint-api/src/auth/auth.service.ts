@@ -1,6 +1,8 @@
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+//TODO fix when we move auth stuff to library
+// eslint-disable-next-line no-restricted-imports
 import {
   LoginUserInput,
   SignupUserInput,
