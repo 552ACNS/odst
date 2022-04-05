@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { UserCreateInput } from '@odst/types/waypoint';
 import { Prisma, User } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -69,7 +68,7 @@ export class UserService {
   async upsert(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
     userUpdateInput: Prisma.UserUpdateInput,
-    userCreateInput: UserCreateInput
+    userCreateInput: Prisma.UserCreateInput
   ): Promise<User> {
     return this.prisma.user.upsert({
       where: userWhereUniqueInput,

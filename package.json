@@ -9,7 +9,8 @@
     "build": "nx build",
     "test": "nx run-many --target=test --all",
     "gen-prisma": "nx run-many --target=prisma-generate --all",
-    "gen-gql": "npx graphql-codegen --config graphql.codegen.yml"
+    "gen-gql": "npx graphql-codegen --config graphql.codegen.yml",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -85,12 +86,14 @@
     "eslint": "8.11.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-cypress": "^2.10.3",
+    "husky": "^7.0.0",
     "jest": "27.5.1",
     "jest-mock-extended": "^2.0.4",
     "jest-preset-angular": "11.1.1",
     "nx": "13.9.4",
     "postcss": "^8.4.5",
     "prettier": "2.6.0",
+    "pretty-quick": "^3.1.3",
     "prisma": "^3.11.1",
     "supertest": "^6.2.2",
     "tailwindcss": "^3.0.2",

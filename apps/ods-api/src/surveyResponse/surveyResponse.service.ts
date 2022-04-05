@@ -92,7 +92,7 @@ export class SurveyResponseService {
   }
 
   async create(data: Prisma.SurveyResponseCreateInput) {
-    return await this.prisma.surveyResponse.create({
+    return this.prisma.surveyResponse.create({
       data,
     });
   }
