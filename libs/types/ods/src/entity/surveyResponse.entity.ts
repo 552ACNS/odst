@@ -1,10 +1,9 @@
-import { ObjectType, Field, InputType } from '@nestjs/graphql';
+import { ObjectType, InputType } from '@nestjs/graphql';
 import { SurveyResponse } from '.prisma/ods/client';
 
 @ObjectType()
 @InputType('SurveyResponseGQLInput')
 export class SurveyResponseGQL implements SurveyResponse {
-  @Field(() => String, { nullable: true })
   id: string;
   surveyId: string;
   openedDate: Date;

@@ -30,7 +30,7 @@ export class QuestionService {
     return await this.prisma.question.findMany({
       where: {
         surveys: {
-          every: surveyWhereUniqueInput
+          every: surveyWhereUniqueInput,
         },
       },
     });

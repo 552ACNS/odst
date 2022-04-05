@@ -31,7 +31,9 @@ export class SurveyResponseService {
     });
   }
 
-  async create(data: Prisma.SurveyResponseCreateInput): Promise<SurveyResponse> {
+  async create(
+    data: Prisma.SurveyResponseCreateInput
+  ): Promise<SurveyResponse> {
     return this.prisma.surveyResponse.create({
       data,
     });

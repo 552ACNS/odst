@@ -8,8 +8,7 @@ import { Question } from '.prisma/ods/client';
 const questionArray: Question[] = [];
 
 TestQuestionCreateInput.forEach((questionCreateInput) => {
-  const question: Question = ((questionCreateInput as Question).id =
-    uuidv4());
+  const question: Question = ((questionCreateInput as Question).id = uuidv4());
   questionArray.push(question);
 });
 
