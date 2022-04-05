@@ -159,7 +159,8 @@ export class AuthService {
       const valid = await compare(passwordPlaintextInput, user.password);
 
       if (valid) {
-        // Do we need to destructure the password?
+        //password is deconstructed to ensure it is not returned
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password, ...result } = user;
         return result;
       }

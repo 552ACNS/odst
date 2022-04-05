@@ -1,6 +1,5 @@
 import { ObjectType, Field, InputType } from '@nestjs/graphql';
 import { Question } from '.prisma/ods/client';
-import { Prisma } from '.prisma/ods/client';
 
 @ObjectType()
 @InputType('QuestionGQLInput')
