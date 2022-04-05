@@ -37,7 +37,12 @@
         "no-restricted-imports": [
           "error",
           {
-            "patterns": [".prisma/*/client"]
+            "patterns": [
+              {
+                "group": [".prisma/*/client", ".prisma/client"],
+                "message": "Do not import types from prisma in resolver, use GQL types instead"
+              }
+            ]
           }
         ]
       }
@@ -51,7 +56,7 @@
             "patterns": [
               {
                 "group": ["@odst/types/*"],
-                "message": "Do not import types from @odst/types, use prisma types instead"
+                "message": "Do not import types from @odst/types in servicer, use prisma types instead"
               }
             ]
           }
