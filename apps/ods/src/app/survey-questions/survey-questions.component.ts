@@ -44,7 +44,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private apollo: Apollo, private router: Router) {}
 
-  private violatorRank(): string {
+  private violatorSpecification(): string {
     if(this.form.value['violatorSpec'] === 'other')
     {
       return this.form.value['violatorOtherSpec']
@@ -54,7 +54,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
       return this.form.value['violatorSpec'];
     }
   }
-  private personRank(): string {
+  private personSpecification(): string {
     if(this.form.value['personSpec'] === 'other')
     {
       return this.form.value['personOtherSpec']
@@ -177,9 +177,9 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     this.answers = [
       this.form.get(['eventOrg'])?.value,
       this.form.value['event'].trim(),
-      this.violatorRank(),
+      this.violatorSpecification(),
       this.form.value['CC'],
-      this.personRank(),
+      this.personSpecification(),
       this.form.value['impact'].trim(),
       this.outsideRoutingWorking()
     ]
