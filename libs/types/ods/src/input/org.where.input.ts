@@ -18,10 +18,10 @@ export class OrgWhereInput
   @Field(() => OrgRelationFilter)
   parent?: Prisma.OrgRelationFilter;
 
-  @Field(() => [SurveyListRelationFilter])
+  @Field(() => SurveyListRelationFilter)
   children?: Prisma.OrgListRelationFilter;
 
-  @Field(() => [SurveyListRelationFilter])
+  @Field(() => SurveyListRelationFilter)
   surveys?: Prisma.SurveyListRelationFilter;
 }
 

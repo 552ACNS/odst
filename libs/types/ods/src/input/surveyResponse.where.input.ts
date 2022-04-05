@@ -23,7 +23,7 @@ export class SurveyResponseWhereInput
   @Field(() => DateTimeNullableFilter)
   closedDate?: Prisma.DateTimeNullableFilter;
 
-  @Field(() => [AnswerListRelationFilter])
+  @Field(() => AnswerListRelationFilter)
   answers?: Prisma.AnswerListRelationFilter;
   routeOutside?: boolean;
 

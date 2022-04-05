@@ -88,9 +88,9 @@ type Query {
 
 input SurveyWhereInput {
   id: String
-  orgs: [OrgListRelationFilter!]
-  questions: [QuestionListRelationFilter!]
-  surveyResponses: [SurveyResponseListRelationFilter!]
+  orgs: OrgListRelationFilter
+  questions: QuestionListRelationFilter
+  surveyResponses: SurveyResponseListRelationFilter
 }
 
 input OrgListRelationFilter {
@@ -105,8 +105,8 @@ input OrgWhereInput {
   orgTier: OrgTier
   users: UserListRelationFilter
   parent: OrgRelationFilter
-  children: [SurveyListRelationFilter!]
-  surveys: [SurveyListRelationFilter!]
+  children: SurveyListRelationFilter
+  surveys: SurveyListRelationFilter
 }
 
 input UserListRelationFilter {
@@ -142,8 +142,8 @@ input QuestionListRelationFilter {
 
 input QuestionWhereInput {
   id: String
-  surveys: [SurveyListRelationFilter!]
-  answers: [AnswerListRelationFilter!]
+  surveys: SurveyListRelationFilter
+  answers: AnswerListRelationFilter
   prompt: String
 }
 
@@ -157,7 +157,7 @@ input AnswerWhereInput {
   id: String
   value: StringFilter
   question: QuestionRelationFilter
-  surveyResponse: [SurveyResponseRelationFilter!]
+  surveyResponse: SurveyResponseRelationFilter
 }
 
 input StringFilter {
@@ -189,7 +189,7 @@ input SurveyResponseWhereInput {
   survey: SurveyWhereInput
   openedDate: DateTimeFilter
   closedDate: DateTimeNullableFilter
-  answers: [AnswerListRelationFilter!]
+  answers: AnswerListRelationFilter
   resolution: StringNullableFilter
   routeOutside: Boolean
 }

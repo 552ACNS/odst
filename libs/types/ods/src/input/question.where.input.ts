@@ -12,10 +12,10 @@ export class QuestionWhereInput
   //TODO move to unique
   prompt?: string;
 
-  @Field(() => [SurveyListRelationFilter])
+  @Field(() => SurveyListRelationFilter)
   surveys?: Prisma.SurveyListRelationFilter;
 
-  @Field(() => [AnswerListRelationFilter])
+  @Field(() => AnswerListRelationFilter)
   answers?: Prisma.AnswerListRelationFilter;
 }
 
@@ -32,7 +32,6 @@ export class QuestionListRelationFilter
   @Field(() => QuestionWhereInput)
   none?: Prisma.QuestionWhereInput;
 }
-
 
 @InputType()
 export class QuestionRelationFilter implements Prisma.QuestionRelationFilter {

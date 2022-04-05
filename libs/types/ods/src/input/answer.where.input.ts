@@ -16,7 +16,7 @@ export class AnswerWhereInput
   @Field(() => QuestionRelationFilter)
   question?: Prisma.QuestionRelationFilter;
 
-  @Field(() => [SurveyResponseRelationFilter])
+  @Field(() => SurveyResponseRelationFilter)
   surveyResponse?: Prisma.SurveyResponseRelationFilter;
 }
 

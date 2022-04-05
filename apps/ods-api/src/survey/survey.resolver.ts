@@ -20,6 +20,7 @@ import {
 import { SurveyResponseService } from '../surveyResponse/surveyResponse.service';
 import { OrgService } from '../org/org.service';
 import { QuestionService } from '../question/question.service';
+import { Logger } from '@nestjs/common';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
@@ -35,7 +36,6 @@ export class SurveyResolver {
   @Query(() => [SurveyGQL], { name: 'findManySurveys' })
   // @UseGuards(AccessTokenAuthGuard)
   async findMany(@Args('where', { nullable: true }) where: SurveyWhereInput) {
-    // return this.surveyService.findMany();
     return this.surveyService.findMany({ where });
   }
 
@@ -84,7 +84,7 @@ export class SurveyResolver {
   @ResolveField(() => [QuestionGQL], { name: 'questions' })
   async questions(@Parent() survey: SurveyGQL) {
     return this.questionService.findMany({
-      where: { surveys: { some: {id: survey.id} } },
+      where: { surveys: { some: { id: survey.id } } },
     });
   }
 

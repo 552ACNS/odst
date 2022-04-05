@@ -6,14 +6,17 @@ import { SurveyResponseListRelationFilter } from './surveyResponse.where.input';
 import { SurveyWhereUniqueInput } from './survey.unique.input';
 
 @InputType()
-export class SurveyWhereInput extends SurveyWhereUniqueInput implements Prisma.SurveyWhereInput {
-  @Field(() => [OrgListRelationFilter])
+export class SurveyWhereInput
+  extends SurveyWhereUniqueInput
+  implements Prisma.SurveyWhereInput
+{
+  @Field(() => OrgListRelationFilter)
   orgs?: Prisma.OrgListRelationFilter;
 
-  @Field(() => [QuestionListRelationFilter])
+  @Field(() => QuestionListRelationFilter)
   questions?: Prisma.QuestionListRelationFilter;
 
-  @Field(() => [SurveyResponseListRelationFilter])
+  @Field(() => SurveyResponseListRelationFilter)
   surveyResponses?: Prisma.SurveyResponseListRelationFilter;
 }
 
