@@ -3,12 +3,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import { OrgService } from './org.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestOrgCreateInput } from './org.repo';
-import { OrgGQL } from '@odst/types/ods';
+import { Org } from '.prisma/ods/client';
 
-const orgArray: OrgGQL[] = [];
+const orgArray: Org[] = [];
 
 TestOrgCreateInput.forEach((orgCreateInput) => {
-  const org: OrgGQL = ((orgCreateInput as OrgGQL).id = uuidv4());
+  const org: Org = ((orgCreateInput as Org).id = uuidv4());
   orgArray.push(org);
 });
 
@@ -95,7 +95,7 @@ describe('OrgService', () => {
     });
 
     it('should return {deleted: false, message: err.message}', () => {
-      const dbSpy = jest
+      jest
         .spyOn(prisma.org, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({

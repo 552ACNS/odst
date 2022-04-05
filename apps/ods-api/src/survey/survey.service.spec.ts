@@ -3,12 +3,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import { SurveyService } from './survey.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestSurveyCreateInput } from './survey.repo';
-import { SurveyGQL } from '@odst/types/ods';
+import { Survey } from '.prisma/ods/client';
 
-const surveyArray: SurveyGQL[] = [];
+const surveyArray: Survey[] = [];
 
 TestSurveyCreateInput.forEach((surveyCreateInput) => {
-  const survey: SurveyGQL = ((surveyCreateInput as SurveyGQL).id = uuidv4());
+  const survey: Survey = ((surveyCreateInput as Survey).id = uuidv4());
   surveyArray.push(survey);
 });
 
