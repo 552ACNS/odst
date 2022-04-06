@@ -5,7 +5,7 @@ import { LoginUserInput, SignupUserInput } from '@odst/types/waypoint';
 import { Logger, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local.authGuard';
 import { RefreshTokenAuthGuard } from './guards/refreshToken.authGuard';
-import { GetCurrentUserId } from '@odst/types/waypoint';
+import { GetCurrentUserId } from '@odst/shared/nest';
 
 @Resolver()
 export class AuthResolver {

@@ -5,15 +5,14 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 // eslint-disable-next-line no-restricted-imports
 import {
   LoginUserInput,
-  JwtPayloadRefresh,
   SignupUserInput,
   TokensGQL,
-  JwtPayloadInit,
   RefreshLoginInput,
 } from '@odst/types/waypoint';
 import { isJwtChainExpired } from '@odst/helpers';
 import { compare, hash } from 'bcrypt';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
+import { JwtPayloadInit, JwtPayloadRefresh } from '@odst/shared/nest';
 
 @Injectable()
 export class AuthService {
