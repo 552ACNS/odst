@@ -10,7 +10,7 @@ export class QuestionService {
     skip?: number;
     take?: number;
     cursor?: Prisma.QuestionWhereUniqueInput;
-    where?: Prisma.QuestionWhereUniqueInput;
+    where?: Prisma.QuestionWhereInput;
     orderBy?: Prisma.QuestionOrderByWithRelationInput;
   }): Promise<Question[]> {
     const { skip, take, cursor, where, orderBy } = params;

@@ -5,6 +5,7 @@ import {
   AnswerCreateInput,
   AnswerUpdateInput,
   AnswerWhereUniqueInput,
+  AnswerWhereInput,
 } from '@odst/types/ods';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
@@ -14,8 +15,10 @@ export class AnswerResolver {
   constructor(private readonly answerService: AnswerService) {}
 
   @Query(() => [AnswerGQL], { name: 'findManyAnswers' })
-  async findMany(): Promise<AnswerGQL[]> {
-    return this.answerService.findMany({});
+  async findMany(
+    @Args('where', { nullable: true }) where: AnswerWhereInput
+  ): Promise<AnswerGQL[]> {
+    return this.answerService.findMany({ where });
   }
 
   @Query(() => AnswerGQL, { name: 'findUniqueAnswer' })

@@ -10,7 +10,7 @@ export class OrgService {
     skip?: number;
     take?: number;
     cursor?: Prisma.OrgWhereUniqueInput;
-    where?: Prisma.OrgWhereUniqueInput;
+    where?: Prisma.OrgWhereInput;
     orderBy?: Prisma.OrgOrderByWithRelationInput;
   }): Promise<Org[]> {
     const { skip, take, cursor, where, orderBy } = params;
@@ -74,9 +74,7 @@ export class OrgService {
     });
   }
 
-  async delete(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
+  async delete(orgWhereUniqueInput: Prisma.OrgWhereUniqueInput) {
     try {
       await this.prisma.org.delete({
         where: orgWhereUniqueInput,

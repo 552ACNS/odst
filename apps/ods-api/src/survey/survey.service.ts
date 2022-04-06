@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Survey, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -10,7 +10,7 @@ export class SurveyService {
     skip?: number;
     take?: number;
     cursor?: Prisma.SurveyWhereUniqueInput;
-    where?: Prisma.SurveyWhereUniqueInput;
+    where?: Prisma.SurveyWhereInput;
     orderBy?: Prisma.SurveyOrderByWithRelationInput;
   }): Promise<Survey[]> {
     const { skip, take, cursor, where, orderBy } = params;

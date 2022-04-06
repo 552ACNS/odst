@@ -5,6 +5,7 @@ import {
   SurveyResponseCreateInput,
   SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
+  SurveyResponseWhereInput,
 } from '@odst/types/ods';
 // import { GetCurrentUserId } from '@odst/shared/nest';
 // import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
@@ -13,6 +14,13 @@ import {
 @Resolver(() => SurveyResponseGQL)
 export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
+  @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async findMany(
+    @Args('where', { nullable: true }) where: SurveyResponseWhereInput
+  ): Promise<SurveyResponseGQL[]> {
+    return this.surveyResponseService.findMany({ where });
+  }
 
   @Query(() => SurveyResponseGQL, { name: 'findUniqueSurveyResponse' })
   // @UseGuards(AccessTokenAuthGuard)
