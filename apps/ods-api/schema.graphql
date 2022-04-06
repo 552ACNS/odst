@@ -34,6 +34,7 @@ type SurveyGQL {
 }
 
 type SurveyResponseGQL {
+  answers: [AnswerGQL!]
   id: String!
   surveyId: String!
   openedDate: DateTime!
@@ -69,15 +70,6 @@ input OrgGQLInput {
 
 input SurveyGQLInput {
   id: String!
-}
-
-input SurveyResponseGQLInput {
-  id: String!
-  surveyId: String!
-  openedDate: DateTime!
-  closedDate: DateTime
-  routeOutside: Boolean!
-  resolution: String
 }
 
 type Query {
@@ -309,7 +301,6 @@ input QuestionCreateNestedManyWithoutSurveysInput {
 
 input SurveyResponseCreateNestedManyWithoutSurveyInput {
   connect: SurveyResponseWhereUniqueInput
-  create: SurveyResponseGQLInput
 }
 
 input SurveyUpdateInput {
@@ -354,7 +345,6 @@ input QuestionCreateNestedOneWithoutAnswersInput {
 
 input SurveyResponseCreateNestedOneWithoutAnswersInput {
   connect: SurveyResponseWhereUniqueInput
-  create: SurveyResponseGQLInput
 }
 
 input AnswerUpdateInput {

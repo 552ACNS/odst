@@ -18,7 +18,7 @@ export class SurveyResponseResolver {
   // @UseGuards(AccessTokenAuthGuard)
   async findMany(
     @Args('where', { nullable: true }) where: SurveyResponseWhereInput
-  ): Promise<SurveyResponseGQL[]> {
+  ) {
     return this.surveyResponseService.findMany({ where });
   }
 
