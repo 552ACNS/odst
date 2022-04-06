@@ -117,63 +117,58 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
         },
       );
 
-      // this.apollo
-      // .mutate<CreateSurveyResponse_FormMutation,
-      // CreateSurveyResponse_FormMutationVariables
-      // >({
-      //   mutation: CreateSurveyResponse_FormDocument,
-      //   variables: {
-      //     surveyResponseCreateInput: {
-      //       routeOutside: this.outsideRoutingWorking(),
-      //       answers: {
-      //         createMany: {
-      //           data: [
-      //             {
-      //               value: this.form.get(['eventOrg'])?.value,
-      //               questionId: "a092c178-2055-4bb6-af4a-413f405ec069",
-      //             },
-      //             {
-      //               value: this.form.value['event'].trim(),
-      //               questionId: "d545c7e5-2c92-44cc-8c31-d7df3a5d1774",
-      //             },
-      //             {
-      //               value: this.violatorSpec.name,
-      //               questionId: "309735b4-8a76-42f1-bf74-889f1ddb85cd",
-      //             },
-      //             {
-      //               value: this.form.get(['CC'])?.value,
-      //               questionId: "1128de41-93c6-40d4-9698-db51ef38058b",
-      //             },
-      //             {
-      //               value: this.personSpec.name,
-      //               questionId: "4128de11-b4dc-44ed-8bd4-1352c7b59bfc",
-      //             },
-      //             {
-      //               value: this.form.value['impact'].trim(),
-      //               questionId: "ed0ff38e-5e63-45da-8a09-3289b0467c8e",
-      //             }
-      //           ]
-      //         }
-      //       },
-      //       survey: {
-      //         connect: {
-      //           id: "3230ed3d-edb0-418b-8ee0-e91d36309523"
-      //         }
-      //       }
-      //     }
-      //   },
-      // })
-      // .subscribe(
-      //   ({ data, errors }) => {
-      //     this.submitSuccess = (!errors);
-      //     alert(this.submitSuccess);
-      //   },
-      // );
-
-    
-    
-    
-
+      this.apollo
+      .mutate<CreateSurveyResponse_FormMutation,
+      CreateSurveyResponse_FormMutationVariables
+      >({
+        mutation: CreateSurveyResponse_FormDocument,
+        variables: {
+          surveyResponseCreateInput: {
+            routeOutside: this.outsideRoutingWorking(),
+            answers: {
+              createMany: {
+                data: [
+                  {
+                    value: this.form.get(['eventOrg'])?.value,
+                    questionId: "a092c178-2055-4bb6-af4a-413f405ec069",
+                  },
+                  {
+                    value: this.form.value['event'].trim(),
+                    questionId: "d545c7e5-2c92-44cc-8c31-d7df3a5d1774",
+                  },
+                  {
+                    value: this.violatorSpec.name,
+                    questionId: "309735b4-8a76-42f1-bf74-889f1ddb85cd",
+                  },
+                  {
+                    value: this.form.get(['CC'])?.value,
+                    questionId: "1128de41-93c6-40d4-9698-db51ef38058b",
+                  },
+                  {
+                    value: this.personSpec.name,
+                    questionId: "4128de11-b4dc-44ed-8bd4-1352c7b59bfc",
+                  },
+                  {
+                    value: this.form.value['impact'].trim(),
+                    questionId: "ed0ff38e-5e63-45da-8a09-3289b0467c8e",
+                  }
+                ]
+              }
+            },
+            survey: {
+              connect: {
+                id: "3230ed3d-edb0-418b-8ee0-e91d36309523"
+              }
+            }
+          }
+        },
+      })
+      .subscribe(
+        ({ data, errors }) => {
+          this.submitSuccess = (!errors);
+          alert(this.submitSuccess);
+        },
+      );
     this.answers = [
       this.form.get(['eventOrg'])?.value,
       this.form.value['event'].trim(),
@@ -184,9 +179,6 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
       this.outsideRoutingWorking()
     ]
      return alert(this.answers)
-  }
-  back() {
-    this.router.navigate(['disclaimer']);
   }
   ngOnDestroy() {
     if (this.querySubscription) {
