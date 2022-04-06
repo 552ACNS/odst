@@ -53,7 +53,7 @@ describe('Answer Resolver', () => {
 
   describe('findMany', () => {
     it('should get an array of answers', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(answerArray);
+      await expect(resolver.findMany({})).resolves.toEqual(answerArray);
     });
   });
 

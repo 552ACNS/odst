@@ -48,7 +48,7 @@ describe('Org Resolver', () => {
 
   describe('findMany', () => {
     it('should get an array of orgs', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(orgArray);
+      await expect(resolver.findMany({})).resolves.toEqual(orgArray);
     });
   });
 
