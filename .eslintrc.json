@@ -24,7 +24,9 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
+      "rules": {
+        "no-return-await": "warn"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
@@ -38,6 +40,17 @@
       "rules": {
         //TODO would like to make up this to error eventually
         "@typescript-eslint/explicit-function-return-type": "warn"
+      }
+    },
+    {
+      "files": [".ts"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "parserOptions": {
+        "project": ["tsconfig.base.json"]
+      },
+      "rules": {
+        "@typescript-eslint/no-misused-promises": "error"
       }
     },
     {
