@@ -46,10 +46,8 @@
         <span class="text-red-500"> * </span>
       </label>
       <!-- TODO Fix to use tailwind for spacing in future -->
-      <!-- TODO Fix autoselecting other when page loads   [(ngModel)]="violatorOption" -->
       <mat-radio-group
         name="violator_spec"
-       
         formControlName="violatorSpec"
         color="primary"
         required
@@ -65,15 +63,12 @@
         <br />
         <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
         <br />
-        <!-- [(ngModel)]="customViolator" (ngModelChange)="violatorOption = 'other'" -->
         <mat-radio-button value="other">
           <mat-form-field>
             <input
               matInput
               formControlName="violatorOtherSpec"
               placeholder="Other"
-              
-              
             />
           </mat-form-field>
         </mat-radio-button>
@@ -101,10 +96,8 @@
         <span class="text-red-500"> * </span>
       </label>
       <!-- TODO Fix to use tailwind for spacing in future -->
-      <!-- TODO Fix autoselecting other when page loads  [(ngModel)]="personOption"-->
       <mat-radio-group
         name="person_spec"
-        
         formControlName="personSpec"
         color="primary"
         required
@@ -127,8 +120,6 @@
               matInput
               formControlName="personOtherSpec"
               placeholder="Other"
-              
-              
             />
           </mat-form-field>
         </mat-radio-button>
@@ -164,7 +155,6 @@
       </section>
     </form>
   </mat-card>
-  <!-- TODO align buttons to the right of form *added justify-end along with who page container, is this good?* -->
   <div class="flex justify-center">
     <button
       id="btnBack"
