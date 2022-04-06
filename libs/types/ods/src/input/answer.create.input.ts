@@ -27,6 +27,14 @@ export class AnswerCreateWithoutSurveyResponseInput
 }
 
 @InputType()
+export class AnswerCreateManySurveyResponseInput
+  implements Prisma.AnswerCreateManySurveyResponseInput
+{
+  value: string;
+  questionId: string;
+}
+
+@InputType()
 export class AnswerCreateNestedManyWithoutSurveyResponseInput
   implements Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput
 {
@@ -44,7 +52,7 @@ export class AnswerCreateNestedManyWithoutSurveyResponseInput
 export class AnswerCreateManySurveyResponseInputEnvelope
   implements Prisma.AnswerCreateManySurveyResponseInputEnvelope
 {
-  @Field(() => [AnswerGQL], { nullable: true })
+  @Field(() => [AnswerCreateManySurveyResponseInput], { nullable: true })
   data: Prisma.Enumerable<Prisma.AnswerCreateManySurveyResponseInput>;
 
   skipDuplicates?: boolean;
