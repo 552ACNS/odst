@@ -3,33 +3,39 @@
     <mat-card-title class="font-medium text-black text-sm">
       Observations of Discrimination in the Squadron
     </mat-card-title>
-    <mat-card-content class="text-sm">
+    <mat-card-content class="text-sm space-y-3">
+      <p>
       The responses provided will be analyzed and addressed at the appropriate
       command level (Squadron/Group/Wing). This form is meant to facilitate low
       level resolution.
-      <br /><br />
+      </p>
+      <p>
       DO NOT formally report instances of sexual assault or harassment, or
       suicidal intent/threat to life on this form. A formal investigation will
       be launched.
-      <br /><br />
+      </p>
+      <p>
       Please do not include names or identifying information in your accounts.
       If you'd like to file a formal complaint, please speak to your chain of
       command.
-      <br /><br />
+      </p>
+      <p>
       False reporting may result in disciplinary actions.
+      </p>
     </mat-card-content>
     <mat-card-actions class="text-sm mt-4 mb-0.5 flex h-8 space-x-4 pt-0">
       <button mat-stroked-button class="w-full shadow-md rounded-full">
         Decline
       </button>
       <button mat-button class="w-full bg-dark-blue text-white shadow-md rounded-full">
+      <!-- TODO: set routing when form is available [routerLink]="['/form']"-->
         Accept
       </button>
     </mat-card-actions>
   </mat-card>
 
   <!-- this lies outside the box -->
-  <div class="mt-2 items-end font-medium">
-    <p class="underline text-right text-dark-blue">I want to login</p>
-  </div>
+  <button mat-button class="underline ml-auto" [routerLink]="['/login']">
+    I want to login
+  </button>
 </div>

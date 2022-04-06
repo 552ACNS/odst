@@ -1,16 +1,20 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { HttpModule } from '@nestjs/axios';
+import { Test, TestingModule } from '@nestjs/testing';
 import { LoginService } from './login.service';
 
 describe('LoginService', () => {
   let service: LoginService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
       providers: [LoginService],
-      imports: [RouterTestingModule],
-    });
-    service = TestBed.inject(LoginService);
+      imports: [HttpModule],
+    }).compile();
+    service = module.get<LoginService>(LoginService);
+  });
+
+  it('ApiService - should be defined', () => {
+    expect(service).toBeDefined();
   });
 
   it('should be created', () => {
