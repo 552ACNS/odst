@@ -36,11 +36,3 @@ export class DashboardComponent implements OnInit {
     return _30DaysInMilliseconds < _difference;
   }
 }
-
-// .subscribe(({data}) => {
-//   //TODO move all of this functionality to the back end
-//   this.responses = data.findManySurveyResponses;
-//   this.unresolvedReports = this.responses.filter(issue => issue.resolution == null).length;
-//   this.resolvedReports = this.responses.filter(issue => issue.resolution != null).length;
-//   this.overdueReports = this.responses.filter(issue => dateIsMoreThan30DaysAgo(new Date(issue.openedDate))).length;
-// });
