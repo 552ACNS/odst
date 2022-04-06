@@ -6,7 +6,7 @@ import {
   SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
 } from '@odst/types/ods';
-import { GetCurrentUserId } from '@odst/shared/nest';
+//import { GetCurrentUserId } from '@odst/shared/nest';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
