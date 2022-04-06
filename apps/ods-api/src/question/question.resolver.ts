@@ -1,4 +1,11 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Query,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { QuestionService } from './question.service';
 import {
   QuestionGQL,
@@ -6,25 +13,34 @@ import {
   QuestionUpdateInput,
   QuestionWhereUniqueInput,
   SurveyWhereUniqueInput,
+  AnswerGQL,
+  SurveyGQL,
 } from '@odst/types/ods';
+import { AnswerService } from '../answer/answer.service';
+import { SurveyService } from '../survey/survey.service';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => QuestionGQL)
 export class QuestionResolver {
-  constructor(private readonly questionService: QuestionService) {}
+  constructor(
+    private readonly questionService: QuestionService,
+    private readonly surveyService: SurveyService,
+    private readonly answerService: AnswerService
+  ) {}
 
   @Query(() => [QuestionGQL], { name: 'findManyQuestions' })
-  async findMany(): Promise<QuestionGQL[]> {
+  async findMany() {
     return this.questionService.findMany({});
   }
 
   @Query(() => [QuestionGQL], { name: 'getSubQuestions' })
   // @UseGuards(AccessTokenAuthGuard)
+  //TODO redo with findMany
   async getSubQuestions(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ): Promise<QuestionGQL[]> {
+  ) {
     return this.questionService.findQuestionsInSurvey(surveyWhereUniqueInput);
   }
 
@@ -33,7 +49,7 @@ export class QuestionResolver {
   async findUnique(
     @Args('questionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput
-  ): Promise<QuestionGQL | null> {
+  ) {
     return this.questionService.findUnique(questionWhereUniqueInput);
   }
 
@@ -52,7 +68,7 @@ export class QuestionResolver {
     questionWhereUniqueInput: QuestionWhereUniqueInput,
     @Args('QuestionUpdateInput')
     questionUpdateInput: QuestionUpdateInput
-  ): Promise<QuestionGQL> {
+  ) {
     return this.questionService.update(
       questionWhereUniqueInput,
       questionUpdateInput
@@ -64,7 +80,21 @@ export class QuestionResolver {
   async delete(
     @Args('questionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput
-  ): Promise<{ deleted: boolean }> {
+  ) {
     return this.questionService.delete(questionWhereUniqueInput);
+  }
+
+  @ResolveField(() => [AnswerGQL], { name: 'answers' })
+  async answers(@Parent() question: QuestionGQL) {
+    const { id } = question;
+    return this.answerService.findMany({ where: { question: { id } } });
+  }
+
+  @ResolveField(() => [SurveyGQL], { name: 'surveys' })
+  async surveys(@Parent() question: QuestionGQL) {
+    const { id } = question;
+    return this.surveyService.findMany({
+      where: { questions: { some: { id } } },
+    });
   }
 }

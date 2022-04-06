@@ -1,17 +1,32 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Query,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { AnswerService } from './answer.service';
 import {
   AnswerGQL,
   AnswerCreateInput,
   AnswerUpdateInput,
   AnswerWhereUniqueInput,
+  QuestionGQL,
+  SurveyResponseGQL,
 } from '@odst/types/ods';
+import { QuestionService } from '../question/question.service';
+import { SurveyResponseService } from '../surveyResponse/surveyResponse.service';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => AnswerGQL)
 export class AnswerResolver {
-  constructor(private readonly answerService: AnswerService) {}
+  constructor(
+    private readonly answerService: AnswerService,
+    private readonly questionService: QuestionService,
+    private readonly surveyResponseService: SurveyResponseService
+  ) {}
 
   @Query(() => [AnswerGQL], { name: 'findManyAnswers' })
   async findMany(): Promise<AnswerGQL[]> {
@@ -29,7 +44,9 @@ export class AnswerResolver {
 
   @Mutation(() => AnswerGQL, { name: 'createAnswer' })
   // @UseGuards(AccessTokenAuthGuard)
-  create(@Args('answerCreateInput') answerCreateInput: AnswerCreateInput) {
+  create(
+    @Args('answerCreateInput') answerCreateInput: AnswerCreateInput
+  ): Promise<AnswerGQL> {
     return this.answerService.create(answerCreateInput);
   }
 
@@ -51,5 +68,21 @@ export class AnswerResolver {
     answerWhereUniqueInput: AnswerWhereUniqueInput
   ): Promise<{ deleted: boolean }> {
     return this.answerService.delete(answerWhereUniqueInput);
+  }
+
+  @ResolveField(() => QuestionGQL, { name: 'question' })
+  async question(@Parent() answer: AnswerGQL): Promise<QuestionGQL | null> {
+    return this.questionService.findUnique({
+      id: answer.questionId,
+    });
+  }
+
+  @ResolveField(() => SurveyResponseGQL, { name: 'surveyResponse' })
+  async surveyResponse(
+    @Parent() answer: AnswerGQL
+  ): Promise<SurveyResponseGQL | null> {
+    return this.surveyResponseService.findUnique({
+      id: answer.surveyResponseId,
+    });
   }
 }
