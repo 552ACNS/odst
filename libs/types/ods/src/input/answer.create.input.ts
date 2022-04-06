@@ -17,13 +17,31 @@ export class AnswerCreateInput implements Prisma.AnswerCreateInput {
 }
 
 @InputType()
+export class AnswerCreateWithoutSurveyResponseInput
+  implements Prisma.AnswerCreateWithoutSurveyResponseInput
+{
+  value: string;
+
+  @Field(() => QuestionCreateNestedOneWithoutAnswersInput)
+  question: Prisma.QuestionCreateNestedOneWithoutAnswersInput;
+}
+
+@InputType()
+export class AnswerCreateManySurveyResponseInput
+  implements Prisma.AnswerCreateManySurveyResponseInput
+{
+  value: string;
+  questionId: string;
+}
+
+@InputType()
 export class AnswerCreateNestedManyWithoutSurveyResponseInput
   implements Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput
 {
-  @Field(() => AnswerGQL, { nullable: true })
-  connect?: AnswerWhereUniqueInput;
+  @Field(() => AnswerWhereUniqueInput, { nullable: true })
+  connect?: Prisma.AnswerWhereUniqueInput;
 
-  @Field(() => AnswerGQL, { nullable: true })
+  @Field(() => AnswerCreateWithoutSurveyResponseInput, { nullable: true })
   create?: Prisma.AnswerCreateWithoutSurveyResponseInput;
 
   @Field(() => AnswerCreateManySurveyResponseInputEnvelope, { nullable: true })
@@ -34,7 +52,7 @@ export class AnswerCreateNestedManyWithoutSurveyResponseInput
 export class AnswerCreateManySurveyResponseInputEnvelope
   implements Prisma.AnswerCreateManySurveyResponseInputEnvelope
 {
-  @Field(() => [AnswerGQL], { nullable: true })
+  @Field(() => [AnswerCreateManySurveyResponseInput], { nullable: true })
   data: Prisma.Enumerable<Prisma.AnswerCreateManySurveyResponseInput>;
 
   skipDuplicates?: boolean;
