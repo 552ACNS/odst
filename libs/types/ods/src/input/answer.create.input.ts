@@ -19,9 +19,9 @@ export class AnswerCreateInput implements Prisma.AnswerCreateInput {
 export class AnswerCreateNestedManyWithoutSurveyResponseInput
   implements Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput
 {
-  @Field(() => AnswerWhereUniqueInput, { nullable: true })
+  @Field(() => AnswerWhereUniqueInput)
   connect?: AnswerWhereUniqueInput;
   //TODO fix type, probably fixed on ODST-survey
-  @Field(() => AnswerCreateInput, { nullable: true })
+  @Field(() => AnswerCreateInput)
   create?: Prisma.AnswerCreateWithoutSurveyResponseInput;
 }
