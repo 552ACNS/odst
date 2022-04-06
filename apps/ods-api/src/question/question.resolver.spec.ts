@@ -8,7 +8,8 @@ import { QuestionGQL } from '@odst/types/ods';
 const questionArray: QuestionGQL[] = [];
 
 TestQuestionCreateInput.forEach((questionCreateInput) => {
-  const question: QuestionGQL = ((questionCreateInput as QuestionGQL).id = uuidv4());
+  const question: QuestionGQL = ((questionCreateInput as QuestionGQL).id =
+    uuidv4());
   questionArray.push(question);
 });
 
@@ -26,14 +27,16 @@ describe('Question Resolver', () => {
           provide: QuestionService,
           useValue: {
             findMany: jest.fn().mockResolvedValue(questionArray),
-            getSubQuestions: jest
-              .fn()
-              .mockResolvedValue(questionArray),
+            getSubQuestions: jest.fn().mockResolvedValue(questionArray),
             findUnique: jest
               .fn()
               .mockImplementation(() => Promise.resolve(oneQuestion)),
-            create: jest.fn().mockImplementation(() => Promise.resolve(oneQuestion)),
-            update: jest.fn().mockImplementation(() => Promise.resolve(oneQuestion)),
+            create: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneQuestion)),
+            update: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneQuestion)),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },
@@ -67,9 +70,9 @@ describe('Question Resolver', () => {
 
   describe('create', () => {
     it('should create a create question', async () => {
-      await expect(resolver.create(TestQuestionCreateInput[0])).resolves.toEqual(
-        questionArray[0]
-      );
+      await expect(
+        resolver.create(TestQuestionCreateInput[0])
+      ).resolves.toEqual(questionArray[0]);
     });
   });
 
@@ -96,8 +99,6 @@ describe('Question Resolver', () => {
       await expect(
         resolver.delete({ id: 'a uuid that does not exist' })
       ).resolves.toEqual({ deleted: false });
-      // TODO expect(deleteSpy).toBeCalledWith('a uuid that does not exist');
-      //the above would be better, but not sure how to get it to pass
       expect(deleteSpy).toBeCalled();
     });
   });

@@ -10,7 +10,7 @@ export class OrgUpdateInput
   extends PartialType(OrgCreateInput)
   implements Prisma.OrgUpdateInput
 {
-  @Field(() => [PersonUpdateManyWithoutOrgInput], { nullable: true })
+  @Field(() => [PersonUpdateManyWithoutOrgInput])
   override persons?: Prisma.PersonUpdateManyWithoutOrgInput;
 }
 
@@ -18,13 +18,13 @@ export class OrgUpdateInput
 export class OrgUpdateOneRequiredWithoutPersonsInput
   implements Prisma.OrgUpdateOneRequiredWithoutPersonsInput
 {
-  @Field(() => [OrgWhereUniqueInput], { nullable: true })
+  @Field(() => [OrgWhereUniqueInput])
   connect?: Prisma.OrgWhereUniqueInput;
 
-  //@Field(() => OrgCreateWithoutPersonsInput, { nullable: true })
+  //@Field(() => OrgCreateWithoutPersonsInput)
   //  create?: Prisma.OrgCreateWithoutPersonsInput;
 
-  //@Field(() => OrgUpdateWithoutPersonsDataInput, { nullable: true })
+  //@Field(() => OrgUpdateWithoutPersonsDataInput)
   //update?: Prisma.OrgUpdateWithoutPersonsDataInput;
 
   //upsert?: Prisma.OrgUpsertWithoutPersonsInput;
@@ -34,6 +34,6 @@ export class OrgUpdateOneRequiredWithoutPersonsInput
 export class PersonUpdateOneRequiredWithoutUserInput
   implements Prisma.PersonUpdateOneRequiredWithoutUserInput
 {
-  @Field(() => PersonWhereUniqueInput, { nullable: true })
+  @Field(() => PersonWhereUniqueInput)
   connect?: Prisma.PersonWhereUniqueInput;
 }

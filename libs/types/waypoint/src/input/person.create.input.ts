@@ -80,10 +80,10 @@ export class PersonCreateManyOrgInputEnvelope
 export class PersonCreateNestedManyWithoutOrgInput
   implements Prisma.PersonCreateNestedManyWithoutOrgInput
 {
-  @Field(() => PersonWhereUniqueInput, { nullable: true })
+  @Field(() => PersonWhereUniqueInput)
   connect?: Prisma.PersonWhereUniqueInput;
 
-  @Field(() => PersonCreateNestedManyWithoutOrgInput, { nullable: true })
+  @Field(() => PersonCreateNestedManyWithoutOrgInput)
   connectOrCreate?: Prisma.PersonCreateOrConnectWithoutOrgInput;
 }
 
@@ -91,13 +91,13 @@ export class PersonCreateNestedManyWithoutOrgInput
 export class PersonCreateNestedOneWithoutUserInput
   implements Prisma.PersonCreateNestedOneWithoutUserInput
 {
-  @Field(() => PersonWhereUniqueInput, { nullable: true })
+  @Field(() => PersonWhereUniqueInput)
   connect?: Prisma.PersonWhereUniqueInput;
 
-  @Field(() => PersonGQL, { nullable: true })
+  @Field(() => PersonGQL)
   create?: Prisma.PersonCreateWithoutUserInput;
 
-  @Field(() => PersonCreateOrConnectWithoutUserInput, { nullable: true })
+  @Field(() => PersonCreateOrConnectWithoutUserInput)
   connectOrCreate?: Prisma.PersonCreateOrConnectWithoutUserInput;
 }
 

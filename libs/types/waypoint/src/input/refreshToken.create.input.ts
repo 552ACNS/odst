@@ -18,10 +18,10 @@ export class RefreshTokenCreateInput {
 export class RefreshTokenCreateNestedManyWithoutUserInput
   implements Prisma.RefreshTokenCreateNestedManyWithoutUserInput
 {
-  @Field(() => RefreshTokenWhereUniqueInput, { nullable: true })
+  @Field(() => RefreshTokenWhereUniqueInput)
   connect?: Prisma.RefreshTokenWhereUniqueInput;
 
-  @Field(() => RefreshTokenCreateOrConnectWithoutUserInput, { nullable: true })
+  @Field(() => RefreshTokenCreateOrConnectWithoutUserInput)
   connectOrCreate?: Prisma.RefreshTokenCreateOrConnectWithoutUserInput;
 }
 

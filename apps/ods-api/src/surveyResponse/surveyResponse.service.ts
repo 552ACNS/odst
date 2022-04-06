@@ -33,47 +33,66 @@ export class SurveyResponseService {
 
   // Get the string IDs of all the issues that are unresolved that the commander
   // has responsibility over
-  async getUnresolvedIssues(userId: string): Promise<string[]> {
+
+  async getIssuesByStatus(resolved: boolean): Promise<string[]> {
     const responsesIDs = await this.prisma.surveyResponse
       .findMany({
         where: {
-          survey: {
-            orgs: {
-              every: {
-                commanders: {
-                  every: {
-                    id: userId,
-                  },
-                },
-              },
-            },
-          },
+          resolution: resolved ? { not: null } : null,
         },
-        select  : {
+        select: {
           id: true,
-        }
-      }).then((responses) => responses.map((response) => response.id));
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      })
+      .then((responses) => responses.map((response) => response.id));
+
+    // TODO Depends on user to be logged in, renable once we have a user
+    // const responsesIDs = await this.prisma.surveyResponse
+    //   .findMany({
+    //     where: {
+    //       survey: {
+    //         orgs: {
+    //           every: {
+    //             commanders: {
+    //               every: {
+    //                 id: userId,
+    //               },
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //     select: {
+    //       id: true,
+    //     },
+    //   })
+    //   .then((responses) => responses.map((response) => response.id));
 
     return responsesIDs;
   }
 
-async getIssueData(issueId: string): Promise<string[]>{
-  const issueIDs = await this.prisma.surveyResponse
-  .findUnique({
-    where: {
-      id: issueId,
-    },
-    select : {
-      id: true,
-    }
-  })
-    
-  return [];
-} 
+  // Get the string IDs of all the issues that are unresolved that the commander
+  async getSurveyResponseData(
+    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+  ) {
+    return await this.prisma.surveyResponse.findUnique({
+      where: {
+        id: surveyResponseWhereUniqueInput.id,
+      },
+      include: {
+        answers: {
+          include: {
+            question: true,
+          },
+        },
+      },
+    });
+  }
 
-  async create(
-    data: Prisma.SurveyResponseCreateInput
-  ): Promise<SurveyResponse> {
+  async create(data: Prisma.SurveyResponseCreateInput) {
     return this.prisma.surveyResponse.create({
       data,
     });

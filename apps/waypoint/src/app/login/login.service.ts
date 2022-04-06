@@ -27,12 +27,12 @@ export class LoginService {
         variables: {
           loginUserInput: {
             username: username,
-            password: password, //TODO hash password first, need to change backend too
+            password: password, //TODO [ODST-136] hash password first, need to change backend too
           },
         },
       })
       .subscribe(
-        //TODO deprecated
+        //TODO [ODST-135] deprecated
         ({ data }) => {
           if (data) {
             setAccessToken(data.login.accessToken);
