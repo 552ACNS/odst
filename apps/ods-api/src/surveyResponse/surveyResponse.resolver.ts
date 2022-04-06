@@ -26,12 +26,17 @@ export class SurveyResponseResolver {
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
   ): Promise<SurveyResponseGQL | null> {
-    return this.surveyResponseService.findUnique(surveyResponseWhereUniqueInput);
+    return this.surveyResponseService.findUnique(
+      surveyResponseWhereUniqueInput
+    );
   }
 
   @Mutation(() => SurveyResponseGQL, { name: 'createSurveyResponse' })
   // @UseGuards(AccessTokenAuthGuard)
-  create(@Args('surveyResponseCreateInput') surveyResponseCreateInput: SurveyResponseCreateInput) {
+  create(
+    @Args('surveyResponseCreateInput')
+    surveyResponseCreateInput: SurveyResponseCreateInput
+  ) {
     return this.surveyResponseService.create(surveyResponseCreateInput);
   }
 
@@ -43,7 +48,10 @@ export class SurveyResponseResolver {
     @Args('SurveyResponseUpdateInput')
     surveyResponseUpdateInput: SurveyResponseUpdateInput
   ): Promise<SurveyResponseGQL> {
-    return this.surveyResponseService.update(surveyResponseWhereUniqueInput, surveyResponseUpdateInput);
+    return this.surveyResponseService.update(
+      surveyResponseWhereUniqueInput,
+      surveyResponseUpdateInput
+    );
   }
 
   @Mutation(() => SurveyResponseGQL, { name: 'deleteSurveyResponse' })

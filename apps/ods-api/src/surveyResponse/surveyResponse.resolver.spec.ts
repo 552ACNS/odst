@@ -8,7 +8,9 @@ import { SurveyResponseGQL } from '@odst/types/ods';
 const surveyResponseArray: SurveyResponseGQL[] = [];
 
 TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
-  const surveyResponse: SurveyResponseGQL = ((surveyResponseCreateInput as unknown as SurveyResponseGQL).id = uuidv4());
+  const surveyResponse: SurveyResponseGQL = ((
+    surveyResponseCreateInput as unknown as SurveyResponseGQL
+  ).id = uuidv4());
   surveyResponseArray.push(surveyResponse);
 });
 
@@ -68,19 +70,16 @@ describe('SurveyResponse Resolver', () => {
 
   describe('create', () => {
     it('should create a create surveyResponse', async () => {
-      await expect(resolver.create(TestSurveyResponseCreateInput[0])).resolves.toEqual(
-        surveyResponseArray[0]
-      );
+      await expect(
+        resolver.create(TestSurveyResponseCreateInput[0])
+      ).resolves.toEqual(surveyResponseArray[0]);
     });
   });
 
   describe('update', () => {
     it('should update a surveyResponse', async () => {
       await expect(
-        resolver.update(
-          { id: oneSurveyResponse.id },
-          { routeOutside : true }
-        )
+        resolver.update({ id: oneSurveyResponse.id }, { routeOutside: true })
       ).resolves.toEqual(oneSurveyResponse);
     });
   });

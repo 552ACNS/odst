@@ -17,8 +17,8 @@
     "paths": {
       "@odst/gql": ["libs/gql/src/index.ts"],
       "@odst/helpers": ["libs/helpers/src/index.ts"],
-      "@odst/types/waypoint": ["libs/types/waypoint/src/index.ts"],
-      "@odst/types/ods": ["libs/types/ods/src/index.ts"]
+      "@odst/types/ods": ["libs/types/ods/src/index.ts"],
+      "@odst/types/waypoint": ["libs/types/waypoint/src/index.ts"]
     },
     "strictNullChecks": true,
     "strictPropertyInitialization": false,

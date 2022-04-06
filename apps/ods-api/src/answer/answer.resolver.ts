@@ -29,9 +29,7 @@ export class AnswerResolver {
 
   @Mutation(() => AnswerGQL, { name: 'createAnswer' })
   // @UseGuards(AccessTokenAuthGuard)
-  create(
-    @Args('answerCreateInput') answerCreateInput: AnswerCreateInput
-  ) {
+  create(@Args('answerCreateInput') answerCreateInput: AnswerCreateInput) {
     return this.answerService.create(answerCreateInput);
   }
 
@@ -43,10 +41,7 @@ export class AnswerResolver {
     @Args('AnswerUpdateInput')
     answerUpdateInput: AnswerUpdateInput
   ): Promise<AnswerGQL> {
-    return this.answerService.update(
-      answerWhereUniqueInput,
-      answerUpdateInput
-    );
+    return this.answerService.update(answerWhereUniqueInput, answerUpdateInput);
   }
 
   @Mutation(() => AnswerGQL, { name: 'deleteAnswer' })

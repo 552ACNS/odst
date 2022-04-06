@@ -8,7 +8,8 @@ import { AnswerGQL } from '@odst/types/ods';
 const answerArray: AnswerGQL[] = [];
 
 TestAnswerCreateInput.forEach((answerCreateInput) => {
-  const answer: AnswerGQL = ((answerCreateInput as unknown as AnswerGQL).id = uuidv4());
+  const answer: AnswerGQL = ((answerCreateInput as unknown as AnswerGQL).id =
+    uuidv4());
   answerArray.push(answer);
 });
 
@@ -26,14 +27,16 @@ describe('Answer Resolver', () => {
           provide: AnswerService,
           useValue: {
             findMany: jest.fn().mockResolvedValue(answerArray),
-            getSubAnswers: jest
-              .fn()
-              .mockResolvedValue(answerArray),
+            getSubAnswers: jest.fn().mockResolvedValue(answerArray),
             findUnique: jest
               .fn()
               .mockImplementation(() => Promise.resolve(oneAnswer)),
-            create: jest.fn().mockImplementation(() => Promise.resolve(oneAnswer)),
-            update: jest.fn().mockImplementation(() => Promise.resolve(oneAnswer)),
+            create: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneAnswer)),
+            update: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(oneAnswer)),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },

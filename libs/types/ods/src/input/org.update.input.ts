@@ -6,5 +6,3 @@ import { OrgCreateInput } from './org.create.input';
 export class OrgUpdateInput
   extends PartialType(OrgCreateInput)
   implements Prisma.OrgUpdateInput {}
-
-

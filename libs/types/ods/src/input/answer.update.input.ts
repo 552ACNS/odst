@@ -6,5 +6,3 @@ import { AnswerCreateInput } from './answer.create.input';
 export class AnswerUpdateInput
   extends PartialType(AnswerCreateInput)
   implements Prisma.AnswerUpdateInput {}
-
-
