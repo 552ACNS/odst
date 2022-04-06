@@ -14,16 +14,20 @@ export class SurveyResponseCreateInput
   @Field(() => AnswerCreateNestedManyWithoutSurveyResponseInput)
   answers?: Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput;
 
+  openedDate?: Date;
+  closedDate?: Date;
   routeOutside?: boolean;
+  resolution?: string;
 }
 
 @InputType()
 export class SurveyResponseCreateNestedManyWithoutSurveyInput
   implements Prisma.SurveyResponseCreateNestedManyWithoutSurveyInput
 {
-  @Field(() => SurveyResponseWhereUniqueInput, { nullable: true })
+  @Field(() => SurveyResponseWhereUniqueInput)
   connect?: Prisma.SurveyResponseWhereUniqueInput;
 
+  //TODO fix type
   @Field(() => SurveyResponseCreateInput, { nullable: true })
   create?: Prisma.SurveyResponseCreateWithoutSurveyInput;
 }
@@ -32,9 +36,10 @@ export class SurveyResponseCreateNestedManyWithoutSurveyInput
 export class SurveyResponseCreateNestedOneWithoutAnswersInput
   implements Prisma.SurveyResponseCreateNestedOneWithoutAnswersInput
 {
-  @Field(() => SurveyResponseWhereUniqueInput, { nullable: true })
+  @Field(() => SurveyResponseWhereUniqueInput)
   connect?: Prisma.SurveyResponseWhereUniqueInput;
 
+  //TODO fix type
   @Field(() => SurveyResponseCreateInput, { nullable: true })
   create?: Prisma.SurveyResponseCreateWithoutAnswersInput;
 }

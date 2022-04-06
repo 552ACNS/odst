@@ -2,7 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SurveyResponseResolver } from './surveyResponse.resolver';
 import { SurveyResponseService } from './surveyResponse.service';
 import { v4 as uuidv4 } from 'uuid';
-import { MockSurveyResponses, MockSurveyResponseCreateInput } from './surveyResponse.repo';
+import {
+  MockSurveyResponses,
+  MockSurveyResponseCreateInput,
+} from './surveyResponse.repo';
 import { SurveyResponseGQL } from '@odst/types/ods';
 import { AnswerService } from '../answer/answer.service';
 import { SurveyService } from '../survey/survey.service';
@@ -21,13 +24,19 @@ describe('SurveyResponse Resolver', () => {
             findMany: jest.fn().mockResolvedValue(MockSurveyResponses),
             findUnique: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(MockSurveyResponses[0])),
+              .mockImplementation(() =>
+                Promise.resolve(MockSurveyResponses[0])
+              ),
             create: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(MockSurveyResponses[0])),
+              .mockImplementation(() =>
+                Promise.resolve(MockSurveyResponses[0])
+              ),
             update: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(MockSurveyResponses[0])),
+              .mockImplementation(() =>
+                Promise.resolve(MockSurveyResponses[0])
+              ),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },
@@ -60,7 +69,7 @@ describe('SurveyResponse Resolver', () => {
     });
   });
 
-  describe('findUnqiue', () => {
+  describe('findUnique', () => {
     it('should get a single surveyResponse', async () => {
       await expect(
         resolver.findUnique({ id: 'a strange id' })
@@ -73,9 +82,9 @@ describe('SurveyResponse Resolver', () => {
 
   describe('create', () => {
     it('should create a create surveyResponse', async () => {
-      await expect(resolver.create(MockSurveyResponseCreateInput[0])).resolves.toEqual(
-        MockSurveyResponses[0]
-      );
+      await expect(
+        resolver.create(MockSurveyResponseCreateInput[0])
+      ).resolves.toEqual(MockSurveyResponses[0]);
     });
   });
 
@@ -84,7 +93,7 @@ describe('SurveyResponse Resolver', () => {
       await expect(
         resolver.update(
           { id: MockSurveyResponses[0].id },
-          { routeOutside : true }
+          { routeOutside: true }
         )
       ).resolves.toEqual(MockSurveyResponses[0]);
     });
@@ -105,8 +114,6 @@ describe('SurveyResponse Resolver', () => {
       await expect(
         resolver.delete({ id: 'a uuid that does not exist' })
       ).resolves.toEqual({ deleted: false });
-      // TODO expect(deleteSpy).toBeCalledWith('a uuid that does not exist');
-      //the above would be better, but not sure how to get it to pass
       expect(deleteSpy).toBeCalled();
     });
   });

@@ -88,7 +88,7 @@ describe('Survey Resolver', () => {
     it('should update a survey', async () => {
       await expect(
         resolver.update(
-          { id: "a uuid" },
+          { id: 'a uuid' },
           { surveyResponses: { connect: { id: 'surveyResponses id' } } }
         )
       ).resolves.toEqual(MockSurveys[0]);
@@ -110,8 +110,6 @@ describe('Survey Resolver', () => {
       await expect(
         resolver.delete({ id: 'a uuid that does not exist' })
       ).resolves.toEqual({ deleted: false });
-      // TODO expect(deleteSpy).toBeCalledWith('a uuid that does not exist');
-      //the above would be better, but not sure how to get it to pass
       expect(deleteSpy).toBeCalled();
     });
   });

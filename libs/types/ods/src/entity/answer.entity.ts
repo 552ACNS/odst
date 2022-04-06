@@ -1,5 +1,6 @@
 import { ObjectType, HideField } from '@nestjs/graphql';
 import { Answer } from '.prisma/ods/client';
+import { QuestionGQL } from './question.entity';
 
 @ObjectType()
 export class AnswerGQL implements Answer {
@@ -11,4 +12,7 @@ export class AnswerGQL implements Answer {
 
   @HideField()
   surveyResponseId: string;
+
+  @Field(() => QuestionGQL, { nullable: true })
+  question?: QuestionGQL;
 }

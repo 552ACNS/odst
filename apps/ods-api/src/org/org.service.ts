@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Org, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { OrgCreateInput, OrgGQL } from '@odst/types/ods';
 
 @Injectable()
 export class OrgService {
@@ -26,7 +25,7 @@ export class OrgService {
 
   async getSubOrgs(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<OrgGQL[]> {
+  ): Promise<Org[]> {
     const parentOrg = await this.prisma.org.findUnique({
       where: orgWhereUniqueInput,
     });
@@ -48,7 +47,7 @@ export class OrgService {
       orgs.push(parentOrg);
     }
 
-    return orgs as OrgGQL[];
+    return orgs as Org[];
   }
 
   async findUnique(
@@ -59,7 +58,7 @@ export class OrgService {
     });
   }
 
-  async create(data: Prisma.OrgCreateInput): Promise<OrgGQL> {
+  async create(data: Prisma.OrgCreateInput): Promise<Org> {
     return this.prisma.org.create({
       data,
     });

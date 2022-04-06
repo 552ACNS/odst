@@ -17,14 +17,16 @@ describe('Org Resolver', () => {
           provide: OrgService,
           useValue: {
             findMany: jest.fn().mockResolvedValue(MockOrgs),
-            getSubOrgs: jest
-              .fn()
-              .mockResolvedValue(MockOrgs),
+            getSubOrgs: jest.fn().mockResolvedValue(MockOrgs),
             findUnique: jest
               .fn()
               .mockImplementation(() => Promise.resolve(MockOrgs[0])),
-            create: jest.fn().mockImplementation(() => Promise.resolve(MockOrgs[0])),
-            update: jest.fn().mockImplementation(() => Promise.resolve(MockOrgs[0])),
+            create: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(MockOrgs[0])),
+            update: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(MockOrgs[0])),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },
@@ -59,9 +61,9 @@ describe('Org Resolver', () => {
 
   describe('getSubOrgs', () => {
     it('should get an array of orgs', async () => {
-      await expect(
-        resolver.getSubOrgs({ id: "a uuid" })
-      ).resolves.toEqual(MockOrgs);
+      await expect(resolver.getSubOrgs({ id: 'a uuid' })).resolves.toEqual(
+        MockOrgs
+      );
     });
   });
 
@@ -107,8 +109,6 @@ describe('Org Resolver', () => {
       await expect(
         resolver.delete({ id: 'a uuid that does not exist' })
       ).resolves.toEqual({ deleted: false });
-      // TODO expect(deleteSpy).toBeCalledWith('a uuid that does not exist');
-      //the above would be better, but not sure how to get it to pass
       expect(deleteSpy).toBeCalled();
     });
   });

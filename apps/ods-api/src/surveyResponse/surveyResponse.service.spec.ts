@@ -2,9 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { SurveyResponseService } from './surveyResponse.service';
 import { v4 as uuidv4 } from 'uuid';
-import { MockSurveyResponseCreateInput, MockSurveyResponses } from './surveyResponse.repo';
+import {
+  MockSurveyResponseCreateInput,
+  MockSurveyResponses,
+} from './surveyResponse.repo';
 import { SurveyResponseGQL } from '@odst/types/ods';
-
 
 const db = {
   surveyResponse: {
@@ -48,13 +50,17 @@ describe('SurveyResponseService', () => {
 
   describe('findUnique', () => {
     it('should get a single surveyResponse', () => {
-      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(MockSurveyResponses[0]);
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
+        MockSurveyResponses[0]
+      );
     });
   });
 
   describe('create', () => {
     it('should call the create method', async () => {
-      const surveyResponse = await service.create(MockSurveyResponseCreateInput[0]);
+      const surveyResponse = await service.create(
+        MockSurveyResponseCreateInput[0]
+      );
       expect(surveyResponse).toEqual(MockSurveyResponses[0]);
     });
   });
@@ -79,9 +85,10 @@ describe('SurveyResponseService', () => {
     });
 
     it('should return {deleted: false, message: err.message}', () => {
-      const dbSpy = jest
+      jest
         .spyOn(prisma.surveyResponse, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
+
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
         deleted: false,
         message: 'Bad Delete Method.',

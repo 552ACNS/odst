@@ -13,7 +13,7 @@ export class QuestionCreateInput implements Prisma.QuestionCreateInput {
 
 @InputType()
 export class QuestionCreateNested {
-  @Field(() => QuestionWhereUniqueInput, { nullable: true })
+  @Field(() => QuestionWhereUniqueInput)
   connect?: Prisma.QuestionWhereUniqueInput;
 }
 
