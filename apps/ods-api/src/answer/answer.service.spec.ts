@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { AnswerService } from './answer.service';
 import { v4 as uuidv4 } from 'uuid';
-import { TestAnswerCreateInput } from './answer.repo'
-import { Answer} from '.prisma/ods/client';
+import { TestAnswerCreateInput } from './answer.repo';
+import { Answer } from '.prisma/ods/client';
 
 const answerArray: Answer[] = [];
 
@@ -57,9 +57,7 @@ describe('AnswerService', () => {
 
   describe('findUnique', () => {
     it('should get a single answer', () => {
-      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
-        oneAnswer
-      );
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(oneAnswer);
     });
   });
 
@@ -90,7 +88,7 @@ describe('AnswerService', () => {
     });
 
     it('should return {deleted: false, message: err.message}', () => {
-      const dbSpy = jest
+      jest
         .spyOn(prisma.answer, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({

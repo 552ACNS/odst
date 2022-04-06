@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { JwtPayload } from '../misc/jwtPayload.type';
+import { JwtPayload } from '../types/jwtPayload.type';
 
 export const GetCurrentUserId = createParamDecorator(
   (_: undefined, context: ExecutionContext): string => {

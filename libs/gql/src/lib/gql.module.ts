@@ -24,12 +24,6 @@ import {
   RefreshMutationVariables,
 } from '../graphql-generated';
 
-// TODO Make this an environment variable, make sure this works
-// just setting process.env.GQL_ENDPOINT doesn't work as expected (it will fail
-// on the frontend)
-
-// Consider undoing this as a component. If not feasible.
-// const uri = 'http://localhost:3333/graphql';
 let environment: { NX_GQL_ENDPOINT: string };
 
 @NgModule({
@@ -42,8 +36,7 @@ let environment: { NX_GQL_ENDPOINT: string };
   ],
 })
 export class GQLModule {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(@Inject('environment') incomingEnv) {
+  constructor(@Inject('environment') incomingEnv: { NX_GQL_ENDPOINT: string }) {
     environment = incomingEnv;
   }
 }
@@ -75,7 +68,7 @@ export function createApollo() {
                 isJwtChainExpired(refreshToken)
               ) {
                 console.log('No valid refresh token');
-                //TODO push to login
+                //TODO [ODST-134] push to login
                 continue;
               }
               let forward$: Observable<boolean> | Observable<void>;

@@ -37,7 +37,7 @@ export class OrgCreateInput
 
 @InputType()
 export class OrgCreateNestedMany {
-  @Field(() => OrgWhereUniqueInput, { nullable: true })
+  @Field(() => OrgWhereUniqueInput)
   connect?: Prisma.OrgWhereUniqueInput;
 }
 
