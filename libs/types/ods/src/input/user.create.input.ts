@@ -23,6 +23,6 @@ export class UserCreateInput implements Prisma.UserCreateInput {
 export class UserCreateNestedManyWithoutOrgsInput
   implements Prisma.UserCreateNestedManyWithoutOrgsInput
 {
-  @Field(() => OrgWhereUniqueInput, { nullable: true })
+  @Field(() => OrgWhereUniqueInput)
   connect?: OrgWhereUniqueInput;
 }

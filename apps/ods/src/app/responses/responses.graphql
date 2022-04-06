@@ -1,0 +1,32 @@
+query GetSurveyResponseData(
+  $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
+) {
+  getSurveyResponseData(
+    surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
+  ) {
+    id
+    openedDate
+    answers {
+      value
+      question {
+        prompt
+      }
+    }
+  }
+}
+
+query getIssuesByStatus($resolved: Boolean!) {
+  getIssuesByStatus(resolved: $resolved)
+}
+
+mutation UpdateSurveyResponse_Resolution(
+  $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
+  $surveyResponseUpdateInput: SurveyResponseUpdateInput!
+) {
+  updateSurveyResponse(
+    SurveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
+    SurveyResponseUpdateInput: $surveyResponseUpdateInput
+  ) {
+    resolution
+  }
+}

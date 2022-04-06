@@ -11,7 +11,6 @@ import {
 @ObjectType()
 @InputType('PersonGQLInput')
 export class PersonGQL implements Person {
-  @Field(() => String, { nullable: true })
   id: string;
   dodId: number;
   ssn: number;
@@ -21,7 +20,6 @@ export class PersonGQL implements Person {
   @Field(() => HairColor)
   hairColor: HairColor;
 
-  @Field(() => String, { nullable: true })
   middleInitial: string | null;
   lastName: string;
   birthDate: Date;
