@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'odst-responses',
@@ -9,46 +10,92 @@ import { ResponsesService } from './responses.service';
   styleUrls: ['./responses.component.scss'],
 })
 export class ResponsesComponent implements OnInit {
-  constructor(private responsesService: ResponsesService) {}
+  resolutionForm = this.fb.group({
+    resolution: ['', [Validators.required]],
+  });
+  constructor(
+    private fb: FormBuilder,
+    private responsesService: ResponsesService
+  ) {}
 
-  prompts: string[];
-  responses: string[];
+  questionsAnswers: [string, string][] = [];
 
-  qas: [string, string][] = [];
+  openedDate: string;
+  numberOfResponses: number;
+  displayedIndex: number;
 
-  dateOfIssue = formatDate(Date.now(), 'MMMM d, yyyy', 'en-US');
-  numberOfResponses = 3;
-  responsesPerPage = 1;
-  displayedIssue = 0;
+  responseIDs: string[] = [];
 
-  issueData = '';
-  issueIds: string[];
-  // MatPaginator Output
   pageEvent: PageEvent;
 
-  ngOnInit(): void {
-    this.issueIds = this.responsesService.getResponsesIds();
-    this.numberOfResponses = this.issueIds.length;
-    this.prompts = this.responsesService.getPrompts('surveyId');
-    this.responses = this.responsesService.getAnswers('surveyResponseId');
+  async ngOnInit() {
+    (await this.responsesService.getResponseIDsByStatus(false)).subscribe(
+      (data) => {
+        this.responseIDs = data;
+        this.numberOfResponses = data.length;
 
-    // combine the prompts and responses into a QA array
-    for (let i = 0; i < this.prompts.length; i++) {
-      this.qas.push([this.prompts[i], this.responses[i]]);
+        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+
+        // navigate to that issue
+        this.displayIssue(this.pageEvent);
+      }
+    );
+  }
+
+  submitResolutionClick() {
+    // if the resolution field is not empty after a trim
+    if (this.resolutionForm.value.resolution.trim() !== '') {
+      this.responsesService.updateResolution(
+        this.responseIDs[this.displayedIndex],
+        this.resolutionForm.value['resolution']
+      );
+
+      //refresh the page
+      window.location.reload();
     }
   }
 
-  // display the issue data for the selected issue from the paginator
-  displayIssue(pageEvent: PageEvent) {
+  async getResponseData(responseID: string) {
+    (await this.responsesService.getResponseData(responseID)).subscribe(
+      (data) => {
+        this.openedDate = formatDate(
+          data.openedDate,
+          'MMM d yy, h:mm a',
+          'en-US'
+        );
+
+        // Clear contents of QA array
+        this.questionsAnswers = [];
+
+        // Handle the Questions & Answers
+        data.answers?.forEach((answer) => {
+          // Clear contents of QA array
+          // Create the Question/Answer Array
+          this.questionsAnswers.push([
+            String(answer?.question?.prompt),
+            answer.value,
+          ]);
+        });
+      }
+    );
+  }
+
+  displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
-      this.issueData = this.responsesService.getIssueData(
-        this.issueIds[pageEvent.pageIndex]
-      );
-      this.displayedIssue = pageEvent.pageIndex;
-      //this.prompts = this.responsesService.getPrompts("surveyId");
+      // Set the resolution
+      this.resolutionForm.setValue({
+        resolution: '',
+      });
+
+      this.displayedIndex = pageEvent.pageIndex;
+
+      this.getResponseData(this.responseIDs[this.displayedIndex]);
     }
     return pageEvent;
   }
 
   //TODO [ODST-133] IMPORTANT: set to first page on load
+
 }
+
+// Suppose our profile query took an avatar size
