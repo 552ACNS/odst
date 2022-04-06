@@ -93,6 +93,9 @@ export class ResponsesComponent implements OnInit {
     }
     return pageEvent;
   }
+
+  //TODO [ODST-133] IMPORTANT: set to first page on load
+
 }
 
 // Suppose our profile query took an avatar size

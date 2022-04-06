@@ -8,7 +8,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginModule),
   },
-  //TODO: add functionality to auto redirect to login if refresh token not found
+  //TODO [ODST-138]: add functionality to auto redirect to login if refresh token not found
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'home', component: NavigationBarComponent },
 ];
