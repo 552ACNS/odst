@@ -2,10 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type QuestionGQL {
+  id: String!
+  prompt: String!
+  answers: [AnswerGQL!]!
+  surveys: [SurveyGQL!]!
+}
+
 type AnswerGQL {
+  question: QuestionGQL
   id: String!
   value: String!
-  question: QuestionGQL!
   surveyResponse: SurveyResponseGQL!
 }
 
@@ -24,13 +31,6 @@ enum OrgTier {
   GROUP
   SQUADRON
   OTHER
-}
-
-type QuestionGQL {
-  id: String!
-  prompt: String!
-  answers: [AnswerGQL!]!
-  surveys: [SurveyGQL!]!
 }
 
 type SurveyGQL {
@@ -75,6 +75,8 @@ type Query {
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   findManySurveyResponses(where: SurveyResponseWhereInput): [SurveyResponseGQL!]!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  getIssuesByStatus(resolved: Boolean!): [String!]!
+  getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   findManyAnswers(where: AnswerWhereInput): [AnswerGQL!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
   findManyOrgs(where: OrgWhereInput): [OrgGQL!]!
@@ -297,7 +299,10 @@ input SurveyResponseCreateNestedManyWithoutSurveyInput {
 input SurveyResponseCreateInput {
   survey: SurveyCreateNestedOneWithoutSurveyResponsesInput!
   answers: AnswerCreateNestedManyWithoutSurveyResponseInput
+  openedDate: DateTime
+  closedDate: DateTime
   routeOutside: Boolean
+  resolution: String
 }
 
 input SurveyCreateNestedOneWithoutSurveyResponsesInput {
