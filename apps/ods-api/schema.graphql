@@ -134,7 +134,7 @@ type Mutation {
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
-  removeQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
+  deleteQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
 }
 
 input SurveyCreateInput {
