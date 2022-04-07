@@ -1,8 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Prisma, Survey } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { SurveyGQL } from '@odst/types/ods';
 import { Md5 as md5 } from 'ts-md5/dist/md5';
+import { getArrayHash } from '@odst/helpers';
 
 @Injectable()
 export class SurveyService {
@@ -53,7 +54,7 @@ export class SurveyService {
       );
     }
 
-    const questionsHash = await this.getQuestionsHash(questionIds);
+    const questionsHash = getArrayHash(questionIds);
 
     return this.prisma.survey.upsert({
       where: { questionsHash },
@@ -123,15 +124,6 @@ export class SurveyService {
       where: surveyWhereUniqueInput,
       data: { questionsHash },
     });
-  }
-
-  private async getQuestionsHash(questionIds: string[]): Promise<string> {
-    if (questionIds.length <= 0) {
-      throw new BadRequestException('No question prompts provided');
-    }
-    const questionStr = questionIds.sort().join();
-
-    return md5.hashStr(questionStr);
   }
 
   //TODO tests for new methods

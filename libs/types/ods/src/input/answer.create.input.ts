@@ -57,3 +57,11 @@ export class AnswerCreateManySurveyResponseInputEnvelope
 
   skipDuplicates?: boolean;
 }
+
+@InputType()
+export class AnswerCreateNestedManyWithoutQuestionInput
+  implements Prisma.AnswerCreateNestedManyWithoutQuestionInput
+{
+  @Field(() => [AnswerWhereUniqueInput])
+  connect?: Prisma.Enumerable<Prisma.AnswerWhereUniqueInput>;
+}

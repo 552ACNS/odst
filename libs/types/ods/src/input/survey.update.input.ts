@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
-import { QuestionUpdateManyWithoutSurveysInput } from './question.unique.input';
 import { SurveyResponseGQL } from '../entity/surveyResponse.entity';
+import { QuestionUpdateManyWithoutSurveysInput } from './question.update.input';
 
 @InputType()
 // extends SurveyCreateInput

@@ -24,7 +24,7 @@ enum OrgTier {
 }
 
 type QuestionGQL {
-  id: String
+  id: String!
   prompt: String!
 }
 
@@ -59,11 +59,6 @@ input OrgGQLInput {
   orgTier: OrgTier!
   name: String!
   parentId: String
-}
-
-input QuestionGQLInput {
-  id: String
-  prompt: String!
 }
 
 input SurveyGQLInput {
@@ -169,7 +164,16 @@ input QuestionUpdateManyWithoutSurveysInput {
 
 input QuestionCreateOrConnectWithoutSurveysInput {
   where: QuestionWhereUniqueInput!
-  create: QuestionGQLInput!
+  create: QuestionCreateWithoutSurveysInput!
+}
+
+input QuestionCreateWithoutSurveysInput {
+  answers: AnswerCreateNestedManyWithoutQuestionInput
+  prompt: String!
+}
+
+input AnswerCreateNestedManyWithoutQuestionInput {
+  connect: [AnswerWhereUniqueInput!]
 }
 
 input SurveyResponseUpdateManyWithoutSurveyInput {

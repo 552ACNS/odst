@@ -10,13 +10,17 @@
 #   }
 # }
 
-
-
 # mutation createSurvey_form($surveyCreateInput: SurveyCreateInput!) {
 #   createSurvey(surveyCreateInput: $surveyCreateInput) {
 #     id
 #   }
 # }
+
+query findUniqueSurvey_form($surveyWhereUniqueInput: SurveyWhereUniqueInput!) {
+  findUniqueSurvey(surveyWhereUniqueInput: $surveyWhereUniqueInput) {
+    id
+  }
+}
 
 mutation createSurveyResponse_form($surveyResponseCreateInput: SurveyResponseCreateInput!) {
   createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
@@ -34,6 +38,13 @@ mutation createSurveyWithQuestions_form($questionPrompts: [String!]!) {
 query findManyOrgs_form {
   findManyOrgs {
     ...orgFields
+  }
+}
+
+query findQuestionsBySurvey_form($surveyWhereUniqueInput: SurveyWhereUniqueInput!) {
+  getSubQuestions(surveyWhereUniqueInput: $surveyWhereUniqueInput) {
+    id
+    prompt
   }
 }
 
