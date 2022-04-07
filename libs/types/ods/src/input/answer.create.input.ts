@@ -20,9 +20,9 @@ export class AnswerCreateInput implements Prisma.AnswerCreateInput {
 export class AnswerCreateNestedManyWithoutSurveyResponseInput
   implements Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput
 {
-  @Field(() => AnswerGQL, { nullable: true })
+  @Field(() => AnswerGQL)
   connect?: AnswerWhereUniqueInput;
 
-  @Field(() => AnswerGQL, { nullable: true })
+  @Field(() => AnswerGQL)
   create?: Prisma.AnswerCreateWithoutSurveyResponseInput;
 }

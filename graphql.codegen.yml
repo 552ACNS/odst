@@ -8,7 +8,7 @@ generates:
       - typed-document-node
   apps/ods/src/graphql-generated.ts:
     schema: apps/ods-api/schema.graphql
-    documents: [ 'apps/ods/**/*.graphql' ]
+    documents: ['apps/ods/**/*.graphql']
     plugins:
       - typescript
       - typescript-operations

@@ -2,16 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type QuestionGQL {
+  id: String!
+  prompt: String!
+}
+
 type AnswerGQL {
-  id: String
+  question: QuestionGQL
+  id: String!
   value: String!
   questionId: String!
   surveyResponseId: String!
 }
 
 type OrgGQL {
-  id: String
   orgTier: OrgTier!
+  id: String!
   name: String!
   parentId: String
 }
@@ -23,17 +29,13 @@ enum OrgTier {
   OTHER
 }
 
-type QuestionGQL {
-  id: String
-  prompt: String!
-}
-
 type SurveyGQL {
-  id: String
+  id: String!
 }
 
 type SurveyResponseGQL {
-  id: String
+  answers: [AnswerGQL!]
+  id: String!
   surveyId: String!
   openedDate: DateTime!
   closedDate: DateTime
@@ -46,31 +48,33 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input QuestionGQLInput {
+  id: String!
+  prompt: String!
+}
+
 input AnswerGQLInput {
-  id: String
+  question: QuestionGQLInput
+  id: String!
   value: String!
   questionId: String!
   surveyResponseId: String!
 }
 
 input OrgGQLInput {
-  id: String
   orgTier: OrgTier!
+  id: String!
   name: String!
   parentId: String
 }
 
-input QuestionGQLInput {
-  id: String
-  prompt: String!
-}
-
 input SurveyGQLInput {
-  id: String
+  id: String!
 }
 
 input SurveyResponseGQLInput {
-  id: String
+  answers: [AnswerGQLInput!]
+  id: String!
   surveyId: String!
   openedDate: DateTime!
   closedDate: DateTime
@@ -83,6 +87,8 @@ type Query {
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   findManySurveyResponses: [SurveyResponseGQL!]!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  getIssuesByStatus(resolved: Boolean!): [String!]!
+  getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   findManyAnswers: [AnswerGQL!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
   findManyOrgs: [OrgGQL!]!
@@ -160,7 +166,10 @@ input SurveyUpdateInput {
 input SurveyResponseCreateInput {
   survey: SurveyCreateNestedOneWithoutSurveyResponsesInput!
   answers: AnswerCreateNestedManyWithoutSurveyResponseInput
+  openedDate: DateTime
+  closedDate: DateTime
   routeOutside: Boolean
+  resolution: String
 }
 
 input SurveyCreateNestedOneWithoutSurveyResponsesInput {

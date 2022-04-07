@@ -59,7 +59,7 @@ export class OrgResolver {
     return this.orgService.update(orgWhereUniqueInput, orgUpdateInput);
   }
 
-  @Mutation(() => OrgGQL, { name: 'removeOrg' })
+  @Mutation(() => OrgGQL, { name: 'deleteOrg' })
   @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('orgWhereUniqueInput')

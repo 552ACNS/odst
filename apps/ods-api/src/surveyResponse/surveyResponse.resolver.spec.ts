@@ -8,7 +8,9 @@ import { SurveyResponseGQL } from '@odst/types/ods';
 const surveyResponseArray: SurveyResponseGQL[] = [];
 
 TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
-  const surveyResponse: SurveyResponseGQL = ((surveyResponseCreateInput as unknown as SurveyResponseGQL).id = uuidv4());
+  const surveyResponse: SurveyResponseGQL = ((
+    surveyResponseCreateInput as unknown as SurveyResponseGQL
+  ).id = uuidv4());
   surveyResponseArray.push(surveyResponse);
 });
 
@@ -49,13 +51,7 @@ describe('SurveyResponse Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
-  describe('findMany', () => {
-    it('should get an array of surveyResponses', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(surveyResponseArray);
-    });
-  });
-
-  describe('findUnqiue', () => {
+  describe('findUnique', () => {
     it('should get a single surveyResponse', async () => {
       await expect(
         resolver.findUnique({ id: 'a strange id' })
@@ -68,19 +64,16 @@ describe('SurveyResponse Resolver', () => {
 
   describe('create', () => {
     it('should create a create surveyResponse', async () => {
-      await expect(resolver.create(TestSurveyResponseCreateInput[0])).resolves.toEqual(
-        surveyResponseArray[0]
-      );
+      await expect(
+        resolver.create(TestSurveyResponseCreateInput[0])
+      ).resolves.toEqual(surveyResponseArray[0]);
     });
   });
 
   describe('update', () => {
     it('should update a surveyResponse', async () => {
       await expect(
-        resolver.update(
-          { id: oneSurveyResponse.id },
-          { routeOutside : true }
-        )
+        resolver.update({ id: oneSurveyResponse.id }, { routeOutside: true })
       ).resolves.toEqual(oneSurveyResponse);
     });
   });
@@ -100,8 +93,6 @@ describe('SurveyResponse Resolver', () => {
       await expect(
         resolver.delete({ id: 'a uuid that does not exist' })
       ).resolves.toEqual({ deleted: false });
-      // TODO expect(deleteSpy).toBeCalledWith('a uuid that does not exist');
-      //the above would be better, but not sure how to get it to pass
       expect(deleteSpy).toBeCalled();
     });
   });

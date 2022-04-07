@@ -26,9 +26,7 @@ describe('Org Resolver', () => {
           provide: OrgService,
           useValue: {
             findMany: jest.fn().mockResolvedValue(orgArray),
-            getSubOrgs: jest
-              .fn()
-              .mockResolvedValue(orgArray),
+            getSubOrgs: jest.fn().mockResolvedValue(orgArray),
             findUnique: jest
               .fn()
               .mockImplementation(() => Promise.resolve(oneOrg)),
@@ -104,8 +102,6 @@ describe('Org Resolver', () => {
       await expect(
         resolver.delete({ id: 'a uuid that does not exist' })
       ).resolves.toEqual({ deleted: false });
-      // TODO expect(deleteSpy).toBeCalledWith('a uuid that does not exist');
-      //the above would be better, but not sure how to get it to pass
       expect(deleteSpy).toBeCalled();
     });
   });

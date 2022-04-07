@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
-import { SurveyResponseGql } from '../../graphql-generated';
+import {
+  FindManySurveyResponsesQuery,
+  SurveyResponseGql,
+} from '../../graphql-generated';
 import { NotificationCard } from './notification-card';
 
 @Component({
@@ -11,7 +14,7 @@ import { NotificationCard } from './notification-card';
 export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
 
-  responses: SurveyResponseGql[];
+  responses;
   unresolvedReports: number;
   overdueReports: number;
   resolvedReports: number;

@@ -3,13 +3,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import { QuestionService } from './question.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestQuestionCreateInput } from './question.repo';
-import { QuestionGQL } from '@odst/types/ods';
+import { Question } from '.prisma/ods/client';
 
-const questionArray: QuestionGQL[] = [];
+const questionArray: Question[] = [];
 
 TestQuestionCreateInput.forEach((questionCreateInput) => {
-  const question: QuestionGQL = ((questionCreateInput as QuestionGQL).id =
-    uuidv4());
+  const question: Question = ((questionCreateInput as Question).id = uuidv4());
   questionArray.push(question);
 });
 
@@ -90,7 +89,7 @@ describe('QuestionService', () => {
     });
 
     it('should return {deleted: false, message: err.message}', () => {
-      const dbSpy = jest
+      jest
         .spyOn(prisma.question, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
