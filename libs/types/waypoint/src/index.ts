@@ -26,10 +26,5 @@ export * from './entity/refreshToken.entity';
 //#endregion
 
 //#region Types
-export * from './misc/jwtPayload.type';
 export * from './misc/navProps.type';
-//#endregion
-
-//#region Decorators
-export * from './decorators/getCurrentUserID.decorator';
 //#endregion

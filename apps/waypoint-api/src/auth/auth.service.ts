@@ -1,17 +1,18 @@
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+//TODO fix when we move auth stuff to library
+// eslint-disable-next-line no-restricted-imports
 import {
   LoginUserInput,
-  JwtPayloadRefresh,
   SignupUserInput,
   TokensGQL,
-  JwtPayloadInit,
   RefreshLoginInput,
 } from '@odst/types/waypoint';
 import { isJwtChainExpired } from '@odst/helpers';
 import { compare, hash } from 'bcrypt';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
+import { JwtPayloadInit, JwtPayloadRefresh } from '@odst/shared/nest';
 
 @Injectable()
 export class AuthService {
@@ -157,7 +158,8 @@ export class AuthService {
       const valid = await compare(passwordPlaintextInput, user.password);
 
       if (valid) {
-        // Do we need to destructure the password?
+        //password is deconstructed to ensure it is not returned
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password, ...result } = user;
         return result;
       }

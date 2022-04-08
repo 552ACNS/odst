@@ -39,7 +39,7 @@ model Org {
   parentId   String? // a parent org can have many child orgs
   parent     Org?     @relation(name: "ParentChild", fields: [parentId], references: [id])
   children   Org[]    @relation(name: "ParentChild") // This is a self relation
-  surveys    Survey[] // TODO Add many to many relationship between Org and Survey
+  surveys    Survey[]
 }
 
 model SurveyResponse {

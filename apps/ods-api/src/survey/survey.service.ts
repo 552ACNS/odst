@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Prisma, Survey } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { SurveyGQL } from '@odst/types/ods';
 import { Md5 as md5 } from 'ts-md5/dist/md5';
 import { getArrayHash } from '@odst/helpers';
 
@@ -66,7 +65,7 @@ export class SurveyService {
     });
   }
 
-  async create(data: Prisma.SurveyCreateInput): Promise<SurveyGQL> {
+  async create(data: Prisma.SurveyCreateInput): Promise<Survey> {
     const survey = await this.prisma.survey.create({
       data,
     });

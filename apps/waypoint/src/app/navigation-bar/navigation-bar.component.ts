@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavProps } from '@odst/types/waypoint';
 import { isLoggedIn } from '@odst/helpers';
 
