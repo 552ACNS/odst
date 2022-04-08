@@ -4,6 +4,7 @@ import {
   SurveyResponseGQL,
   SurveyResponseCreateInput,
   SurveyResponseUpdateInput,
+  SurveyResponseWhereInput,
   SurveyResponseWhereUniqueInput,
 } from '@odst/types/ods';
 // import { GetCurrentUserId } from '@odst/shared/nest';
@@ -86,5 +87,14 @@ export class SurveyResponseResolver {
     return await this.surveyResponseService.getSurveyResponseData(
       surveyResponseWhereUniqueInput
     );
+  }
+
+  @Query(() => SurveyResponseGQL, { name: 'countSurveyResponse' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async count(
+    @Args('surveyResponseWhereUniqueInput')
+    surveyResponseWhereInput: SurveyResponseWhereInput
+  ) {
+    return this.surveyResponseService.count(surveyResponseWhereInput);
   }
 }
