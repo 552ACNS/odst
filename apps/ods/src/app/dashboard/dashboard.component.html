@@ -9,7 +9,12 @@
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0 ng-star-inserted"
   >
-    <mat-card class="card" *ngFor="let spec of CardSpecs">
+    <mat-card
+      class="card"
+      *ngFor="let spec of CardSpecs"
+      [routerLink]="['/responses']"
+      [queryParams]="[spec.CardRouteParams]"
+    >
       <div class="flex items-start justify-between">
         <p class="text-lg font-medium tracking-tight leading-6 truncate">
           {{ spec.Title }}

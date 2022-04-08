@@ -6,6 +6,7 @@ query GetSurveyResponseData(
   ) {
     id
     openedDate
+    resolution
     answers {
       value
       question {

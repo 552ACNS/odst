@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'odst-responses',
@@ -15,10 +16,13 @@ export class ResponsesComponent implements OnInit {
   });
   constructor(
     private fb: FormBuilder,
-    private responsesService: ResponsesService
+    private responsesService: ResponsesService,
+    private route: ActivatedRoute
   ) {}
 
   questionsAnswers: [string, string][] = [];
+
+  resolved: boolean;
 
   openedDate: string;
   numberOfResponses: number;
@@ -29,17 +33,23 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   async ngOnInit() {
-    (await this.responsesService.getResponseIDsByStatus(false)).subscribe(
-      (data) => {
-        this.responseIDs = data;
-        this.numberOfResponses = data.length;
+    // Get resolved value form route params
+    this.route.queryParams.subscribe(async (params) => {
+      console.log(params['resolved']);
+      this.resolved = params[0] === 'true';
+    });
 
-        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+    (
+      await this.responsesService.getResponseIDsByStatus(this.resolved)
+    ).subscribe((data) => {
+      this.responseIDs = data;
+      this.numberOfResponses = data.length;
 
-        // navigate to that issue
-        this.displayIssue(this.pageEvent);
-      }
-    );
+      this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+
+      // navigate to that issue
+      this.displayIssue(this.pageEvent);
+    });
   }
 
   submitResolutionClick() {
@@ -63,6 +73,12 @@ export class ResponsesComponent implements OnInit {
           'MMM d yy, h:mm a',
           'en-US'
         );
+
+        if (this.resolved) {
+          this.resolutionForm.setValue({
+            resolution: data.resolution,
+          });
+        }
 
         // Clear contents of QA array
         this.questionsAnswers = [];

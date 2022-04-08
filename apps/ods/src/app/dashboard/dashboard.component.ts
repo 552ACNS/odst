@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit {
           Suffix: 'Unresolved Reports',
           SuffixStyle:
             'text-lg font-medium text-blue-600 dark:text-blue-500 text-center',
+          CardRouteParams: '{ resolved: false }',
         },
         {
           Title: 'Overdue',
@@ -55,6 +56,7 @@ export class DashboardComponent implements OnInit {
           Suffix: 'Resolved Reports',
           SuffixStyle:
             'text-lg font-medium text-green-600 dark:text-green-500 text-center',
+          CardRouteParams: '{ resolved: true }',
         },
       ];
     });
