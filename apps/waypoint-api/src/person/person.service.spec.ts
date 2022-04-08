@@ -1,7 +1,6 @@
 import { Person, Prisma } from '.prisma/waypoint/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
-import { PersonWhereUniqueInput, PersonUpdateInput } from '@odst/types/waypoint';
 import { TestPersonCreateInput } from './person.repo';
 import { PersonService } from './person.service';
 import { prismaMock } from '../prisma/singleton';
@@ -26,7 +25,7 @@ describe('PersonsService', () => {
 
   it('Should find a person', async () => {
     const personInput = TestPersonCreateInput[0];
-    const personWhereUniqueInput: PersonWhereUniqueInput = {
+    const personWhereUniqueInput: Prisma.PersonWhereUniqueInput = {
       dodId: personInput.dodId,
     };
 
@@ -41,7 +40,7 @@ describe('PersonsService', () => {
       service.create(personCreateInput)
     );
 
-    const personInput: PersonWhereUniqueInput = {
+    const personInput: Prisma.PersonWhereUniqueInput = {
       dodId: TestPersonCreateInput[0].dodId,
     };
 
@@ -67,7 +66,7 @@ describe('PersonsService', () => {
   });
 
   it('Should find a unique person', async () => {
-    const personInput: PersonWhereUniqueInput = {
+    const personInput: Prisma.PersonWhereUniqueInput = {
       dodId: TestPersonCreateInput[0].dodId,
     };
 
@@ -78,10 +77,10 @@ describe('PersonsService', () => {
 
   it('Should update a person', async () => {
     const personInput = TestPersonCreateInput[0];
-    const personWhereUniqueInput: PersonWhereUniqueInput = {
+    const personWhereUniqueInput: Prisma.PersonWhereUniqueInput = {
       dodId: personInput.dodId,
     };
-    const personUpdateInput: PersonUpdateInput = {
+    const personUpdateInput: Prisma.PersonUpdateInput = {
       hairColor: 'WHITE',
     };
 
@@ -92,7 +91,7 @@ describe('PersonsService', () => {
 
   it('Should delete a person', async () => {
     const personInput = TestPersonCreateInput[0];
-    const personWhereUniqueInput: PersonWhereUniqueInput = {
+    const personWhereUniqueInput: Prisma.PersonWhereUniqueInput = {
       dodId: personInput.dodId,
     };
     await service.delete(personWhereUniqueInput);
@@ -103,7 +102,7 @@ describe('PersonsService', () => {
 
   it('Should find a list of people skipiing 1, taking 3, with matching dodId', async () => {
     const personInput = TestPersonCreateInput[3];
-    const personWhereUniqueInput: PersonWhereUniqueInput = {
+    const personWhereUniqueInput: Prisma.PersonWhereUniqueInput = {
       dodId: personInput.dodId,
     };
 
