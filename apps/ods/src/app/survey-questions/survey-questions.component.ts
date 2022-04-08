@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
+import { SurveyQuestionsService } from './survey-questions.service';
 import {
   CreateSurveyWithQuestions_FormDocument,
   CreateSurveyWithQuestions_FormMutation,
@@ -41,7 +42,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   outsideRouting = false;
   answers: string[];
   openDate = new Date();
-  orgs: Partial<OrgGql>[];
+  orgs: string[];
   CCs: string[] = ['Matos, Emmanuel Lt. Col.'];
   querySubscription: Subscription;
   loading = true;
@@ -52,7 +53,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private apollo: Apollo,
-    private router: Router
+    private router: Router,
+    private surveyService: SurveyQuestionsService
   ) {}
 
   private violatorSpecification(): string {
@@ -87,14 +89,17 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   });
 
   async ngOnInit(): Promise<void> {
-    this.querySubscription = this.apollo
-      .watchQuery<FindManyOrgs_FormQuery, FindManyOrgs_FormQueryVariables>({
-        query: FindManyOrgs_FormDocument,
-      })
-      .valueChanges.subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.orgs = data.findManyOrgs;
-      });
+    (await this.surveyService.getManyOrgs()).subscribe((data) => {
+      this.orgs = data;
+    });
+    // this.querySubscription = this.apollo
+    //   .watchQuery<FindManyOrgs_FormQuery, FindManyOrgs_FormQueryVariables>({
+    //     query: FindManyOrgs_FormDocument,
+    //   })
+    //   .valueChanges.subscribe(({ data, loading }) => {
+    //     this.loading = loading;
+    //     this.orgs = data.findManyOrgs;
+    //   });
   }
   //TODO find out a way to fix without this
   outsideRoutingWorking(): boolean {

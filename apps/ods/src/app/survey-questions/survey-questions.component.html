@@ -14,8 +14,8 @@
           formControlName="eventOrg"
           required
         >
-          <mat-option *ngFor="let org of orgs" [value]="org.name">
-            {{ org.name }}
+          <mat-option *ngFor="let org of orgs" [value]="org">
+            {{ org }}
           </mat-option>
         </mat-select>
         <mat-error> Please select the organization </mat-error>

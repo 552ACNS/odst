@@ -22,7 +22,9 @@ query findUniqueSurvey_form($surveyWhereUniqueInput: SurveyWhereUniqueInput!) {
   }
 }
 
-mutation createSurveyResponse_form($surveyResponseCreateInput: SurveyResponseCreateInput!) {
+mutation createSurveyResponse_form(
+  $surveyResponseCreateInput: SurveyResponseCreateInput!
+) {
   createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
     ...surveyResponseFields
   }
@@ -34,21 +36,20 @@ mutation createSurveyWithQuestions_form($questionPrompts: [String!]!) {
   }
 }
 
-
 query findManyOrgs_form {
   findManyOrgs {
-    ...orgFields
+    name
   }
 }
 
-query findQuestionsBySurvey_form($surveyWhereUniqueInput: SurveyWhereUniqueInput!) {
+query findQuestionsBySurvey_form(
+  $surveyWhereUniqueInput: SurveyWhereUniqueInput!
+) {
   getSubQuestions(surveyWhereUniqueInput: $surveyWhereUniqueInput) {
     id
     prompt
   }
 }
-
-
 
 # fragment answerField on AnswerGQL{
 #     id
@@ -77,9 +78,7 @@ fragment surveyResponseFields on SurveyResponseGQL {
   resolution
 }
 
-fragment surveyFields on SurveyGQL
-{
+fragment surveyFields on SurveyGQL {
   id
   questionsHash
 }
-
