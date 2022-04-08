@@ -121,8 +121,6 @@ export class SurveyResponseService {
   }
 
   async count(where?: Prisma.SurveyResponseWhereInput): Promise<number> {
-    return this.prisma.surveyResponse.count({
-      where,
-    });
+    return this.prisma.surveyResponse.count({ where });
   }
 }
