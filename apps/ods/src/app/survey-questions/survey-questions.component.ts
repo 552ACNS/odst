@@ -35,7 +35,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     'What impacts did this event have on you or your work environment',
   ];
 
-  questionID: QuestionGql[];
+  questionObjects: QuestionGql[];
   surveyID?: string | null;
 
   outsideRouting = false;
@@ -118,7 +118,6 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
       .subscribe(({ data, errors }) => {
         this.surveyID = data?.createSurveyWithQuestions.id;
         //this.submitSuccess = (!errors);
-        //alert(this.surveyID);
         this.querySubscription = this.apollo
           .watchQuery<
             FindQuestionsBySurvey_FormQuery,
@@ -133,63 +132,64 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
           })
           .valueChanges.subscribe(({ data, loading }) => {
             this.loading = loading;
-            this.questionID = data.getSubQuestions;
+            this.questionObjects = data.getSubQuestions;
+            console.log(this.surveyID);
+            console.log(this.questionObjects);
             this.apollo
-            .mutate<
-              CreateSurveyResponse_FormMutation,
-              CreateSurveyResponse_FormMutationVariables
-            >({
-              mutation: CreateSurveyResponse_FormDocument,
-              variables: {
-                surveyResponseCreateInput: {
-                  routeOutside: this.outsideRoutingWorking(),
-                  answers: {
-                    createMany: {
-                      data: [
-                        {
-                          value: this.form.get(['eventOrg'])?.value,
-                          questionId: this.questionID[0].id,
-                        },
-                        {
-                          value: this.form.value['event'].trim(),
-                          questionId: this.questionID[1].id,
-                        },
-                        {
-                          value: this.violatorSpecification(),
-                          questionId: this.questionID[2].id,
-                        },
-                        {
-                          value: this.form.get(['CC'])?.value,
-                          questionId: this.questionID[3].id,
-                        },
-                        {
-                          value: this.personSpecification(),
-                          questionId: this.questionID[4].id,
-                        },
-                        {
-                          value: this.form.value['impact'].trim(),
-                          questionId: this.questionID[5].id,
-                        },
-                      ],
+              .mutate<
+                CreateSurveyResponse_FormMutation,
+                CreateSurveyResponse_FormMutationVariables
+              >({
+                mutation: CreateSurveyResponse_FormDocument,
+                variables: {
+                  surveyResponseCreateInput: {
+                    routeOutside: this.outsideRoutingWorking(),
+                    answers: {
+                      createMany: {
+                        data: [
+                          {
+                            value: this.form.get(['eventOrg'])?.value,
+                            questionId: this.questionObjects[0].id,
+                          },
+                          {
+                            value: this.form.value['event'].trim(),
+                            questionId: this.questionObjects[1].id,
+                          },
+                          {
+                            value: this.violatorSpecification(),
+                            questionId: this.questionObjects[2].id,
+                          },
+                          {
+                            value: this.form.get(['CC'])?.value,
+                            questionId: this.questionObjects[3].id,
+                          },
+                          {
+                            value: this.personSpecification(),
+                            questionId: this.questionObjects[4].id,
+                          },
+                          {
+                            value: this.form.value['impact'].trim(),
+                            questionId: this.questionObjects[5].id,
+                          },
+                        ],
+                      },
                     },
-                  },
-                  survey: {
-                    connect: {
-                      id: this.surveyID,
+                    survey: {
+                      connect: {
+                        id: this.surveyID,
+                      },
                     },
                   },
                 },
-              },
-            })
-            .subscribe(({ data, errors }) => {
-              this.submitSuccess = !errors;
-              alert(this.submitSuccess);
-              alert(data);
-            });
+              })
+              .subscribe(({ data, errors }) => {
+                this.submitSuccess = !errors;
+                alert(this.submitSuccess);
+                alert(data);
+              });
           });
       });
 
-   
     // this.answers = [
     //   this.form.get(['eventOrg'])?.value,
     //   this.form.value['event'].trim(),
@@ -207,4 +207,3 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     }
   }
 }
-

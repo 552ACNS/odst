@@ -5,7 +5,7 @@
   <mat-card class="rounded-2xl shadow-md">
     <form [formGroup]="form" class="flex flex-col flex-wrap">
       <label class="mb-1">
-        {{questions[0]}}
+        {{ questions[0] }}
         <span class="text-red-500"> * </span>
       </label>
       <mat-form-field>
@@ -14,14 +14,14 @@
           formControlName="eventOrg"
           required
         >
-          <mat-option *ngFor="let org of orgs" [value]="org.id">
+          <mat-option *ngFor="let org of orgs" [value]="org.name">
             {{ org.name }}
           </mat-option>
         </mat-select>
         <mat-error> Please select the organization </mat-error>
       </mat-form-field>
       <label class="mt-6 mb-1">
-        {{questions[1]}}
+        {{ questions[1] }}
         <span class="text-red-500"> * </span>
       </label>
       <mat-form-field appearance="outline" class="w-full">
@@ -39,7 +39,7 @@
         </mat-error>
       </mat-form-field>
       <label class="mt-6 mb-2">
-        {{questions[2]}}
+        {{ questions[2] }}
         <span class="text-red-500"> * </span>
       </label>
       <!-- TODO Fix to use tailwind for spacing in future -->
@@ -71,7 +71,7 @@
         </mat-radio-button>
       </mat-radio-group>
       <label class="mt-6 mb-1">
-        {{questions[3]}}
+        {{ questions[3] }}
         <span class="text-red-500"> * </span>
       </label>
       <mat-form-field>
@@ -89,7 +89,7 @@
         <mat-error>Please select your Squadron Commander</mat-error>
       </mat-form-field>
       <label class="mt-6 mb-2">
-        {{questions[4]}}
+        {{ questions[4] }}
         <span class="text-red-500"> * </span>
       </label>
       <!-- TODO Fix to use tailwind for spacing in future -->
@@ -122,7 +122,7 @@
         </mat-radio-button>
       </mat-radio-group>
       <label class="mt-6 mb-1">
-        {{questions[5]}}
+        {{ questions[5] }}
         <span class="text-red-500"> * </span>
       </label>
       <mat-form-field appearance="outline" class="w-full border-solid">
@@ -143,10 +143,7 @@
       </label>
       <section>
         <br />
-        <mat-checkbox 
-        formControlName="outsideRouting"
-        color="primary"
-        >
+        <mat-checkbox formControlName="outsideRouting" color="primary">
           My Squadron Commander was involved</mat-checkbox
         >
       </section>
@@ -154,7 +151,6 @@
   </mat-card>
   <div class="flex justify-center">
     <button
-      id="btnBack"
       class="m-2 border-1 border-dark-blue shadow-md rounded-full w-full"
       mat-raised-button
       [routerLink]="['/disclaimer']"
@@ -162,7 +158,6 @@
       Back
     </button>
     <button
-      formControlName="btnSubmit"
       class="m-2 text-white rounded-full w-full"
       mat-raised-button
       color="primary"
@@ -176,4 +171,3 @@
     </button>
   </div>
 </div>
-
