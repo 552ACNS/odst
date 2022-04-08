@@ -1,80 +1,90 @@
 <div
-  class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] text-center"
+  class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] text-center mt-3"
 >
-  <mat-card>
-    <mat-card-title class="mt-8 ml-0 text-4xl font-extrabold tracking-tight leading-tight">
-        Sign In
+  <mat-card class="rounded-2xl">
+    <mat-card-title
+      class="ml-0 text-4xl font-extrabold tracking-tight leading-tight"
+    >
+      Sign In
     </mat-card-title>
-      <mat-card-content class="mt-2 flex justify-center font-medium h-fit space-x-2">
-        <div>Don't have an account?</div>
+    <mat-card-content
+      class="mt-2 flex justify-center font-medium h-fit space-x-2"
+    >
+      <div>Don't have an account?</div>
 
-        <p class="underline text-right text-blue-300">Get one!</p>
+      <p class="underline text-right text-blue-300">Get one!</p>
+    </mat-card-content>
+
+    <!-- Sign in form -->
+    <form [formGroup]="loginForm">
+      <!-- User Name field -->
+      <mat-form-field class="mx-0 w-full" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input
+          id="userName"
+          formcontrolname="userUsername"
+          type="text"
+          matInput
+          placeholder="Username"
+          [formControlName]="'userUsername'"
+        />
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      </mat-form-field>
+      <br />
+      <!-- Password field -->
+      <mat-form-field class="mx-0 w-full" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          id="password"
+          formcontrolname="userPassword"
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          [formControlName]="'userPassword'"
+        />
+        <button
+          mat-icon-button
+          type="button"
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-card-content
+        class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full"
+      >
+        <mat-checkbox
+          class="align-middle float-left"
+          [color]="'primary'"
+          [formControlName]="'rememberMe'"
+        >
+          Remember Me
+        </mat-checkbox>
+        <div class="pt-0.5 float-right font-medium underline text-blue-300">
+          Forgot Password?
+        </div>
       </mat-card-content>
 
-      <!-- Sign in form -->
-      <form [formGroup]="loginForm">
-        <!-- User Name field -->
-        <mat-form-field class="mx-0 w-full" appearance="outline">
-          <mat-label>Username</mat-label>
-          <input
-            id="userName"
-            formcontrolname="userUsername"
-            type="text"
-            matInput
-            placeholder="Username"
-            [formControlName]="'userUsername'"
-          />
-          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-        </mat-form-field>
-        <br>
-        <!-- Password field -->
-        <mat-form-field class="mx-0 w-full" appearance="outline">
-          <mat-label>Password</mat-label>
-          <input
-            id="password"
-            formcontrolname="userPassword"
-            matInput
-            [type]="hide ? 'password' : 'text'"
-            [formControlName]="'userPassword'"
-          />
-          <button
-            mat-icon-button
-            type="button"
-            matSuffix
-            (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
-          >
-            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-        </mat-form-field>
-        <mat-card-content class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full">
-          <mat-checkbox
-            class="align-middle float-left"
-            [color]="'primary'"
-            [formControlName]="'rememberMe'"
-          >
-            Remember Me
-          </mat-checkbox>
-          <div class="pt-0.5 float-right font-medium underline text-blue-300">
-            Forgot Password?
-          </div>
-        </mat-card-content>
+      <!-- Buttons -->
+      <mat-card-actions class="flex h-8 space-x-2 mb-0 py-0 mx-1">
+        <button
+          mat-stroked-button
+          class="w-full shadow-md rounded-full"
+          (click)="goBackClick()"
+        >
+          Back
+        </button>
 
-        <!-- Buttons -->
-        <mat-card-actions class="flex h-8 space-x-2 mb-0 py-0 mx-1">
-            <button mat-stroked-button class="w-full shadow-md rounded-full"
-            (click)="goBackClick()"
-            >
-                Back
-            </button>
-            
-            <button mat-button class="w-full bg-dark-blue text-white shadow-md rounded-full"
-            [routerLink]="['/responses']"
-            >
-                Sign In
-            </button>
-        </mat-card-actions>
-      </form>
+        <button
+          mat-button
+          class="w-full bg-dark-blue text-white shadow-md rounded-full"
+          [routerLink]="['/responses']"
+        >
+          Sign In
+        </button>
+      </mat-card-actions>
+    </form>
   </mat-card>
 </div>
