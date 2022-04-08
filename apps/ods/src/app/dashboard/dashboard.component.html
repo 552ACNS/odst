@@ -13,7 +13,7 @@
       class="card"
       *ngFor="let spec of CardSpecs"
       [routerLink]="['/responses']"
-      [queryParams]="[spec.CardRouteParams]"
+      [queryParams]="{ resolved: spec.CardRouteParams }"
     >
       <div class="flex items-start justify-between">
         <p class="text-lg font-medium tracking-tight leading-6 truncate">

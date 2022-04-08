@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
-import {
-  FindManySurveyResponsesQuery,
-  SurveyResponseGql,
-} from '../../graphql-generated';
 import { NotificationCard } from './notification-card';
 
 @Component({
@@ -34,7 +30,7 @@ export class DashboardComponent implements OnInit {
           Suffix: 'Unresolved Reports',
           SuffixStyle:
             'text-lg font-medium text-blue-600 dark:text-blue-500 text-center',
-          CardRouteParams: '{ resolved: false }',
+          CardRouteParams: false,
         },
         {
           Title: 'Overdue',
@@ -56,7 +52,7 @@ export class DashboardComponent implements OnInit {
           Suffix: 'Resolved Reports',
           SuffixStyle:
             'text-lg font-medium text-green-600 dark:text-green-500 text-center',
-          CardRouteParams: '{ resolved: true }',
+          CardRouteParams: true,
         },
       ];
     });

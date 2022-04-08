@@ -36,7 +36,7 @@ export class ResponsesComponent implements OnInit {
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
       console.log(params['resolved']);
-      this.resolved = params[0] === 'true';
+      this.resolved = params['resolved'] === 'true';
     });
 
     (

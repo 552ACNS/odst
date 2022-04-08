@@ -4,5 +4,5 @@ export interface NotificationCard {
   CountOf: number;
   Suffix: string;
   SuffixStyle: string;
-  CardRouteParams?: string;
+  CardRouteParams?: boolean;
 }
