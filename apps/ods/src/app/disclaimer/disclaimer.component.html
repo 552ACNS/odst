@@ -1,5 +1,5 @@
-<div class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] m-3">
-  <mat-card class="rounded-2xl shadow-md">
+<div class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-3">
+  <mat-card class="rounded-2xl">
     <mat-card-title class="font-medium text-black text-sm">
       Observations of Discrimination in the Squadron
     </mat-card-title>
@@ -21,7 +21,7 @@
       </p>
       <p>False reporting may result in disciplinary actions.</p>
     </mat-card-content>
-    <mat-card-actions class="text-sm mt-4 mb-0.5 flex h-8 space-x-4 pt-0">
+    <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
       <button mat-stroked-button class="w-full shadow-md rounded-full">
         Decline
       </button>
@@ -29,7 +29,6 @@
         mat-button
         class="w-full bg-dark-blue text-white shadow-md rounded-full"
       >
-        <!-- TODO: set routing when form is available [routerLink]="['/form']"-->
         Accept
       </button>
     </mat-card-actions>
@@ -38,7 +37,7 @@
   <!-- this lies outside the box -->
   <button
     mat-button
-    class="flex underline ml-auto justify-end"
+    class="flex underline ml-auto justify-end mt-2 rounded-2xl"
     [routerLink]="['/login']"
   >
     I want to login

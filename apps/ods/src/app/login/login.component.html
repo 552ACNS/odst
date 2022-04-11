@@ -2,9 +2,7 @@
   class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] text-center mt-3"
 >
   <mat-card class="rounded-2xl">
-    <mat-card-title
-      class="ml-0 text-4xl font-extrabold tracking-tight leading-tight"
-    >
+    <mat-card-title class="ml-0 text-4xl font-extrabold">
       Sign In
     </mat-card-title>
     <mat-card-content
@@ -68,11 +66,11 @@
       </mat-card-content>
 
       <!-- Buttons -->
-      <mat-card-actions class="flex h-8 space-x-2 mb-0 py-0 mx-1">
+      <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
         <button
           mat-stroked-button
           class="w-full shadow-md rounded-full"
-          (click)="goBackClick()"
+          [routerLink]="['/disclaimer']"
         >
           Back
         </button>
