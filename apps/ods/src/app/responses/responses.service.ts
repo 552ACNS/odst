@@ -27,7 +27,6 @@ export class ResponsesService {
         },
       })
       .valueChanges.pipe(map(result => result.data.getIssuesByStatus), take(1));
-
       // pluck lets me retrieve nested data.
   }
 

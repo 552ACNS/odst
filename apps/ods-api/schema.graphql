@@ -3,21 +3,21 @@
 # ------------------------------------------------------
 
 type QuestionGQL {
-  id: String
+  id: String!
   prompt: String!
 }
 
 type AnswerGQL {
-  id: String
   question: QuestionGQL
+  id: String!
   value: String!
   questionId: String!
   surveyResponseId: String!
 }
 
 type OrgGQL {
-  id: String
   orgTier: OrgTier!
+  id: String!
   name: String!
   parentId: String
 }
@@ -30,7 +30,7 @@ enum OrgTier {
 }
 
 type SurveyGQL {
-  id: String
+  id: String!
 }
 
 type SurveyResponseGQL {
@@ -49,27 +49,27 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 input QuestionGQLInput {
-  id: String
+  id: String!
   prompt: String!
 }
 
 input AnswerGQLInput {
-  id: String
   question: QuestionGQLInput
+  id: String!
   value: String!
   questionId: String!
   surveyResponseId: String!
 }
 
 input OrgGQLInput {
-  id: String
   orgTier: OrgTier!
+  id: String!
   name: String!
   parentId: String
 }
 
 input SurveyGQLInput {
-  id: String
+  id: String!
 }
 
 input SurveyResponseGQLInput {
@@ -134,7 +134,7 @@ type Mutation {
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
-  deleteQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
+  removeQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
 }
 
 input SurveyCreateInput {
