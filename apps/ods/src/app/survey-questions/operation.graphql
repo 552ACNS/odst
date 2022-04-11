@@ -46,8 +46,7 @@ query findQuestionsBySurvey_form(
   $surveyWhereUniqueInput: SurveyWhereUniqueInput!
 ) {
   getSubQuestions(surveyWhereUniqueInput: $surveyWhereUniqueInput) {
-    surveyId
-    routeOutside
+    id
   }
 }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { map, take } from 'rxjs';
+import { map } from 'rxjs';
 import {
   CreateSurveyWithQuestions_FormDocument,
   CreateSurveyWithQuestions_FormMutation,

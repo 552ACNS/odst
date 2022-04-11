@@ -86,6 +86,15 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     }
   }
   submit() {
+    this.answers = [
+      this.form.get(['eventOrg'])?.value,
+      this.form.value['event'].trim(),
+      this.violatorSpecification(),
+      this.form.value['CC'],
+      this.personSpecification(),
+      this.form.value['impact'].trim(),
+      this.outsideRoutingWorking(),
+    ];
     this.surveyService
       .submitWithQuestions(this.questions)
       .subscribe(({ data, errors }) => {
