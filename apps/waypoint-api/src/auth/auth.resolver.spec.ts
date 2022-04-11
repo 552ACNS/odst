@@ -1,11 +1,15 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TokensGQL, LoginUserInput, SignupUserInput } from '@odst/types/waypoint';
+import {
+  TokensGQL,
+  LoginUserInput,
+  SignupUserInput,
+  UserGQL,
+} from '@odst/types/waypoint';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { User } from '.prisma/waypoint/client';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
@@ -43,10 +47,10 @@ describe('AuthResolver', () => {
     // TEST PARAMS
     const methodToSpy = 'login';
 
-    const user: User = {
+    const user: UserGQL = {
       username: 'username',
       personId: 'personidString',
-    } as unknown as User;
+    } as unknown as UserGQL;
 
     const resolvedLoginResponse = {
       user: user,

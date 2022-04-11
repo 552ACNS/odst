@@ -10,7 +10,7 @@ export class QuestionService {
     skip?: number;
     take?: number;
     cursor?: Prisma.QuestionWhereUniqueInput;
-    where?: Prisma.QuestionWhereUniqueInput;
+    where?: Prisma.QuestionWhereInput;
     orderBy?: Prisma.QuestionOrderByWithRelationInput;
   }): Promise<Question[]> {
     const { skip, take, cursor, where, orderBy } = params;
@@ -86,7 +86,7 @@ export class QuestionService {
   }
 
   // async getPromptsFromIds(prompts: string[]) {
-  //   //Gets an array of IDs based off an array of prompts, then 
+  //   //Gets an array of IDs based off an array of prompts, then
   //   const IDs : string[] = (await this.prisma.question.findMany({
   //     select: {
   //       id: true,
@@ -97,12 +97,9 @@ export class QuestionService {
   //   })).map(x => x.id);
 
   //   const hash = getArrayHash(IDs)
-    
-    
+
   //   this.survey.findUnique({
   //     questionsHash: hash,
   //   })
   // }
 }
-
-

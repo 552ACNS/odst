@@ -12,7 +12,7 @@ export class SurveyService {
     skip?: number;
     take?: number;
     cursor?: Prisma.SurveyWhereUniqueInput;
-    where?: Prisma.SurveyWhereUniqueInput;
+    where?: Prisma.SurveyWhereInput;
     orderBy?: Prisma.SurveyOrderByWithRelationInput;
   }): Promise<Survey[]> {
     const { skip, take, cursor, where, orderBy } = params;
@@ -127,4 +127,3 @@ export class SurveyService {
 
   //TODO tests for new methods
 }
-
