@@ -32,7 +32,7 @@ mutation createSurveyResponse_form(
 
 mutation createSurveyWithQuestions_form($questionPrompts: [String!]!) {
   createSurveyWithQuestions(questionPrompts: $questionPrompts) {
-    ...surveyFields
+    id
   }
 }
 
@@ -46,8 +46,8 @@ query findQuestionsBySurvey_form(
   $surveyWhereUniqueInput: SurveyWhereUniqueInput!
 ) {
   getSubQuestions(surveyWhereUniqueInput: $surveyWhereUniqueInput) {
-    id
-    prompt
+    surveyId
+    routeOutside
   }
 }
 
