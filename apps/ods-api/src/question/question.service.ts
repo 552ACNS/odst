@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class QuestionService {
-  constructor(private prisma: PrismaService) {} //, private survey: SurveyService
+  constructor(private prisma: PrismaService) {}
 
   async findMany(params: {
     skip?: number;
@@ -84,22 +84,4 @@ export class QuestionService {
       create: questionCreateInput,
     });
   }
-
-  // async getPromptsFromIds(prompts: string[]) {
-  //   //Gets an array of IDs based off an array of prompts, then
-  //   const IDs : string[] = (await this.prisma.question.findMany({
-  //     select: {
-  //       id: true,
-  //     },
-  //     where: {
-  //       prompt: { in: prompts },
-  //     },
-  //   })).map(x => x.id);
-
-  //   const hash = getArrayHash(IDs)
-
-  //   this.survey.findUnique({
-  //     questionsHash: hash,
-  //   })
-  // }
 }
