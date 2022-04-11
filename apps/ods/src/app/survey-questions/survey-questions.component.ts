@@ -3,22 +3,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import { SurveyQuestionsService } from './survey-questions.service';
-import {
-  CreateSurveyWithQuestions_FormDocument,
-  CreateSurveyWithQuestions_FormMutation,
-  CreateSurveyWithQuestions_FormMutationVariables,
-  FindManyOrgs_FormDocument,
-  FindManyOrgs_FormQuery,
-  FindManyOrgs_FormQueryVariables,
-  CreateSurveyResponse_FormMutation,
-  CreateSurveyResponse_FormMutationVariables,
-  CreateSurveyResponse_FormDocument,
-  OrgGql,
-  QuestionGql,
-  FindQuestionsBySurvey_FormQuery,
-  FindQuestionsBySurvey_FormQueryVariables,
-  FindQuestionsBySurvey_FormDocument,
-} from '../../graphql-generated';
 import { Router } from '@angular/router';
 
 @Component({
@@ -36,8 +20,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     'What impacts did this event have on you or your work environment',
   ];
 
-  questionObjects: QuestionGql[];
-  surveyID?: string | null;
+  questionIDs: string[];
+  surveyID?: string;
 
   outsideRouting = false;
   answers: string[];
@@ -92,14 +76,6 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     (await this.surveyService.getManyOrgs()).subscribe((data) => {
       this.orgs = data;
     });
-    // this.querySubscription = this.apollo
-    //   .watchQuery<FindManyOrgs_FormQuery, FindManyOrgs_FormQueryVariables>({
-    //     query: FindManyOrgs_FormDocument,
-    //   })
-    //   .valueChanges.subscribe(({ data, loading }) => {
-    //     this.loading = loading;
-    //     this.orgs = data.findManyOrgs;
-    //   });
   }
   //TODO find out a way to fix without this
   outsideRoutingWorking(): boolean {
@@ -110,101 +86,27 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     }
   }
   submit() {
-    this.apollo
-      .mutate<
-        CreateSurveyWithQuestions_FormMutation,
-        CreateSurveyWithQuestions_FormMutationVariables
-      >({
-        mutation: CreateSurveyWithQuestions_FormDocument,
-        variables: {
-          questionPrompts: this.questions,
-        },
-      })
+    this.surveyService
+      .submitWithQuestions(this.questions)
       .subscribe(({ data, errors }) => {
         this.surveyID = data?.createSurveyWithQuestions.id;
-        //this.submitSuccess = (!errors);
-        this.querySubscription = this.apollo
-          .watchQuery<
-            FindQuestionsBySurvey_FormQuery,
-            FindQuestionsBySurvey_FormQueryVariables
-          >({
-            query: FindQuestionsBySurvey_FormDocument,
-            variables: {
-              surveyWhereUniqueInput: {
-                id: this.surveyID,
-              },
-            },
-          })
-          .valueChanges.subscribe(({ data, loading }) => {
-            this.loading = loading;
-            this.questionObjects = data.getSubQuestions;
-            console.log(this.surveyID);
-            console.log(this.questionObjects);
-            this.apollo
-              .mutate<
-                CreateSurveyResponse_FormMutation,
-                CreateSurveyResponse_FormMutationVariables
-              >({
-                mutation: CreateSurveyResponse_FormDocument,
-                variables: {
-                  surveyResponseCreateInput: {
-                    routeOutside: this.outsideRoutingWorking(),
-                    answers: {
-                      createMany: {
-                        data: [
-                          {
-                            value: this.form.get(['eventOrg'])?.value,
-                            questionId: this.questionObjects[0].id,
-                          },
-                          {
-                            value: this.form.value['event'].trim(),
-                            questionId: this.questionObjects[1].id,
-                          },
-                          {
-                            value: this.violatorSpecification(),
-                            questionId: this.questionObjects[2].id,
-                          },
-                          {
-                            value: this.form.get(['CC'])?.value,
-                            questionId: this.questionObjects[3].id,
-                          },
-                          {
-                            value: this.personSpecification(),
-                            questionId: this.questionObjects[4].id,
-                          },
-                          {
-                            value: this.form.value['impact'].trim(),
-                            questionId: this.questionObjects[5].id,
-                          },
-                        ],
-                      },
-                    },
-                    survey: {
-                      connect: {
-                        id: this.surveyID,
-                      },
-                    },
-                  },
-                },
-              })
+        this.surveyService
+          .getQuestionsFromSurvey(<string>this.surveyID)
+          .subscribe((data) => {
+            this.questionIDs = data;
+            console.log(this.questionIDs);
+            this.surveyService
+              .submitSurveyReponse(
+                this.outsideRoutingWorking(),
+                this.answers,
+                this.questionIDs,
+                this.surveyID
+              )
               .subscribe(({ data, errors }) => {
                 this.submitSuccess = !errors;
-                alert(this.submitSuccess);
-                alert(data);
               });
           });
       });
-
-    // this.answers = [
-    //   this.form.get(['eventOrg'])?.value,
-    //   this.form.value['event'].trim(),
-    //   this.violatorSpecification(),
-    //   this.form.value['CC'],
-    //   this.personSpecification(),
-    //   this.form.value['impact'].trim(),
-    //   this.outsideRoutingWorking()
-    // ]
-    //  return alert(this.answers)
   }
   ngOnDestroy() {
     if (this.querySubscription) {
