@@ -1,27 +1,25 @@
 import { Injectable } from '@angular/core';
-import {Apollo} from "apollo-angular";
+import { Apollo } from 'apollo-angular';
 import {
-  FindManySurveyResponsesDocument,
-  FindManySurveyResponsesQuery,
-  FindManySurveyResponsesQueryVariables
-} from "../../graphql-generated";
-import {Subscription} from "rxjs";
+  DashboardIssueCountDocument,
+  DashboardIssueCountQuery,
+  DashboardIssueCountQueryVariables,
+} from '../../graphql-generated';
+import { Subscription } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DashboardService {
-
-  constructor(private apollo: Apollo) {
-
-  }
+  constructor(private apollo: Apollo) {}
   querySubscription: Subscription;
 
-
   GetResponseCount() {
-    return this.apollo
-      .watchQuery<FindManySurveyResponsesQuery, FindManySurveyResponsesQueryVariables>({
-        query: FindManySurveyResponsesDocument
-      }).valueChanges;
+    return this.apollo.watchQuery<
+      DashboardIssueCountQuery,
+      DashboardIssueCountQueryVariables
+    >({
+      query: DashboardIssueCountDocument,
+    }).valueChanges;
   }
 }

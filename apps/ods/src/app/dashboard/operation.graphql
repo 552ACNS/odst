@@ -1,6 +1,9 @@
-query FindManySurveyResponses {
-  findManySurveyResponses {
-    openedDate
-    resolution
-  }
+query DashboardIssueCount(
+  $unresolved: SurveyResponseWhereInput!
+  $overdue: SurveyResponseWhereInput!
+  $resolved: SurveyResponseWhereInput!
+) {
+  Unresolved: countSurveyResponse(surveyResponseWhereInput: $unresolved)
+  Overdue: countSurveyResponse(surveyResponseWhereInput: $overdue)
+  Resolved: countSurveyResponse(surveyResponseWhereInput: $resolved)
 }

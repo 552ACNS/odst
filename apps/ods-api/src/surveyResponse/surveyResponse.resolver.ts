@@ -89,10 +89,10 @@ export class SurveyResponseResolver {
     );
   }
 
-  @Query(() => SurveyResponseGQL, { name: 'countSurveyResponse' })
+  @Query(() => Number, { name: 'countSurveyResponse' })
   // @UseGuards(AccessTokenAuthGuard)
   async count(
-    @Args('surveyResponseWhereUniqueInput')
+    @Args('surveyResponseWhereInput')
     surveyResponseWhereInput: SurveyResponseWhereInput
   ) {
     return this.surveyResponseService.count(surveyResponseWhereInput);

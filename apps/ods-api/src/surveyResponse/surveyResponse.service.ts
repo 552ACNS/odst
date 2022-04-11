@@ -121,6 +121,30 @@ export class SurveyResponseService {
   }
 
   async count(where?: Prisma.SurveyResponseWhereInput): Promise<number> {
-    return this.prisma.surveyResponse.count({ where });
+    return await this.prisma.surveyResponse.count({ where });
   }
+
+  // TODO: Optimize at a later date, so we don't go back and forth to the server
+
+  // async countIssues() {
+  //   const unresolvedCount = await this.prisma.surveyResponse.count({
+  //     where: {
+  //       resolution: null
+  //     }
+  //   })
+  //
+  //   const resolvedCount = await this.prisma.surveyResponse.count({
+  //     where: {
+  //       resolution: {not: null}
+  //     }
+  //   })
+  //
+  //   const overdueCount = await this.prisma.surveyResponse.count({
+  //     where: {
+  //       openedDate: {
+  //         lt: new Date(Date.now() - 2592000000)
+  //       }
+  //     }
+  //   })
+  // }
 }
