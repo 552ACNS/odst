@@ -1,0 +1,43 @@
+{
+  "extends": [".eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.resolver.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": [
+                  ".prisma/*/client",
+                  ".prisma/client",
+                  "@prisma/*/client",
+                  "@prisma/client"
+                ],
+                "message": "Do not import types from prisma in resolver, use GQL types instead"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.service.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@odst/types/*"],
+                "message": "Do not import types from @odst/types in servicer, use prisma types instead"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -30,39 +30,6 @@
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
       "rules": {}
-    },
-    {
-      "files": ["*.resolver.ts"],
-      "rules": {
-        "no-restricted-imports": [
-          "error",
-          {
-            "patterns": [
-              {
-                "group": [".prisma/*/client", ".prisma/client"],
-                "message": "Do not import types from prisma in resolver, use GQL types instead"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      //Bug: does not run against frontend files, which isn't desired but it is expected. Move to project specific file?
-      "files": ["*.service.ts"],
-      "rules": {
-        "no-restricted-imports": [
-          "error",
-          {
-            "patterns": [
-              {
-                "group": ["@odst/types/*"],
-                "message": "Do not import types from @odst/types in servicer, use prisma types instead"
-              }
-            ]
-          }
-        ]
-      }
     }
   ]
 }
