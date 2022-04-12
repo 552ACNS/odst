@@ -13,7 +13,7 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/survey');
     cy.get('[formcontrolname="eventOrg')
       .click()
-      .get('mat-option')
+      .get('mat-option', { timeout: 10000 })
       .contains('552 ACNS')
       .click();
     cy.get('[formcontrolname="event"]').type('e2e Test');
@@ -21,7 +21,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="CC')
       .click()
       .get('mat-option')
-      .contains('Matos, Emmanuel Lt. Col.')
+      .contains('Matos, Emmanuel Lt. Col.', { timeout: 10000 })
       .click();
     cy.get('#mat-radio-8').click();
     cy.get('[formcontrolname="impact"]').type('it made me cry');
