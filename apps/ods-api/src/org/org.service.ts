@@ -4,21 +4,8 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class OrgService {
-  constructor(private prisma: PrismaService) {
-    this.prisma.$use(async (params, next) => {
-      const before = Date.now();
+  constructor(private prisma: PrismaService) {}
 
-      const result = await next(params);
-
-      const after = Date.now();
-
-      console.log(
-        `Query ${params.model}.${params.action} took ${after - before}ms`
-      );
-
-      return result;
-    });
-  }
   async findMany(params: {
     skip?: number;
     take?: number;

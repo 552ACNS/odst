@@ -15,18 +15,12 @@ import {
   QuestionGQL,
   SurveyResponseGQL,
 } from '@odst/types/ods';
-import { QuestionService } from '../question/question.service';
-import { SurveyResponseService } from '../surveyResponse/surveyResponse.service';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => AnswerGQL)
 export class AnswerResolver {
-  constructor(
-    private readonly answerService: AnswerService,
-    private readonly questionService: QuestionService,
-    private readonly surveyResponseService: SurveyResponseService
-  ) {}
+  constructor(private readonly answerService: AnswerService) {}
 
   @Query(() => [AnswerGQL], { name: 'findManyAnswers' })
   async findMany(): Promise<AnswerGQL[]> {

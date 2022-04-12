@@ -2,8 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { OrgResolver } from './org.resolver';
 import { OrgService } from './org.service';
 import { MockOrgCreateInput, MockOrgs } from './org.repo';
-import { UserService } from '../user/user.service';
-import { SurveyService } from '../survey/survey.service';
 
 describe('Org Resolver', () => {
   let resolver: OrgResolver;
@@ -28,18 +26,6 @@ describe('Org Resolver', () => {
               .fn()
               .mockImplementation(() => Promise.resolve(MockOrgs[0])),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
-          },
-        },
-        {
-          provide: UserService,
-          useValue: {
-            findMany: jest.fn().mockResolvedValue({}),
-          },
-        },
-        {
-          provide: SurveyService,
-          useValue: {
-            findMany: jest.fn().mockResolvedValue({}),
           },
         },
       ],

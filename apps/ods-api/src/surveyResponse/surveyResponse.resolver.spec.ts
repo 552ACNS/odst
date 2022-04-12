@@ -5,8 +5,6 @@ import {
   MockSurveyResponses,
   MockSurveyResponseCreateInput,
 } from './surveyResponse.repo';
-import { AnswerService } from '../answer/answer.service';
-import { SurveyService } from '../survey/survey.service';
 
 describe('SurveyResponse Resolver', () => {
   let resolver: SurveyResponseResolver;
@@ -36,18 +34,6 @@ describe('SurveyResponse Resolver', () => {
                 Promise.resolve(MockSurveyResponses[0])
               ),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
-          },
-        },
-        {
-          provide: SurveyService,
-          useValue: {
-            findUnique: jest.fn().mockResolvedValue({}),
-          },
-        },
-        {
-          provide: AnswerService,
-          useValue: {
-            findMany: jest.fn().mockResolvedValue({}),
           },
         },
       ],

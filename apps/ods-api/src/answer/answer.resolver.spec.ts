@@ -2,8 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AnswerResolver } from './answer.resolver';
 import { AnswerService } from './answer.service';
 import { MockAnswerCreateInput, MockAnswers } from './answer.repo';
-import { QuestionService } from '../question/question.service';
-import { SurveyResponseService } from '../surveyResponse/surveyResponse.service';
 
 describe('Answer Resolver', () => {
   let resolver: AnswerResolver;
@@ -28,18 +26,6 @@ describe('Answer Resolver', () => {
               .fn()
               .mockImplementation(() => Promise.resolve(MockAnswers[0])),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
-          },
-        },
-        {
-          provide: QuestionService,
-          useValue: {
-            findUnique: jest.fn().mockResolvedValue({}),
-          },
-        },
-        {
-          provide: SurveyResponseService,
-          useValue: {
-            findUnique: jest.fn().mockResolvedValue({}),
           },
         },
       ],
