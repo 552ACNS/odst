@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
-import { NotificationCard } from './notification-card';
 
 @Component({
   selector: 'odst-dashboard',
@@ -9,10 +8,8 @@ import { NotificationCard } from './notification-card';
 })
 export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
-
   responses;
-  CardSpecs: NotificationCard[];
-
+  CardSpecs;
   ngOnInit() {
     this.dashboardService.GetResponseCount().subscribe((data) => {
       this.responses = data.data.countIssues;
