@@ -10,7 +10,7 @@ export class OrgService {
     skip?: number;
     take?: number;
     cursor?: Prisma.OrgWhereUniqueInput;
-    where?: Prisma.OrgWhereUniqueInput;
+    where?: Prisma.OrgWhereInput;
     orderBy?: Prisma.OrgOrderByWithRelationInput;
   }): Promise<Org[]> {
     const { skip, take, cursor, where, orderBy } = params;
