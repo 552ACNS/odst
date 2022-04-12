@@ -1,13 +1,14 @@
-import { ObjectType, Field, InputType } from '@nestjs/graphql';
+import { ObjectType, Field, HideField } from '@nestjs/graphql';
 import { Org, OrgTier } from '.prisma/ods/client';
 
 @ObjectType()
-@InputType('OrgGQLInput')
 export class OrgGQL implements Org {
   id: string;
   name: string;
 
   @Field(() => OrgTier)
   orgTier: OrgTier;
+
+  @HideField()
   parentId: string | null;
 }
