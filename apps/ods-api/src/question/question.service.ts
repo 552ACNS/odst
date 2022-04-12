@@ -1,10 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { Question, Prisma } from '.prisma/ods/client';
+import { Question, Prisma, Survey, Answer } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class QuestionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {
+    this.prisma.$use(async (params, next) => {
+      const before = Date.now();
+
+      const result = await next(params);
+
+      const after = Date.now();
+
+      console.log(
+        `Query ${params.model}.${params.action} took ${after - before}ms`
+      );
+
+      return result;
+    });
+  }
 
   async findMany(params: {
     skip?: number;
@@ -71,5 +85,21 @@ export class QuestionService {
     } catch (err) {
       return { deleted: false, message: err.message };
     }
+  }
+
+  async answers(
+    questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput
+  ): Promise<Answer[]> {
+    return this.prisma.question
+      .findUnique({ where: questionWhereUniqueInput })
+      .answers();
+  }
+
+  async surveys(
+    questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput
+  ): Promise<Survey[]> {
+    return this.prisma.question
+      .findUnique({ where: questionWhereUniqueInput })
+      .surveys();
   }
 }

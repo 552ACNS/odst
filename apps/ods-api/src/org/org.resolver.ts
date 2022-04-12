@@ -7,8 +7,6 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { OrgService } from './org.service';
-import { UserService } from '../user/user.service';
-import { SurveyService } from '../survey/survey.service';
 import {
   OrgGQL,
   OrgCreateInput,
@@ -22,11 +20,7 @@ import {
 
 @Resolver(() => OrgGQL)
 export class OrgResolver {
-  constructor(
-    private readonly orgService: OrgService,
-    private readonly userService: UserService,
-    private readonly surveyService: SurveyService
-  ) {}
+  constructor(private readonly orgService: OrgService) {}
 
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
   // @UseGuards(AccessTokenAuthGuard)
@@ -85,37 +79,23 @@ export class OrgResolver {
     return this.orgService.delete(orgWhereUniqueInput);
   }
 
-  @ResolveField(() => [UserGQL], { name: 'users' })
+  @ResolveField(() => [UserGQL])
   async users(@Parent() org: OrgGQL): Promise<UserGQL[]> {
-    return this.userService.findMany({
-      where: { orgs: { some: { id: org.id } } },
-    });
+    return this.orgService.users({ id: org.id });
   }
 
-  @ResolveField(() => [OrgGQL], { name: 'children' })
+  @ResolveField(() => [OrgGQL])
   async children(@Parent() org: OrgGQL): Promise<OrgGQL[]> {
-    return this.orgService.findMany({
-      where: { parent: { id: org.id } },
-    });
+    return this.orgService.children({ id: org.id });
   }
 
-  @ResolveField(() => OrgGQL, { name: 'parent', nullable: true })
+  @ResolveField(() => OrgGQL)
   async parent(@Parent() org: OrgGQL): Promise<OrgGQL | null> {
-    //parentId is of type string or null.
-    //id in WhereUniqueInput is of type string or undefined.
-    //this check is to make those types happy
-    if (!org.parentId) {
-      return null;
-    }
-    return this.orgService.findUnique({
-      id: org.parentId,
-    });
+    return this.orgService.parent({ id: org.id });
   }
 
-  @ResolveField(() => [SurveyGQL], { name: 'surveys' })
+  @ResolveField(() => [SurveyGQL])
   async surveys(@Parent() org: OrgGQL): Promise<SurveyGQL[]> {
-    return this.surveyService.findMany({
-      where: { orgs: { some: { id: org.id } } },
-    });
+    return this.orgService.surveys({ id: org.id });
   }
 }

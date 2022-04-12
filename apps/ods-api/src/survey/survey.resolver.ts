@@ -16,20 +16,12 @@ import {
   QuestionGQL,
   SurveyResponseGQL,
 } from '@odst/types/ods';
-import { SurveyResponseService } from '../surveyResponse/surveyResponse.service';
-import { OrgService } from '../org/org.service';
-import { QuestionService } from '../question/question.service';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => SurveyGQL)
 export class SurveyResolver {
-  constructor(
-    private readonly surveyService: SurveyService,
-    private readonly orgService: OrgService,
-    private readonly questionService: QuestionService,
-    private readonly surveyResponseService: SurveyResponseService
-  ) {}
+  constructor(private readonly surveyService: SurveyService) {}
 
   @Query(() => [SurveyGQL], { name: 'findManySurveys' })
   // @UseGuards(AccessTokenAuthGuard)
@@ -74,22 +66,18 @@ export class SurveyResolver {
 
   @ResolveField(() => [OrgGQL], { name: 'orgs' })
   async orgs(@Parent() survey: SurveyGQL) {
-    return this.orgService.findMany({
-      where: { surveys: { some: { id: survey.id } } },
-    });
+    return this.surveyService.orgs({ id: survey.id });
   }
 
-  @ResolveField(() => [QuestionGQL], { name: 'questions' })
-  async questions(@Parent() survey: SurveyGQL) {
-    return this.questionService.findMany({
-      where: { surveys: { some: { id: survey.id } } },
-    });
+  @ResolveField(() => [QuestionGQL])
+  async questions(@Parent() survey: SurveyGQL): Promise<QuestionGQL[]> {
+    return this.surveyService.questions({ id: survey.id });
   }
 
-  @ResolveField(() => [SurveyResponseGQL], { name: 'surveyResponses' })
-  async surveyResponses(@Parent() survey: SurveyGQL) {
-    return this.surveyResponseService.findMany({
-      where: { survey: { id: survey.id } },
-    });
+  @ResolveField(() => [SurveyResponseGQL])
+  async surveyResponses(
+    @Parent() survey: SurveyGQL
+  ): Promise<SurveyResponseGQL[]> {
+    return this.surveyService.surveyResponses({ id: survey.id });
   }
 }

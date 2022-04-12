@@ -16,18 +16,12 @@ import {
   AnswerGQL,
   SurveyGQL,
 } from '@odst/types/ods';
-import { AnswerService } from '../answer/answer.service';
-import { SurveyService } from '../survey/survey.service';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => QuestionGQL)
 export class QuestionResolver {
-  constructor(
-    private readonly questionService: QuestionService,
-    private readonly surveyService: SurveyService,
-    private readonly answerService: AnswerService
-  ) {}
+  constructor(private readonly questionService: QuestionService) {}
 
   @Query(() => [QuestionGQL], { name: 'findManyQuestions' })
   async findMany() {
@@ -84,17 +78,13 @@ export class QuestionResolver {
     return this.questionService.delete(questionWhereUniqueInput);
   }
 
-  @ResolveField(() => [AnswerGQL], { name: 'answers' })
-  async answers(@Parent() question: QuestionGQL) {
-    const { id } = question;
-    return this.answerService.findMany({ where: { question: { id } } });
+  @ResolveField(() => [AnswerGQL])
+  async answers(@Parent() question: QuestionGQL): Promise<AnswerGQL[]> {
+    return this.questionService.answers({ id: question.id });
   }
 
-  @ResolveField(() => [SurveyGQL], { name: 'surveys' })
-  async surveys(@Parent() question: QuestionGQL) {
-    const { id } = question;
-    return this.surveyService.findMany({
-      where: { questions: { some: { id } } },
-    });
+  @ResolveField(() => [SurveyGQL])
+  async surveys(@Parent() question: QuestionGQL): Promise<SurveyGQL[]> {
+    return this.questionService.surveys({ id: question.id });
   }
 }

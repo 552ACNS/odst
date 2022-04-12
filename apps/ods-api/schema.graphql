@@ -15,7 +15,7 @@ type OrgGQL {
   name: String!
   users: [UserGQL!]!
   children: [OrgGQL!]!
-  parent: OrgGQL
+  parent: OrgGQL!
   surveys: [SurveyGQL!]!
 }
 

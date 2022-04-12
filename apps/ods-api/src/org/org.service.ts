@@ -1,11 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { Org, Prisma } from '.prisma/ods/client';
+import { Org, Prisma, User, Survey } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class OrgService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {
+    this.prisma.$use(async (params, next) => {
+      const before = Date.now();
 
+      const result = await next(params);
+
+      const after = Date.now();
+
+      console.log(
+        `Query ${params.model}.${params.action} took ${after - before}ms`
+      );
+
+      return result;
+    });
+  }
   async findMany(params: {
     skip?: number;
     take?: number;
@@ -83,5 +96,31 @@ export class OrgService {
     } catch (err) {
       return { deleted: false, message: err.message };
     }
+  }
+
+  async users(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<User[]> {
+    return this.prisma.org.findUnique({ where: orgWhereUniqueInput }).users();
+  }
+
+  async children(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<Org[]> {
+    return this.prisma.org
+      .findUnique({ where: orgWhereUniqueInput })
+      .children();
+  }
+
+  async parent(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<Org | null> {
+    return this.prisma.org.findUnique({ where: orgWhereUniqueInput }).parent();
+  }
+
+  async surveys(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<Survey[]> {
+    return this.prisma.org.findUnique({ where: orgWhereUniqueInput }).surveys();
   }
 }

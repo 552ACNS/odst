@@ -70,19 +70,15 @@ export class AnswerResolver {
     return this.answerService.delete(answerWhereUniqueInput);
   }
 
-  @ResolveField(() => QuestionGQL, { name: 'question' })
+  @ResolveField(() => QuestionGQL)
   async question(@Parent() answer: AnswerGQL): Promise<QuestionGQL | null> {
-    return this.questionService.findUnique({
-      id: answer.questionId,
-    });
+    return this.answerService.question({ id: answer.id });
   }
 
-  @ResolveField(() => SurveyResponseGQL, { name: 'surveyResponse' })
+  @ResolveField(() => SurveyResponseGQL)
   async surveyResponse(
     @Parent() answer: AnswerGQL
   ): Promise<SurveyResponseGQL | null> {
-    return this.surveyResponseService.findUnique({
-      id: answer.surveyResponseId,
-    });
+    return this.answerService.surveyResponse({ id: answer.id });
   }
 }
