@@ -3,8 +3,8 @@
 # ------------------------------------------------------
 
 type OrgGQL {
+  id: String
   orgTier: OrgTier!
-  id: String!
   name: String!
   aliases: [String!]!
   parentId: String
@@ -18,17 +18,17 @@ enum OrgTier {
 }
 
 type PersonGQL {
+  id: String
   hairColor: HairColor!
+  middleInitial: String
   birthState: BirthState!
   eyeColor: EyeColor!
   spec: Spec!
   role: Role!
-  id: String!
   dodId: Float!
   ssn: Float!
   email: String!
   firstName: String!
-  middleInitial: String
   lastName: String!
   birthDate: DateTime!
   birthCity: String!
@@ -135,7 +135,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type UserGQL {
-  id: String!
+  id: String
   username: String!
   personId: String!
   enabled: Boolean!
@@ -147,7 +147,7 @@ type TokensGQL {
 }
 
 type IncidentGQL {
-  id: String!
+  id: String
   openDate: DateTime!
   closeDate: DateTime!
   reportedDate: DateTime!
@@ -155,25 +155,25 @@ type IncidentGQL {
 }
 
 input OrgGQLInput {
+  id: String
   orgTier: OrgTier!
-  id: String!
   name: String!
   aliases: [String!]!
   parentId: String
 }
 
 input PersonGQLInput {
+  id: String
   hairColor: HairColor!
+  middleInitial: String
   birthState: BirthState!
   eyeColor: EyeColor!
   spec: Spec!
   role: Role!
-  id: String!
   dodId: Float!
   ssn: Float!
   email: String!
   firstName: String!
-  middleInitial: String
   lastName: String!
   birthDate: DateTime!
   birthCity: String!
@@ -187,7 +187,7 @@ input PersonGQLInput {
 }
 
 input UserGQLInput {
-  id: String!
+  id: String
   username: String!
   personId: String!
   enabled: Boolean!
@@ -436,7 +436,7 @@ input RefreshTokenCreateOrConnectWithoutUserInput {
 }
 
 input RefreshTokenGQLInput {
-  id: String!
+  id: String
   isRevoked: Boolean!
   issued: DateTime!
   expires: DateTime!
