@@ -11,9 +11,6 @@ export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
 
   responses;
-  unresolvedReports: number;
-  overdueReports: number;
-  resolvedReports: number;
   CardSpecs: NotificationCard[];
 
   ngOnInit() {
@@ -53,11 +50,5 @@ export class DashboardComponent implements OnInit {
         },
       ];
     });
-  }
-
-  dateIsMoreThan30DaysAgo(responseDate: Date) {
-    const _difference = new Date().getTime() - responseDate.getTime();
-    const _30DaysInMilliseconds = 2592000000;
-    return _30DaysInMilliseconds < _difference;
   }
 }
