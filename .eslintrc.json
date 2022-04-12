@@ -71,7 +71,7 @@
     },
     {
       //Bug: does not run against frontend files, which isn't desired but it is expected. Move to project specific file?
-      "files": ["*.service.ts"],
+      "files": ["*.service.ts", "*.service.spec.ts"],
       "rules": {
         "no-restricted-imports": [
           "error",
