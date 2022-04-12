@@ -18,14 +18,15 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.dashboardService.GetResponseCount().subscribe((data) => {
-      this.responses = data.data;
+      this.responses = data.data.countIssues;
+      console.log(data);
 
       this.CardSpecs = [
         {
           Title: 'Unresolved',
           NumberStyle:
             'text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500',
-          CountOf: this.responses.Unresolved,
+          CountOf: this.responses.unresolved,
           Suffix: 'Unresolved Reports',
           SuffixStyle:
             'text-lg font-medium text-blue-600 dark:text-blue-500 text-center',
@@ -35,7 +36,7 @@ export class DashboardComponent implements OnInit {
           Title: 'Overdue',
           NumberStyle:
             'text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500',
-          CountOf: this.responses.Overdue,
+          CountOf: this.responses.overdue,
           Suffix: 'Overdue Reports',
           SuffixStyle:
             'text-lg font-medium text-red-600 dark:text-red-500 text-center',
@@ -44,7 +45,7 @@ export class DashboardComponent implements OnInit {
           Title: 'Resolved',
           NumberStyle:
             'text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500',
-          CountOf: this.responses.Resolved,
+          CountOf: this.responses.resolved,
           Suffix: 'Resolved Reports',
           SuffixStyle:
             'text-lg font-medium text-green-600 dark:text-green-500 text-center',

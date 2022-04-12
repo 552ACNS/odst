@@ -6,6 +6,7 @@ import {
   SurveyResponseUpdateInput,
   SurveyResponseWhereInput,
   SurveyResponseWhereUniqueInput,
+  IssueCount,
 } from '@odst/types/ods';
 // import { GetCurrentUserId } from '@odst/shared/nest';
 // import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
@@ -96,5 +97,11 @@ export class SurveyResponseResolver {
     surveyResponseWhereInput: SurveyResponseWhereInput
   ) {
     return this.surveyResponseService.count(surveyResponseWhereInput);
+  }
+
+  @Query(() => IssueCount, { name: 'countIssues' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async countIssues() {
+    return this.surveyResponseService.countIssues();
   }
 }

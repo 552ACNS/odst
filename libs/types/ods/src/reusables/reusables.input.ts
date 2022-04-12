@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
 
 @InputType()
@@ -50,4 +50,11 @@ export class StringFilter
 {
   @Field(() => StringFilter)
   not?: Prisma.NestedStringFilter;
+}
+
+@ObjectType()
+export class IssueCount {
+  unresolved: number;
+  overdue: number;
+  resolved: number;
 }

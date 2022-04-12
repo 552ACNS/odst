@@ -48,6 +48,12 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type IssueCount {
+  unresolved: Float!
+  overdue: Float!
+  resolved: Float!
+}
+
 input QuestionGQLInput {
   id: String!
   prompt: String!
@@ -90,6 +96,7 @@ type Query {
   getIssuesByStatus(resolved: Boolean!): [String!]!
   getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   countSurveyResponse(surveyResponseWhereInput: SurveyResponseWhereInput!): Float!
+  countIssues: IssueCount!
   findManyAnswers: [AnswerGQL!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
   findManyOrgs: [OrgGQL!]!

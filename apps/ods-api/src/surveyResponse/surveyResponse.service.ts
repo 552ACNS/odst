@@ -1,6 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SurveyResponse, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
+//TODO remove once shared types are moved out of ODS types
+// eslint-disable-next-line no-restricted-imports
+import { IssueCount } from '@odst/types/ods';
 
 @Injectable()
 export class SurveyResponseService {
@@ -126,25 +129,33 @@ export class SurveyResponseService {
 
   // TODO: Optimize at a later date, so we don't go back and forth to the server
 
-  // async countIssues() {
-  //   const unresolvedCount = await this.prisma.surveyResponse.count({
-  //     where: {
-  //       resolution: null
-  //     }
-  //   })
-  //
-  //   const resolvedCount = await this.prisma.surveyResponse.count({
-  //     where: {
-  //       resolution: {not: null}
-  //     }
-  //   })
-  //
-  //   const overdueCount = await this.prisma.surveyResponse.count({
-  //     where: {
-  //       openedDate: {
-  //         lt: new Date(Date.now() - 2592000000)
-  //       }
-  //     }
-  //   })
-  // }
+  async countIssues() {
+    //TODO: Promise a number array and remove awaits
+
+    const unresolvedCount = await this.prisma.surveyResponse.count({
+      where: {
+        resolution: null,
+      },
+    });
+
+    const resolvedCount = await this.prisma.surveyResponse.count({
+      where: {
+        resolution: { not: null },
+      },
+    });
+
+    const overdueCount = await this.prisma.surveyResponse.count({
+      where: {
+        openedDate: {
+          lt: new Date(Date.now() - 2592000000),
+        },
+      },
+    });
+
+    return {
+      unresolved: unresolvedCount ?? 0,
+      overdue: overdueCount ?? 0,
+      resolved: resolvedCount ?? 0,
+    };
+  }
 }
