@@ -1,9 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { SurveyResponse, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-//TODO remove once shared types are moved out of ODS types
-// eslint-disable-next-line no-restricted-imports
-import { IssueCount } from '@odst/types/ods';
 
 @Injectable()
 export class SurveyResponseService {
