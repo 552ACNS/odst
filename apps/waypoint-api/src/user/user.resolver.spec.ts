@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrgService } from '../org/org.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { UserCreateInput } from '@odst/types/waypoint';
+import { UserCreateInput, UserGQL } from '@odst/types/waypoint';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { TestUserCreateInput } from './user.repo';
-import { User } from '.prisma/waypoint/client';
 
 describe('UsersResolver', () => {
   let resolver: UserResolver;
@@ -32,10 +31,10 @@ describe('UsersResolver', () => {
     const methodToSpy = 'create';
 
     // TODO: Seems awkward to cast the User here, but I don't know how to do it otherwise
-    const resolvedUser: User = createdUser as unknown as User;
+    const resolvedUser: UserGQL = createdUser as unknown as UserGQL;
 
     // Change value of promise
-    const result: Promise<User> = Promise.resolve(resolvedUser);
+    const result: Promise<UserGQL> = Promise.resolve(resolvedUser);
 
     //Make it so that the createUser method returns the fake User
     const spy = jest
@@ -54,12 +53,12 @@ describe('UsersResolver', () => {
     // TEST PARAMS
     const methodToSpy = 'findMany';
 
-    const resolvedUsers: User[] = testUsers.map(
-      (User) => User as unknown as User
+    const resolvedUsers: UserGQL[] = testUsers.map(
+      (User) => User as unknown as UserGQL
     );
 
     // Change value of promise
-    const result: Promise<User[]> = Promise.resolve(resolvedUsers);
+    const result: Promise<UserGQL[]> = Promise.resolve(resolvedUsers);
 
     //Make it so that the createUser method returns the fake User
     const spy = jest
@@ -79,10 +78,10 @@ describe('UsersResolver', () => {
     const methodToSpy = 'findUnique';
 
     // TODO: Seems awkward to cast the User here, but I don't know how to do it otherwise
-    const resolvedUser: User = userToFind as unknown as User;
+    const resolvedUser: UserGQL = userToFind as unknown as UserGQL;
 
     // Change value of promise
-    const result: Promise<User> = Promise.resolve(resolvedUser);
+    const result: Promise<UserGQL> = Promise.resolve(resolvedUser);
 
     //Make it so that the createUser method returns the fake User
     const spy = jest
@@ -101,10 +100,10 @@ describe('UsersResolver', () => {
     const methodToSpy = 'update';
     const newUsername = 'new.username';
     //Create a GQL definition of the User to update
-    const updatedUser: User = testUsers[2] as unknown as User;
+    const updatedUser: UserGQL = testUsers[2] as unknown as UserGQL;
 
     //Create a promised result that will match the User GQL data type that will be updated
-    const result: Promise<User> = Promise.resolve(updatedUser);
+    const result: Promise<UserGQL> = Promise.resolve(updatedUser);
 
     //Create the spy on the service
     const spy = jest
@@ -126,10 +125,10 @@ describe('UsersResolver', () => {
     // TEST PARAMS
     const methodToSpy = 'delete';
     //Create a GQL definition of the User to delete
-    const deletedUser: User = testUsers[2] as unknown as User;
+    const deletedUser: UserGQL = testUsers[2] as unknown as UserGQL;
 
     //Create a promised result that will match the User GQL data type that will be deleted
-    const result: Promise<User> = Promise.resolve(deletedUser);
+    const result: Promise<UserGQL> = Promise.resolve(deletedUser);
 
     //Create the spy on the service
     const spy = jest

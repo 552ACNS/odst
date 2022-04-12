@@ -300,7 +300,7 @@ type Mutation {
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
-  deleteQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
+  removeQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
 }
 
 input SurveyCreateInput {

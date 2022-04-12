@@ -13,7 +13,7 @@ export class SurveyResponseService {
     skip?: number;
     take?: number;
     cursor?: Prisma.SurveyResponseWhereUniqueInput;
-    where?: Prisma.SurveyResponseWhereUniqueInput;
+    where?: Prisma.SurveyResponseWhereInput;
     orderBy?: Prisma.SurveyResponseOrderByWithRelationInput;
   }): Promise<SurveyResponse[]> {
     const { skip, take, cursor, where, orderBy } = params;
@@ -36,6 +36,7 @@ export class SurveyResponseService {
 
   // Get the string IDs of all the issues that are unresolved that the commander
   // has responsibility over
+
   async getIssuesByStatus(resolved: boolean): Promise<string[]> {
     const responsesIDs = await this.prisma.surveyResponse
       .findMany({
