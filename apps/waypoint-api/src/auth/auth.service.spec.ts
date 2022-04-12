@@ -1,12 +1,7 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  LoginUserInput,
-  SignupUserInput,
-  UserWhereUniqueInput,
-} from '@odst/types/waypoint';
-import { User } from '.prisma/waypoint/client';
+import { User, Prisma } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { prismaMock } from '../prisma/singleton';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
@@ -40,11 +35,11 @@ describe('AuthService', () => {
   });
 
   it('should throw UnauthorizedException due to incorrecct credentials', async () => {
-    const userInput: LoginUserInput = {
+    const userInput = {
       username: 'idonotexist',
       password: 'password',
     };
-    const userWhereUniqueInput: UserWhereUniqueInput = {
+    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = {
       username: userInput.username,
     };
     const resolvedUser: User = userWhereUniqueInput as unknown as User;
@@ -57,7 +52,7 @@ describe('AuthService', () => {
   });
 
   it('should sign up user', async () => {
-    const userInput: SignupUserInput = {
+    const userInput = {
       username: 'test',
       password: 'test',
       person: { connect: { dodId: 123456789 } },

@@ -15,7 +15,9 @@ import {
   AnswerGQL,
   SurveyGQL,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
+
+// import { GetCurrentUserId } from '@odst/shared/nest';
+// import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => SurveyResponseGQL)
