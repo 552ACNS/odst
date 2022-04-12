@@ -1,3 +1,6 @@
+# TODO: Reads the first schema no matter what, fix to read unique schema
 projects:
   waypoint:
-    schema: http://localhost:3333/graphql
+    schema: http://localhost:3343/graphql
+  ods:
+    schema: http://localhost:3343/graphql

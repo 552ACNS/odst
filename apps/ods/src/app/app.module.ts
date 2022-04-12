@@ -19,6 +19,7 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
+    GQLModule,
   ],
   providers: [Apollo, { provide: 'environment', useValue: environment }],
   bootstrap: [AppComponent],

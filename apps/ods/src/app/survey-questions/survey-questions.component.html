@@ -1,0 +1,174 @@
+<div class="mx-auto min-w-[360px] w-[95%] max-w-[500px] mt-2 space-y-2">
+  <mat-card class="rounded-2xl shadow-md font-medium flex justify-center" id="headerCard">
+    Observations of Discrimination in Squadron
+  </mat-card>
+  <mat-card class="rounded-2xl shadow-md">
+    <form [formGroup]="form" class="flex flex-col flex-wrap">
+      <label class="mb-1">
+        {{ questions[0] }}
+        <span class="text-red-500"> * </span>
+      </label>
+      <mat-form-field>
+        <mat-select
+          placeholder="Organization"
+          formControlName="eventOrg"
+          required
+        >
+          <mat-option *ngFor="let org of orgs" [value]="org">
+            {{ org }}
+          </mat-option>
+        </mat-select>
+        <mat-error> Please select the organization </mat-error>
+      </mat-form-field>
+      <label class="mt-6 mb-1">
+        {{ questions[1] }}
+        <span class="text-red-500"> * </span>
+      </label>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Event description</mat-label>
+        <textarea
+          matInput
+          placeholder="Event description"
+          formControlName="event"
+          class=""
+          required
+        >
+        </textarea>
+        <mat-error>
+          Please describe the microaggression or discrimination that took place.
+        </mat-error>
+      </mat-form-field>
+      <label class="mt-6 mb-2">
+        {{ questions[2] }}
+        <span class="text-red-500"> * </span>
+      </label>
+      <!-- TODO Fix to use tailwind for spacing in future -->
+      <mat-radio-group
+        name="violator_spec"
+        formControlName="violatorSpec"
+        color="primary"
+        required
+      >
+        <mat-radio-button value="AD">Active Duty</mat-radio-button>
+        <br />
+        <br />
+        <mat-radio-button value="CIVILIAN">Civilian</mat-radio-button>
+        <br />
+        <br />
+        <mat-radio-button value="CONTRACTOR">Contractor</mat-radio-button>
+        <br />
+        <br />
+        <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
+        <br />
+        <mat-radio-button value="other">
+          <mat-form-field>
+            <input
+              matInput
+              formControlName="violatorOtherSpec"
+              placeholder="Other"
+            />
+          </mat-form-field>
+        </mat-radio-button>
+      </mat-radio-group>
+      <label class="mt-6 mb-1">
+        {{ questions[3] }}
+        <span class="text-red-500"> * </span>
+      </label>
+      <mat-form-field>
+        <!-- TODO make placeholder not stay when CC is selected and add back placeholder when fixed -->
+        <!-- TODO Implement query to backend to find commanders to populate selector -->
+        <mat-select
+          placeholder="Squadron Commander"
+          formControlName="CC"
+          required
+        >
+          <mat-option *ngFor="let CC of CCs" [value]="CC">
+            {{ CC }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select your Squadron Commander</mat-error>
+      </mat-form-field>
+      <label class="mt-6 mb-2">
+        {{ questions[4] }}
+        <span class="text-red-500"> * </span>
+      </label>
+      <!-- TODO Fix to use tailwind for spacing in future -->
+      <mat-radio-group
+        name="person_spec"
+        formControlName="personSpec"
+        color="primary"
+        required
+      >
+        <mat-radio-button value="AD">Active Duty</mat-radio-button>
+        <br />
+        <br />
+        <mat-radio-button value="CIVILIAN">Civilian</mat-radio-button>
+        <br />
+        <br />
+        <mat-radio-button value="CONTRACTOR">Contractor</mat-radio-button>
+        <br />
+        <br />
+        <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
+        <br />
+        <!-- [(ngModel)]="customPerson" (ngModelChange)="personOption = 'other'"-->
+        <mat-radio-button value="other">
+          <mat-form-field>
+            <input
+              matInput
+              formControlName="personOtherSpec"
+              placeholder="Other"
+            />
+          </mat-form-field>
+        </mat-radio-button>
+      </mat-radio-group>
+      <label class="mt-6 mb-1">
+        {{ questions[5] }}
+        <span class="text-red-500"> * </span>
+      </label>
+      <mat-form-field appearance="outline" class="w-full border-solid">
+        <mat-label>Event impact</mat-label>
+        <textarea
+          matInput
+          placeholder="Event impact"
+          formControlName="impact"
+          required
+        >
+        </textarea>
+        <mat-error> Please describe the events impact </mat-error>
+      </mat-form-field>
+      <label class="mt-6 mb-1">
+        Click the box below if your Squadron Commander was involved in the event
+        (this will route the submission to a representative outside of your
+        chain of command).
+      </label>
+      <section>
+        <br />
+        <mat-checkbox formControlName="outsideRouting" color="primary">
+          My Squadron Commander was involved</mat-checkbox
+        >
+      </section>
+    </form>
+  </mat-card>
+  <div class="flex justify-center">
+    <button
+      class="m-2 border-1 border-dark-blue shadow-md rounded-full w-full"
+      mat-raised-button
+      [routerLink]="['/disclaimer']"
+    >
+      Back
+    </button>
+    <button
+      id="btnSubmit"
+      class="m-2 text-white rounded-full w-full"
+      mat-raised-button
+      color="primary"
+      (click)="submit()"
+      [disabled]="!form.valid"
+    >
+      Submit
+      <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess"
+        >check</mat-icon
+      >
+    </button>
+  </div>
+</div>

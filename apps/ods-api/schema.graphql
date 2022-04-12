@@ -31,6 +31,7 @@ enum OrgTier {
 
 type SurveyGQL {
   id: String!
+  questionsHash: String
 }
 
 type SurveyResponseGQL {
@@ -70,6 +71,7 @@ input OrgGQLInput {
 
 input SurveyGQLInput {
   id: String!
+  questionsHash: String
 }
 
 input SurveyResponseGQLInput {
@@ -100,6 +102,7 @@ type Query {
 
 input SurveyWhereUniqueInput {
   id: String
+  questionsHash: String
 }
 
 input SurveyResponseWhereUniqueInput {
@@ -117,9 +120,11 @@ input OrgWhereUniqueInput {
 
 input QuestionWhereUniqueInput {
   id: String
+  prompt: String
 }
 
 type Mutation {
+  createSurveyWithQuestions(questionPrompts: [String!]!): SurveyGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
@@ -148,7 +153,7 @@ input OrgCreateNestedManyWithoutSurveysInput {
 }
 
 input QuestionCreateNestedManyWithoutSurveysInput {
-  connect: QuestionWhereUniqueInput
+  connect: [QuestionWhereUniqueInput!]
 }
 
 input SurveyResponseCreateNestedManyWithoutSurveyInput {
@@ -157,9 +162,36 @@ input SurveyResponseCreateNestedManyWithoutSurveyInput {
 }
 
 input SurveyUpdateInput {
-  orgs: OrgCreateNestedManyWithoutSurveysInput
-  questions: QuestionCreateNestedManyWithoutSurveysInput
-  surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
+  questions: QuestionUpdateManyWithoutSurveysInput
+  surveyResponses: SurveyResponseUpdateManyWithoutSurveyInput
+}
+
+input QuestionUpdateManyWithoutSurveysInput {
+  connect: [QuestionWhereUniqueInput!]
+  connectOrCreate: [QuestionCreateOrConnectWithoutSurveysInput!]
+}
+
+input QuestionCreateOrConnectWithoutSurveysInput {
+  where: QuestionWhereUniqueInput!
+  create: QuestionCreateWithoutSurveysInput!
+}
+
+input QuestionCreateWithoutSurveysInput {
+  answers: AnswerCreateNestedManyWithoutQuestionInput
+  prompt: String!
+}
+
+input AnswerCreateNestedManyWithoutQuestionInput {
+  connect: [AnswerWhereUniqueInput!]
+}
+
+input SurveyResponseUpdateManyWithoutSurveyInput {
+  createMany: SurveyResponseCreateManySurveyInputEnvelope
+}
+
+input SurveyResponseCreateManySurveyInputEnvelope {
+  data: [SurveyResponseGQLInput!]
+  skipDuplicates: Boolean
 }
 
 input SurveyResponseCreateInput {
@@ -176,8 +208,28 @@ input SurveyCreateNestedOneWithoutSurveyResponsesInput {
 }
 
 input AnswerCreateNestedManyWithoutSurveyResponseInput {
-  connect: AnswerGQLInput
-  create: AnswerGQLInput
+  connect: AnswerWhereUniqueInput
+  create: AnswerCreateWithoutSurveyResponseInput
+  createMany: AnswerCreateManySurveyResponseInputEnvelope
+}
+
+input AnswerCreateWithoutSurveyResponseInput {
+  question: QuestionCreateNestedOneWithoutAnswersInput!
+  value: String!
+}
+
+input QuestionCreateNestedOneWithoutAnswersInput {
+  connect: QuestionWhereUniqueInput
+}
+
+input AnswerCreateManySurveyResponseInputEnvelope {
+  data: [AnswerCreateManySurveyResponseInput!]
+  skipDuplicates: Boolean
+}
+
+input AnswerCreateManySurveyResponseInput {
+  value: String!
+  questionId: String!
 }
 
 input SurveyResponseUpdateInput {
@@ -190,10 +242,6 @@ input AnswerCreateInput {
   question: QuestionCreateNestedOneWithoutAnswersInput!
   surveyResponse: SurveyResponseCreateNestedOneWithoutAnswersInput!
   value: String!
-}
-
-input QuestionCreateNestedOneWithoutAnswersInput {
-  connect: QuestionWhereUniqueInput
 }
 
 input SurveyResponseCreateNestedOneWithoutAnswersInput {

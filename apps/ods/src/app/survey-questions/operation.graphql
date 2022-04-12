@@ -1,0 +1,83 @@
+# mutation createOrg_form($orgCreateInput: OrgCreateInput!) {
+#   createOrg(orgCreateInput: $orgCreateInput) {
+#     ...orgFields
+#   }
+# }
+
+# mutation createAnswer_form($answerCreateInput: AnswerCreateInput!) {
+#   createAnswer(answerCreateInput: $answerCreateInput) {
+#     ...answerField
+#   }
+# }
+
+# mutation createSurvey_form($surveyCreateInput: SurveyCreateInput!) {
+#   createSurvey(surveyCreateInput: $surveyCreateInput) {
+#     id
+#   }
+# }
+
+query findUniqueSurvey_form($surveyWhereUniqueInput: SurveyWhereUniqueInput!) {
+  findUniqueSurvey(surveyWhereUniqueInput: $surveyWhereUniqueInput) {
+    id
+  }
+}
+
+mutation createSurveyResponse_form(
+  $surveyResponseCreateInput: SurveyResponseCreateInput!
+) {
+  createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
+    ...surveyResponseFields
+  }
+}
+
+mutation createSurveyWithQuestions_form($questionPrompts: [String!]!) {
+  createSurveyWithQuestions(questionPrompts: $questionPrompts) {
+    id
+  }
+}
+
+query findManyOrgs_form {
+  findManyOrgs {
+    name
+  }
+}
+
+query findQuestionsBySurvey_form(
+  $surveyWhereUniqueInput: SurveyWhereUniqueInput!
+) {
+  getSubQuestions(surveyWhereUniqueInput: $surveyWhereUniqueInput) {
+    id
+  }
+}
+
+# fragment answerField on AnswerGQL{
+#     id
+#     value
+#     questionId
+#     surveyResponseId
+# }
+
+fragment orgFields on OrgGQL {
+  id
+  name
+  orgTier
+  parentId
+}
+# fragment questionFields on QuestionGQL {
+#   id
+#   prompt
+# }
+
+fragment surveyResponseFields on SurveyResponseGQL {
+  id
+  surveyId
+  openedDate
+  closedDate
+  routeOutside
+  resolution
+}
+
+fragment surveyFields on SurveyGQL {
+  id
+  questionsHash
+}

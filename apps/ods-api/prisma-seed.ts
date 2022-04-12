@@ -73,11 +73,13 @@ async function main() {
   //#endregion survey
 
   //#region answer
-  const question = await prisma.question.create({
-    data: {
+  const question = await prisma.question.upsert({
+    where: { prompt: 'What is the meaning of life?' },
+    create: {
       prompt: 'What is the meaning of life?',
       surveys: { connect: { id: survey.id } },
     },
+    update: {},
   });
   //#endregion answer
 

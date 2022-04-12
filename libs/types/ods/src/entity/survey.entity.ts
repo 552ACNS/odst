@@ -5,4 +5,5 @@ import { Survey } from '.prisma/ods/client';
 @InputType('SurveyGQLInput')
 export class SurveyGQL implements Survey {
   id: string;
+  questionsHash: string | null;
 }
