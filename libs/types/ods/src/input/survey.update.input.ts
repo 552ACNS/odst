@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
-import { SurveyResponseGQL } from '../entity/surveyResponse.entity';
 import { QuestionUpdateManyWithoutSurveysInput } from './question.update.input';
+import { SurveyResponseCreateInput } from './surveyResponse.create.input';
 
 @InputType()
 // extends SurveyCreateInput
@@ -25,8 +25,8 @@ export class SurveyResponseUpdateManyWithoutSurveyInput
 export class SurveyResponseCreateManySurveyInputEnvelope
   implements Prisma.SurveyResponseCreateManySurveyInputEnvelope
 {
-  @Field(() => [SurveyResponseGQL], { nullable: true })
+  //TODO might not be the right type, since SurveyResponseCreateInput requires survey input
+  @Field(() => [SurveyResponseCreateInput])
   data: Prisma.Enumerable<Prisma.SurveyResponseCreateManySurveyInput>;
   skipDuplicates?: boolean;
 }
-

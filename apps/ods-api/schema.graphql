@@ -2,24 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type QuestionGQL {
-  id: String!
-  prompt: String!
-}
-
 type AnswerGQL {
-  question: QuestionGQL
   id: String!
   value: String!
-  questionId: String!
-  surveyResponseId: String!
+  question: QuestionGQL!
+  surveyResponse: SurveyResponseGQL!
 }
 
 type OrgGQL {
   orgTier: OrgTier!
   id: String!
   name: String!
-  parentId: String
+  users: [UserGQL!]!
+  children: [OrgGQL!]!
+  parent: OrgGQL!
+  surveys: [SurveyGQL!]!
 }
 
 enum OrgTier {
@@ -29,19 +26,29 @@ enum OrgTier {
   OTHER
 }
 
+type QuestionGQL {
+  id: String!
+  prompt: String!
+  answers: [AnswerGQL!]!
+  surveys: [SurveyGQL!]!
+}
+
 type SurveyGQL {
   id: String!
   questionsHash: String
+  orgs: [OrgGQL!]!
+  questions: [QuestionGQL!]!
+  surveyResponses: [SurveyResponseGQL!]!
 }
 
 type SurveyResponseGQL {
-  answers: [AnswerGQL!]
   id: String!
-  surveyId: String!
   openedDate: DateTime!
   closedDate: DateTime
   routeOutside: Boolean!
   resolution: String
+  answers: [AnswerGQL!]!
+  survey: SurveyGQL!
 }
 
 """
@@ -49,44 +56,24 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-input QuestionGQLInput {
+type UserGQL {
+  roles: Role!
   id: String!
-  prompt: String!
+  email: String!
+  enabled: Boolean!
 }
 
-input AnswerGQLInput {
-  question: QuestionGQLInput
-  id: String!
-  value: String!
-  questionId: String!
-  surveyResponseId: String!
-}
-
-input OrgGQLInput {
-  orgTier: OrgTier!
-  id: String!
-  name: String!
-  parentId: String
-}
-
-input SurveyGQLInput {
-  id: String!
-  questionsHash: String
-}
-
-input SurveyResponseGQLInput {
-  answers: [AnswerGQLInput!]
-  id: String!
-  surveyId: String!
-  openedDate: DateTime!
-  closedDate: DateTime
-  routeOutside: Boolean!
-  resolution: String
+enum Role {
+  ADMIN
+  DEI
+  EO
+  CC
 }
 
 type Query {
   findManySurveys: [SurveyGQL!]!
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
+  findManySurveyResponses: [SurveyResponseGQL!]!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   getIssuesByStatus(resolved: Boolean!): [String!]!
   getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
@@ -158,7 +145,6 @@ input QuestionCreateNestedManyWithoutSurveysInput {
 
 input SurveyResponseCreateNestedManyWithoutSurveyInput {
   connect: SurveyResponseWhereUniqueInput
-  create: SurveyResponseGQLInput
 }
 
 input SurveyUpdateInput {
@@ -190,7 +176,7 @@ input SurveyResponseUpdateManyWithoutSurveyInput {
 }
 
 input SurveyResponseCreateManySurveyInputEnvelope {
-  data: [SurveyResponseGQLInput!]
+  data: [SurveyResponseCreateInput!]!
   skipDuplicates: Boolean
 }
 
@@ -223,7 +209,7 @@ input QuestionCreateNestedOneWithoutAnswersInput {
 }
 
 input AnswerCreateManySurveyResponseInputEnvelope {
-  data: [AnswerCreateManySurveyResponseInput!]
+  data: [AnswerCreateManySurveyResponseInput!]!
   skipDuplicates: Boolean
 }
 
@@ -246,7 +232,6 @@ input AnswerCreateInput {
 
 input SurveyResponseCreateNestedOneWithoutAnswersInput {
   connect: SurveyResponseWhereUniqueInput
-  create: SurveyResponseGQLInput
 }
 
 input AnswerUpdateInput {
@@ -257,7 +242,7 @@ input AnswerUpdateInput {
 
 input OrgCreateInput {
   orgTier: OrgTier!
-  commanders: UserCreateNestedManyWithoutOrgsInput
+  users: UserCreateNestedManyWithoutOrgsInput
   parent: OrgCreateNestedOneWithoutChildrenInput
   children: OrgCreateNestedManyWithoutParentInput
   name: String!
@@ -282,7 +267,7 @@ input SurveyCreateNestedManyWithoutOrgsInput {
 
 input OrgUpdateInput {
   orgTier: OrgTier
-  commanders: UserCreateNestedManyWithoutOrgsInput
+  users: UserCreateNestedManyWithoutOrgsInput
   parent: OrgCreateNestedOneWithoutChildrenInput
   children: OrgCreateNestedManyWithoutParentInput
   name: String
@@ -291,7 +276,6 @@ input OrgUpdateInput {
 
 input QuestionCreateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
-  id: String
   prompt: String!
 }
 
@@ -301,6 +285,5 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
-  id: String
   prompt: String
 }

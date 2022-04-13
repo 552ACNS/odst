@@ -51,8 +51,8 @@ export class AnswerCreateNestedManyWithoutSurveyResponseInput
 export class AnswerCreateManySurveyResponseInputEnvelope
   implements Prisma.AnswerCreateManySurveyResponseInputEnvelope
 {
-  @Field(() => [AnswerCreateManySurveyResponseInput], { nullable: true })
-  data: Prisma.Enumerable<Prisma.AnswerCreateManySurveyResponseInput>;
+  @Field(() => [AnswerCreateManySurveyResponseInput])
+  data: Prisma.AnswerCreateManySurveyResponseInput[];
 
   skipDuplicates?: boolean;
 }
