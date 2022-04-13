@@ -2,24 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type QuestionGQL {
-  id: String!
-  prompt: String!
-}
-
 type AnswerGQL {
-  question: QuestionGQL
   id: String!
   value: String!
-  questionId: String!
-  surveyResponseId: String!
+  question: QuestionGQL!
+  surveyResponse: SurveyResponseGQL!
 }
 
 type OrgGQL {
   orgTier: OrgTier!
   id: String!
   name: String!
-  parentId: String
+  users: [UserGQL!]!
+  children: [OrgGQL!]!
+  parent: OrgGQL!
+  surveys: [SurveyGQL!]!
 }
 
 enum OrgTier {
@@ -29,24 +26,35 @@ enum OrgTier {
   OTHER
 }
 
+type QuestionGQL {
+  id: String!
+  prompt: String!
+  answers: [AnswerGQL!]!
+  surveys: [SurveyGQL!]!
+}
+
 type SurveyGQL {
   id: String!
+  orgs: [OrgGQL!]!
+  questions: [QuestionGQL!]!
+  surveyResponses: [SurveyResponseGQL!]!
 }
 
 type SurveyResponseGQL {
-  answers: [AnswerGQL!]
   id: String!
-  surveyId: String!
   openedDate: DateTime!
   closedDate: DateTime
   routeOutside: Boolean!
   resolution: String
+  answers: [AnswerGQL!]!
+  survey: SurveyGQL!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
 
 type IssueCount {
   unresolved: Float!
@@ -74,18 +82,18 @@ input OrgGQLInput {
   parentId: String
 }
 
-input SurveyGQLInput {
+type UserGQL {
+  roles: Role!
   id: String!
+  email: String!
+  enabled: Boolean!
 }
 
-input SurveyResponseGQLInput {
-  answers: [AnswerGQLInput!]
-  id: String!
-  surveyId: String!
-  openedDate: DateTime!
-  closedDate: DateTime
-  routeOutside: Boolean!
-  resolution: String
+enum Role {
+  ADMIN
+  DEI
+  EO
+  CC
 }
 
 type Query {
@@ -319,7 +327,6 @@ input QuestionCreateNestedManyWithoutSurveysInput {
 
 input SurveyResponseCreateNestedManyWithoutSurveyInput {
   connect: SurveyResponseWhereUniqueInput
-  create: SurveyResponseGQLInput
 }
 
 input SurveyUpdateInput {
@@ -342,14 +349,8 @@ input SurveyCreateNestedOneWithoutSurveyResponsesInput {
 }
 
 input AnswerCreateNestedManyWithoutSurveyResponseInput {
-  connect: AnswerGQLInput
-  create: AnswerGQLInput
-}
-
-input SurveyResponseUpdateInput {
-  closedDate: DateTime
-  routeOutside: Boolean
-  resolution: String
+  connect: AnswerWhereUniqueInput
+  create: AnswerCreateInput
 }
 
 input AnswerCreateInput {
@@ -364,7 +365,12 @@ input QuestionCreateNestedOneWithoutAnswersInput {
 
 input SurveyResponseCreateNestedOneWithoutAnswersInput {
   connect: SurveyResponseWhereUniqueInput
-  create: SurveyResponseGQLInput
+}
+
+input SurveyResponseUpdateInput {
+  closedDate: DateTime
+  routeOutside: Boolean
+  resolution: String
 }
 
 input AnswerUpdateInput {
@@ -375,7 +381,7 @@ input AnswerUpdateInput {
 
 input OrgCreateInput {
   orgTier: OrgTier!
-  commanders: UserCreateNestedManyWithoutOrgsInput
+  users: UserCreateNestedManyWithoutOrgsInput
   parent: OrgCreateNestedOneWithoutChildrenInput
   children: OrgCreateNestedManyWithoutParentInput
   name: String!
@@ -400,7 +406,7 @@ input SurveyCreateNestedManyWithoutOrgsInput {
 
 input OrgUpdateInput {
   orgTier: OrgTier
-  commanders: UserCreateNestedManyWithoutOrgsInput
+  users: UserCreateNestedManyWithoutOrgsInput
   parent: OrgCreateNestedOneWithoutChildrenInput
   children: OrgCreateNestedManyWithoutParentInput
   name: String
@@ -409,7 +415,6 @@ input OrgUpdateInput {
 
 input QuestionCreateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
-  id: String
   prompt: String!
 }
 
@@ -419,6 +424,5 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
-  id: String
   prompt: String
 }

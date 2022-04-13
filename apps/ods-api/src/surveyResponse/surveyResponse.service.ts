@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SurveyResponse, Prisma } from '.prisma/ods/client';
+import { SurveyResponse, Prisma, Survey, Answer } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -155,5 +155,21 @@ export class SurveyResponseService {
       overdue: overdueCount ?? 0,
       resolved: resolvedCount ?? 0,
     };
+  }
+
+  async survey(
+    AnswerWhereUniqueInput: Prisma.AnswerWhereUniqueInput
+  ): Promise<Survey | null> {
+    return this.prisma.surveyResponse
+      .findUnique({ where: AnswerWhereUniqueInput })
+      .survey();
+  }
+
+  async answers(
+    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+  ): Promise<Answer[]> {
+    return this.prisma.surveyResponse
+      .findUnique({ where: surveyResponseWhereUniqueInput })
+      .answers();
   }
 }

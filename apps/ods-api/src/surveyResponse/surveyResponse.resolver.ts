@@ -1,4 +1,11 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Query,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { SurveyResponseService } from './surveyResponse.service';
 import {
   SurveyResponseGQL,
@@ -7,6 +14,8 @@ import {
   SurveyResponseWhereInput,
   SurveyResponseWhereUniqueInput,
   IssueCount,
+  AnswerGQL,
+  SurveyGQL,
 } from '@odst/types/ods';
 
 // import { GetCurrentUserId } from '@odst/shared/nest';
@@ -19,7 +28,8 @@ export class SurveyResponseResolver {
 
   @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
   // @UseGuards(AccessTokenAuthGuard)
-  async findMany() {
+
+  async findMany(): Promise<SurveyResponseGQL[]> {
     return this.surveyResponseService.findMany({});
   }
 
@@ -28,7 +38,7 @@ export class SurveyResponseResolver {
   async findUnique(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ) {
+  ): Promise<SurveyResponseGQL | null> {
     return this.surveyResponseService.findUnique(
       surveyResponseWhereUniqueInput
     );
@@ -39,7 +49,7 @@ export class SurveyResponseResolver {
   async create(
     @Args('surveyResponseCreateInput')
     surveyResponseCreateInput: SurveyResponseCreateInput
-  ) {
+  ): Promise<SurveyResponseGQL> {
     return this.surveyResponseService.create(surveyResponseCreateInput);
   }
 
@@ -50,7 +60,7 @@ export class SurveyResponseResolver {
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput,
     @Args('SurveyResponseUpdateInput')
     surveyResponseUpdateInput: SurveyResponseUpdateInput
-  ) {
+  ): Promise<SurveyResponseGQL> {
     return this.surveyResponseService.update(
       surveyResponseWhereUniqueInput,
       surveyResponseUpdateInput
@@ -104,5 +114,19 @@ export class SurveyResponseResolver {
   // @UseGuards(AccessTokenAuthGuard)
   async countIssues() {
     return this.surveyResponseService.countIssues();
+  }
+
+  @ResolveField(() => [AnswerGQL])
+  async answers(
+    @Parent() surveyResponse: SurveyResponseGQL
+  ): Promise<AnswerGQL[]> {
+    return this.surveyResponseService.answers({ id: surveyResponse.id });
+  }
+
+  @ResolveField(() => SurveyGQL)
+  async survey(
+    @Parent() surveyResponse: SurveyResponseGQL
+  ): Promise<SurveyGQL | null> {
+    return this.surveyResponseService.survey({ id: surveyResponse.id });
   }
 }
