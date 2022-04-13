@@ -1,5 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Survey, Prisma } from '.prisma/ods/client';
+import { Injectable } from '@nestjs/common';
+import {
+  Survey,
+  Prisma,
+  SurveyResponse,
+  Question,
+  Org,
+} from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -58,5 +64,29 @@ export class SurveyService {
     } catch (err) {
       return { deleted: false, message: err.message };
     }
+  }
+
+  async orgs(
+    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  ): Promise<Org[]> {
+    return this.prisma.survey
+      .findUnique({ where: surveyWhereUniqueInput })
+      .orgs();
+  }
+
+  async questions(
+    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  ): Promise<Question[]> {
+    return this.prisma.survey
+      .findUnique({ where: surveyWhereUniqueInput })
+      .questions();
+  }
+
+  async surveyResponses(
+    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  ): Promise<SurveyResponse[]> {
+    return this.prisma.survey
+      .findUnique({ where: surveyWhereUniqueInput })
+      .surveyResponses();
   }
 }

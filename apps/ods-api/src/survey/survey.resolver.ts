@@ -1,10 +1,20 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Query,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { SurveyService } from './survey.service';
 import {
   SurveyGQL,
   SurveyCreateInput,
   SurveyUpdateInput,
   SurveyWhereUniqueInput,
+  OrgGQL,
+  QuestionGQL,
+  SurveyResponseGQL,
   SurveyWhereInput,
 } from '@odst/types/ods';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
@@ -25,7 +35,7 @@ export class SurveyResolver {
   async findUnique(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ): Promise<SurveyGQL | null> {
+  ) {
     return this.surveyService.findUnique(surveyWhereUniqueInput);
   }
 
@@ -42,7 +52,7 @@ export class SurveyResolver {
     surveyWhereUniqueInput: SurveyWhereUniqueInput,
     @Args('SurveyUpdateInput')
     surveyUpdateInput: SurveyUpdateInput
-  ): Promise<SurveyGQL> {
+  ) {
     return this.surveyService.update(surveyWhereUniqueInput, surveyUpdateInput);
   }
 
@@ -51,7 +61,24 @@ export class SurveyResolver {
   async delete(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ): Promise<{ deleted: boolean }> {
+  ) {
     return this.surveyService.delete(surveyWhereUniqueInput);
+  }
+
+  @ResolveField(() => [OrgGQL])
+  async orgs(@Parent() survey: SurveyGQL) {
+    return this.surveyService.orgs({ id: survey.id });
+  }
+
+  @ResolveField(() => [QuestionGQL])
+  async questions(@Parent() survey: SurveyGQL): Promise<QuestionGQL[]> {
+    return this.surveyService.questions({ id: survey.id });
+  }
+
+  @ResolveField(() => [SurveyResponseGQL])
+  async surveyResponses(
+    @Parent() survey: SurveyGQL
+  ): Promise<SurveyResponseGQL[]> {
+    return this.surveyService.surveyResponses({ id: survey.id });
   }
 }

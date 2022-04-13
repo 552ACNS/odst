@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Prisma } from '.prisma/ods/client';
+import { User, Prisma, Org } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -21,5 +21,11 @@ export class UserService {
       where,
       orderBy,
     });
+  }
+
+  async orgs(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<Org[]> {
+    return this.prisma.user.findUnique({ where: userWhereUniqueInput }).orgs();
   }
 }

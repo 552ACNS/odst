@@ -1,10 +1,19 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Query,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { OrgService } from './org.service';
 import {
   OrgGQL,
   OrgCreateInput,
   OrgUpdateInput,
   OrgWhereUniqueInput,
+  UserGQL,
+  SurveyGQL,
   OrgWhereInput,
 } from '@odst/types/ods';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
@@ -28,6 +37,7 @@ export class OrgResolver {
   }
 
   @Query(() => [OrgGQL], { name: 'getSubOrgs' })
+  //TODO redo with findMany
   // @UseGuards(AccessTokenAuthGuard)
   async getSubOrgs(
     @Args('orgWhereUniqueInput')
@@ -47,7 +57,9 @@ export class OrgResolver {
 
   @Mutation(() => OrgGQL, { name: 'createOrg' })
   // @UseGuards(AccessTokenAuthGuard)
-  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput) {
+  create(
+    @Args('orgCreateInput') orgCreateInput: OrgCreateInput
+  ): Promise<OrgGQL> {
     return this.orgService.create(orgCreateInput);
   }
 
@@ -69,5 +81,25 @@ export class OrgResolver {
     orgWhereUniqueInput: OrgWhereUniqueInput
   ): Promise<{ deleted: boolean }> {
     return this.orgService.delete(orgWhereUniqueInput);
+  }
+
+  @ResolveField(() => [UserGQL])
+  async users(@Parent() org: OrgGQL): Promise<UserGQL[]> {
+    return this.orgService.users({ id: org.id });
+  }
+
+  @ResolveField(() => [OrgGQL])
+  async children(@Parent() org: OrgGQL): Promise<OrgGQL[]> {
+    return this.orgService.children({ id: org.id });
+  }
+
+  @ResolveField(() => OrgGQL)
+  async parent(@Parent() org: OrgGQL): Promise<OrgGQL | null> {
+    return this.orgService.parent({ id: org.id });
+  }
+
+  @ResolveField(() => [SurveyGQL])
+  async surveys(@Parent() org: OrgGQL): Promise<SurveyGQL[]> {
+    return this.orgService.surveys({ id: org.id });
   }
 }
