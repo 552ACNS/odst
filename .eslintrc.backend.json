@@ -3,6 +3,13 @@
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
+      "files": ["*.ts"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {
+        "no-return-await": "warn"
+      }
+    },
+    {
       "files": ["*.resolver.ts"],
       "rules": {
         "no-restricted-imports": [
