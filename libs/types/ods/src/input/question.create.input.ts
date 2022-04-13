@@ -5,7 +5,6 @@ import { SurveyCreateNestedManyWithoutQuestionsInput } from './survey.create.inp
 
 @InputType()
 export class QuestionCreateInput implements Prisma.QuestionCreateInput {
-  id?: string;
   prompt: string;
 
   @Field(() => SurveyCreateNestedManyWithoutQuestionsInput)
