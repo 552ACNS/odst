@@ -25,7 +25,7 @@ describe('ods', () => {
       .click()
       .wait('@graphql')
       .focused()
-      .click()
+      .click({ force: true })
       .type('{enter}');
 
     // cy.contains('span', 'Organization').click();
