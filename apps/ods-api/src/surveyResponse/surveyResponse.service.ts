@@ -121,13 +121,9 @@ export class SurveyResponseService {
     }
   }
 
-  async count(where?: Prisma.SurveyResponseWhereInput): Promise<number> {
-    return await this.prisma.surveyResponse.count({ where });
-  }
-
   // TODO: Optimize at a later date, so we don't go back and forth to the server
 
-  async countIssues() {
+  async countResponses() {
     //TODO: Promise a number array and remove awaits
 
     const unresolvedCount = await this.prisma.surveyResponse.count({

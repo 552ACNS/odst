@@ -12,38 +12,38 @@ export class DashboardComponent implements OnInit {
   CardSpecs;
   ngOnInit() {
     this.dashboardService.GetResponseCount().subscribe((data) => {
-      this.responses = data.data.countIssues;
+      this.responses = data.data.countResponses;
       console.log(data);
 
       this.CardSpecs = [
         {
-          Title: 'Unresolved',
-          NumberStyle:
+          title: 'Unresolved',
+          numberStyle:
             'text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500',
-          CountOf: this.responses.unresolved,
-          Suffix: 'Unresolved Reports',
-          SuffixStyle:
+          countOf: this.responses.unresolved,
+          suffix: 'Unresolved Reports',
+          suffixStyle:
             'text-lg font-medium text-blue-600 dark:text-blue-500 text-center',
-          CardRouteParams: false,
+          cardRouteParams: false,
         },
         {
-          Title: 'Overdue',
-          NumberStyle:
+          title: 'Overdue',
+          numberStyle:
             'text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500',
-          CountOf: this.responses.overdue,
-          Suffix: 'Overdue Reports',
-          SuffixStyle:
+          countOf: this.responses.overdue,
+          suffix: 'Overdue Reports',
+          suffixStyle:
             'text-lg font-medium text-red-600 dark:text-red-500 text-center',
         },
         {
-          Title: 'Resolved',
-          NumberStyle:
+          title: 'Resolved',
+          numberStyle:
             'text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500',
-          CountOf: this.responses.resolved,
-          Suffix: 'Resolved Reports',
-          SuffixStyle:
+          countOf: this.responses.resolved,
+          suffix: 'Resolved Reports',
+          suffixStyle:
             'text-lg font-medium text-green-600 dark:text-green-500 text-center',
-          CardRouteParams: true,
+          cardRouteParams: true,
         },
       ];
     });

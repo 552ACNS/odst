@@ -53,7 +53,7 @@ export class StringFilter
 }
 
 @ObjectType()
-export class IssueCount {
+export class responseCount {
   unresolved: number;
   overdue: number;
   resolved: number;

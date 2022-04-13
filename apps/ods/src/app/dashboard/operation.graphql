@@ -1,5 +1,5 @@
 query DashboardIssueCount {
-  countIssues {
+  countResponses {
     unresolved
     overdue
     resolved
