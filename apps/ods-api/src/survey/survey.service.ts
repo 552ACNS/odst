@@ -117,13 +117,8 @@ export class SurveyService {
       where: { surveys: { every: surveyWhereUniqueInput } },
     });
 
-    const questionStr = questions
-      .map((question) => question.id)
-      .sort()
-      .join();
-
-    const questionsHash =
-      questionStr.length > 0 ? md5.hashStr(questionStr) : null;
+    const questionStr = questions.map((question) => question.id);
+    const questionsHash = getArrayHash(questionStr);
 
     await this.prisma.survey.update({
       where: surveyWhereUniqueInput,
