@@ -21,12 +21,21 @@ describe('ods', () => {
     // cy.get('mat-select[formControlName=eventOrg]').click().first().click();
     // cy.get('[formcontrolname="eventOrg"]').focus().click();
 
-    cy.contains('span', 'Organization').click().wait('@graphql');
+    cy.contains('span', 'Organization')
+      .click()
+      .wait('@graphql')
+      .focused()
+      .click()
+      .get('mat-option')
+      .first()
+      .click();
 
-    cy.contains('span', 'Organization').click();
+    // cy.contains('span', 'Organization').click();
 
     // select the first option
-    cy.get('mat-option').first().click();
+    // cy.get('mat-option').first().click();
+
+    // cy.type('{enter}');
 
     // cy.contains('552 ACNS').click({ force: true });
 
