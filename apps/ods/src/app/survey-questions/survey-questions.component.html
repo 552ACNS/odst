@@ -9,7 +9,6 @@
     <form [formGroup]="form" class="flex flex-col flex-wrap">
       <label class="mb-1">
         {{ questions[0] }}
-        <span class="text-red-500"> * </span>
       </label>
       <mat-form-field>
         <mat-select
@@ -25,15 +24,13 @@
       </mat-form-field>
       <label class="mt-6 mb-1">
         {{ questions[1] }}
-        <span class="text-red-500"> * </span>
       </label>
       <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Event description</mat-label>
+        <mat-label>Event Description</mat-label>
         <textarea
           matInput
-          placeholder="Event description"
+          placeholder="Event Description"
           formControlName="event"
-          class=""
           required
         >
         </textarea>
@@ -43,7 +40,6 @@
       </mat-form-field>
       <label class="mt-6 mb-2">
         {{ questions[2] }}
-        <span class="text-red-500"> * </span>
       </label>
       <!-- TODO Fix to use tailwind for spacing in future -->
       <mat-radio-group
@@ -75,7 +71,6 @@
       </mat-radio-group>
       <label class="mt-6 mb-1">
         {{ questions[3] }}
-        <span class="text-red-500"> * </span>
       </label>
       <mat-form-field>
         <!-- TODO make placeholder not stay when CC is selected and add back placeholder when fixed -->
@@ -93,7 +88,6 @@
       </mat-form-field>
       <label class="mt-6 mb-2">
         {{ questions[4] }}
-        <span class="text-red-500"> * </span>
       </label>
       <!-- TODO Fix to use tailwind for spacing in future -->
       <mat-radio-group
@@ -126,7 +120,6 @@
       </mat-radio-group>
       <label class="mt-6 mb-1">
         {{ questions[5] }}
-        <span class="text-red-500"> * </span>
       </label>
       <mat-form-field appearance="outline" class="w-full border-solid">
         <mat-label>Event impact</mat-label>
