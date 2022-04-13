@@ -3,7 +3,7 @@ import { SurveyResponseResolver } from './surveyResponse.resolver';
 import { SurveyResponseService } from './surveyResponse.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestSurveyResponseCreateInput } from './surveyResponse.repo';
-import { SurveyResponseGQL } from '@odst/types/ods';
+import { responseCount, SurveyResponseGQL } from '@odst/types/ods';
 
 const surveyResponseArray: SurveyResponseGQL[] = [];
 
@@ -16,7 +16,11 @@ TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
 
 const oneSurveyResponse = surveyResponseArray[0];
 
-const arbitraryNumber = 3;
+const mockResponseCount: responseCount = {
+  unresolved: 3,
+  overdue: 5,
+  resolved: 7,
+};
 
 describe('SurveyResponse Resolver', () => {
   let resolver: SurveyResponseResolver;
@@ -40,7 +44,7 @@ describe('SurveyResponse Resolver', () => {
               .fn()
               .mockImplementation(() => Promise.resolve(oneSurveyResponse)),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
-            count: jest.fn().mockReturnValue(arbitraryNumber),
+            countResponses: jest.fn().mockReturnValue(mockResponseCount),
           },
         },
       ],
@@ -102,8 +106,8 @@ describe('SurveyResponse Resolver', () => {
 
   describe('count', () => {
     it('should count surveyResponses', async () => {
-      await expect(resolver.count({ routeOutside: false })).resolves.toEqual(
-        arbitraryNumber
+      await expect(resolver.countResponses()).resolves.toEqual(
+        mockResponseCount
       );
     });
   });

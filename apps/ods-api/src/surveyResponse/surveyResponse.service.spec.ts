@@ -4,6 +4,9 @@ import { SurveyResponseService } from './surveyResponse.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestSurveyResponseCreateInput } from './surveyResponse.repo';
 import { SurveyResponse } from '.prisma/ods/client';
+//TODO Fix this plz cater
+// eslint-disable-next-line no-restricted-imports
+import { responseCount } from '@odst/types/ods';
 
 const surveyResponseArray: SurveyResponse[] = [];
 
@@ -16,6 +19,12 @@ TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
 
 const oneSurveyResponse = surveyResponseArray[0];
 
+const mockResponseCount: responseCount = {
+  unresolved: 7,
+  overdue: 7,
+  resolved: 7,
+};
+
 const db = {
   surveyResponse: {
     findMany: jest.fn().mockReturnValue(surveyResponseArray),
@@ -23,6 +32,7 @@ const db = {
     create: jest.fn().mockResolvedValue(oneSurveyResponse),
     update: jest.fn().mockResolvedValue(oneSurveyResponse),
     delete: jest.fn().mockResolvedValue(oneSurveyResponse),
+    count: jest.fn().mockReturnValue(mockResponseCount.unresolved),
   },
 };
 
@@ -56,9 +66,17 @@ describe('SurveyResponseService', () => {
     });
   });
 
+  describe('countResponses', () => {
+    it('should get a number of surveyResponses', async () => {
+      await expect(service.countResponses()).resolves.toEqual(
+        mockResponseCount
+      );
+    });
+  });
+
   describe('findUnique', () => {
-    it('should get a single surveyResponse', () => {
-      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
+    it('should get a single surveyResponse', async () => {
+      await expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
         oneSurveyResponse
       );
     });
