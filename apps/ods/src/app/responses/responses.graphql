@@ -1,5 +1,9 @@
-query GetSurveyResponseData($surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!) {
-  getSurveyResponseData(surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput) {
+query GetSurveyResponseData(
+  $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
+) {
+  getSurveyResponseData(
+    surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
+  ) {
     id
     openedDate
     answers {
@@ -15,8 +19,14 @@ query getIssuesByStatus($resolved: Boolean!) {
   getIssuesByStatus(resolved: $resolved)
 }
 
-mutation UpdateSurveyResponse_Resolution($surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!, $surveyResponseUpdateInput: SurveyResponseUpdateInput!) {
-  updateSurveyResponse(SurveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput, SurveyResponseUpdateInput: $surveyResponseUpdateInput) {
+mutation UpdateSurveyResponse_Resolution(
+  $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
+  $surveyResponseUpdateInput: SurveyResponseUpdateInput!
+) {
+  updateSurveyResponse(
+    SurveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
+    SurveyResponseUpdateInput: $surveyResponseUpdateInput
+  ) {
     resolution
   }
 }

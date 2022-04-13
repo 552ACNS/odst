@@ -51,7 +51,6 @@ describe('SurveyResponse Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
-
   describe('findUnique', () => {
     it('should get a single surveyResponse', async () => {
       await expect(
