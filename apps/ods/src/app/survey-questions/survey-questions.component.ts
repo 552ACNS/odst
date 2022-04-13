@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SurveyQuestionsService } from './survey-questions.service';
 import { Router } from '@angular/router';
 
@@ -26,7 +26,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   outsideRouting = false;
   answers: string[];
   openDate = new Date();
-  orgs: string[];
+  orgs: Observable<string[]>;
   CCs: string[] = ['Matos, Emmanuel Lt. Col.'];
   querySubscription: Subscription;
   loading = true;
@@ -72,10 +72,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     outsideRouting: [],
   });
 
-  async ngOnInit(): Promise<void> {
-    (await this.surveyService.getManyOrgs()).subscribe((data) => {
-      this.orgs = data;
-    });
+  async ngOnInit() {
+    this.orgs = await this.surveyService.getManyOrgs();
   }
   //TODO find out a way to fix without this
   outsideRoutingWorking(): boolean {

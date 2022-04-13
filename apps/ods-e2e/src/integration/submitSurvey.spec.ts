@@ -1,4 +1,9 @@
+import { timeout } from 'rxjs';
+
 describe('ods', () => {
+  beforeEach(() => {
+    cy.intercept('POST', '**/graphql').as('graphql');
+  });
   before(() => {
     //   cy.visit('/login');
     //   cy.get('[formcontrolname="userUsername"]').type('admin');
@@ -15,13 +20,23 @@ describe('ods', () => {
     // cy.get('[formcontrolname="eventOrg"]').select('#mat-option-1')
 
     // select the write option and press enter
-    cy.get('[formcontrolname="eventOrg"]').focus().click();
+    // cy.get('mat-select[formControlName=eventOrg]').click().first().click();
+    // cy.get('[formcontrolname="eventOrg"]').focus().click();
 
-    cy.contains('552 ACNS').click({ force: true });
+    cy.contains('span', 'Organization').click();
+
+    // cy.wait(2000);
+    // wait for the graphql response to finish first
+    cy.wait('@graphql');
+
+    // select the first option
+    cy.get('mat-option').first().click();
+
+    // cy.contains('552 ACNS').click({ force: true });
 
     // cy.get('mat-option')
 
-    cy.get('[formcontrolname="event"]').type('e2e Test');
+    // cy.get('[formcontrolname="event"]').type('e2e Test');
     // cy.get('#mat-radio-3').click();
     // cy.get('[formcontrolname="CC')
     //   .click()
