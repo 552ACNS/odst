@@ -38,4 +38,3 @@ export const mockQuestions: Question[] = cloneDeep(TestQuestionCreateInput).map(
     return questionInputs as Question;
   }
 );
-

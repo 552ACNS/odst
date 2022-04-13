@@ -11,7 +11,9 @@ import {
   SurveyResponseGQL,
   SurveyResponseCreateInput,
   SurveyResponseUpdateInput,
+  SurveyResponseWhereInput,
   SurveyResponseWhereUniqueInput,
+  IssueCount,
   AnswerGQL,
   SurveyGQL,
 } from '@odst/types/ods';
@@ -26,8 +28,8 @@ export class SurveyResponseResolver {
 
   @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
   // @UseGuards(AccessTokenAuthGuard)
+
   async findMany(): Promise<SurveyResponseGQL[]> {
-    // return this.surveyResponseService.findMany();
     return this.surveyResponseService.findMany({});
   }
 
@@ -97,6 +99,21 @@ export class SurveyResponseResolver {
     return await this.surveyResponseService.getSurveyResponseData(
       surveyResponseWhereUniqueInput
     );
+  }
+
+  @Query(() => Number, { name: 'countSurveyResponse' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async count(
+    @Args('surveyResponseWhereInput')
+    surveyResponseWhereInput: SurveyResponseWhereInput
+  ) {
+    return this.surveyResponseService.count(surveyResponseWhereInput);
+  }
+
+  @Query(() => IssueCount, { name: 'countIssues' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async countIssues() {
+    return this.surveyResponseService.countIssues();
   }
 
   @ResolveField(() => [AnswerGQL])
