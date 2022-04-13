@@ -17,7 +17,13 @@
           {
             "patterns": [
               {
-                "group": ["(.|@)prisma/*/client", "(.|@).prisma/client"],
+                //I don't know how to gg (glob good)
+                "group": [
+                  ".prisma/*/client",
+                  "@prisma/*/client",
+                  ".prisma/client",
+                  "@prisma/client"
+                ],
                 "message": "Do not import types from prisma in resolver, use GQL types instead"
               }
             ]
@@ -33,7 +39,7 @@
           {
             "patterns": [
               {
-                "group": ["@odst/types/ods", "@odst/types/waypoint"],
+                "group": ["@odst/types/*"],
                 "message": "Do not import types from @odst/types in servicer, use prisma types instead"
               }
             ]
