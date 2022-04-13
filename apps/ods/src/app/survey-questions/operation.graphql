@@ -61,7 +61,9 @@ fragment orgFields on OrgGQL {
   id
   name
   orgTier
-  parentId
+  parent {
+    id
+  }
 }
 # fragment questionFields on QuestionGQL {
 #   id
@@ -70,7 +72,9 @@ fragment orgFields on OrgGQL {
 
 fragment surveyResponseFields on SurveyResponseGQL {
   id
-  surveyId
+  survey {
+    id
+  }
   openedDate
   closedDate
   routeOutside

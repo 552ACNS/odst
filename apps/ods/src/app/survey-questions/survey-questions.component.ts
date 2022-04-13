@@ -101,7 +101,6 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
           .getQuestionsFromSurvey(<string>this.surveyID)
           .subscribe((data) => {
             this.questionIDs = data;
-            console.log(this.questionIDs);
             this.surveyService
               .submitSurveyReponse(
                 this.outsideRoutingWorking(),
