@@ -1,5 +1,3 @@
-import { timeout } from 'rxjs';
-
 describe('ods', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
@@ -23,11 +21,9 @@ describe('ods', () => {
     // cy.get('mat-select[formControlName=eventOrg]').click().first().click();
     // cy.get('[formcontrolname="eventOrg"]').focus().click();
 
-    cy.contains('span', 'Organization').click();
+    cy.contains('span', 'Organization').click().wait('@graphql');
 
-    // cy.wait(2000);
-    // wait for the graphql response to finish first
-    cy.wait('@graphql');
+    cy.contains('span', 'Organization').click();
 
     // select the first option
     cy.get('mat-option').first().click();
