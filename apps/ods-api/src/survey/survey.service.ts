@@ -115,15 +115,10 @@ export class SurveyService {
   ): Promise<void> {
     const questions = await this.prisma.question.findMany({
       where: { surveys: { every: surveyWhereUniqueInput } },
+      select: { id: true },
     });
 
-    const questionStr = questions
-      .map((question) => question.id)
-      .sort()
-      .join();
-
-    const questionsHash =
-      questionStr.length > 0 ? md5.hashStr(questionStr) : null;
+    const questionsHash = getArrayHash(questions.map((q) => q.id));
 
     await this.prisma.survey.update({
       where: surveyWhereUniqueInput,
