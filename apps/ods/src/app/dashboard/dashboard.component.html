@@ -9,7 +9,7 @@
   >
     <mat-card
       class="flex flex-col flex-auto p-6 rounded-2xl"
-      *ngFor="let card of CardSpecs"
+      *ngFor="let card of cardSpecs"
       [routerLink]="['/responses']"
       [queryParams]="{ resolved: card.cardRouteParams }"
     >

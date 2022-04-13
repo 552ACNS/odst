@@ -147,9 +147,9 @@ export class SurveyResponseService {
     });
 
     return {
-      unresolved: unresolvedCount ?? 0,
-      overdue: overdueCount ?? 0,
-      resolved: resolvedCount ?? 0,
+      unresolved: unresolvedCount,
+      overdue: overdueCount,
+      resolved: resolvedCount,
     };
   }
 

@@ -9,13 +9,13 @@ import { DashboardService } from './dashboard.service';
 export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
   responses;
-  CardSpecs;
+  cardSpecs;
   ngOnInit() {
     this.dashboardService.GetResponseCount().subscribe((data) => {
       this.responses = data.data.countResponses;
       console.log(data);
 
-      this.CardSpecs = [
+      this.cardSpecs = [
         {
           title: 'Unresolved',
           numberStyle:
