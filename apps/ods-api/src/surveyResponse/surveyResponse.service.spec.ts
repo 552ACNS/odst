@@ -16,8 +16,6 @@ TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
 
 const oneSurveyResponse = surveyResponseArray[0];
 
-const arbitraryNumber = 3;
-
 const db = {
   surveyResponse: {
     findMany: jest.fn().mockReturnValue(surveyResponseArray),
@@ -25,7 +23,6 @@ const db = {
     create: jest.fn().mockResolvedValue(oneSurveyResponse),
     update: jest.fn().mockResolvedValue(oneSurveyResponse),
     delete: jest.fn().mockResolvedValue(oneSurveyResponse),
-    count: jest.fn().mockReturnValue(arbitraryNumber),
   },
 };
 
@@ -56,14 +53,6 @@ describe('SurveyResponseService', () => {
     it('should return an array of surveyResponses', async () => {
       const surveyResponses = await service.findMany({});
       expect(surveyResponses).toEqual(surveyResponseArray);
-    });
-  });
-
-  describe('count', () => {
-    it('should get a number of surveyResponses', () => {
-      expect(service.count({ routeOutside: false })).resolves.toEqual(
-        arbitraryNumber
-      );
     });
   });
 
@@ -107,7 +96,7 @@ describe('SurveyResponseService', () => {
       jest
         .spyOn(prisma.surveyResponse, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
-
+        
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
         deleted: false,
         message: 'Bad Delete Method.',

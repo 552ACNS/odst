@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'odst-responses',
@@ -16,13 +15,10 @@ export class ResponsesComponent implements OnInit {
   });
   constructor(
     private fb: FormBuilder,
-    private responsesService: ResponsesService,
-    private route: ActivatedRoute
+    private responsesService: ResponsesService
   ) {}
 
   questionsAnswers: [string, string][] = [];
-
-  resolved: boolean;
 
   openedDate: string;
   numberOfResponses: number;
@@ -33,23 +29,17 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   async ngOnInit() {
-    // Get resolved value form route params
-    this.route.queryParams.subscribe(async (params) => {
-      console.log(params['resolved']);
-      this.resolved = params['resolved'] === 'true';
-    });
+    (await this.responsesService.getResponseIDsByStatus(false)).subscribe(
+      (data) => {
+        this.responseIDs = data;
+        this.numberOfResponses = data.length;
 
-    (
-      await this.responsesService.getResponseIDsByStatus(this.resolved)
-    ).subscribe((data) => {
-      this.responseIDs = data;
-      this.numberOfResponses = data.length;
+        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
 
-      this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
-
-      // navigate to that issue
-      this.displayIssue(this.pageEvent);
-    });
+        // navigate to that issue
+        this.displayIssue(this.pageEvent);
+      }
+    );
   }
 
   submitResolutionClick() {
@@ -73,12 +63,6 @@ export class ResponsesComponent implements OnInit {
           'MMM d yy, h:mm a',
           'en-US'
         );
-
-        if (this.resolved) {
-          this.resolutionForm.setValue({
-            resolution: data.resolution,
-          });
-        }
 
         // Clear contents of QA array
         this.questionsAnswers = [];
@@ -111,6 +95,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   //TODO [ODST-133] IMPORTANT: set to first page on load
+
 }
 
 // Suppose our profile query took an avatar size

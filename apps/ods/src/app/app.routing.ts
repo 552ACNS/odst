@@ -9,11 +9,6 @@ const routes: Routes = [
   },
   { path: '', redirectTo: '/disclaimer', pathMatch: 'full' },
   {
-    path: 'dashboard',
-    loadChildren: () =>
-      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
-  },
-  {
     path: 'responses',
     loadChildren: () =>
       import('./responses/responses.module').then((m) => m.ResponsesModule),
@@ -24,7 +19,6 @@ const routes: Routes = [
       import('./login/login.module').then((m) => m.LoginModule),
   },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

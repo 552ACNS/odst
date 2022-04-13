@@ -9,7 +9,7 @@ describe('ResponsesService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ApolloTestingModule],
+      imports: [ApolloTestingModule]
     });
 
     controller = TestBed.inject(ApolloTestingController);

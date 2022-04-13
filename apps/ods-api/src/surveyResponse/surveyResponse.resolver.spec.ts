@@ -16,8 +16,6 @@ TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
 
 const oneSurveyResponse = surveyResponseArray[0];
 
-const arbitraryNumber = 3;
-
 describe('SurveyResponse Resolver', () => {
   let resolver: SurveyResponseResolver;
   let service: SurveyResponseService;
@@ -40,7 +38,6 @@ describe('SurveyResponse Resolver', () => {
               .fn()
               .mockImplementation(() => Promise.resolve(oneSurveyResponse)),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
-            count: jest.fn().mockReturnValue(arbitraryNumber),
           },
         },
       ],
@@ -53,6 +50,7 @@ describe('SurveyResponse Resolver', () => {
   it('should be defined', () => {
     expect(resolver).toBeDefined();
   });
+
 
   describe('findUnique', () => {
     it('should get a single surveyResponse', async () => {
@@ -97,14 +95,6 @@ describe('SurveyResponse Resolver', () => {
         resolver.delete({ id: 'a uuid that does not exist' })
       ).resolves.toEqual({ deleted: false });
       expect(deleteSpy).toBeCalled();
-    });
-  });
-
-  describe('count', () => {
-    it('should count surveyResponses', async () => {
-      await expect(resolver.count({ routeOutside: false })).resolves.toEqual(
-        arbitraryNumber
-      );
     });
   });
 });

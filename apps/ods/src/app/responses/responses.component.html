@@ -1,7 +1,5 @@
 <div class="mx-auto min-w-[340px] w-[95%] max-w-[500px] mt-2 space-y-3">
-  <h1 class="text-center">
-    {{ resolved ? 'Resolved' : 'Unresolved' }} Responses
-  </h1>
+  <h1 class="text-center">Unresolved Responses</h1>
   <mat-paginator
     class="flex justify-center border-1 border-solid border-dark-blue rounded-2xl shadow-md"
     [length]="numberOfResponses"
@@ -40,7 +38,6 @@
             mat-stroked-button
             class="w-full shadow-md rounded-full"
             type="reset"
-            [routerLink]="['/dashboard']"
           >
             Back
           </button>

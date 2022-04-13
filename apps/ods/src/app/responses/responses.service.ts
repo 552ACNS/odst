@@ -26,11 +26,8 @@ export class ResponsesService {
           resolved: resolved,
         },
       })
-      .valueChanges.pipe(
-        map((result) => result.data.getIssuesByStatus),
-        take(1)
-      );
-    // pluck lets me retrieve nested data.
+      .valueChanges.pipe(map(result => result.data.getIssuesByStatus), take(1));
+      // pluck lets me retrieve nested data.
   }
 
   updateResolution(id: string, resolution: string) {
