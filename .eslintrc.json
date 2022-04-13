@@ -25,9 +25,7 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {
-        "no-return-await": "warn"
-      }
+      "rules": {}
     },
     {
       "files": ["*.js", "*.jsx"],

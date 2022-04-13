@@ -5,8 +5,23 @@
     {
       "files": ["*.ts"],
       "extends": ["plugin:@nrwl/nx/typescript"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "parserOptions": {
+        "project": ["tsconfig.base.json"]
+      },
       "rules": {
-        "no-return-await": "warn"
+        "no-return-await": "warn",
+        "@typescript-eslint/no-misused-promises": "error"
+      }
+    },
+    {
+      "files": ["*.resolver.ts", "*.service.ts"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "rules": {
+        //TODO would like to make up this to error eventually
+        "@typescript-eslint/explicit-function-return-type": "warn"
       }
     },
     {
