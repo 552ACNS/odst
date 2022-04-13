@@ -44,7 +44,7 @@ export class SurveyResponseResolver {
 
   @Mutation(() => SurveyResponseGQL, { name: 'createSurveyResponse' })
   // @UseGuards(AccessTokenAuthGuard)
-  create(
+  async create(
     @Args('surveyResponseCreateInput')
     surveyResponseCreateInput: SurveyResponseCreateInput
   ): Promise<SurveyResponseGQL> {

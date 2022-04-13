@@ -64,7 +64,7 @@ export class SurveyResolver {
     return this.surveyService.delete(surveyWhereUniqueInput);
   }
 
-  @ResolveField(() => [OrgGQL], { name: 'orgs' })
+  @ResolveField(() => [OrgGQL])
   async orgs(@Parent() survey: SurveyGQL) {
     return this.surveyService.orgs({ id: survey.id });
   }
