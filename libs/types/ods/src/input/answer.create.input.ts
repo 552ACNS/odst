@@ -3,7 +3,6 @@ import { Prisma } from '.prisma/ods/client';
 import { QuestionCreateNestedOneWithoutAnswersInput } from './question.create.input';
 import { SurveyResponseCreateNestedOneWithoutAnswersInput } from './surveyResponse.create.input';
 import { AnswerWhereUniqueInput } from './answer.unique.input';
-import { AnswerGQL } from '../entity/answer.entity';
 
 @InputType()
 export class AnswerCreateInput implements Prisma.AnswerCreateInput {

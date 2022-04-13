@@ -28,8 +28,9 @@ export class SurveyResponseCreateNestedManyWithoutSurveyInput
   @Field(() => SurveyResponseWhereUniqueInput)
   connect?: Prisma.SurveyResponseWhereUniqueInput;
 
-  @Field(() => SurveyResponseGQL)
-  create?: Prisma.SurveyResponseCreateWithoutSurveyInput;
+  //TODO fix type
+  // @Field(() => SurveyResponseGQL)
+  // create?: Prisma.SurveyResponseCreateWithoutSurveyInput;
 }
 
 @InputType()
@@ -39,6 +40,7 @@ export class SurveyResponseCreateNestedOneWithoutAnswersInput
   @Field(() => SurveyResponseWhereUniqueInput)
   connect?: Prisma.SurveyResponseWhereUniqueInput;
 
-  @Field(() => SurveyResponseGQL)
-  create?: Prisma.SurveyResponseCreateWithoutAnswersInput;
+  //TODO fix type
+  // @Field(() => SurveyResponseGQL)
+  // create?: Prisma.SurveyResponseCreateWithoutAnswersInput;
 }

@@ -1,5 +1,11 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { Prisma, Survey } from '.prisma/ods/client';
+import {
+  Survey,
+  Prisma,
+  SurveyResponse,
+  Question,
+  Org,
+} from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { Md5 as md5 } from 'ts-md5/dist/md5';
 import { getArrayHash } from '@odst/helpers';
@@ -123,6 +129,30 @@ export class SurveyService {
       where: surveyWhereUniqueInput,
       data: { questionsHash },
     });
+  }
+
+  async orgs(
+    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  ): Promise<Org[]> {
+    return this.prisma.survey
+      .findUnique({ where: surveyWhereUniqueInput })
+      .orgs();
+  }
+
+  async questions(
+    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  ): Promise<Question[]> {
+    return this.prisma.survey
+      .findUnique({ where: surveyWhereUniqueInput })
+      .questions();
+  }
+
+  async surveyResponses(
+    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  ): Promise<SurveyResponse[]> {
+    return this.prisma.survey
+      .findUnique({ where: surveyWhereUniqueInput })
+      .surveyResponses();
   }
 
   //TODO tests for new methods

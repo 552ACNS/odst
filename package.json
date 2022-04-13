@@ -103,6 +103,8 @@
     "typescript": "4.6.2"
   },
   "resolutions": {
-    "@graphql-codegen/cli/**/ansi-regex": "^5.0.1"
+    "@graphql-codegen/cli/**/ansi-regex": "^5.0.1",
+    "@nrwl/angular/**/async": "^3.2.2",
+    "@angular-devkit/build-angular/**/async": "^3.2.2"
   }
 }

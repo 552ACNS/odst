@@ -17,7 +17,7 @@ export class OrgCreateWithoutSurveysInput
   orgTier: OrgTier;
 
   @Field(() => UserCreateNestedManyWithoutOrgsInput)
-  commanders?: Prisma.UserCreateNestedManyWithoutOrgsInput;
+  users?: Prisma.UserCreateNestedManyWithoutOrgsInput;
 
   @Field(() => OrgCreateNestedOneWithoutChildrenInput)
   parent?: Prisma.OrgCreateNestedOneWithoutChildrenInput;
