@@ -106,7 +106,7 @@ describe('SurveyResponse Resolver', () => {
 
   describe('count', () => {
     it('should count surveyResponses', async () => {
-      await expect(resolver.countResponses()).resolves.toEqual(
+      await expect(resolver.ResponseCount()).resolves.toEqual(
         mockResponseCount
       );
     });

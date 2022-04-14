@@ -4,7 +4,7 @@ import { SurveyResponseService } from './surveyResponse.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestSurveyResponseCreateInput } from './surveyResponse.repo';
 import { SurveyResponse } from '.prisma/ods/client';
-//TODO Fix this plz cater
+//TODO Fix the restricted imports please Cater
 // eslint-disable-next-line no-restricted-imports
 import { responseCount } from '@odst/types/ods';
 

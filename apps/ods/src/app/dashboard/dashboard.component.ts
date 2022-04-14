@@ -12,8 +12,7 @@ export class DashboardComponent implements OnInit {
   cardSpecs;
   ngOnInit() {
     this.dashboardService.GetResponseCount().subscribe((data) => {
-      this.responses = data.data.countResponses;
-      console.log(data);
+      this.responses = data.data.ResponseCount;
 
       this.cardSpecs = [
         {

@@ -11,7 +11,6 @@ import {
   SurveyResponseGQL,
   SurveyResponseCreateInput,
   SurveyResponseUpdateInput,
-  SurveyResponseWhereInput,
   SurveyResponseWhereUniqueInput,
   responseCount,
   AnswerGQL,
@@ -100,9 +99,9 @@ export class SurveyResponseResolver {
     );
   }
 
-  @Query(() => responseCount, { name: 'countResponses' })
+  @Query(() => responseCount, { name: 'ResponseCount' })
   // @UseGuards(AccessTokenAuthGuard)
-  async countResponses() {
+  async ResponseCount() {
     return this.surveyResponseService.countResponses();
   }
 
