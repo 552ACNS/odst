@@ -1,38 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { SurveyResponseService } from './surveyResponse.service';
-import { v4 as uuidv4 } from 'uuid';
-import { TestSurveyResponseCreateInput } from './surveyResponse.repo';
-import { SurveyResponse } from '.prisma/ods/client';
-//TODO Fix the restricted imports please Cater
-// eslint-disable-next-line no-restricted-imports
-import { ResponseCount } from '@odst/types/ods';
-
-const surveyResponseArray: SurveyResponse[] = [];
-
-TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
-  const surveyResponse: SurveyResponse = ((
-    surveyResponseCreateInput as unknown as SurveyResponse
-  ).id = uuidv4());
-  surveyResponseArray.push(surveyResponse);
-});
-
-const oneSurveyResponse = surveyResponseArray[0];
-
-const mockResponseCount: ResponseCount = {
-  unresolved: 7,
-  overdue: 7,
-  resolved: 7,
-};
+import {
+  MockSurveyResponseCreateInput,
+  MockSurveyResponses,
+} from './surveyResponse.repo';
 
 const db = {
   surveyResponse: {
-    findMany: jest.fn().mockReturnValue(surveyResponseArray),
-    findUnique: jest.fn().mockResolvedValue(oneSurveyResponse),
-    create: jest.fn().mockResolvedValue(oneSurveyResponse),
-    update: jest.fn().mockResolvedValue(oneSurveyResponse),
-    delete: jest.fn().mockResolvedValue(oneSurveyResponse),
-    count: jest.fn().mockReturnValue(mockResponseCount.unresolved),
+    findMany: jest.fn().mockReturnValue(MockSurveyResponses),
+    findUnique: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
+    create: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
+    update: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
+    delete: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
   },
 };
 
@@ -62,22 +42,14 @@ describe('SurveyResponseService', () => {
   describe('findMany', () => {
     it('should return an array of surveyResponses', async () => {
       const surveyResponses = await service.findMany({});
-      expect(surveyResponses).toEqual(surveyResponseArray);
-    });
-  });
-
-  describe('countResponses', () => {
-    it('should get a number of surveyResponses', async () => {
-      await expect(service.countResponses()).resolves.toEqual(
-        mockResponseCount
-      );
+      expect(surveyResponses).toEqual(MockSurveyResponses);
     });
   });
 
   describe('findUnique', () => {
-    it('should get a single surveyResponse', async () => {
-      await expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
-        oneSurveyResponse
+    it('should get a single surveyResponse', () => {
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
+        MockSurveyResponses[0]
       );
     });
   });
@@ -85,9 +57,9 @@ describe('SurveyResponseService', () => {
   describe('create', () => {
     it('should call the create method', async () => {
       const surveyResponse = await service.create(
-        TestSurveyResponseCreateInput[0]
+        MockSurveyResponseCreateInput[0]
       );
-      expect(surveyResponse).toEqual(oneSurveyResponse);
+      expect(surveyResponse).toEqual(MockSurveyResponses[0]);
     });
   });
 
@@ -99,7 +71,7 @@ describe('SurveyResponseService', () => {
           survey: { connect: { id: 'survey id' } },
         }
       );
-      expect(surveyResponse).toEqual(oneSurveyResponse);
+      expect(surveyResponse).toEqual(MockSurveyResponses[0]);
     });
   });
 

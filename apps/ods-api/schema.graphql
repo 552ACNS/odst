@@ -61,6 +61,7 @@ type UserGQL {
   id: String!
   email: String!
   enabled: Boolean!
+  orgs: [OrgGQL!]!
 }
 
 enum Role {
@@ -92,6 +93,7 @@ type Query {
   findManyQuestions: [QuestionGQL!]!
   getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
+  findManyUsers: [UserGQL!]!
 }
 
 input SurveyWhereUniqueInput {
@@ -140,6 +142,7 @@ input SurveyCreateInput {
   orgs: OrgCreateNestedManyWithoutSurveysInput
   questions: QuestionCreateNestedManyWithoutSurveysInput
   surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
+  questionsHash: String
 }
 
 input OrgCreateNestedManyWithoutSurveysInput {

@@ -1,6 +1,22 @@
 import { OrgCreateInput } from '@odst/types/ods';
+import { Org } from '.prisma/ods/client';
 
-export const TestOrgCreateInput: OrgCreateInput[] = [
+export const MockOrgs: Org[] = [
+  {
+    id: 'org id 1',
+    name: 'org name',
+    orgTier: 'WING',
+    parentId: 'org parent id',
+  },
+  {
+    id: 'org id 2',
+    name: 'other org name',
+    orgTier: 'WING',
+    parentId: 'org parent id',
+  },
+];
+
+export const MockOrgCreateInput: OrgCreateInput[] = [
   {
     name: '552 ACW',
     orgTier: 'WING',
