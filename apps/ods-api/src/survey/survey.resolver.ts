@@ -15,6 +15,7 @@ import {
   OrgGQL,
   QuestionGQL,
   SurveyResponseGQL,
+  SurveyWhereInput,
 } from '@odst/types/ods';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
@@ -25,8 +26,8 @@ export class SurveyResolver {
 
   @Query(() => [SurveyGQL], { name: 'findManySurveys' })
   // @UseGuards(AccessTokenAuthGuard)
-  async findMany() {
-    return this.surveyService.findMany({});
+  async findMany(@Args('where', { nullable: true }) where: SurveyWhereInput) {
+    return this.surveyService.findMany({ where });
   }
 
   @Query(() => SurveyGQL, { name: 'findUniqueSurvey' })
