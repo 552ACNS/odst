@@ -1,8 +1,5 @@
 <div class="mx-auto min-w-[360px] w-[95%] max-w-[500px] mt-2 space-y-2">
-  <mat-card
-    class="rounded-2xl shadow-md font-medium flex justify-center"
-    id="headerCard"
-  >
+  <mat-card class="rounded-2xl shadow-md font-medium flex justify-center">
     Observations of Discrimination in Squadron
   </mat-card>
   <mat-card class="rounded-2xl shadow-md">
@@ -84,7 +81,7 @@
             {{ CC }}
           </mat-option>
         </mat-select>
-        <mat-error>Please select your Squadron Commander</mat-error>
+        <mat-error>Please select your Squadron Commander.</mat-error>
       </mat-form-field>
       <label class="mt-6 mb-2">
         {{ questions[4] }}
@@ -107,7 +104,6 @@
         <br />
         <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
         <br />
-        <!-- [(ngModel)]="customPerson" (ngModelChange)="personOption = 'other'"-->
         <mat-radio-button value="other">
           <mat-form-field>
             <input
@@ -140,7 +136,7 @@
       <section>
         <br />
         <mat-checkbox formControlName="outsideRouting" color="primary">
-          My Squadron Commander was involved</mat-checkbox
+          My Squadron Commander was involved.</mat-checkbox
         >
       </section>
     </form>

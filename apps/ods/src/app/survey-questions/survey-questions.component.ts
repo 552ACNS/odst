@@ -17,7 +17,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?',
     'Who is your SQ/CC?',
     'Are you active duty, a civilian, guard/reserve or contractor?',
-    'What impacts did this event have on you or your work environment',
+    'What impacts did this event have on you or your work environment?',
   ];
 
   questionIDs: string[];
@@ -93,6 +93,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
       this.form.value['impact'].trim(),
       this.outsideRoutingWorking(),
     ];
+
+    // TODO: Nested behaviors like this are hard to test.
     this.surveyService
       .submitWithQuestions(this.questions)
       .subscribe(({ data, errors }) => {

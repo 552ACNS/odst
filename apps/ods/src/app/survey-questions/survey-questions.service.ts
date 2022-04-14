@@ -95,6 +95,7 @@ export class SurveyQuestionsService {
     });
   }
 
+  // TODO: Do testing on this function
   jsonTypeConverter(arrOne: string[], arrTwo: string[]) {
     const result: {
       value: string;
