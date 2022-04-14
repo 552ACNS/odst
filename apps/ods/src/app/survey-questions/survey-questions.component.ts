@@ -16,7 +16,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     'Please describe the event of a microaggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.',
     'Was the person performing the microaggression or discrimination active duty, civilian, guard/reserve or a contractor?',
     'Who is your SQ/CC?',
-    'Are you active duty, a civilian, guard/reserve or contractor?',
+    'Are you active duty, a civilian, guard/reserve or a contractor?',
     'What impacts did this event have on you or your work environment?',
   ];
 
