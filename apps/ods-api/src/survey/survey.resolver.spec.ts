@@ -3,7 +3,9 @@ import { SurveyResolver } from './survey.resolver';
 import { SurveyService } from './survey.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestSurveyCreateInput } from './survey.repo';
-import { SurveyGQL } from '@odst/types/ods';
+import { TestQuestionCreateInput } from '../question/question.repo';
+import { QuestionGQL, SurveyGQL } from '@odst/types/ods';
+import { QuestionService } from '../question/question.service';
 
 const surveyArray: SurveyGQL[] = [];
 
@@ -13,6 +15,14 @@ TestSurveyCreateInput.forEach((surveyCreateInput) => {
 });
 
 const oneSurvey = surveyArray[0];
+
+const questionArray: QuestionGQL[] = [];
+
+TestQuestionCreateInput.forEach((questionCreateInput) => {
+  const question: QuestionGQL = ((questionCreateInput as QuestionGQL).id =
+    uuidv4());
+  questionArray.push(question);
+});
 
 describe('Survey Resolver', () => {
   let resolver: SurveyResolver;
@@ -38,6 +48,7 @@ describe('Survey Resolver', () => {
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },
+        { provide: QuestionService, useValue: {findMany: jest.fn().mockResolvedValue(questionArray),} },
       ],
     }).compile();
 
@@ -104,3 +115,4 @@ describe('Survey Resolver', () => {
     });
   });
 });
+

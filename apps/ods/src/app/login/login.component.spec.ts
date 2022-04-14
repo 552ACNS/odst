@@ -18,7 +18,7 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
+      declarations: [LoginComponent],
       imports: [
         ReactiveFormsModule,
         ApolloTestingModule,
@@ -28,10 +28,9 @@ describe('LoginComponent', () => {
         RouterTestingModule,
         MatButtonModule,
         MatCheckboxModule,
-        MatIconModule
-      ],      
-    })
-    .compileComponents();
+        MatIconModule,
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
