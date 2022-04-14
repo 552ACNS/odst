@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Apollo } from 'apollo-angular';
 import { Observable, Subscription } from 'rxjs';
 import { SurveyQuestionsService } from './survey-questions.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'odst-survey-questions',
