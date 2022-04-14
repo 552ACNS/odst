@@ -75,11 +75,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   }
   //TODO find out a way to fix without this
   outsideRoutingWorking(): boolean {
-    if (this.form.get(['outsideRouting'])?.value == true) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.form.get(['outsideRouting'])?.value == true;
   }
   submit() {
     this.answers = [
