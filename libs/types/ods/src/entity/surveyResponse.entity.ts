@@ -12,3 +12,10 @@ export class SurveyResponseGQL implements SurveyResponse {
   routeOutside: boolean;
   resolution: string | null;
 }
+
+@ObjectType()
+export class ResponseCount {
+  unresolved: number;
+  overdue: number;
+  resolved: number;
+}

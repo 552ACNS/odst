@@ -17,18 +17,16 @@ export class DashboardComponent implements OnInit {
       this.cardSpecs = [
         {
           title: 'Unresolved',
-          numberStyle:
-            'text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500',
+          numberStyle: 'text-7xl sm:text-8xl font-bold text-blue-500',
           countOf: this.responses.unresolved,
           suffix: 'Unresolved Reports',
           suffixStyle:
             'text-lg font-medium text-blue-600 dark:text-blue-500 text-center',
-          cardRouteParams: false,
+          resolved: false,
         },
         {
           title: 'Overdue',
-          numberStyle:
-            'text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500',
+          numberStyle: 'text-7xl sm:text-8xl font-bold text-red-500',
           countOf: this.responses.overdue,
           suffix: 'Overdue Reports',
           suffixStyle:
@@ -36,13 +34,12 @@ export class DashboardComponent implements OnInit {
         },
         {
           title: 'Resolved',
-          numberStyle:
-            'text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500',
+          numberStyle: 'text-7xl sm:text-8xl font-bold text-green-500',
           countOf: this.responses.resolved,
           suffix: 'Resolved Reports',
           suffixStyle:
             'text-lg font-medium text-green-600 dark:text-green-500 text-center',
-          cardRouteParams: true,
+          resolved: true,
         },
       ];
     });

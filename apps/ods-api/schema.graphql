@@ -56,6 +56,12 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type ResponseCount {
+  unresolved: Float!
+  overdue: Float!
+  resolved: Float!
+}
+
 type UserGQL {
   roles: Role!
   id: String!
@@ -69,12 +75,6 @@ enum Role {
   DEI
   EO
   CC
-}
-
-type ResponseCount {
-  unresolved: Float!
-  overdue: Float!
-  resolved: Float!
 }
 
 type Query {
