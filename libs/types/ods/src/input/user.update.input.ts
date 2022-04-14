@@ -11,5 +11,4 @@ export class UserUpdateInput implements Prisma.UserUpdateInput {
   roles: Role;
 
   //TODO refreshToken, org
-
 }
