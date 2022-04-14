@@ -21,4 +21,3 @@ export class QuestionUpdateManyWithoutSurveysInput
   @Field(() => [QuestionCreateOrConnectWithoutSurveysInput], { nullable: true })
   connectOrCreate?: Prisma.Enumerable<Prisma.QuestionCreateOrConnectWithoutSurveysInput>;
 }
-

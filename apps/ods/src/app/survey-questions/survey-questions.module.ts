@@ -12,20 +12,20 @@ import { SurveyQuestionsComponent } from './survey-questions.component';
 import { SurveyQuestionsRoutes } from './survey-questions.routing';
 import { RouterModule } from '@angular/router';
 @NgModule({
-    declarations: [SurveyQuestionsComponent],
-    imports: [
-        RouterModule.forChild(SurveyQuestionsRoutes),
-        CommonModule, 
-        ReactiveFormsModule,
-        MatInputModule,
-        MatIconModule,
-        MatButtonModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatCardModule,
-        MatCheckboxModule,
-        FormsModule
-    ],
-    exports: []
-  })
-  export class SurveyQuestionsModule {}
+  declarations: [SurveyQuestionsComponent],
+  imports: [
+    RouterModule.forChild(SurveyQuestionsRoutes),
+    CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCardModule,
+    MatCheckboxModule,
+    FormsModule,
+  ],
+  exports: [],
+})
+export class SurveyQuestionsModule {}

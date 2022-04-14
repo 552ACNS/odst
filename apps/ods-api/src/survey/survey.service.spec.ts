@@ -18,8 +18,7 @@ const oneSurvey = surveyArray[0];
 const questionArray: Question[] = [];
 
 TestQuestionCreateInput.forEach((questionCreateInput) => {
-  const question: Question = ((questionCreateInput as Question).id =
-    uuidv4());
+  const question: Question = ((questionCreateInput as Question).id = uuidv4());
   questionArray.push(question);
 });
 
@@ -31,9 +30,9 @@ const db = {
     update: jest.fn().mockResolvedValue(oneSurvey),
     delete: jest.fn().mockResolvedValue(oneSurvey),
   },
-  question:{
+  question: {
     findMany: jest.fn().mockReturnValue(questionArray),
-  }
+  },
 };
 
 describe('SurveyService', () => {

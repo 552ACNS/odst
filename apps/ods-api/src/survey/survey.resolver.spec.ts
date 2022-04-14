@@ -48,7 +48,10 @@ describe('Survey Resolver', () => {
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },
-        { provide: QuestionService, useValue: {findMany: jest.fn().mockResolvedValue(questionArray),} },
+        {
+          provide: QuestionService,
+          useValue: { findMany: jest.fn().mockResolvedValue(questionArray) },
+        },
       ],
     }).compile();
 
@@ -115,4 +118,3 @@ describe('Survey Resolver', () => {
     });
   });
 });
-

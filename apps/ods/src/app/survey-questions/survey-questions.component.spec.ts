@@ -20,9 +20,9 @@ describe('SurveyQuestionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SurveyQuestionsComponent ],
+      declarations: [SurveyQuestionsComponent],
       imports: [
-        ReactiveFormsModule, 
+        ReactiveFormsModule,
         FormsModule,
         ApolloTestingModule,
         MatCardModule,
@@ -36,9 +36,8 @@ describe('SurveyQuestionsComponent', () => {
         MatRadioModule,
         BrowserModule,
         BrowserAnimationsModule,
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   // beforeEach(() => {
@@ -51,4 +50,3 @@ describe('SurveyQuestionsComponent', () => {
     expect(true).toBeTruthy();
   });
 });
-
