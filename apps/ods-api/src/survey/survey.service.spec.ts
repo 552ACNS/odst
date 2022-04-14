@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { SurveyService } from './survey.service';
 import { MockSurveyCreateInput, MockSurveys } from './survey.repo';
+import { MockQuestions } from '../question/question.repo';
 
 const db = {
   survey: {
@@ -10,6 +11,9 @@ const db = {
     create: jest.fn().mockResolvedValue(MockSurveys[0]),
     update: jest.fn().mockResolvedValue(MockSurveys[0]),
     delete: jest.fn().mockResolvedValue(MockSurveys[0]),
+  },
+  question: {
+    findMany: jest.fn().mockReturnValue(MockQuestions),
   },
 };
 
