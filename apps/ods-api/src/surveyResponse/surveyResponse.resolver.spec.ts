@@ -3,7 +3,7 @@ import { SurveyResponseResolver } from './surveyResponse.resolver';
 import { SurveyResponseService } from './surveyResponse.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestSurveyResponseCreateInput } from './surveyResponse.repo';
-import { responseCount, SurveyResponseGQL } from '@odst/types/ods';
+import { ResponseCount, SurveyResponseGQL } from '@odst/types/ods';
 
 const surveyResponseArray: SurveyResponseGQL[] = [];
 
@@ -16,7 +16,7 @@ TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
 
 const oneSurveyResponse = surveyResponseArray[0];
 
-const mockResponseCount: responseCount = {
+const mockResponseCount: ResponseCount = {
   unresolved: 3,
   overdue: 5,
   resolved: 7,

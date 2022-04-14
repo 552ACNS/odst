@@ -6,7 +6,7 @@ import { TestSurveyResponseCreateInput } from './surveyResponse.repo';
 import { SurveyResponse } from '.prisma/ods/client';
 //TODO Fix the restricted imports please Cater
 // eslint-disable-next-line no-restricted-imports
-import { responseCount } from '@odst/types/ods';
+import { ResponseCount } from '@odst/types/ods';
 
 const surveyResponseArray: SurveyResponse[] = [];
 
@@ -19,7 +19,7 @@ TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
 
 const oneSurveyResponse = surveyResponseArray[0];
 
-const mockResponseCount: responseCount = {
+const mockResponseCount: ResponseCount = {
   unresolved: 7,
   overdue: 7,
   resolved: 7,
