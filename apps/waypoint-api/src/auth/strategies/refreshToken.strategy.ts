@@ -41,7 +41,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
       throw new UnauthorizedException();
     }
 
-    const validToken = this.authService.validateRefreshToken(
+    const validToken = await this.authService.validateRefreshToken(
       user.id,
       refreshToken
     );

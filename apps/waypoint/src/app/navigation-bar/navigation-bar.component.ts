@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+// TODO move NavProps out of waypoint specific types
+// eslint-disable-next-line no-restricted-imports
 import { NavProps } from '@odst/types/waypoint';
 import { isLoggedIn } from '@odst/helpers';
 
