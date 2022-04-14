@@ -1,6 +1,6 @@
-import { Resolver, Query, Parent, ResolveField, Args } from '@nestjs/graphql';
+import { Resolver, Query, Parent, ResolveField } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { OrgGQL, UserGQL, UserWhereInput } from '@odst/types/ods';
+import { OrgGQL, UserGQL } from '@odst/types/ods';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
 
@@ -11,8 +11,8 @@ export class UserResolver {
   // find all users
   @Query(() => [UserGQL], { name: 'findManyUsers' })
   // @UseGuards(AccessTokenAuthGuard)
-  async findMany(@Args('where', { nullable: true }) where: UserWhereInput) {
-    return this.userService.findMany({ where });
+  async findMany() {
+    return this.userService.findMany({});
   }
 
   @ResolveField(() => [OrgGQL])

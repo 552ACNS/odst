@@ -15,7 +15,6 @@ import {
   OrgGQL,
   QuestionGQL,
   SurveyResponseGQL,
-  SurveyWhereInput,
 } from '@odst/types/ods';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
@@ -26,8 +25,8 @@ export class SurveyResolver {
 
   @Query(() => [SurveyGQL], { name: 'findManySurveys' })
   // @UseGuards(AccessTokenAuthGuard)
-  async findMany(@Args('where', { nullable: true }) where: SurveyWhereInput) {
-    return this.surveyService.findMany({ where });
+  async findMany() {
+    return this.surveyService.findMany({});
   }
 
   @Query(() => SurveyGQL, { name: 'findUniqueSurvey' })
@@ -37,6 +36,15 @@ export class SurveyResolver {
     surveyWhereUniqueInput: SurveyWhereUniqueInput
   ) {
     return this.surveyService.findUnique(surveyWhereUniqueInput);
+  }
+
+  @Mutation(() => SurveyGQL, { name: 'createSurveyWithQuestions' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async createWithQuestions(
+    @Args({ name: 'questionPrompts', type: () => [String] })
+    questionPrompts: string[]
+  ): Promise<SurveyGQL | null> {
+    return this.surveyService.createWithQuestions(questionPrompts);
   }
 
   @Mutation(() => SurveyGQL, { name: 'createSurvey' })
