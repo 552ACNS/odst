@@ -16,7 +16,7 @@ export class IncidentResolver {
   @UseGuards(AccessTokenAuthGuard)
   async create(
     @Args('incidentCreateInput') incidentCreateInput: IncidentCreateInput
-  ) {
+  ): Promise<IncidentGQL> {
     return this.incidentService.create(incidentCreateInput);
   }
 
@@ -25,7 +25,7 @@ export class IncidentResolver {
   async findUnique(
     @Args('incidentWhereUniqueInput')
     incidentWhereUniqueInput: IncidentWhereUniqueInput
-  ) {
+  ): Promise<IncidentGQL | null> {
     return this.incidentService.findUnique(incidentWhereUniqueInput);
   }
 }

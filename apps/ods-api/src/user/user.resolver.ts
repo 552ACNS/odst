@@ -11,12 +11,12 @@ export class UserResolver {
   // find all users
   @Query(() => [UserGQL], { name: 'findManyUsers' })
   // @UseGuards(AccessTokenAuthGuard)
-  async findMany() {
+  async findMany(): Promise<UserGQL[]> {
     return this.userService.findMany({});
   }
 
   @ResolveField(() => [OrgGQL])
-  async orgs(@Parent() user: UserGQL) {
-    return await this.userService.orgs({ id: user.id });
+  async orgs(@Parent() user: UserGQL): Promise<OrgGQL[]> {
+    return this.userService.orgs({ id: user.id });
   }
 }

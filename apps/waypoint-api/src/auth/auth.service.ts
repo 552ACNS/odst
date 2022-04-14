@@ -22,8 +22,8 @@ export class AuthService {
     private refreshTokenService: RefreshTokenService
   ) {}
 
-  async hash(data: string) {
-    return await hash(data, 10);
+  async hash(data: string): Promise<string> {
+    return hash(data, 10);
   }
 
   async getTokens(userId: string, username: string): Promise<TokensGQL> {

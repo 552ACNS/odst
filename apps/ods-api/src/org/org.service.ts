@@ -74,7 +74,9 @@ export class OrgService {
     });
   }
 
-  async delete(orgWhereUniqueInput: Prisma.OrgWhereUniqueInput) {
+  async delete(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<{ deleted: boolean; message?: string }> {
     try {
       await this.prisma.org.delete({
         where: orgWhereUniqueInput,

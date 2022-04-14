@@ -78,7 +78,7 @@ export class SurveyResponseService {
   async getSurveyResponseData(
     surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
   ) {
-    return await this.prisma.surveyResponse.findUnique({
+    return this.prisma.surveyResponse.findUnique({
       where: {
         id: surveyResponseWhereUniqueInput.id,
       },
@@ -92,7 +92,9 @@ export class SurveyResponseService {
     });
   }
 
-  async create(data: Prisma.SurveyResponseCreateInput) {
+  async create(
+    data: Prisma.SurveyResponseCreateInput
+  ): Promise<SurveyResponse> {
     return this.prisma.surveyResponse.create({
       data,
     });
