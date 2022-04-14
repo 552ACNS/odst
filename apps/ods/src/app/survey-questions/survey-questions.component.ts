@@ -36,8 +36,6 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private apollo: Apollo,
-    private router: Router,
     private surveyService: SurveyQuestionsService
   ) {}
 
@@ -97,7 +95,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     // TODO: Nested behaviors like this are hard to test.
     this.surveyService
       .submitWithQuestions(this.questions)
-      .subscribe(({ data, errors }) => {
+      .subscribe(({ data }) => {
         this.surveyID = data?.createSurveyWithQuestions.id;
         this.surveyService
           .getQuestionsFromSurvey(<string>this.surveyID)
@@ -110,7 +108,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
                 this.questionIDs,
                 this.surveyID
               )
-              .subscribe(({ data, errors }) => {
+              .subscribe(({ errors }) => {
                 this.submitSuccess = !errors;
               });
           });
