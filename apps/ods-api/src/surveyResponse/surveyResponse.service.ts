@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { SurveyResponse, Prisma, Survey, Answer } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
+// eslint-disable-next-line no-restricted-imports
+import { ResponseCount } from '@odst/types/ods';
 
 @Injectable()
 export class SurveyResponseService {
@@ -75,6 +77,7 @@ export class SurveyResponseService {
   }
 
   // Get the string IDs of all the issues that are unresolved that the commander
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   async getSurveyResponseData(
     surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
   ) {
@@ -121,6 +124,38 @@ export class SurveyResponseService {
     } catch (err) {
       return { deleted: false, message: err.message };
     }
+  }
+
+  // TODO: Optimize at a later date, so we don't go back and forth to the server
+
+  async countResponses(): Promise<ResponseCount> {
+    //TODO: Promise a number array and remove awaits
+
+    const unresolvedCount = await this.prisma.surveyResponse.count({
+      where: {
+        resolution: null,
+      },
+    });
+
+    const resolvedCount = await this.prisma.surveyResponse.count({
+      where: {
+        resolution: { not: null },
+      },
+    });
+
+    const overdueCount = await this.prisma.surveyResponse.count({
+      where: {
+        openedDate: {
+          lt: new Date(Date.now() - 2592000000),
+        },
+      },
+    });
+
+    return {
+      unresolved: unresolvedCount,
+      overdue: overdueCount,
+      resolved: resolvedCount,
+    };
   }
 
   async survey(

@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApolloTestingModule } from 'apollo-angular/build/testing';
-
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
