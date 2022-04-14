@@ -35,6 +35,7 @@ type QuestionGQL {
 
 type SurveyGQL {
   id: String!
+  questionsHash: String
   orgs: [OrgGQL!]!
   questions: [QuestionGQL!]!
   surveyResponses: [SurveyResponseGQL!]!
@@ -69,7 +70,7 @@ enum Role {
   CC
 }
 
-type responseCount {
+type ResponseCount {
   unresolved: Float!
   overdue: Float!
   resolved: Float!
@@ -80,9 +81,9 @@ type Query {
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   findManySurveyResponses: [SurveyResponseGQL!]!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  ResponseCount: ResponseCount!
   getIssuesByStatus(resolved: Boolean!): [String!]!
   getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
-  ResponseCount: responseCount!
   findManyAnswers: [AnswerGQL!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
   findManyOrgs: [OrgGQL!]!
@@ -95,6 +96,7 @@ type Query {
 
 input SurveyWhereUniqueInput {
   id: String
+  questionsHash: String
 }
 
 input SurveyResponseWhereUniqueInput {
@@ -112,9 +114,11 @@ input OrgWhereUniqueInput {
 
 input QuestionWhereUniqueInput {
   id: String
+  prompt: String
 }
 
 type Mutation {
+  createSurveyWithQuestions(questionPrompts: [String!]!): SurveyGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
@@ -143,7 +147,7 @@ input OrgCreateNestedManyWithoutSurveysInput {
 }
 
 input QuestionCreateNestedManyWithoutSurveysInput {
-  connect: QuestionWhereUniqueInput
+  connect: [QuestionWhereUniqueInput!]
 }
 
 input SurveyResponseCreateNestedManyWithoutSurveyInput {
@@ -151,9 +155,36 @@ input SurveyResponseCreateNestedManyWithoutSurveyInput {
 }
 
 input SurveyUpdateInput {
-  orgs: OrgCreateNestedManyWithoutSurveysInput
-  questions: QuestionCreateNestedManyWithoutSurveysInput
-  surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
+  questions: QuestionUpdateManyWithoutSurveysInput
+  surveyResponses: SurveyResponseUpdateManyWithoutSurveyInput
+}
+
+input QuestionUpdateManyWithoutSurveysInput {
+  connect: [QuestionWhereUniqueInput!]
+  connectOrCreate: [QuestionCreateOrConnectWithoutSurveysInput!]
+}
+
+input QuestionCreateOrConnectWithoutSurveysInput {
+  where: QuestionWhereUniqueInput!
+  create: QuestionCreateWithoutSurveysInput!
+}
+
+input QuestionCreateWithoutSurveysInput {
+  answers: AnswerCreateNestedManyWithoutQuestionInput
+  prompt: String!
+}
+
+input AnswerCreateNestedManyWithoutQuestionInput {
+  connect: [AnswerWhereUniqueInput!]
+}
+
+input SurveyResponseUpdateManyWithoutSurveyInput {
+  createMany: SurveyResponseCreateManySurveyInputEnvelope
+}
+
+input SurveyResponseCreateManySurveyInputEnvelope {
+  data: [SurveyResponseCreateInput!]!
+  skipDuplicates: Boolean
 }
 
 input SurveyResponseCreateInput {
@@ -171,7 +202,33 @@ input SurveyCreateNestedOneWithoutSurveyResponsesInput {
 
 input AnswerCreateNestedManyWithoutSurveyResponseInput {
   connect: AnswerWhereUniqueInput
-  create: AnswerCreateInput
+  create: AnswerCreateWithoutSurveyResponseInput
+  createMany: AnswerCreateManySurveyResponseInputEnvelope
+}
+
+input AnswerCreateWithoutSurveyResponseInput {
+  question: QuestionCreateNestedOneWithoutAnswersInput!
+  value: String!
+}
+
+input QuestionCreateNestedOneWithoutAnswersInput {
+  connect: QuestionWhereUniqueInput
+}
+
+input AnswerCreateManySurveyResponseInputEnvelope {
+  data: [AnswerCreateManySurveyResponseInput!]!
+  skipDuplicates: Boolean
+}
+
+input AnswerCreateManySurveyResponseInput {
+  value: String!
+  questionId: String!
+}
+
+input SurveyResponseUpdateInput {
+  closedDate: DateTime
+  routeOutside: Boolean
+  resolution: String
 }
 
 input AnswerCreateInput {
@@ -180,18 +237,8 @@ input AnswerCreateInput {
   value: String!
 }
 
-input QuestionCreateNestedOneWithoutAnswersInput {
-  connect: QuestionWhereUniqueInput
-}
-
 input SurveyResponseCreateNestedOneWithoutAnswersInput {
   connect: SurveyResponseWhereUniqueInput
-}
-
-input SurveyResponseUpdateInput {
-  closedDate: DateTime
-  routeOutside: Boolean
-  resolution: String
 }
 
 input AnswerUpdateInput {

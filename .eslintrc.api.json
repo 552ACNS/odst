@@ -1,0 +1,69 @@
+{
+  "extends": [".eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "parserOptions": {
+        "project": ["tsconfig.base.json"]
+      },
+      "rules": {
+        "no-return-await": "warn",
+        "@typescript-eslint/no-misused-promises": [
+          "error",
+          { "checksVoidReturn": false }
+        ]
+      }
+    },
+    {
+      "files": ["*.resolver.ts", "*.service.ts"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "rules": {
+        //TODO would like to make up this to error eventually
+        "@typescript-eslint/explicit-function-return-type": "warn"
+      }
+    },
+    {
+      "files": ["*.resolver.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                //I don't know how to gg (glob good)
+                "group": [
+                  ".prisma/*/client",
+                  "@prisma/*/client",
+                  ".prisma/client",
+                  "@prisma/client"
+                ],
+                "message": "Do not import types from prisma in resolver, use GQL types instead"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.service.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@odst/types/*"],
+                "message": "Do not import types from @odst/types in servicer, use prisma types instead"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

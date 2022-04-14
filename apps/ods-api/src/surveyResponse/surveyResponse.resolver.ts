@@ -12,9 +12,9 @@ import {
   SurveyResponseCreateInput,
   SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
-  responseCount,
   AnswerGQL,
   SurveyGQL,
+  ResponseCount,
 } from '@odst/types/ods';
 
 // import { GetCurrentUserId } from '@odst/shared/nest';
@@ -28,6 +28,7 @@ export class SurveyResponseResolver {
   @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
   // @UseGuards(AccessTokenAuthGuard)
   async findMany(): Promise<SurveyResponseGQL[]> {
+    // return this.surveyResponseService.findMany();
     return this.surveyResponseService.findMany({});
   }
 
@@ -76,6 +77,12 @@ export class SurveyResponseResolver {
     );
   }
 
+  @Query(() => ResponseCount, { name: 'ResponseCount' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async ResponseCount() {
+    return this.surveyResponseService.countResponses();
+  }
+
   @Query(() => [String], { name: 'getIssuesByStatus' })
   // @UseGuards(AccessTokenAuthGuard)
 
@@ -97,12 +104,6 @@ export class SurveyResponseResolver {
     return await this.surveyResponseService.getSurveyResponseData(
       surveyResponseWhereUniqueInput
     );
-  }
-
-  @Query(() => responseCount, { name: 'ResponseCount' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async ResponseCount() {
-    return this.surveyResponseService.countResponses();
   }
 
   @ResolveField(() => [AnswerGQL])
