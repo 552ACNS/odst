@@ -35,6 +35,7 @@ type QuestionGQL {
 
 type SurveyGQL {
   id: String!
+  questionsHash: String
   orgs: [OrgGQL!]!
   questions: [QuestionGQL!]!
   surveyResponses: [SurveyResponseGQL!]!
@@ -70,174 +71,25 @@ enum Role {
 }
 
 type Query {
-  findManySurveys(where: SurveyWhereInput): [SurveyGQL!]!
+  findManySurveys: [SurveyGQL!]!
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
-  findManySurveyResponses(where: SurveyResponseWhereInput): [SurveyResponseGQL!]!
+  findManySurveyResponses: [SurveyResponseGQL!]!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   getIssuesByStatus(resolved: Boolean!): [String!]!
   getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
-  findManyAnswers(where: AnswerWhereInput): [AnswerGQL!]!
+  findManyAnswers: [AnswerGQL!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
-  findManyOrgs(where: OrgWhereInput): [OrgGQL!]!
+  findManyOrgs: [OrgGQL!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  findManyQuestions(where: QuestionWhereInput): [QuestionGQL!]!
+  findManyQuestions: [QuestionGQL!]!
   getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
 }
 
-input SurveyWhereInput {
-  id: String
-  orgs: OrgListRelationFilter
-  questions: QuestionListRelationFilter
-  surveyResponses: SurveyResponseListRelationFilter
-}
-
-input OrgListRelationFilter {
-  every: OrgWhereInput
-  some: OrgWhereInput
-  none: OrgWhereInput
-}
-
-input OrgWhereInput {
-  id: String
-  name: String
-  orgTier: OrgTier
-  users: UserListRelationFilter
-  parent: OrgRelationFilter
-  children: SurveyListRelationFilter
-  surveys: SurveyListRelationFilter
-}
-
-input UserListRelationFilter {
-  every: UserWhereInput
-  some: UserWhereInput
-  none: UserWhereInput
-}
-
-input UserWhereInput {
-  id: String
-  email: String
-  roles: Role
-  orgs: OrgListRelationFilter
-  enabled: Boolean
-}
-
-input OrgRelationFilter {
-  is: OrgWhereInput
-  isNot: OrgWhereInput
-}
-
-input SurveyListRelationFilter {
-  every: SurveyWhereInput
-  some: SurveyWhereInput
-  none: SurveyWhereInput
-}
-
-input QuestionListRelationFilter {
-  every: QuestionWhereInput
-  some: QuestionWhereInput
-  none: QuestionWhereInput
-}
-
-input QuestionWhereInput {
-  id: String
-  surveys: SurveyListRelationFilter
-  answers: AnswerListRelationFilter
-  prompt: String
-}
-
-input AnswerListRelationFilter {
-  every: AnswerWhereInput
-  some: AnswerWhereInput
-  none: AnswerWhereInput
-}
-
-input AnswerWhereInput {
-  id: String
-  value: StringFilter
-  question: QuestionRelationFilter
-  surveyResponse: SurveyResponseRelationFilter
-}
-
-input StringFilter {
-  not: StringFilter
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-}
-
-input QuestionRelationFilter {
-  is: QuestionWhereInput
-  isNot: QuestionWhereInput
-}
-
-input SurveyResponseRelationFilter {
-  is: SurveyResponseWhereInput
-  isNot: SurveyResponseWhereInput
-}
-
-input SurveyResponseWhereInput {
-  id: String
-  survey: SurveyWhereInput
-  openedDate: DateTimeFilter
-  closedDate: DateTimeNullableFilter
-  answers: AnswerListRelationFilter
-  resolution: StringNullableFilter
-  routeOutside: Boolean
-}
-
-input DateTimeFilter {
-  not: DateTimeFilter
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-}
-
-input DateTimeNullableFilter {
-  not: DateTimeNullableFilter
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-}
-
-input StringNullableFilter {
-  not: StringFilter
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-}
-
-input SurveyResponseListRelationFilter {
-  every: SurveyResponseWhereInput
-  some: SurveyResponseWhereInput
-  none: SurveyResponseWhereInput
-}
-
 input SurveyWhereUniqueInput {
   id: String
+  questionsHash: String
 }
 
 input SurveyResponseWhereUniqueInput {
@@ -255,9 +107,11 @@ input OrgWhereUniqueInput {
 
 input QuestionWhereUniqueInput {
   id: String
+  prompt: String
 }
 
 type Mutation {
+  createSurveyWithQuestions(questionPrompts: [String!]!): SurveyGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
@@ -286,7 +140,7 @@ input OrgCreateNestedManyWithoutSurveysInput {
 }
 
 input QuestionCreateNestedManyWithoutSurveysInput {
-  connect: QuestionWhereUniqueInput
+  connect: [QuestionWhereUniqueInput!]
 }
 
 input SurveyResponseCreateNestedManyWithoutSurveyInput {
@@ -294,9 +148,36 @@ input SurveyResponseCreateNestedManyWithoutSurveyInput {
 }
 
 input SurveyUpdateInput {
-  orgs: OrgCreateNestedManyWithoutSurveysInput
-  questions: QuestionCreateNestedManyWithoutSurveysInput
-  surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
+  questions: QuestionUpdateManyWithoutSurveysInput
+  surveyResponses: SurveyResponseUpdateManyWithoutSurveyInput
+}
+
+input QuestionUpdateManyWithoutSurveysInput {
+  connect: [QuestionWhereUniqueInput!]
+  connectOrCreate: [QuestionCreateOrConnectWithoutSurveysInput!]
+}
+
+input QuestionCreateOrConnectWithoutSurveysInput {
+  where: QuestionWhereUniqueInput!
+  create: QuestionCreateWithoutSurveysInput!
+}
+
+input QuestionCreateWithoutSurveysInput {
+  answers: AnswerCreateNestedManyWithoutQuestionInput
+  prompt: String!
+}
+
+input AnswerCreateNestedManyWithoutQuestionInput {
+  connect: [AnswerWhereUniqueInput!]
+}
+
+input SurveyResponseUpdateManyWithoutSurveyInput {
+  createMany: SurveyResponseCreateManySurveyInputEnvelope
+}
+
+input SurveyResponseCreateManySurveyInputEnvelope {
+  data: [SurveyResponseCreateInput!]!
+  skipDuplicates: Boolean
 }
 
 input SurveyResponseCreateInput {
@@ -314,7 +195,33 @@ input SurveyCreateNestedOneWithoutSurveyResponsesInput {
 
 input AnswerCreateNestedManyWithoutSurveyResponseInput {
   connect: AnswerWhereUniqueInput
-  create: AnswerCreateInput
+  create: AnswerCreateWithoutSurveyResponseInput
+  createMany: AnswerCreateManySurveyResponseInputEnvelope
+}
+
+input AnswerCreateWithoutSurveyResponseInput {
+  question: QuestionCreateNestedOneWithoutAnswersInput!
+  value: String!
+}
+
+input QuestionCreateNestedOneWithoutAnswersInput {
+  connect: QuestionWhereUniqueInput
+}
+
+input AnswerCreateManySurveyResponseInputEnvelope {
+  data: [AnswerCreateManySurveyResponseInput!]!
+  skipDuplicates: Boolean
+}
+
+input AnswerCreateManySurveyResponseInput {
+  value: String!
+  questionId: String!
+}
+
+input SurveyResponseUpdateInput {
+  closedDate: DateTime
+  routeOutside: Boolean
+  resolution: String
 }
 
 input AnswerCreateInput {
@@ -323,18 +230,8 @@ input AnswerCreateInput {
   value: String!
 }
 
-input QuestionCreateNestedOneWithoutAnswersInput {
-  connect: QuestionWhereUniqueInput
-}
-
 input SurveyResponseCreateNestedOneWithoutAnswersInput {
   connect: SurveyResponseWhereUniqueInput
-}
-
-input SurveyResponseUpdateInput {
-  closedDate: DateTime
-  routeOutside: Boolean
-  resolution: String
 }
 
 input AnswerUpdateInput {
