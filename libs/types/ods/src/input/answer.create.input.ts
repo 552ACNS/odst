@@ -16,12 +16,51 @@ export class AnswerCreateInput implements Prisma.AnswerCreateInput {
 }
 
 @InputType()
+export class AnswerCreateWithoutSurveyResponseInput
+  implements Prisma.AnswerCreateWithoutSurveyResponseInput
+{
+  value: string;
+
+  @Field(() => QuestionCreateNestedOneWithoutAnswersInput)
+  question: Prisma.QuestionCreateNestedOneWithoutAnswersInput;
+}
+
+@InputType()
+export class AnswerCreateManySurveyResponseInput
+  implements Prisma.AnswerCreateManySurveyResponseInput
+{
+  value: string;
+  questionId: string;
+}
+
+@InputType()
 export class AnswerCreateNestedManyWithoutSurveyResponseInput
   implements Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput
 {
-  @Field(() => AnswerWhereUniqueInput)
-  connect?: AnswerWhereUniqueInput;
-  //TODO fix type, probably fixed on ODST-survey
-  @Field(() => AnswerCreateInput)
+  @Field(() => AnswerWhereUniqueInput, { nullable: true })
+  connect?: Prisma.AnswerWhereUniqueInput;
+
+  @Field(() => AnswerCreateWithoutSurveyResponseInput, { nullable: true })
   create?: Prisma.AnswerCreateWithoutSurveyResponseInput;
+
+  @Field(() => AnswerCreateManySurveyResponseInputEnvelope, { nullable: true })
+  createMany?: Prisma.AnswerCreateManySurveyResponseInputEnvelope;
+}
+
+@InputType()
+export class AnswerCreateManySurveyResponseInputEnvelope
+  implements Prisma.AnswerCreateManySurveyResponseInputEnvelope
+{
+  @Field(() => [AnswerCreateManySurveyResponseInput])
+  data: Prisma.AnswerCreateManySurveyResponseInput[];
+
+  skipDuplicates?: boolean;
+}
+
+@InputType()
+export class AnswerCreateNestedManyWithoutQuestionInput
+  implements Prisma.AnswerCreateNestedManyWithoutQuestionInput
+{
+  @Field(() => [AnswerWhereUniqueInput])
+  connect?: Prisma.Enumerable<Prisma.AnswerWhereUniqueInput>;
 }

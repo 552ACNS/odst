@@ -38,6 +38,15 @@ export class SurveyResolver {
     return this.surveyService.findUnique(surveyWhereUniqueInput);
   }
 
+  @Mutation(() => SurveyGQL, { name: 'createSurveyWithQuestions' })
+  // @UseGuards(AccessTokenAuthGuard)
+  async createWithQuestions(
+    @Args({ name: 'questionPrompts', type: () => [String] })
+    questionPrompts: string[]
+  ): Promise<SurveyGQL | null> {
+    return this.surveyService.createWithQuestions(questionPrompts);
+  }
+
   @Mutation(() => SurveyGQL, { name: 'createSurvey' })
   // @UseGuards(AccessTokenAuthGuard)
   create(@Args('surveyCreateInput') surveyCreateInput: SurveyCreateInput) {

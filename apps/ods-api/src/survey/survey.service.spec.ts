@@ -3,7 +3,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { SurveyService } from './survey.service';
 import { v4 as uuidv4 } from 'uuid';
 import { TestSurveyCreateInput } from './survey.repo';
-import { Survey } from '.prisma/ods/client';
+import { TestQuestionCreateInput } from '../question/question.repo';
+import { Survey, Question } from '.prisma/ods/client';
 
 const surveyArray: Survey[] = [];
 
@@ -14,6 +15,13 @@ TestSurveyCreateInput.forEach((surveyCreateInput) => {
 
 const oneSurvey = surveyArray[0];
 
+const questionArray: Question[] = [];
+
+TestQuestionCreateInput.forEach((questionCreateInput) => {
+  const question: Question = ((questionCreateInput as Question).id = uuidv4());
+  questionArray.push(question);
+});
+
 const db = {
   survey: {
     findMany: jest.fn().mockReturnValue(surveyArray),
@@ -21,6 +29,9 @@ const db = {
     create: jest.fn().mockResolvedValue(oneSurvey),
     update: jest.fn().mockResolvedValue(oneSurvey),
     delete: jest.fn().mockResolvedValue(oneSurvey),
+  },
+  question: {
+    findMany: jest.fn().mockReturnValue(questionArray),
   },
 };
 
