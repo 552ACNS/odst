@@ -58,7 +58,8 @@ jobs:
       - name: Generate Graphql types
         run: npx graphql-codegen --config graphql.codegen.yml
       - run: yarn nx affected --target=lint --parallel
-      - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
+      # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
+      - run: yarn nx affected --target=test --parallel
       - run: dotnet tool update -g dotnet-reportgenerator-globaltool
         continue-on-error: true
       - name: Merge Test Coverage Results
