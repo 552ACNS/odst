@@ -1,9 +1,10 @@
-import { Resolver, Query, Parent, ResolveField, Args } from '@nestjs/graphql';
+import { Resolver, Parent, ResolveField, Args, Query } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { OrgGQL, UserGQL } from '@odst/types/ods';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
-// TODO: @ericcater - remove this import when we have a better solution for the dependency
+
+// fix this when we have a better solution
 // eslint-disable-next-line no-restricted-imports
 import { Role } from '.prisma/ods/client';
 
@@ -24,7 +25,7 @@ export class UserResolver {
   }
 
   @ResolveField(() => [OrgGQL])
-  async orgs(@Parent() user: UserGQL): Promise<OrgGQL[]> {
+  async orgs(@Parent() user: UserGQL) {
     return this.userService.orgs({ id: user.id });
   }
 }

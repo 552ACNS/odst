@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   //#region org
-  const org = await prisma.org.upsert({
+  await prisma.org.upsert({
     where: {
       name: 'Scorpion Developers',
     },

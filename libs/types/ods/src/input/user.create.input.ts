@@ -10,8 +10,15 @@ export class UserCreateInput implements Prisma.UserCreateInput {
   firstName: string;
   lastName: string;
   enabled?: boolean;
+
   @Field(() => Role)
   role: Role;
+
+  //TODO org
+
+  //TODO refreshtoken
+  // @Field(() => RefreshTokenCreateNestedManyWithoutUserInput)
+  // refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
 }
 
 @InputType()

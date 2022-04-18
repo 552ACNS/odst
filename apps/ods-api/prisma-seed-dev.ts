@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { PrismaClient, Prisma } from '.prisma/ods/client';
+import { PrismaClient } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
 import { hash } from 'bcrypt';
 
@@ -19,30 +19,6 @@ async function main() {
     },
     create: {
       name: orgName,
-      orgTier: 'SQUADRON',
-    },
-  });
-  await prisma.org.upsert({
-    where: {
-      name: '552 MXS',
-    },
-    update: {
-      orgTier: 'SQUADRON',
-    },
-    create: {
-      name: '552 MXS',
-      orgTier: 'SQUADRON',
-    },
-  });
-  await prisma.org.upsert({
-    where: {
-      name: '752 OSS',
-    },
-    update: {
-      orgTier: 'SQUADRON',
-    },
-    create: {
-      name: '752 OSS',
       orgTier: 'SQUADRON',
     },
   });
@@ -134,28 +110,9 @@ async function main() {
 
   //#region survey
   //delete existing test surveys
-
-  const orgNames = [
-    {
-      name: '552 ACNS',
-    },
-    {
-      name: '552 MXS',
-    },
-    {
-      name: '752 OSS',
-    },
-  ];
-
   try {
     await prisma.survey.deleteMany({
-      where: {
-        orgs: {
-          some: {
-            OR: orgNames,
-          },
-        },
-      },
+      where: { orgs: { every: { name: orgName } } },
     });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
