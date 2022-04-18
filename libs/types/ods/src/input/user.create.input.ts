@@ -6,11 +6,17 @@ import { OrgWhereUniqueInput } from './org.unique.input';
 export class UserCreateInput implements Prisma.UserCreateInput {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+
   enabled?: boolean;
+
   @Field(() => Role)
-  role: Role;
+  roles: Role;
+
+  //TODO org
+
+  //TODO refreshtoken
+  // @Field(() => RefreshTokenCreateNestedManyWithoutUserInput)
+  // refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
 }
 
 @InputType()
