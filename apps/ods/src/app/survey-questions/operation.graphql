@@ -50,6 +50,14 @@ query findQuestionsBySurvey_form(
   }
 }
 
+query findUsersWithRole_form($role: String!) {
+  findUsersWithRole(role: $role) {
+    id
+    firstName
+    lastName
+  }
+}
+
 # fragment answerField on AnswerGQL{
 #     id
 #     value

@@ -64,9 +64,9 @@ async function main() {
 
   try {
     await prisma.refreshToken.deleteMany({
-      where: { user: { email: 'big.foot.2@us.af.mil' } },
+      where: { user: { email: 'michael.henry.2@us.af.mil' } },
     });
-    await prisma.user.delete({ where: { email: 'big.foot.2@us.af.mil' } });
+    await prisma.user.delete({ where: { email: 'michael.henry.2@us.af.mil' } });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
     if (!(e instanceof PrismaClientKnownRequestError)) {
@@ -76,9 +76,11 @@ async function main() {
 
   try {
     await prisma.refreshToken.deleteMany({
-      where: { user: { email: 'billy.bob.99@us.af.mil' } },
+      where: { user: { email: 'henry.henderson.99@us.af.mil' } },
     });
-    await prisma.user.delete({ where: { email: 'billy.bob.99@us.af.mil' } });
+    await prisma.user.delete({
+      where: { email: 'henry.henderson.99@us.af.mil' },
+    });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
     if (!(e instanceof PrismaClientKnownRequestError)) {
@@ -105,23 +107,23 @@ async function main() {
 
     await prisma.user.create({
       data: {
-        email: 'big.foot.2@us.af.mil',
+        email: 'michael.henry.2@us.af.mil',
         password: pw,
         orgs: { connect: { name: '552 MXS' } },
         role: 'CC',
-        firstName: 'Big',
-        lastName: 'Foot',
+        firstName: 'Michael',
+        lastName: 'Henry',
       },
     });
 
     await prisma.user.create({
       data: {
-        email: 'billy.bob.99@us.af.mil',
+        email: 'henry.henderson.99@us.af.mil',
         password: pw,
         orgs: { connect: { name: '752 OSS' } },
         role: 'CC',
-        firstName: 'Billy',
-        lastName: 'Bob',
+        firstName: 'Henry',
+        lastName: 'Henderson',
       },
     });
   }

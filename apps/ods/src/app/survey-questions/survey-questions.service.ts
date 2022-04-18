@@ -14,6 +14,10 @@ import {
   FindQuestionsBySurvey_FormQuery,
   FindQuestionsBySurvey_FormQueryVariables,
   FindQuestionsBySurvey_FormDocument,
+  FindUsersWithRole_FormQuery,
+  FindUsersWithRole_FormQueryVariables,
+  FindUsersWithRole_FormDocument,
+  Role,
 } from '../../graphql-generated';
 
 @Injectable({
@@ -30,6 +34,27 @@ export class SurveyQuestionsService {
       })
       .valueChanges.pipe(
         map((result) => result.data.findManyOrgs.map((x) => x.name))
+      );
+  }
+
+  async findUsersWithRole(role: Role) {
+    return this.apollo
+      .watchQuery<
+        FindUsersWithRole_FormQuery,
+        FindUsersWithRole_FormQueryVariables
+      >({
+        query: FindUsersWithRole_FormDocument,
+        variables: {
+          role: role,
+        },
+      })
+      .valueChanges.pipe(
+        //TODO: fix this later when adding rank to user.
+        map((result) =>
+          result.data.findUsersWithRole.map(
+            (x) => `Lt. Col. ${x.lastName}, ${x.firstName}`
+          )
+        )
       );
   }
   //Takes questions that are in an array and connectsOrCreates to a survey ID based on question set and returns the survey ID
