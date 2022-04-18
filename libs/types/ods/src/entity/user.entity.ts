@@ -3,6 +3,7 @@ import { Role, User } from '.prisma/ods/client';
 
 @ObjectType()
 export class UserGQL implements User {
+  rank: string | null;
   firstName: string;
   lastName: string;
 

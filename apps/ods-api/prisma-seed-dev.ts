@@ -102,6 +102,7 @@ async function main() {
         role: 'CC',
         firstName: 'John',
         lastName: 'Doe',
+        rank: 'Lt. Col.',
       },
     });
 
@@ -113,6 +114,7 @@ async function main() {
         role: 'CC',
         firstName: 'Michael',
         lastName: 'Henry',
+        rank: 'Lt. Col.',
       },
     });
 
@@ -124,6 +126,7 @@ async function main() {
         role: 'CC',
         firstName: 'Henry',
         lastName: 'Henderson',
+        rank: 'Lt. Col.',
       },
     });
   }

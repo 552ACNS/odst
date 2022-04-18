@@ -52,7 +52,7 @@ export class SurveyQuestionsService {
         //TODO: fix this later when adding rank to user.
         map((result) =>
           result.data.findUsersWithRole
-            .map((x) => `Lt. Col. ${x.lastName}, ${x.firstName}`)
+            .map((x) => `${x.rank} ${x.lastName}, ${x.firstName}`)
             .sort()
         )
       );
