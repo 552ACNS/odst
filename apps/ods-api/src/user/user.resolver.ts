@@ -1,22 +1,30 @@
-import { Resolver, Query, Parent, ResolveField } from '@nestjs/graphql';
+import { Resolver, Query, Parent, ResolveField, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { OrgGQL, UserGQL } from '@odst/types/ods';
 //import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 // import { UseGuards } from '@nestjs/common';
+// TODO: @ericcater - remove this import when we have a better solution for the dependency
+// eslint-disable-next-line no-restricted-imports
+import { Role } from '.prisma/ods/client';
 
 @Resolver(() => UserGQL)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  // find all users
+  // Refactor this to include Cater's Where command when we implement it
   @Query(() => [UserGQL], { name: 'findManyUsers' })
   // @UseGuards(AccessTokenAuthGuard)
-  async findMany() {
+  async findManyInOrg() {
     return this.userService.findMany({});
   }
 
+  @Query(() => [UserGQL], { name: 'findUsersWithRole' })
+  async findUsersWithRole(@Args('role') role: Role): Promise<UserGQL[]> {
+    return this.userService.findUsersWithRole(role);
+  }
+
   @ResolveField(() => [OrgGQL])
-  async orgs(@Parent() user: UserGQL) {
-    return await this.userService.orgs({ id: user.id });
+  async orgs(@Parent() user: UserGQL): Promise<OrgGQL[]> {
+    return this.userService.orgs({ id: user.id });
   }
 }

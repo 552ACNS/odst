@@ -6,8 +6,10 @@ export const MockUsers: User[] = [
     id: 'user id 1',
     email: 'email',
     password: 'password',
-    roles: 'ADMIN',
+    role: 'ADMIN',
     enabled: true,
+    firstName: 'firstName',
+    lastName: 'lastName',
   },
 ];
 

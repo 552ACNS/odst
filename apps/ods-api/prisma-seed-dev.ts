@@ -1,4 +1,5 @@
-import { PrismaClient } from '.prisma/ods/client';
+/* eslint-disable complexity */
+import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
 import { hash } from 'bcrypt';
 
@@ -21,6 +22,30 @@ async function main() {
       orgTier: 'SQUADRON',
     },
   });
+  await prisma.org.upsert({
+    where: {
+      name: '552 MXS',
+    },
+    update: {
+      orgTier: 'SQUADRON',
+    },
+    create: {
+      name: '552 MXS',
+      orgTier: 'SQUADRON',
+    },
+  });
+  await prisma.org.upsert({
+    where: {
+      name: '752 OSS',
+    },
+    update: {
+      orgTier: 'SQUADRON',
+    },
+    create: {
+      name: '752 OSS',
+      orgTier: 'SQUADRON',
+    },
+  });
   //#endregion
 
   //#region user admin
@@ -30,6 +55,30 @@ async function main() {
       where: { user: { email: CCEmail } },
     });
     await prisma.user.delete({ where: { email: CCEmail } });
+  } catch (e) {
+    //delete can fail if no entities are found. Ignore that
+    if (!(e instanceof PrismaClientKnownRequestError)) {
+      throw e;
+    }
+  }
+
+  try {
+    await prisma.refreshToken.deleteMany({
+      where: { user: { email: 'big.foot.2@us.af.mil' } },
+    });
+    await prisma.user.delete({ where: { email: 'big.foot.2@us.af.mil' } });
+  } catch (e) {
+    //delete can fail if no entities are found. Ignore that
+    if (!(e instanceof PrismaClientKnownRequestError)) {
+      throw e;
+    }
+  }
+
+  try {
+    await prisma.refreshToken.deleteMany({
+      where: { user: { email: 'billy.bob.99@us.af.mil' } },
+    });
+    await prisma.user.delete({ where: { email: 'billy.bob.99@us.af.mil' } });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
     if (!(e instanceof PrismaClientKnownRequestError)) {
@@ -48,7 +97,31 @@ async function main() {
         email: CCEmail,
         password: pw,
         orgs: { connect: { name: orgName } },
-        roles: 'CC',
+        role: 'CC',
+        firstName: 'John',
+        lastName: 'Doe',
+      },
+    });
+
+    await prisma.user.create({
+      data: {
+        email: 'big.foot.2@us.af.mil',
+        password: pw,
+        orgs: { connect: { name: '552 MXS' } },
+        role: 'CC',
+        firstName: 'Big',
+        lastName: 'Foot',
+      },
+    });
+
+    await prisma.user.create({
+      data: {
+        email: 'billy.bob.99@us.af.mil',
+        password: pw,
+        orgs: { connect: { name: '752 OSS' } },
+        role: 'CC',
+        firstName: 'Billy',
+        lastName: 'Bob',
       },
     });
   }
@@ -56,9 +129,28 @@ async function main() {
 
   //#region survey
   //delete existing test surveys
+
+  const orgNames = [
+    {
+      name: '552 ACNS',
+    },
+    {
+      name: '552 MXS',
+    },
+    {
+      name: '752 OSS',
+    },
+  ];
+
   try {
     await prisma.survey.deleteMany({
-      where: { orgs: { every: { name: orgName } } },
+      where: {
+        orgs: {
+          some: {
+            OR: orgNames,
+          },
+        },
+      },
     });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
@@ -69,7 +161,7 @@ async function main() {
 
   const survey = await prisma.survey.create({
     data: {
-      orgs: { connect: { name: orgName } },
+      orgs: { connect: orgNames },
     },
   });
   //#endregion survey

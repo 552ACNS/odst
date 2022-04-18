@@ -63,7 +63,9 @@ type ResponseCount {
 }
 
 type UserGQL {
-  roles: Role!
+  role: Role!
+  firstName: String!
+  lastName: String!
   id: String!
   email: String!
   enabled: Boolean!
@@ -94,6 +96,7 @@ type Query {
   getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   findManyUsers: [UserGQL!]!
+  findUsersWithRole(role: String!): [UserGQL!]!
 }
 
 input SurveyWhereUniqueInput {

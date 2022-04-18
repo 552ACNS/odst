@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { PrismaClient } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
 import { hash } from 'bcrypt';
@@ -45,7 +46,9 @@ async function main() {
         email: 'admin@admin.com',
         password: pw,
         orgs: { connect: { name: 'Scorpion Developers' } },
-        roles: 'ADMIN',
+        role: 'ADMIN',
+        firstName: 'Admin',
+        lastName: 'Admin',
       },
     });
     console.log({ user });

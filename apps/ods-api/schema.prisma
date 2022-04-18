@@ -16,7 +16,9 @@ model User {
   email         String         @unique
   password      String
   enabled       Boolean        @default(true)
-  roles         Role
+  firstName     String
+  lastName      String
+  role          Role
   refreshTokens RefreshToken[] //many RefreshToken to user
   orgs          Org[] // MANY TO MANY
 }
@@ -66,7 +68,7 @@ model Survey {
   id              String           @id @default(uuid())
   orgs            Org[]
   questions       Question[]
-  questionsHash   String?           @unique
+  questionsHash   String?          @unique
   surveyResponses SurveyResponse[]
 }
 
