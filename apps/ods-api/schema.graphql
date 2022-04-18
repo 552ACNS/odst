@@ -56,11 +56,18 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type ResponseCount {
+  unresolved: Float!
+  overdue: Float!
+  resolved: Float!
+}
+
 type UserGQL {
   roles: Role!
   id: String!
   email: String!
   enabled: Boolean!
+  orgs: [OrgGQL!]!
 }
 
 enum Role {
@@ -75,6 +82,7 @@ type Query {
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
   findManySurveyResponses: [SurveyResponseGQL!]!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  ResponseCount: ResponseCount!
   getIssuesByStatus(resolved: Boolean!): [String!]!
   getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   findManyAnswers: [AnswerGQL!]!
@@ -85,6 +93,7 @@ type Query {
   findManyQuestions: [QuestionGQL!]!
   getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
+  findManyUsers: [UserGQL!]!
 }
 
 input SurveyWhereUniqueInput {
@@ -133,6 +142,7 @@ input SurveyCreateInput {
   orgs: OrgCreateNestedManyWithoutSurveysInput
   questions: QuestionCreateNestedManyWithoutSurveysInput
   surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
+  questionsHash: String
 }
 
 input OrgCreateNestedManyWithoutSurveysInput {

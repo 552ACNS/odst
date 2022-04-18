@@ -1,27 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { OrgService } from './org.service';
-import { v4 as uuidv4 } from 'uuid';
-import { TestOrgCreateInput } from './org.repo';
-import { Org } from '.prisma/ods/client';
-
-const orgArray: Org[] = [];
-
-TestOrgCreateInput.forEach((orgCreateInput) => {
-  const org: Org = ((orgCreateInput as Org).id = uuidv4());
-  orgArray.push(org);
-});
-
-const oneOrg = orgArray[0];
+import { MockOrgCreateInput, MockOrgs } from './org.repo';
 
 const db = {
   org: {
-    findMany: jest.fn().mockReturnValue(orgArray),
-    getSubOrgs: jest.fn().mockReturnValue(orgArray),
-    findUnique: jest.fn().mockResolvedValue(oneOrg),
-    create: jest.fn().mockResolvedValue(oneOrg),
-    update: jest.fn().mockResolvedValue(oneOrg),
-    delete: jest.fn().mockResolvedValue(oneOrg),
+    findMany: jest.fn().mockReturnValue(MockOrgs),
+    getSubOrgs: jest.fn().mockReturnValue(MockOrgs),
+    findUnique: jest.fn().mockResolvedValue(MockOrgs[0]),
+    create: jest.fn().mockResolvedValue(MockOrgs[0]),
+    update: jest.fn().mockResolvedValue(MockOrgs[0]),
+    delete: jest.fn().mockResolvedValue(MockOrgs[0]),
   },
 };
 
@@ -51,27 +40,29 @@ describe('OrgService', () => {
   describe('findMany', () => {
     it('should return an array of orgs', async () => {
       const orgs = await service.findMany({});
-      expect(orgs).toEqual(orgArray);
+      expect(orgs).toEqual(MockOrgs);
     });
   });
 
   describe('getSubOrgs', () => {
     it('should call the getSubOrgs method', async () => {
       const org = await service.getSubOrgs({ id: 'a uuid' });
-      expect(org).toEqual(orgArray);
+      expect(org).toEqual(MockOrgs);
     });
   });
 
   describe('findUnique', () => {
     it('should get a single org', () => {
-      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(oneOrg);
+      expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
+        MockOrgs[0]
+      );
     });
   });
 
   describe('create', () => {
     it('should call the create method', async () => {
-      const org = await service.create(TestOrgCreateInput[0]);
-      expect(org).toEqual(oneOrg);
+      const org = await service.create(MockOrgCreateInput[0]);
+      expect(org).toEqual(MockOrgs[0]);
     });
   });
 
@@ -83,7 +74,7 @@ describe('OrgService', () => {
           orgTier: 'WING',
         }
       );
-      expect(org).toEqual(oneOrg);
+      expect(org).toEqual(MockOrgs[0]);
     });
   });
 

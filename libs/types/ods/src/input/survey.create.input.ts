@@ -15,6 +15,7 @@ export class SurveyCreateInput implements Prisma.SurveyCreateInput {
 
   @Field(() => SurveyResponseCreateNestedManyWithoutSurveyInput)
   surveyResponses?: Prisma.SurveyResponseCreateNestedManyWithoutSurveyInput;
+  questionsHash?: string;
 }
 
 @InputType()
