@@ -72,9 +72,7 @@ export class SurveyResponseResolver {
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
   ): Promise<{ deleted: boolean }> {
-    return await this.surveyResponseService.delete(
-      surveyResponseWhereUniqueInput
-    );
+    return this.surveyResponseService.delete(surveyResponseWhereUniqueInput);
   }
 
   @Query(() => ResponseCount, { name: 'ResponseCount' })
@@ -92,7 +90,7 @@ export class SurveyResponseResolver {
     @Args('resolved') resolved: boolean
   ): Promise<string[]> {
     // return this.surveyResponseService.getUnresolvedIssues(userId);
-    return await this.surveyResponseService.getIssuesByStatus(resolved);
+    return this.surveyResponseService.getIssuesByStatus(resolved);
   }
 
   @Query(() => SurveyResponseGQL, { name: 'getSurveyResponseData' })
@@ -101,7 +99,7 @@ export class SurveyResponseResolver {
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
   ) {
-    return await this.surveyResponseService.getSurveyResponseData(
+    return this.surveyResponseService.getSurveyResponseData(
       surveyResponseWhereUniqueInput
     );
   }

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   Survey,
   Prisma,
@@ -7,7 +7,6 @@ import {
   Org,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { Md5 as md5 } from 'ts-md5/dist/md5';
 import { getArrayHash } from '@odst/helpers';
 
 @Injectable()
@@ -39,7 +38,7 @@ export class SurveyService {
     });
   }
 
-  async createWithQuestions(questionPrompts: string[]) {
+  async createWithQuestions(questionPrompts: string[]): Promise<Survey> {
     if (questionPrompts.length <= 0) {
       throw new BadRequestException('No question prompts provided');
     }

@@ -62,7 +62,7 @@ export class RefreshTokenService {
 
   async delete(
     refreshTokenWhereUniqueInput: Prisma.RefreshTokenWhereUniqueInput
-  ) {
+  ): Promise<RefreshToken> {
     return this.prisma.refreshToken.delete({
       where: refreshTokenWhereUniqueInput,
     });
