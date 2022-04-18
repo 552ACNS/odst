@@ -51,9 +51,9 @@ export class SurveyQuestionsService {
       .valueChanges.pipe(
         //TODO: fix this later when adding rank to user.
         map((result) =>
-          result.data.findUsersWithRole.map(
-            (x) => `Lt. Col. ${x.lastName}, ${x.firstName}`
-          )
+          result.data.findUsersWithRole
+            .map((x) => `Lt. Col. ${x.lastName}, ${x.firstName}`)
+            .sort()
         )
       );
   }
