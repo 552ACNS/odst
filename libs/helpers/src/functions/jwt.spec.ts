@@ -20,7 +20,6 @@ describe('the jsonTypeConverter', () => {
 
   it('should return the correct result', () => {
     const actual = jsonTypeConverter(arrOne, arrTwo);
-
     expect(actual).toStrictEqual(expected);
   });
 });

@@ -98,8 +98,6 @@ export class SurveyQuestionsService {
     questionIDArray: string[],
     surveyID: string | undefined
   ) {
-    console.log(valueArray);
-    console.log(questionIDArray);
     return this.apollo.mutate<
       CreateSurveyResponse_FormMutation,
       CreateSurveyResponse_FormMutationVariables
