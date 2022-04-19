@@ -1,6 +1,7 @@
 //TODO delete once waypoint is migrated to use auth lib
 
 export interface JwtPayloadInit {
+  username: string;
   sub: string;
 }
 
