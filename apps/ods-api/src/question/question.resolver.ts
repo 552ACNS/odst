@@ -16,8 +16,6 @@ import {
   AnswerGQL,
   SurveyGQL,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => QuestionGQL)
 export class QuestionResolver {
@@ -29,7 +27,7 @@ export class QuestionResolver {
   }
 
   @Query(() => [QuestionGQL], { name: 'getSubQuestions' })
-  // @UseGuards(AccessTokenAuthGuard)
+
   //TODO redo with findMany
   async getSubQuestions(
     @Args('surveyWhereUniqueInput')
@@ -39,7 +37,6 @@ export class QuestionResolver {
   }
 
   @Query(() => QuestionGQL, { name: 'findUniqueQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('questionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput
@@ -48,7 +45,6 @@ export class QuestionResolver {
   }
 
   @Mutation(() => QuestionGQL, { name: 'createQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   create(
     @Args('questionCreateInput') questionCreateInput: QuestionCreateInput
   ) {
@@ -56,7 +52,6 @@ export class QuestionResolver {
   }
 
   @Mutation(() => QuestionGQL, { name: 'updateQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('QuestionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput,
@@ -70,7 +65,6 @@ export class QuestionResolver {
   }
 
   @Mutation(() => QuestionGQL, { name: 'removeQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('questionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput

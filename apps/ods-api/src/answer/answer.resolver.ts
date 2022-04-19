@@ -15,8 +15,7 @@ import {
   QuestionGQL,
   SurveyResponseGQL,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
+import { Public } from '@odst/auth';
 
 @Resolver(() => AnswerGQL)
 export class AnswerResolver {
@@ -28,7 +27,6 @@ export class AnswerResolver {
   }
 
   @Query(() => AnswerGQL, { name: 'findUniqueAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('answerWhereUniqueInput')
     answerWhereUniqueInput: AnswerWhereUniqueInput
@@ -37,7 +35,6 @@ export class AnswerResolver {
   }
 
   @Mutation(() => AnswerGQL, { name: 'createAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
   create(
     @Args('answerCreateInput') answerCreateInput: AnswerCreateInput
   ): Promise<AnswerGQL> {
@@ -45,7 +42,6 @@ export class AnswerResolver {
   }
 
   @Mutation(() => AnswerGQL, { name: 'updateAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('AnswerWhereUniqueInput')
     answerWhereUniqueInput: AnswerWhereUniqueInput,
@@ -56,7 +52,6 @@ export class AnswerResolver {
   }
 
   @Mutation(() => AnswerGQL, { name: 'deleteAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('answerWhereUniqueInput')
     answerWhereUniqueInput: AnswerWhereUniqueInput
