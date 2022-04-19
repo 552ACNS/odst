@@ -1,6 +1,7 @@
-import { JwtPayloadRefresh } from '@odst/shared/nest';
 import { Tokens } from './dtos/tokens.entity';
-import { RefreshToken, User } from './interfaces/user-service.interface';
+import { RefreshToken } from './interfaces/refreshToken.interface';
+import { User } from './interfaces/user-service.interface';
+import { JwtPayloadRefresh } from './types/JwtPayload.types';
 
 export const MockUser: User = {
   id: 'user id',

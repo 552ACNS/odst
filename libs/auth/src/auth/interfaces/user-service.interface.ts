@@ -1,3 +1,8 @@
+import {
+  RefreshToken,
+  RefreshTokenUpdateOneWithoutUserInput,
+} from './refreshToken.interface';
+
 export interface User {
   id: string;
   username?: string;
@@ -20,39 +25,6 @@ export interface UserWhereUniqueInput {
 
 export interface UserUpdateInput {
   refreshToken?: RefreshTokenUpdateOneWithoutUserInput;
-}
-
-export interface RefreshTokenUpdateOneWithoutUserInput {
-  create?: RefreshTokenCreateWithoutUserInput;
-  update?: RefreshTokenUpdateWithoutUserInput;
-  delete?: boolean;
-  upsert?: RefreshTokenUpsertWithoutUserInput;
-}
-
-export interface RefreshTokenCreateWithoutUserInput {
-  isRevoked?: boolean;
-  issuedDate?: Date;
-  expiredDate: Date;
-  hash: string;
-}
-
-export interface RefreshTokenUpdateWithoutUserInput {
-  isRevoked?: boolean;
-  issuedDate: Date;
-  expiredDate: Date;
-  hash: string;
-}
-
-export interface RefreshTokenUpsertWithoutUserInput {
-  update: RefreshTokenUpdateWithoutUserInput;
-  create: RefreshTokenCreateWithoutUserInput;
-}
-
-export interface RefreshToken {
-  isRevoked?: boolean;
-  issuedDate?: Date;
-  expiredDate: Date;
-  hash: string;
 }
 
 export interface UserService {

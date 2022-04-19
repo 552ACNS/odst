@@ -14,8 +14,8 @@ import {
   RefreshLoginInput,
   SignupUserInput,
 } from './dtos/login.input';
-import { JwtPayloadRefresh } from '@odst/shared/nest';
-import { isDecodedJwtChainExpired, hashPassword } from '@odst/helpers';
+import { hashPassword } from '@odst/helpers';
+import { JwtPayloadRefresh } from './types/JwtPayload.types';
 
 @Injectable()
 export class AuthService {
@@ -107,15 +107,15 @@ export class AuthService {
     providedRefreshToken: string,
     decodedToken: JwtPayloadRefresh
   ): Promise<boolean> {
-    if (isDecodedJwtChainExpired(decodedToken)) {
-      throw new UnauthorizedException('1');
+    if (Date.now() >= decodedToken.chainExp * 1000) {
+      throw new UnauthorizedException();
     }
 
     const refreshToken = await this.userService.refreshToken({ id: user.id });
 
     //if user or refreshToken.hash do not exist, throw exception
     if (!refreshToken?.hash || refreshToken.isRevoked) {
-      throw new UnauthorizedException('2');
+      throw new UnauthorizedException();
     }
 
     const refreshTokensMatch = refreshToken.hash === providedRefreshToken;
@@ -123,7 +123,7 @@ export class AuthService {
     if (!refreshTokensMatch) {
       //invalidating existing refresh token, since someone is using an outdated token (either maliciously or it's from an old session)
       //TODO need to return an error to indicate that FE needs to login, no way to reauthorize
-      throw new UnauthorizedException('3');
+      throw new UnauthorizedException();
     }
     return true;
   }
