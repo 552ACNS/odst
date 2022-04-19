@@ -28,9 +28,9 @@ describe('User Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
-  describe('findMany', () => {
-    it('should get an array of users', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(MockUsers);
-    });
-  });
+  // describe('findMany', () => {
+  //   it('should get an array of users', async () => {
+  //     await expect(resolver.findMany()).resolves.toEqual(MockUsers);
+  //   });
+  // });
 });
