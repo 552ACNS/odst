@@ -8,7 +8,7 @@ import { DashboardService } from './dashboard.service';
 })
 export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
-  responses;
+  responses: { unresolved: number; overdue: number; resolved: number };
   cardSpecs;
   ngOnInit() {
     this.dashboardService.GetResponseCount().subscribe((data) => {

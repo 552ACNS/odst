@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Prisma, Org } from '.prisma/ods/client';
+import { User, Prisma, Org, Role } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -20,6 +20,14 @@ export class UserService {
       cursor,
       where,
       orderBy,
+    });
+  }
+
+  async findUsersWithRole(role: Role): Promise<User[]> {
+    return this.prisma.user.findMany({
+      where: {
+        role: role,
+      },
     });
   }
 
