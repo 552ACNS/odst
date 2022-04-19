@@ -15,7 +15,6 @@ import {
   QuestionGQL,
   SurveyResponseGQL,
 } from '@odst/types/ods';
-import { Public } from '@odst/auth';
 
 @Resolver(() => AnswerGQL)
 export class AnswerResolver {
