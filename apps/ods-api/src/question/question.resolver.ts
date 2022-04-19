@@ -22,7 +22,7 @@ export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
   @Query(() => [QuestionGQL], { name: 'findManyQuestions' })
-  async findMany() {
+  async findMany(): Promise<QuestionGQL[]> {
     return this.questionService.findMany({});
   }
 
@@ -32,7 +32,7 @@ export class QuestionResolver {
   async getSubQuestions(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ) {
+  ): Promise<QuestionGQL[]> {
     return this.questionService.findQuestionsInSurvey(surveyWhereUniqueInput);
   }
 
@@ -40,14 +40,14 @@ export class QuestionResolver {
   async findUnique(
     @Args('questionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput
-  ) {
+  ): Promise<QuestionGQL | null> {
     return this.questionService.findUnique(questionWhereUniqueInput);
   }
 
   @Mutation(() => QuestionGQL, { name: 'createQuestion' })
   create(
     @Args('questionCreateInput') questionCreateInput: QuestionCreateInput
-  ) {
+  ): Promise<QuestionGQL> {
     return this.questionService.create(questionCreateInput);
   }
 
@@ -57,7 +57,7 @@ export class QuestionResolver {
     questionWhereUniqueInput: QuestionWhereUniqueInput,
     @Args('QuestionUpdateInput')
     questionUpdateInput: QuestionUpdateInput
-  ) {
+  ): Promise<QuestionGQL> {
     return this.questionService.update(
       questionWhereUniqueInput,
       questionUpdateInput
@@ -68,7 +68,7 @@ export class QuestionResolver {
   async delete(
     @Args('questionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput
-  ) {
+  ): Promise<{ deleted: boolean; message?: string }> {
     return this.questionService.delete(questionWhereUniqueInput);
   }
 

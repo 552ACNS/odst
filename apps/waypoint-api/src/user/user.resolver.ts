@@ -39,7 +39,7 @@ export class UserResolver {
   async create(
     @Args('userCreateInput') userCreateInput: UserCreateInput
   ): Promise<UserGQL> {
-    return await this.userService.create(userCreateInput);
+    return this.userService.create(userCreateInput);
   }
 
   // find all users
@@ -54,7 +54,7 @@ export class UserResolver {
   async findUnique(
     @Args('userWhereUniqueInput')
     userWhereUniqueInput: UserWhereUniqueInput
-  ) {
+  ): Promise<UserGQL | null> {
     return this.userService.findUnique(userWhereUniqueInput);
   }
 

@@ -38,7 +38,7 @@ export class SurveyService {
     });
   }
 
-  async createWithQuestions(questionPrompts: string[]) {
+  async createWithQuestions(questionPrompts: string[]): Promise<Survey> {
     if (questionPrompts.length <= 0) {
       throw new BadRequestException('No question prompts provided');
     }
