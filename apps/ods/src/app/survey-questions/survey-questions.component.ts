@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
+import { Role } from '../../graphql-generated';
 import { SurveyQuestionsService } from './survey-questions.service';
 
 @Component({
@@ -25,7 +26,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   answers: string[];
   openDate = new Date();
   orgs: Observable<string[]>;
-  CCs: string[] = ['Matos, Emmanuel Lt. Col.'];
+  CCs: Observable<string[]>;
   querySubscription: Subscription;
   loading = true;
   submitSuccess = false;
@@ -70,6 +71,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.orgs = await this.surveyService.getManyOrgs();
+    this.CCs = await this.surveyService.findUsersWithRole(Role.Cc);
   }
   //TODO find out a way to fix without this
   outsideRoutingWorking(): boolean {
@@ -83,7 +85,6 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
       this.form.value['CC'],
       this.personSpecification(),
       this.form.value['impact'].trim(),
-      this.outsideRoutingWorking(),
     ];
 
     // TODO: Nested behaviors like this are hard to test.

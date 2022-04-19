@@ -1,18 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrgResolver } from './org.resolver';
 import { OrgService } from './org.service';
-import { v4 as uuidv4 } from 'uuid';
-import { TestOrgCreateInput } from './org.repo';
-import { OrgGQL } from '@odst/types/ods';
-
-const orgArray: OrgGQL[] = [];
-
-TestOrgCreateInput.forEach((orgCreateInput) => {
-  const org: OrgGQL = ((orgCreateInput as OrgGQL).id = uuidv4());
-  orgArray.push(org);
-});
-
-const oneOrg = orgArray[0];
+import { MockOrgCreateInput, MockOrgs } from './org.repo';
 
 describe('Org Resolver', () => {
   let resolver: OrgResolver;
@@ -25,13 +14,17 @@ describe('Org Resolver', () => {
         {
           provide: OrgService,
           useValue: {
-            findMany: jest.fn().mockResolvedValue(orgArray),
-            getSubOrgs: jest.fn().mockResolvedValue(orgArray),
+            findMany: jest.fn().mockResolvedValue(MockOrgs),
+            getSubOrgs: jest.fn().mockResolvedValue(MockOrgs),
             findUnique: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneOrg)),
-            create: jest.fn().mockImplementation(() => Promise.resolve(oneOrg)),
-            update: jest.fn().mockImplementation(() => Promise.resolve(oneOrg)),
+              .mockImplementation(() => Promise.resolve(MockOrgs[0])),
+            create: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(MockOrgs[0])),
+            update: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(MockOrgs[0])),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },
@@ -48,15 +41,15 @@ describe('Org Resolver', () => {
 
   describe('findMany', () => {
     it('should get an array of orgs', async () => {
-      await expect(resolver.findMany({})).resolves.toEqual(orgArray);
+      await expect(resolver.findMany()).resolves.toEqual(MockOrgs);
     });
   });
 
   describe('getSubOrgs', () => {
     it('should get an array of orgs', async () => {
-      await expect(
-        resolver.getSubOrgs({ id: orgArray[0].id })
-      ).resolves.toEqual(orgArray);
+      await expect(resolver.getSubOrgs({ id: 'a uuid' })).resolves.toEqual(
+        MockOrgs
+      );
     });
   });
 
@@ -64,17 +57,17 @@ describe('Org Resolver', () => {
     it('should get a single org', async () => {
       await expect(
         resolver.findUnique({ id: 'a strange id' })
-      ).resolves.toEqual(orgArray[0]);
+      ).resolves.toEqual(MockOrgs[0]);
       await expect(
         resolver.findUnique({ id: 'a different id' })
-      ).resolves.toEqual(orgArray[0]);
+      ).resolves.toEqual(MockOrgs[0]);
     });
   });
 
   describe('create', () => {
     it('should create a create org', async () => {
-      await expect(resolver.create(TestOrgCreateInput[0])).resolves.toEqual(
-        orgArray[0]
+      await expect(resolver.create(MockOrgCreateInput[0])).resolves.toEqual(
+        MockOrgs[0]
       );
     });
   });
@@ -82,8 +75,8 @@ describe('Org Resolver', () => {
   describe('update', () => {
     it('should update a org', async () => {
       await expect(
-        resolver.update({ id: oneOrg.id }, { orgTier: 'WING' })
-      ).resolves.toEqual(oneOrg);
+        resolver.update({ id: MockOrgs[0].id }, { orgTier: 'WING' })
+      ).resolves.toEqual(MockOrgs[0]);
     });
   });
 

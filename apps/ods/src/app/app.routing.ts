@@ -21,6 +21,11 @@ const routes: Routes = [
         (m) => m.SurveyQuestionsModule
       ),
   },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
   //TODO: add functionality to auto redirect to login if refresh token not found
   {
     path: 'login',

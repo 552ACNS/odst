@@ -15,9 +15,9 @@ export class QuestionUpdateInput
 export class QuestionUpdateManyWithoutSurveysInput
   implements Prisma.QuestionUpdateManyWithoutSurveysInput
 {
-  @Field(() => [QuestionWhereUniqueInput], { nullable: true })
+  @Field(() => [QuestionWhereUniqueInput])
   connect?: Prisma.Enumerable<Prisma.QuestionWhereUniqueInput>;
 
-  @Field(() => [QuestionCreateOrConnectWithoutSurveysInput], { nullable: true })
+  @Field(() => [QuestionCreateOrConnectWithoutSurveysInput])
   connectOrCreate?: Prisma.Enumerable<Prisma.QuestionCreateOrConnectWithoutSurveysInput>;
 }

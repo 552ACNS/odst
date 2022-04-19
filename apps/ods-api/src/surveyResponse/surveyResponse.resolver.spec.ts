@@ -1,20 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SurveyResponseResolver } from './surveyResponse.resolver';
 import { SurveyResponseService } from './surveyResponse.service';
-import { v4 as uuidv4 } from 'uuid';
-import { TestSurveyResponseCreateInput } from './surveyResponse.repo';
-import { SurveyResponseGQL } from '@odst/types/ods';
-
-const surveyResponseArray: SurveyResponseGQL[] = [];
-
-TestSurveyResponseCreateInput.forEach((surveyResponseCreateInput) => {
-  const surveyResponse: SurveyResponseGQL = ((
-    surveyResponseCreateInput as unknown as SurveyResponseGQL
-  ).id = uuidv4());
-  surveyResponseArray.push(surveyResponse);
-});
-
-const oneSurveyResponse = surveyResponseArray[0];
+import {
+  MockSurveyResponses,
+  MockSurveyResponseCreateInput,
+} from './surveyResponse.repo';
 
 describe('SurveyResponse Resolver', () => {
   let resolver: SurveyResponseResolver;
@@ -27,16 +17,22 @@ describe('SurveyResponse Resolver', () => {
         {
           provide: SurveyResponseService,
           useValue: {
-            findMany: jest.fn().mockResolvedValue(surveyResponseArray),
+            findMany: jest.fn().mockResolvedValue(MockSurveyResponses),
             findUnique: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneSurveyResponse)),
+              .mockImplementation(() =>
+                Promise.resolve(MockSurveyResponses[0])
+              ),
             create: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneSurveyResponse)),
+              .mockImplementation(() =>
+                Promise.resolve(MockSurveyResponses[0])
+              ),
             update: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneSurveyResponse)),
+              .mockImplementation(() =>
+                Promise.resolve(MockSurveyResponses[0])
+              ),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },
@@ -51,31 +47,39 @@ describe('SurveyResponse Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
+  describe('findMany', () => {
+    it('should get an array of surveyResponses', async () => {
+      await expect(resolver.findMany()).resolves.toEqual(MockSurveyResponses);
+    });
+  });
 
   describe('findUnique', () => {
     it('should get a single surveyResponse', async () => {
       await expect(
         resolver.findUnique({ id: 'a strange id' })
-      ).resolves.toEqual(surveyResponseArray[0]);
+      ).resolves.toEqual(MockSurveyResponses[0]);
       await expect(
         resolver.findUnique({ id: 'a different id' })
-      ).resolves.toEqual(surveyResponseArray[0]);
+      ).resolves.toEqual(MockSurveyResponses[0]);
     });
   });
 
   describe('create', () => {
     it('should create a create surveyResponse', async () => {
       await expect(
-        resolver.create(TestSurveyResponseCreateInput[0])
-      ).resolves.toEqual(surveyResponseArray[0]);
+        resolver.create(MockSurveyResponseCreateInput[0])
+      ).resolves.toEqual(MockSurveyResponses[0]);
     });
   });
 
   describe('update', () => {
     it('should update a surveyResponse', async () => {
       await expect(
-        resolver.update({ id: oneSurveyResponse.id }, { routeOutside: true })
-      ).resolves.toEqual(oneSurveyResponse);
+        resolver.update(
+          { id: MockSurveyResponses[0].id },
+          { routeOutside: true }
+        )
+      ).resolves.toEqual(MockSurveyResponses[0]);
     });
   });
 

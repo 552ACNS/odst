@@ -3,6 +3,7 @@ import { Prisma, Role } from '.prisma/ods/client';
 
 @InputType()
 export class UserUpdateInput implements Prisma.UserUpdateInput {
+  rank?: string;
   email?: string;
   password?: string;
   enabled?: boolean;
@@ -11,5 +12,4 @@ export class UserUpdateInput implements Prisma.UserUpdateInput {
   roles: Role;
 
   //TODO refreshToken, org
-
 }

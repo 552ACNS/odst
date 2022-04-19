@@ -5,7 +5,6 @@ import {
   OrgCreateInput,
   OrgUpdateInput,
   OrgWhereUniqueInput,
-  OrgWhereInput,
 } from '@odst/types/waypoint';
 import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 import { UseGuards } from '@nestjs/common';
@@ -22,11 +21,9 @@ export class OrgResolver {
 
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
   @UseGuards(AccessTokenAuthGuard)
-  async findMany(
-    @Args('where', { nullable: true }) where: OrgWhereInput
-  ): Promise<OrgGQL[]> {
+  async findMany(): Promise<OrgGQL[]> {
+    // return this.orgService.findMany();
     return this.orgService.orgs({
-      where,
       orderBy: {
         name: 'asc',
       },

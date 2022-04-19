@@ -63,7 +63,7 @@ describe('OrgResolver', () => {
       .mockImplementation(() => result);
 
     // Call the createOrg method by calling the controller
-    const actual = await resolver.findMany({});
+    const actual = await resolver.findMany();
     // Assert that the method was called
     expect(spy).toHaveBeenCalled();
 

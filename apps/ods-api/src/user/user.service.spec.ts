@@ -1,22 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from './user.service';
-import { v4 as uuidv4 } from 'uuid';
-import { TestUserCreateInput } from './user.repo';
-import { User } from '.prisma/ods/client';
-
-const userArray: User[] = [];
-
-TestUserCreateInput.forEach((userCreateInput) => {
-  const user: User = ((userCreateInput as unknown as User).id = uuidv4());
-  userArray.push(user);
-});
-
-const oneUser = userArray[0];
+import { MockUserCreateInput, MockUsers } from './user.repo';
 
 const db = {
   user: {
-    findMany: jest.fn().mockReturnValue(userArray),
+    findMany: jest.fn().mockReturnValue(MockUsers),
   },
 };
 
@@ -46,7 +35,7 @@ describe('UserService', () => {
   describe('findMany', () => {
     it('should return an array of users', async () => {
       const users = await service.findMany({});
-      expect(users).toEqual(userArray);
+      expect(users).toEqual(MockUsers);
     });
   });
 });

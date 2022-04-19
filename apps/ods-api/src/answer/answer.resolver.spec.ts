@@ -1,19 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AnswerResolver } from './answer.resolver';
 import { AnswerService } from './answer.service';
-import { v4 as uuidv4 } from 'uuid';
-import { TestAnswerCreateInput } from './answer.repo';
-import { AnswerGQL } from '@odst/types/ods';
-
-const answerArray: AnswerGQL[] = [];
-
-TestAnswerCreateInput.forEach((answerCreateInput) => {
-  const answer: AnswerGQL = ((answerCreateInput as unknown as AnswerGQL).id =
-    uuidv4());
-  answerArray.push(answer);
-});
-
-const oneAnswer = answerArray[0];
+import { MockAnswerCreateInput, MockAnswers } from './answer.repo';
 
 describe('Answer Resolver', () => {
   let resolver: AnswerResolver;
@@ -26,17 +14,17 @@ describe('Answer Resolver', () => {
         {
           provide: AnswerService,
           useValue: {
-            findMany: jest.fn().mockResolvedValue(answerArray),
-            getSubAnswers: jest.fn().mockResolvedValue(answerArray),
+            findMany: jest.fn().mockResolvedValue(MockAnswers),
+            getSubAnswers: jest.fn().mockResolvedValue(MockAnswers),
             findUnique: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneAnswer)),
+              .mockImplementation(() => Promise.resolve(MockAnswers[0])),
             create: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneAnswer)),
+              .mockImplementation(() => Promise.resolve(MockAnswers[0])),
             update: jest
               .fn()
-              .mockImplementation(() => Promise.resolve(oneAnswer)),
+              .mockImplementation(() => Promise.resolve(MockAnswers[0])),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },
@@ -53,25 +41,25 @@ describe('Answer Resolver', () => {
 
   describe('findMany', () => {
     it('should get an array of answers', async () => {
-      await expect(resolver.findMany({})).resolves.toEqual(answerArray);
+      await expect(resolver.findMany({})).resolves.toEqual(MockAnswers);
     });
   });
 
-  describe('findUnqiue', () => {
+  describe('findUnique', () => {
     it('should get a single answer', async () => {
       await expect(
         resolver.findUnique({ id: 'a strange id' })
-      ).resolves.toEqual(answerArray[0]);
+      ).resolves.toEqual(MockAnswers[0]);
       await expect(
         resolver.findUnique({ id: 'a different id' })
-      ).resolves.toEqual(answerArray[0]);
+      ).resolves.toEqual(MockAnswers[0]);
     });
   });
 
   describe('create', () => {
     it('should create a create answer', async () => {
-      await expect(resolver.create(TestAnswerCreateInput[0])).resolves.toEqual(
-        answerArray[0]
+      await expect(resolver.create(MockAnswerCreateInput[0])).resolves.toEqual(
+        MockAnswers[0]
       );
     });
   });
@@ -79,8 +67,8 @@ describe('Answer Resolver', () => {
   describe('update', () => {
     it('should update a answer', async () => {
       await expect(
-        resolver.update({ id: oneAnswer.id }, { value: 'new prompt' })
-      ).resolves.toEqual(oneAnswer);
+        resolver.update({ id: MockAnswers[0].id }, { value: 'new prompt' })
+      ).resolves.toEqual(MockAnswers[0]);
     });
   });
 
