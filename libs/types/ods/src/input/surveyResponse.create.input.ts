@@ -2,7 +2,6 @@ import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
 import { SurveyCreateNestedOneWithoutSurveyResponsesInput } from './survey.create.input';
 import { SurveyResponseWhereUniqueInput } from './surveyResponse.unique.input';
-import { SurveyResponseGQL } from '../entity/surveyResponse.entity';
 import { AnswerCreateNestedManyWithoutSurveyResponseInput } from './answer.create.input';
 
 @InputType()

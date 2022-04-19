@@ -90,7 +90,9 @@ export class PersonService {
     });
   }
 
-  async delete(personWhereUniqueInput: Prisma.PersonWhereUniqueInput) {
+  async delete(
+    personWhereUniqueInput: Prisma.PersonWhereUniqueInput
+  ): Promise<Person> {
     return this.prisma.person.delete({
       where: personWhereUniqueInput,
     });

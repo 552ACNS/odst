@@ -18,15 +18,15 @@ export class PersonResolver {
   @UseGuards(AccessTokenAuthGuard)
   async create(
     @Args('personCreateInput') personCreateInput: PersonCreateInput
-  ) {
+  ): Promise<PersonGQL> {
     return this.personService.create(personCreateInput);
   }
 
   // find all persons
   @Query(() => [PersonGQL], { name: 'findManyPersons' })
   @UseGuards(AccessTokenAuthGuard)
-  async findMany() {
-    return await this.personService.findMany();
+  async findMany(): Promise<PersonGQL[]> {
+    return this.personService.findMany();
   }
 
   @Query(() => PersonGQL, { name: 'findUniquePerson' })
@@ -34,7 +34,7 @@ export class PersonResolver {
   async findUnique(
     @Args('personWhereUniqueInput')
     personWhereUniqueInput: PersonWhereUniqueInput
-  ) {
+  ): Promise<PersonGQL | null> {
     return this.personService.findUnique(personWhereUniqueInput);
   }
 
@@ -46,7 +46,7 @@ export class PersonResolver {
     @Args('personWhereUniqueInput')
     personWhereUniqueInput: PersonWhereUniqueInput
   ): Promise<PersonGQL[]> {
-    return await this.personService.findManyInOrg(personWhereUniqueInput);
+    return this.personService.findManyInOrg(personWhereUniqueInput);
   }
 
   @Mutation(() => PersonGQL, { name: 'updatePerson' })

@@ -15,7 +15,9 @@ export class OrgResolver {
 
   @Mutation(() => OrgGQL, { name: 'createOrg' })
   @UseGuards(AccessTokenAuthGuard)
-  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput) {
+  create(
+    @Args('orgCreateInput') orgCreateInput: OrgCreateInput
+  ): Promise<OrgGQL> {
     return this.orgService.create(orgCreateInput);
   }
 
