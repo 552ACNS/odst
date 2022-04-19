@@ -12,12 +12,12 @@ import { Role } from '.prisma/ods/client';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  // Refactor this to include Cater's Where command when we implement it
-  // @Query(() => [UserGQL], { name: 'findManyUsers' })
-  // @UseGuards(AccessTokenAuthGuard)
-  // async findManyInOrg() {
-  //   return this.userService.findMany({});
-  // }
+  @Query(() => [UserGQL], { name: 'findManyUsers' })
+  async findManyInOrg(
+    @Args('where', { nullable: true }) where: UserWhereInput
+  ) {
+    return this.userService.findMany({ where });
+  }
 
   @Query(() => [UserGQL], { name: 'findUsersWithRole' })
   async findUsersWithRole(@Args('role') role: Role): Promise<UserGQL[]> {

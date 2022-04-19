@@ -15,6 +15,7 @@ import {
   AnswerGQL,
   SurveyGQL,
   ResponseCount,
+  SurveyResponseWhereInput,
 } from '@odst/types/ods';
 
 // import { GetCurrentUserId } from '@odst/shared/nest';
