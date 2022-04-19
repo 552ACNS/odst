@@ -1,4 +1,3 @@
-import { DynamicModule, Provider } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AUTH_SECRET, USER_SERVICE } from './auth.constants';

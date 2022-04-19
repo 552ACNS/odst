@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Inject,
-  UnauthorizedException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AUTH_SECRET, USER_SERVICE } from './auth.constants';
 import { UserService, User } from './interfaces/user-service.interface';
