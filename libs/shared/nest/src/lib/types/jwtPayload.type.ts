@@ -1,5 +1,4 @@
 export interface JwtPayloadInit {
-  username: string;
   sub: string;
 }
 

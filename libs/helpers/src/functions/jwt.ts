@@ -12,3 +12,7 @@ export function isJwtChainExpired(token: string): boolean {
   const jwt = jwt_decode(token) as JwtPayloadRefresh;
   return Date.now() >= jwt.chainExp * 1000;
 }
+
+export function isDecodedJwtChainExpired(jwt: JwtPayloadRefresh): boolean {
+  return Date.now() >= jwt.chainExp * 1000;
+}

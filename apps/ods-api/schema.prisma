@@ -12,19 +12,19 @@ generator client {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  email         String         @unique
-  password      String
-  enabled       Boolean        @default(true)
-  roles         Role
-  refreshTokens RefreshToken[] //many RefreshToken to user
-  orgs          Org[] // MANY TO MANY
+  id           String        @id @default(uuid())
+  email        String        @unique
+  password     String
+  enabled      Boolean       @default(true)
+  roles        Role?
+  refreshToken RefreshToken?
+  orgs         Org[]
 }
 
 model RefreshToken {
   id          String   @id @default(uuid())
   user        User     @relation(fields: [userId], references: [id])
-  userId      String
+  userId      String   @unique
   isRevoked   Boolean  @default(false)
   issuedDate  DateTime @default(now())
   expiredDate DateTime

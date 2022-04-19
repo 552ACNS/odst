@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "auth": "libs/auth",
     "gql": {
       "projectType": "library",
       "root": "libs/gql",

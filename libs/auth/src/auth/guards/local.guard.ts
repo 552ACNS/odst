@@ -1,4 +1,4 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import { ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -9,6 +9,7 @@ export class LocalAuthGuard extends AuthGuard('local') {
   }
 
   getRequest(context: ExecutionContext) {
+    Logger.log('LocalAuthGuard.getRequest()');
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext();
     request.body = ctx.getArgs().loginUserInput;

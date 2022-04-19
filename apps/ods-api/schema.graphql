@@ -63,7 +63,7 @@ type ResponseCount {
 }
 
 type UserGQL {
-  roles: Role!
+  roles: Role
   id: String!
   email: String!
   enabled: Boolean!
@@ -75,6 +75,11 @@ enum Role {
   DEI
   EO
   CC
+}
+
+type Tokens {
+  accessToken: String!
+  refreshToken: String!
 }
 
 type Query {
@@ -136,6 +141,9 @@ type Mutation {
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
   removeQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
+  login(loginUserInput: LoginUserInput!): Tokens!
+  signup(signupUserInput: SignupUserInput!): Tokens!
+  refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
 
 input SurveyCreateInput {
@@ -296,4 +304,19 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
   prompt: String
+}
+
+input LoginUserInput {
+  username: String!
+  password: String!
+}
+
+input SignupUserInput {
+  username: String
+  email: String!
+  password: String!
+}
+
+input RefreshLoginInput {
+  refreshToken: String!
 }
