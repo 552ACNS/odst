@@ -16,7 +16,10 @@ model User {
   email         String         @unique
   password      String
   enabled       Boolean        @default(true)
-  roles         Role
+  rank          String?
+  firstName     String
+  lastName      String
+  role          Role
   refreshTokens RefreshToken[] //many RefreshToken to user
   orgs          Org[] // MANY TO MANY
 }

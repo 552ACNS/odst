@@ -1,12 +1,16 @@
+/* eslint-disable complexity */
 import { PrismaClient } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
 import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+const orgName = '552 ACNS';
+const CCEmail = 'john.doe@us.af.mil';
+
 async function main() {
   //#region org
-  const org = await prisma.org.upsert({
+  await prisma.org.upsert({
     where: {
       name: 'Scorpion Developers',
     },
@@ -16,6 +20,42 @@ async function main() {
     create: {
       name: 'Scorpion Developers',
       orgTier: 'OTHER',
+    },
+  });
+  await prisma.org.upsert({
+    where: {
+      name: orgName,
+    },
+    update: {
+      orgTier: 'SQUADRON',
+    },
+    create: {
+      name: orgName,
+      orgTier: 'SQUADRON',
+    },
+  });
+  await prisma.org.upsert({
+    where: {
+      name: '552 MXS',
+    },
+    update: {
+      orgTier: 'SQUADRON',
+    },
+    create: {
+      name: '552 MXS',
+      orgTier: 'SQUADRON',
+    },
+  });
+  await prisma.org.upsert({
+    where: {
+      name: '752 OSS',
+    },
+    update: {
+      orgTier: 'SQUADRON',
+    },
+    create: {
+      name: '752 OSS',
+      orgTier: 'SQUADRON',
     },
   });
   //#endregion
@@ -34,29 +74,36 @@ async function main() {
     }
   }
 
-  if (
-    process.env.NODE_ENV !== 'PRODUCTION' &&
-    process.env.NX_DEV_ACCOUNT_PASSWORD
-  ) {
-    const pw = await hash(process.env.NX_DEV_ACCOUNT_PASSWORD, 10);
-
-    const user = await prisma.user.create({
-      data: {
-        email: 'admin@admin.com',
-        password: pw,
-        orgs: { connect: { name: 'Scorpion Developers' } },
-        roles: 'ADMIN',
-      },
-    });
-    console.log({ user });
-  }
-  //#endregion user admin
-
-  //#region survey
-  //delete existing test surveys
   try {
-    await prisma.survey.deleteMany({
-      where: { orgs: { every: { name: 'Scorpion Developers' } } },
+    await prisma.refreshToken.deleteMany({
+      where: { user: { email: CCEmail } },
+    });
+    await prisma.user.delete({ where: { email: CCEmail } });
+  } catch (e) {
+    //delete can fail if no entities are found. Ignore that
+    if (!(e instanceof PrismaClientKnownRequestError)) {
+      throw e;
+    }
+  }
+
+  try {
+    await prisma.refreshToken.deleteMany({
+      where: { user: { email: 'michael.henry.2@us.af.mil' } },
+    });
+    await prisma.user.delete({ where: { email: 'michael.henry.2@us.af.mil' } });
+  } catch (e) {
+    //delete can fail if no entities are found. Ignore that
+    if (!(e instanceof PrismaClientKnownRequestError)) {
+      throw e;
+    }
+  }
+
+  try {
+    await prisma.refreshToken.deleteMany({
+      where: { user: { email: 'henry.henderson.99@us.af.mil' } },
+    });
+    await prisma.user.delete({
+      where: { email: 'henry.henderson.99@us.af.mil' },
     });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
@@ -65,43 +112,108 @@ async function main() {
     }
   }
 
-  const survey = await prisma.survey.create({
-    data: {
-      orgs: { connect: { name: 'Scorpion Developers' } },
-    },
-  });
-  //#endregion survey
+  if (
+    process.env.NODE_ENV !== 'PRODUCTION' &&
+    process.env.NX_DEV_ACCOUNT_PASSWORD
+  ) {
+    const pw = await hash(process.env.NX_DEV_ACCOUNT_PASSWORD, 10);
 
-  //#region answer
-  const question = await prisma.question.upsert({
-    where: { prompt: 'What is the meaning of life?' },
-    create: {
-      prompt: 'What is the meaning of life?',
-      surveys: { connect: { id: survey.id } },
-    },
-    update: {},
-  });
-  //#endregion answer
+    await prisma.user.upsert({
+      where: {
+        email: 'admin@admin.com',
+      },
+      update: {},
+      create: {
+        email: 'admin@admin.com',
+        password: pw,
+        orgs: { connect: { name: 'Scorpion Developers' } },
+        role: 'ADMIN',
+        firstName: 'Admin',
+        lastName: 'Admin',
+        rank: 'ADMIN',
+      },
+    });
 
-  //#region answer
-  const surveyResponse = await prisma.surveyResponse.create({
-    data: {
-      survey: { connect: { id: survey.id } },
-    },
-  });
-  //#endregion answer
+    await prisma.user.upsert({
+      where: {
+        email: 'CCEmail',
+      },
+      update: {},
+      create: {
+        email: CCEmail,
+        password: pw,
+        orgs: { connect: { name: orgName } },
+        role: 'CC',
+        firstName: 'John',
+        lastName: 'Doe',
+        rank: 'Lt. Col.',
+      },
+    });
 
-  //#region answer
-  const answer = await prisma.answer.create({
-    data: {
-      value: '42',
-      question: { connect: { id: question.id } },
-      surveyResponse: { connect: { id: surveyResponse.id } },
-    },
-  });
-  //#endregion answer
+    await prisma.user.upsert({
+      where: {
+        email: 'michael.henry.2@us.af.mil',
+      },
+      update: {},
+      create: {
+        email: 'michael.henry.2@us.af.mil',
+        password: pw,
+        orgs: { connect: { name: '552 MXS' } },
+        role: 'CC',
+        firstName: 'Michael',
+        lastName: 'Henry',
+        rank: 'Lt. Col.',
+      },
+    });
 
-  console.log({ org, survey, surveyResponse, question, answer });
+    await prisma.user.upsert({
+      where: {
+        email: 'henry.henderson.99@us.af.mil',
+      },
+      update: {},
+      create: {
+        email: 'henry.henderson.99@us.af.mil',
+        password: pw,
+        orgs: { connect: { name: '752 OSS' } },
+        role: 'CC',
+        firstName: 'Henry',
+        lastName: 'Henderson',
+        rank: 'Lt. Col.',
+      },
+    });
+  }
+  //#endregion user admin
+
+  //#region survey
+  //delete existing test surveys
+  const orgNames = [
+    {
+      name: '552 ACNS',
+    },
+    {
+      name: '552 MXS',
+    },
+    {
+      name: '752 OSS',
+    },
+  ];
+
+  try {
+    await prisma.survey.deleteMany({
+      where: {
+        orgs: {
+          some: {
+            OR: orgNames,
+          },
+        },
+      },
+    });
+  } catch (e) {
+    //delete can fail if no entities are found. Ignore that
+    if (!(e instanceof PrismaClientKnownRequestError)) {
+      throw e;
+    }
+  }
 }
 
 main()

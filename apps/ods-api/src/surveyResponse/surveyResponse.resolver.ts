@@ -77,7 +77,7 @@ export class SurveyResponseResolver {
 
   @Query(() => ResponseCount, { name: 'ResponseCount' })
   // @UseGuards(AccessTokenAuthGuard)
-  async ResponseCount() {
+  async ResponseCount(): Promise<ResponseCount> {
     return this.surveyResponseService.countResponses();
   }
 
