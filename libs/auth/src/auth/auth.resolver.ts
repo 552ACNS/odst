@@ -6,7 +6,7 @@ import {
   RefreshLoginInput,
   SignupUserInput,
 } from './dtos/login.input';
-import { Logger, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local.guard';
 import { GetCurrentUser } from '@odst/shared/nest';
 import { User } from './interfaces/user-service.interface';
@@ -22,7 +22,6 @@ export class AuthResolver {
   login(
     @Args('loginUserInput') loginUserInput: LoginUserInput
   ): Promise<Tokens> {
-    Logger.log('AuthResolver.login()');
     return this.authService.login(loginUserInput);
   }
 
@@ -39,7 +38,6 @@ export class AuthResolver {
     @Args('refreshLoginInput') refreshLoginInput: RefreshLoginInput,
     @GetCurrentUser() user: User
   ): Promise<Tokens> {
-    Logger.log('AuthResolver.refreshTokens()');
     return this.authService.refreshTokens(refreshLoginInput, user);
   }
 }

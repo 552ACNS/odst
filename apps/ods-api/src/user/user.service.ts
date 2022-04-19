@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User, Prisma, Org, RefreshToken } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -42,7 +42,6 @@ export class UserService {
   async findUnique(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
-    Logger.log('UserService.findUnique()');
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
     });
