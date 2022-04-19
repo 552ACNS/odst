@@ -19,6 +19,7 @@ import {
   FindUsersWithRole_FormDocument,
   Role,
 } from '../../graphql-generated';
+import { jsonTypeConverter } from '@odst/helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -97,6 +98,8 @@ export class SurveyQuestionsService {
     questionIDArray: string[],
     surveyID: string | undefined
   ) {
+    console.log(valueArray);
+    console.log(questionIDArray);
     return this.apollo.mutate<
       CreateSurveyResponse_FormMutation,
       CreateSurveyResponse_FormMutationVariables
@@ -107,7 +110,7 @@ export class SurveyQuestionsService {
           routeOutside: outsideRouting,
           answers: {
             createMany: {
-              data: this.jsonTypeConverter(valueArray, questionIDArray),
+              data: jsonTypeConverter(valueArray, questionIDArray),
             },
           },
           survey: {
@@ -121,18 +124,4 @@ export class SurveyQuestionsService {
   }
 
   // TODO: Do testing on this function
-  jsonTypeConverter(arrOne: string[], arrTwo: string[]) {
-    const result: {
-      value: string;
-      questionId: string;
-    }[] = [];
-
-    for (let i = 0; i < arrOne.length - 1; i++) {
-      result.push({
-        value: arrOne[i],
-        questionId: arrTwo[i],
-      });
-    }
-    return result;
-  }
 }

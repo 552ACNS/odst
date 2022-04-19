@@ -85,7 +85,6 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
       this.form.value['CC'],
       this.personSpecification(),
       this.form.value['impact'].trim(),
-      this.outsideRoutingWorking(),
     ];
 
     // TODO: Nested behaviors like this are hard to test.
