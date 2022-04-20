@@ -57,14 +57,6 @@ describe('AuthService', () => {
     });
   });
 
-  describe('signup', () => {
-    it('should return a set of tokens', async () => {
-      await expect(
-        service.signup({ email: 'username', password: 'password' })
-      ).resolves.toEqual(MockTokens);
-    });
-  });
-
   describe('refreshTokens', () => {
     it('should return a set of tokens', async () => {
       await expect(

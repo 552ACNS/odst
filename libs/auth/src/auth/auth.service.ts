@@ -32,21 +32,6 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  async signup(signupUserInput: SignupUserInput): Promise<Tokens> {
-    const password = await hash(signupUserInput.password, 10);
-
-    //if user exists, database will throw unique error
-    const user = await this.userService.create({
-      ...signupUserInput,
-      password,
-    });
-
-    return {
-      accessToken: await this.getToken(user.id, false),
-      refreshToken: await this.getToken(user.id, true),
-    };
-  }
-
   async refreshTokens(
     refreshLoginInput: RefreshLoginInput,
     user: User

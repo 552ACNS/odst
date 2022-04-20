@@ -11,7 +11,7 @@ export class UserGQL implements User {
   enabled: boolean;
 
   @Field(() => Role)
-  role: Role | null;
+  role: Role;
 
   @HideField()
   password: string;

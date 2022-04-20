@@ -38,14 +38,6 @@ describe('Auth Resolver', () => {
     });
   });
 
-  describe('signup', () => {
-    it('should return a set of tokens', async () => {
-      await expect(
-        resolver.signup({ email: 'email', password: 'password' })
-      ).resolves.toEqual(MockTokens);
-    });
-  });
-
   describe('refreshToken', () => {
     it('should return a set of tokens', async () => {
       await expect(

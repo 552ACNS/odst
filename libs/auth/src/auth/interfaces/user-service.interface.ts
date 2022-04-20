@@ -11,12 +11,6 @@ export interface User {
   password: string;
 }
 
-export interface UserCreateInput {
-  username?: string;
-  email: string;
-  password: string;
-}
-
 export interface UserWhereUniqueInput {
   id?: string;
   username?: string;
@@ -31,8 +25,6 @@ export interface UserService {
   findUnique: (
     userWhereUniqueInput: UserWhereUniqueInput
   ) => Promise<User | null>;
-
-  create: (userCreateInput: UserCreateInput) => Promise<User>;
 
   update: (
     userWhereUniqueInput: UserWhereUniqueInput,

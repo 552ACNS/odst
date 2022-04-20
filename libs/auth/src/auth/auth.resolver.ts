@@ -26,14 +26,6 @@ export class AuthResolver {
   }
 
   @Mutation(() => Tokens)
-  @Public()
-  async signup(
-    @Args('signupUserInput') signupUserInput: SignupUserInput
-  ): Promise<Tokens> {
-    return this.authService.signup(signupUserInput);
-  }
-
-  @Mutation(() => Tokens)
   async refreshTokens(
     @Args('refreshLoginInput') refreshLoginInput: RefreshLoginInput,
     @GetCurrentUser() user: User
