@@ -63,7 +63,7 @@ type ResponseCount {
 }
 
 type UserGQL {
-  role: Role
+  role: Role!
   id: String!
   email: String!
   rank: String
@@ -137,16 +137,12 @@ type Mutation {
   updateSurveyResponse(SurveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!, SurveyResponseUpdateInput: SurveyResponseUpdateInput!): SurveyResponseGQL!
   deleteSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   createAnswer(answerCreateInput: AnswerCreateInput!): AnswerGQL!
-  updateAnswer(AnswerWhereUniqueInput: AnswerWhereUniqueInput!, AnswerUpdateInput: AnswerUpdateInput!): AnswerGQL!
-  deleteAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
-  removeQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   login(loginUserInput: LoginUserInput!): Tokens!
-  signup(signupUserInput: SignupUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
 
@@ -256,12 +252,6 @@ input SurveyResponseCreateNestedOneWithoutAnswersInput {
   connect: SurveyResponseWhereUniqueInput
 }
 
-input AnswerUpdateInput {
-  question: QuestionCreateNestedOneWithoutAnswersInput
-  surveyResponse: SurveyResponseCreateNestedOneWithoutAnswersInput
-  value: String
-}
-
 input OrgCreateInput {
   orgTier: OrgTier!
   users: UserCreateNestedManyWithoutOrgsInput
@@ -312,12 +302,6 @@ input QuestionUpdateInput {
 
 input LoginUserInput {
   username: String!
-  password: String!
-}
-
-input SignupUserInput {
-  username: String
-  email: String!
   password: String!
 }
 
