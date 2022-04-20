@@ -96,7 +96,7 @@ type Query {
   findManyQuestions: [QuestionGQL!]!
   getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
-  findUsersWithRole(role: String!): [UserGQL!]!
+  getCommanders: [UserGQL!]!
 }
 
 input SurveyWhereUniqueInput {
