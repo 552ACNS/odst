@@ -36,8 +36,13 @@ export class SurveyResponseService {
   // Get the string IDs of all the issues that are unresolved that the commander
   // has responsibility over
 
-  async getIssuesByStatus(resolved: boolean): Promise<string[]> {
-    const responsesIDs = await this.prisma.surveyResponse
+  async getIssuesByStatus(resolved: boolean): Promise<
+    {
+      id: string;
+      openedDate: Date;
+    }[]
+  > {
+    const responses = this.prisma.surveyResponse
       .findMany({
         where: {
           resolution: resolved ? { not: null } : null,
@@ -52,7 +57,7 @@ export class SurveyResponseService {
           openedDate: 'asc',
         },
       })
-      .then((responses) => responses.map((response) => response.id));
+      .then((responses) => responses.map((response) => response));
 
     // TODO Depends on user to be logged in, renable once we have a user
     // const responsesIDs = await this.prisma.surveyResponse
@@ -76,7 +81,7 @@ export class SurveyResponseService {
     //   })
     //   .then((responses) => responses.map((response) => response.id));
 
-    return responsesIDs;
+    return responses;
   }
 
   // Get the string IDs of all the issues that are unresolved that the commander
