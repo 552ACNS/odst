@@ -41,6 +41,8 @@ export class SurveyResponseService {
       .findMany({
         where: {
           resolution: resolved ? { not: null } : null,
+          // openedDate: {
+          //   lt: new Date(Date.now() - 2592000000),}
         },
         select: {
           id: true,

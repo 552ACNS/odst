@@ -18,12 +18,13 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getResponseIDsByStatus(resolved: boolean) {
+  async getResponseIDsByStatus(resolved: boolean, overDue: boolean) {
     return this.apollo
       .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
         query: GetIssuesByStatusDocument,
         variables: {
           resolved: resolved,
+          overDue: overDue,
         },
       })
       .valueChanges.pipe(

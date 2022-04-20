@@ -24,6 +24,8 @@ export class ResponsesComponent implements OnInit {
 
   resolved: boolean;
 
+  overDue: boolean;
+
   openedDate: string;
   numberOfResponses: number;
   displayedIndex: number;
@@ -36,10 +38,14 @@ export class ResponsesComponent implements OnInit {
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
       this.resolved = params['resolved'] === 'true';
+      //this.overDue = params['overDue'] === 'false';
     });
 
     (
-      await this.responsesService.getResponseIDsByStatus(this.resolved)
+      await this.responsesService.getResponseIDsByStatus(
+        this.resolved,
+        this.overDue
+      )
     ).subscribe((data) => {
       this.responseIDs = data;
       this.numberOfResponses = data.length;
