@@ -16,6 +16,7 @@ import {
   QuestionGQL,
   SurveyResponseGQL,
 } from '@odst/types/ods';
+import { Public } from '@odst/auth';
 
 @Resolver(() => SurveyGQL)
 export class SurveyResolver {
@@ -34,6 +35,7 @@ export class SurveyResolver {
     return this.surveyService.findUnique(surveyWhereUniqueInput);
   }
 
+  @Public()
   @Mutation(() => SurveyGQL, { name: 'createSurveyWithQuestions' })
   async createWithQuestions(
     @Args({ name: 'questionPrompts', type: () => [String] })

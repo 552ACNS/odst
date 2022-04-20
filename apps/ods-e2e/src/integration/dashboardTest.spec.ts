@@ -1,10 +1,10 @@
 describe('ods', () => {
   before(() => {
     cy.visit('/login');
-    cy.get('[formcontrolname="userUsername"]').type('admin');
+    cy.get('[formcontrolname="userUsername"]').type('admin@admin.com');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('odst-login').find('button').contains('Sign In').click();
-    cy.location('pathname').should('include', '/home');
+    cy.location('pathname').should('include', '/dashboard');
   });
   it('should view unresolved and resolved responses from dashboard', () => {
     cy.visit('/dashboard');

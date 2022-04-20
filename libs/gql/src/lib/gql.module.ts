@@ -51,6 +51,7 @@ export function createApollo() {
   };
 
   const errorLink = onError(
+    // eslint-disable-next-line complexity
     ({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors) {
         for (const err of graphQLErrors) {

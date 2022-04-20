@@ -16,6 +16,7 @@ import {
   AnswerGQL,
   SurveyGQL,
 } from '@odst/types/ods';
+import { Public } from '@odst/auth';
 
 @Resolver(() => QuestionGQL)
 export class QuestionResolver {
@@ -27,6 +28,7 @@ export class QuestionResolver {
   }
 
   @Query(() => [QuestionGQL], { name: 'getSubQuestions' })
+  @Public()
 
   //TODO redo with findMany
   async getSubQuestions(
