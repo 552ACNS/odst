@@ -2,7 +2,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { RefreshLoginInput, TokensGQL, UserGQL } from '@odst/types/waypoint';
 import { LoginUserInput, SignupUserInput } from '@odst/types/waypoint';
-import { Logger, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local.authGuard';
 import { RefreshTokenAuthGuard } from './guards/refreshToken.authGuard';
 import { GetCurrentUser } from '@odst/shared/nest';

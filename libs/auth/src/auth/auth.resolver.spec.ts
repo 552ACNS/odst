@@ -1,15 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { MockTokens } from './auth.repo';
-import { User } from './interfaces/user-service.interface';
-
-const MockUser: User = {
-  id: 'user id',
-  email: 'user@mail.com',
-  enabled: true,
-  password: 'p@assword',
-};
+import { MockTokens, MockUser } from './auth.repo';
 
 describe('Auth Resolver', () => {
   let resolver: AuthResolver;

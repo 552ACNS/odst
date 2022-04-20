@@ -3,6 +3,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
+/** Requires JWT in auth header */
 export class LocalAuthGuard extends AuthGuard('local') {
   constructor() {
     super();

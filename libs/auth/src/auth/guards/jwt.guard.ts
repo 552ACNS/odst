@@ -9,6 +9,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { IS_PUBLIC_KEY } from '../decorator/public.decorator';
 
 @Injectable()
+/** Requires JWT in auth header */
 export class JWTAuthGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
     super();
@@ -19,7 +20,7 @@ export class JWTAuthGuard extends AuthGuard('jwt') {
     return ctx.getContext().req;
   }
 
-  canActivate(context: ExecutionContext) {
+  override canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -30,7 +31,7 @@ export class JWTAuthGuard extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(error: any, user: any, info: Error) {
+  override handleRequest(error: any, user: any, info: Error) {
     if (error || info || !user) {
       throw info?.name === 'TokenExpiredError'
         ? new UnauthorizedException('The session has expired. Please relogin')
