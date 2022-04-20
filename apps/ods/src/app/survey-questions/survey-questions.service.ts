@@ -14,7 +14,12 @@ import {
   FindQuestionsBySurvey_FormQuery,
   FindQuestionsBySurvey_FormQueryVariables,
   FindQuestionsBySurvey_FormDocument,
+  FindUsersWithRole_FormQuery,
+  FindUsersWithRole_FormQueryVariables,
+  FindUsersWithRole_FormDocument,
+  Role,
 } from '../../graphql-generated';
+import { jsonTypeConverter } from '@odst/helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +35,27 @@ export class SurveyQuestionsService {
       })
       .valueChanges.pipe(
         map((result) => result.data.findManyOrgs.map((x) => x.name))
+      );
+  }
+
+  async findUsersWithRole(role: Role) {
+    return this.apollo
+      .watchQuery<
+        FindUsersWithRole_FormQuery,
+        FindUsersWithRole_FormQueryVariables
+      >({
+        query: FindUsersWithRole_FormDocument,
+        variables: {
+          role: role,
+        },
+      })
+      .valueChanges.pipe(
+        //TODO: fix this later when adding rank to user.
+        map((result) =>
+          result.data.findUsersWithRole
+            .map((x) => `${x.rank} ${x.lastName}, ${x.firstName}`)
+            .sort()
+        )
       );
   }
   //Takes questions that are in an array and connectsOrCreates to a survey ID based on question set and returns the survey ID
@@ -82,7 +108,7 @@ export class SurveyQuestionsService {
           routeOutside: outsideRouting,
           answers: {
             createMany: {
-              data: this.jsonTypeConverter(valueArray, questionIDArray),
+              data: jsonTypeConverter(valueArray, questionIDArray),
             },
           },
           survey: {
@@ -96,18 +122,4 @@ export class SurveyQuestionsService {
   }
 
   // TODO: Do testing on this function
-  jsonTypeConverter(arrOne: string[], arrTwo: string[]) {
-    const result: {
-      value: string;
-      questionId: string;
-    }[] = [];
-
-    for (let i = 0; i < arrOne.length - 1; i++) {
-      result.push({
-        value: arrOne[i],
-        questionId: arrTwo[i],
-      });
-    }
-    return result;
-  }
 }

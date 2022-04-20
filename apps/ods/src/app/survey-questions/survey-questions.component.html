@@ -77,7 +77,7 @@
           formControlName="CC"
           required
         >
-          <mat-option *ngFor="let CC of CCs" [value]="CC">
+          <mat-option *ngFor="let CC of CCs | async" [value]="CC">
             {{ CC }}
           </mat-option>
         </mat-select>

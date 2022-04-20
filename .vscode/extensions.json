@@ -11,7 +11,8 @@
     "dbaeumer.vscode-eslint",
     "github.vscode-pull-request-github",
     "bradlc.vscode-tailwindcss",
-    "firsttris.vscode-jest-runner",
-    "Gruntfuggly.todo-tree"
+    // "firsttris.vscode-jest-runner",
+    "gruntfuggly.todo-tree",
+    "EditorConfig.EditorConfig"
   ]
 }
