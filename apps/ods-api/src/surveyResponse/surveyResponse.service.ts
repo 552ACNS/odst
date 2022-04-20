@@ -46,6 +46,7 @@ export class SurveyResponseService {
         },
         select: {
           id: true,
+          openedDate: true,
         },
         orderBy: {
           openedDate: 'asc',
