@@ -10,7 +10,6 @@ import { AnswerService } from './answer.service';
 import {
   AnswerGQL,
   AnswerCreateInput,
-  AnswerUpdateInput,
   AnswerWhereUniqueInput,
   QuestionGQL,
   SurveyResponseGQL,
@@ -38,24 +37,6 @@ export class AnswerResolver {
     @Args('answerCreateInput') answerCreateInput: AnswerCreateInput
   ): Promise<AnswerGQL> {
     return this.answerService.create(answerCreateInput);
-  }
-
-  @Mutation(() => AnswerGQL, { name: 'updateAnswer' })
-  async update(
-    @Args('AnswerWhereUniqueInput')
-    answerWhereUniqueInput: AnswerWhereUniqueInput,
-    @Args('AnswerUpdateInput')
-    answerUpdateInput: AnswerUpdateInput
-  ): Promise<AnswerGQL> {
-    return this.answerService.update(answerWhereUniqueInput, answerUpdateInput);
-  }
-
-  @Mutation(() => AnswerGQL, { name: 'deleteAnswer' })
-  async delete(
-    @Args('answerWhereUniqueInput')
-    answerWhereUniqueInput: AnswerWhereUniqueInput
-  ): Promise<{ deleted: boolean }> {
-    return this.answerService.delete(answerWhereUniqueInput);
   }
 
   @ResolveField(() => QuestionGQL)

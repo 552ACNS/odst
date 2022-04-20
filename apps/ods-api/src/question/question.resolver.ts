@@ -66,14 +66,6 @@ export class QuestionResolver {
     );
   }
 
-  @Mutation(() => QuestionGQL, { name: 'removeQuestion' })
-  async delete(
-    @Args('questionWhereUniqueInput')
-    questionWhereUniqueInput: QuestionWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    return this.questionService.delete(questionWhereUniqueInput);
-  }
-
   @ResolveField(() => [AnswerGQL])
   async answers(@Parent() question: QuestionGQL): Promise<AnswerGQL[]> {
     return this.questionService.answers({ id: question.id });
