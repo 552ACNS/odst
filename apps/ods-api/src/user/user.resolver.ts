@@ -5,6 +5,7 @@ import { OrgGQL, UserGQL } from '@odst/types/ods';
 // fix this when we have a better solution
 // eslint-disable-next-line no-restricted-imports
 import { Role } from '.prisma/ods/client';
+import { Public } from '@odst/auth';
 
 @Resolver(() => UserGQL)
 export class UserResolver {
@@ -17,13 +18,27 @@ export class UserResolver {
   //   return this.userService.findMany({});
   // }
 
-  @Query(() => [UserGQL], { name: 'findUsersWithRole' })
+  @Query(() => [UserGQL])
   async findUsersWithRole(@Args('role') role: Role): Promise<UserGQL[]> {
-    return this.userService.findUsersWithRole(role);
+    return this.userService.findMany({
+      where: {
+        role: role,
+      },
+    });
+  }
+
+  @Public()
+  @Query(() => [UserGQL])
+  async getCommanders(): Promise<UserGQL[]> {
+    return this.userService.findMany({
+      where: {
+        role: Role.CC,
+      },
+    });
   }
 
   @ResolveField(() => [OrgGQL])
-  async orgs(@Parent() user: UserGQL) {
+  async orgs(@Parent() user: UserGQL): Promise<OrgGQL[]> {
     return this.userService.orgs({ id: user.id });
   }
 }

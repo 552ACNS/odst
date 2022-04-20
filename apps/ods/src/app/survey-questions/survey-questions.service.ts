@@ -14,9 +14,9 @@ import {
   FindQuestionsBySurvey_FormQuery,
   FindQuestionsBySurvey_FormQueryVariables,
   FindQuestionsBySurvey_FormDocument,
-  FindUsersWithRole_FormQuery,
-  FindUsersWithRole_FormQueryVariables,
-  FindUsersWithRole_FormDocument,
+  GetCommanders_FormQuery,
+  GetCommanders_FormQueryVariables,
+  GetCommanders_FormDocument,
   Role,
 } from '../../graphql-generated';
 import { jsonTypeConverter } from '@odst/helpers';
@@ -40,19 +40,13 @@ export class SurveyQuestionsService {
 
   async findUsersWithRole(role: Role) {
     return this.apollo
-      .watchQuery<
-        FindUsersWithRole_FormQuery,
-        FindUsersWithRole_FormQueryVariables
-      >({
-        query: FindUsersWithRole_FormDocument,
-        variables: {
-          role: role,
-        },
+      .watchQuery<GetCommanders_FormQuery, GetCommanders_FormQueryVariables>({
+        query: GetCommanders_FormDocument,
       })
       .valueChanges.pipe(
         //TODO: fix this later when adding rank to user.
         map((result) =>
-          result.data.findUsersWithRole
+          result.data.getCommanders
             .map((x) => `${x.rank} ${x.lastName}, ${x.firstName}`)
             .sort()
         )

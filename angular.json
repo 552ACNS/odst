@@ -209,7 +209,7 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss",
+              "env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss --force-reset",
               "env-cmd -f apps/ods-api/.env.local yarn ts-node ./apps/ods-api/prisma-seed.ts"
             ],
             "schema": "apps/ods-api/schema.prisma",

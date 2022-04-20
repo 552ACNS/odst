@@ -33,4 +33,11 @@ export class LoginComponent /*implements OnInit*/ {
   //     this.loginForm.value['userPassword']
   //   );
   // }
+
+  submitLoginClick() {
+    this.loginService.submitLogin(
+      this.loginForm.value['userUsername'],
+      this.loginForm.value['userPassword']
+    );
+  }
 }

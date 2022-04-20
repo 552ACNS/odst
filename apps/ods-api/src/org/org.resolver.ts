@@ -15,11 +15,13 @@ import {
   UserGQL,
   SurveyGQL,
 } from '@odst/types/ods';
+import { Public } from '@odst/auth';
 
 @Resolver(() => OrgGQL)
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
+  @Public()
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
   async findMany(): Promise<OrgGQL[]> {
     return this.orgService.findMany({

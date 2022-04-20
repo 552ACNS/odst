@@ -9,7 +9,7 @@ import {
   RefreshLoginInput,
   SignupUserInput,
 } from './dtos/login.input';
-import { hashPassword } from '@odst/helpers';
+import { hash } from 'bcrypt';
 import { JwtPayloadRefresh } from './types/JwtPayload.types';
 
 @Injectable()
@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   async signup(signupUserInput: SignupUserInput): Promise<Tokens> {
-    const password = await hashPassword(signupUserInput.password);
+    const password = await hash(signupUserInput.password, 10);
 
     //if user exists, database will throw unique error
     const user = await this.userService.create({
@@ -129,7 +129,7 @@ export class AuthService {
         sub: userId,
       },
       {
-        expiresIn: process.env.NODE_ENV === 'production' ? '15m' : '5d',
+        expiresIn: process.env['NODE_ENV'] === 'production' ? '15m' : '5d',
         secret: this.secret,
       }
     );

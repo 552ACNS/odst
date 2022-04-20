@@ -46,13 +46,6 @@ export class UserService {
       where: userWhereUniqueInput,
     });
   }
-  async findUsersWithRole(role: Role): Promise<User[]> {
-    return this.prisma.user.findMany({
-      where: {
-        role: role,
-      },
-    });
-  }
 
   async orgs(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
