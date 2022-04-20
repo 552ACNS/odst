@@ -103,6 +103,7 @@ type Query {
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   findUsersWithRole(role: String!): [UserGQL!]!
   getCommanders: [UserGQL!]!
+  me: UserGQL!
 }
 
 input SurveyWhereUniqueInput {

@@ -6,6 +6,7 @@ import { OrgGQL, UserGQL } from '@odst/types/ods';
 // eslint-disable-next-line no-restricted-imports
 import { Role } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
+import { GetCurrentUser } from '@odst/shared/nest';
 
 @Resolver(() => UserGQL)
 export class UserResolver {
@@ -40,5 +41,10 @@ export class UserResolver {
   @ResolveField(() => [OrgGQL])
   async orgs(@Parent() user: UserGQL): Promise<OrgGQL[]> {
     return this.userService.orgs({ id: user.id });
+  }
+
+  @Query(() => UserGQL)
+  async me(@GetCurrentUser() user): Promise<UserGQL> {
+    return user;
   }
 }
