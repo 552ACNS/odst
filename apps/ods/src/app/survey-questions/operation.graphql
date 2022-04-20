@@ -18,6 +18,7 @@ mutation createSurveyWithQuestions_form($questionPrompts: [String!]!) {
   }
 }
 
+#TODO combine findMany orgs and getCommanders into one query
 query findManyOrgs_form {
   findManyOrgs {
     name
