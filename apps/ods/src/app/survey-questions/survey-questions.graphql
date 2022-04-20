@@ -9,13 +9,6 @@ mutation createSurveyResponse(
 ) {
   createSurveyResponse(surveyResponseCreateInput: $surveyResponseCreateInput) {
     id
-    survey {
-      id
-    }
-    openedDate
-    closedDate
-    routeOutside
-    resolution
   }
 }
 
@@ -39,7 +32,6 @@ query findQuestionsBySurvey($surveyWhereUniqueInput: SurveyWhereUniqueInput!) {
 
 query getCommanders {
   getCommanders {
-    id
     rank
     firstName
     lastName
