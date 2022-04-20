@@ -1,4 +1,4 @@
-query GetSurveyResponseData(
+query getSurveyResponseData(
   $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
 ) {
   getSurveyResponseData(
@@ -20,7 +20,7 @@ query getIssuesByStatus($resolved: Boolean!) {
   getIssuesByStatus(resolved: $resolved)
 }
 
-mutation UpdateSurveyResponse_Resolution(
+mutation updateSurveyResponse(
   $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
   $surveyResponseUpdateInput: SurveyResponseUpdateInput!
 ) {

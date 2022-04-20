@@ -6,7 +6,8 @@
 /out-tsc
 
 #generated files
-graphql-generated.ts
+*[-|.]generated.ts
+types.graphql.ts
 
 # dependencies
 /node_modules

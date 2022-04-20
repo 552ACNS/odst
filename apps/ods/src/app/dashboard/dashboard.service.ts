@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import {
-  DashboardIssueCountDocument,
-  DashboardIssueCountQuery,
-  DashboardIssueCountQueryVariables,
-} from '../../graphql-generated';
+  ResponseCountDocument,
+  ResponseCountQuery,
+  ResponseCountQueryVariables,
+} from './dashboard.generated';
 import { Subscription } from 'rxjs';
 
 @Injectable({
@@ -16,10 +16,10 @@ export class DashboardService {
 
   GetResponseCount() {
     return this.apollo.watchQuery<
-      DashboardIssueCountQuery,
-      DashboardIssueCountQueryVariables
+      ResponseCountQuery,
+      ResponseCountQueryVariables
     >({
-      query: DashboardIssueCountDocument,
+      query: ResponseCountDocument,
     }).valueChanges;
   }
 }
