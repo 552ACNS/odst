@@ -63,32 +63,4 @@ describe('Answer Resolver', () => {
       );
     });
   });
-
-  describe('update', () => {
-    it('should update a answer', async () => {
-      await expect(
-        resolver.update({ id: MockAnswers[0].id }, { value: 'new prompt' })
-      ).resolves.toEqual(MockAnswers[0]);
-    });
-  });
-
-  describe('delete', () => {
-    it('should return that it deleted a answer', async () => {
-      await expect(
-        resolver.delete({ id: 'a uuid that exists' })
-      ).resolves.toEqual({
-        deleted: true,
-      });
-    });
-    it('should return that it did not delete a answer', async () => {
-      const deleteSpy = jest
-        .spyOn(service, 'delete')
-        .mockResolvedValueOnce({ deleted: false });
-      await expect(
-        resolver.delete({ id: 'a uuid that does not exist' })
-      ).resolves.toEqual({ deleted: false });
-
-      expect(deleteSpy).toBeCalled();
-    });
-  });
 });

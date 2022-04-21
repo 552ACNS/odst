@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Prisma, Org, Role } from '.prisma/ods/client';
+import { User, Prisma, Org, RefreshToken } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -23,9 +23,37 @@ export class UserService {
     });
   }
 
+  async findUnique(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: userWhereUniqueInput,
+    });
+  }
+
+  async update(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    userUpdateInput: Prisma.UserUpdateInput
+  ): Promise<User> {
+    return this.prisma.user.update({
+      where: userWhereUniqueInput,
+      data: userUpdateInput,
+    });
+  }
+
   async orgs(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<Org[]> {
     return this.prisma.user.findUnique({ where: userWhereUniqueInput }).orgs();
+  }
+
+  async refreshToken(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<RefreshToken | null> {
+    return this.prisma.user
+      .findUnique({
+        where: userWhereUniqueInput,
+      })
+      .refreshToken();
   }
 }

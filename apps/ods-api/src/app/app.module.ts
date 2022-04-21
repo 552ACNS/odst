@@ -16,7 +16,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SurveyResponseModule } from '../surveyResponse/surveyResponse.module';
 import { AnswerModule } from '../answer/answer.module';
 import { QuestionModule } from '../question/question.module';
+import { AuthModule } from '@odst/auth';
 import { UserModule } from '../user/user.module';
+import { UserService } from '../user/user.service';
+import { JWTAuthGuard } from '@odst/auth';
+import { APP_GUARD } from '@nestjs/core';
 
 // Register enum types here, if they are used in multiple places, make sure that they are registered
 // only once and that the resource module that is imported first is the one that registers them
@@ -43,6 +47,22 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
     OrgModule,
     QuestionModule,
     UserModule,
+    AuthModule.forRootAsync(AuthModule, {
+      imports: [UserModule],
+      inject: [UserService],
+      useFactory: (userService: UserService) => {
+        return {
+          secret: process.env.NX_JWT_SECRET || 'secret',
+          userService,
+        };
+      },
+    }),
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JWTAuthGuard,
+    },
   ],
 })
 export class AppModule {}

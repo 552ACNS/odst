@@ -1,6 +1,6 @@
 import { JwtPayload, JwtPayloadRefresh } from '@odst/shared/nest';
 import jwt_decode from 'jwt-decode';
-
+//TODO move to auth lib?
 //These are used in gql.module, which is not async, so made these not async
 
 export function isJwtExpired(token: string): boolean {
