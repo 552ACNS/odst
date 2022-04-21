@@ -16,15 +16,14 @@ import {
   SurveyGQL,
   OrgWhereInput,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
+import { Public } from '@odst/auth';
 
 @Resolver(() => OrgGQL)
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
+  @Public()
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findMany(
     @Args('where', { nullable: true }) where: OrgWhereInput
   ): Promise<OrgGQL[]> {
@@ -38,7 +37,6 @@ export class OrgResolver {
 
   @Query(() => [OrgGQL], { name: 'getSubOrgs' })
   //TODO redo with findMany
-  // @UseGuards(AccessTokenAuthGuard)
   async getSubOrgs(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
@@ -47,7 +45,6 @@ export class OrgResolver {
   }
 
   @Query(() => OrgGQL, { name: 'findUniqueOrg' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
@@ -56,7 +53,6 @@ export class OrgResolver {
   }
 
   @Mutation(() => OrgGQL, { name: 'createOrg' })
-  // @UseGuards(AccessTokenAuthGuard)
   create(
     @Args('orgCreateInput') orgCreateInput: OrgCreateInput
   ): Promise<OrgGQL> {
@@ -64,7 +60,6 @@ export class OrgResolver {
   }
 
   @Mutation(() => OrgGQL, { name: 'updateOrg' })
-  // @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('OrgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput,
@@ -75,7 +70,6 @@ export class OrgResolver {
   }
 
   @Mutation(() => OrgGQL, { name: 'deleteOrg' })
-  // @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput

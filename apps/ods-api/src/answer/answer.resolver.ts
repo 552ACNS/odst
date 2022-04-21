@@ -10,14 +10,11 @@ import { AnswerService } from './answer.service';
 import {
   AnswerGQL,
   AnswerCreateInput,
-  AnswerUpdateInput,
   AnswerWhereUniqueInput,
   QuestionGQL,
   SurveyResponseGQL,
   AnswerWhereInput,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => AnswerGQL)
 export class AnswerResolver {
@@ -31,7 +28,6 @@ export class AnswerResolver {
   }
 
   @Query(() => AnswerGQL, { name: 'findUniqueAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('answerWhereUniqueInput')
     answerWhereUniqueInput: AnswerWhereUniqueInput
@@ -40,31 +36,10 @@ export class AnswerResolver {
   }
 
   @Mutation(() => AnswerGQL, { name: 'createAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
   create(
     @Args('answerCreateInput') answerCreateInput: AnswerCreateInput
   ): Promise<AnswerGQL> {
     return this.answerService.create(answerCreateInput);
-  }
-
-  @Mutation(() => AnswerGQL, { name: 'updateAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async update(
-    @Args('AnswerWhereUniqueInput')
-    answerWhereUniqueInput: AnswerWhereUniqueInput,
-    @Args('AnswerUpdateInput')
-    answerUpdateInput: AnswerUpdateInput
-  ): Promise<AnswerGQL> {
-    return this.answerService.update(answerWhereUniqueInput, answerUpdateInput);
-  }
-
-  @Mutation(() => AnswerGQL, { name: 'deleteAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async delete(
-    @Args('answerWhereUniqueInput')
-    answerWhereUniqueInput: AnswerWhereUniqueInput
-  ): Promise<{ deleted: boolean }> {
-    return this.answerService.delete(answerWhereUniqueInput);
   }
 
   @ResolveField(() => QuestionGQL)

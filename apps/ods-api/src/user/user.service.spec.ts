@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from './user.service';
-import { MockUserCreateInput, MockUsers } from './user.repo';
+import { MockUsers } from './user.repo';
 
 const db = {
   user: {

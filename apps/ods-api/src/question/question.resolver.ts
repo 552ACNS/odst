@@ -17,8 +17,7 @@ import {
   SurveyGQL,
   QuestionWhereInput,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
+import { Public } from '@odst/auth';
 
 @Resolver(() => QuestionGQL)
 export class QuestionResolver {
@@ -30,53 +29,42 @@ export class QuestionResolver {
   }
 
   @Query(() => [QuestionGQL], { name: 'getSubQuestions' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Public()
+
   //TODO redo with findMany
   async getSubQuestions(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ) {
+  ): Promise<QuestionGQL[]> {
     return this.questionService.findQuestionsInSurvey(surveyWhereUniqueInput);
   }
 
   @Query(() => QuestionGQL, { name: 'findUniqueQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('questionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput
-  ) {
+  ): Promise<QuestionGQL | null> {
     return this.questionService.findUnique(questionWhereUniqueInput);
   }
 
   @Mutation(() => QuestionGQL, { name: 'createQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   create(
     @Args('questionCreateInput') questionCreateInput: QuestionCreateInput
-  ) {
+  ): Promise<QuestionGQL> {
     return this.questionService.create(questionCreateInput);
   }
 
   @Mutation(() => QuestionGQL, { name: 'updateQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('QuestionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput,
     @Args('QuestionUpdateInput')
     questionUpdateInput: QuestionUpdateInput
-  ) {
+  ): Promise<QuestionGQL> {
     return this.questionService.update(
       questionWhereUniqueInput,
       questionUpdateInput
     );
-  }
-
-  @Mutation(() => QuestionGQL, { name: 'removeQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async delete(
-    @Args('questionWhereUniqueInput')
-    questionWhereUniqueInput: QuestionWhereUniqueInput
-  ) {
-    return this.questionService.delete(questionWhereUniqueInput);
   }
 
   @ResolveField(() => [AnswerGQL])

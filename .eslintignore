@@ -1,1 +1,2 @@
-graphql-generated.ts
+*.generated.ts
+types.graphql.ts

@@ -17,30 +17,27 @@ import {
   SurveyResponseGQL,
   SurveyWhereInput,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
+import { Public } from '@odst/auth';
 
 @Resolver(() => SurveyGQL)
 export class SurveyResolver {
   constructor(private readonly surveyService: SurveyService) {}
 
   @Query(() => [SurveyGQL], { name: 'findManySurveys' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findMany(@Args('where', { nullable: true }) where: SurveyWhereInput) {
     return this.surveyService.findMany({ where });
   }
 
   @Query(() => SurveyGQL, { name: 'findUniqueSurvey' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ) {
+  ): Promise<SurveyGQL | null> {
     return this.surveyService.findUnique(surveyWhereUniqueInput);
   }
 
+  @Public()
   @Mutation(() => SurveyGQL, { name: 'createSurveyWithQuestions' })
-  // @UseGuards(AccessTokenAuthGuard)
   async createWithQuestions(
     @Args({ name: 'questionPrompts', type: () => [String] })
     questionPrompts: string[]
@@ -49,33 +46,32 @@ export class SurveyResolver {
   }
 
   @Mutation(() => SurveyGQL, { name: 'createSurvey' })
-  // @UseGuards(AccessTokenAuthGuard)
-  create(@Args('surveyCreateInput') surveyCreateInput: SurveyCreateInput) {
+  create(
+    @Args('surveyCreateInput') surveyCreateInput: SurveyCreateInput
+  ): Promise<SurveyGQL> {
     return this.surveyService.create(surveyCreateInput);
   }
 
   @Mutation(() => SurveyGQL, { name: 'updateSurvey' })
-  // @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('SurveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput,
     @Args('SurveyUpdateInput')
     surveyUpdateInput: SurveyUpdateInput
-  ) {
+  ): Promise<SurveyGQL> {
     return this.surveyService.update(surveyWhereUniqueInput, surveyUpdateInput);
   }
 
   @Mutation(() => SurveyGQL, { name: 'deleteSurvey' })
-  // @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ) {
+  ): Promise<{ deleted: boolean; message?: string }> {
     return this.surveyService.delete(surveyWhereUniqueInput);
   }
 
   @ResolveField(() => [OrgGQL])
-  async orgs(@Parent() survey: SurveyGQL) {
+  async orgs(@Parent() survey: SurveyGQL): Promise<OrgGQL[]> {
     return this.surveyService.orgs({ id: survey.id });
   }
 

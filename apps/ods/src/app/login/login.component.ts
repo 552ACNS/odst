@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
+import { setAccessToken, setRefreshToken } from '@odst/helpers';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'odst-login',
@@ -10,27 +12,35 @@ import { LoginService } from './login.service';
 export class LoginComponent /*implements OnInit*/ {
   hide = true;
   loginForm = this.fb.group({
-    // TODO: Reenable once password is implemented
-
-    // userUsername: ['', Validators.required],
-    // userPassword: ['', Validators.required],
-    // rememberMe: ['', Validators.nullValidator],
-
-    userUsername: [''],
-    userPassword: [''],
-    rememberMe: [''],
+    userUsername: ['', Validators.required],
+    userPassword: ['', Validators.required],
+    rememberMe: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder, private loginService: LoginService) {}
+  constructor(
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private router: Router
+  ) {}
 
-  // ngOnInit(): void {
-  // }
-  //TODO: Fix maybe if AuthGuards are required in front end login routing
+  submitLoginClick() {
+    this.loginService
+      .submitLogin(
+        this.loginForm.value['userUsername'],
+        this.loginForm.value['userPassword']
+      )
+      .subscribe(({ data, errors }) => {
+        if (errors) {
+          alert('Username or Password was incorrect');
+        }
+        if (data) {
+          setAccessToken(data.login.accessToken);
+          if (this.loginForm.value['rememberMe']) {
+            setRefreshToken(data.login.refreshToken);
+          }
 
-  // submitLoginClick() {
-  //   this.loginService.submitLogin(
-  //     this.loginForm.value['userUsername'],
-  //     this.loginForm.value['userPassword']
-  //   );
-  // }
+          this.router.navigate(['dashboard']);
+        }
+      });
+  }
 }
