@@ -6,11 +6,11 @@ function getCACType(rawScan) {
 export function getFirstName(scanData) {
   // Depending on the CAC type, get the first name
   const cacType = getCACType(scanData);
-  let firstName = ''
+  let firstName = '';
   switch (cacType) {
     case 'M':
       firstName = scanData.substring(16, 36).trim();
-      
+
       break;
     case 'N':
       firstName = scanData.substring(15, 35).trim();
@@ -23,14 +23,14 @@ export function getMiddleInitial(scanData) {
   // Depending on the CAC type, get the middle initial
   const cacType = getCACType(scanData);
 
-  let middleInitial = ''
-  
+  let middleInitial = '';
+
   switch (cacType) {
     case 'M':
       middleInitial = scanData.substring(36, 37);
       break;
     case 'N':
-      middleInitial = scanData.substring(88,89);
+      middleInitial = scanData.substring(88, 89);
       break;
     default:
   }
@@ -40,11 +40,11 @@ export function getLastName(scanData) {
   // Depending on the CAC type, get the last name
   const cacType = getCACType(scanData);
 
-  let lastName = ''
+  let lastName = '';
   switch (cacType) {
     case 'M':
       lastName = scanData.substring(37, 52).trim();
-      
+
       break;
     case 'N':
       lastName = scanData.substring(35, 50).trim();
@@ -57,8 +57,8 @@ export function getDoDID(scanData) {
   // Depending on the CAC type, get the DoD ID
   const cacType = getCACType(scanData);
 
-  let dodID = ''
-  let parsedDoDID = ''
+  let dodID = '';
+  let parsedDoDID = '';
   switch (cacType) {
     case 'M':
       dodID = scanData.substring(1, 8);
@@ -76,7 +76,7 @@ export function getDoB(scanData) {
   // Depending on the CAC type, get the date of birth
   const cacType = getCACType(scanData);
 
-  let str = ''
+  let str = '';
   // eslint-disable-next-line prefer-const
   let dateOfBirth = new Date(1000, 0, 1);
   switch (cacType) {
@@ -95,17 +95,17 @@ export function getDoB(scanData) {
 export function getSSN(scanData) {
   // Depending on the CAC type, get the social security number
   const cacType = getCACType(scanData);
-  let socialSecurityNumber
+  let socialSecurityNumber;
   switch (cacType) {
     case 'M':
-      socialSecurityNumber = ''
+      socialSecurityNumber = '';
       break;
     case 'N':
-      socialSecurityNumber = parseInt(scanData.substring(1, 7), 32).toString(10);
+      socialSecurityNumber = parseInt(scanData.substring(1, 7), 32).toString(
+        10
+      );
       break;
     default:
   }
   return socialSecurityNumber;
 }
-
-

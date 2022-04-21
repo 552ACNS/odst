@@ -1,9 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
-import { Org, OrgTier } from '@prisma/client';
 import { Subscription } from 'rxjs';
 import { CreateOrgService } from './create-org.service';
+import {
+  CreateOrgDocument,
+  CreateOrgMutation,
+  CreateOrgMutationVariables,
+  FindManyOrgsDocument,
+  FindManyOrgsQuery,
+  FindManyOrgsQueryVariables,
+  OrgGql,
+  OrgTier,
+} from '../../graphql-generated';
 
 @Component({
   selector: 'odst-create-org',
@@ -13,11 +22,10 @@ import { CreateOrgService } from './create-org.service';
 export class CreateOrgComponent implements OnInit, OnDestroy {
   orgTiers: string[] = Object.values(OrgTier);
   orgAliases: string[] = [];
-  orgs: Partial<Org>[] = [
-    { id: '', name: '', aliases: [], orgTier: 'WING', parentId: null },
-  ];
+  orgs: Partial<OrgGql>[];
   querySubscription: Subscription;
   loading = true;
+  submitSuccess = false;
 
   orgForm = this.fb.group({
     orgName: ['', Validators.required],
@@ -27,7 +35,11 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
     orgChildren: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder, private apollo: Apollo, private orgService: CreateOrgService ) {}
+  constructor(
+    private fb: FormBuilder,
+    private apollo: Apollo,
+    private orgService: CreateOrgService
+  ) {}
   // isString(input: string): null | string{
   //   if(!input){
   //     return null;
@@ -37,7 +49,6 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-
   // addAlias(): void {
   //   if (this.orgForm.get(['orgAlias'])?.value !== null) {
   //     this.orgAliases.push(this.orgForm.get(['orgAlias'])?.value);
@@ -45,27 +56,24 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   //   }
   // }
   async ngOnInit(): Promise<void> {
-    const GET_ORGS = this.orgService.queryOrgs();
     this.querySubscription = this.apollo
-    .watchQuery<any>({
-      query: GET_ORGS,
-    })
-    .valueChanges.subscribe(({ data, loading }) => {
-      this.loading = loading;
-      this.orgs = data.findManyOrgs;
-    });
+      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+        query: FindManyOrgsDocument,
+      })
+      .valueChanges.subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.orgs = data.findManyOrgs;
+      });
   }
 
-   OrgSubmit(): void {
-    const SUBMIT_ORG = this.orgService.mutationCreateOrg();
-
+  OrgSubmit(): void {
     this.apollo
-      .mutate<any>({
-        mutation: SUBMIT_ORG,
+      .mutate<CreateOrgMutation, CreateOrgMutationVariables>({
+        mutation: CreateOrgDocument,
         variables: {
           orgCreateInput: {
-            name: this.orgForm.value["orgName"],
-            orgTier: this.orgForm.get(["orgTier"])?.value,
+            name: this.orgForm.value['orgName'],
+            orgTier: this.orgForm.get(['orgTier'])?.value,
             aliases: [],
             //TODO: Functionality with adding a parent or children orgs to an org being created+
             // parent: {
@@ -82,8 +90,9 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
         },
       })
       .subscribe(
+        //TODO deprecated
         ({ data }) => {
-          alert("IOrganization Added!")
+          this.submitSuccess = true;
         },
         (error) => {
           alert('There was an error sending the query: /n' + error);

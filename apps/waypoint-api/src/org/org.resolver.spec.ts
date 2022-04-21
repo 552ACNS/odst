@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { OrgResolver } from './org.resolver';
 import { OrgService } from './org.service';
-import { OrgCreateInput, OrgGQL, OrgUpdateInput } from '@odst/types';
+import { OrgCreateInput, OrgGQL, OrgUpdateInput } from '@odst/types/waypoint';
 import { TestOrgCreateInput } from './org.repo';
 
 describe('OrgResolver', () => {
@@ -51,7 +51,7 @@ describe('OrgResolver', () => {
     const methodToSpy = 'orgs';
 
     const resolvedOrgs: OrgGQL[] = TestOrgCreateInput.map(
-      (org) => org as unknown as OrgGQL,
+      (org) => org as unknown as OrgGQL
     );
 
     // Change value of promise
@@ -97,7 +97,7 @@ describe('OrgResolver', () => {
     const methodToSpy = 'getSubOrgs';
 
     const resolvedOrgs: OrgGQL[] = TestOrgCreateInput.map(
-      (org) => org as unknown as OrgGQL,
+      (org) => org as unknown as OrgGQL
     );
 
     const parentOrg: OrgGQL = TestOrgCreateInput[0] as unknown as OrgGQL;

@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Incident, Prisma } from '@prisma/client';
+import { Incident, Prisma } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
-
 
 @Injectable()
 export class IncidentService {
-
   constructor(private prisma: PrismaService) {}
-  
   async findUnique(
-    incidentWhereUniqueInput: Prisma.IncidentWhereUniqueInput,
+    incidentWhereUniqueInput: Prisma.IncidentWhereUniqueInput
   ): Promise<Incident | null> {
     return this.prisma.incident.findUnique({
       where: incidentWhereUniqueInput,
@@ -20,6 +17,5 @@ export class IncidentService {
     return this.prisma.incident.create({
       data,
     });
-  } 
-  
+  }
 }

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrgService } from '../org/org.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { PersonCreateInput, PersonGQL } from '@odst/types';
+import { PersonCreateInput, PersonGQL } from '@odst/types/waypoint';
 import { PersonResolver } from './person.resolver';
 import { PersonService } from './person.service';
 import { TestPersonCreateInput } from './person.repo';
@@ -54,7 +54,7 @@ describe('PersonsResolver', () => {
     const methodToSpy = 'findMany';
 
     const resolvedPersons: PersonGQL[] = testPersons.map(
-      (person) => person as unknown as PersonGQL,
+      (person) => person as unknown as PersonGQL
     );
 
     // Change value of promise
@@ -88,7 +88,7 @@ describe('PersonsResolver', () => {
       .spyOn(servicer, methodToSpy)
       .mockImplementation(() => result);
     // Call the createPerson method by calling the controller
-    const actual = await resolver.findUnique({ dodId : personToFind.dodId });
+    const actual = await resolver.findUnique({ dodId: personToFind.dodId });
     // Assert that the method was called
     expect(spy).toHaveBeenCalled();
 
@@ -105,7 +105,7 @@ describe('PersonsResolver', () => {
     const resolvedPersons: PersonGQL[] = testPersons
       .filter(
         (personInput) =>
-          personInput.org?.connect?.id === 'ck3q0xqj0cq0a0129x0x0x0x',
+          personInput.org?.connect?.id === 'ck3q0xqj0cq0a0129x0x0x0x'
       )
       .map((person) => person as unknown as PersonGQL);
     // Change value of promise
@@ -130,7 +130,7 @@ describe('PersonsResolver', () => {
   it('Should update a Person', async () => {
     // TEST PARAMS
     const methodToSpy = 'update';
-    const newfirstName = "new.firstName";
+    const newfirstName = 'new.firstName';
     //Create a GQL definition of the Person to update
     const updatedPerson: PersonGQL = testPersons[2] as unknown as PersonGQL;
 
@@ -143,7 +143,10 @@ describe('PersonsResolver', () => {
       .mockImplementation(() => result);
 
     // Call the update service and get the actual to be compared to result
-    const actual = await resolver.update({ dodId: updatedPerson.dodId }, { firstName: newfirstName });
+    const actual = await resolver.update(
+      { dodId: updatedPerson.dodId },
+      { firstName: newfirstName }
+    );
     // Assert that the method was called
     expect(spy).toHaveBeenCalled();
     //Determine if the actual and result are the same
@@ -172,4 +175,26 @@ describe('PersonsResolver', () => {
     //Determine if the actual and result are the same
     expect(actual).toEqual(deletedPerson);
   });
+
+  // it('should throw error on the method to create a person with incorrect height', async () => {
+  //   const createdPerson: PersonCreateInput = TestPersonCreateInput[0];
+  //   createdPerson.height = 101;
+
+  //   await resolver.create(createdPerson);
+
+  //   // Call the createPerson method by calling the controller
+  //   // try {
+  //   //   const actual = await resolver.create(createdPerson);
+
+  //   //   // expect(actual).toBe(resolvedPerson);
+  //   //   //fail('Expected to fail');
+  //   // } catch (error) {
+  //   //   expect(error).toBeInstanceOf(BadRequestException)
+  //   //   expect(spy).toHaveBeenCalled();
+  //   // }
+
+  //   // // Assert that the method was called
+
+  //   // expect(actual).toBe(resolvedPerson);
+  // });
 });

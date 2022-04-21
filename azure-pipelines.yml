@@ -10,7 +10,6 @@ variables:
   ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
     NX_BRANCH: $(System.PullRequest.PullRequestNumber)
 
-
 jobs:
   - job: master
     pool:
@@ -56,7 +55,7 @@ jobs:
         inputs:
           packageType: sdk
           version: 6.x
-      - script: npx nx run waypoint-api:prisma-generate
+      - script: yarn nx run-many --target=prisma-generate --all=true --parallel=false
         displayName: Generate Prisma clients
       - script: npx nx affected --target=lint --base=origin/master --head=HEAD --parallel
         displayName: Run linter

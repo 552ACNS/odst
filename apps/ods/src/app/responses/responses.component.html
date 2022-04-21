@@ -1,0 +1,60 @@
+<div class="mx-auto min-w-[340px] w-[95%] max-w-[500px] mt-2 space-y-3">
+  <h1 class="text-center dark:text-white">
+    {{ resolved ? 'Resolved' : 'Unresolved' }} Responses
+  </h1>
+  <mat-paginator
+    class="flex justify-center border-1 border-solid border-dark-blue rounded-2xl shadow-md"
+    [length]="numberOfResponses"
+    [pageIndex]="displayedIndex"
+    [pageSize]="1"
+    [hidePageSize]="true"
+    [showFirstLastButtons]="true"
+    (page)="pageEvent = displayIssue($event)"
+  >
+  </mat-paginator>
+
+  <p class="text-center dark:text-white">Date Submitted: {{ openedDate }}</p>
+
+  <mat-card
+    *ngFor="let qa of questionsAnswers; let i = index"
+    class="rounded-2xl shadow-md"
+  >
+    <mat-card-content class="text-sm text-left">
+      <p class="text-base font-medium">{{ i + 1 }}. {{ qa[0] }}</p>
+      <p>{{ qa[1] }}</p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="rounded-2xl shadow-md">
+    <mat-card-content class="text-sm text-left">
+      <form [formGroup]="resolutionForm">
+        <p class="text-base font-medium">How was this addressed?</p>
+        <!-- Not empty validator -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>I took the following actions...</mat-label>
+
+          <textarea matInput [formControlName]="'resolution'" rows="3">
+          </textarea>
+        </mat-form-field>
+        <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
+          <button
+            mat-stroked-button
+            class="w-full shadow-md rounded-full"
+            type="reset"
+            [routerLink]="['/dashboard']"
+          >
+            Back
+          </button>
+          <button
+            mat-button
+            class="w-full bg-dark-blue text-white shadow-md rounded-full"
+            (click)="submitResolutionClick()"
+            type="submit"
+          >
+            <!-- TODO: redirect to dashboard when there are no more reports to address -->
+            Submit
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

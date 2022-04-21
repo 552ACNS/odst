@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgres"
+  url      = env("NX_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/.prisma/ods/client"
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  password     String
+  enabled      Boolean       @default(true)
+  rank         String?
+  firstName    String
+  lastName     String
+  role         Role
+  refreshToken RefreshToken?
+  orgs         Org[]
+}
+
+model RefreshToken {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
+  isRevoked   Boolean  @default(false)
+  issuedDate  DateTime @default(now())
+  expiredDate DateTime
+  hash        String
+}
+
+model Org {
+  id       String   @id @default(uuid())
+  name     String   @unique // Example "552 ACNS"
+  orgTier  OrgTier
+  users    User[]
+  parentId String? // a parent org can have many child orgs
+  parent   Org?     @relation(name: "ParentChild", fields: [parentId], references: [id])
+  children Org[]    @relation(name: "ParentChild") // This is a self relation
+  surveys  Survey[]
+}
+
+model SurveyResponse {
+  id           String    @id @default(uuid())
+  survey       Survey    @relation(fields: [surveyId], references: [id])
+  surveyId     String
+  openedDate   DateTime  @default(now())
+  closedDate   DateTime?
+  answers      Answer[]
+  routeOutside Boolean   @default(false)
+  resolution   String?
+}
+
+model Answer {
+  id               String         @id @default(uuid())
+  value            String
+  question         Question       @relation(fields: [questionId], references: [id])
+  questionId       String
+  surveyResponse   SurveyResponse @relation(fields: [surveyResponseId], references: [id])
+  surveyResponseId String
+}
+
+model Survey {
+  id              String           @id @default(uuid())
+  orgs            Org[]
+  questions       Question[]
+  questionsHash   String?          @unique
+  surveyResponses SurveyResponse[]
+}
+
+model Question {
+  id      String   @id @default(uuid())
+  prompt  String   @unique
+  surveys Survey[]
+  answers Answer[]
+}
+
+enum Role {
+  ADMIN
+  DEI // Diversity, Equity, Inclusion
+  EO // Equal Opportunity
+  CC // Commander
+}
+
+enum Spec {
+  AD
+  CIVILIAN
+  CONTRACTOR
+  RESERVE_GUARD
+}
+
+enum OrgTier {
+  WING
+  GROUP
+  SQUADRON
+  OTHER
+}

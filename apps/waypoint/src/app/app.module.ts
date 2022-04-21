@@ -5,23 +5,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
 import { GQLModule } from '@odst/gql';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CreatePersonComponent } from './create-person/create-person.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CreateOrgComponent } from './create-org/create-org.component';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from './material.module';
-import { LoginComponent } from './login/login.component';
-import { TableComponent } from './table/table.component';
+//import { MaterialModule } from './material.module';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { AppRoutingModule } from './app.routing';
+import { environment } from '../environments/environment';
+import { NavigationBarRoutingModule } from './navigation-bar/navigation-bar.routing';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CreatePersonComponent,
-    CreateOrgComponent,
-    LoginComponent,
-    TableComponent
-  ],
+  declarations: [AppComponent, NavigationBarComponent],
   imports: [
     RouterModule.forRoot([]),
     BrowserModule,
@@ -30,9 +26,13 @@ import { TableComponent } from './table/table.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    //MaterialModule,
+    AppRoutingModule,
+    NavigationBarRoutingModule,
+    MatSidenavModule,
+    MatIconModule,
   ],
-  providers: [Apollo],
+  providers: [Apollo, { provide: 'environment', useValue: environment }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

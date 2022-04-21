@@ -1,29 +1,28 @@
 {
-  "version": 1,
+  "version": 2,
   "projects": {
+    "auth": "libs/auth",
     "gql": {
       "projectType": "library",
       "root": "libs/gql",
       "sourceRoot": "libs/gql/src",
       "prefix": "odst",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/gql"
-          ],
-          "options": {
-            "jestConfig": "libs/gql/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/gql/src/**/*.ts",
               "libs/gql/src/**/*.html"
             ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/gql"],
+          "options": {
+            "jestConfig": "libs/gql/jest.config.js",
+            "passWithNoTests": true
           }
         }
       },
@@ -33,16 +32,16 @@
       "root": "libs/helpers",
       "sourceRoot": "libs/helpers/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/helpers/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/helpers"],
           "options": {
             "jestConfig": "libs/helpers/jest.config.js",
@@ -52,19 +51,248 @@
       },
       "tags": []
     },
-    "types": {
-      "root": "libs/types",
-      "sourceRoot": "libs/types/src",
-      "projectType": "library",
-      "architect": {
+    "ods": {
+      "projectType": "application",
+      "root": "apps/ods",
+      "sourceRoot": "apps/ods/src",
+      "prefix": "odst",
+      "targets": {
+        "build": {
+          "executor": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/ods",
+            "index": "apps/ods/src/index.html",
+            "main": "apps/ods/src/main.ts",
+            "polyfills": "apps/ods/src/polyfills.ts",
+            "tsConfig": "apps/ods/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["apps/ods/src/favicon.ico", "apps/ods/src/assets"],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/ods/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/ods/src/environments/environment.ts",
+                  "with": "apps/ods/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/types/**/*.ts"
+              "apps/ods/src/**/*.ts",
+              "apps/ods/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ods"],
+          "options": {
+            "jestConfig": "apps/ods/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "serve": {
+          "executor": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ods:build:production"
+            },
+            "development": {
+              "browserTarget": "ods:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4210,
+            "proxyConfig": "apps/ods/proxy.conf.json"
+          }
+        },
+        "extract-i18n": {
+          "executor": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ods:build"
+          }
+        }
+      },
+      "tags": []
+    },
+    "ods-api": {
+      "root": "apps/ods-api",
+      "sourceRoot": "apps/ods-api/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/ods-api",
+            "main": "apps/ods-api/src/main.ts",
+            "tsConfig": "apps/ods-api/tsconfig.app.json",
+            "tsPlugins": ["@nestjs/graphql/plugin"],
+            "assets": ["apps/ods-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/ods-api/src/environments/environment.ts",
+                  "with": "apps/ods-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/ods-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ods-api"],
+          "options": {
+            "jestConfig": "apps/ods-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:node",
+          "options": {
+            "buildTarget": "ods-api:build"
+          }
+        },
+        "prisma-generate": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "npx prisma generate --schema=apps/ods-api/schema.prisma"
+          }
+        },
+        "prisma-migrate": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss --force-reset",
+              "env-cmd -f apps/ods-api/.env.local yarn ts-node ./apps/ods-api/prisma-seed.ts"
+            ],
+            "schema": "apps/ods-api/schema.prisma",
+            "parallel": false
+          },
+          "configurations": {
+            "test": {
+              "command": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
+            },
+            "production": {
+              "command": "env-cmd -f apps/ods-api/.env.prod prisma migrate dev"
+            }
+          }
+        },
+        "prisma-studio": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "env-cmd -f apps/ods-api/.env.local npx prisma studio",
+            "schema": "apps/ods-api/schema.prisma"
+          }
+        }
+      },
+      "tags": []
+    },
+    "ods-e2e": {
+      "root": "apps/ods-e2e",
+      "sourceRoot": "apps/ods-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ods-e2e/cypress.json",
+            "devServerTarget": "ods:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ods:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/ods-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["ods"]
+    },
+    "shared-nest": "libs/shared/nest",
+    "types-ods": {
+      "root": "libs/types/ods",
+      "sourceRoot": "libs/types/ods/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "libs/types/ods/src/**/*.ts",
+              "libs/types/ods/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "types-waypoint": {
+      "root": "libs/types/waypoint",
+      "sourceRoot": "libs/types/waypoint/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "libs/types/waypoint/src/**/*.ts",
+              "libs/types/waypoint/src/**/*.html"
             ]
           }
         }
@@ -76,12 +304,10 @@
       "root": "apps/waypoint",
       "sourceRoot": "apps/waypoint/src",
       "prefix": "odst",
-      "architect": {
+      "targets": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "executor": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/waypoint",
             "index": "apps/waypoint/src/index.html",
@@ -132,8 +358,25 @@
           },
           "defaultConfiguration": "production"
         },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/waypoint/src/**/*.ts",
+              "apps/waypoint/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/waypoint"],
+          "options": {
+            "jestConfig": "apps/waypoint/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "executor": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "browserTarget": "waypoint:build:production"
@@ -148,28 +391,9 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "executor": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "waypoint:build"
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "apps/waypoint/src/**/*.ts",
-              "apps/waypoint/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/waypoint"
-          ],
-          "options": {
-            "jestConfig": "apps/waypoint/jest.config.js",
-            "passWithNoTests": true
           }
         }
       },
@@ -179,22 +403,16 @@
       "root": "apps/waypoint-api",
       "sourceRoot": "apps/waypoint-api/src",
       "projectType": "application",
-      "architect": {
+      "targets": {
         "build": {
-          "builder": "@nrwl/node:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "executor": "@nrwl/node:webpack",
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/waypoint-api",
             "main": "apps/waypoint-api/src/main.ts",
             "tsConfig": "apps/waypoint-api/tsconfig.app.json",
-            "tsPlugins": [
-              "@nestjs/graphql/plugin"
-            ],
-            "assets": [
-              "apps/waypoint-api/src/assets"
-            ]
+            "tsPlugins": ["@nestjs/graphql/plugin"],
+            "assets": ["apps/waypoint-api/src/assets"]
           },
           "configurations": {
             "production": {
@@ -210,52 +428,39 @@
             }
           }
         },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "waypoint-api:build"
-          }
-        },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/waypoint-api/**/*.ts"
-            ]
+            "lintFilePatterns": ["apps/waypoint-api/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/waypoint-api"
-          ],
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/waypoint-api"],
           "options": {
             "jestConfig": "apps/waypoint-api/jest.config.js",
             "passWithNoTests": true
           }
         },
+        "serve": {
+          "executor": "@nrwl/node:node",
+          "options": {
+            "buildTarget": "waypoint-api:build"
+          }
+        },
         "prisma-generate": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "npx prisma generate --schema=apps/waypoint-api/schema.prisma"
           }
         },
-        "prisma-studio": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "command": "env-cmd -f apps/waypoint-api/.env.local npx prisma studio",
-            "schema": "apps/waypoint-api/schema.prisma"
-          }
-        },
         "prisma-migrate": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
               "env-cmd -f apps/waypoint-api/.env.local npx prisma db push --accept-data-loss",
-              "env-cmd -f apps/waypoint-api/.env.local npx prisma db seed"
+              "env-cmd -f apps/waypoint-api/.env.local yarn ts-node ./apps/waypoint-api/prisma-seed.ts"
             ],
             "schema": "apps/waypoint-api/schema.prisma",
             "parallel": false
@@ -268,6 +473,13 @@
               "command": "env-cmd -f apps/waypoint-api/.env.prod prisma migrate dev"
             }
           }
+        },
+        "prisma-studio": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "env-cmd -f apps/waypoint-api/.env.local npx prisma studio",
+            "schema": "apps/waypoint-api/schema.prisma"
+          }
         }
       },
       "tags": []
@@ -276,9 +488,9 @@
       "root": "apps/waypoint-e2e",
       "sourceRoot": "apps/waypoint-e2e/src",
       "projectType": "application",
-      "architect": {
+      "targets": {
         "e2e": {
-          "builder": "@nrwl/cypress:cypress",
+          "executor": "@nrwl/cypress:cypress",
           "options": {
             "cypressConfig": "apps/waypoint-e2e/cypress.json",
             "devServerTarget": "waypoint:serve:development"
@@ -290,21 +502,15 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/waypoint-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/waypoint-e2e/**/*.{js,ts}"]
           }
         }
       },
       "tags": [],
-      "implicitDependencies": [
-        "waypoint"
-      ]
+      "implicitDependencies": ["waypoint"]
     }
   }
 }

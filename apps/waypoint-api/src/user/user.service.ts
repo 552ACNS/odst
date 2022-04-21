@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserCreateInput } from '@odst/types';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, User } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -8,7 +7,7 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async user(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
@@ -43,7 +42,7 @@ export class UserService {
   }
 
   async findUnique(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
@@ -52,7 +51,7 @@ export class UserService {
 
   async update(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-    userUpdateInput: Prisma.UserUpdateInput,
+    userUpdateInput: Prisma.UserUpdateInput
   ): Promise<User> {
     return this.prisma.user.update({
       where: userWhereUniqueInput,
@@ -60,19 +59,23 @@ export class UserService {
     });
   }
 
-  async delete(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
+  async delete(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<User> {
     return this.prisma.user.delete({
       where: userWhereUniqueInput,
     });
   }
 
-
-  async upsert(userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-    userUpdateInput: Prisma.UserUpdateInput, userCreateInput: UserCreateInput): Promise<User> {
+  async upsert(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    userUpdateInput: Prisma.UserUpdateInput,
+    userCreateInput: Prisma.UserCreateInput
+  ): Promise<User> {
     return this.prisma.user.upsert({
       where: userWhereUniqueInput,
       update: userUpdateInput,
-      create: userCreateInput
+      create: userCreateInput,
     });
   }
 }

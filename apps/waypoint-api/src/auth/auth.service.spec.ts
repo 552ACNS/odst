@@ -1,14 +1,10 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  LoginUserInput,
-  SignupUserInput,
-  UserWhereUniqueInput,
-} from '@odst/types';
-import { User } from '@prisma/client';
+import { User, Prisma } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { prismaMock } from '../prisma/singleton';
+import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 
@@ -17,16 +13,12 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        JwtModule.register({
-          signOptions: { expiresIn: '15m' },
-          secret: 'this-should-not-be-hardcoded-here', //process.env.JWT_SECRET
-        }),
-      ],
+      imports: [JwtModule.register({})],
       providers: [
         AuthService,
         UserService,
         { provide: PrismaService, useValue: prismaMock },
+        RefreshTokenService,
       ],
     }).compile();
 
@@ -43,11 +35,11 @@ describe('AuthService', () => {
   });
 
   it('should throw UnauthorizedException due to incorrecct credentials', async () => {
-    const userInput: LoginUserInput = {
+    const userInput = {
       username: 'idonotexist',
       password: 'password',
     };
-    const userWhereUniqueInput: UserWhereUniqueInput = {
+    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = {
       username: userInput.username,
     };
     const resolvedUser: User = userWhereUniqueInput as unknown as User;
@@ -60,13 +52,13 @@ describe('AuthService', () => {
   });
 
   it('should sign up user', async () => {
-    const userInput: SignupUserInput = {
+    const userInput = {
       username: 'test',
       password: 'test',
       person: { connect: { dodId: 123456789 } },
     };
 
-    await service.signup(userInput);
+    await await service.signup(userInput);
 
     expect(prismaMock.user.create).toHaveBeenCalled();
   });

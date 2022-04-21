@@ -1,0 +1,6 @@
+{
+  "/ods-api": {
+    "target": "http://localhost:3343",
+    "secure": false
+  }
+}

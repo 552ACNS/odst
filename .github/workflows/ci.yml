@@ -19,14 +19,16 @@ jobs:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v2
-      - uses: actions/setup-node@v2 
-        with: 
+      - uses: actions/setup-node@v2
+        with:
           node-version: '16'
           cache: 'yarn'
       - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
       - name: Generate Prisma clients
-        run: npx nx run waypoint-api:prisma-generate
+        run: yarn nx run-many --target=prisma-generate --all=true --parallel=false
+      - name: Generate Graphql types
+        run: npx graphql-codegen --config graphql.codegen.yml
       - run: npx nx affected --target=test --parallel
   pr:
     runs-on: ubuntu-latest
@@ -41,26 +43,25 @@ jobs:
         with:
           main-branch-name: master
       - uses: actions/setup-node@v2
-        with: 
+        with:
           node-version: '16'
           cache: 'yarn'
       - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
-      - name: Setup .NET 6.x
-        uses: actions/setup-dotnet@v1
-        with:
-          # Semantic version range syntax or exact version of a dotnet version
-          dotnet-version: '6.x'
-      - name: Generate Prisma clients
-        run: npx nx run waypoint-api:prisma-generate
-      - run: npx nx affected --target=lint --parallel
-      - run: npx nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
-      - run: dotnet tool update -g dotnet-reportgenerator-globaltool
-        continue-on-error: true
-      - name: Report Generator
-        run: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:HtmlInline_AzurePipelines;"
-        continue-on-error: true
-      - name: Upload coverage report artifact
-        uses: actions/upload-artifact@v2.2.3
-        with:
-          path: ./coverage/merged # Directory containing files to upload
+      # - name: Setup .NET 6.x
+      #   uses: actions/setup-dotnet@v1
+      #   with:
+      #     # Semantic version range syntax or exact version of a dotnet version
+      #     dotnet-version: '6.x'
+      - run: yarn nx affected --target=lint --parallel
+      # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
+      - run: yarn nx affected --target=test --parallel
+      # - run: dotnet tool update -g dotnet-reportgenerator-globaltool
+      #   continue-on-error: true
+      # - name: Merge Test Coverage Results
+      #   run: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:TextSummary;"
+      #   continue-on-error: true
+      # - name: Upload coverage report artifact
+      #   uses: actions/upload-artifact@v2.2.3
+      #   with:
+      #     path: ./coverage/merged # Directory containing files to upload

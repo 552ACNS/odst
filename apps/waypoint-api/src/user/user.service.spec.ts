@@ -1,9 +1,8 @@
-import { User } from '.prisma/client';
+import { User, Prisma } from '.prisma/waypoint/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from './user.service';
 import { prismaMock } from '../prisma/singleton';
-import { UserUpdateInput, UserWhereUniqueInput } from '@odst/types';
 import { TestUserCreateInput } from './user.repo';
 
 describe('UsersService', () => {
@@ -26,7 +25,7 @@ describe('UsersService', () => {
 
   it('Should find a user', async () => {
     const userInput = TestUserCreateInput[0];
-    const userWhereUniqueInput: UserWhereUniqueInput = {
+    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = {
       username: userInput.username,
     };
 
@@ -49,37 +48,32 @@ describe('UsersService', () => {
   });
 
   it('Should find a unique user', async () => {
-    const userInput: UserWhereUniqueInput = {
+    const userInput: Prisma.UserWhereUniqueInput = {
       username: TestUserCreateInput[0].username,
     };
 
-    await service.findUnique(
-      userInput.username as unknown as User,
-    );
+    await service.findUnique(userInput.username as unknown as User);
 
     expect(prismaMock.user.findUnique).toHaveBeenCalled();
   });
 
   it('Should update a user', async () => {
     const userInput = TestUserCreateInput[0];
-    const userWhereUniqueInput: UserWhereUniqueInput = {
+    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = {
       username: userInput.username,
     };
-    const userUpdateInput: UserUpdateInput = {
+    const userUpdateInput: Prisma.UserUpdateInput = {
       username: 'new.username',
     };
 
-    await service.update(
-      userWhereUniqueInput,
-      userUpdateInput,
-    );
+    await service.update(userWhereUniqueInput, userUpdateInput);
 
     expect(prismaMock.user.update).toHaveBeenCalled();
   });
 
   it('Should delete a user', async () => {
     const userInput = TestUserCreateInput[0];
-    const userWhereUniqueInput: UserWhereUniqueInput = {
+    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = {
       username: userInput.username,
     };
     await service.delete(userWhereUniqueInput);
@@ -90,7 +84,7 @@ describe('UsersService', () => {
 
   it('Should find a list of people skipiing 1, taking 3, with matching username', async () => {
     const userInput = TestUserCreateInput[3];
-    const userWhereUniqueInput: UserWhereUniqueInput = {
+    const userWhereUniqueInput: Prisma.UserWhereUniqueInput = {
       username: userInput.username,
     };
 

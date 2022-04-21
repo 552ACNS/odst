@@ -2,15 +2,15 @@
 version: '3.7'
 
 services:
-    postgres:
-        container_name: postgres
-        image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
-        environment:
-            - POSTGRES_PASSWORD=H@CK3YITPL3ASE
-        ports:
-            - "5432:5432/tcp"
-        networks:
-            - waypoint-network
+  postgres:
+    container_name: postgres
+    image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
+    environment:
+      - POSTGRES_PASSWORD=H@CK3YITPL3ASE
+    ports:
+      - '5432:5432/tcp'
+    networks:
+      - waypoint-network
 
 networks:
-    waypoint-network:
+  waypoint-network:

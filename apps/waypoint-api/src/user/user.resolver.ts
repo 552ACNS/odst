@@ -5,9 +5,9 @@ import {
   UserUpdateInput,
   UserGQL,
   UserWhereUniqueInput,
-} from '@odst/types';
+} from '@odst/types/waypoint';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt.auth-guard';
+import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 
 @Resolver(() => UserGQL)
 export class UserResolver {
@@ -35,31 +35,31 @@ export class UserResolver {
   // ths uses the guard because to make an account while unauthenticated you use the signup mutation
   // password provided must be the hashed password for user to be able to log in
   @Mutation(() => UserGQL, { name: 'createUser' })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenAuthGuard)
   async create(
     @Args('userCreateInput') userCreateInput: UserCreateInput
   ): Promise<UserGQL> {
-    return await this.userService.create(userCreateInput);
+    return this.userService.create(userCreateInput);
   }
 
   // find all users
   @Query(() => [UserGQL], { name: 'findManyUsers' })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenAuthGuard)
   async findMany(): Promise<UserGQL[]> {
     return this.userService.findMany();
   }
 
   @Query(() => UserGQL, { name: 'findUniqueUser' })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('userWhereUniqueInput')
     userWhereUniqueInput: UserWhereUniqueInput
-  ) {
+  ): Promise<UserGQL | null> {
     return this.userService.findUnique(userWhereUniqueInput);
   }
 
   @Mutation(() => UserGQL, { name: 'updateUser' })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('userWhereUniqueInput')
     userWhereUniqueInput: UserWhereUniqueInput,
@@ -73,7 +73,7 @@ export class UserResolver {
   }
 
   @Mutation(() => UserGQL, { name: 'deleteUser' })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('userWhereUniqueInput')
     userWhereUniqueInput: UserWhereUniqueInput

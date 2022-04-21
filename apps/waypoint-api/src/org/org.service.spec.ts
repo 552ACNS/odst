@@ -1,10 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Org } from '@prisma/client';
+import { Org, Prisma } from '.prisma/waypoint/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { TestOrgCreateInput } from './org.repo';
 import { OrgService } from './org.service';
 import { prismaMock } from '../prisma/singleton';
-import { OrgWhereInput, OrgWhereUniqueInput, OrgUpdateInput } from '@odst/types';
 
 describe('OrgService', () => {
   let service: OrgService;
@@ -23,7 +22,7 @@ describe('OrgService', () => {
 
   it('Should find an org', async () => {
     const orgInput = TestOrgCreateInput[0];
-    const orgWhereUniqueInput: OrgWhereUniqueInput = {
+    const orgWhereUniqueInput: Prisma.OrgWhereUniqueInput = {
       name: orgInput.name,
     };
 
@@ -44,7 +43,7 @@ describe('OrgService', () => {
   });
 
   it('Should find a unique org', async () => {
-    const orgInput: OrgWhereUniqueInput = {
+    const orgInput: Prisma.OrgWhereUniqueInput = {
       name: TestOrgCreateInput[0].name,
     };
     await service.findUnique(orgInput.name as unknown as Org);
@@ -54,10 +53,10 @@ describe('OrgService', () => {
 
   it('Should update a org', async () => {
     const orgInput = TestOrgCreateInput[0];
-    const orgWhereUniqueInput: OrgWhereUniqueInput = {
+    const orgWhereUniqueInput: Prisma.OrgWhereUniqueInput = {
       name: orgInput.name,
     };
-    const orgUpdateInput: OrgUpdateInput = {
+    const orgUpdateInput: Prisma.OrgUpdateInput = {
       orgTier: 'SQUADRON',
     };
 
@@ -67,7 +66,7 @@ describe('OrgService', () => {
 
   it('Should delete a org', async () => {
     const orgInput = TestOrgCreateInput[0];
-    const orgWhereUniqueInput: OrgWhereUniqueInput = {
+    const orgWhereUniqueInput: Prisma.OrgWhereUniqueInput = {
       name: orgInput.name,
     };
     await service.delete(orgWhereUniqueInput);
@@ -77,9 +76,11 @@ describe('OrgService', () => {
   });
 
   it('Should find all orgs that are a sub org to the given org', async () => {
-    TestOrgCreateInput.forEach((orgCreateInput) => service.create(orgCreateInput));
+    TestOrgCreateInput.forEach((orgCreateInput) =>
+      service.create(orgCreateInput)
+    );
 
-    const orgInput: OrgWhereUniqueInput = {
+    const orgInput: Prisma.OrgWhereUniqueInput = {
       name: TestOrgCreateInput[0].name,
     };
 
@@ -95,7 +96,7 @@ describe('OrgService', () => {
 
   it('Should find a list of people skipiing 1, taking 3, with matching name', async () => {
     const orgInput = TestOrgCreateInput[3];
-    const orgWhereUniqueInput: OrgWhereUniqueInput = {
+    const orgWhereUniqueInput: Prisma.OrgWhereUniqueInput = {
       name: orgInput.name,
     };
 
@@ -111,7 +112,7 @@ describe('OrgService', () => {
   });
 
   it('Should find a list of people skipiing 3, taking 1, with matching name', async () => {
-    const orgWhereInput: OrgWhereInput = {
+    const orgWhereInput: Prisma.OrgWhereInput = {
       orgTier: 'WING',
     };
 

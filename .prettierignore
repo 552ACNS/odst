@@ -2,3 +2,7 @@
 
 /dist
 /coverage
+schema.graphql
+*.generated.ts
+types.graphql.ts
+

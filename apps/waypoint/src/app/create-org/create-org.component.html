@@ -11,9 +11,7 @@
           formControlName="orgName"
           required
         />
-        <mat-hint>
-          Please enter organization acronym
-        </mat-hint>
+        <mat-hint> Please enter organization acronym </mat-hint>
       </mat-form-field>
       <mat-form-field>
         <mat-select placeholder="Organization Tier" formControlName="orgTier">
@@ -21,9 +19,7 @@
             {{ orgTier }}
           </mat-option>
         </mat-select>
-        <mat-hint>
-          Please select organization tier
-        </mat-hint>
+        <mat-hint> Please select organization tier </mat-hint>
       </mat-form-field>
       <mat-form-field>
         <input
@@ -61,6 +57,7 @@
       </mat-form-field>
       <div>
         <button
+          id="btnOrgSubmit"
           class="m-2"
           mat-raised-button
           color="primary"
@@ -68,8 +65,10 @@
           [disabled]="!orgForm.valid"
         >
           Submit
+          <mat-icon class="ml-1" *ngIf="submitSuccess" id="orgCheck"
+            >check</mat-icon
+          >
         </button>
-        
       </div>
     </mat-card-content>
   </mat-card>

@@ -1,0 +1,74 @@
+import { Injectable } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import { map, pluck, take } from 'rxjs';
+import {
+  GetIssuesByStatusDocument,
+  GetIssuesByStatusQuery,
+  GetIssuesByStatusQueryVariables,
+  GetSurveyResponseDataDocument,
+  GetSurveyResponseDataQuery,
+  GetSurveyResponseDataQueryVariables,
+  UpdateSurveyResponseDocument,
+  UpdateSurveyResponseMutation,
+  UpdateSurveyResponseMutationVariables,
+} from './responses.generated';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ResponsesService {
+  constructor(private apollo: Apollo) {}
+  async getResponseIDsByStatus(resolved: boolean) {
+    return this.apollo
+      .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
+        query: GetIssuesByStatusDocument,
+        variables: {
+          resolved: resolved,
+        },
+      })
+      .valueChanges.pipe(
+        map((result) => result.data.getIssuesByStatus),
+        take(1)
+      );
+    // pluck lets me retrieve nested data.
+  }
+
+  updateResolution(id: string, resolution: string) {
+    return this.apollo
+      .mutate<
+        UpdateSurveyResponseMutation,
+        UpdateSurveyResponseMutationVariables
+      >({
+        mutation: UpdateSurveyResponseDocument,
+        variables: {
+          surveyResponseWhereUniqueInput: {
+            id: id,
+          },
+          surveyResponseUpdateInput: {
+            // We can opt to not send date now and instead just do it in the
+            // back end, but that would mean having to make another
+            // UpdateSurveyResponse method
+            closedDate: Date.now(),
+            resolution: resolution,
+          },
+        },
+      })
+      .subscribe();
+  }
+
+  async getResponseData(responseID: string) {
+    return this.apollo
+      .watchQuery<
+        GetSurveyResponseDataQuery,
+        GetSurveyResponseDataQueryVariables
+      >({
+        query: GetSurveyResponseDataDocument,
+        variables: {
+          surveyResponseWhereUniqueInput: {
+            id: responseID,
+          },
+        },
+      })
+      .valueChanges.pipe(pluck('data', 'getSurveyResponseData'));
+  }
+}

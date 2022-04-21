@@ -1,0 +1,50 @@
+<div class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-3">
+  <mat-card class="rounded-2xl shadow-md">
+    <mat-card-title class="font-medium text-black text-sm">
+      Observations of Discrimination in the Squadron
+    </mat-card-title>
+    <mat-card-content class="text-sm space-y-3">
+      <p>
+        The responses provided will be analyzed and addressed at the appropriate
+        command level (Squadron/Group/Wing). This form is meant to facilitate
+        low level resolution.
+      </p>
+      <p>
+        DO NOT formally report instances of sexual assault or harassment, or
+        suicidal intent/threat to life on this form. A formal investigation will
+        be launched.
+      </p>
+      <p>
+        Please do not include names or identifying information in your accounts.
+        If you'd like to file a formal complaint, please speak to the
+        appropriate command team.
+      </p>
+      <p>False reporting may result in disciplinary actions.</p>
+    </mat-card-content>
+    <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
+      <a
+        mat-stroked-button
+        class="w-full shadow-md rounded-full"
+        href="https://www.tinker.af.mil"
+      >
+        Decline
+      </a>
+      <button
+        mat-button
+        class="w-full bg-dark-blue text-white shadow-md rounded-full"
+        [routerLink]="['/survey']"
+      >
+        Accept
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- this lies outside the box -->
+  <button
+    mat-button
+    class="flex underline ml-auto justify-end mt-2 rounded-2xl dark:text-white"
+    [routerLink]="['/login']"
+  >
+    I want to login
+  </button>
+</div>
