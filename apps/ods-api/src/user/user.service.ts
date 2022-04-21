@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Prisma, Org, RefreshToken, Role } from '.prisma/ods/client';
+import { User, Prisma, Org, RefreshToken } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -23,9 +23,11 @@ export class UserService {
     });
   }
 
-  async create(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({
-      data,
+  async findUnique(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: userWhereUniqueInput,
     });
   }
 
@@ -36,14 +38,6 @@ export class UserService {
     return this.prisma.user.update({
       where: userWhereUniqueInput,
       data: userUpdateInput,
-    });
-  }
-
-  async findUnique(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<User | null> {
-    return this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
     });
   }
 

@@ -1,4 +1,4 @@
-import { Resolver, Parent, ResolveField, Args, Query } from '@nestjs/graphql';
+import { Resolver, Parent, ResolveField, Query, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { OrgGQL, UserGQL } from '@odst/types/ods';
 
