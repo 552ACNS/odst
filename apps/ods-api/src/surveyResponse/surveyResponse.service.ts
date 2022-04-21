@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
 import { ResponseCount } from '@odst/types/ods';
 
+type statuses = { unresolved: string[]; resolved: string[]; overdue: string[] };
 @Injectable()
 export class SurveyResponseService {
   constructor(private prisma: PrismaService) {}
@@ -155,6 +156,66 @@ export class SurveyResponseService {
       unresolved: unresolvedCount,
       overdue: overdueCount,
       resolved: resolvedCount,
+    };
+  }
+
+  async getResponseStatus(): Promise<statuses> {
+    //TODO: Promise a number array and remove awaits
+
+    const unresolvedStatus = await this.prisma.surveyResponse
+      .findMany({
+        where: {
+          resolution: null,
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      })
+      .then((unresolvedStatus) =>
+        unresolvedStatus.map((unresolvedStatus) => unresolvedStatus.id)
+      );
+
+    const resolvedStatus = await this.prisma.surveyResponse
+      .findMany({
+        where: {
+          resolution: { not: null },
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      })
+      .then((resolvedStatus) =>
+        resolvedStatus.map((resolvedStatus) => resolvedStatus.id)
+      );
+
+    const overdueStatus = await this.prisma.surveyResponse
+      .findMany({
+        where: {
+          openedDate: {
+            lt: new Date(Date.now() - 2592000000),
+          },
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      })
+      .then((overdueStatus) =>
+        overdueStatus.map((overdueStatus) => overdueStatus.id)
+      );
+
+    return {
+      unresolved: unresolvedStatus,
+      overdue: overdueStatus,
+      resolved: resolvedStatus,
     };
   }
 
