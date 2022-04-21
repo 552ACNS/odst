@@ -107,3 +107,7 @@ When creating a new prisma database, you need to specify what project it is made
 ### - Tailwind isn't working w/ Material
 
 Ensure that you marked Tailwind as "Important" under tailwind config.
+
+### - No loader available on a .graphql file in frontend
+
+Don't import from the .graphql file, import from .generated file
