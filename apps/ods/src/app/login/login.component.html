@@ -23,9 +23,18 @@
           formcontrolname="userUsername"
           type="text"
           matInput
+          required="true"
           placeholder="Username"
           [formControlName]="'userUsername'"
         />
+        <mat-error
+          *ngIf="
+            loginForm.controls['userUsername'].hasError('email') &&
+            !loginForm.controls['userUsername'].hasError('required')
+          "
+        >
+          Please enter a valid Email
+        </mat-error>
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
       <br />

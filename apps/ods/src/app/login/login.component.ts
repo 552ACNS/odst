@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class LoginComponent /*implements OnInit*/ {
   hide = true;
   loginForm = this.fb.group({
-    userUsername: ['', Validators.required],
+    userUsername: ['', [Validators.required, Validators.email]],
     userPassword: ['', Validators.required],
     rememberMe: ['', Validators.nullValidator],
   });

@@ -31,7 +31,9 @@ describe('ods', () => {
       .click({ force: true })
       .type('{enter}');
     cy.get('#mat-radio-8').click();
-    cy.get('[formcontrolname="impact"]').type('it made me cry');
+    cy.get('[formcontrolname="impact"]').type(
+      'negative impact on work environment'
+    );
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
