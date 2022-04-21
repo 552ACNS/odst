@@ -6,20 +6,23 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  //at least it isn't :Promise<any>
   async findMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;
     where?: Prisma.UserWhereInput;
     orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<User[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+    select?: Prisma.UserSelect;
+  }): Promise<unknown> {
+    const { skip, take, cursor, where, orderBy, select } = params;
     return this.prisma.user.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
+      select,
     });
   }
 
