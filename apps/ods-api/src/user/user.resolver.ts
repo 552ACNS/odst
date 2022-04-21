@@ -28,7 +28,7 @@ export class UserResolver {
     });
   }
 
-  //TODO write custom pipe to not need serarate route for this
+  //TODO write custom pipe to not need separate route for this
   @Public()
   @Query(() => [UserGQL])
   async getCommanders(): Promise<UserGQL[]> {
