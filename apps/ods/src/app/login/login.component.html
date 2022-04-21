@@ -1,7 +1,7 @@
 <div
   class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] text-center mt-3"
 >
-  <mat-card class="rounded-2xl">
+  <mat-card class="rounded-2xl shadow-md">
     <mat-card-title class="ml-0 text-4xl font-extrabold">
       Sign In
     </mat-card-title>
@@ -23,9 +23,18 @@
           formcontrolname="userUsername"
           type="text"
           matInput
+          required="true"
           placeholder="Username"
           [formControlName]="'userUsername'"
         />
+        <mat-error
+          *ngIf="
+            loginForm.controls['userUsername'].hasError('email') &&
+            !loginForm.controls['userUsername'].hasError('required')
+          "
+        >
+          Please enter a valid Email
+        </mat-error>
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
       <br />

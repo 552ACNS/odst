@@ -1,5 +1,5 @@
 <div class="mx-auto min-w-[340px] w-[95%] max-w-[500px] mt-2 space-y-3">
-  <h1 class="text-center">
+  <h1 class="text-center dark:text-white">
     {{ resolved ? 'Resolved' : 'Unresolved' }} Responses
   </h1>
   <mat-paginator
@@ -13,7 +13,7 @@
   >
   </mat-paginator>
 
-  <p class="text-center">Date Submitted: {{ openedDate }}</p>
+  <p class="text-center dark:text-white">Date Submitted: {{ openedDate }}</p>
 
   <mat-card
     *ngFor="let qa of questionsAnswers; let i = index"
