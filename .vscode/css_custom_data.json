@@ -50,6 +50,16 @@
           "url": "https://tailwindcss.com/docs/functions-and-directives#apply"
         }
       ]
+    },
+    {
+      "name": "@layer",
+      "description": "Use the @layer directive to tell Tailwind which bucket a set of custom styles belong to",
+      "references": [
+        {
+          "name": "Tailwind Documentation",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#layer"
+        }
+      ]
     }
   ]
 }

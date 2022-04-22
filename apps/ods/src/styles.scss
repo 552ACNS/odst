@@ -84,10 +84,14 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+// declares a parent-div attribute that can be reused in multiple places
 .parent-div {
   @apply container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-3;
 }
 
-.mat-card {
-  @apply rounded-2xl;
+@layer base {
+  .mat-card {
+    // Need to wrap important in SASS interpolation to work with Tailwind
+    @apply rounded-2xl shadow-md #{!important};
+  }
 }
