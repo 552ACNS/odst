@@ -41,7 +41,7 @@ describe('Answer Resolver', () => {
 
   describe('findMany', () => {
     it('should get an array of answers', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(MockAnswers);
+      await expect(resolver.findMany({})).resolves.toEqual(MockAnswers);
     });
   });
 
