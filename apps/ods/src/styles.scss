@@ -1,4 +1,7 @@
 @use '@angular/material' as mat;
+
+@import '~@angular/material/theming';
+
 @include mat.core();
 
 @tailwind base;
@@ -66,11 +69,13 @@ $dark-theme: mat.define-dark-theme(
 // Apply the light theme by default
 @include mat.core-color($light-theme);
 @include mat.button-color($light-theme);
+@include angular-material-theme($light-theme);
 
 // Apply the dark theme if someone's machine prefers it
 @media (prefers-color-scheme: dark) {
   @include mat.core-theme($dark-theme);
   @include mat.button-theme($dark-theme);
+  @include angular-material-theme($dark-theme);
 }
 
 /* You can add global styles to this file, and also import other style files */
