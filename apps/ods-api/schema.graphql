@@ -86,24 +86,175 @@ type Tokens {
 }
 
 type Query {
-  findManySurveys: [SurveyGQL!]!
+  findManySurveys(where: SurveyWhereInput): [SurveyGQL!]!
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
-  findManySurveyResponses: [SurveyResponseGQL!]!
+  findManySurveyResponses(where: SurveyResponseWhereInput): [SurveyResponseGQL!]!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   ResponseCount: ResponseCount!
   getIssuesByStatus(resolved: Boolean!): [String!]!
   getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
-  findManyAnswers: [AnswerGQL!]!
+  findManyAnswers(where: AnswerWhereInput): [AnswerGQL!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
-  findManyOrgs: [OrgGQL!]!
+  findManyOrgs(where: OrgWhereInput): [OrgGQL!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  findManyQuestions: [QuestionGQL!]!
+  findManyQuestions(where: QuestionWhereInput): [QuestionGQL!]!
   getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   findUsersWithRole(role: String!): [UserGQL!]!
   getCommanders: [UserGQL!]!
   me: UserGQL!
+}
+
+input SurveyWhereInput {
+  id: String
+  questionsHash: String
+  orgs: OrgListRelationFilter
+  questions: QuestionListRelationFilter
+  surveyResponses: SurveyResponseListRelationFilter
+}
+
+input OrgListRelationFilter {
+  every: OrgWhereInput
+  some: OrgWhereInput
+  none: OrgWhereInput
+}
+
+input OrgWhereInput {
+  id: String
+  name: String
+  orgTier: OrgTier
+  users: UserListRelationFilter
+  parent: OrgRelationFilter
+  children: SurveyListRelationFilter
+  surveys: SurveyListRelationFilter
+}
+
+input UserListRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
+}
+
+input UserWhereInput {
+  id: String
+  email: String
+  roles: Role
+  orgs: OrgListRelationFilter
+  enabled: Boolean
+}
+
+input OrgRelationFilter {
+  is: OrgWhereInput
+  isNot: OrgWhereInput
+}
+
+input SurveyListRelationFilter {
+  every: SurveyWhereInput
+  some: SurveyWhereInput
+  none: SurveyWhereInput
+}
+
+input QuestionListRelationFilter {
+  every: QuestionWhereInput
+  some: QuestionWhereInput
+  none: QuestionWhereInput
+}
+
+input QuestionWhereInput {
+  id: String
+  prompt: String
+  surveys: SurveyListRelationFilter
+  answers: AnswerListRelationFilter
+}
+
+input AnswerListRelationFilter {
+  every: AnswerWhereInput
+  some: AnswerWhereInput
+  none: AnswerWhereInput
+}
+
+input AnswerWhereInput {
+  id: String
+  value: StringFilter
+  question: QuestionRelationFilter
+  surveyResponse: SurveyResponseRelationFilter
+}
+
+input StringFilter {
+  not: StringFilter
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+}
+
+input QuestionRelationFilter {
+  is: QuestionWhereInput
+  isNot: QuestionWhereInput
+}
+
+input SurveyResponseRelationFilter {
+  is: SurveyResponseWhereInput
+  isNot: SurveyResponseWhereInput
+}
+
+input SurveyResponseWhereInput {
+  id: String
+  survey: SurveyWhereInput
+  openedDate: DateTimeFilter
+  closedDate: DateTimeNullableFilter
+  answers: AnswerListRelationFilter
+  resolution: StringNullableFilter
+  routeOutside: Boolean
+}
+
+input DateTimeFilter {
+  not: DateTimeFilter
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+}
+
+input DateTimeNullableFilter {
+  not: DateTimeNullableFilter
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+}
+
+input StringNullableFilter {
+  not: StringFilter
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+}
+
+input SurveyResponseListRelationFilter {
+  every: SurveyResponseWhereInput
+  some: SurveyResponseWhereInput
+  none: SurveyResponseWhereInput
 }
 
 input SurveyWhereUniqueInput {
