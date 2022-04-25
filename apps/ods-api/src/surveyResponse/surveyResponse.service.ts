@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SurveyResponse, Prisma, Survey, Answer } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-// eslint-disable-next-line no-restricted-imports
-import { ResponseCount } from '@odst/types/ods';
 
 @Injectable()
 export class SurveyResponseService {
@@ -33,66 +31,6 @@ export class SurveyResponseService {
     });
   }
 
-  // Get the string IDs of all the issues that are unresolved that the commander
-  // has responsibility over
-
-  async getIssuesByStatus(resolved: boolean): Promise<string[]> {
-    const responsesIDs = await this.prisma.surveyResponse
-      .findMany({
-        where: {
-          resolution: resolved ? { not: null } : null,
-        },
-        select: {
-          id: true,
-        },
-        orderBy: {
-          openedDate: 'asc',
-        },
-      })
-      .then((responses) => responses.map((response) => response.id));
-
-    // TODO Depends on user to be logged in, renable once we have a user
-    // const responsesIDs = await this.prisma.surveyResponse
-    //   .findMany({
-    //     where: {
-    //       survey: {
-    //         orgs: {
-    //           every: {
-    //             commanders: {
-    //               every: {
-    //                 id: userId,
-    //               },
-    //             },
-    //           },
-    //         },
-    //       },
-    //     },
-    //     select: {
-    //       id: true,
-    //     },
-    //   })
-    //   .then((responses) => responses.map((response) => response.id));
-
-    return responsesIDs;
-  }
-
-  // Get the string IDs of all the issues that are unresolved that the commander
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  async getSurveyResponseData(
-    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
-  ) {
-    return this.prisma.surveyResponse.findUnique({
-      where: surveyResponseWhereUniqueInput,
-      include: {
-        answers: {
-          include: {
-            question: true,
-          },
-        },
-      },
-    });
-  }
-
   async create(
     data: Prisma.SurveyResponseCreateInput
   ): Promise<SurveyResponse> {
@@ -112,11 +50,11 @@ export class SurveyResponseService {
   }
 
   async delete(
-    orgWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
   ): Promise<{ deleted: boolean; message?: string }> {
     try {
       await this.prisma.surveyResponse.delete({
-        where: orgWhereUniqueInput,
+        where: surveyResponseWhereUniqueInput,
       });
       return { deleted: true };
     } catch (err) {
@@ -124,36 +62,36 @@ export class SurveyResponseService {
     }
   }
 
-  // TODO: Optimize at a later date, so we don't go back and forth to the server
+  async countResponses(
+    surveyResponseWhereInput: Prisma.SurveyResponseWhereInput
+  ): Promise<number[]> {
+    // TODO: Optimize at a later date, so we don't go back and forth to the server
+    // Will need a custom data loader to do this. Or use _count subfield inside a query that prisma already batches
 
-  async countResponses(): Promise<ResponseCount> {
-    //TODO: Promise a number array and remove awaits
-
-    const unresolvedCount = await this.prisma.surveyResponse.count({
+    const unresolvedCount = this.prisma.surveyResponse.count({
       where: {
         resolution: null,
+        ...surveyResponseWhereInput,
       },
     });
 
-    const resolvedCount = await this.prisma.surveyResponse.count({
+    const resolvedCount = this.prisma.surveyResponse.count({
       where: {
         resolution: { not: null },
+        ...surveyResponseWhereInput,
       },
     });
 
-    const overdueCount = await this.prisma.surveyResponse.count({
+    const overdueCount = this.prisma.surveyResponse.count({
       where: {
         openedDate: {
           lt: new Date(Date.now() - 2592000000),
         },
+        ...surveyResponseWhereInput,
       },
     });
 
-    return {
-      unresolved: unresolvedCount,
-      overdue: overdueCount,
-      resolved: resolvedCount,
-    };
+    return Promise.all([unresolvedCount, overdueCount, resolvedCount]);
   }
 
   async survey(

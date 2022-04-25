@@ -66,31 +66,33 @@ export class ResponsesComponent implements OnInit {
 
   async getResponseData(responseID: string) {
     (await this.responsesService.getResponseData(responseID)).subscribe(
-      (data) => {
-        this.openedDate = formatDate(
-          data.openedDate,
-          'MMM d yy, h:mm a',
-          'en-US'
-        );
+      ({ data }) => {
+        if (data) {
+          this.openedDate = formatDate(
+            data.findUniqueSurveyResponse.openedDate,
+            'MMM d yy, h:mm a',
+            'en-US'
+          );
 
-        if (this.resolved) {
-          this.resolutionForm.setValue({
-            resolution: data.resolution,
+          if (this.resolved) {
+            this.resolutionForm.setValue({
+              resolution: data.findUniqueSurveyResponse.resolution,
+            });
+          }
+
+          // Clear contents of QA array
+          this.questionsAnswers = [];
+
+          // Handle the Questions & Answers
+          data.findUniqueSurveyResponse.answers?.forEach((answer) => {
+            // Clear contents of QA array
+            // Create the Question/Answer Array
+            this.questionsAnswers.push([
+              String(answer?.question?.prompt),
+              answer.value,
+            ]);
           });
         }
-
-        // Clear contents of QA array
-        this.questionsAnswers = [];
-
-        // Handle the Questions & Answers
-        data.answers?.forEach((answer) => {
-          // Clear contents of QA array
-          // Create the Question/Answer Array
-          this.questionsAnswers.push([
-            String(answer?.question?.prompt),
-            answer.value,
-          ]);
-        });
       }
     );
   }
@@ -102,6 +104,7 @@ export class ResponsesComponent implements OnInit {
         resolution: '',
       });
 
+      //TODO rewrite with proper pagination
       this.displayedIndex = pageEvent.pageIndex;
 
       this.getResponseData(this.responseIDs[this.displayedIndex]);
