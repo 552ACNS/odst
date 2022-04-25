@@ -13,6 +13,7 @@ import {
   AnswerWhereUniqueInput,
   QuestionGQL,
   SurveyResponseGQL,
+  AnswerWhereInput,
 } from '@odst/types/ods';
 
 @Resolver(() => AnswerGQL)
@@ -20,8 +21,10 @@ export class AnswerResolver {
   constructor(private readonly answerService: AnswerService) {}
 
   @Query(() => [AnswerGQL], { name: 'findManyAnswers' })
-  async findMany(): Promise<AnswerGQL[]> {
-    return this.answerService.findMany({});
+  async findMany(
+    @Args('where', { nullable: true }) where: AnswerWhereInput
+  ): Promise<AnswerGQL[]> {
+    return this.answerService.findMany({ where });
   }
 
   @Query(() => AnswerGQL, { name: 'findUniqueAnswer' })

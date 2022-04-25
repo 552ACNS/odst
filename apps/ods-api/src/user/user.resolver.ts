@@ -45,7 +45,7 @@ export class UserResolver {
   }
 
   @Query(() => UserGQL)
-  async me(@GetCurrentUser() user): Promise<UserGQL> {
+  async me(@GetCurrentUser() user: UserGQL): Promise<UserGQL> {
     return user;
   }
 }

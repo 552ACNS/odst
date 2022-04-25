@@ -14,6 +14,7 @@ import {
   OrgWhereUniqueInput,
   UserGQL,
   SurveyGQL,
+  OrgWhereInput,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
@@ -23,8 +24,11 @@ export class OrgResolver {
 
   @Public()
   @Query(() => [OrgGQL], { name: 'findManyOrgs' })
-  async findMany(): Promise<OrgGQL[]> {
+  async findMany(
+    @Args('where', { nullable: true }) where: OrgWhereInput
+  ): Promise<OrgGQL[]> {
     return this.orgService.findMany({
+      where,
       orderBy: {
         name: 'asc',
       },
