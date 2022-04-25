@@ -40,7 +40,7 @@ describe('Survey Resolver', () => {
 
   describe('findMany', () => {
     it('should get an array of surveys', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(MockSurveys);
+      await expect(resolver.findMany({})).resolves.toEqual(MockSurveys);
     });
   });
 

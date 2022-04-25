@@ -15,6 +15,7 @@ import {
   AnswerGQL,
   SurveyGQL,
   ResponseCount,
+  SurveyResponseWhereInput,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
@@ -23,8 +24,10 @@ export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
 
   @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
-  async findMany(): Promise<SurveyResponseGQL[]> {
-    return this.surveyResponseService.findMany({});
+  async findMany(
+    @Args('where', { nullable: true }) where: SurveyResponseWhereInput
+  ): Promise<SurveyResponseGQL[]> {
+    return this.surveyResponseService.findMany({ where });
   }
 
   @Query(() => SurveyResponseGQL, { name: 'findUniqueSurveyResponse' })
