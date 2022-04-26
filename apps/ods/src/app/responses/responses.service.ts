@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ResolvedReflectiveFactory } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, pluck, take } from 'rxjs';
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
   GetIssuesByStatusQueryVariables,
+  GetResponseByStatusDocument,
+  GetResponseByStatusQuery,
+  GetResponseByStatusQueryVariables,
   GetSurveyResponseDataDocument,
   GetSurveyResponseDataQuery,
   GetSurveyResponseDataQueryVariables,
@@ -31,6 +34,15 @@ export class ResponsesService {
         take(1)
       );
     // pluck lets me retrieve nested data.
+  }
+
+  async getResponseByStatus() {
+    return this.apollo.watchQuery<
+      GetResponseByStatusQuery,
+      GetResponseByStatusQueryVariables
+    >({
+      query: GetResponseByStatusDocument,
+    }).valueChanges;
   }
 
   updateResolution(id: string, resolution: string) {
