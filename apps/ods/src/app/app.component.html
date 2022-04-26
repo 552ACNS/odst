@@ -1,1 +1,17 @@
-<router-outlet></router-outlet>
+<div class="flex flex-col space-y-3 h-full">
+  <div class="flex-grow">
+    <router-outlet></router-outlet>
+  </div>
+  <footer
+    class="relative flex justify-between flex-none items-center h-fit border-t bg-[#3f51b5] bg-card dark:bg-transparent text-white print:hidden"
+  >
+    <span class="font-medium text-secondary ml-4" color="primary"
+      >Scorpion Camp &copy; Tinker AFB, 2022</span
+    >
+    <img
+      class="mr-4 mt-2"
+      src="assets/ScorpionCamp5_-_hires_-_transparent_-_small.png"
+      alt="Scorpion"
+    />
+  </footer>
+</div>
