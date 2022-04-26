@@ -1,46 +1,44 @@
 @use '@angular/material' as mat;
 
-@import '~@angular/material/theming';
-
-@include mat.core();
+// @import '~@angular/material/theming';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-$darkblue-palette: (
-  50: #e4e6ed,
-  100: #bcc1d4,
-  200: #9199b6,
-  300: #687399,
-  400: #4a5786,
-  500: #2c3c74,
-  600: #27366c,
-  700: #1f2d62,
-  800: #182456,
-  900: #0d153f,
-  A100: #ffffff,
-  A200: #dde6f3,
-  A400: #6992c9,
-  A700: #38649d,
+// $darkblue-palette: (
+//   50: #e4e6ed,
+//   100: #bcc1d4,
+//   200: #9199b6,
+//   300: #687399,
+//   400: #4a5786,
+//   500: #2c3c74,
+//   600: #27366c,
+//   700: #1f2d62,
+//   800: #182456,
+//   900: #0d153f,
+//   A100: #ffffff,
+//   A200: #dde6f3,
+//   A400: #6992c9,
+//   A700: #38649d,
 
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #ffffff,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000,
-  ),
-);
+//   contrast: (
+//     50: #000000,
+//     100: #000000,
+//     200: #000000,
+//     300: #000000,
+//     400: #ffffff,
+//     500: #ffffff,
+//     600: #ffffff,
+//     700: #ffffff,
+//     800: #ffffff,
+//     900: #ffffff,
+//     A100: #000000,
+//     A200: #000000,
+//     A400: #000000,
+//     A700: #000000,
+//   ),
+// );
 
 // Define a light theme
 $light-theme: mat.define-light-theme(
@@ -63,11 +61,11 @@ $dark-theme: mat.define-dark-theme(
 );
 
 // Apply the light theme by default
-@include angular-material-theme($light-theme);
+@include mat.all-component-themes($light-theme);
 
 // Apply the dark theme if someone's machine prefers it
 @media (prefers-color-scheme: dark) {
-  @include angular-material-theme($dark-theme);
+  @include mat.all-component-colors($dark-theme);
 }
 
 /* You can add global styles to this file, and also import other style files */
