@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'ods-api',
-  preset: '../../jest.preset.js',
+  displayName: 'waypoint-api',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,6 +11,7 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/ods-api',
+  coverageDirectory: '../../coverage/apps/waypoint-api',
   setupFiles: ['./jest.setup.ts'],
+  preset: '../../jest.preset.ts',
 };
