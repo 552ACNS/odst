@@ -8,7 +8,7 @@ export const MockSurveyResponses: SurveyResponse[] = [
     closedDate: new Date(),
     surveyId: 'surveyId',
     routeOutside: false,
-    resolution: 'resolved',
+    resolved: false,
   },
   {
     id: 'SurveyResponse id 2',
@@ -16,7 +16,7 @@ export const MockSurveyResponses: SurveyResponse[] = [
     closedDate: new Date(),
     surveyId: 'surveyId',
     routeOutside: false,
-    resolution: 'resolved',
+    resolved: true,
   },
 ];
 

@@ -15,6 +15,7 @@ import {
   AnswerGQL,
   SurveyGQL,
   ResponseCount,
+  CommentGQL,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
@@ -105,5 +106,12 @@ export class SurveyResponseResolver {
     @Parent() surveyResponse: SurveyResponseGQL
   ): Promise<SurveyGQL | null> {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
+  }
+
+  @ResolveField(() => [CommentGQL])
+  async comments(
+    @Parent() surveyResponse: SurveyResponseGQL
+  ): Promise<CommentGQL[]> {
+    return this.surveyResponseService.comments({ id: surveyResponse.id });
   }
 }

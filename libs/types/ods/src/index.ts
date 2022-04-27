@@ -2,6 +2,7 @@
 export * from './entity/answer.entity';
 export * from './entity/org.entity';
 export * from './entity/question.entity';
+export * from './entity/comment.entity';
 export * from './entity/survey.entity';
 export * from './entity/surveyResponse.entity';
 export * from './entity/user.entity';

@@ -75,7 +75,7 @@ export class ResponsesComponent implements OnInit {
 
         if (this.resolved) {
           this.resolutionForm.setValue({
-            resolution: data.resolution,
+            resolution: data.resolved,
           });
         }
 

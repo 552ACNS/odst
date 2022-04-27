@@ -1,6 +1,6 @@
 import { Resolver, Parent, ResolveField, Query, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { OrgGQL, UserGQL } from '@odst/types/ods';
+import { CommentGQL, OrgGQL, UserGQL } from '@odst/types/ods';
 
 // fix this when we have a better solution
 // eslint-disable-next-line no-restricted-imports
@@ -42,6 +42,11 @@ export class UserResolver {
   @ResolveField(() => [OrgGQL])
   async orgs(@Parent() user: UserGQL): Promise<OrgGQL[]> {
     return this.userService.orgs({ id: user.id });
+  }
+
+  @ResolveField(() => [CommentGQL])
+  async comments(@Parent() user: UserGQL): Promise<CommentGQL[]> {
+    return this.userService.comments({ id: user.id });
   }
 
   @Query(() => UserGQL)

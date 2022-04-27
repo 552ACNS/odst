@@ -33,6 +33,18 @@ type QuestionGQL {
   surveys: [SurveyGQL!]!
 }
 
+type CommentGQL {
+  id: String!
+  value: String!
+  date: DateTime!
+  author: UserGQL!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type SurveyGQL {
   id: String!
   questionsHash: String
@@ -46,15 +58,11 @@ type SurveyResponseGQL {
   openedDate: DateTime!
   closedDate: DateTime
   routeOutside: Boolean!
-  resolution: String
+  resolved: Boolean!
   answers: [AnswerGQL!]!
   survey: SurveyGQL!
+  comments: [CommentGQL!]!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type ResponseCount {
   unresolved: Float!
@@ -71,6 +79,7 @@ type UserGQL {
   lastName: String!
   enabled: Boolean!
   orgs: [OrgGQL!]!
+  comments: [CommentGQL!]!
 }
 
 enum Role {

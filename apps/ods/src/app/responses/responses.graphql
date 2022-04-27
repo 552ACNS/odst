@@ -5,11 +5,20 @@ query getSurveyResponseData(
     surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
   ) {
     openedDate
-    resolution
     answers {
       value
       question {
         prompt
+      }
+    }
+    resolved
+    comments {
+      value
+      date
+      author {
+        firstName
+        lastName
+        #grade (or use auth'd user fragment)
       }
     }
   }
@@ -27,6 +36,6 @@ mutation updateSurveyResponse(
     SurveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
     SurveyResponseUpdateInput: $surveyResponseUpdateInput
   ) {
-    resolution
+    resolved
   }
 }

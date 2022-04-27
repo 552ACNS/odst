@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { SurveyResponse, Prisma, Survey, Answer } from '.prisma/ods/client';
+import {
+  SurveyResponse,
+  Prisma,
+  Survey,
+  Answer,
+  Comment,
+} from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
 import { ResponseCount } from '@odst/types/ods';
@@ -40,7 +46,7 @@ export class SurveyResponseService {
     const responsesIDs = await this.prisma.surveyResponse
       .findMany({
         where: {
-          resolution: resolved ? { not: null } : null,
+          resolved: resolved,
         },
         select: {
           id: true,
@@ -131,18 +137,19 @@ export class SurveyResponseService {
 
     const unresolvedCount = await this.prisma.surveyResponse.count({
       where: {
-        resolution: null,
+        resolved: false,
       },
     });
 
     const resolvedCount = await this.prisma.surveyResponse.count({
       where: {
-        resolution: { not: null },
+        resolved: true,
       },
     });
 
     const overdueCount = await this.prisma.surveyResponse.count({
       where: {
+        resolved: false,
         openedDate: {
           lt: new Date(Date.now() - 2592000000),
         },
@@ -170,5 +177,13 @@ export class SurveyResponseService {
     return this.prisma.surveyResponse
       .findUnique({ where: surveyResponseWhereUniqueInput })
       .answers();
+  }
+
+  async comments(
+    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+  ): Promise<Comment[]> {
+    return this.prisma.surveyResponse
+      .findUnique({ where: surveyResponseWhereUniqueInput })
+      .comments();
   }
 }
