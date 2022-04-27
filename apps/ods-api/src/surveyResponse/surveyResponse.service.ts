@@ -1,6 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { SurveyResponse, Prisma, Survey, Answer } from '.prisma/ods/client';
+import { Injectable, Logger } from '@nestjs/common';
+import {
+  SurveyResponse,
+  Prisma,
+  Survey,
+  Answer,
+  Role,
+  User,
+} from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
+// eslint-disable-next-line no-restricted-imports
+import { ResponseCount } from '@odst/types/ods';
 
 @Injectable()
 export class SurveyResponseService {
@@ -62,36 +71,52 @@ export class SurveyResponseService {
     }
   }
 
-  async countResponses(
-    surveyResponseWhereInput: Prisma.SurveyResponseWhereInput
-  ): Promise<number[]> {
-    // TODO: Optimize at a later date, so we don't go back and forth to the server
-    // Will need a custom data loader to do this. Or use _count subfield inside a query that prisma already batches
+  async countResponses(user: User): Promise<ResponseCount> {
+    const whereBasedOnUserOrgs = await this.getWhereBasedOnUserOrgs(user);
 
-    const unresolvedCount = this.prisma.surveyResponse.count({
-      where: {
-        resolution: null,
-        ...surveyResponseWhereInput,
-      },
-    });
-
-    const resolvedCount = this.prisma.surveyResponse.count({
-      where: {
-        resolution: { not: null },
-        ...surveyResponseWhereInput,
-      },
-    });
-
-    const overdueCount = this.prisma.surveyResponse.count({
-      where: {
-        openedDate: {
-          lt: new Date(Date.now() - 2592000000),
+    const [unresolved, overdue, resolved] = await this.prisma.$transaction([
+      this.prisma.surveyResponse.count({
+        where: {
+          resolution: null,
+          ...whereBasedOnUserOrgs,
         },
-        ...surveyResponseWhereInput,
-      },
-    });
+      }),
 
-    return Promise.all([unresolvedCount, overdueCount, resolvedCount]);
+      this.prisma.surveyResponse.count({
+        where: {
+          resolution: { not: null },
+          ...whereBasedOnUserOrgs,
+        },
+      }),
+
+      this.prisma.surveyResponse.count({
+        where: {
+          openedDate: {
+            lt: new Date(Date.now() - 2592000000),
+          },
+          ...whereBasedOnUserOrgs,
+        },
+      }),
+    ]);
+
+    return { unresolved, overdue, resolved };
+  }
+
+  async getIssuesByStatus(resolved: boolean, user: User): Promise<string[]> {
+    return this.prisma.surveyResponse
+      .findMany({
+        where: {
+          resolution: resolved ? { not: null } : null,
+          ...(await this.getWhereBasedOnUserOrgs(user)),
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      })
+      .then((responses) => responses.map((response) => response.id));
   }
 
   async survey(
@@ -108,5 +133,105 @@ export class SurveyResponseService {
     return this.prisma.surveyResponse
       .findUnique({ where: surveyResponseWhereUniqueInput })
       .answers();
+  }
+
+  //TODO refactor for complexity
+  private async getUsersOrgs(user: User): Promise<string[]> {
+    const whereUser = {
+      users: {
+        some: {
+          id: user.id,
+        },
+      },
+    };
+
+    switch (user.role) {
+      case Role.ADMIN:
+        // no need to do a db query for admins
+        return [];
+      case Role.DEI:
+      case Role.EO:
+        //get all orgs where user is either a member of it, a member of the parent or a member of the grand parent
+        return this.prisma.org
+          .findMany({
+            select: { name: true },
+            where: {
+              OR: [
+                whereUser,
+                {
+                  parent: {
+                    OR: [
+                      whereUser,
+                      {
+                        parent: whereUser,
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          })
+          .then((orgs) => orgs.map((org) => org.name));
+      case Role.CC:
+        return this.prisma.org
+          .findMany({ where: whereUser, select: { name: true } })
+          .then((orgs) => orgs.map((org) => org.name));
+    }
+  }
+
+  //TODO refactor for complexity
+  private async getWhereBasedOnUserOrgs(
+    user: User
+  ): Promise<Prisma.SurveyResponseWhereInput> {
+    Logger.log('getOrgWhereBasedOnUser');
+    const orgs = await this.getUsersOrgs(user);
+
+    const whereAnswer = {
+      answers: {
+        some: {
+          question: {
+            prompt: {
+              //TODO hardcoded value
+              equals: 'What squadron did the event occur in?',
+            },
+          },
+          value: {
+            in: orgs,
+          },
+        },
+      },
+    };
+
+    switch (user.role) {
+      case Role.ADMIN:
+        //admin sees everything
+        return {};
+      case Role.DEI:
+      case Role.EO:
+        return {
+          ...whereAnswer,
+          survey: {
+            orgs: {
+              some: {
+                name: { in: orgs },
+              },
+            },
+          },
+        };
+      case Role.CC:
+        return {
+          //no surveyResponses that are routed outside
+          routeOutside: false,
+          ...whereAnswer,
+          survey: {
+            orgs: {
+              some: { name: { in: orgs } },
+            },
+          },
+        };
+    }
+    // This is here so if we define a new role,
+    // they see nothing until we define what they should see
+    return { id: { in: [] } };
   }
 }

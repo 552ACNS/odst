@@ -72,16 +72,7 @@ export class SurveyResponseResolver {
 
   @Query(() => ResponseCount, { name: 'ResponseCount' })
   async ResponseCount(@GetCurrentUser() user: UserGQL): Promise<ResponseCount> {
-    return this.surveyResponseService
-      .countResponses({
-        //survey where org contains user's id
-        survey: { orgs: { some: { users: { some: { id: user.id } } } } },
-      })
-      .then((counts) => ({
-        unresolved: counts[0],
-        overdue: counts[1],
-        resolved: counts[2],
-      }));
+    return this.surveyResponseService.countResponses(user);
   }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
@@ -89,24 +80,7 @@ export class SurveyResponseResolver {
     @Args('resolved') resolved: boolean,
     @GetCurrentUser() user: UserGQL
   ): Promise<string[]> {
-    return (
-      this.surveyResponseService
-        .findMany({
-          where: {
-            resolution: resolved ? { not: null } : null,
-            survey: { orgs: { some: { users: { some: { id: user.id } } } } },
-          },
-          // select: {
-          //   id: true,
-          // },
-          orderBy: {
-            openedDate: 'asc',
-          },
-        })
-        //Not ideal. frontend is doing some wonky delayed loading. Should just return all issues, or paginate them.
-        //Using the findMany above so as to not repeat stuff in the servicer
-        .then((responses) => responses.map((response) => response.id))
-    );
+    return this.surveyResponseService.getIssuesByStatus(resolved, user);
   }
 
   @ResolveField(() => [AnswerGQL])
