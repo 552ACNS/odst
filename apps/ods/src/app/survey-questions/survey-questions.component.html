@@ -1,9 +1,11 @@
-<div class="mx-auto min-w-[360px] w-[95%] max-w-[500px] mt-2 space-y-2">
-  <mat-card class="rounded-2xl shadow-md font-medium flex justify-center">
-    Observations of Discrimination in Squadron
+<div class="parent-div space-y-3">
+  <mat-card class="shadow-md font-medium">
+    <mat-card-title>
+      Observations of Discrimination in Squadron
+    </mat-card-title>
   </mat-card>
   <form [formGroup]="form">
-    <mat-card class="rounded-2xl shadow-md flex flex-col flex-wrap">
+    <mat-card class="shadow-md flex flex-col flex-wrap">
       <label class="mb-1">
         {{ questions[0] }}
       </label>
@@ -17,7 +19,7 @@
             {{ org }}
           </mat-option>
         </mat-select>
-        <mat-error> Please select the organization </mat-error>
+        <mat-error> Please select an organization </mat-error>
       </mat-form-field>
       <label class="mt-6 mb-1">
         {{ questions[1] }}
@@ -142,7 +144,7 @@
     </mat-card>
     <div class="flex justify-center">
       <button
-        class="m-2 border-1 border-dark-blue shadow-md rounded-full w-full"
+        class="m-2 border-1 shadow-md rounded-full w-full"
         mat-raised-button
         [routerLink]="['/disclaimer']"
       >
@@ -150,7 +152,7 @@
       </button>
       <button
         id="btnSubmit"
-        class="m-2 text-white rounded-full w-full"
+        class="m-2 rounded-full w-full"
         mat-raised-button
         color="primary"
         (click)="submit()"
