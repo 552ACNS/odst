@@ -25,8 +25,7 @@ describe('ods', () => {
     cy.get('#mat-radio-3').click();
     cy.get('[formcontrolname="CC')
       .click()
-      //TODO: put this back when CC query is implemented
-      //.wait('@graphql')
+      .wait('@graphql')
       .focused()
       .click({ force: true })
       .type('{enter}');

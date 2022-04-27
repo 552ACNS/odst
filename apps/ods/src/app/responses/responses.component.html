@@ -15,10 +15,7 @@
 
   <p class="text-center dark:text-white">Date Submitted: {{ openedDate }}</p>
 
-  <mat-card
-    *ngFor="let qa of questionsAnswers; let i = index"
-    class="shadow-md"
-  >
+  <mat-card *ngFor="let qa of questionsAnswers; let i = index">
     <mat-card-content class="text-sm text-left">
       <p class="text-base font-medium">{{ i + 1 }}. {{ qa[0] }}</p>
       <p>{{ qa[1] }}</p>
