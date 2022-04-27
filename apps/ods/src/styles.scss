@@ -40,15 +40,21 @@
 //   ),
 // );
 
+$my-primary: mat.define-palette(mat.$indigo-palette);
+
 // Define a light theme
 $light-theme: mat.define-light-theme(
   (
     color: (
-      primary: mat.define-palette(mat.$indigo-palette),
+      primary: $my-primary,
       accent: mat.define-palette(mat.$pink-palette),
     ),
   )
 );
+.primary-text-contrast {
+  background: mat.get-color-from-palette($my-primary, '500');
+  color: mat.get-color-from-palette($my-primary, 'text-contrast');
+}
 
 // Define a dark theme
 $dark-theme: mat.define-dark-theme(
