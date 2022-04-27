@@ -1,96 +1,104 @@
 <div class="parent-div space-y-3">
   <h1>Account Request</h1>
   <form [formGroup]="form">
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>First Name</mat-label>
-      <input
-        matInput
-        placeholder="First Name"
-        formControlName="firstName"
-        required
-      />
-      <mat-error> Please enter your first name. </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Last Name</mat-label>
-      <input
-        matInput
-        placeholder="Last Name"
-        formControlName="lastName"
-        required
-      />
-      <mat-error> Please enter your last name. </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Email</mat-label>
-      <input matInput placeholder="Email" formControlName="email" required />
-      <mat-error> Please enter your email address. </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-select
-        placeholder="Request Permissions"
-        formControlName="permissions"
-        required
-      >
-        <mat-option *ngFor="let role of roles" [value]="role">
-          {{ role }}
-        </mat-option>
-      </mat-select>
-      <mat-error> Please select a role for permissions. </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-select placeholder="Organization" formControlName="org" required>
-        <mat-option *ngFor="let org of orgs | async" [value]="org">
-          {{ org }}
-        </mat-option>
-      </mat-select>
-      <mat-error> Please select an organization. </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        placeholder="Password"
-        formControlName="password"
-        required
-      />
-      <mat-error *ngIf="form.hasError('required', 'password')">
-        Please enter a password.
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Confirm Password</mat-label>
-      <input
-        matInput
-        placeholder="Confirm Password"
-        formControlName="confirmPassword"
-        required
-      />
-      <mat-error *ngIf="form.hasError('notSame')">
-        Please enter a enter a matching password.
-      </mat-error>
-    </mat-form-field>
-    <div class="flex justify-center">
-      <button
-        class="m-2 border-1 shadow-md rounded-full w-full"
-        mat-stroked-button
-        [routerLink]="['/login']"
-      >
-        Back
-      </button>
-      <button
-        id="btnSubmit"
-        class="m-2 rounded-full w-full"
-        mat-raised-button
-        color="primary"
-        (click)="submit()"
-        [disabled]="!form.valid || submitSuccess"
-      >
-        Submit
-        <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess"
-          >check</mat-icon
+    <mat-card class="shadow-md flex flex-col flex-wrap">
+      <div class="flex flex-row">
+        <mat-form-field appearance="outline" class="mr-3 flex-auto">
+          <mat-label>First Name</mat-label>
+          <input
+            matInput
+            placeholder="First Name"
+            formControlName="firstName"
+            required
+          />
+          <mat-error> Please enter your first name. </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="flex-auto">
+          <mat-label>Last Name</mat-label>
+          <input
+            matInput
+            placeholder="Last Name"
+            formControlName="lastName"
+            required
+          />
+          <mat-error> Please enter your last name. </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email" required />
+        <mat-error> Please enter your email address. </mat-error>
+      </mat-form-field>
+      <div class="flex flex-row">
+        <mat-form-field appearance="outline" class="mr-3 flex-auto">
+          <mat-label>Requested Permissions</mat-label>
+          <mat-select
+            placeholder="Request Permissions"
+            formControlName="permissions"
+            required
+          >
+            <mat-option *ngFor="let role of roles" [value]="role">
+              {{ role }}
+            </mat-option>
+          </mat-select>
+          <mat-error> Please select a role for permissions. </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="flex-auto">
+          <mat-label>Unit</mat-label>
+          <mat-select placeholder="Unit" formControlName="org" required>
+            <mat-option *ngFor="let org of orgs | async" [value]="org">
+              {{ org }}
+            </mat-option>
+          </mat-select>
+          <mat-error> Please select an organization. </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          placeholder="Password"
+          formControlName="password"
+          required
+        />
+        <mat-error *ngIf="form.hasError('required', 'password')">
+          Please enter a password.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Confirm Password</mat-label>
+        <input
+          matInput
+          placeholder="Confirm Password"
+          formControlName="confirmPassword"
+        />
+        <!-- [errorStateMatcher]="matcher" -->
+        <mat-error *ngIf="form.hasError('notSame')">
+          Please enter a enter a matching password.
+        </mat-error>
+      </mat-form-field>
+      <div class="flex justify-center">
+        <button
+          class="m-2 border-1 shadow-md rounded-full w-full"
+          mat-stroked-button
+          [routerLink]="['/login']"
         >
-      </button>
-    </div>
+          Back
+        </button>
+        <button
+          id="btnSubmit"
+          class="m-2 rounded-full w-full"
+          mat-raised-button
+          color="primary"
+          (click)="submit()"
+          [disabled]="!form.valid || submitSuccess"
+        >
+          Submit
+          <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess"
+            >check</mat-icon
+          >
+        </button>
+      </div>
+    </mat-card>
   </form>
 </div>

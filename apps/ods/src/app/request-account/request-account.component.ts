@@ -15,7 +15,7 @@ import { RequestAccountService } from './request-account.service';
 // export class MyErrorStateMatcher implements ErrorStateMatcher {
 //     // eslint-disable-next-line complexity
 //     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-//       const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
+//       const invalidCtrl = !!(control && control.invalid && control.parent?.dirty);
 //       const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
 
 //       return (invalidCtrl || invalidParent);
@@ -28,6 +28,7 @@ import { RequestAccountService } from './request-account.service';
   styleUrls: ['./request-account.component.scss'],
 })
 export class RequestAccountComponent implements OnInit {
+  //   matcher = new MyErrorStateMatcher();
   orgs: Observable<string[]>;
 
   roles = ['Commander', 'DEI', 'Admin'];
