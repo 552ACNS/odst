@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<div class="flex flex-col space-y-3 h-full">
+  <div class="flex-grow">
+    <router-outlet></router-outlet>
+  </div>
+  <!-- bg-primary is defined in tailwind.config -->
+  <footer
+    class="primary-text-contrast relative flex justify-between items-center h-fit border-t dark:bg-transparent print:hidden"
+  >
+    <span class="font-medium ml-4">
+      Scorpion Camp &copy; Tinker AFB, 2022
+    </span>
+    <img
+      class="mr-4 mt-2"
+      src="assets/ScorpionCamp5_-_hires_-_transparent_-_small.png"
+      alt="Scorpion"
+    />
+  </footer>
+</div>

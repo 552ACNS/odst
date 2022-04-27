@@ -21,7 +21,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/gql"],
           "options": {
-            "jestConfig": "libs/gql/jest.config.js",
+            "jestConfig": "libs/gql/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -44,7 +44,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/helpers"],
           "options": {
-            "jestConfig": "libs/helpers/jest.config.js",
+            "jestConfig": "libs/helpers/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -120,7 +120,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/ods"],
           "options": {
-            "jestConfig": "apps/ods/jest.config.js",
+            "jestConfig": "apps/ods/jest.config.ts",
             "passWithNoTests": true
           }
         },
@@ -189,7 +189,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/ods-api"],
           "options": {
-            "jestConfig": "apps/ods-api/jest.config.js",
+            "jestConfig": "apps/ods-api/jest.config.ts",
             "passWithNoTests": true
           }
         },
@@ -389,7 +389,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/waypoint"],
           "options": {
-            "jestConfig": "apps/waypoint/jest.config.js",
+            "jestConfig": "apps/waypoint/jest.config.ts",
             "passWithNoTests": true
           }
         },
@@ -457,7 +457,7 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/waypoint-api"],
           "options": {
-            "jestConfig": "apps/waypoint-api/jest.config.js",
+            "jestConfig": "apps/waypoint-api/jest.config.ts",
             "passWithNoTests": true
           }
         },
