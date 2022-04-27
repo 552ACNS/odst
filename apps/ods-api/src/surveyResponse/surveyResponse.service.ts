@@ -117,6 +117,8 @@ export class SurveyResponseService {
         },
       })
       .then((responses) => responses.map((response) => response.id));
+    //TODO Not ideal. frontend is doing some wonky delayed loading. Should just return all issues, or paginate them.
+    //Using the findMany above so as to not repeat stuff in the servicer
   }
 
   async survey(
