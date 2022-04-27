@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { Role } from '../../types.graphql';
 import { SurveyQuestionsService } from './survey-questions.service';
 
 @Component({
