@@ -35,9 +35,11 @@ export class LoginComponent /*implements OnInit*/ {
         }
         if (data) {
           setAccessToken(data.login.accessToken);
-          if (this.loginForm.value['rememberMe']) {
-            setRefreshToken(data.login.refreshToken);
-          }
+          // if (this.loginForm.value['rememberMe']) {
+          setRefreshToken(data.login.refreshToken);
+          // if remember me is false, it should get a refreshToken with a low time to live
+          // if it's true, it should get a refreshToken with a high time to live
+          // }
 
           this.router.navigate(['dashboard']);
         }
