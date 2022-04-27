@@ -66,7 +66,12 @@ export class ResponsesComponent implements OnInit {
 
   async getResponseData(responseID: string) {
     (await this.responsesService.getResponseData(responseID)).subscribe(
-      ({ data }) => {
+      ({ data, errors }) => {
+        //one reason to not use pluck/map/whatever is it drops the errors and
+        //they're never seen/handled. Not that we're doing much of that right now
+        if (errors) {
+          alert(errors);
+        }
         if (data) {
           this.openedDate = formatDate(
             data.findUniqueSurveyResponse.openedDate,
