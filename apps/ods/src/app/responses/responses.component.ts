@@ -14,6 +14,7 @@ export class ResponsesComponent implements OnInit {
   resolutionForm = this.fb.group({
     resolution: ['', [Validators.required]],
   });
+
   constructor(
     private fb: FormBuilder,
     private responsesService: ResponsesService,
@@ -22,8 +23,8 @@ export class ResponsesComponent implements OnInit {
 
   questionsAnswers: [string, string][] = [];
 
-  resolved: boolean;
-
+  resolved: string;
+  responses: { unresolved: string[]; overdue: string[]; resolved: string[] };
   openedDate: string;
   numberOfResponses: number;
   displayedIndex: number;
@@ -35,7 +36,7 @@ export class ResponsesComponent implements OnInit {
   async ngOnInit() {
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
-      this.resolved = params['resolved'] === 'true';
+      this.resolved = params['resolved'];
     });
 
     (

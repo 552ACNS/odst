@@ -1,4 +1,4 @@
-import { Injectable, ResolvedReflectiveFactory } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, pluck, take } from 'rxjs';
 import {
@@ -21,7 +21,7 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getResponseIDsByStatus(resolved: boolean) {
+  async getResponseIDsByStatus(resolved: string) {
     return this.apollo
       .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
         query: GetIssuesByStatusDocument,

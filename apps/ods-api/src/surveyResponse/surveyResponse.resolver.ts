@@ -94,7 +94,7 @@ export class SurveyResponseResolver {
   // TODO This line gets the current user ID but it requires a login system to exist first.
   // async getUnresolvedIssues(@GetCurrentUserId() userId: string): Promise<string[]> {
   async getIssuesByStatus(
-    @Args('resolved') resolved: boolean
+    @Args('resolved') resolved: string
   ): Promise<string[]> {
     // return this.surveyResponseService.getUnresolvedIssues(userId);
     return this.surveyResponseService.getIssuesByStatus(resolved);
