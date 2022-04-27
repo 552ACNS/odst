@@ -1,70 +1,41 @@
 @use '@angular/material' as mat;
-
-// @import '~@angular/material/theming';
+@import '~@angular/material/theming';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-// $darkblue-palette: (
-//   50: #e4e6ed,
-//   100: #bcc1d4,
-//   200: #9199b6,
-//   300: #687399,
-//   400: #4a5786,
-//   500: #2c3c74,
-//   600: #27366c,
-//   700: #1f2d62,
-//   800: #182456,
-//   900: #0d153f,
-//   A100: #ffffff,
-//   A200: #dde6f3,
-//   A400: #6992c9,
-//   A700: #38649d,
-
-//   contrast: (
-//     50: #000000,
-//     100: #000000,
-//     200: #000000,
-//     300: #000000,
-//     400: #ffffff,
-//     500: #ffffff,
-//     600: #ffffff,
-//     700: #ffffff,
-//     800: #ffffff,
-//     900: #ffffff,
-//     A100: #000000,
-//     A200: #000000,
-//     A400: #000000,
-//     A700: #000000,
-//   ),
-// );
+$light-primary: mat.define-palette(mat.$indigo-palette);
+$light-accent: mat.define-palette(mat.$pink-palette);
 
 // Define a light theme
+
 $light-theme: mat.define-light-theme(
   (
     color: (
-      primary: mat.define-palette(mat.$indigo-palette),
-      accent: mat.define-palette(mat.$pink-palette),
+      primary: $light-primary,
+      accent: $light-accent,
     ),
   )
 );
 
-// Define a dark theme
-$dark-theme: mat.define-dark-theme(
-  (
-    color: (
-      primary: mat.define-palette(mat.$pink-palette),
-      accent: mat.define-palette(mat.$blue-gray-palette),
-    ),
-  )
-);
-
-// Apply the light theme by default
 @include mat.all-component-themes($light-theme);
 
 // Apply the dark theme if someone's machine prefers it
 @media (prefers-color-scheme: dark) {
+  $dark-primary: mat.define-palette(mat.$pink-palette);
+  $dark-accent: mat.define-palette(mat.$blue-gray-palette);
+
+  // Define a dark theme
+  $dark-theme: mat.define-dark-theme(
+    (
+      color: (
+        primary: $dark-primary,
+        accent: $dark-accent,
+      ),
+    )
+  );
+
   @include mat.all-component-colors($dark-theme);
 }
 
@@ -81,7 +52,12 @@ body {
 
 // declares a parent-div attribute that can be reused in multiple places
 .parent-div {
-  @apply container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-3;
+  @apply container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-6;
+}
+
+.primary-text-contrast {
+  background-color: mat-color($light-primary);
+  color: mat.get-color-from-palette($light-primary, '500-contrast');
 }
 
 @layer base {
