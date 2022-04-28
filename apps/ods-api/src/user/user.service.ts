@@ -56,4 +56,12 @@ export class UserService {
       })
       .refreshToken();
   }
+
+  async create(data: Prisma.UserCreateInput): Promise<User> {
+    const user = await this.prisma.user.create({
+      data,
+    });
+
+    return user;
+  }
 }

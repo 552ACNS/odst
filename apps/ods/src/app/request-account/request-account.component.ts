@@ -8,19 +8,23 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+//import { UserGQL } from '@odst/types/ods';
 import { Observable, Subscription } from 'rxjs';
-//import { Role } from '../../types.graphql';
+import { Role } from '../../types.graphql';
 import { RequestAccountService } from './request-account.service';
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
+    const invalidCtrl = !!(control?.invalid && control?.parent?.dirty);
+    const invalidParent = !!(
+      control?.parent?.invalid && control?.parent?.dirty
+    );
 
-// export class MyErrorStateMatcher implements ErrorStateMatcher {
-//     // eslint-disable-next-line complexity
-//     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-//       const invalidCtrl = !!(control && control.invalid && control.parent?.dirty);
-//       const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
-
-//       return (invalidCtrl || invalidParent);
-//     }
-//   }
+    return control?.parent?.errors && control.parent.errors['notSame'];
+  }
+}
 
 @Component({
   selector: 'odst-request-account',
@@ -28,17 +32,48 @@ import { RequestAccountService } from './request-account.service';
   styleUrls: ['./request-account.component.scss'],
 })
 export class RequestAccountComponent implements OnInit {
-  //   matcher = new MyErrorStateMatcher();
+  hide = true;
+  matcher = new MyErrorStateMatcher();
+  grades = [
+    'N/A',
+    'O-1',
+    'O-2',
+    'O-3',
+    'O-4',
+    'O-5',
+    'O-6',
+    'O-7',
+    'O-8',
+    'O-9',
+    'O-10',
+  ];
   orgs: Observable<string[]>;
-
   roles = ['Commander', 'DEI', 'Admin'];
-  request: string[];
+  grade?: string;
   submitSuccess = false;
   constructor(
     private fb: FormBuilder,
-    private requestService: RequestAccountService
+    private requestService: RequestAccountService // private passwordMatch: PasswordMatchValidator
   ) {}
+  async ngOnInit(): Promise<void> {
+    this.orgs = await this.requestService.getManyOrgs();
+  }
+  gradeCheck(grade?: string) {
+    if (grade == 'N/A') {
+      grade = undefined;
+    }
+    return grade;
+  }
 
+  determineRole(roleInput: string): Role {
+    if (roleInput == 'Commander') {
+      return Role.Cc;
+    } else if (roleInput == 'DEI') {
+      return Role.Dei;
+    } else {
+      return Role.Admin;
+    }
+  }
   checkPasswords(group: FormGroup) {
     // here we have the 'passwords' group
     const pass = group.controls['password'].value;
@@ -52,26 +87,33 @@ export class RequestAccountComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.email]],
+      grade: [''],
       permissions: ['', [Validators.required]],
       org: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      confirmPassword: [''],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required]],
     },
     { validator: this.checkPasswords }
   );
 
   submit() {
-    this.request = [
-      this.form.value(['firstName']).trim(),
-      this.form.value(['lastName']).trim(),
-      this.form.value(['email']).trim(),
-      this.form.get(['permissions'])?.value,
-      this.form.get(['org'])?.value,
-      this.form.value(['confirmPassword']),
-    ];
-  }
-
-  async ngOnInit(): Promise<void> {
-    this.orgs = await this.requestService.getManyOrgs();
+    (this.grade = this.gradeCheck(this.form.get(['grade'])?.value)),
+      this.requestService
+        .submitAccountCreationRequest({
+          firstName: this.form.value['firstName'].trim(),
+          lastName: this.form.value['lastName'].trim(),
+          email: this.form.value['email'].trim(),
+          grade: this.grade,
+          role: this.determineRole(this.form.get(['permissions'])?.value),
+          orgs: {
+            connect: {
+              name: this.form.get(['org'])?.value,
+            },
+          },
+          password: this.form.value['confirmPassword'].trim(),
+        })
+        .subscribe(({ errors }) => {
+          this.submitSuccess = !errors;
+        });
   }
 }

@@ -1,20 +1,21 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { Prisma, Role } from '.prisma/ods/client';
 import { OrgWhereUniqueInput } from './org.unique.input';
+import { OrgCreateNestedManyWithoutUsersInput } from './org.create.input';
 
 @InputType()
 export class UserCreateInput implements Prisma.UserCreateInput {
   email: string;
   password: string;
-  rank?: string;
+  grade?: string;
   firstName: string;
   lastName: string;
   enabled?: boolean;
 
   @Field(() => Role)
   role: Role;
-
-  //TODO org
+  @Field(() => OrgCreateNestedManyWithoutUsersInput)
+  orgs: Prisma.OrgCreateNestedManyWithoutUsersInput;
 
   //TODO refreshtoken
   // @Field(() => RefreshTokenCreateNestedManyWithoutUserInput)

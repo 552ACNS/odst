@@ -32,7 +32,7 @@ query findQuestionsBySurvey($surveyWhereUniqueInput: SurveyWhereUniqueInput!) {
 
 query getCommanders {
   getCommanders {
-    rank
+    grade
     firstName
     lastName
   }

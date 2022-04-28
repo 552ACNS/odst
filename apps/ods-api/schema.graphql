@@ -66,7 +66,7 @@ type UserGQL {
   role: Role!
   id: String!
   email: String!
-  rank: String
+  grade: String
   firstName: String!
   lastName: String!
   enabled: Boolean!
@@ -143,6 +143,7 @@ type Mutation {
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
+  createUser(userCreateInput: UserCreateInput!): UserGQL!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -299,6 +300,21 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
   prompt: String
+}
+
+input UserCreateInput {
+  role: Role!
+  orgs: OrgCreateNestedManyWithoutUsersInput!
+  email: String!
+  password: String!
+  grade: String
+  firstName: String!
+  lastName: String!
+  enabled: Boolean
+}
+
+input OrgCreateNestedManyWithoutUsersInput {
+  connect: OrgWhereUniqueInput
 }
 
 input LoginUserInput {

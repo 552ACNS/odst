@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { PrismaClient } from '.prisma/ods/client';
+import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
 import { hash } from 'bcrypt';
 
@@ -9,6 +9,31 @@ const orgName = '552 ACNS';
 const CCEmail = 'john.doe@us.af.mil';
 
 async function main() {
+  const userCreateInputs: Prisma.UserCreateInput[] = [
+    {
+      email: 'email',
+      password: 'password **HASH**',
+      firstName: 'Firstname',
+      lastName: 'LastName',
+      role: 'ADMIN',
+    },
+    {
+      email: 'email',
+      password: 'password **HASH**',
+      firstName: 'Firstname',
+      lastName: 'LastName',
+      role: 'ADMIN',
+    },
+  ];
+
+  userCreateInputs.forEach((user) => {
+    prisma.user.upsert({
+      where: { email: user.email },
+      update: user,
+      create: user,
+    });
+  });
+
   //#region org
   await prisma.org.upsert({
     where: {
@@ -130,7 +155,7 @@ async function main() {
         role: 'ADMIN',
         firstName: 'Admin',
         lastName: 'Admin',
-        rank: 'ADMIN',
+        grade: 'ADMIN',
       },
     });
 
@@ -146,7 +171,7 @@ async function main() {
         role: 'CC',
         firstName: 'John',
         lastName: 'Doe',
-        rank: 'Lt. Col.',
+        grade: 'Lt. Col.',
       },
     });
 
@@ -162,7 +187,7 @@ async function main() {
         role: 'CC',
         firstName: 'Michael',
         lastName: 'Henry',
-        rank: 'Lt. Col.',
+        grade: 'Lt. Col.',
       },
     });
 
@@ -178,7 +203,7 @@ async function main() {
         role: 'CC',
         firstName: 'Henry',
         lastName: 'Henderson',
-        rank: 'Lt. Col.',
+        grade: 'Lt. Col.',
       },
     });
   }

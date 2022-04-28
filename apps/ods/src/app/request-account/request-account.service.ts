@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs';
 import {
+  CreateUserDocument,
+  CreateUserMutation,
+  CreateUserMutationVariables,
   FindManyOrgsDocument,
   FindManyOrgsQuery,
   FindManyOrgsQueryVariables,
@@ -22,5 +25,16 @@ export class RequestAccountService {
       .valueChanges.pipe(
         map((result) => result.data.findManyOrgs.map((x) => x.name))
       );
+  }
+
+  submitAccountCreationRequest(
+    createUserMutationVariables: CreateUserMutationVariables['userCreateInput']
+  ) {
+    return this.apollo.mutate<CreateUserMutation, CreateUserMutationVariables>({
+      mutation: CreateUserDocument,
+      variables: {
+        userCreateInput: createUserMutationVariables,
+      },
+    });
   }
 }
