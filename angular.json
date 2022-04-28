@@ -262,6 +262,7 @@
       "tags": [],
       "implicitDependencies": ["ods"]
     },
+    "shared-angular": "libs/shared/angular",
     "shared-nest": "libs/shared/nest",
     "types-ods": {
       "root": "libs/types/ods",

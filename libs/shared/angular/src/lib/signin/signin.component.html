@@ -1,0 +1,95 @@
+<div
+  class="md:items-center md:justify-end sm:w-auto md:h-full md:w-1/2 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card"
+>
+  <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+    <!-- Title -->
+    <div class="ml-0 text-7xl font-extrabold tracking-tight leading-tight">
+      Sign In
+    </div>
+    <div class="mt-2 flex justify-between font-medium h-fit">
+      <div>Don't have an account?</div>
+
+      <p class="underline text-right text-blue-300">Request one.</p>
+    </div>
+
+    <!-- Sign in form -->
+    <form [formGroup]="signinForm">
+      <!-- Email field -->
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input
+          id="userName"
+          formcontrolname="userUsername"
+          type="text"
+          matInput
+          placeholder="Username"
+          [formControlName]="'userUsername'"
+        />
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      </mat-form-field>
+
+      <!-- Password field -->
+      <mat-form-field class="w-full mx-0" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          id="password"
+          formcontrolname="userPassword"
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          [formControlName]="'userPassword'"
+        />
+        <button
+          mat-icon-button
+          type="button"
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- Actions -->
+      <div class="flex justify-between">
+        <mat-checkbox
+          class="align-middle"
+          [color]="'primary'"
+          [formControlName]="'rememberMe'"
+        >
+          Remember Me
+        </mat-checkbox>
+        <div class="font-medium underline text-blue-300" p="0">
+          Forgot Password?
+        </div>
+      </div>
+
+      <!-- Sign In button -->
+      <button
+        class="w-full mt-5 px-0 bg-dark-blue text-white rounded-3xl"
+        mat-flat-button
+        color="primary"
+        (click)="submitLoginClick()"
+      >
+        Sign In
+      </button>
+
+      <!-- Separator -->
+      <div class="flex mt-5 items-center w-full">
+        <div class="flex-auto mt-1 border-t"></div>
+        <div class="mx-2 text-secondary">OR</div>
+        <div class="flex-auto mt-px border-t"></div>
+      </div>
+
+      <!-- Single sign-on buttons -->
+      <button
+        class="w-full mt-5 rounded-3xl"
+        mat-stroked-button
+        [color]="'primary'"
+      >
+        <!-- TODO: add on click event to login with a CAC -->
+        SSO CAC
+      </button>
+    </form>
+  </div>
+</div>

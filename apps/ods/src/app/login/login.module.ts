@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -9,9 +9,10 @@ import { RouterModule } from '@angular/router';
 import { loginRoutes } from './login.routing';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { SigninComponent } from '@odst/shared/angular';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, SigninComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -22,5 +23,6 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     RouterModule.forChild(loginRoutes),
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LoginModule {}
