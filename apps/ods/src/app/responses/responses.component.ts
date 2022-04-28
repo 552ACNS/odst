@@ -24,9 +24,11 @@ export class ResponsesComponent implements OnInit {
   questionsAnswers: [string, string][] = [];
 
   resolved: string;
-  responses: { unresolved: string[]; overdue: string[]; resolved: string[] };
+
   openedDate: string;
+
   numberOfResponses: number;
+
   displayedIndex: number;
 
   responseIDs: string[] = [];

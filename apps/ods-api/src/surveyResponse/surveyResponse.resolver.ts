@@ -5,7 +5,6 @@ import {
   Query,
   ResolveField,
   Parent,
-  ObjectType,
 } from '@nestjs/graphql';
 import { SurveyResponseService } from './surveyResponse.service';
 import {
@@ -16,7 +15,6 @@ import {
   AnswerGQL,
   SurveyGQL,
   ResponseCount,
-  statuses,
 } from '@odst/types/ods';
 
 // import { GetCurrentUserId } from '@odst/shared/nest';
@@ -81,11 +79,6 @@ export class SurveyResponseResolver {
   // @UseGuards(AccessTokenAuthGuard)
   async ResponseCount(): Promise<ResponseCount> {
     return this.surveyResponseService.countResponses();
-  }
-
-  @Query(() => statuses, { name: 'getResponseByStatus' })
-  async getResponseByStatus(): Promise<statuses> {
-    return this.surveyResponseService.getResponseStatus();
   }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })

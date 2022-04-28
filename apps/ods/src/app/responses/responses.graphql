@@ -20,13 +20,13 @@ query getIssuesByStatus($resolved: String!) {
   getIssuesByStatus(resolved: $resolved)
 }
 
-query getResponseByStatus {
-  getResponseByStatus {
-    unresolved
-    overdue
-    resolved
-  }
-}
+# query getResponseByStatus {
+#   getResponseByStatus {
+#     unresolved
+#     overdue
+#     resolved
+#   }
+# }
 
 mutation UpdateSurveyResponse_Resolution(
   $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
