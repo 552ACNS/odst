@@ -8,10 +8,9 @@ import { GQLModule } from '@odst/gql';
 import { Apollo } from 'apollo-angular';
 import { environment } from '../environments/environment';
 import { AuthGuard, LoggedInGuard } from '@odst/shared/angular';
-import { RequestedAccountsComponent } from './requested-accounts/requested-accounts.component';
 
 @NgModule({
-  declarations: [AppComponent, RequestedAccountsComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     GQLModule,
@@ -27,6 +26,5 @@ import { RequestedAccountsComponent } from './requested-accounts/requested-accou
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  exports: [RequestedAccountsComponent],
 })
 export class AppModule {}
