@@ -133,6 +133,7 @@ export class SurveyResponseService {
       'Deleting survey responses older than a year',
       'SurveyResponseService'
     );
+    // TODO: Redo with try catch
     //Will silently fail if delete isn't cascaded properly
     const [deleteAnswers, deleteSurveyResponses] =
       await this.prisma.$transaction([
