@@ -1,8 +1,6 @@
-<div
-  class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] text-center mt-3"
->
-  <mat-card class="rounded-2xl">
-    <mat-card-title class="ml-0 text-4xl font-extrabold">
+<div class="parent-div">
+  <mat-card class="shadow-md">
+    <mat-card-title class="ml-0 text-4xl font-extrabold text-center">
       Sign In
     </mat-card-title>
     <mat-card-content
@@ -10,7 +8,7 @@
     >
       <div>Don't have an account?</div>
 
-      <p class="underline text-right text-blue-300">Get one!</p>
+      <p class="underline text-right">Get one!</p>
     </mat-card-content>
 
     <!-- Sign in form -->
@@ -23,9 +21,18 @@
           formcontrolname="userUsername"
           type="text"
           matInput
+          required="true"
           placeholder="Username"
           [formControlName]="'userUsername'"
         />
+        <mat-error
+          *ngIf="
+            loginForm.controls['userUsername'].hasError('email') &&
+            !loginForm.controls['userUsername'].hasError('required')
+          "
+        >
+          Please enter a valid Email
+        </mat-error>
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
       <br />
@@ -60,7 +67,8 @@
         >
           Remember Me
         </mat-checkbox>
-        <div class="pt-0.5 float-right font-medium underline text-blue-300">
+        <!-- Set link color to primary color of theme -->
+        <div class="pt-0.5 float-right font-medium underline">
           Forgot Password?
         </div>
       </mat-card-content>
@@ -68,6 +76,7 @@
       <!-- Buttons -->
       <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
         <button
+          type="reset"
           mat-stroked-button
           class="w-full shadow-md rounded-full"
           [routerLink]="['/disclaimer']"
@@ -76,9 +85,11 @@
         </button>
 
         <button
-          mat-button
-          class="w-full bg-dark-blue text-white shadow-md rounded-full"
-          [routerLink]="['/dashboard']"
+          mat-raised-button
+          type="submit"
+          color="primary"
+          class="w-full text-white shadow-md rounded-full"
+          (click)="submitLoginClick()"
         >
           Sign In
         </button>

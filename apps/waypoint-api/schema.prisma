@@ -13,12 +13,14 @@ generator client {
 
 model User {
   id            String         @id @default(uuid())
+  //TODO if we continue using username, make it so it can't be an email
+  //Part of the goal is to avoid conflicts between username and email, which is done by the above
   username      String         @unique
   password      String
   person        Person         @relation(fields: [personId], references: [id])
   personId      String         @unique
   enabled       Boolean        @default(true)
-  refreshTokens RefreshToken[] //many RefreshToken to user
+  refreshTokens RefreshToken[]
 }
 
 model RefreshToken {

@@ -16,8 +16,7 @@ import {
   AnswerGQL,
   SurveyGQL,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
+import { Public } from '@odst/auth';
 
 @Resolver(() => QuestionGQL)
 export class QuestionResolver {
@@ -29,7 +28,8 @@ export class QuestionResolver {
   }
 
   @Query(() => [QuestionGQL], { name: 'getSubQuestions' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Public()
+
   //TODO redo with findMany
   async getSubQuestions(
     @Args('surveyWhereUniqueInput')
@@ -39,7 +39,6 @@ export class QuestionResolver {
   }
 
   @Query(() => QuestionGQL, { name: 'findUniqueQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('questionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput
@@ -48,7 +47,6 @@ export class QuestionResolver {
   }
 
   @Mutation(() => QuestionGQL, { name: 'createQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   create(
     @Args('questionCreateInput') questionCreateInput: QuestionCreateInput
   ): Promise<QuestionGQL> {
@@ -56,7 +54,6 @@ export class QuestionResolver {
   }
 
   @Mutation(() => QuestionGQL, { name: 'updateQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('QuestionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput,
@@ -67,15 +64,6 @@ export class QuestionResolver {
       questionWhereUniqueInput,
       questionUpdateInput
     );
-  }
-
-  @Mutation(() => QuestionGQL, { name: 'removeQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async delete(
-    @Args('questionWhereUniqueInput')
-    questionWhereUniqueInput: QuestionWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    return this.questionService.delete(questionWhereUniqueInput);
   }
 
   @ResolveField(() => [AnswerGQL])

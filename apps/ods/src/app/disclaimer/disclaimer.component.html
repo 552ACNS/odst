@@ -1,9 +1,9 @@
-<div class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-3">
-  <mat-card class="rounded-2xl">
-    <mat-card-title class="font-medium text-black text-sm">
+<div class="parent-div">
+  <mat-card class="shadow-md">
+    <mat-card-title class="font-medium">
       Observations of Discrimination in the Squadron
     </mat-card-title>
-    <mat-card-content class="text-sm space-y-3">
+    <mat-card-content class="text-sm space-y-3 text-justify">
       <p>
         The responses provided will be analyzed and addressed at the appropriate
         command level (Squadron/Group/Wing). This form is meant to facilitate
@@ -16,8 +16,8 @@
       </p>
       <p>
         Please do not include names or identifying information in your accounts.
-        If you'd like to file a formal complaint, please speak to your chain of
-        command.
+        If you'd like to file a formal complaint, please speak to the
+        appropriate command team.
       </p>
       <p>False reporting may result in disciplinary actions.</p>
     </mat-card-content>
@@ -30,8 +30,9 @@
         Decline
       </a>
       <button
-        mat-button
-        class="w-full bg-dark-blue text-white shadow-md rounded-full"
+        mat-raised-button
+        color="primary"
+        class="w-full text-white shadow-md rounded-full"
         [routerLink]="['/survey']"
       >
         Accept
@@ -42,7 +43,7 @@
   <!-- this lies outside the box -->
   <button
     mat-button
-    class="flex underline ml-auto justify-end mt-2 rounded-2xl"
+    class="flex underline ml-auto justify-end mt-2 rounded-2xl dark:text-white"
     [routerLink]="['/login']"
   >
     I want to login

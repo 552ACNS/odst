@@ -102,9 +102,7 @@ export class SurveyResponseService {
     surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
   ) {
     return this.prisma.surveyResponse.findUnique({
-      where: {
-        id: surveyResponseWhereUniqueInput.id,
-      },
+      where: surveyResponseWhereUniqueInput,
       include: {
         answers: {
           include: {

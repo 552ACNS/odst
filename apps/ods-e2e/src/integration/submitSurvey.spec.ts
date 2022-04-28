@@ -25,13 +25,14 @@ describe('ods', () => {
     cy.get('#mat-radio-3').click();
     cy.get('[formcontrolname="CC')
       .click()
-      //TODO: put this back when CC query is implemented
-      //.wait('@graphql')
+      .wait('@graphql')
       .focused()
       .click({ force: true })
       .type('{enter}');
     cy.get('#mat-radio-8').click();
-    cy.get('[formcontrolname="impact"]').type('it made me cry');
+    cy.get('[formcontrolname="impact"]').type(
+      'negative impact on work environment'
+    );
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });

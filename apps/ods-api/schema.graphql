@@ -64,11 +64,11 @@ type ResponseCount {
 
 type UserGQL {
   role: Role!
+  id: String!
+  email: String!
   rank: String
   firstName: String!
   lastName: String!
-  id: String!
-  email: String!
   enabled: Boolean!
   orgs: [OrgGQL!]!
 }
@@ -78,6 +78,11 @@ enum Role {
   DEI
   EO
   CC
+}
+
+type Tokens {
+  accessToken: String!
+  refreshToken: String!
 }
 
 type Query {
@@ -97,6 +102,8 @@ type Query {
   getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   findUsersWithRole(role: String!): [UserGQL!]!
+  getCommanders: [UserGQL!]!
+  me: UserGQL!
 }
 
 input SurveyWhereUniqueInput {
@@ -131,14 +138,13 @@ type Mutation {
   updateSurveyResponse(SurveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!, SurveyResponseUpdateInput: SurveyResponseUpdateInput!): SurveyResponseGQL!
   deleteSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   createAnswer(answerCreateInput: AnswerCreateInput!): AnswerGQL!
-  updateAnswer(AnswerWhereUniqueInput: AnswerWhereUniqueInput!, AnswerUpdateInput: AnswerUpdateInput!): AnswerGQL!
-  deleteAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
-  removeQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
+  login(loginUserInput: LoginUserInput!): Tokens!
+  refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
 
 input SurveyCreateInput {
@@ -247,12 +253,6 @@ input SurveyResponseCreateNestedOneWithoutAnswersInput {
   connect: SurveyResponseWhereUniqueInput
 }
 
-input AnswerUpdateInput {
-  question: QuestionCreateNestedOneWithoutAnswersInput
-  surveyResponse: SurveyResponseCreateNestedOneWithoutAnswersInput
-  value: String
-}
-
 input OrgCreateInput {
   orgTier: OrgTier!
   users: UserCreateNestedManyWithoutOrgsInput
@@ -299,4 +299,13 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
   prompt: String
+}
+
+input LoginUserInput {
+  username: String!
+  password: String!
+}
+
+input RefreshLoginInput {
+  refreshToken: String!
 }
