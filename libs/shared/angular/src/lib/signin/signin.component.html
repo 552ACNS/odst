@@ -1,35 +1,43 @@
-<div
-  class="md:items-center md:justify-end sm:w-auto md:h-full md:w-1/2 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card"
->
-  <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
-    <!-- Title -->
-    <div class="ml-0 text-7xl font-extrabold tracking-tight leading-tight">
+<div class="parent-div">
+  <mat-card class="shadow-md">
+    <mat-card-title class="ml-0 text-4xl font-extrabold text-center">
       Sign In
-    </div>
-    <div class="mt-2 flex justify-between font-medium h-fit">
+    </mat-card-title>
+    <mat-card-content
+      class="mt-2 flex justify-center font-medium h-fit space-x-2"
+    >
       <div>Don't have an account?</div>
 
-      <p class="underline text-right text-blue-300">Request one.</p>
-    </div>
+      <p class="underline text-right">Get one!</p>
+    </mat-card-content>
 
     <!-- Sign in form -->
     <form [formGroup]="signinForm">
-      <!-- Email field -->
-      <mat-form-field class="w-full" appearance="outline">
+      <!-- User Name field -->
+      <mat-form-field class="mx-0 w-full" appearance="outline">
         <mat-label>Username</mat-label>
         <input
           id="userName"
           formcontrolname="userUsername"
           type="text"
           matInput
+          required="true"
           placeholder="Username"
           [formControlName]="'userUsername'"
         />
+        <mat-error
+          *ngIf="
+            signinForm.controls['userUsername'].hasError('email') &&
+            !signinForm.controls['userUsername'].hasError('required')
+          "
+        >
+          Please enter a valid Email
+        </mat-error>
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
-
+      <br />
       <!-- Password field -->
-      <mat-form-field class="w-full mx-0" appearance="outline">
+      <mat-form-field class="mx-0 w-full" appearance="outline">
         <mat-label>Password</mat-label>
         <input
           id="password"
@@ -49,47 +57,43 @@
           <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>
-
-      <!-- Actions -->
-      <div class="flex justify-between">
+      <mat-card-content
+        class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full"
+      >
         <mat-checkbox
-          class="align-middle"
+          class="align-middle float-left"
           [color]="'primary'"
           [formControlName]="'rememberMe'"
         >
           Remember Me
         </mat-checkbox>
-        <div class="font-medium underline text-blue-300" p="0">
+        <!-- Set link color to primary color of theme -->
+        <div class="pt-0.5 float-right font-medium underline">
           Forgot Password?
         </div>
-      </div>
+      </mat-card-content>
 
-      <!-- Sign In button -->
-      <button
-        class="w-full mt-5 px-0 bg-dark-blue text-white rounded-3xl"
-        mat-flat-button
-        color="primary"
-        (click)="submitLoginClick()"
-      >
-        Sign In
-      </button>
+      <!-- Buttons -->
+      <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
+        <button
+          type="reset"
+          mat-stroked-button
+          class="w-full shadow-md rounded-full"
+        >
+          <!-- TODO [routerLink]="['/disclaimer']" -->
+          Back
+        </button>
 
-      <!-- Separator -->
-      <div class="flex mt-5 items-center w-full">
-        <div class="flex-auto mt-1 border-t"></div>
-        <div class="mx-2 text-secondary">OR</div>
-        <div class="flex-auto mt-px border-t"></div>
-      </div>
-
-      <!-- Single sign-on buttons -->
-      <button
-        class="w-full mt-5 rounded-3xl"
-        mat-stroked-button
-        [color]="'primary'"
-      >
-        <!-- TODO: add on click event to login with a CAC -->
-        SSO CAC
-      </button>
+        <button
+          mat-raised-button
+          type="submit"
+          color="primary"
+          class="w-full text-white shadow-md rounded-full"
+          (click)="submitLoginClick()"
+        >
+          Sign In
+        </button>
+      </mat-card-actions>
     </form>
-  </div>
+  </mat-card>
 </div>

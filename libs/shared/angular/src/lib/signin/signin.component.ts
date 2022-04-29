@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject, SkipSelf } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { LoginServiceInterface } from './interfaces/signin-interface';
+import { LOGIN_SERVICE } from './signin.constants';
 @Component({
   selector: 'odst-signin',
   templateUrl: './signin.component.html',
@@ -13,12 +15,24 @@ export class SigninComponent {
     rememberMe: ['', Validators.nullValidator],
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    @SkipSelf()
+    @Inject(LOGIN_SERVICE)
+    private loginService: LoginServiceInterface
+  ) {
+    console.log(loginService);
+  }
 
   submitLoginClick() {
-    // this.loginService.submitLogin(
-    //   this.signinForm.value['userUsername'],
-    //   this.signinForm.value['userPassword']
-    // );
+    console.log(this.loginService);
+
+    //why do I have to instantiate loginService here?
+
+    this.loginService.submitLogin(
+      this.signinForm.value['userUsername'],
+      this.signinForm.value['userPassword'],
+      this.signinForm.value['rememberMe']
+    );
   }
 }
