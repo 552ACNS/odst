@@ -62,7 +62,7 @@ describe('ods', () => {
       },
     });
   });
-  it('submit a survey with a unique uuid', () => {
+  it('submit a account creation request', () => {
     cy.visit('/request-account');
     cy.location('pathname').should('include', '/request-account');
     cy.get('[formcontrolname="firstName"]').type('e2e');
@@ -83,12 +83,10 @@ describe('ods', () => {
       .focused()
       .click({ force: true })
       .type('{enter}');
-    cy.get('[formcontrolname="password"]').type(
-      'thisISaREALLYgreatPA$$word:)!<3'
-    );
-    cy.get('[formcontrolname="confirmPassword"]').type(
-      'thisISaREALLYgreatPA$$word:)!<3'
-    );
+    cy.get('[formcontrolname="password"]').type('thisISaREALLYgreatPA$$word!3');
+    cy.get('[formcontrolname="confirmPassword"]')
+      .type('thisISaREALLYgreatPA$$word!3')
+      .wait('@graphql');
     cy.get('button').contains('Submit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
