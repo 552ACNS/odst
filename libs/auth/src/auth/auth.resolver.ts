@@ -1,11 +1,7 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Tokens } from './dtos/tokens.entity';
-import {
-  LoginUserInput,
-  RefreshLoginInput,
-  SignupUserInput,
-} from './dtos/login.input';
+import { LoginUserInput, RefreshLoginInput } from './dtos/login.input';
 import { UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local.guard';
 import { GetCurrentUser } from '@odst/shared/nest';
