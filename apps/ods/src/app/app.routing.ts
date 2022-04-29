@@ -37,6 +37,14 @@ const routes: Routes = [
     //Should we refresh any tokens? access/refresh/id?
     canActivate: [LoggedInGuard],
   },
+  {
+    path: 'requested-accounts',
+    loadChildren: () =>
+      import('./requested-accounts/requested-accounts.module').then(
+        (m) => m.RequestedAccountsModule
+      ),
+    canActivate: [AuthGuard],
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

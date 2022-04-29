@@ -4,6 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RequestedAccountsComponent } from './requested-accounts.component';
 import { requestedAccountsRoutes } from './requested-accounts.routing';
+import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [RequestedAccountsComponent],
@@ -11,6 +13,8 @@ import { requestedAccountsRoutes } from './requested-accounts.routing';
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild(requestedAccountsRoutes),
+    MatTableModule,
+    MatCardModule,
   ],
 })
 export class RequestedAccountsModule {}
