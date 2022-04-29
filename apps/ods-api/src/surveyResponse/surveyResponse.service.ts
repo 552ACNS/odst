@@ -10,6 +10,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
 import { ResponseCount } from '@odst/types/ods';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class SurveyResponseService {
@@ -71,8 +72,41 @@ export class SurveyResponseService {
     }
   }
 
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
+    name: 'Delete surveyResponses older than a year',
+  })
+  private async deleteSurveyResponsesOlderThanAYear(): Promise<void> {
+    Logger.log(
+      'Deleting survey responses older than a year',
+      'SurveyResponseService'
+    );
+    // TODO: Redo with try catch
+    //Will silently fail if delete isn't cascaded properly
+    const [deleteAnswers, deleteSurveyResponses] =
+      await this.prisma.$transaction([
+        this.prisma.answer.deleteMany({
+          where: {
+            surveyResponse: {
+              closedDate: { lt: new Date(Date.now() - 31536000000) },
+            },
+          },
+        }),
+        this.prisma.surveyResponse.deleteMany({
+          where: { closedDate: { lt: new Date(Date.now() - 31536000000) } },
+        }),
+      ]);
+    if (deleteSurveyResponses.count > 0) {
+      Logger.log(
+        `Deleted ${deleteSurveyResponses.count} survey responses`,
+        'SurveyResponseService'
+      );
+    }
+  }
+
   async countResponses(user: User): Promise<ResponseCount> {
     const whereBasedOnUserOrgs = await this.getWhereBasedOnUserOrgs(user);
+
+    // TODO: Optimize at a later date, so we don't go back and forth to the server
 
     const [unresolved, overdue, resolved] = await this.prisma.$transaction([
       this.prisma.surveyResponse.count({
