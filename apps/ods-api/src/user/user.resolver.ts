@@ -7,7 +7,12 @@ import {
   Mutation,
 } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { OrgGQL, UserCreateInput, UserGQL } from '@odst/types/ods';
+import {
+  OrgGQL,
+  UserCreateInput,
+  UserGQL,
+  UserWhereUniqueInput,
+} from '@odst/types/ods';
 
 // fix this when we have a better solution
 // eslint-disable-next-line no-restricted-imports
@@ -61,5 +66,13 @@ export class UserResolver {
     @Args('userCreateInput') userCreateInput: UserCreateInput
   ): Promise<UserGQL> {
     return this.userService.create(userCreateInput);
+  }
+
+  @Mutation(() => UserGQL, { name: 'deleteUser' })
+  async delete(
+    @Args('userWhereUniqueInput')
+    userWhereUniqueInput: UserWhereUniqueInput
+  ): Promise<UserGQL> {
+    return this.userService.delete(userWhereUniqueInput);
   }
 }
