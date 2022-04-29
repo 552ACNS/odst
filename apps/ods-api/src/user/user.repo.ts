@@ -8,7 +8,7 @@ export const MockUsers: User[] = [
     password: 'password',
     role: 'ADMIN',
     enabled: true,
-    grade: 'rank',
+    grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
   },

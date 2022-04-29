@@ -46,7 +46,11 @@ export class LoginComponent implements OnInit {
           setAccessToken(data.login.accessToken);
           // if (this.loginForm.value['rememberMe']) {
           setRefreshToken(data.login.refreshToken);
+          // TODO: if remember me is false, it should get a refreshToken with a low time to live
+          // if it's true, it should get a refreshToken with a high time to live
           // }
+
+          this.router.navigate(['dashboard']);
         }
         //TODO Need to consider redirect attacks
         this.router.navigateByUrl(this.returnUrl);

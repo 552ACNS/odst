@@ -43,7 +43,6 @@ export class SurveyQuestionsService {
         query: GetCommandersDocument,
       })
       .valueChanges.pipe(
-        //TODO: fix this later when adding rank to user.
         map((result) =>
           result.data.getCommanders
             .map((x) => `${x.grade} ${x.lastName}, ${x.firstName}`)
