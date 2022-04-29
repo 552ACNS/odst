@@ -33,7 +33,7 @@ describe('ods', () => {
   it('Verify that only people with correct permission can view a specific survey', () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
-    //TODO: update when unique accounts are made
+    //TODO: update when unique accounts are made and make a sign in query
     cy.get('[formcontrolname="userUsername"]').type('admin@admin.com');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('button').contains('Sign In').click();
