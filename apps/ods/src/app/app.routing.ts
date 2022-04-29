@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard, LoggedInGuard } from '@odst/shared/angular';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
     path: 'responses',
     loadChildren: () =>
       import('./responses/responses.module').then((m) => m.ResponsesModule),
+    canActivate: [AuthGuard],
   },
   //TODO: Change survey to report eventually
   {
@@ -25,12 +27,15 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+    canActivate: [AuthGuard],
   },
-  //TODO: add functionality to auto redirect to login if refresh token not found
   {
     path: 'login',
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginModule),
+    //this skips logging in if already logged in.
+    //Should we refresh any tokens? access/refresh/id?
+    canActivate: [LoggedInGuard],
   },
 ];
 @NgModule({

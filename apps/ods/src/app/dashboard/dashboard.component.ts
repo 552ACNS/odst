@@ -14,7 +14,14 @@ import { Role } from '../../types.graphql';
 export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
   responses: ResponseCountQuery['ResponseCount'];
-  cardSpecs;
+  cardSpecs: ({
+    title: string;
+    numberStyle: string;
+    countOf: number;
+    suffix: string;
+    suffixStyle: string;
+    resolved?: boolean;
+  })[];
   user: AuthenticatedUserFragment;
 
   userTitle: string;
