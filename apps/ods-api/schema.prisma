@@ -16,7 +16,7 @@ model User {
   email        String        @unique
   password     String
   enabled      Boolean       @default(true)
-  rank         String?
+  grade         String?
   firstName    String
   lastName     String
   role         Role

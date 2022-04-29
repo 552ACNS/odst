@@ -66,7 +66,7 @@ type UserGQL {
   role: Role!
   id: String!
   email: String!
-  rank: String
+  grade: String
   firstName: String!
   lastName: String!
   enabled: Boolean!
