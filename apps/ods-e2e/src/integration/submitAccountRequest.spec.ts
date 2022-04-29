@@ -54,13 +54,11 @@ describe('ods', () => {
             email: 'e2etest@gmail.com',
           },
         },
-        query: `
-        mutation DeleteUser($userWhereUniqueInput: UserWhereUniqueInput!) {
+        query: `mutation deleteUser($userWhereUniqueInput: UserWhereUniqueInput!) {
           deleteUser(userWhereUniqueInput: $userWhereUniqueInput) {
             firstName
           }
-        }
-        `,
+        }`,
       },
     });
   });
