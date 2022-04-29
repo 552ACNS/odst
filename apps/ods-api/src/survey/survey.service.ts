@@ -109,6 +109,7 @@ export class SurveyService {
 
   //TODO optimize database calls. each survey create/update requires 3 database calls.
   //TODO only call if questions is being updated
+  //TODO move this to prisma hook
   private async updateQuestionsHash(
     surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
   ): Promise<void> {

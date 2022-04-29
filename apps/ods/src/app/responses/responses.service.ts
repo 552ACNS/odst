@@ -8,10 +8,10 @@ import {
   GetSurveyResponseDataDocument,
   GetSurveyResponseDataQuery,
   GetSurveyResponseDataQueryVariables,
-  UpdateSurveyResponse_ResolutionDocument,
-  UpdateSurveyResponse_ResolutionMutation,
-  UpdateSurveyResponse_ResolutionMutationVariables,
-} from '../../graphql-generated';
+  UpdateSurveyResponseDocument,
+  UpdateSurveyResponseMutation,
+  UpdateSurveyResponseMutationVariables,
+} from './responses.generated';
 
 @Injectable({
   providedIn: 'root',
@@ -36,10 +36,10 @@ export class ResponsesService {
   updateResolution(id: string, resolution: string) {
     return this.apollo
       .mutate<
-        UpdateSurveyResponse_ResolutionMutation,
-        UpdateSurveyResponse_ResolutionMutationVariables
+        UpdateSurveyResponseMutation,
+        UpdateSurveyResponseMutationVariables
       >({
-        mutation: UpdateSurveyResponse_ResolutionDocument,
+        mutation: UpdateSurveyResponseDocument,
         variables: {
           surveyResponseWhereUniqueInput: {
             id: id,

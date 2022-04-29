@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
+import { ResponseCountQuery } from './dashboard.generated';
 
 @Component({
   selector: 'odst-dashboard',
@@ -8,7 +9,7 @@ import { DashboardService } from './dashboard.service';
 })
 export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
-  responses: { unresolved: number; overdue: number; resolved: number };
+  responses: ResponseCountQuery['ResponseCount'];
   cardSpecs;
   ngOnInit() {
     this.dashboardService.GetResponseCount().subscribe((data) => {

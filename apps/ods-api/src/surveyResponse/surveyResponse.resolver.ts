@@ -16,24 +16,18 @@ import {
   SurveyGQL,
   ResponseCount,
 } from '@odst/types/ods';
-
-// import { GetCurrentUserId } from '@odst/shared/nest';
-// import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
+import { Public } from '@odst/auth';
 
 @Resolver(() => SurveyResponseGQL)
 export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
 
   @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findMany(): Promise<SurveyResponseGQL[]> {
-    // return this.surveyResponseService.findMany();
     return this.surveyResponseService.findMany({});
   }
 
   @Query(() => SurveyResponseGQL, { name: 'findUniqueSurveyResponse' })
-  // @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
@@ -44,7 +38,7 @@ export class SurveyResponseResolver {
   }
 
   @Mutation(() => SurveyResponseGQL, { name: 'createSurveyResponse' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Public()
   async create(
     @Args('surveyResponseCreateInput')
     surveyResponseCreateInput: SurveyResponseCreateInput
@@ -53,7 +47,6 @@ export class SurveyResponseResolver {
   }
 
   @Mutation(() => SurveyResponseGQL, { name: 'updateSurveyResponse' })
-  // @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('SurveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput,
@@ -67,7 +60,6 @@ export class SurveyResponseResolver {
   }
 
   @Mutation(() => SurveyResponseGQL, { name: 'deleteSurveyResponse' })
-  // @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
@@ -76,13 +68,11 @@ export class SurveyResponseResolver {
   }
 
   @Query(() => ResponseCount, { name: 'ResponseCount' })
-  // @UseGuards(AccessTokenAuthGuard)
   async ResponseCount(): Promise<ResponseCount> {
     return this.surveyResponseService.countResponses();
   }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
-  // @UseGuards(AccessTokenAuthGuard)
 
   // TODO This line gets the current user ID but it requires a login system to exist first.
   // async getUnresolvedIssues(@GetCurrentUserId() userId: string): Promise<string[]> {
@@ -94,7 +84,6 @@ export class SurveyResponseResolver {
   }
 
   @Query(() => SurveyResponseGQL, { name: 'getSurveyResponseData' })
-  // @UseGuards(AccessTokenAuthGuard)
   async getSurveyResponseData(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput

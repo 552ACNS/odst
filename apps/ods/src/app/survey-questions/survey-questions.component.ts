@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { Role } from '../../graphql-generated';
+import { Role } from '../../types.graphql';
 import { SurveyQuestionsService } from './survey-questions.service';
 
 @Component({
@@ -71,7 +71,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.orgs = await this.surveyService.getManyOrgs();
-    this.CCs = await this.surveyService.findUsersWithRole(Role.Cc);
+    this.CCs = await this.surveyService.getCommanders();
   }
   //TODO find out a way to fix without this
   outsideRoutingWorking(): boolean {

@@ -1,7 +1,0 @@
-query DashboardIssueCount {
-  ResponseCount {
-    unresolved
-    overdue
-    resolved
-  }
-}

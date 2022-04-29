@@ -1,0 +1,7 @@
+query ResponseCount {
+  ResponseCount {
+    resolved
+    overdue
+    unresolved
+  }
+}

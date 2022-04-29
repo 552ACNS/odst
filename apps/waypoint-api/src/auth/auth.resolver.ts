@@ -1,11 +1,11 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { RefreshLoginInput, TokensGQL } from '@odst/types/waypoint';
+import { RefreshLoginInput, TokensGQL, UserGQL } from '@odst/types/waypoint';
 import { LoginUserInput, SignupUserInput } from '@odst/types/waypoint';
-import { Logger, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local.authGuard';
 import { RefreshTokenAuthGuard } from './guards/refreshToken.authGuard';
-import { GetCurrentUserId } from '@odst/shared/nest';
+import { GetCurrentUser } from '@odst/shared/nest';
 
 @Resolver()
 export class AuthResolver {
@@ -28,16 +28,14 @@ export class AuthResolver {
 
   @Mutation(() => TokensGQL)
   @UseGuards(RefreshTokenAuthGuard)
-  async refreshTokens(@GetCurrentUserId() userId: string): Promise<TokensGQL> {
-    return this.authService.refreshTokens(userId);
+  async refreshTokens(@GetCurrentUser() user: UserGQL): Promise<TokensGQL> {
+    return this.authService.refreshTokens(user);
   }
 
   @Mutation(() => TokensGQL)
   async refreshTokensVar(
     @Args('refreshLoginInput') refreshLoginInput: RefreshLoginInput
   ): Promise<TokensGQL> {
-    const tokens = await this.authService.refreshTokensVar(refreshLoginInput);
-    Logger.log({ tokens });
     return this.authService.refreshTokensVar(refreshLoginInput);
   }
 }
