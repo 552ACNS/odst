@@ -5,7 +5,6 @@ export * from './entity/question.entity';
 export * from './entity/survey.entity';
 export * from './entity/surveyResponse.entity';
 export * from './entity/user.entity';
-export * from './entity/statuses.entity';
 //#endregion
 
 //#region Input InputTypes

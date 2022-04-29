@@ -98,7 +98,7 @@ export class SurveyResponseResolver {
   async getSurveyResponseData(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ) {
+  ): Promise<SurveyResponseGQL | null> {
     return this.surveyResponseService.getSurveyResponseData(
       surveyResponseWhereUniqueInput
     );
