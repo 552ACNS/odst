@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 let accessToken = '';
 describe('ods', () => {
   const uuid = uuidv4();
-  before(() => {
+  beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
 
