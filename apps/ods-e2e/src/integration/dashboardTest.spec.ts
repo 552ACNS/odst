@@ -9,6 +9,8 @@ describe('ods', () => {
   it('should view unresolved and resolved responses from dashboard', () => {
     cy.visit('/dashboard');
     cy.location('pathname').should('include', '/dashboard');
+    cy.get('h1').contains('Admin Admin, E-∞');
+    cy.get('h3').contains('Administrator');
     cy.get('p').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
     cy.get('h1').contains('Unresolved Responses');
