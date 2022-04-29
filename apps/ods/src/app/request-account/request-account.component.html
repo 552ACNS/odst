@@ -69,6 +69,7 @@
           <mat-error> Please select an organization. </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-full">
+          <!-- TODO: add password strength library -->
           <mat-label>Password</mat-label>
           <input
             matInput
@@ -79,7 +80,7 @@
             [attr.aria-pressed]="hide"
             required
           />
-          <mat-error> {{ errors.password }} </mat-error>
+          <mat-error></mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Confirm Password</mat-label>
@@ -92,6 +93,7 @@
           />
           <mat-error *ngIf="form.hasError('notSame')">
             Please enter a enter a matching password.
+            {{ errors['password'] }}
           </mat-error>
           <button
             mat-icon-button

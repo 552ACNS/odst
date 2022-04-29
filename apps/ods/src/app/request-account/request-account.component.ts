@@ -1,30 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  NgForm,
-  Validators,
-} from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-//import { UserGQL } from '@odst/types/ods';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { Role } from '../../types.graphql';
 import { RequestAccountService } from './request-account.service';
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const invalidCtrl = !!(control?.invalid && control?.parent?.dirty);
-    const invalidParent = !!(
-      control?.parent?.invalid && control?.parent?.dirty
-    );
-
-    return control?.parent?.errors && control.parent.errors['notSame'];
-  }
-}
+import {
+  CustomValidators,
+  MyErrorStateMatcher,
+  regExps,
+  errorMessages,
+} from '@odst/shared/angular';
 
 @Component({
   selector: 'odst-request-account',
@@ -33,6 +17,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class RequestAccountComponent implements OnInit {
   hide = true;
+  errors = errorMessages;
   matcher = new MyErrorStateMatcher();
   grades = [
     'N/A',
@@ -74,13 +59,6 @@ export class RequestAccountComponent implements OnInit {
       return Role.Admin;
     }
   }
-  checkPasswords(group: FormGroup) {
-    // here we have the 'passwords' group
-    const pass = group.controls['password'].value;
-    const confirmPass = group.controls['confirmPassword'].value;
-
-    return pass === confirmPass ? null : { notSame: true };
-  }
   // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group(
     {
@@ -90,10 +68,13 @@ export class RequestAccountComponent implements OnInit {
       grade: [''],
       permissions: ['', [Validators.required]],
       org: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: [
+        '',
+        [Validators.required, Validators.pattern(regExps['password'])],
+      ],
       confirmPassword: ['', [Validators.required]],
     },
-    { validator: this.checkPasswords }
+    { validator: CustomValidators.checkPasswords }
   );
 
   submit() {

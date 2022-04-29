@@ -7,10 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
 import { RequestAccountComponent } from './request-account.component';
 import { RequestAccountRoutes } from './request-account.routing';
 import { RouterModule } from '@angular/router';
+
 @NgModule({
   declarations: [RequestAccountComponent],
   imports: [
@@ -21,7 +21,6 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     MatButtonModule,
     MatSelectModule,
-    MatRadioModule,
     MatCardModule,
     MatCheckboxModule,
     FormsModule,
