@@ -19,7 +19,7 @@ export class CustomValidators {
 //this is the password requirements regex
 export const regExps: { [key: string]: RegExp } = {
   password:
-    /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*?[A-Z])[a-zA-Z0-9!@#$%^&*]{8,48}$/,
+    /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*?[A-Z])(?=.*?[a-z])[a-zA-Z0-9!@#$%^&*]{8,48}$/,
 };
 //these are the custom messages for errors states
 export const errorMessages: { [key: string]: string } = {
