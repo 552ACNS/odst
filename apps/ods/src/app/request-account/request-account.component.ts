@@ -9,6 +9,7 @@ import {
   regExps,
   errorMessages,
 } from '@odst/shared/angular';
+import { subscribe } from 'graphql';
 
 @Component({
   selector: 'odst-request-account',
@@ -17,6 +18,7 @@ import {
 })
 export class RequestAccountComponent implements OnInit {
   hide = true;
+  emailIsUnique = true;
   errors = errorMessages;
   matcher = new MyErrorStateMatcher();
   grades = [
@@ -42,6 +44,21 @@ export class RequestAccountComponent implements OnInit {
   ) {}
   async ngOnInit(): Promise<void> {
     this.orgs = await this.requestService.getManyOrgs();
+  }
+
+  async uniqueEmail() {
+    let tempEmail;
+    await (
+      await this.requestService.findUniqueUser(this.form.value['email'].trim())
+    ).subscribe((data) => {
+      tempEmail = data;
+      console.log(tempEmail);
+    });
+    if (tempEmail == this.form.value['email'].trim()) {
+      this.emailIsUnique = false;
+    } else {
+      this.emailIsUnique = true;
+    }
   }
   gradeCheck(grade?: string) {
     if (grade == 'N/A') {

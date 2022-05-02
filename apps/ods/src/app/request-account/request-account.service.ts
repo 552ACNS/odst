@@ -8,6 +8,9 @@ import {
   FindManyOrgsDocument,
   FindManyOrgsQuery,
   FindManyOrgsQueryVariables,
+  FindUniqueUserDocument,
+  FindUniqueUserQuery,
+  FindUniqueUserQueryVariables,
 } from './request-account.generated';
 
 @Injectable({
@@ -25,6 +28,19 @@ export class RequestAccountService {
       .valueChanges.pipe(
         map((result) => result.data.findManyOrgs.map((x) => x.name))
       );
+  }
+
+  async findUniqueUser(email: string) {
+    return this.apollo
+      .watchQuery<FindUniqueUserQuery, FindUniqueUserQueryVariables>({
+        query: FindUniqueUserDocument,
+        variables: {
+          userWhereUniqueInput: {
+            email: email,
+          },
+        },
+      })
+      .valueChanges.pipe(map((result) => result.data));
   }
 
   submitAccountCreationRequest(

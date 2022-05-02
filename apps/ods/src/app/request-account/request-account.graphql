@@ -10,3 +10,9 @@ mutation CreateUser($userCreateInput: UserCreateInput!) {
     firstName
   }
 }
+
+query FindUniqueUser($userWhereUniqueInput: UserWhereUniqueInput!) {
+  findUniqueUser(userWhereUniqueInput: $userWhereUniqueInput) {
+    email
+  }
+}
