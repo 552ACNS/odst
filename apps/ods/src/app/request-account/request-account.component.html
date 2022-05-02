@@ -1,6 +1,6 @@
-<div class="parent-div space-y-3">
+<div class="parent-div space-y-3 flex flex-col flex-wrap">
   <form [formGroup]="form">
-    <mat-card class="flex flex-col flex-wrap">
+    <mat-card>
       <mat-card-title>Account Request</mat-card-title>
       <mat-card-content class="mb-0">
         <div class="flex flex-row mt-3 space-x-3">
@@ -73,9 +73,9 @@
           <mat-label>Password</mat-label>
           <input
             matInput
+            matTooltip="-At least one lowercase character (a-z) -At least one uppercase character (A-Z) -At least one numeral (0-9) -At least one speical character (~!@#$%^&)"
             placeholder="Password"
             formControlName="password"
-            matTooltip="-At least one lowercase character (a-z) \n-At least one uppercase character (A-Z) \n-At least one numeral (0-9) -At least one speical character (~!@#$%^&)"
             [type]="hide ? 'password' : 'text'"
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hide"
