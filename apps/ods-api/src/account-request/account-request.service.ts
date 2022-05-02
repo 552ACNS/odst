@@ -24,19 +24,10 @@ export class AccountRequestService {
     });
   }
 
-  async findUnique(
-    accountrequestWhereUniqueInput: Prisma.AccountRequestWhereUniqueInput
-  ): Promise<AccountRequest | null> {
-    return this.prisma.accountRequest.findUnique({
-      where: accountrequestWhereUniqueInput,
-    });
-  }
-
   async approveRequest(
     accountRequestWhereUniqueInput: Prisma.AccountRequestWhereUniqueInput,
     approver: User
   ): Promise<User | null> {
-    await this.prisma.user.delete({ where: { email: 'blah' } });
     const [request, orgs] = await this.prisma.$transaction([
       this.prisma.accountRequest.findUnique({
         where: accountRequestWhereUniqueInput,
@@ -90,16 +81,6 @@ export class AccountRequestService {
     data.password = await hash(data.password, 10);
     return this.prisma.accountRequest.create({
       data,
-    });
-  }
-
-  async update(
-    accountRequestWhereUniqueInput: Prisma.AccountRequestWhereUniqueInput,
-    accountRequestUpdateInput: Prisma.AccountRequestUpdateInput
-  ): Promise<AccountRequest> {
-    return this.prisma.accountRequest.update({
-      where: accountRequestWhereUniqueInput,
-      data: accountRequestUpdateInput,
     });
   }
 

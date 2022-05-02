@@ -158,8 +158,8 @@ type Mutation {
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
   approveAccountRequest(accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!): UserGQL!
-  createAccountRequest(accountRequestCreateInput: AccountRequestCreateInput!): AccountRequestGQL!
   declineAccountRequest(accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!): AccountRequestGQL!
+  createAccountRequest(accountRequestCreateInput: AccountRequestCreateInput!): AccountRequestGQL!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }

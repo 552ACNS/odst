@@ -41,14 +41,6 @@ export class AccountRequestResolver {
     );
   }
 
-  @Mutation(() => AccountRequestGQL, { name: 'createAccountRequest' })
-  create(
-    @Args('accountRequestCreateInput')
-    accountRequestCreateInput: AccountRequestCreateInput
-  ): Promise<AccountRequestGQL> {
-    return this.accountRequestService.create(accountRequestCreateInput);
-  }
-
   @Mutation(() => AccountRequestGQL, { name: 'declineAccountRequest' })
   declineRequest(
     @Args('accountRequestWhereUniqueInput')
@@ -57,6 +49,14 @@ export class AccountRequestResolver {
     return this.accountRequestService.declineRequest(
       accountRequestWhereUniqueInput
     );
+  }
+
+  @Mutation(() => AccountRequestGQL, { name: 'createAccountRequest' })
+  create(
+    @Args('accountRequestCreateInput')
+    accountRequestCreateInput: AccountRequestCreateInput
+  ): Promise<AccountRequestGQL> {
+    return this.accountRequestService.create(accountRequestCreateInput);
   }
 
   @ResolveField(() => UserGQL, { nullable: true })

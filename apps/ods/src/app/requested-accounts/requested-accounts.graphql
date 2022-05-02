@@ -26,7 +26,7 @@ mutation ApproveAccountRequest(
 mutation DeclineAccountRequest(
   $accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!
 ) {
-  DeclineAccountRequest(
+  declineAccountRequest(
     accountRequestWhereUniqueInput: $accountRequestWhereUniqueInput
   ) {
     id
