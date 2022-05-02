@@ -41,7 +41,11 @@ const requestedAccounts: requestedAccountDetails[] = [
   templateUrl: './requested-accounts.component.html',
   styleUrls: ['./requested-accounts.component.scss'],
 })
-export class RequestedAccountsComponent /*implements OnInit */ {
+export class RequestedAccountsComponent /*implements OnInit*/ {
   // constructor() {}
+
+  dataSource = requestedAccounts;
+  displayedColumns: string[] = ['Name', 'Grade', 'requested Permissions'];
+
   // ngOnInit(): void {}
 }
