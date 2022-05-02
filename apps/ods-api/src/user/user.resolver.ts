@@ -51,6 +51,14 @@ export class UserResolver {
     });
   }
 
+  @Query(() => UserGQL, { name: 'findUniqueUser' })
+  async findUnique(
+    @Args('userWhereUniqueInput')
+    userWhereUniqueInput: UserWhereUniqueInput
+  ): Promise<UserGQL | null> {
+    return this.userService.findUnique(userWhereUniqueInput);
+  }
+
   @ResolveField(() => [OrgGQL])
   async orgs(@Parent() user: UserGQL): Promise<OrgGQL[]> {
     return this.userService.orgs({ id: user.id });
