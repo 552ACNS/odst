@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
     countOf: number;
     suffix: string;
     suffixStyle: string;
-    resolved?: boolean;
+    resolved?: string;
   }[];
   user: AuthenticatedUserFragment;
 
