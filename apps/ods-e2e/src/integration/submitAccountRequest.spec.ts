@@ -1,7 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
 let accessToken = '';
 describe('ods', () => {
-  const uuid = uuidv4();
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
@@ -31,10 +29,7 @@ describe('ods', () => {
     }).then((response) => {
       expect(response.body.errors).to.be.undefined;
       accessToken = response.body.data.login.accessToken;
-      //cy.log(response.body.data.login.accessToken);
       cy.log(accessToken);
-      //cy.wrap(response.body.data.login.accesstoken).as('accessToken');
-      //cy.log(this["accessToken"]);
     });
   });
 

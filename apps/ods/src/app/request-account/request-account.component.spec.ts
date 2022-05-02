@@ -3,7 +3,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequestAccountComponent } from './request-account.component';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,7 +24,6 @@ describe('SurveyQuestionsComponent', () => {
         FormsModule,
         ApolloTestingModule,
         MatCardModule,
-        MatCheckboxModule,
         MatInputModule,
         MatIconModule,
         MatButtonModule,
