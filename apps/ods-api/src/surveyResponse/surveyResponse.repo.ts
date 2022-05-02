@@ -18,6 +18,24 @@ export const MockSurveyResponses: SurveyResponse[] = [
     routeOutside: false,
     resolution: 'resolved',
   },
+  //add condition for unresolved
+  {
+    id: 'SurveyResponse id 3',
+    openedDate: new Date(),
+    closedDate: null,
+    surveyId: 'surveyId',
+    routeOutside: false,
+    resolution: null,
+  },
+  //add condition for overdue
+  {
+    id: 'SurveyResponse id 4',
+    openedDate: new Date(Date.now() - 2592000000),
+    closedDate: null,
+    surveyId: 'surveyId',
+    routeOutside: false,
+    resolution: null,
+  },
 ];
 
 export const MockSurveyResponseCreateInput: SurveyResponseCreateInput[] = [
