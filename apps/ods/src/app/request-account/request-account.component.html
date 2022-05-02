@@ -75,6 +75,7 @@
             matInput
             placeholder="Password"
             formControlName="password"
+            matTooltip="-At least one lowercase character (a-z) \n-At least one uppercase character (A-Z) \n-At least one numeral (0-9) -At least one speical character (~!@#$%^&)"
             [type]="hide ? 'password' : 'text'"
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hide"
