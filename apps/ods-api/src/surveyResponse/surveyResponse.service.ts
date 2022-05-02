@@ -179,19 +179,18 @@ export class SurveyResponseService {
     );
     // TODO: Redo with try catch
     //Will silently fail if delete isn't cascaded properly
-    const [deleteAnswers, deleteSurveyResponses] =
-      await this.prisma.$transaction([
-        this.prisma.answer.deleteMany({
-          where: {
-            surveyResponse: {
-              closedDate: { lt: new Date(Date.now() - 31536000000) },
-            },
+    const [deleteSurveyResponses] = await this.prisma.$transaction([
+      this.prisma.answer.deleteMany({
+        where: {
+          surveyResponse: {
+            closedDate: { lt: new Date(Date.now() - 31536000000) },
           },
-        }),
-        this.prisma.surveyResponse.deleteMany({
-          where: { closedDate: { lt: new Date(Date.now() - 31536000000) } },
-        }),
-      ]);
+        },
+      }),
+      this.prisma.surveyResponse.deleteMany({
+        where: { closedDate: { lt: new Date(Date.now() - 31536000000) } },
+      }),
+    ]);
     if (deleteSurveyResponses.count > 0) {
       Logger.log(
         `Deleted ${deleteSurveyResponses.count} survey responses`,
