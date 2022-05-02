@@ -10,6 +10,9 @@ type AccountRequestGQL {
   firstName: String!
   lastName: String!
   date: DateTime!
+  denied: Boolean!
+  approver: UserGQL
+  orgs: [OrgGQL!]!
 }
 
 enum Role {
@@ -27,8 +30,8 @@ scalar DateTime
 type AnswerGQL {
   id: String!
   value: String!
-  question: QuestionGQL!
-  surveyResponse: SurveyResponseGQL!
+  question: QuestionGQL
+  surveyResponse: SurveyResponseGQL
 }
 
 type OrgGQL {
@@ -37,7 +40,7 @@ type OrgGQL {
   name: String!
   users: [UserGQL!]!
   children: [OrgGQL!]!
-  parent: OrgGQL!
+  parent: OrgGQL
   surveys: [SurveyGQL!]!
 }
 
@@ -70,7 +73,7 @@ type SurveyResponseGQL {
   routeOutside: Boolean!
   resolution: String
   answers: [AnswerGQL!]!
-  survey: SurveyGQL!
+  survey: SurveyGQL
 }
 
 type ResponseCount {
@@ -154,8 +157,9 @@ type Mutation {
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
-  approve: UserGQL!
+  approveAccountRequest(accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!): UserGQL!
   createAccountRequest(accountRequestCreateInput: AccountRequestCreateInput!): AccountRequestGQL!
+  declineAccountRequest(accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!): AccountRequestGQL!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -314,13 +318,23 @@ input QuestionUpdateInput {
   prompt: String
 }
 
+input AccountRequestWhereUniqueInput {
+  id: String
+  email: String
+}
+
 input AccountRequestCreateInput {
   role: Role!
+  orgs: OrgCreateNestedManyWithoutAccountRequestsInput!
   email: String!
   firstName: String!
   lastName: String!
   password: String!
   rank: String
+}
+
+input OrgCreateNestedManyWithoutAccountRequestsInput {
+  connect: OrgWhereUniqueInput
 }
 
 input LoginUserInput {

@@ -22,27 +22,23 @@ model User {
   role             Role
   refreshToken     RefreshToken?
   orgs             Org[]
-  accountRequest   AccountRequest?  @relation(name: "RequestApprover", fields: [accountRequestId], references: [id]) //request that resulted in this user
-  accountRequestId String?          @unique
   approvedRequests AccountRequest[] @relation(name: "ApprovedRequests") //requests this user approved
-
 }
 
 model AccountRequest {
-  id               String   @id @default(uuid())
-  email            String   @unique
-  rank             String?
-  password         String
-  firstName        String
-  lastName         String
-  date             DateTime @default(now())
-  role             Role
-  orgs             Org[]
+  id         String   @id @default(uuid())
+  email      String   @unique
+  rank       String?
+  password   String
+  firstName  String
+  lastName   String
+  date       DateTime @default(now())
+  role       Role
+  orgs       Org[]
   //TODO comments  Comment[]
-  approver         User?    @relation(name: "RequestApprover")
-  approverId       String?
-  approvedRequests User[]   @relation(name: "ApprovedRequests")
-  denied           Boolean  @default(false)
+  approver   User?    @relation(name: "ApprovedRequests", fields: [approverId], references: [id]) //user that approved this request
+  approverId String?
+  denied     Boolean  @default(false)
 }
 
 model RefreshToken {
@@ -64,7 +60,7 @@ model Org {
   parent          Org?             @relation(name: "ParentChild", fields: [parentId], references: [id])
   children        Org[]            @relation(name: "ParentChild") // This is a self relation
   surveys         Survey[]
-  AccountRequests AccountRequest[]
+  accountRequests AccountRequest[]
 }
 
 model SurveyResponse {

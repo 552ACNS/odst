@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { AccountRequest, User, Prisma } from '.prisma/ods/client';
+import { AccountRequest, User, Org, Prisma } from '.prisma/ods/client';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class AccountRequestService {
@@ -31,13 +32,14 @@ export class AccountRequestService {
     });
   }
 
-  async approve(
-    answerWhereUniqueInput: Prisma.AnswerWhereUniqueInput,
+  async approveRequest(
+    accountRequestWhereUniqueInput: Prisma.AccountRequestWhereUniqueInput,
     approver: User
   ): Promise<User | null> {
+    await this.prisma.user.delete({ where: { email: 'blah' } });
     const [request, orgs] = await this.prisma.$transaction([
       this.prisma.accountRequest.findUnique({
-        where: answerWhereUniqueInput,
+        where: accountRequestWhereUniqueInput,
         select: {
           email: true,
           password: true,
@@ -47,14 +49,12 @@ export class AccountRequestService {
           role: true,
         },
       }),
-      this.prisma.accountRequest
-        .findUnique({
-          where: answerWhereUniqueInput,
-          select: {
-            id: true,
-          },
-        })
-        .orgs(),
+      this.prisma.org.findMany({
+        where: { accountRequests: { some: accountRequestWhereUniqueInput } },
+        select: {
+          id: true,
+        },
+      }),
     ]);
 
     if (!request) return null;
@@ -65,20 +65,57 @@ export class AccountRequestService {
 
     //could have this up in the transaction
     //but then it could run then have create fail
-    //Could use interactive transaction for bottom two/all four
-    this.prisma.accountRequest.update({
-      where: answerWhereUniqueInput,
-      data: { approverId: approver.id },
+    //Or could use interactive transaction for bottom two/all four
+    await this.prisma.accountRequest.update({
+      where: accountRequestWhereUniqueInput,
+      data: { approver: { connect: { id: approver.id } }, denied: true },
     });
-
     return user;
+  }
+
+  async declineRequest(
+    accountRequestWhereUniqueInput: Prisma.AccountRequestWhereUniqueInput
+  ): Promise<AccountRequest> {
+    return this.prisma.accountRequest.update({
+      where: accountRequestWhereUniqueInput,
+      data: { denied: true },
+      //TODO auto generate comment indicating who declined?
+      //Could do the same with approve relationship
+    });
   }
 
   async create(
     data: Prisma.AccountRequestCreateInput
   ): Promise<AccountRequest> {
+    data.password = await hash(data.password, 10);
     return this.prisma.accountRequest.create({
       data,
     });
+  }
+
+  async update(
+    accountRequestWhereUniqueInput: Prisma.AccountRequestWhereUniqueInput,
+    accountRequestUpdateInput: Prisma.AccountRequestUpdateInput
+  ): Promise<AccountRequest> {
+    return this.prisma.accountRequest.update({
+      where: accountRequestWhereUniqueInput,
+      data: accountRequestUpdateInput,
+    });
+  }
+
+  async approver(
+    accountRequestWhereUniqueInput: Prisma.AccountRequestWhereUniqueInput
+  ): Promise<User | null> {
+    return this.prisma.accountRequest
+      .findUnique({ where: accountRequestWhereUniqueInput })
+      .approver();
+  }
+
+  async orgs(
+    accountRequestWhereUniqueInput: Prisma.AccountRequestWhereUniqueInput
+  ): Promise<Org[]> {
+    return this.prisma.accountRequest
+      .findUnique({ where: accountRequestWhereUniqueInput })
+      .orgs();
   }
 }

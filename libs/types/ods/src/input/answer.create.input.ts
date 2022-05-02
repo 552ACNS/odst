@@ -37,13 +37,13 @@ export class AnswerCreateManySurveyResponseInput
 export class AnswerCreateNestedManyWithoutSurveyResponseInput
   implements Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput
 {
-  @Field(() => AnswerWhereUniqueInput, { nullable: true })
+  @Field(() => AnswerWhereUniqueInput)
   connect?: Prisma.AnswerWhereUniqueInput;
 
-  @Field(() => AnswerCreateWithoutSurveyResponseInput, { nullable: true })
+  @Field(() => AnswerCreateWithoutSurveyResponseInput)
   create?: Prisma.AnswerCreateWithoutSurveyResponseInput;
 
-  @Field(() => AnswerCreateManySurveyResponseInputEnvelope, { nullable: true })
+  @Field(() => AnswerCreateManySurveyResponseInputEnvelope)
   createMany?: Prisma.AnswerCreateManySurveyResponseInputEnvelope;
 }
 

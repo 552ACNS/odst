@@ -18,5 +18,5 @@ export class AccountRequestGQL implements AccountRequest {
   role: Role;
 
   @HideField()
-  approverId: string;
+  approverId: string | null;
 }

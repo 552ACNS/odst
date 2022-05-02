@@ -1,7 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma, Role } from '.prisma/ods/client';
 import { OrgCreateNestedManyWithoutAccountRequestsInput } from './org.create.input';
-import { UserCreateNestedManyWithoutApprovedRequestsInput } from './user.create.input';
 
 @InputType()
 export class AccountRequestCreateInput
@@ -18,7 +17,4 @@ export class AccountRequestCreateInput
 
   @Field(() => OrgCreateNestedManyWithoutAccountRequestsInput)
   orgs: Prisma.OrgCreateNestedManyWithoutAccountRequestsInput;
-
-  @Field(() => UserCreateNestedManyWithoutApprovedRequestsInput)
-  approvedRequests?: UserCreateNestedManyWithoutApprovedRequestsInput;
 }

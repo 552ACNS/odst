@@ -100,7 +100,7 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.answers({ id: surveyResponse.id });
   }
 
-  @ResolveField(() => SurveyGQL)
+  @ResolveField(() => SurveyGQL, { nullable: true })
   async survey(
     @Parent() surveyResponse: SurveyResponseGQL
   ): Promise<SurveyGQL | null> {

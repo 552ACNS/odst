@@ -1,9 +1,17 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { GetCurrentUser } from '@odst/shared/nest';
 import {
   AccountRequestCreateInput,
   AccountRequestGQL,
-  AnswerWhereUniqueInput,
+  AccountRequestWhereUniqueInput,
+  OrgGQL,
   UserGQL,
 } from '@odst/types/ods';
 import { AccountRequestService } from './account-request.service';
@@ -21,12 +29,16 @@ export class AccountRequestResolver {
     });
   }
 
-  @Mutation(() => UserGQL)
-  approve(
-    answerWhereUniqueInput: AnswerWhereUniqueInput,
+  @Mutation(() => UserGQL, { name: 'approveAccountRequest' })
+  approveRequest(
+    @Args('accountRequestWhereUniqueInput')
+    accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput,
     @GetCurrentUser() approver: UserGQL
   ): Promise<UserGQL | null> {
-    return this.accountRequestService.approve(answerWhereUniqueInput, approver);
+    return this.accountRequestService.approveRequest(
+      accountRequestWhereUniqueInput,
+      approver
+    );
   }
 
   @Mutation(() => AccountRequestGQL, { name: 'createAccountRequest' })
@@ -35,5 +47,27 @@ export class AccountRequestResolver {
     accountRequestCreateInput: AccountRequestCreateInput
   ): Promise<AccountRequestGQL> {
     return this.accountRequestService.create(accountRequestCreateInput);
+  }
+
+  @Mutation(() => AccountRequestGQL, { name: 'declineAccountRequest' })
+  declineRequest(
+    @Args('accountRequestWhereUniqueInput')
+    accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput
+  ): Promise<AccountRequestGQL> {
+    return this.accountRequestService.declineRequest(
+      accountRequestWhereUniqueInput
+    );
+  }
+
+  @ResolveField(() => UserGQL, { nullable: true })
+  async approver(
+    @Parent() accountRequest: AccountRequestGQL
+  ): Promise<UserGQL | null> {
+    return this.accountRequestService.approver({ id: accountRequest.id });
+  }
+
+  @ResolveField(() => [OrgGQL])
+  async orgs(@Parent() accountRequest: AccountRequestGQL): Promise<OrgGQL[]> {
+    return this.accountRequestService.orgs({ id: accountRequest.id });
   }
 }

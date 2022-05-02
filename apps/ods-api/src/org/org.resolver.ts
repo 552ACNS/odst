@@ -83,7 +83,7 @@ export class OrgResolver {
     return this.orgService.children({ id: org.id });
   }
 
-  @ResolveField(() => OrgGQL)
+  @ResolveField(() => OrgGQL, { nullable: true })
   async parent(@Parent() org: OrgGQL): Promise<OrgGQL | null> {
     return this.orgService.parent({ id: org.id });
   }
