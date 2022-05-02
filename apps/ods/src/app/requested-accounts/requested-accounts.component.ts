@@ -44,5 +44,8 @@ const requestedAccounts: requestedAccountDetails[] = [
 export class RequestedAccountsComponent implements OnInit {
   constructor() {}
 
+  dataSource = requestedAccounts;
+  displayedColumns: string[] = ['Name', 'Grade', 'requested Permissions'];
+
   ngOnInit(): void {}
 }
