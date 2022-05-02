@@ -130,7 +130,7 @@ async function main() {
         role: 'ADMIN',
         firstName: 'Admin',
         lastName: 'Admin',
-        rank: 'ADMIN',
+        grade: 'E-∞',
       },
     });
 
@@ -146,7 +146,7 @@ async function main() {
         role: 'CC',
         firstName: 'John',
         lastName: 'Doe',
-        rank: 'Lt. Col.',
+        grade: 'O-6',
       },
     });
 
@@ -162,7 +162,7 @@ async function main() {
         role: 'CC',
         firstName: 'Michael',
         lastName: 'Henry',
-        rank: 'Lt. Col.',
+        grade: 'O-6',
       },
     });
 
@@ -178,7 +178,7 @@ async function main() {
         role: 'CC',
         firstName: 'Henry',
         lastName: 'Henderson',
-        rank: 'Lt. Col.',
+        grade: 'O-6',
       },
     });
   }

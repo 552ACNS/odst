@@ -9,6 +9,7 @@ export function setAccessToken(token: string): void {
 export function getRefreshToken(): string | null {
   return localStorage.getItem('refreshToken');
 }
+
 export function setRefreshToken(token: string): void {
   localStorage.setItem('refreshToken', token);
 }

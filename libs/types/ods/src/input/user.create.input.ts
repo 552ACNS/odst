@@ -6,7 +6,7 @@ import { OrgWhereUniqueInput } from './org.unique.input';
 export class UserCreateInput implements Prisma.UserCreateInput {
   email: string;
   password: string;
-  rank?: string;
+  grade?: string;
   firstName: string;
   lastName: string;
   enabled?: boolean;
