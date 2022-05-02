@@ -144,9 +144,11 @@ export class AuthService {
     return token;
   }
 
+  //TODO when creating users, ensure that check if username/email exists is case insensitive
   async getUserByEmailOrUsername(
     emailOrUsername: string
   ): Promise<User | null> {
+    emailOrUsername = emailOrUsername.toLowerCase();
     //Gets user by email or username
     //could optmize to not make two db calls
 
