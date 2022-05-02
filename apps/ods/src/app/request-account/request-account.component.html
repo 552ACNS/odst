@@ -1,10 +1,10 @@
-<div class="parent-div space-y-3 flex flex-col flex-wrap">
+<div class="parent-div space-y-3 flex justify-center">
   <form [formGroup]="form">
     <mat-card>
       <mat-card-title>Account Request</mat-card-title>
       <mat-card-content class="mb-0">
         <div class="flex flex-row mt-3 space-x-3">
-          <mat-form-field appearance="outline" class="flex-auto">
+          <mat-form-field appearance="outline" class="w-full">
             <mat-label>First Name</mat-label>
             <input
               matInput
@@ -14,7 +14,7 @@
             />
             <mat-error> Please enter your first name. </mat-error>
           </mat-form-field>
-          <mat-form-field appearance="outline" class="flex-auto">
+          <mat-form-field appearance="outline" class="w-full">
             <mat-label>Last Name</mat-label>
             <input
               matInput
