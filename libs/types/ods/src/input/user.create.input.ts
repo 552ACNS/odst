@@ -28,3 +28,17 @@ export class UserCreateNestedManyWithoutOrgsInput
   @Field(() => OrgWhereUniqueInput)
   connect?: OrgWhereUniqueInput;
 }
+
+export class UserCreateNestedManyWithoutApprovedRequestsInput
+  implements Prisma.UserCreateNestedManyWithoutApprovedRequestsInput
+{
+  @Field(() => OrgWhereUniqueInput)
+  connect?: OrgWhereUniqueInput;
+}
+
+export class UserCreateNestedOneWithoutAccountRequestInput
+  implements Prisma.UserCreateNestedOneWithoutAccountRequestInput
+{
+  @Field(() => OrgWhereUniqueInput)
+  connect?: OrgWhereUniqueInput;
+}

@@ -11,6 +11,7 @@ export const MockUsers: User[] = [
     rank: 'rank',
     firstName: 'firstName',
     lastName: 'lastName',
+    accountRequestId: null,
   },
 ];
 

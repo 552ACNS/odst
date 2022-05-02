@@ -1,0 +1,11 @@
+query FindManyAccountRequests {
+  findManyAccountRequests {
+    date
+    lastName
+    firstName
+    rank
+    email
+    id
+    role
+  }
+}
