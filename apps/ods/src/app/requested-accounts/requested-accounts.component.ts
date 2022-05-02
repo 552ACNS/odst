@@ -41,8 +41,7 @@ const requestedAccounts: requestedAccountDetails[] = [
   templateUrl: './requested-accounts.component.html',
   styleUrls: ['./requested-accounts.component.scss'],
 })
-export class RequestedAccountsComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class RequestedAccountsComponent /*implements OnInit */ {
+  // constructor() {}
+  // ngOnInit(): void {}
 }
