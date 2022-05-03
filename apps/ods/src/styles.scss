@@ -21,12 +21,16 @@ $light-theme: mat.define-light-theme(
 
 @include mat.all-component-themes($light-theme);
 
+.text-link-color {
+  color: mat.get-color-from-palette($light-primary, 'text');
+}
+
 // Apply the dark theme if someone's machine prefers it
 @media (prefers-color-scheme: dark) {
   $dark-primary: mat.define-palette(mat.$pink-palette);
   $dark-accent: mat.define-palette(mat.$blue-gray-palette);
 
-  .text-dark-link-color {
+  .text-link-color {
     color: mat.get-color-from-palette($dark-primary, 'text');
   }
 
@@ -62,10 +66,6 @@ body {
 .primary-text-contrast {
   background-color: mat-color($light-primary);
   color: mat.get-color-from-palette($light-primary, '500-contrast');
-}
-
-.text-link-color {
-  color: mat.get-color-from-palette($light-primary, 'text');
 }
 
 @layer base {
