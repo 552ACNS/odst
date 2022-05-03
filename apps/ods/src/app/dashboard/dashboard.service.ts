@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import {
+  CurrentUserDocument,
+  CurrentUserQuery,
+  CurrentUserQueryVariables,
   ResponseCountDocument,
   ResponseCountQuery,
   ResponseCountQueryVariables,
@@ -20,6 +23,12 @@ export class DashboardService {
       ResponseCountQueryVariables
     >({
       query: ResponseCountDocument,
+    }).valueChanges;
+  }
+
+  getCurrentUser() {
+    return this.apollo.watchQuery<CurrentUserQuery, CurrentUserQueryVariables>({
+      query: CurrentUserDocument,
     }).valueChanges;
   }
 }
