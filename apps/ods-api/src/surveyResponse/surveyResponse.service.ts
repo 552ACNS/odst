@@ -63,38 +63,15 @@ export class SurveyResponseService {
   // has responsibility over
 
   async getIssuesByStatus(resolved: string): Promise<string[]> {
-    // let whereIssues: Prisma.SurveyResponseWhereInput = {};
-    // switch (resolved) {
-    //   case 'overdue':
-    //     whereIssues = {
-    //       openedDate: {
-    //         lt: new Date(Date.now() - 2592000000),
-    //       },
-    //       resolution: null,
-    //     };
-    //     break;
-    //   case 'unresolved':
-    //     whereIssues = {
-    //       resolution: null,
-    //     };
-    //     break;
-    //   case 'resolved':
-    //     whereIssues = {
-    //       resolution: { not: null },
-    //     };
-    //     break;
-    // }
-    const responsesIDs = await this.prisma.surveyResponse
-      .findMany({
-        where: this.determineStatus(resolved),
-        select: {
-          id: true,
-        },
-        orderBy: {
-          openedDate: 'asc',
-        },
-      })
-      .then((responses) => responses.map((response) => response.id));
+    const responsesIDs = await this.prisma.surveyResponse.findMany({
+      where: this.determineStatus(resolved),
+      select: {
+        id: true,
+      },
+      orderBy: {
+        openedDate: 'asc',
+      },
+    });
 
     // TODO Depends on user to be logged in, renable once we have a user
     // const responsesIDs = await this.prisma.surveyResponse
@@ -118,7 +95,7 @@ export class SurveyResponseService {
     //   })
     //   .then((responses) => responses.map((response) => response.id));
 
-    return responsesIDs;
+    return responsesIDs.map((response) => response.id);
   }
 
   // Get the string IDs of all the issues that are unresolved that the commander

@@ -93,6 +93,7 @@ describe('SurveyResponseService', () => {
       });
     });
   });
+
   describe('determine status', () => {
     it('should return an overdue status condition check', () => {
       const surveyResponse = service.determineStatus('overdue');
@@ -109,11 +110,14 @@ describe('SurveyResponseService', () => {
       expect(surveyResponse.resolution).toEqual({ not: null });
     });
   });
-  // describe('get overdue issues', () => {
-  //   it('should return an array of overdue responses', async () => {
-  //     const surveyResponses = await service.getIssuesByStatus('overdue');
-  //     expect(surveyResponses).toEqual(MockSurveyResponses[3]);
-  //   });
 
-  // });
+  describe('return issues by status', () => {
+    it('should return reports that are resolved', async () => {
+      const surveyResponse = await service.getIssuesByStatus('resolved');
+      expect(surveyResponse).toEqual(
+        MockSurveyResponses.map((response) => response.id)
+      );
+      expect(surveyResponse).toEqual(MockSurveyResponses);
+    });
+  });
 });
