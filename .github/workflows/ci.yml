@@ -35,7 +35,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
 
     container:
-      image: postgres:lts
+      image: postgres:latest
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
