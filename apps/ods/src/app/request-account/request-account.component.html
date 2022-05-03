@@ -69,11 +69,12 @@
           <mat-error> Please select an organization. </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-full">
-          <!-- TODO: add password strength library -->
           <mat-label>Password</mat-label>
+          <!-- TODO: either fix formatting or fix using password strength library -->
           <input
             matInput
-            matTooltip="-At least one lowercase character (a-z) -At least one uppercase character (A-Z) -At least one numeral (0-9) -At least one speical character (~!@#$%^&)"
+            matTooltip="-At least one lowercase character (a-z)  -At least one uppercase character (A-Z)  -At least one numeral (0-9)  -At least one speical character (~!@#$%^&)"
+            matTooltipPosition="right"
             placeholder="Password"
             formControlName="password"
             [type]="hide ? 'password' : 'text'"

@@ -62,7 +62,7 @@ export class RequestAccountComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   // TODO: create custom error for non unique email upon submission.
   // TODO: edit regex so that spaces are not allowed (this may be covered in password-strength library, do not know yet)
-  //TODO: fix antiquated group command that is causeing eslint error.
+  // TODO: fix antiquated group command that is causeing eslint error.
   // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group(
     {
