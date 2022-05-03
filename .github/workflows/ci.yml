@@ -33,7 +33,6 @@ jobs:
 
   container-job:
     runs-on: ubuntu-latest
-    container: node:lts
     services:
       postgres:
         image: postgres
