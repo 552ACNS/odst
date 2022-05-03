@@ -30,6 +30,22 @@ jobs:
       - name: Generate Graphql types
         run: npx graphql-codegen --config graphql.codegen.yml
       - run: npx nx affected --target=test --parallel
+
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:lts
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -56,6 +72,8 @@ jobs:
       - run: yarn nx affected --target=lint --parallel
       # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
       - run: yarn nx affected --target=test --parallel
+      - name: Start backend servers
+        run: yarn nx run-many --target=serve --projects=ods-api,waypoint-api
       # - run: dotnet tool update -g dotnet-reportgenerator-globaltool
       #   continue-on-error: true
       # - name: Merge Test Coverage Results
