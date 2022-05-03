@@ -1,29 +1,15 @@
-<p>requested-accounts works!</p>
-
 <div class="parent-div space-y-3">
   <mat-card class="shadow-md font-medium">
-    <mat-card-title> Requested Accounts </mat-card-title>
+    <mat-card-title> Requested Accounts</mat-card-title>
 
     <table mat-table class="mat-elevation-z8 w-full" [dataSource]="dataSource">
-      <!-- Position Column -->
-      <ng-container matColumnDef="Name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
+      <ng-container
+        *ngFor="let column of displayedColumns"
+        matColumnDef="{{ column }}"
+      >
+        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
         <td mat-cell *matCellDef="let requestedAccount">
-          {{ requestedAccount.FirstName }} {{ requestedAccount.LastName }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="Grade">
-        <th mat-header-cell *matHeaderCellDef>Grade</th>
-        <td mat-cell *matCellDef="let requestedAccount">
-          {{ requestedAccount.Grade }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="requested Permissions">
-        <th mat-header-cell *matHeaderCellDef>Requested Permissions</th>
-        <td mat-cell *matCellDef="let requestedAccount">
-          {{ requestedAccount.RequestedPermissions }}
+          {{ requestedAccount[column] }}
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
