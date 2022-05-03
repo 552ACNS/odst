@@ -23,6 +23,5 @@ export const regExps: { [key: string]: RegExp } = {
 };
 //these are the custom messages for errors states
 export const errorMessages: { [key: string]: string } = {
-  password:
-    'Password must be between 8 and 48 characters, and contain at least one uppercase letter, one lowercase letter, one number and one special character',
+  password: 'Password does not meet requirements and/or does not match.',
 };

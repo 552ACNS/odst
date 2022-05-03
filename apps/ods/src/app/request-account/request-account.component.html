@@ -73,7 +73,13 @@
           <!-- TODO: either fix formatting or fix using password strength library -->
           <input
             matInput
-            matTooltip="-At least one lowercase character (a-z)  -At least one uppercase character (A-Z)  -At least one numeral (0-9)  -At least one speical character (~!@#$%^&)"
+            matTooltip="The password must have the following:
+            - 8 to 32 characters
+            - At least one lowercase character (a-z)
+            - At least one uppercase character (A-Z)
+            - At least one numeral (0-9)
+            - At least one special character (~!@#$%^&)"
+            matTooltipClass="whitespace-pre"
             matTooltipPosition="right"
             placeholder="Password"
             formControlName="password"
