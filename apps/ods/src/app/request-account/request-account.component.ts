@@ -9,6 +9,7 @@ import {
   regExps,
   errorMessages,
 } from '@odst/shared/angular';
+import { contains } from 'class-validator';
 
 @Component({
   selector: 'odst-request-account',
@@ -17,7 +18,7 @@ import {
 })
 export class RequestAccountComponent implements OnInit {
   hide = true;
-  emailIsUnique = true;
+  emailNotUnique = true;
   errors = errorMessages;
   matcher = new MyErrorStateMatcher();
   grades = [
@@ -46,19 +47,13 @@ export class RequestAccountComponent implements OnInit {
   }
 
   async uniqueEmail() {
-    console.log(this.form.value['email'].trim());
-    let result = this.requestService.emailExists(
-      this.form.value['email'].trim()
-    );
-    console.log(result);
-
-    if (result) {
-      this.emailIsUnique = false;
-    } else {
-      this.emailIsUnique = true;
-    }
-
-    console.log(this.emailIsUnique);
+    //TODO: add fix so that it does not send queries on every keypress
+    (
+      await this.requestService.emailExists(this.form.value['email'].trim())
+    ).subscribe((data) => {
+      this.emailNotUnique = data;
+      console.log(this.emailNotUnique);
+    });
   }
   gradeCheck(grade?: string) {
     if (grade == 'N/A') {

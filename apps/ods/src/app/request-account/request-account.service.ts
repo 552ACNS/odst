@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   CreateUserDocument,
   CreateUserMutation,
@@ -30,16 +30,18 @@ export class RequestAccountService {
       );
   }
 
-  async emailExists(email: string) {
-    return this.apollo.watchQuery<
-      UsernameOrEmailExistsQuery,
-      UsernameOrEmailExistsQueryVariables
-    >({
-      query: UsernameOrEmailExistsDocument,
-      variables: {
-        usernameOrEmail: email,
-      },
-    }).valueChanges;
+  async emailExists(email: string): Promise<Observable<boolean>> {
+    return this.apollo
+      .watchQuery<
+        UsernameOrEmailExistsQuery,
+        UsernameOrEmailExistsQueryVariables
+      >({
+        query: UsernameOrEmailExistsDocument,
+        variables: {
+          usernameOrEmail: email,
+        },
+      })
+      .valueChanges.pipe(map((result) => result.data.usernameOrEmailExists));
   }
 
   submitAccountCreationRequest(
