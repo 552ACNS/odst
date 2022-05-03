@@ -15,6 +15,7 @@ import {
   OrgGQL,
   QuestionGQL,
   SurveyResponseGQL,
+  OrgWhereUniqueInput,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
@@ -39,9 +40,13 @@ export class SurveyResolver {
   @Mutation(() => SurveyGQL, { name: 'createSurveyWithQuestions' })
   async createWithQuestions(
     @Args({ name: 'questionPrompts', type: () => [String] })
-    questionPrompts: string[]
+    questionPrompts: string[],
+    @Args('orgWhereUniqueInput') orgWhereUniqueInput: OrgWhereUniqueInput
   ): Promise<SurveyGQL | null> {
-    return this.surveyService.createWithQuestions(questionPrompts);
+    return this.surveyService.createWithQuestions(
+      questionPrompts,
+      orgWhereUniqueInput
+    );
   }
 
   @Mutation(() => SurveyGQL, { name: 'createSurvey' })

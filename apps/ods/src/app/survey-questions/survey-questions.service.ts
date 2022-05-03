@@ -19,6 +19,7 @@ import {
   GetCommandersDocument,
 } from './survey-questions.generated';
 import { jsonTypeConverter } from '@odst/helpers';
+import { OrgWhereUniqueInput } from '../../types.graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +54,10 @@ export class SurveyQuestionsService {
   }
   //Takes questions that are in an array and connectsOrCreates to a survey ID based on question set and returns the survey ID
   //that was found or created
-  submitWithQuestions(questions: string[]) {
+  submitWithQuestions(
+    questions: string[],
+    orgWhereUniqueInput: OrgWhereUniqueInput
+  ) {
     return this.apollo.mutate<
       CreateSurveyWithQuestionsMutation,
       CreateSurveyWithQuestionsMutationVariables
@@ -61,6 +65,8 @@ export class SurveyQuestionsService {
       mutation: CreateSurveyWithQuestionsDocument,
       variables: {
         questionPrompts: questions,
+        //TODO don't hardcode org
+        orgWhereUniqueInput,
       },
     });
   }

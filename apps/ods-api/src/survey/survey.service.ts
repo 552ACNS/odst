@@ -38,7 +38,10 @@ export class SurveyService {
     });
   }
 
-  async createWithQuestions(questionPrompts: string[]): Promise<Survey> {
+  async createWithQuestions(
+    questionPrompts: string[],
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<Survey> {
     if (questionPrompts.length <= 0) {
       throw new BadRequestException('No question prompts provided');
     }
@@ -65,8 +68,11 @@ export class SurveyService {
       create: {
         questionsHash,
         questions: { connect: questionIds.map((id) => ({ id })) },
+        orgs: { connect: [orgWhereUniqueInput] },
       },
-      update: {},
+      update: {
+        orgs: { connect: [orgWhereUniqueInput] },
+      },
     });
   }
 
