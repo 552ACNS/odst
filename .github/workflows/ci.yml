@@ -72,6 +72,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: H@CK3YITPL3ASE
           POSTGRES_PORT: 5432
+        run: yarn nx run ods-api:prisma-migrate
       # - run: dotnet tool update -g dotnet-reportgenerator-globaltool
       #   continue-on-error: true
       # - name: Merge Test Coverage Results
