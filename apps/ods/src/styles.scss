@@ -26,6 +26,10 @@ $light-theme: mat.define-light-theme(
   $dark-primary: mat.define-palette(mat.$pink-palette);
   $dark-accent: mat.define-palette(mat.$blue-gray-palette);
 
+  .text-dark-link-color {
+    color: mat.get-color-from-palette($dark-primary, 'text');
+  }
+
   // Define a dark theme
   $dark-theme: mat.define-dark-theme(
     (
@@ -58,6 +62,10 @@ body {
 .primary-text-contrast {
   background-color: mat-color($light-primary);
   color: mat.get-color-from-palette($light-primary, '500-contrast');
+}
+
+.text-link-color {
+  color: mat.get-color-from-palette($light-primary, 'text');
 }
 
 @layer base {
