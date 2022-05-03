@@ -2,11 +2,36 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AccountRequestGQL {
+  role: Role!
+  id: String!
+  email: String!
+  rank: String
+  firstName: String!
+  lastName: String!
+  date: DateTime!
+  denied: Boolean!
+  approver: UserGQL
+  orgs: [OrgGQL!]!
+}
+
+enum Role {
+  ADMIN
+  DEI
+  EO
+  CC
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type AnswerGQL {
   id: String!
   value: String!
-  question: QuestionGQL!
-  surveyResponse: SurveyResponseGQL!
+  question: QuestionGQL
+  surveyResponse: SurveyResponseGQL
 }
 
 type OrgGQL {
@@ -15,7 +40,7 @@ type OrgGQL {
   name: String!
   users: [UserGQL!]!
   children: [OrgGQL!]!
-  parent: OrgGQL!
+  parent: OrgGQL
   surveys: [SurveyGQL!]!
 }
 
@@ -48,13 +73,8 @@ type SurveyResponseGQL {
   routeOutside: Boolean!
   resolution: String
   answers: [AnswerGQL!]!
-  survey: SurveyGQL!
+  survey: SurveyGQL
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type ResponseCount {
   unresolved: Float!
@@ -71,13 +91,6 @@ type UserGQL {
   lastName: String!
   enabled: Boolean!
   orgs: [OrgGQL!]!
-}
-
-enum Role {
-  ADMIN
-  DEI
-  EO
-  CC
 }
 
 type Tokens {
@@ -104,6 +117,7 @@ type Query {
   findUsersWithRole(role: String!): [UserGQL!]!
   getCommanders: [UserGQL!]!
   me: UserGQL!
+  findManyAccountRequests: [AccountRequestGQL!]!
 }
 
 input SurveyWhereUniqueInput {
@@ -143,6 +157,9 @@ type Mutation {
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
+  approveAccountRequest(accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!): UserGQL!
+  declineAccountRequest(accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!): AccountRequestGQL!
+  createAccountRequest(accountRequestCreateInput: AccountRequestCreateInput!): AccountRequestGQL!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -299,6 +316,25 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
   prompt: String
+}
+
+input AccountRequestWhereUniqueInput {
+  id: String
+  email: String
+}
+
+input AccountRequestCreateInput {
+  role: Role!
+  orgs: OrgCreateNestedManyWithoutAccountRequestsInput!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  rank: String
+}
+
+input OrgCreateNestedManyWithoutAccountRequestsInput {
+  connect: OrgWhereUniqueInput
 }
 
 input LoginUserInput {

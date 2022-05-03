@@ -39,12 +39,12 @@ export class AnswerResolver {
     return this.answerService.create(answerCreateInput);
   }
 
-  @ResolveField(() => QuestionGQL)
+  @ResolveField(() => QuestionGQL, { nullable: true })
   async question(@Parent() answer: AnswerGQL): Promise<QuestionGQL | null> {
     return this.answerService.question({ id: answer.id });
   }
 
-  @ResolveField(() => SurveyResponseGQL)
+  @ResolveField(() => SurveyResponseGQL, { nullable: true })
   async surveyResponse(
     @Parent() answer: AnswerGQL
   ): Promise<SurveyResponseGQL | null> {

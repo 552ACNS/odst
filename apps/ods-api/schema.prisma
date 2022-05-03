@@ -12,16 +12,33 @@ generator client {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  email        String        @unique
-  password     String
-  enabled      Boolean       @default(true)
-  rank         String?
-  firstName    String
-  lastName     String
-  role         Role
-  refreshToken RefreshToken?
-  orgs         Org[]
+  id               String           @id @default(uuid())
+  email            String           @unique
+  password         String
+  enabled          Boolean          @default(true)
+  rank             String?
+  firstName        String
+  lastName         String
+  role             Role
+  refreshToken     RefreshToken?
+  orgs             Org[]
+  approvedRequests AccountRequest[] @relation(name: "ApprovedRequests") //requests this user approved
+}
+
+model AccountRequest {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  rank       String?
+  password   String
+  firstName  String
+  lastName   String
+  date       DateTime @default(now())
+  role       Role
+  orgs       Org[]
+  //TODO comments  Comment[]
+  approver   User?    @relation(name: "ApprovedRequests", fields: [approverId], references: [id]) //user that approved this request
+  approverId String?
+  denied     Boolean  @default(false)
 }
 
 model RefreshToken {
@@ -35,14 +52,15 @@ model RefreshToken {
 }
 
 model Org {
-  id       String   @id @default(uuid())
-  name     String   @unique // Example "552 ACNS"
-  orgTier  OrgTier
-  users    User[]
-  parentId String? // a parent org can have many child orgs
-  parent   Org?     @relation(name: "ParentChild", fields: [parentId], references: [id])
-  children Org[]    @relation(name: "ParentChild") // This is a self relation
-  surveys  Survey[]
+  id              String           @id @default(uuid())
+  name            String           @unique // Example "552 ACNS"
+  orgTier         OrgTier
+  users           User[]
+  parentId        String? // a parent org can have many child orgs
+  parent          Org?             @relation(name: "ParentChild", fields: [parentId], references: [id])
+  children        Org[]            @relation(name: "ParentChild") // This is a self relation
+  surveys         Survey[]
+  accountRequests AccountRequest[]
 }
 
 model SurveyResponse {

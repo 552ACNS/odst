@@ -6,7 +6,6 @@ import { MockOrgCreateInput, MockOrgs } from './org.repo';
 const db = {
   org: {
     findMany: jest.fn().mockReturnValue(MockOrgs),
-    getSubOrgs: jest.fn().mockReturnValue(MockOrgs),
     findUnique: jest.fn().mockResolvedValue(MockOrgs[0]),
     create: jest.fn().mockResolvedValue(MockOrgs[0]),
     update: jest.fn().mockResolvedValue(MockOrgs[0]),

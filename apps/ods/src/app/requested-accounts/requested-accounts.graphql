@@ -1,0 +1,43 @@
+query FindManyAccountRequests {
+  findManyAccountRequests {
+    email
+    lastName
+    firstName
+    rank
+    date
+    id
+    role
+    orgs {
+      id
+    }
+  }
+}
+
+mutation ApproveAccountRequest(
+  $accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!
+) {
+  approveAccountRequest(
+    accountRequestWhereUniqueInput: $accountRequestWhereUniqueInput
+  ) {
+    id
+  }
+}
+
+mutation DeclineAccountRequest(
+  $accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!
+) {
+  declineAccountRequest(
+    accountRequestWhereUniqueInput: $accountRequestWhereUniqueInput
+  ) {
+    id
+  }
+}
+
+#TODO move some where else. This is just here so McGrew didnt have to write it
+mutation CreateAccountRequest(
+  $accountRequestCreateInput: AccountRequestCreateInput!
+) {
+  createAccountRequest(accountRequestCreateInput: $accountRequestCreateInput) {
+    id
+  }
+}

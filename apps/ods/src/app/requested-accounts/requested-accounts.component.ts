@@ -9,12 +9,13 @@ import {
   templateUrl: './requested-accounts.component.html',
   styleUrls: ['./requested-accounts.component.scss'],
 })
-export class RequestedAccountsComponent implements OnInit {
-  constructor(private requestedAccountsService: RequestedAccountsService) {}
+
+export class RequestedAccountsComponent /*implements OnInit*/ {
+  // constructor() {}
 
   dataSource: requestedAccountDetails[] =
     this.requestedAccountsService.getRequestedAccounts();
   displayedColumns: string[] = ['Name', 'Grade', 'Requested Permissions'];
 
-  ngOnInit(): void {}
+  // ngOnInit(): void {}
 }
