@@ -5,6 +5,7 @@
 *.ts text
 *.js text
 *.json text
+*.graphql text
 
 # Define binary file attributes.
 # - Do not treat them as text.
