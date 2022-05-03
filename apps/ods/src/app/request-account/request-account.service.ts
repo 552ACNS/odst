@@ -8,9 +8,9 @@ import {
   FindManyOrgsDocument,
   FindManyOrgsQuery,
   FindManyOrgsQueryVariables,
-  FindUniqueUserDocument,
-  FindUniqueUserQuery,
-  FindUniqueUserQueryVariables,
+  UsernameOrEmailExistsDocument,
+  UsernameOrEmailExistsQuery,
+  UsernameOrEmailExistsQueryVariables,
 } from './request-account.generated';
 
 @Injectable({
@@ -30,17 +30,16 @@ export class RequestAccountService {
       );
   }
 
-  async findUniqueUser(email: string) {
-    return this.apollo
-      .watchQuery<FindUniqueUserQuery, FindUniqueUserQueryVariables>({
-        query: FindUniqueUserDocument,
-        variables: {
-          userWhereUniqueInput: {
-            email: email,
-          },
-        },
-      })
-      .valueChanges.pipe(map((result) => result.data));
+  async emailExists(email: string) {
+    return this.apollo.watchQuery<
+      UsernameOrEmailExistsQuery,
+      UsernameOrEmailExistsQueryVariables
+    >({
+      query: UsernameOrEmailExistsDocument,
+      variables: {
+        usernameOrEmail: email,
+      },
+    }).valueChanges;
   }
 
   submitAccountCreationRequest(

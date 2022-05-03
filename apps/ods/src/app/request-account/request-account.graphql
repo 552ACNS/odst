@@ -11,8 +11,6 @@ mutation CreateUser($userCreateInput: UserCreateInput!) {
   }
 }
 
-query FindUniqueUser($userWhereUniqueInput: UserWhereUniqueInput!) {
-  findUniqueUser(userWhereUniqueInput: $userWhereUniqueInput) {
-    email
-  }
+query UsernameOrEmailExists($usernameOrEmail: String!) {
+  usernameOrEmailExists(usernameOrEmail: $usernameOrEmail)
 }

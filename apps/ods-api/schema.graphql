@@ -105,6 +105,7 @@ type Query {
   getCommanders: [UserGQL!]!
   findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   me: UserGQL!
+  usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
 input SurveyWhereUniqueInput {

@@ -31,13 +31,14 @@
             matInput
             placeholder="Email"
             formControlName="email"
-            (keypress)="uniqueEmail()"
+            (keyup)="uniqueEmail()"
             required
           />
+          <!--  -->
           <mat-error> Please enter your email address. </mat-error>
-          <mat-icon id="emailIsUniqueIcon" class="" *ngIf="emailIsUnique"
+          <!-- <mat-icon id="emailIsUniqueIcon" class="" *ngIf="emailIsUnique"
             >check</mat-icon
-          >
+          > -->
         </mat-form-field>
         <div class="flex flex-row space-x-3">
           <mat-form-field appearance="outline" class="flex-auto">

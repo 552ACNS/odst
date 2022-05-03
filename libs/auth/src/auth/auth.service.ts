@@ -147,8 +147,10 @@ export class AuthService {
   async getUserByEmailOrUsername(
     emailOrUsername: string
   ): Promise<User | null> {
+    //TODO how to prevent user signing up with with someone's email as their username
+    //example: someone uses Lt Col Matos's email as their username and then Lt Col Matos comes in and he can't make an account with that email
     //Gets user by email or username
-    //could optmize to not make two db calls
+    //TODO could optmize to not make two db calls
 
     let userFromEmail;
     let userFromUsername;

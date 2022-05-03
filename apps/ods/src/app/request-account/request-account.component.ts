@@ -9,7 +9,6 @@ import {
   regExps,
   errorMessages,
 } from '@odst/shared/angular';
-import { subscribe } from 'graphql';
 
 @Component({
   selector: 'odst-request-account',
@@ -47,18 +46,19 @@ export class RequestAccountComponent implements OnInit {
   }
 
   async uniqueEmail() {
-    let tempEmail;
-    await (
-      await this.requestService.findUniqueUser(this.form.value['email'].trim())
-    ).subscribe((data) => {
-      tempEmail = data;
-      console.log(tempEmail);
-    });
-    if (tempEmail == this.form.value['email'].trim()) {
+    console.log(this.form.value['email'].trim());
+    let result = this.requestService.emailExists(
+      this.form.value['email'].trim()
+    );
+    console.log(result);
+
+    if (result) {
       this.emailIsUnique = false;
     } else {
       this.emailIsUnique = true;
     }
+
+    console.log(this.emailIsUnique);
   }
   gradeCheck(grade?: string) {
     if (grade == 'N/A') {
