@@ -4,16 +4,21 @@
 
     <table mat-table class="mat-elevation-z8 w-full" [dataSource]="dataSource">
       <ng-container
-        *ngFor="let column of displayedColumns"
-        matColumnDef="{{ column }}"
+        *ngFor="let column of columnData | keyvalue"
+        matColumnDef="{{ column.key }}"
       >
-        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+        <th mat-header-cell *matHeaderCellDef>{{ column.key }}</th>
         <td mat-cell *matCellDef="let requestedAccount">
-          {{ requestedAccount[column] }}
+          {{ requestedAccount[column.value] }}
         </td>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="objectKeys(columnData)"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: objectKeys(columnData)"
+        (click)="viewAccountRequest(row)"
+      ></tr>
     </table>
   </mat-card>
+  <mat-card class="shadow-md font-medium" *ngIf="requestViewIsOpen"> </mat-card>
 </div>

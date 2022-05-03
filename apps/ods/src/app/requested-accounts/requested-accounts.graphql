@@ -33,7 +33,7 @@ mutation DeclineAccountRequest(
   }
 }
 
-#TODO move some where else. This is just here so McGrew didnt have to write it
+#TODO move to the create account request when that gets created
 mutation CreateAccountRequest(
   $accountRequestCreateInput: AccountRequestCreateInput!
 ) {
