@@ -34,11 +34,18 @@
             (keyup)="uniqueEmail()"
             required
           />
-          <!--  -->
+          <button mat-icon-button matSuffix *ngIf="emailNotUnique">
+            <mat-icon
+              id="emailIsNotUniqueIcon"
+              matTooltip="An account with this email already exists"
+              matTooltipPosition="right"
+              class="text-red-500"
+            >
+              close
+            </mat-icon>
+          </button>
+
           <mat-error> Please enter your email address. </mat-error>
-          <!-- <mat-icon id="emailIsUniqueIcon" class="" *ngIf="emailIsUnique"
-            >check</mat-icon
-          > -->
         </mat-form-field>
         <div class="flex flex-row space-x-3">
           <mat-form-field appearance="outline" class="flex-auto">

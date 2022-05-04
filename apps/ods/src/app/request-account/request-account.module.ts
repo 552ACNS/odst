@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RequestAccountComponent } from './request-account.component';
 import { RequestAccountRoutes } from './request-account.routing';
 import { RouterModule } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [RequestAccountComponent],
@@ -21,6 +22,7 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     MatSelectModule,
     MatCardModule,
+    MatTooltipModule,
     FormsModule,
   ],
   exports: [],
