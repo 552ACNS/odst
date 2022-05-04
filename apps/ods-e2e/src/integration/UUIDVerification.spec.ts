@@ -17,7 +17,7 @@ describe('ods', () => {
       .click({ force: true })
       .type('{enter}');
     cy.get('[formcontrolname="event"]').type('e2e Test');
-    cy.get('#mat-radio-3').click();
+    cy.get('#mat-radio-5').click();
     cy.get('[formcontrolname="CC')
       .click()
       .wait('@graphql')
@@ -33,8 +33,7 @@ describe('ods', () => {
   it('Verify that only people with correct permission can view a specific survey', () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
-    //TODO: update when unique accounts are made and make a sign in query
-    cy.get('[formcontrolname="userUsername"]').type('admin@admin.com');
+    cy.get('[formcontrolname="userUsername"]').type('john.doe@us.af.mil');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
@@ -42,5 +41,18 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/responses');
     cy.get('[aria-label="Last page"]').click();
     cy.get('mat-card-content').contains(uuid);
+  });
+
+  it("Verify that only people with wrong permission can't view a specific survey", () => {
+    cy.visit('/login');
+    cy.location('pathname').should('include', '/login');
+    //Login with someone who has zero responses, of any type
+    cy.get('[formcontrolname="userUsername"]').type(
+      'henry.henderson.99@us.af.mil'
+    );
+    cy.get('[formcontrolname="userPassword"]').type('admin');
+    cy.get('button').contains('Sign In').click();
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('p').contains(0);
   });
 });
