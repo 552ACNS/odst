@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Role } from '../../types.graphql';
 import { RequestAccountService } from './request-account.service';
@@ -33,8 +38,18 @@ export class RequestAccountComponent implements OnInit {
       ],
       confirmPassword: ['', [Validators.required]],
     },
-    { validator: CustomValidators.checkPasswords }
+    { validators: CustomValidators.checkPasswords }
   );
+  // form = new FormGroup({
+  //   firstName: new FormControl('', [Validators.required]),
+  //   lastName: new FormControl('', [Validators.required]),
+  //   email: new FormControl('', [Validators.email]),
+  //   grade: new FormControl(''),
+  //   permissions: new FormControl('', [Validators.required]),
+  //   org: new FormControl('', [Validators.required]),
+  //   password: new FormControl('', [Validators.required, Validators.pattern(regExps['password'])],),
+  //   confirmPassword: new FormControl('', [Validators.required]),
+  // })
 
   hide = true;
   errors = errorMessages;
@@ -58,7 +73,7 @@ export class RequestAccountComponent implements OnInit {
   submitSuccess = false;
   constructor(
     private fb: FormBuilder,
-    private requestService: RequestAccountService // private passwordMatch: PasswordMatchValidator
+    private requestService: RequestAccountService
   ) {}
   async ngOnInit(): Promise<void> {
     this.orgs = await this.requestService.getManyOrgs();

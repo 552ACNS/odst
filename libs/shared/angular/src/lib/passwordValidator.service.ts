@@ -1,4 +1,10 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 //This is the tells the ghtml when to trigger an error state
@@ -16,6 +22,15 @@ export class CustomValidators {
     return pass === confirmPass ? null : { notSame: true };
   }
 }
+
+// export function checkPasswords(group: FormGroup): ValidatorFn {
+//   return (control: AbstractControl): ValidationErrors | null => {
+//     const pass = group.controls['password'].value;
+//     const confirmPass = group.controls['confirmPassword'].value;
+//     return pass === confirmPass ? null : { notSame: true };
+//   };
+// }
+
 //this is the password requirements regex
 export const regExps: { [key: string]: RegExp } = {
   password:
