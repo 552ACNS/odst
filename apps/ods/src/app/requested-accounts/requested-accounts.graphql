@@ -9,6 +9,7 @@ query FindManyAccountRequests {
     role
     orgs {
       id
+      name
     }
   }
 }

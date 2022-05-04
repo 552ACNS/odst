@@ -2,9 +2,9 @@
   <mat-card class="shadow-md font-medium">
     <mat-card-title> Requested Accounts</mat-card-title>
 
-    <table mat-table class="mat-elevation-z8 w-full" [dataSource]="dataSource">
+    <table mat-table class="w-full" [dataSource]="dataSource">
       <ng-container
-        *ngFor="let column of columnData | keyvalue"
+        *ngFor="let column of columnData | keyvalue: keepOrder"
         matColumnDef="{{ column.key }}"
       >
         <th mat-header-cell *matHeaderCellDef>{{ column.key }}</th>
@@ -20,5 +20,15 @@
       ></tr>
     </table>
   </mat-card>
-  <mat-card class="shadow-md font-medium" *ngIf="requestViewIsOpen"> </mat-card>
+  <mat-card class="shadow-md font-medium" *ngIf="requestViewIsOpen">
+    <mat-list>
+      <mat-list-item
+        *ngFor="
+          let accountRequest of displayedRequestData | keyvalue: keepOrder
+        "
+      >
+        <label>{{ accountRequest.key }}: {{ accountRequest.value }}</label>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
 </div>

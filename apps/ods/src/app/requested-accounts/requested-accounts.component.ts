@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestedAccountsService } from './requested-accounts.service';
-import { AccountRequestGQL } from '@odst/types/ods';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'odst-requested-accounts',
@@ -13,12 +13,15 @@ export class RequestedAccountsComponent implements OnInit {
   objectKeys = Object.keys;
   dataSource;
   columnData = {
-    Name: 'firstName',
+    'First Name': 'firstName',
+    'Last Name': 'lastName',
     Grade: 'rank',
     'Requested Permissions': 'role',
   };
+
   requestViewIsOpen = false;
-  displayedAccountRequest: AccountRequestGQL;
+  displayedAccountRequest;
+  displayedRequestData;
 
   ngOnInit(): void {
     this.requestedAccountsService.getRequestedAccounts().subscribe((data) => {
@@ -27,9 +30,24 @@ export class RequestedAccountsComponent implements OnInit {
     });
   }
 
-  viewAccountRequest(row: AccountRequestGQL) {
+  viewAccountRequest(row) {
     this.displayedAccountRequest = row;
+    //this.displayedAccountRequest.date = new Date(formatDate(row['date'], 'shortDate', 'en-US'));
+    this.displayedRequestData = {
+      'First Lame': row.firstName,
+      'Last Name': row.lastName,
+      Grade: row.rank,
+      'Requested Permissions': row.role,
+      'E-mail': row.email,
+      Date: formatDate(row['date'], 'fullDate', 'en-US'),
+      Organization: row.orgs[0].name,
+    };
     this.requestViewIsOpen = true;
-    console.log(this.displayedAccountRequest);
+    console.log(row);
   }
+
+  //This function preserves the original order of objects when called by the 'keyvalue' function
+  keepOrder = (a, b) => {
+    return a;
+  };
 }

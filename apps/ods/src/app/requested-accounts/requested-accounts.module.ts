@@ -6,7 +6,7 @@ import { RequestedAccountsComponent } from './requested-accounts.component';
 import { requestedAccountsRoutes } from './requested-accounts.routing';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-
+import { MatListModule } from '@angular/material/list';
 @NgModule({
   declarations: [RequestedAccountsComponent],
   imports: [
@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
     RouterModule.forChild(requestedAccountsRoutes),
     MatTableModule,
     MatCardModule,
+    MatListModule,
   ],
 })
 export class RequestedAccountsModule {}
