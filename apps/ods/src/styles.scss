@@ -21,10 +21,18 @@ $light-theme: mat.define-light-theme(
 
 @include mat.all-component-themes($light-theme);
 
+.text-link-color {
+  color: mat.get-color-from-palette($light-primary, 'text');
+}
+
 // Apply the dark theme if someone's machine prefers it
 @media (prefers-color-scheme: dark) {
   $dark-primary: mat.define-palette(mat.$pink-palette);
   $dark-accent: mat.define-palette(mat.$blue-gray-palette);
+
+  .text-link-color {
+    color: mat.get-color-from-palette($dark-primary, 'text');
+  }
 
   // Define a dark theme
   $dark-theme: mat.define-dark-theme(
