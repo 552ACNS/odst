@@ -16,6 +16,26 @@ import {
   styleUrls: ['./request-account.component.scss'],
 })
 export class RequestAccountComponent implements OnInit {
+  // TODO: create custom error for non unique email upon submission.
+  // TODO: edit regex so that spaces are not allowed (this may be covered in password-strength library, do not know yet)
+  // TODO: fix antiquated group command that is causeing eslint error.
+  form = this.fb.group(
+    {
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.email]],
+      grade: [''],
+      permissions: ['', [Validators.required]],
+      org: ['', [Validators.required]],
+      password: [
+        '',
+        [Validators.required, Validators.pattern(regExps['password'])],
+      ],
+      confirmPassword: ['', [Validators.required]],
+    },
+    { validator: CustomValidators.checkPasswords }
+  );
+
   hide = true;
   errors = errorMessages;
   matcher = new MyErrorStateMatcher();
@@ -59,46 +79,26 @@ export class RequestAccountComponent implements OnInit {
       return Role.Admin;
     }
   }
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  // TODO: create custom error for non unique email upon submission.
-  // TODO: edit regex so that spaces are not allowed (this may be covered in password-strength library, do not know yet)
-  // TODO: fix antiquated group command that is causeing eslint error.
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  form = this.fb.group(
-    {
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.email]],
-      grade: [''],
-      permissions: ['', [Validators.required]],
-      org: ['', [Validators.required]],
-      password: [
-        '',
-        [Validators.required, Validators.pattern(regExps['password'])],
-      ],
-      confirmPassword: ['', [Validators.required]],
-    },
-    { validator: CustomValidators.checkPasswords }
-  );
 
   submit() {
-    (this.grade = this.gradeCheck(this.form.get(['grade'])?.value)),
-      this.requestService
-        .submitAccountCreationRequest({
-          firstName: this.form.value['firstName'].trim(),
-          lastName: this.form.value['lastName'].trim(),
-          email: this.form.value['email'].trim(),
-          grade: this.grade,
-          role: this.determineRole(this.form.get(['permissions'])?.value),
-          orgs: {
-            connect: {
-              name: this.form.get(['org'])?.value,
-            },
+    this.grade = this.gradeCheck(this.form.get(['grade'])?.value);
+
+    this.requestService
+      .submitAccountCreationRequest({
+        firstName: this.form.value['firstName'].trim(),
+        lastName: this.form.value['lastName'].trim(),
+        email: this.form.value['email'].trim(),
+        grade: this.grade,
+        role: this.determineRole(this.form.get(['permissions'])?.value),
+        orgs: {
+          connect: {
+            name: this.form.get(['org'])?.value,
           },
-          password: this.form.value['confirmPassword'].trim(),
-        })
-        .subscribe(({ errors }) => {
-          this.submitSuccess = !errors;
-        });
+        },
+        password: this.form.value['confirmPassword'].trim(),
+      })
+      .subscribe(({ errors }) => {
+        this.submitSuccess = !errors;
+      });
   }
 }
