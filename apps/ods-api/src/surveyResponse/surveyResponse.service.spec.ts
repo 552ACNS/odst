@@ -5,8 +5,6 @@ import {
   MockSurveyResponseCreateInput,
   MockSurveyResponses,
 } from './surveyResponse.repo';
-import { PrismaPromise, SurveyResponse } from '.prisma/ods/client';
-import { responsePathAsArray } from 'graphql';
 
 const db = {
   surveyResponse: {
@@ -126,17 +124,32 @@ describe('SurveyResponseService', () => {
       expect(surveyResponse[0]).toBe('SurveyResponse id 1');
       expect(surveyResponse[1]).toBe('SurveyResponse id 2');
     });
-    it('should return reports that are resolved', async () => {
+    it('should return reports that are unresolved', async () => {
       // return a json body of string IDs
       jest
         .spyOn(prisma.surveyResponse, 'findMany')
-        .mockResolvedValue(MockSurveyResponses.filter((x) => !!x.resolution));
+        .mockResolvedValue(MockSurveyResponses.filter((x) => !x.resolution));
 
       const surveyResponse = await service.getIssuesByStatus('unresolved');
 
       expect(surveyResponse).toHaveLength(2);
       expect(surveyResponse[0]).toBe('SurveyResponse id 3');
       expect(surveyResponse[1]).toBe('SurveyResponse id 4');
+    });
+
+    it('should return reports that are overdue', async () => {
+      const compareDate = new Date(Date.now() - 2592000000);
+      // return a json body of string IDs
+      jest
+        .spyOn(prisma.surveyResponse, 'findMany')
+        .mockResolvedValue(
+          MockSurveyResponses.filter((x) => x.openedDate < compareDate)
+        );
+
+      const surveyResponse = await service.getIssuesByStatus('overdue');
+
+      expect(surveyResponse).toHaveLength(1);
+      expect(surveyResponse[0]).toBe('SurveyResponse id 4');
     });
   });
 });
