@@ -30,7 +30,7 @@ export const MockSurveyResponses: SurveyResponse[] = [
   //add condition for overdue
   {
     id: 'SurveyResponse id 4',
-    openedDate: new Date(Date.now() - 2592000000),
+    openedDate: new Date(Date.now() - 2678400000),
     closedDate: null,
     surveyId: 'surveyId',
     routeOutside: false,

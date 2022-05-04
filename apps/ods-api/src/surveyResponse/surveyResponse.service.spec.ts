@@ -151,5 +151,62 @@ describe('SurveyResponseService', () => {
       expect(surveyResponse).toHaveLength(1);
       expect(surveyResponse[0]).toBe('SurveyResponse id 4');
     });
+
+    it('should return reports using unresolved status', async () => {
+      const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+
+      await service.getIssuesByStatus('unresolved');
+
+      expect(spy).toHaveBeenCalledWith({
+        where: {
+          resolution: null,
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      });
+    });
+
+    it('should return reports using resolved status', async () => {
+      const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+
+      await service.getIssuesByStatus('resolved');
+
+      expect(spy).toHaveBeenCalledWith({
+        where: {
+          resolution: { not: null },
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      });
+    });
+
+    it('should return reports using overdue status', async () => {
+      const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+
+      await service.getIssuesByStatus('overdue');
+
+      expect(spy).toHaveBeenCalledWith({
+        where: {
+          openedDate: {
+            lt: new Date(Date.now() - 2592000000),
+          },
+          resolution: null,
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      });
+    });
   });
 });
