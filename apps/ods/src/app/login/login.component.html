@@ -57,14 +57,12 @@
           <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>
+      <!-- <p *ngIf="passwordError" class="mb-4 text-red-500"> -->
+      <p class="mb-4 error-text text-center" *ngIf="passwordError">
+        Wrong email or password. Try again or click Forgot password to reset it.
+      </p>
 
-      <mat-card-content
-        class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full"
-      >
-        <mat-label *ngIf="passwordError" class="mb-4 text-red-500">
-          Wrong email or password. Try again or click Forgot password to reset
-          it.
-        </mat-label>
+      <div class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full">
         <mat-checkbox
           class="align-middle float-left"
           [color]="'primary'"
@@ -76,7 +74,7 @@
         <div class="pt-0.5 float-right font-medium underline">
           Forgot Password?
         </div>
-      </mat-card-content>
+      </div>
 
       <!-- Buttons -->
       <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
