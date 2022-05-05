@@ -94,14 +94,14 @@ export class RequestAccountComponent implements OnInit {
     }
   }
 
-  //TODO: remove the toLowerCase() on email when tolower is implemented in backend
+  //prerequisite: email must be unique
   submit() {
     this.grade = this.gradeCheck(this.form.get(['grade'])?.value);
     this.requestService
       .submitAccountCreationRequest({
         firstName: this.form.value['firstName'].trim(),
         lastName: this.form.value['lastName'].trim(),
-        email: this.form.value['email'].toLowerCase().trim(),
+        email: this.form.value['email'].trim(),
         grade: this.grade,
         role: this.determineRole(this.form.get(['permissions'])?.value),
         orgs: {

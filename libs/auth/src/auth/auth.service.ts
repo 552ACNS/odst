@@ -1,15 +1,15 @@
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  UnauthorizedException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AUTH_SECRET, USER_SERVICE } from './auth.constants';
 import { UserService, User } from './interfaces/user-service.interface';
 import { compare } from 'bcrypt';
 import { Tokens } from './dtos/tokens.entity';
-import {
-  LoginUserInput,
-  RefreshLoginInput,
-  SignupUserInput,
-} from './dtos/login.input';
-import { hash } from 'bcrypt';
+import { LoginUserInput, RefreshLoginInput } from './dtos/login.input';
 import { JwtPayloadRefresh } from './types/JwtPayload.types';
 
 @Injectable()
@@ -144,6 +144,7 @@ export class AuthService {
     return token;
   }
 
+  // eslint-disable-next-line complexity
   async getUserByEmailOrUsername(
     emailOrUsername: string
   ): Promise<User | null> {
@@ -151,15 +152,22 @@ export class AuthService {
     //example: someone uses Lt Col Matos's email as their username and then Lt Col Matos comes in and he can't make an account with that email
     //Gets user by email or username
     //TODO could optmize to not make two db calls
+    //or maybe not since we don't inject prisma
 
-    let userFromEmail;
-    let userFromUsername;
+    let userFromEmail: User | null;
+    let userFromUsername: User | null;
 
     //first try to get by username, return it if exists
     try {
-      userFromEmail = await this.userService.findUnique({
-        email: emailOrUsername,
+      const usersFromEmail = await this.userService.findMany({
+        where: { email: { equals: emailOrUsername, mode: 'insensitive' } },
       });
+
+      if (usersFromEmail.length > 1) {
+        throw new InternalServerErrorException('duplicate email');
+      }
+
+      userFromEmail = usersFromEmail[0];
 
       if (userFromEmail) {
         return userFromEmail;
@@ -168,12 +176,16 @@ export class AuthService {
       userFromEmail = null;
     }
 
-    //second try to get by email
-
     try {
-      userFromUsername = await this.userService.findUnique({
-        email: emailOrUsername,
+      const usersFromUsername = await this.userService.findMany({
+        where: { username: { equals: emailOrUsername, mode: 'insensitive' } },
       });
+
+      if (usersFromUsername.length > 1) {
+        throw new InternalServerErrorException('duplicate username');
+      }
+
+      userFromUsername = usersFromUsername[0];
     } catch {
       userFromUsername = null;
     }
