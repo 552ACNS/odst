@@ -20,6 +20,7 @@ export class LoginService {
           password: password, //TODO [ODST-136] hash password first, need to change backend too
         },
       },
+      errorPolicy: 'all',
     });
   }
 }

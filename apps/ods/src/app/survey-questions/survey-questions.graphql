@@ -12,8 +12,14 @@ mutation createSurveyResponse(
   }
 }
 
-mutation createSurveyWithQuestions($questionPrompts: [String!]!) {
-  createSurveyWithQuestions(questionPrompts: $questionPrompts) {
+mutation CreateSurveyWithQuestions(
+  $questionPrompts: [String!]!
+  $orgWhereUniqueInput: OrgWhereUniqueInput!
+) {
+  createSurveyWithQuestions(
+    questionPrompts: $questionPrompts
+    orgWhereUniqueInput: $orgWhereUniqueInput
+  ) {
     id
   }
 }

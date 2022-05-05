@@ -130,7 +130,7 @@ input QuestionWhereUniqueInput {
 }
 
 type Mutation {
-  createSurveyWithQuestions(questionPrompts: [String!]!): SurveyGQL!
+  createSurveyWithQuestions(questionPrompts: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): SurveyGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
