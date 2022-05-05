@@ -46,6 +46,12 @@ export class RequestedAccountsComponent implements OnInit {
     console.log(row);
   }
 
+  acceptRequest() {
+    this.requestedAccountsService
+      .acceptAccountRequest(this.displayedAccountRequest['id'])
+      .subscribe();
+  }
+
   //This function preserves the original order of objects when called by the 'keyvalue' function
   keepOrder = (a, b) => {
     return a;

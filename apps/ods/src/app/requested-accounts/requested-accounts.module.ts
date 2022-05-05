@@ -7,6 +7,8 @@ import { requestedAccountsRoutes } from './requested-accounts.routing';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+
 @NgModule({
   declarations: [RequestedAccountsComponent],
   imports: [
@@ -16,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
     MatTableModule,
     MatCardModule,
     MatListModule,
+    MatButtonModule,
   ],
 })
 export class RequestedAccountsModule {}

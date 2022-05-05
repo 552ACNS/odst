@@ -30,5 +30,21 @@
         <label>{{ accountRequest.key }}: {{ accountRequest.value }}</label>
       </mat-list-item>
     </mat-list>
+    <mat-card-actions class="space-y-3">
+      <button
+        mat-raised-button
+        color="primary"
+        class="w-full text-white shadow-md rounded-full"
+        (click)="acceptRequest()"
+      >
+        Accept
+      </button>
+      <button
+        mat-stroked-button
+        class="w-full text-white shadow-md rounded-full m-0"
+      >
+        Deny
+      </button>
+    </mat-card-actions>
   </mat-card>
 </div>

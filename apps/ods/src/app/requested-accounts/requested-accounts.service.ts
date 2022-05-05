@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import {
+  ApproveAccountRequestDocument,
+  ApproveAccountRequestMutation,
+  ApproveAccountRequestMutationVariables,
   FindManyAccountRequestsDocument,
   FindManyAccountRequestsQuery,
   FindManyAccountRequestsQueryVariables,
@@ -19,5 +22,20 @@ export class RequestedAccountsService {
     >({
       query: FindManyAccountRequestsDocument,
     }).valueChanges;
+  }
+
+  acceptAccountRequest(id: string) {
+    console.log(id);
+    return this.apollo.mutate<
+      ApproveAccountRequestMutation,
+      ApproveAccountRequestMutationVariables
+    >({
+      mutation: ApproveAccountRequestDocument,
+      variables: {
+        accountRequestWhereUniqueInput: {
+          id: id,
+        },
+      },
+    });
   }
 }
