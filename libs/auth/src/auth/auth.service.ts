@@ -144,53 +144,48 @@ export class AuthService {
     return token;
   }
 
-  // eslint-disable-next-line complexity
   async getUserByEmailOrUsername(
     emailOrUsername: string
   ): Promise<User | null> {
+    //Gets user by email or username
+
     //TODO how to prevent user signing up with with someone's email as their username
     //example: someone uses Lt Col Matos's email as their username and then Lt Col Matos comes in and he can't make an account with that email
-    //Gets user by email or username
+    //preventing '@' in username and requiring it in email should be fine
+
     //TODO could optmize to not make two db calls
     //or maybe not since we don't inject prisma
 
-    let userFromEmail: User | null;
-    let userFromUsername: User | null;
+    return (
+      this.getUser(emailOrUsername, 'email') ??
+      this.getUser(emailOrUsername, 'username')
+    );
+  }
 
-    //first try to get by username, return it if exists
-    try {
-      const usersFromEmail = await this.userService.findMany({
-        where: { email: { equals: emailOrUsername, mode: 'insensitive' } },
-      });
-
-      if (usersFromEmail.length > 1) {
-        throw new InternalServerErrorException('duplicate email');
-      }
-
-      userFromEmail = usersFromEmail[0];
-
-      if (userFromEmail) {
-        return userFromEmail;
-      }
-    } catch {
-      userFromEmail = null;
-    }
+  async getUser(
+    input: string,
+    emailOrUsername: 'email' | 'username'
+  ): Promise<User | null> {
+    let users: User[] = [];
 
     try {
-      const usersFromUsername = await this.userService.findMany({
-        where: { username: { equals: emailOrUsername, mode: 'insensitive' } },
-      });
-
-      if (usersFromUsername.length > 1) {
-        throw new InternalServerErrorException('duplicate username');
+      if (emailOrUsername === 'email') {
+        users = await this.userService.findMany({
+          where: { email: { equals: input, mode: 'insensitive' } },
+        });
+      } else {
+        users = await this.userService.findMany({
+          where: { username: { equals: input, mode: 'insensitive' } },
+        });
       }
 
-      userFromUsername = usersFromUsername[0];
-    } catch {
-      userFromUsername = null;
-    }
+      if (users.length > 1) {
+        throw new InternalServerErrorException(`duplicate ${emailOrUsername}`);
+      }
 
-    //could be null
-    return userFromUsername;
+      return users[0];
+    } catch {
+      return null;
+    }
   }
 }
