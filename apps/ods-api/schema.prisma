@@ -13,7 +13,7 @@ generator client {
 
 generator nestgraphql {
     provider = "prisma-nestjs-graphql"
-    output = "../../@generated/prisma-nestjs-graphql"
+    output = "../../node_modules/.prisma/ods/prisma-nestjs-graphql"
 }
 
 model User {
