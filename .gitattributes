@@ -5,7 +5,8 @@
 *.ts text
 *.js text
 *.json text
-*.graphql text
+# May cause bizarre problem with merge conflicts on the .graphql files, delete this line if line endings are still problematic
+# *.graphql text
 
 # Define binary file attributes.
 # - Do not treat them as text.
