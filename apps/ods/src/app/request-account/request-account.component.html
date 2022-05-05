@@ -34,6 +34,7 @@
             (keyup)="uniqueEmail()"
             required
           />
+          <!-- TODO: once custom validators no longer deprecated, make tooltip an valdiation error -->
           <button matSuffix disabled="true">
             <mat-icon
               *ngIf="emailNotUnique"
@@ -90,7 +91,8 @@
             - At least one lowercase character (a-z)
             - At least one uppercase character (A-Z)
             - At least one numeral (0-9)
-            - At least one special character (~!@#$%^&)"
+            - At least one special character (~!@#$%^&)
+            - No spaces or tabs allowed"
             matTooltipClass="whitespace-pre"
             matTooltipPosition="right"
             placeholder="Password"

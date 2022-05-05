@@ -82,7 +82,7 @@ export class RequestAccountComponent implements OnInit {
   }
 
   async uniqueEmail() {
-    //TODO: add fix so that it does not send queries on every keypress
+    //TODO: optimize the way it determines the amount of queries to send to the backend
     if (this.form.value['email'].trim().includes('@') == true) {
       (
         await this.requestService.emailExists(this.form.value['email'].trim())

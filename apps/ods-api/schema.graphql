@@ -92,7 +92,6 @@ type Query {
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   ResponseCount: ResponseCount!
   getIssuesByStatus(resolved: Boolean!): [String!]!
-  getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   findManyAnswers: [AnswerGQL!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
   findManyOrgs: [OrgGQL!]!
@@ -137,7 +136,7 @@ input UserWhereUniqueInput {
 }
 
 type Mutation {
-  createSurveyWithQuestions(questionPrompts: [String!]!): SurveyGQL!
+  createSurveyWithQuestions(questionPrompts: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): SurveyGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
