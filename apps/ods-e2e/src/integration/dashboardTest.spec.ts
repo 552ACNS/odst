@@ -1,7 +1,7 @@
 describe('ods', () => {
   before(() => {
     cy.visit('/login');
-    cy.get('[formcontrolname="userUsername"]').type('admin@admin.com');
+    cy.get('[formcontrolname="userEmail"]').type('admin@admin.com');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('odst-login').find('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');

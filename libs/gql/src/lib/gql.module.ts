@@ -23,6 +23,7 @@ import {
   RefreshMutation,
   RefreshMutationVariables,
 } from '../graphql-generated';
+import { removeTokens } from '@odst/helpers';
 
 let environment: { NX_GQL_ENDPOINT: string };
 
@@ -50,12 +51,22 @@ export function createApollo() {
     pendingRequests = [];
   };
 
+  //TODO refactor for complexity
   const errorLink = onError(
     ({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors) {
         for (const err of graphQLErrors) {
           switch (err.extensions?.['code']) {
             case 'UNAUTHENTICATED': {
+              //Token is malformed. Delete them and have user relogin
+              if (err.message == 'Token malformed') {
+                removeTokens();
+                // Could be better than just reloading page. Navigate to login page?
+                location.reload();
+                //TODO display error to user
+                //currently it just pushes them to login page with no reason why
+                break;
+              }
               const refreshToken = getRefreshToken();
               //TODO 16 check if refresh token is expired before getting an error from api request?
               //TODO check if access token is expired before getting an error from api request?
@@ -85,10 +96,13 @@ export function createApollo() {
                         },
                       },
                     })
-                    .then(({ data }) => {
+                    .then(({ data, errors }) => {
+                      if (errors) {
+                        console.log(`errors ${errors}`);
+                      }
                       if (data) {
-                        setAccessToken(data.refreshTokensVar.accessToken);
-                        setRefreshToken(data.refreshTokensVar.refreshToken);
+                        setAccessToken(data.refreshTokens.accessToken);
+                        setRefreshToken(data.refreshTokens.refreshToken);
                       }
                       return true;
                     })

@@ -8,6 +8,7 @@ import { GQLModule } from '@odst/gql';
 import { Apollo } from 'apollo-angular';
 import { environment } from '../environments/environment';
 import { AuthGuard, LoggedInGuard } from '@odst/shared/angular';
+import { HeaderModule } from './header/header.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { AuthGuard, LoggedInGuard } from '@odst/shared/angular';
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
+    HeaderModule,
   ],
   providers: [
     Apollo,
