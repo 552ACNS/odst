@@ -88,7 +88,9 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
     // TODO: Nested behaviors like this are hard to test.
     this.surveyService
-      .submitWithQuestions(this.questions)
+      .submitWithQuestions(this.questions, {
+        name: '552 ACNS',
+      })
       .subscribe(({ data }) => {
         this.surveyID = data?.createSurveyWithQuestions.id;
         this.surveyService

@@ -8,7 +8,6 @@ import { LocalAuthGuard } from './guards/local.guard';
 import { GetCurrentUser } from '@odst/shared/nest';
 import { User } from './interfaces/user-service.interface';
 import { Public } from './decorator/public.decorator';
-import {} from '@nestjs/graphql';
 
 @Resolver()
 export class AuthResolver {
