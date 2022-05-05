@@ -12,12 +12,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   hide = true;
   loginForm = this.fb.group({
-    userUsername: ['', [Validators.required, Validators.email]],
+    userEmail: ['', [Validators.required, Validators.email]],
     userPassword: ['', Validators.required],
     rememberMe: ['', Validators.nullValidator],
   });
 
   returnUrl: string;
+
+  passwordError = false;
 
   constructor(
     private fb: FormBuilder,
@@ -35,12 +37,15 @@ export class LoginComponent implements OnInit {
   submitLoginClick() {
     this.loginService
       .submitLogin(
-        this.loginForm.value['userUsername'],
+        this.loginForm.value['userEmail'],
         this.loginForm.value['userPassword']
       )
-      .subscribe(({ data, errors }) => {
+      .subscribe(({ data, errors, loading }) => {
+        if (loading) {
+          this.passwordError = false;
+        }
         if (errors) {
-          alert('Username or Password was incorrect');
+          this.passwordError = true;
         }
         if (data) {
           setAccessToken(data.login.accessToken);

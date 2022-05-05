@@ -33,7 +33,7 @@ describe('ods', () => {
   it('Verify that only people with correct permission can view a specific survey', () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
-    cy.get('[formcontrolname="userUsername"]').type('john.doe@us.af.mil');
+    cy.get('[formcontrolname="userEmail"]').type('john.doe@us.af.mil');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
@@ -47,7 +47,7 @@ describe('ods', () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
     //Login with someone who has zero responses, of any type
-    cy.get('[formcontrolname="userUsername"]').type(
+    cy.get('[formcontrolname="userEmail"]').type(
       'henry.henderson.99@us.af.mil'
     );
     cy.get('[formcontrolname="userPassword"]').type('admin');
