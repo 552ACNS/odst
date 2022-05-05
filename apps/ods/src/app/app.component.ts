@@ -9,7 +9,7 @@ import { isLoggedIn } from '@odst/helpers';
 export class AppComponent {
   title = 'ods';
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return isLoggedIn();
   }
 }
