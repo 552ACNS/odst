@@ -20,8 +20,9 @@ generates:
     plugins:
       - typescript-operations
       - typed-document-node
+  #TODO login functionality is dependent on a specific graphql schema implementation
   libs/gql/src/graphql-generated.ts:
-    schema: apps/waypoint-api/schema.graphql
+    schema: apps/ods-api/schema.graphql
     documents: ['libs/gql/src/**/*.graphql']
     plugins:
       - typescript
