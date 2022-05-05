@@ -2,7 +2,7 @@ describe('ods', () => {
   before(() => {
     cy.visit('/login');
     //email has capitalized letters in it to test case insensitivity
-    cy.get('[formcontrolname="userUsername"]').type('adMin@aDmin.com');
+    cy.get('[formcontrolname="userEmail"]').type('adMin@aDmin.com');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('odst-login').find('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
