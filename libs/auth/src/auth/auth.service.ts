@@ -32,13 +32,17 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  async refreshTokens(
-    refreshLoginInput: RefreshLoginInput,
-    user: User
-  ): Promise<Tokens> {
-    const token = this.jwtService.verify(refreshLoginInput.refreshToken, {
-      secret: this.secret,
-    });
+  async refreshTokens(refreshLoginInput: RefreshLoginInput): Promise<Tokens> {
+    const token: JwtPayloadRefresh = this.jwtService.verify(
+      refreshLoginInput.refreshToken,
+      {
+        secret: this.secret,
+      }
+    );
+
+    const user = await this.userService.findUnique({ id: token.sub });
+
+    if (!token || !user || !user.enabled) throw new UnauthorizedException();
 
     if (
       !(await this.validateRefreshToken(
@@ -47,10 +51,6 @@ export class AuthService {
         token
       ))
     ) {
-      throw new UnauthorizedException();
-    }
-
-    if (!token || !user.enabled) {
       throw new UnauthorizedException();
     }
 
@@ -116,6 +116,7 @@ export class AuthService {
       {
         expiresIn: process.env['NODE_ENV'] === 'production' ? '15m' : '5d',
         secret: this.secret,
+        //TODO sign refreshTokens with different secret
       }
     );
 

@@ -7,6 +7,7 @@
 
 $light-primary: mat.define-palette(mat.$indigo-palette);
 $light-accent: mat.define-palette(mat.$pink-palette);
+$error-color: mat.define-palette(mat.$red-palette);
 
 // Define a light theme
 
@@ -15,6 +16,7 @@ $light-theme: mat.define-light-theme(
     color: (
       primary: $light-primary,
       accent: $light-accent,
+      error: $error-color,
     ),
   )
 );
@@ -27,7 +29,7 @@ $light-theme: mat.define-light-theme(
 
 // Apply the dark theme if someone's machine prefers it
 @media (prefers-color-scheme: dark) {
-  $dark-primary: mat.define-palette(mat.$pink-palette);
+  $dark-primary: mat.define-palette(mat.$teal-palette);
   $dark-accent: mat.define-palette(mat.$blue-gray-palette);
 
   .text-link-color {
@@ -40,6 +42,7 @@ $light-theme: mat.define-light-theme(
       color: (
         primary: $dark-primary,
         accent: $dark-accent,
+        error: $error-color,
       ),
     )
   );
@@ -66,6 +69,10 @@ body {
 .primary-text-contrast {
   background-color: mat-color($light-primary);
   color: mat.get-color-from-palette($light-primary, '500-contrast');
+}
+
+.error-text {
+  color: mat-color($error-color);
 }
 
 @layer base {
