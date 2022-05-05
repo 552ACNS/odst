@@ -11,12 +11,14 @@
   <div class="absolute right-4">
     <button mat-button [matMenuTriggerFor]="homeMenu">
       <!-- TODO can't get any profile/account mat icons to work -->
-      <mat-icon>home</mat-icon>
+      <mat-icon>account_circle</mat-icon>
     </button>
 
     <mat-menu #homeMenu="matMenu">
-      <button mat-menu-item (click)="gotToDashboard()">Home</button>
-      <button mat-menu-item (click)="logout()">Logout</button>
+      <button [routerLink]="['/dashboard']" mat-menu-item>Home</button>
+      <button (click)="removeTokens()" [routerLink]="['/login']" mat-menu-item>
+        Logout
+      </button>
     </mat-menu>
   </div>
 </mat-toolbar>
