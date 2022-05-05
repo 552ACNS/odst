@@ -1,15 +1,15 @@
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  UnauthorizedException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AUTH_SECRET, USER_SERVICE } from './auth.constants';
 import { UserService, User } from './interfaces/user-service.interface';
 import { compare } from 'bcrypt';
 import { Tokens } from './dtos/tokens.entity';
-import {
-  LoginUserInput,
-  RefreshLoginInput,
-  SignupUserInput,
-} from './dtos/login.input';
-import { hash } from 'bcrypt';
+import { LoginUserInput, RefreshLoginInput } from './dtos/login.input';
 import { JwtPayloadRefresh } from './types/JwtPayload.types';
 
 @Injectable()
@@ -147,38 +147,45 @@ export class AuthService {
   async getUserByEmailOrUsername(
     emailOrUsername: string
   ): Promise<User | null> {
+    //Gets user by email or username
+
     //TODO how to prevent user signing up with with someone's email as their username
     //example: someone uses Lt Col Matos's email as their username and then Lt Col Matos comes in and he can't make an account with that email
-    //Gets user by email or username
+    //preventing '@' in username and requiring it in email should be fine
+
     //TODO could optmize to not make two db calls
+    //or maybe not since we don't inject prisma
 
-    let userFromEmail;
-    let userFromUsername;
+    return (
+      this.getUser(emailOrUsername, 'email') ??
+      this.getUser(emailOrUsername, 'username')
+    );
+  }
 
-    //first try to get by username, return it if exists
+  async getUser(
+    input: string,
+    emailOrUsername: 'email' | 'username'
+  ): Promise<User | null> {
+    let users: User[] = [];
+
     try {
-      userFromEmail = await this.userService.findUnique({
-        email: emailOrUsername,
-      });
-
-      if (userFromEmail) {
-        return userFromEmail;
+      if (emailOrUsername === 'email') {
+        users = await this.userService.findMany({
+          where: { email: { equals: input, mode: 'insensitive' } },
+        });
+      } else {
+        users = await this.userService.findMany({
+          where: { username: { equals: input, mode: 'insensitive' } },
+        });
       }
+
+      if (users.length > 1) {
+        throw new InternalServerErrorException(`duplicate ${emailOrUsername}`);
+      }
+
+      return users[0];
     } catch {
-      userFromEmail = null;
+      return null;
     }
-
-    //second try to get by email
-
-    try {
-      userFromUsername = await this.userService.findUnique({
-        email: emailOrUsername,
-      });
-    } catch {
-      userFromUsername = null;
-    }
-
-    //could be null
-    return userFromUsername;
   }
 }
