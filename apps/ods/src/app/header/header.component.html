@@ -9,10 +9,10 @@
   </mat-menu>
   <!-- justify-center items-center w-screen mb-0 grid grid-cols-2 gap-4 place-items-stretch -->
   <div class="w-screen">
-    <p class="mb-0 flex justify-center items-center">
+    <p id="userNameGrade" class="mb-0 flex justify-center items-center">
       {{ this.user.firstName }} {{ this.user.lastName }}, {{ this.user.grade }}
     </p>
-    <p class="mb-0 flex justify-center items-center text-sm">
+    <p id="userTitleOrg" class="mb-0 flex justify-center items-center text-sm">
       <!-- update backend to have take/first parameter? -->
       {{ this.userTitle }} {{ this.user.orgs[0].name }}
     </p>
