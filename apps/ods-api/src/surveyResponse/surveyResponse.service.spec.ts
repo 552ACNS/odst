@@ -36,7 +36,7 @@ describe('SurveyResponseService', () => {
     prisma = module.get<PrismaService>(PrismaService);
   });
 
-  it('should be defined', () => {
+  it('should be defined', async () => {
     expect(service).toBeDefined();
   });
 
@@ -48,7 +48,7 @@ describe('SurveyResponseService', () => {
   });
 
   describe('findUnique', () => {
-    it('should get a single surveyResponse', () => {
+    it('should get a single surveyResponse', async () => {
       expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
         MockSurveyResponses[0]
       );
@@ -77,18 +77,18 @@ describe('SurveyResponseService', () => {
   });
 
   describe('delete', () => {
-    it('should return {deleted: true}', () => {
-      expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
+    it('should return {deleted: true}', async () => {
+      await expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
         deleted: true,
       });
     });
 
-    it('should return {deleted: false, message: err.message}', () => {
+    it('should return {deleted: false, message: err.message}', async () => {
       jest
         .spyOn(prisma.surveyResponse, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
 
-      expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
+      await expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
         deleted: false,
         message: 'Bad Delete Method.',
       });
@@ -96,17 +96,17 @@ describe('SurveyResponseService', () => {
   });
 
   describe('determine status', () => {
-    it('should return an overdue status condition check', () => {
+    it('should return an overdue status condition check', async () => {
       const surveyResponse = service.determineStatus('overdue');
       expect(surveyResponse.resolution).toEqual(null);
       expect(surveyResponse.openedDate).toBeDefined();
     });
-    it('should return an unresolved status condition check', () => {
+    it('should return an unresolved status condition check', async () => {
       const surveyResponse = service.determineStatus('unresolved');
       expect(surveyResponse.resolution).toEqual(null);
       expect(surveyResponse.openedDate).toBeUndefined();
     });
-    it('should return a resolved status condition check', () => {
+    it('should return a resolved status condition check', async () => {
       const surveyResponse = service.determineStatus('resolved');
       expect(surveyResponse.resolution).toEqual({ not: null });
     });
@@ -128,6 +128,7 @@ describe('SurveyResponseService', () => {
       expect(surveyResponse[0]).toBe('SurveyResponse id 1');
       expect(surveyResponse[1]).toBe('SurveyResponse id 2');
     });
+
     it('should return reports that are unresolved', async () => {
       // return a json body of string IDs
       jest
@@ -203,7 +204,7 @@ describe('SurveyResponseService', () => {
 
       await service.getIssuesByStatus('overdue', MockUsers[0]);
 
-      expect(spy).toHaveBeenCalledWith({
+      await expect(spy).toHaveBeenCalledWith({
         where: {
           openedDate: {
             lt: new Date(Date.now() - 2592000000),
