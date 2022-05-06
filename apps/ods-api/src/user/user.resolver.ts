@@ -1,6 +1,13 @@
-import { Resolver, Parent, ResolveField, Query, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Parent,
+  ResolveField,
+  Query,
+  Args,
+  Mutation,
+} from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { User, Org, Role } from '../__types__/';
+import { User, Org, Role, UserCreateInput, UserWhereUniqueInput } from '../__types__/';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
 
@@ -41,7 +48,22 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  async me(@GetCurrentUser() user: User): Promise<User> {
+  async me(@GetCurrentUser() user : User): Promise<User> {
     return user;
+  }
+  @Public()
+  @Mutation(() => User, { name: 'createUser' })
+  create(
+    @Args('userCreateInput') userCreateInput: UserCreateInput
+  ): Promise<User> {
+    return this.userService.create(userCreateInput);
+  }
+
+  @Mutation(() => User, { name: 'deleteUser' })
+  async delete(
+    @Args('userWhereUniqueInput')
+    userWhereUniqueInput: UserWhereUniqueInput
+  ): Promise<User> {
+    return this.userService.delete(userWhereUniqueInput);
   }
 }

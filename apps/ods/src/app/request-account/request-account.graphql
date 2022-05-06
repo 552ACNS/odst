@@ -1,0 +1,12 @@
+query findManyOrgs {
+  findManyOrgs {
+    name
+  }
+}
+mutation CreateUser($userCreateInput: UserCreateInput!) {
+  createUser(userCreateInput: $userCreateInput) {
+    grade
+    lastName
+    firstName
+  }
+}

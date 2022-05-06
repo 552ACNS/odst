@@ -30,6 +30,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'request-account',
+    loadChildren: () =>
+      import('./request-account/request-account.module').then(
+        (m) => m.RequestAccountModule
+      ),
+  },
+  //TODO: add functionality to auto redirect to login if refresh token not found
+  {
     path: 'login',
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginModule),
