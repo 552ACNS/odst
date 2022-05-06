@@ -136,11 +136,36 @@ export class SurveyResponseService {
     return { unresolved, overdue, resolved };
   }
 
-  async getIssuesByStatus(resolved: boolean, user: User): Promise<string[]> {
+  determineStatus(resolved: string): Prisma.SurveyResponseWhereInput {
+    let whereIssues: Prisma.SurveyResponseWhereInput = {};
+    switch (resolved) {
+      case 'overdue':
+        whereIssues = {
+          openedDate: {
+            lt: new Date(Date.now() - 2592000000),
+          },
+          resolution: null,
+        };
+        break;
+      case 'unresolved':
+        whereIssues = {
+          resolution: null,
+        };
+        break;
+      case 'resolved':
+        whereIssues = {
+          resolution: { not: null },
+        };
+        break;
+    }
+    return whereIssues;
+  }
+
+  async getIssuesByStatus(resolved: string, user: User): Promise<string[]> {
     return this.prisma.surveyResponse
       .findMany({
         where: {
-          resolution: resolved ? { not: null } : null,
+          ...this.determineStatus(resolved),
           ...(await this.getWhereBasedOnUserOrgs(user)),
         },
         select: {

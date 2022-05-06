@@ -77,7 +77,7 @@ export class SurveyResponseResolver {
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
-    @Args('resolved') resolved: boolean,
+    @Args('resolved') resolved: string,
     @GetCurrentUser() user: UserGQL
   ): Promise<string[]> {
     return this.surveyResponseService.getIssuesByStatus(resolved, user);

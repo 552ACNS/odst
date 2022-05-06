@@ -15,7 +15,7 @@ query findUniqueSurveyResponse(
   }
 }
 
-query getIssuesByStatus($resolved: Boolean!) {
+query getIssuesByStatus($resolved: String!) {
   getIssuesByStatus(resolved: $resolved)
 }
 

@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
     countOf: number;
     suffix: string;
     suffixStyle: string;
-    resolved?: boolean;
+    resolved?: string;
   }[];
   user: AuthenticatedUserFragment;
 
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
           suffix: 'Unresolved Reports',
           suffixStyle:
             'text-lg font-medium text-blue-600 dark:text-blue-500 text-center',
-          resolved: false,
+          resolved: 'unresolved',
         },
         {
           title: 'Overdue',
@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit {
           suffix: 'Overdue Reports',
           suffixStyle:
             'text-lg font-medium text-red-600 dark:text-red-500 text-center',
+          resolved: 'overdue',
         },
         {
           title: 'Resolved',
@@ -55,7 +56,7 @@ export class DashboardComponent implements OnInit {
           suffix: 'Resolved Reports',
           suffixStyle:
             'text-lg font-medium text-green-600 dark:text-green-500 text-center',
-          resolved: true,
+          resolved: 'resolved',
         },
       ];
     });
