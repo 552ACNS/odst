@@ -44,10 +44,12 @@ export class ResponsesComponent implements OnInit {
       this.responseIDs = data;
       this.numberOfResponses = data.length;
 
-      this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+      if (this.numberOfResponses !== 0) {
+        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
 
-      // navigate to that issue
-      this.displayIssue(this.pageEvent);
+        // navigate to that issue
+        this.displayIssue(this.pageEvent);
+      }
     });
   }
 

@@ -1,4 +1,7 @@
 describe('ods', () => {
+  beforeEach(() => {
+    cy.intercept('POST', '**/graphql').as('graphql');
+  });
   before(() => {
     cy.visit('/login');
     //email has capitalized letters in it to test case insensitivity
@@ -15,7 +18,7 @@ describe('ods', () => {
     cy.get('p').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
     cy.get('h1').contains('Unresolved Responses');
-    cy.get('button').contains('Back').click();
+    cy.get('button').contains('Back').click().wait('@graphql');
     cy.location('pathname').should('include', '/dashboard');
     cy.get('p').contains('Resolved').click();
     cy.location('pathname').should('include', '/responses');
