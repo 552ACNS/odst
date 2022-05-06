@@ -1,26 +1,22 @@
 import { Resolver, Parent, ResolveField, Query, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { OrgGQL, UserGQL } from '@odst/types/ods';
-
-// fix this when we have a better solution
-// eslint-disable-next-line no-restricted-imports
-import { Role } from '.prisma/ods/client';
+import { User, Org, Role } from '../__types__/';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
 
-@Resolver(() => UserGQL)
+@Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   // Refactor this to include Cater's Where command when we implement it
-  // @Query(() => [UserGQL], { name: 'findManyUsers' })
+  // @Query(() => [User], { name: 'findManyUsers' })
 
   // async findManyInOrg() {
   //   return this.userService.findMany({});
   // }
 
-  @Query(() => [UserGQL])
-  async findUsersWithRole(@Args('role') role: Role): Promise<UserGQL[]> {
+  @Query(() => [User])
+  async findUsersWithRole(@Args('role') role: Role): Promise<User[]> {
     return this.userService.findMany({
       where: {
         role: role,
@@ -30,8 +26,8 @@ export class UserResolver {
 
   //TODO write custom pipe to not need separate route for this
   @Public()
-  @Query(() => [UserGQL])
-  async getCommanders(): Promise<UserGQL[]> {
+  @Query(() => [User])
+  async getCommanders(): Promise<User[]> {
     return this.userService.findMany({
       where: {
         role: Role.CC,
@@ -39,13 +35,13 @@ export class UserResolver {
     });
   }
 
-  @ResolveField(() => [OrgGQL])
-  async orgs(@Parent() user: UserGQL): Promise<OrgGQL[]> {
+  @ResolveField(() => [Org])
+  async orgs(@Parent() user: User): Promise<Org[]> {
     return this.userService.orgs({ id: user.id });
   }
 
-  @Query(() => UserGQL)
-  async me(@GetCurrentUser() user: UserGQL): Promise<UserGQL> {
+  @Query(() => User)
+  async me(@GetCurrentUser() user: User): Promise<User> {
     return user;
   }
 }

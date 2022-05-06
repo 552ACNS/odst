@@ -8,61 +8,61 @@ import {
 } from '@nestjs/graphql';
 import { SurveyResponseService } from './surveyResponse.service';
 import {
-  SurveyResponseGQL,
+  SurveyResponse,
   SurveyResponseCreateInput,
   SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
-  AnswerGQL,
-  SurveyGQL,
+  Answer,
+  Survey,
   ResponseCount,
-  UserGQL,
-} from '@odst/types/ods';
+  User,
+} from '../__types__/';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
 
-@Resolver(() => SurveyResponseGQL)
+@Resolver(() => SurveyResponse)
 export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
 
-  @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
-  async findMany(): Promise<SurveyResponseGQL[]> {
+  @Query(() => [SurveyResponse], { name: 'findManySurveyResponses' })
+  async findMany(): Promise<SurveyResponse[]> {
     return this.surveyResponseService.findMany({});
   }
 
   //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
-  @Query(() => SurveyResponseGQL, { name: 'findUniqueSurveyResponse' })
+  @Query(() => SurveyResponse, { name: 'findUniqueSurveyResponse' })
   async findUnique(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ): Promise<SurveyResponseGQL | null> {
+  ): Promise<SurveyResponse | null> {
     return this.surveyResponseService.findUnique(
       surveyResponseWhereUniqueInput
     );
   }
 
-  @Mutation(() => SurveyResponseGQL, { name: 'createSurveyResponse' })
+  @Mutation(() => SurveyResponse, { name: 'createSurveyResponse' })
   @Public()
   async create(
     @Args('surveyResponseCreateInput')
     surveyResponseCreateInput: SurveyResponseCreateInput
-  ): Promise<SurveyResponseGQL> {
+  ): Promise<SurveyResponse> {
     return this.surveyResponseService.create(surveyResponseCreateInput);
   }
 
-  @Mutation(() => SurveyResponseGQL, { name: 'updateSurveyResponse' })
+  @Mutation(() => SurveyResponse, { name: 'updateSurveyResponse' })
   async update(
     @Args('SurveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput,
     @Args('SurveyResponseUpdateInput')
     surveyResponseUpdateInput: SurveyResponseUpdateInput
-  ): Promise<SurveyResponseGQL> {
+  ): Promise<SurveyResponse> {
     return this.surveyResponseService.update(
       surveyResponseWhereUniqueInput,
       surveyResponseUpdateInput
     );
   }
 
-  @Mutation(() => SurveyResponseGQL, { name: 'deleteSurveyResponse' })
+  @Mutation(() => SurveyResponse, { name: 'deleteSurveyResponse' })
   async delete(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
@@ -71,29 +71,27 @@ export class SurveyResponseResolver {
   }
 
   @Query(() => ResponseCount, { name: 'ResponseCount' })
-  async ResponseCount(@GetCurrentUser() user: UserGQL): Promise<ResponseCount> {
+  async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
     return this.surveyResponseService.countResponses(user);
   }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
     @Args('resolved') resolved: boolean,
-    @GetCurrentUser() user: UserGQL
+    @GetCurrentUser() user: User
   ): Promise<string[]> {
     return this.surveyResponseService.getIssuesByStatus(resolved, user);
   }
 
-  @ResolveField(() => [AnswerGQL])
-  async answers(
-    @Parent() surveyResponse: SurveyResponseGQL
-  ): Promise<AnswerGQL[]> {
+  @ResolveField(() => [Answer])
+  async answers(@Parent() surveyResponse: SurveyResponse): Promise<Answer[]> {
     return this.surveyResponseService.answers({ id: surveyResponse.id });
   }
 
-  @ResolveField(() => SurveyGQL)
+  @ResolveField(() => Survey)
   async survey(
-    @Parent() surveyResponse: SurveyResponseGQL
-  ): Promise<SurveyGQL | null> {
+    @Parent() surveyResponse: SurveyResponse
+  ): Promise<Survey | null> {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
   }
 }

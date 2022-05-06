@@ -1,4 +1,4 @@
-import { OrgCreateInput } from '@odst/types/ods';
+import { OrgCreateInput } from '../__types__/';
 import { Org } from '.prisma/ods/client';
 
 export const MockOrgs: Org[] = [

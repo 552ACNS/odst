@@ -8,22 +8,22 @@ import {
 } from '@nestjs/graphql';
 import { OrgService } from './org.service';
 import {
-  OrgGQL,
+  Org,
   OrgCreateInput,
   OrgUpdateInput,
   OrgWhereUniqueInput,
-  UserGQL,
-  SurveyGQL,
-} from '@odst/types/ods';
+  User,
+  Survey,
+} from '../__types__/';
 import { Public } from '@odst/auth';
 
-@Resolver(() => OrgGQL)
+@Resolver(() => Org)
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
   @Public()
-  @Query(() => [OrgGQL], { name: 'findManyOrgs' })
-  async findMany(): Promise<OrgGQL[]> {
+  @Query(() => [Org], { name: 'findManyOrgs' })
+  async findMany(): Promise<Org[]> {
     return this.orgService.findMany({
       orderBy: {
         name: 'asc',
@@ -31,41 +31,39 @@ export class OrgResolver {
     });
   }
 
-  @Query(() => [OrgGQL], { name: 'getSubOrgs' })
+  @Query(() => [Org], { name: 'getSubOrgs' })
   //TODO redo with findMany
   async getSubOrgs(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<OrgGQL[]> {
+  ): Promise<Org[]> {
     return this.orgService.getSubOrgs(orgWhereUniqueInput);
   }
 
-  @Query(() => OrgGQL, { name: 'findUniqueOrg' })
+  @Query(() => Org, { name: 'findUniqueOrg' })
   async findUnique(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<OrgGQL | null> {
+  ): Promise<Org | null> {
     return this.orgService.findUnique(orgWhereUniqueInput);
   }
 
-  @Mutation(() => OrgGQL, { name: 'createOrg' })
-  create(
-    @Args('orgCreateInput') orgCreateInput: OrgCreateInput
-  ): Promise<OrgGQL> {
+  @Mutation(() => Org, { name: 'createOrg' })
+  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput): Promise<Org> {
     return this.orgService.create(orgCreateInput);
   }
 
-  @Mutation(() => OrgGQL, { name: 'updateOrg' })
+  @Mutation(() => Org, { name: 'updateOrg' })
   async update(
     @Args('OrgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput,
     @Args('OrgUpdateInput')
     orgUpdateInput: OrgUpdateInput
-  ): Promise<OrgGQL> {
+  ): Promise<Org> {
     return this.orgService.update(orgWhereUniqueInput, orgUpdateInput);
   }
 
-  @Mutation(() => OrgGQL, { name: 'deleteOrg' })
+  @Mutation(() => Org, { name: 'deleteOrg' })
   async delete(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
@@ -73,23 +71,23 @@ export class OrgResolver {
     return this.orgService.delete(orgWhereUniqueInput);
   }
 
-  @ResolveField(() => [UserGQL])
-  async users(@Parent() org: OrgGQL): Promise<UserGQL[]> {
+  @ResolveField(() => [User])
+  async users(@Parent() org: Org): Promise<User[]> {
     return this.orgService.users({ id: org.id });
   }
 
-  @ResolveField(() => [OrgGQL])
-  async children(@Parent() org: OrgGQL): Promise<OrgGQL[]> {
+  @ResolveField(() => [Org])
+  async children(@Parent() org: Org): Promise<Org[]> {
     return this.orgService.children({ id: org.id });
   }
 
-  @ResolveField(() => OrgGQL)
-  async parent(@Parent() org: OrgGQL): Promise<OrgGQL | null> {
+  @ResolveField(() => Org)
+  async parent(@Parent() org: Org): Promise<Org | null> {
     return this.orgService.parent({ id: org.id });
   }
 
-  @ResolveField(() => [SurveyGQL])
-  async surveys(@Parent() org: OrgGQL): Promise<SurveyGQL[]> {
+  @ResolveField(() => [Survey])
+  async surveys(@Parent() org: Org): Promise<Survey[]> {
     return this.orgService.surveys({ id: org.id });
   }
 }

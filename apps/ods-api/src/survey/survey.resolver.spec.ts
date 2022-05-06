@@ -68,7 +68,7 @@ describe('Survey Resolver', () => {
       await expect(
         resolver.update(
           { id: 'a uuid' },
-          { surveyResponses: { connect: { id: 'surveyResponses id' } } }
+          { surveyResponses: { connect: [{ id: 'surveyResponses id' }] } }
         )
       ).resolves.toEqual(MockSurveys[0]);
     });

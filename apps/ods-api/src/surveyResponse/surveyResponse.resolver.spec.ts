@@ -77,7 +77,7 @@ describe('SurveyResponse Resolver', () => {
       await expect(
         resolver.update(
           { id: MockSurveyResponses[0].id },
-          { routeOutside: true }
+          { routeOutside: { set: true } }
         )
       ).resolves.toEqual(MockSurveyResponses[0]);
     });

@@ -75,7 +75,7 @@ describe('Org Resolver', () => {
   describe('update', () => {
     it('should update a org', async () => {
       await expect(
-        resolver.update({ id: MockOrgs[0].id }, { orgTier: 'WING' })
+        resolver.update({ id: MockOrgs[0].id }, { orgTier: { set: 'WING' } })
       ).resolves.toEqual(MockOrgs[0]);
     });
   });

@@ -9,7 +9,7 @@ import {
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
-import { ResponseCount } from '@odst/types/ods';
+import { ResponseCount } from '../__types__/';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
