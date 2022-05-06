@@ -1,6 +1,18 @@
-import { Resolver, Parent, ResolveField, Query, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Parent,
+  ResolveField,
+  Query,
+  Args,
+  Mutation,
+} from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { OrgGQL, UserGQL } from '@odst/types/ods';
+import {
+  OrgGQL,
+  UserCreateInput,
+  UserGQL,
+  UserWhereUniqueInput,
+} from '@odst/types/ods';
 
 // fix this when we have a better solution
 // eslint-disable-next-line no-restricted-imports
@@ -45,7 +57,22 @@ export class UserResolver {
   }
 
   @Query(() => UserGQL)
-  async me(@GetCurrentUser() user: UserGQL): Promise<UserGQL> {
+  async me(@GetCurrentUser() user): Promise<UserGQL> {
     return user;
+  }
+  @Public()
+  @Mutation(() => UserGQL, { name: 'createUser' })
+  create(
+    @Args('userCreateInput') userCreateInput: UserCreateInput
+  ): Promise<UserGQL> {
+    return this.userService.create(userCreateInput);
+  }
+
+  @Mutation(() => UserGQL, { name: 'deleteUser' })
+  async delete(
+    @Args('userWhereUniqueInput')
+    userWhereUniqueInput: UserWhereUniqueInput
+  ): Promise<UserGQL> {
+    return this.userService.delete(userWhereUniqueInput);
   }
 }

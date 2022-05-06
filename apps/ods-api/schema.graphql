@@ -142,6 +142,8 @@ type Mutation {
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
+  createUser(userCreateInput: UserCreateInput!): UserGQL!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -298,6 +300,26 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
   prompt: String
+}
+
+input UserCreateInput {
+  role: Role!
+  orgs: OrgCreateNestedManyWithoutUsersInput!
+  email: String!
+  password: String!
+  grade: String
+  firstName: String!
+  lastName: String!
+  enabled: Boolean
+}
+
+input OrgCreateNestedManyWithoutUsersInput {
+  connect: OrgWhereUniqueInput
+}
+
+input UserWhereUniqueInput {
+  id: String
+  email: String
 }
 
 input LoginUserInput {
