@@ -25,13 +25,6 @@ jobs:
           cache: 'yarn'
       - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
-      - name: Generate Prisma clients
-        run: yarn nx run-many --target=prisma-generate --all=true --parallel=false
-      - name: Generate Graphql schema
-        run: yarn nx run-many --target=prisma-generate --all
-      - name: Generate Graphql types
-        run: npx graphql-codegen --config graphql.codegen.yml
-      - run: npx nx affected --target=test --parallel
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
