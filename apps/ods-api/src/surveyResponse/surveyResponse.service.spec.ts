@@ -4,6 +4,7 @@ import { SurveyResponseService } from './surveyResponse.service';
 import {
   MockSurveyResponseCreateInput,
   MockSurveyResponses,
+  MockUsers,
 } from './surveyResponse.repo';
 
 const db = {
@@ -90,6 +91,131 @@ describe('SurveyResponseService', () => {
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
         deleted: false,
         message: 'Bad Delete Method.',
+      });
+    });
+  });
+
+  describe('determine status', () => {
+    it('should return an overdue status condition check', () => {
+      const surveyResponse = service.determineStatus('overdue');
+      expect(surveyResponse.resolution).toEqual(null);
+      expect(surveyResponse.openedDate).toBeDefined();
+    });
+    it('should return an unresolved status condition check', () => {
+      const surveyResponse = service.determineStatus('unresolved');
+      expect(surveyResponse.resolution).toEqual(null);
+      expect(surveyResponse.openedDate).toBeUndefined();
+    });
+    it('should return a resolved status condition check', () => {
+      const surveyResponse = service.determineStatus('resolved');
+      expect(surveyResponse.resolution).toEqual({ not: null });
+    });
+  });
+
+  describe('return issues by status', () => {
+    it('should return reports that are resolved', async () => {
+      // return a json body of string IDs
+      jest
+        .spyOn(prisma.surveyResponse, 'findMany')
+        .mockResolvedValue(MockSurveyResponses.filter((x) => !!x.resolution));
+
+      const surveyResponse = await service.getIssuesByStatus(
+        'resolved',
+        MockUsers[0]
+      );
+
+      expect(surveyResponse).toHaveLength(2);
+      expect(surveyResponse[0]).toBe('SurveyResponse id 1');
+      expect(surveyResponse[1]).toBe('SurveyResponse id 2');
+    });
+    it('should return reports that are unresolved', async () => {
+      // return a json body of string IDs
+      jest
+        .spyOn(prisma.surveyResponse, 'findMany')
+        .mockResolvedValue(MockSurveyResponses.filter((x) => !x.resolution));
+
+      const surveyResponse = await service.getIssuesByStatus(
+        'unresolved',
+        MockUsers[0]
+      );
+
+      expect(surveyResponse).toHaveLength(2);
+      expect(surveyResponse[0]).toBe('SurveyResponse id 3');
+      expect(surveyResponse[1]).toBe('SurveyResponse id 4');
+    });
+
+    it('should return reports that are overdue', async () => {
+      const compareDate = new Date(Date.now() - 2592000000);
+      // return a json body of string IDs
+      jest
+        .spyOn(prisma.surveyResponse, 'findMany')
+        .mockResolvedValue(
+          MockSurveyResponses.filter((x) => x.openedDate < compareDate)
+        );
+
+      const surveyResponse = await service.getIssuesByStatus(
+        'overdue',
+        MockUsers[0]
+      );
+
+      expect(surveyResponse).toHaveLength(1);
+      expect(surveyResponse[0]).toBe('SurveyResponse id 4');
+    });
+
+    it('should return reports using unresolved status', async () => {
+      const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+
+      await service.getIssuesByStatus('unresolved', MockUsers[0]);
+
+      expect(spy).toHaveBeenCalledWith({
+        where: {
+          resolution: null,
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      });
+    });
+
+    it('should return reports using resolved status', async () => {
+      const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+
+      await service.getIssuesByStatus('resolved', MockUsers[0]);
+
+      expect(spy).toHaveBeenCalledWith({
+        where: {
+          resolution: { not: null },
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      });
+    });
+
+    it('should return reports using overdue status', async () => {
+      const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+
+      await service.getIssuesByStatus('overdue', MockUsers[0]);
+
+      expect(spy).toHaveBeenCalledWith({
+        where: {
+          openedDate: {
+            lt: new Date(Date.now() - 2592000000),
+          },
+          resolution: null,
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
       });
     });
   });
