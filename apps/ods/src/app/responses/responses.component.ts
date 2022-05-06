@@ -4,6 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { CommentGql } from '../../types.graphql';
 
 @Component({
   selector: 'odst-responses',
@@ -23,7 +24,7 @@ export class ResponsesComponent implements OnInit {
   questionsAnswers: [string, string][] = [];
 
   resolved: boolean;
-
+  comments: CommentGql[];
   openedDate: string;
   numberOfResponses: number;
   displayedIndex: number;
