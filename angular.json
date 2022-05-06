@@ -232,6 +232,14 @@
           }
         }
       },
+      "graphql-generate": {
+        "builder": "@nrwl/workspace:run-commands",
+        "options": {
+          "commands": [
+            "ts-node -r tsconfig-paths/register --project apps/ods-api/tsconfig.app.json apps/ods-api/graphql-generate.ts"
+          ]
+        }
+      },
       "tags": []
     },
     "ods-e2e": {

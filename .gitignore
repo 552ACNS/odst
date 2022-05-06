@@ -8,6 +8,8 @@
 #generated files
 *[-|.]generated.ts
 types.graphql.ts
+**/__types__/generated
+schema.graphql
 
 # dependencies
 /node_modules

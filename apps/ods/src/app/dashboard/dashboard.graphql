@@ -12,7 +12,7 @@ query CurrentUser {
     ...AuthenticatedUser
   }
 }
-fragment AuthenticatedUser on UserGQL {
+fragment AuthenticatedUser on User {
   firstName
   lastName
   grade
