@@ -7,7 +7,13 @@ import {
   Mutation,
 } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { User, Org, Role, UserCreateInput, UserWhereUniqueInput } from '../__types__/';
+import {
+  User,
+  Org,
+  Role,
+  UserCreateInput,
+  UserWhereUniqueInput,
+} from '../__types__/';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
 
@@ -42,15 +48,6 @@ export class UserResolver {
     });
   }
 
-  @ResolveField(() => [Org])
-  async orgs(@Parent() user: User): Promise<Org[]> {
-    return this.userService.orgs({ id: user.id });
-  }
-
-  @Query(() => User)
-  async me(@GetCurrentUser() user : User): Promise<User> {
-    return user;
-  }
   @Public()
   @Mutation(() => User, { name: 'createUser' })
   create(
@@ -65,5 +62,15 @@ export class UserResolver {
     userWhereUniqueInput: UserWhereUniqueInput
   ): Promise<User> {
     return this.userService.delete(userWhereUniqueInput);
+  }
+
+  @ResolveField(() => [Org])
+  async orgs(@Parent() user: User): Promise<Org[]> {
+    return this.userService.orgs({ id: user.id });
+  }
+
+  @Query(() => User)
+  async me(@GetCurrentUser() user: User): Promise<User> {
+    return user;
   }
 }

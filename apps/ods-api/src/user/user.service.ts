@@ -42,22 +42,6 @@ export class UserService {
     });
   }
 
-  async orgs(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<Org[]> {
-    return this.prisma.user.findUnique({ where: userWhereUniqueInput }).orgs();
-  }
-
-  async refreshToken(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<RefreshToken | null> {
-    return this.prisma.user
-      .findUnique({
-        where: userWhereUniqueInput,
-      })
-      .refreshToken();
-  }
-
   async create(data: Prisma.UserCreateInput): Promise<User> {
     data.password = await hash(data.password, 10);
 
@@ -72,5 +56,21 @@ export class UserService {
     return this.prisma.user.delete({
       where: userWhereUniqueInput,
     });
+  }
+
+  async orgs(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<Org[]> {
+    return this.prisma.user.findUnique({ where: userWhereUniqueInput }).orgs();
+  }
+
+  async refreshToken(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<RefreshToken | null> {
+    return this.prisma.user
+      .findUnique({
+        where: userWhereUniqueInput,
+      })
+      .refreshToken();
   }
 }

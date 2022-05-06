@@ -101,9 +101,11 @@ export class RequestAccountComponent implements OnInit {
         grade: this.grade,
         role: this.determineRole(this.form.get(['permissions'])?.value),
         orgs: {
-          connect: {
-            name: this.form.get(['org'])?.value,
-          },
+          connect: [
+            {
+              name: this.form.get(['org'])?.value,
+            },
+          ],
         },
         password: this.form.value['confirmPassword'].trim(),
       })

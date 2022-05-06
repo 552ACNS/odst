@@ -67,10 +67,7 @@ export class SurveyResolver {
   ): Promise<Survey> {
     //Type coercion is required here because there is a bug in typescript
     //where entities with several relations overflow the stack
-    return this.surveyService.update(
-      surveyWhereUniqueInput as Prisma.SurveyWhereUniqueInput,
-      surveyUpdateInput as Prisma.SurveyUpdateInput
-    );
+    return this.surveyService.update(surveyWhereUniqueInput, surveyUpdateInput);
   }
 
   @Mutation(() => Survey, { name: 'deleteSurvey' })
