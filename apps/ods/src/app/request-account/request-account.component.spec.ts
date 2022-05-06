@@ -27,7 +27,6 @@ describe('SurveyQuestionsComponent', () => {
         MatInputModule,
         MatIconModule,
         MatButtonModule,
-        MatOptionModule,
         MatFormFieldModule,
         MatSelectModule,
         BrowserModule,
