@@ -4,6 +4,7 @@ import { SurveyResponseService } from './surveyResponse.service';
 import {
   MockSurveyResponseCreateInput,
   MockSurveyResponses,
+  MockUsers,
 } from './surveyResponse.repo';
 
 const db = {
@@ -118,7 +119,10 @@ describe('SurveyResponseService', () => {
         .spyOn(prisma.surveyResponse, 'findMany')
         .mockResolvedValue(MockSurveyResponses.filter((x) => !!x.resolution));
 
-      const surveyResponse = await service.getIssuesByStatus('resolved');
+      const surveyResponse = await service.getIssuesByStatus(
+        'resolved',
+        MockUsers[0]
+      );
 
       expect(surveyResponse).toHaveLength(2);
       expect(surveyResponse[0]).toBe('SurveyResponse id 1');
@@ -130,7 +134,10 @@ describe('SurveyResponseService', () => {
         .spyOn(prisma.surveyResponse, 'findMany')
         .mockResolvedValue(MockSurveyResponses.filter((x) => !x.resolution));
 
-      const surveyResponse = await service.getIssuesByStatus('unresolved');
+      const surveyResponse = await service.getIssuesByStatus(
+        'unresolved',
+        MockUsers[0]
+      );
 
       expect(surveyResponse).toHaveLength(2);
       expect(surveyResponse[0]).toBe('SurveyResponse id 3');
@@ -146,7 +153,10 @@ describe('SurveyResponseService', () => {
           MockSurveyResponses.filter((x) => x.openedDate < compareDate)
         );
 
-      const surveyResponse = await service.getIssuesByStatus('overdue');
+      const surveyResponse = await service.getIssuesByStatus(
+        'overdue',
+        MockUsers[0]
+      );
 
       expect(surveyResponse).toHaveLength(1);
       expect(surveyResponse[0]).toBe('SurveyResponse id 4');
@@ -155,7 +165,7 @@ describe('SurveyResponseService', () => {
     it('should return reports using unresolved status', async () => {
       const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
 
-      await service.getIssuesByStatus('unresolved');
+      await service.getIssuesByStatus('unresolved', MockUsers[0]);
 
       expect(spy).toHaveBeenCalledWith({
         where: {
@@ -173,7 +183,7 @@ describe('SurveyResponseService', () => {
     it('should return reports using resolved status', async () => {
       const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
 
-      await service.getIssuesByStatus('resolved');
+      await service.getIssuesByStatus('resolved', MockUsers[0]);
 
       expect(spy).toHaveBeenCalledWith({
         where: {
@@ -191,7 +201,7 @@ describe('SurveyResponseService', () => {
     it('should return reports using overdue status', async () => {
       const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
 
-      await service.getIssuesByStatus('overdue');
+      await service.getIssuesByStatus('overdue', MockUsers[0]);
 
       expect(spy).toHaveBeenCalledWith({
         where: {

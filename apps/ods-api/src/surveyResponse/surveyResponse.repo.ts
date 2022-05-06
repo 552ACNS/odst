@@ -1,6 +1,6 @@
 import { SurveyResponseCreateInput } from '@odst/types/ods';
 import { SurveyResponse } from '.prisma/ods/client';
-
+import { User } from '.prisma/ods/client';
 export const MockSurveyResponses: SurveyResponse[] = [
   {
     id: 'SurveyResponse id 1',
@@ -41,5 +41,18 @@ export const MockSurveyResponses: SurveyResponse[] = [
 export const MockSurveyResponseCreateInput: SurveyResponseCreateInput[] = [
   {
     survey: { connect: { id: 'survey id' } },
+  },
+];
+
+export const MockUsers: User[] = [
+  {
+    id: 'user id 1',
+    email: 'email',
+    password: 'password',
+    role: 'ADMIN',
+    enabled: true,
+    grade: 'grade',
+    firstName: 'firstName',
+    lastName: 'lastName',
   },
 ];
