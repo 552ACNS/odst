@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "root": "libs/gql",
+  "sourceRoot": "libs/gql/src",
+  "prefix": "odst",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/gql/src/**/*.ts", "libs/gql/src/**/*.html"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/gql"],
+      "options": {
+        "jestConfig": "libs/gql/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

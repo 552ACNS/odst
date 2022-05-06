@@ -1,0 +1,28 @@
+{
+  "root": "apps/ods-e2e",
+  "sourceRoot": "apps/ods-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/ods-e2e/cypress.json",
+        "devServerTarget": "ods:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "ods:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/ods-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["ods"]
+}

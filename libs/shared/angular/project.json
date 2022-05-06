@@ -1,0 +1,18 @@
+{
+  "projectType": "library",
+  "root": "libs/shared/angular",
+  "sourceRoot": "libs/shared/angular/src",
+  "prefix": "odst",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/angular/src/**/*.ts",
+          "libs/shared/angular/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

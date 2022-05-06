@@ -1,0 +1,28 @@
+{
+  "root": "apps/waypoint-e2e",
+  "sourceRoot": "apps/waypoint-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/waypoint-e2e/cypress.json",
+        "devServerTarget": "waypoint:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "waypoint:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/waypoint-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["waypoint"]
+}

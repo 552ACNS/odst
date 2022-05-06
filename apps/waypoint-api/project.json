@@ -1,0 +1,85 @@
+{
+  "root": "apps/waypoint-api",
+  "sourceRoot": "apps/waypoint-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/waypoint-api",
+        "main": "apps/waypoint-api/src/main.ts",
+        "tsConfig": "apps/waypoint-api/tsconfig.app.json",
+        "tsPlugins": ["@nestjs/graphql/plugin"],
+        "assets": ["apps/waypoint-api/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/waypoint-api/src/environments/environment.ts",
+              "with": "apps/waypoint-api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/waypoint-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/waypoint-api"],
+      "options": {
+        "jestConfig": "apps/waypoint-api/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "waypoint-api:build"
+      }
+    },
+    "prisma-generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npx prisma generate --schema=apps/waypoint-api/schema.prisma"
+      }
+    },
+    "prisma-migrate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "env-cmd -f apps/waypoint-api/.env.local npx prisma db push --accept-data-loss",
+          "env-cmd -f apps/waypoint-api/.env.local yarn ts-node ./apps/waypoint-api/prisma-seed.ts"
+        ],
+        "schema": "apps/waypoint-api/schema.prisma",
+        "parallel": false
+      },
+      "configurations": {
+        "test": {
+          "command": "env-cmd -f apps/waypoint-api/.env.test npx prisma db push --accept-data-loss"
+        },
+        "production": {
+          "command": "env-cmd -f apps/waypoint-api/.env.prod prisma migrate dev"
+        }
+      }
+    },
+    "prisma-studio": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "env-cmd -f apps/waypoint-api/.env.local npx prisma studio",
+        "schema": "apps/waypoint-api/schema.prisma"
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,18 @@
+{
+  "root": "libs/types/ods",
+  "sourceRoot": "libs/types/ods/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/types/ods/src/**/*.ts",
+          "libs/types/ods/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
