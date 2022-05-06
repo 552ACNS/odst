@@ -66,6 +66,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // SIM - Should probably use a dictionary or something to map roles to titles
+  // eslint-disable-next-line complexity
   setUserTitle(role: Role) {
     switch (role) {
       case Role.Admin:
