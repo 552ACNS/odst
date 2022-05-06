@@ -7,8 +7,7 @@
     <button mat-menu-item>Menu Item 1</button>
     <button mat-menu-item>Menu Item 2</button>
   </mat-menu>
-  <!-- justify-center items-center w-screen mb-0 grid grid-cols-2 gap-4 place-items-stretch -->
-  <div class="w-screen">
+  <div *ngIf="user" class="w-screen">
     <p id="userNameGrade" class="mb-0 flex justify-center items-center">
       {{ this.user.firstName }} {{ this.user.lastName }}, {{ this.user.grade }}
     </p>
@@ -18,7 +17,7 @@
     </p>
   </div>
 
-  <div class="absolute right-4">
+  <div class="right-4">
     <button mat-button [matMenuTriggerFor]="homeMenu">
       <mat-icon>account_circle</mat-icon>
     </button>
