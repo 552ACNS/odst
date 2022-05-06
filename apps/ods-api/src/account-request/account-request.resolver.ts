@@ -25,7 +25,20 @@ export class AccountRequestResolver {
     @GetCurrentUser() user: UserGQL
   ): Promise<AccountRequestGQL[]> {
     return this.accountRequestService.findMany({
-      where: { orgs: { some: { users: { some: { id: user.id } } } } },
+      where: {
+        AND: {
+          denied: false,
+          orgs: {
+            some: {
+              users: {
+                some: {
+                  id: user.id,
+                },
+              },
+            },
+          },
+        },
+      },
     });
   }
 

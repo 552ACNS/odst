@@ -18,6 +18,7 @@ export class RequestedAccountsComponent implements OnInit {
     Grade: 'rank',
     'Requested Permissions': 'role',
   };
+  hasNoData: boolean;
 
   requestViewIsOpen = false;
   displayedAccountRequest;
@@ -26,7 +27,8 @@ export class RequestedAccountsComponent implements OnInit {
   ngOnInit(): void {
     this.requestedAccountsService.getRequestedAccounts().subscribe((data) => {
       this.dataSource = data.data.findManyAccountRequests;
-      console.log();
+      this.hasNoData = this.dataSource.length === 0;
+      console.log(this.hasNoData);
     });
   }
 
@@ -50,6 +52,27 @@ export class RequestedAccountsComponent implements OnInit {
     this.requestedAccountsService
       .acceptAccountRequest(this.displayedAccountRequest['id'])
       .subscribe();
+    this.removeRow();
+    alert('Account successfully created.');
+  }
+
+  denyRequest() {
+    this.requestedAccountsService
+      .denyAccountRequest(this.displayedAccountRequest['id'])
+      .subscribe();
+    this.removeRow();
+    alert('Account request Denied.');
+  }
+
+  removeRow(): void {
+    this.dataSource = this.dataSource.filter(
+      (item, index) =>
+        index !== this.dataSource.indexOf(this.displayedAccountRequest)
+    );
+    this.requestViewIsOpen = false;
+    this.displayedAccountRequest = {};
+    this.displayedRequestData = {};
+    this.hasNoData = this.dataSource.length === 0;
   }
 
   //This function preserves the original order of objects when called by the 'keyvalue' function

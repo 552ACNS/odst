@@ -19,6 +19,9 @@
         (click)="viewAccountRequest(row)"
       ></tr>
     </table>
+    <mat-card-footer class="text-center my-5" *ngIf="hasNoData"
+      >No data to display</mat-card-footer
+    >
   </mat-card>
   <mat-card class="shadow-md font-medium" *ngIf="requestViewIsOpen">
     <mat-list>
@@ -42,6 +45,7 @@
       <button
         mat-stroked-button
         class="w-full text-white shadow-md rounded-full m-0"
+        (click)="denyRequest()"
       >
         Deny
       </button>
