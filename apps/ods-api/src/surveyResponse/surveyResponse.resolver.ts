@@ -15,9 +15,11 @@ import {
   AnswerGQL,
   SurveyGQL,
   ResponseCount,
+  UserGQL,
   CommentGQL,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
+import { GetCurrentUser } from '@odst/shared/nest';
 
 @Resolver(() => SurveyResponseGQL)
 export class SurveyResponseResolver {
@@ -28,6 +30,7 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.findMany({});
   }
 
+  //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
   @Query(() => SurveyResponseGQL, { name: 'findUniqueSurveyResponse' })
   async findUnique(
     @Args('surveyResponseWhereUniqueInput')
@@ -69,29 +72,16 @@ export class SurveyResponseResolver {
   }
 
   @Query(() => ResponseCount, { name: 'ResponseCount' })
-  async ResponseCount(): Promise<ResponseCount> {
-    return this.surveyResponseService.countResponses();
+  async ResponseCount(@GetCurrentUser() user: UserGQL): Promise<ResponseCount> {
+    return this.surveyResponseService.countResponses(user);
   }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
-
-  // TODO This line gets the current user ID but it requires a login system to exist first.
-  // async getUnresolvedIssues(@GetCurrentUserId() userId: string): Promise<string[]> {
   async getIssuesByStatus(
-    @Args('resolved') resolved: boolean
+    @Args('resolved') resolved: string,
+    @GetCurrentUser() user: UserGQL
   ): Promise<string[]> {
-    // return this.surveyResponseService.getUnresolvedIssues(userId);
-    return this.surveyResponseService.getIssuesByStatus(resolved);
-  }
-
-  @Query(() => SurveyResponseGQL, { name: 'getSurveyResponseData' })
-  async getSurveyResponseData(
-    @Args('surveyResponseWhereUniqueInput')
-    surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ) {
-    return this.surveyResponseService.getSurveyResponseData(
-      surveyResponseWhereUniqueInput
-    );
+    return this.surveyResponseService.getIssuesByStatus(resolved, user);
   }
 
   @ResolveField(() => [AnswerGQL])
@@ -106,6 +96,16 @@ export class SurveyResponseResolver {
     @Parent() surveyResponse: SurveyResponseGQL
   ): Promise<SurveyGQL | null> {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
+  }
+
+  @Query(() => SurveyResponseGQL, { name: 'getSurveyResponseData' })
+  async getSurveyResponseData(
+    @Args('surveyResponseWhereUniqueInput')
+    surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
+  ) {
+    return this.surveyResponseService.getSurveyResponseData(
+      surveyResponseWhereUniqueInput
+    );
   }
 
   @ResolveField(() => [CommentGQL])

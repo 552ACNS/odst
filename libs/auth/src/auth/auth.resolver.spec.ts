@@ -41,7 +41,7 @@ describe('Auth Resolver', () => {
   describe('refreshToken', () => {
     it('should return a set of tokens', async () => {
       await expect(
-        resolver.refreshTokens({ refreshToken: 'aaa' }, MockUser)
+        resolver.refreshTokens({ refreshToken: 'aaa' })
       ).resolves.toEqual(MockTokens);
     });
   });

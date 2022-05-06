@@ -22,9 +22,9 @@ export class ResponsesComponent implements OnInit {
   ) {}
 
   questionsAnswers: [string, string][] = [];
-
-  resolved: boolean;
   comments: CommentGql[];
+  resolved: string;
+
   openedDate: string;
   numberOfResponses: number;
   displayedIndex: number;
@@ -36,7 +36,7 @@ export class ResponsesComponent implements OnInit {
   async ngOnInit() {
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
-      this.resolved = params['resolved'] === 'true';
+      this.resolved = params['resolved'];
     });
 
     (
@@ -45,10 +45,12 @@ export class ResponsesComponent implements OnInit {
       this.responseIDs = data;
       this.numberOfResponses = data.length;
 
-      this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+      if (this.numberOfResponses !== 0) {
+        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
 
-      // navigate to that issue
-      this.displayIssue(this.pageEvent);
+        // navigate to that issue
+        this.displayIssue(this.pageEvent);
+      }
     });
   }
 
@@ -67,31 +69,38 @@ export class ResponsesComponent implements OnInit {
 
   async getResponseData(responseID: string) {
     (await this.responsesService.getResponseData(responseID)).subscribe(
-      (data) => {
-        this.openedDate = formatDate(
-          data.openedDate,
-          'MMM d yy, h:mm a',
-          'en-US'
-        );
+      ({ data, errors }) => {
+        //one reason to not use pluck/map/whatever is it drops the errors and
+        //they're never seen/handled. Not that we're doing much of that right now
+        if (errors) {
+          alert(errors);
+        }
+        if (data) {
+          this.openedDate = formatDate(
+            data.findUniqueSurveyResponse.openedDate,
+            'MMM d yy, h:mm a',
+            'en-US'
+          );
 
-        if (this.resolved) {
-          this.resolutionForm.setValue({
-            resolution: data.resolved,
+          if (this.resolved) {
+            this.resolutionForm.setValue({
+              resolution: data.findUniqueSurveyResponse.resolution,
+            });
+          }
+
+          // Clear contents of QA array
+          this.questionsAnswers = [];
+
+          // Handle the Questions & Answers
+          data.findUniqueSurveyResponse.answers?.forEach((answer) => {
+            // Clear contents of QA array
+            // Create the Question/Answer Array
+            this.questionsAnswers.push([
+              String(answer?.question?.prompt),
+              answer.value,
+            ]);
           });
         }
-
-        // Clear contents of QA array
-        this.questionsAnswers = [];
-
-        // Handle the Questions & Answers
-        data.answers?.forEach((answer) => {
-          // Clear contents of QA array
-          // Create the Question/Answer Array
-          this.questionsAnswers.push([
-            String(answer?.question?.prompt),
-            answer.value,
-          ]);
-        });
       }
     );
   }
@@ -103,6 +112,7 @@ export class ResponsesComponent implements OnInit {
         resolution: '',
       });
 
+      //TODO rewrite with proper pagination
       this.displayedIndex = pageEvent.pageIndex;
 
       this.getResponseData(this.responseIDs[this.displayedIndex]);

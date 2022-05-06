@@ -5,7 +5,7 @@ import { Role, User } from '.prisma/ods/client';
 export class UserGQL implements User {
   id: string;
   email: string;
-  rank: string | null;
+  grade: string | null;
   firstName: string;
   lastName: string;
   enabled: boolean;

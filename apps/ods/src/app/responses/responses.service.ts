@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { map, pluck, take } from 'rxjs';
+import { map, take } from 'rxjs';
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
   GetIssuesByStatusQueryVariables,
-  GetSurveyResponseDataDocument,
-  GetSurveyResponseDataQuery,
-  GetSurveyResponseDataQueryVariables,
+  FindUniqueSurveyResponseDocument,
+  FindUniqueSurveyResponseQuery,
+  FindUniqueSurveyResponseQueryVariables,
   UpdateSurveyResponseDocument,
   UpdateSurveyResponseMutation,
   UpdateSurveyResponseMutationVariables,
@@ -18,7 +18,7 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getResponseIDsByStatus(resolved: boolean) {
+  async getResponseIDsByStatus(resolved: string) {
     return this.apollo
       .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
         query: GetIssuesByStatusDocument,
@@ -57,18 +57,16 @@ export class ResponsesService {
   }
 
   async getResponseData(responseID: string) {
-    return this.apollo
-      .watchQuery<
-        GetSurveyResponseDataQuery,
-        GetSurveyResponseDataQueryVariables
-      >({
-        query: GetSurveyResponseDataDocument,
-        variables: {
-          surveyResponseWhereUniqueInput: {
-            id: responseID,
-          },
+    return this.apollo.watchQuery<
+      FindUniqueSurveyResponseQuery,
+      FindUniqueSurveyResponseQueryVariables
+    >({
+      query: FindUniqueSurveyResponseDocument,
+      variables: {
+        surveyResponseWhereUniqueInput: {
+          id: responseID,
         },
-      })
-      .valueChanges.pipe(pluck('data', 'getSurveyResponseData'));
+      },
+    }).valueChanges;
   }
 }

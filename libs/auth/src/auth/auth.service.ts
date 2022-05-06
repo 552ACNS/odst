@@ -4,12 +4,7 @@ import { AUTH_SECRET, USER_SERVICE } from './auth.constants';
 import { UserService, User } from './interfaces/user-service.interface';
 import { compare } from 'bcrypt';
 import { Tokens } from './dtos/tokens.entity';
-import {
-  LoginUserInput,
-  RefreshLoginInput,
-  SignupUserInput,
-} from './dtos/login.input';
-import { hash } from 'bcrypt';
+import { LoginUserInput, RefreshLoginInput } from './dtos/login.input';
 import { JwtPayloadRefresh } from './types/JwtPayload.types';
 
 @Injectable()
@@ -32,13 +27,17 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  async refreshTokens(
-    refreshLoginInput: RefreshLoginInput,
-    user: User
-  ): Promise<Tokens> {
-    const token = this.jwtService.verify(refreshLoginInput.refreshToken, {
-      secret: this.secret,
-    });
+  async refreshTokens(refreshLoginInput: RefreshLoginInput): Promise<Tokens> {
+    const token: JwtPayloadRefresh = this.jwtService.verify(
+      refreshLoginInput.refreshToken,
+      {
+        secret: this.secret,
+      }
+    );
+
+    const user = await this.userService.findUnique({ id: token.sub });
+
+    if (!token || !user || !user.enabled) throw new UnauthorizedException();
 
     if (
       !(await this.validateRefreshToken(
@@ -47,10 +46,6 @@ export class AuthService {
         token
       ))
     ) {
-      throw new UnauthorizedException();
-    }
-
-    if (!token || !user.enabled) {
       throw new UnauthorizedException();
     }
 
@@ -116,6 +111,7 @@ export class AuthService {
       {
         expiresIn: process.env['NODE_ENV'] === 'production' ? '15m' : '5d',
         secret: this.secret,
+        //TODO sign refreshTokens with different secret
       }
     );
 
@@ -144,9 +140,11 @@ export class AuthService {
     return token;
   }
 
+  //TODO when creating users, ensure that check if username/email exists is case insensitive
   async getUserByEmailOrUsername(
     emailOrUsername: string
   ): Promise<User | null> {
+    emailOrUsername = emailOrUsername.toLowerCase();
     //Gets user by email or username
     //could optmize to not make two db calls
 

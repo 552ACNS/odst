@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { Role } from '../../types.graphql';
 import { SurveyQuestionsService } from './survey-questions.service';
 
 @Component({
@@ -89,7 +88,9 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
     // TODO: Nested behaviors like this are hard to test.
     this.surveyService
-      .submitWithQuestions(this.questions)
+      .submitWithQuestions(this.questions, {
+        name: '552 ACNS',
+      })
       .subscribe(({ data }) => {
         this.surveyID = data?.createSurveyWithQuestions.id;
         this.surveyService

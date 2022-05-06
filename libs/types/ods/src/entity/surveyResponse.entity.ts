@@ -10,7 +10,7 @@ export class SurveyResponseGQL implements SurveyResponse {
   openedDate: Date;
   closedDate: Date | null;
   routeOutside: boolean;
-  resolved: boolean;
+  resolution: string | null;
 }
 
 @ObjectType()
