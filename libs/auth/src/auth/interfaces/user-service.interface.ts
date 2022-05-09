@@ -3,6 +3,8 @@ import {
   RefreshTokenUpdateOneWithoutUserInput,
 } from './refreshToken.interface';
 
+// TODO: May need to refactor once we get generator going
+
 export interface User {
   id: string;
   username?: string;
