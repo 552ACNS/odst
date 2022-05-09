@@ -6,6 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HeaderComponent } from './header.component';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -22,6 +23,7 @@ describe('HeaderComponent', () => {
         MatToolbarModule,
         MatMenuModule,
         RouterTestingModule,
+        ApolloTestingModule,
       ],
     }).compileComponents();
   });
