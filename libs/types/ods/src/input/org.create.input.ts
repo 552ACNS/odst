@@ -52,6 +52,11 @@ export class OrgCreateNestedManyWithoutAccountRequestsInput
   implements Prisma.OrgCreateNestedManyWithoutAccountRequestsInput {}
 
 @InputType()
+export class OrgCreateNestedManyWithoutUsersInput
+  extends OrgCreateNestedMany
+  implements Prisma.OrgCreateNestedManyWithoutUsersInput {}
+
+@InputType()
 export class OrgCreateNestedManyWithoutSurveysInput
   extends OrgCreateNestedMany
   implements Prisma.OrgCreateNestedManyWithoutSurveysInput {}

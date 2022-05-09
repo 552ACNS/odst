@@ -22,6 +22,7 @@ import { UserService } from '../user/user.service';
 import { JWTAuthGuard } from '@odst/auth';
 import { APP_GUARD } from '@nestjs/core';
 import { AccountRequestModule } from '../account-request/account-request.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 // Register enum types here, if they are used in multiple places, make sure that they are registered
 // only once and that the resource module that is imported first is the one that registers them
@@ -59,6 +60,7 @@ registerEnumType(OrgTier, { name: 'OrgTier' });
         };
       },
     }),
+    ScheduleModule.forRoot(),
   ],
   providers: [
     {

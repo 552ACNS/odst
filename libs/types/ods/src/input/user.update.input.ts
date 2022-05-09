@@ -4,7 +4,7 @@ import { UserWhereUniqueInput } from './user.unique.input';
 
 @InputType()
 export class UserUpdateInput implements Prisma.UserUpdateInput {
-  rank?: string;
+  grade?: string;
   email?: string;
   password?: string;
   enabled?: boolean;

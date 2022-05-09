@@ -2,10 +2,9 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Tokens } from './dtos/tokens.entity';
 import { LoginUserInput, RefreshLoginInput } from './dtos/login.input';
-import { UseGuards } from '@nestjs/common';
+import { Query } from '@nestjs/graphql';
+import { Logger, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local.guard';
-import { GetCurrentUser } from '@odst/shared/nest';
-import { User } from './interfaces/user-service.interface';
 import { Public } from './decorator/public.decorator';
 
 @Resolver()
@@ -21,11 +20,20 @@ export class AuthResolver {
     return this.authService.login(loginUserInput);
   }
 
+  @Public()
   @Mutation(() => Tokens)
   async refreshTokens(
-    @Args('refreshLoginInput') refreshLoginInput: RefreshLoginInput,
-    @GetCurrentUser() user: User
+    @Args('refreshLoginInput') refreshLoginInput: RefreshLoginInput
   ): Promise<Tokens> {
-    return this.authService.refreshTokens(refreshLoginInput, user);
+    Logger.log('refreshToken', 'auth resolver');
+    return this.authService.refreshTokens(refreshLoginInput);
+  }
+
+  @Public()
+  @Query(() => Boolean)
+  async usernameOrEmailExists(
+    @Args('usernameOrEmail') usernameOrEmail: string
+  ): Promise<boolean> {
+    return !!(await this.authService.getUserByEmailOrUsername(usernameOrEmail));
   }
 }

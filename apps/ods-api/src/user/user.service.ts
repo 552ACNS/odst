@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User, Prisma, Org, RefreshToken } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -55,5 +56,30 @@ export class UserService {
         where: userWhereUniqueInput,
       })
       .refreshToken();
+  }
+
+  async create(data: Prisma.UserCreateInput): Promise<User> {
+    data.password = await hash(data.password, 10);
+
+    return this.prisma.user.create({
+      data,
+    });
+  }
+
+  async delete(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<User | null> {
+    let deletedUser: User | null = null;
+
+    try {
+      deletedUser = await this.prisma.user.delete({
+        where: userWhereUniqueInput,
+      });
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        console.log(err?.meta?.cause);
+      }
+    }
+    return deletedUser;
   }
 }
