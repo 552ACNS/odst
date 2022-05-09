@@ -19,7 +19,7 @@ export const MockUserCreateInput: Prisma.UserCreateInput[] = [
     password: '$2b$10$lYLvDW.qcmZhkpckBIst/.2jvC7rqD./U6MO0GFVVVlW52tlOkgWy',
     enabled: true,
     role: 'ADMIN',
-    rank: 'rank',
+    grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
   },
