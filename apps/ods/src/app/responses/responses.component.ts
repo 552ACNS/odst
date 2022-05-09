@@ -22,7 +22,7 @@ export class ResponsesComponent implements OnInit {
 
   questionsAnswers: [string, string][] = [];
 
-  resolved: boolean;
+  resolved: string;
 
   openedDate: string;
   numberOfResponses: number;
@@ -35,7 +35,7 @@ export class ResponsesComponent implements OnInit {
   async ngOnInit() {
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
-      this.resolved = params['resolved'] === 'true';
+      this.resolved = params['resolved'];
     });
 
     (
