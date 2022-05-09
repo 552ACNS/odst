@@ -22,7 +22,7 @@ export class ResponsesComponent implements OnInit {
   ) {}
 
   questionsAnswers: [string, string][] = [];
-  comments: CommentGql[];
+  comments: any[];
   resolved: string;
 
   openedDate: string;
@@ -90,6 +90,7 @@ export class ResponsesComponent implements OnInit {
 
           // Clear contents of QA array
           this.questionsAnswers = [];
+          this.comments = [];
 
           // Handle the Questions & Answers
           data.findUniqueSurveyResponse.answers?.forEach((answer) => {
@@ -100,6 +101,14 @@ export class ResponsesComponent implements OnInit {
               answer.value,
             ]);
           });
+          // data.findUniqueSurveyResponse.comments?.forEach((answer) => {
+          //   this.comments.push([
+          //     answer.author,
+          //     answer.date,
+          //     answer.value,
+          //   ]);
+          //   console.log(this.comments[0]);
+          // })
         }
       }
     );
