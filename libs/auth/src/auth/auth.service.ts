@@ -150,7 +150,8 @@ export class AuthService {
   ): Promise<User | null> {
     //Gets user by email or username
 
-    //TODO how to prevent user signing up with with someone's email as their username
+    // ODST-191
+    //TODO: how to prevent user signing up with with someone's email as their username
     //example: someone uses Lt Col Matos's email as their username and then Lt Col Matos comes in and he can't make an account with that email
     //preventing '@' in username and requiring it in email should be fine
 

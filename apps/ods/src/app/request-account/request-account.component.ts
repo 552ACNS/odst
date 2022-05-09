@@ -9,7 +9,6 @@ import {
   regExps,
   errorMessages,
 } from '@odst/shared/angular';
-import { contains } from 'class-validator';
 
 @Component({
   selector: 'odst-request-account',

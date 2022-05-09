@@ -20,7 +20,7 @@ export class RequestAccountService {
   constructor(private apollo: Apollo) {}
 
   //a query to find all of the orgs available for the selector
-  async getManyOrgs() {
+  async getManyOrgs(): Promise<Observable<string[]>> {
     return this.apollo
       .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
         query: FindManyOrgsDocument,
