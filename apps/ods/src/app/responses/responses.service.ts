@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CommentGQL } from '@odst/types/ods';
 import { Apollo } from 'apollo-angular';
 import { map, take } from 'rxjs';
 import {
@@ -33,7 +34,7 @@ export class ResponsesService {
     // pluck lets me retrieve nested data.
   }
 
-  updateResolution(id: string, resolution: string) {
+  updateResolution(id: string, comments: CommentGQL[]) {
     return this.apollo
       .mutate<
         UpdateSurveyResponseMutation,
@@ -49,7 +50,7 @@ export class ResponsesService {
             // back end, but that would mean having to make another
             // UpdateSurveyResponse method
             closedDate: Date.now(),
-            comments: resolution,
+            comments: comments,
           },
         },
       })

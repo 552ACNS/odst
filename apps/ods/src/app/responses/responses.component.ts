@@ -84,7 +84,12 @@ export class ResponsesComponent implements OnInit {
 
           if (this.resolved) {
             data.findUniqueSurveyResponse.comments?.forEach((comment) => {
-              this.comments.push([comment.author, comment.date, comment.value]);
+              this.comments.push([
+                comment.value,
+                comment.date,
+                comment.author.firstName,
+                comment.author.lastName,
+              ]);
               console.log(this.comments[0]);
             });
             // this.resolutionForm.setValue({
