@@ -83,9 +83,13 @@ export class ResponsesComponent implements OnInit {
           );
 
           if (this.resolved) {
-            this.resolutionForm.setValue({
-              resolution: data.findUniqueSurveyResponse.resolved,
+            data.findUniqueSurveyResponse.comments?.forEach((comment) => {
+              this.comments.push([comment.author, comment.date, comment.value]);
+              console.log(this.comments[0]);
             });
+            // this.resolutionForm.setValue({
+            //   resolution: data.findUniqueSurveyResponse.comments,
+            // });
           }
 
           // Clear contents of QA array
@@ -101,14 +105,6 @@ export class ResponsesComponent implements OnInit {
               answer.value,
             ]);
           });
-          // data.findUniqueSurveyResponse.comments?.forEach((answer) => {
-          //   this.comments.push([
-          //     answer.author,
-          //     answer.date,
-          //     answer.value,
-          //   ]);
-          //   console.log(this.comments[0]);
-          // })
         }
       }
     );
