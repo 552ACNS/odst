@@ -76,7 +76,7 @@ export class RequestedAccountsComponent implements OnInit {
   }
 
   //This function preserves the original order of objects when called by the 'keyvalue' function
-  keepOrder = (a, b) => {
+  keepOrder = (a) => {
     return a;
   };
 }
