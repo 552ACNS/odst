@@ -17,7 +17,9 @@ export class SurveyResponseCreateInput
   openedDate?: Date;
   closedDate?: Date;
   routeOutside?: boolean;
-  resolution?: string;
+  comments?:
+    | Prisma.CommentCreateNestedManyWithoutSurveyResponseInput
+    | undefined;
 }
 
 @InputType()
