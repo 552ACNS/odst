@@ -49,7 +49,7 @@ export class ResponsesService {
             // back end, but that would mean having to make another
             // UpdateSurveyResponse method
             closedDate: Date.now(),
-            resolution: resolution,
+            comments: resolution,
           },
         },
       })

@@ -216,7 +216,6 @@ input SurveyResponseCreateInput {
   openedDate: DateTime
   closedDate: DateTime
   routeOutside: Boolean
-  resolution: String
 }
 
 input SurveyCreateNestedOneWithoutSurveyResponsesInput {
@@ -249,9 +248,23 @@ input AnswerCreateManySurveyResponseInput {
 }
 
 input SurveyResponseUpdateInput {
+  comments: CommentCreateWithoutSurveyResponseInput
   closedDate: DateTime
   routeOutside: Boolean
-  resolution: String
+}
+
+input CommentCreateWithoutSurveyResponseInput {
+  author: UserGQLInput!
+  id: String
+  value: String!
+  date: DateTime
+}
+
+input UserGQLInput {
+  id: String!
+  username: String!
+  personId: String!
+  enabled: Boolean!
 }
 
 input AnswerCreateInput {
