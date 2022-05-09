@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CommentGQL } from '@odst/types/ods';
 import { Apollo } from 'apollo-angular';
 import { map, take } from 'rxjs';
 import {
@@ -34,7 +33,10 @@ export class ResponsesService {
     // pluck lets me retrieve nested data.
   }
 
-  updateResolution(id: string, comments: CommentGQL[]) {
+  updateResolution(
+    updateSurveyLocation: UpdateSurveyResponseMutationVariables['surveyResponseWhereUniqueInput'],
+    variablesUpdated: UpdateSurveyResponseMutationVariables['surveyResponseUpdateInput']
+  ) {
     return this.apollo
       .mutate<
         UpdateSurveyResponseMutation,
@@ -42,16 +44,15 @@ export class ResponsesService {
       >({
         mutation: UpdateSurveyResponseDocument,
         variables: {
-          surveyResponseWhereUniqueInput: {
-            id: id,
-          },
-          surveyResponseUpdateInput: {
-            // We can opt to not send date now and instead just do it in the
-            // back end, but that would mean having to make another
-            // UpdateSurveyResponse method
-            closedDate: Date.now(),
-            comments: comments,
-          },
+          surveyResponseWhereUniqueInput: updateSurveyLocation,
+          surveyResponseUpdateInput: variablesUpdated,
+          //   {
+          // We can opt to not send date now and instead just do it in the
+          // back end, but that would mean having to make another
+          // UpdateSurveyResponse method
+          //     closedDate: Date.now(),
+          //     comments: comments,
+          // },
         },
       })
       .subscribe();
