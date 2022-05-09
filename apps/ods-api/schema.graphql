@@ -102,7 +102,9 @@ type Query {
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   findUsersWithRole(role: String!): [UserGQL!]!
   getCommanders: [UserGQL!]!
+  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   me: UserGQL!
+  usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
 input SurveyWhereUniqueInput {
@@ -126,6 +128,11 @@ input OrgWhereUniqueInput {
 input QuestionWhereUniqueInput {
   id: String
   prompt: String
+}
+
+input UserWhereUniqueInput {
+  id: String
+  email: String
 }
 
 type Mutation {
@@ -315,11 +322,6 @@ input UserCreateInput {
 
 input OrgCreateNestedManyWithoutUsersInput {
   connect: OrgWhereUniqueInput
-}
-
-input UserWhereUniqueInput {
-  id: String
-  email: String
 }
 
 input LoginUserInput {
