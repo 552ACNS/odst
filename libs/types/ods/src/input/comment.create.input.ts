@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
 import { CommentWhereUniqueInput } from './comment.unique.input';
-import { UserGQL } from '@odst/types/waypoint';
+import { UserGQL } from '../entity/user.entity';
 
 @InputType()
 export class CommentCreateInput implements Prisma.CommentCreateInput {
