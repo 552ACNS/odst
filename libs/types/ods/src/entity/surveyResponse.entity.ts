@@ -11,9 +11,6 @@ export class SurveyResponseGQL implements SurveyResponse {
   closedDate: Date | null;
   routeOutside: boolean;
   resolved: boolean;
-
-  @Field(() => Comment)
-  comments: Comment[];
 }
 
 @ObjectType()

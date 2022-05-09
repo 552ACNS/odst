@@ -1,6 +1,5 @@
-import { InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
-
 @InputType()
 export class SurveyResponseUpdateInput
   implements Prisma.SurveyResponseUpdateInput
@@ -11,5 +10,6 @@ export class SurveyResponseUpdateInput
   // so a CC can't come in and route something to themself that they shouldn't be seen
   //TODO Org Guard
   routeOutside?: boolean;
+  @Field(() => Comment)
   comments?: Prisma.CommentUpdateManyWithoutSurveyResponseInput | undefined;
 }
