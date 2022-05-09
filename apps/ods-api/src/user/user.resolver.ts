@@ -76,11 +76,11 @@ export class UserResolver {
     return this.userService.create(userCreateInput);
   }
 
-  @Mutation(() => UserGQL, { name: 'deleteUser' })
+  @Mutation(() => UserGQL, { name: 'deleteUser', nullable: true })
   async delete(
     @Args('userWhereUniqueInput')
     userWhereUniqueInput: UserWhereUniqueInput
-  ): Promise<UserGQL> {
+  ): Promise<UserGQL | null> {
     return this.userService.delete(userWhereUniqueInput);
   }
 }
