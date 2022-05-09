@@ -112,14 +112,7 @@ export class SurveyResponseService {
     const [unresolved, overdue, resolved] = await this.prisma.$transaction([
       this.prisma.surveyResponse.count({
         where: {
-          resolution: null,
-          ...whereBasedOnUserOrgs,
-        },
-      }),
-
-      this.prisma.surveyResponse.count({
-        where: {
-          resolution: { not: null },
+          resolved: false,
           ...whereBasedOnUserOrgs,
         },
       }),
@@ -129,6 +122,14 @@ export class SurveyResponseService {
           openedDate: {
             lt: new Date(Date.now() - 2592000000),
           },
+          resolved: false,
+          ...whereBasedOnUserOrgs,
+        },
+      }),
+
+      this.prisma.surveyResponse.count({
+        where: {
+          resolved: true,
           ...whereBasedOnUserOrgs,
         },
       }),
@@ -145,17 +146,17 @@ export class SurveyResponseService {
           openedDate: {
             lt: new Date(Date.now() - 2592000000),
           },
-          resolution: null,
+          resolved: false,
         };
         break;
       case 'unresolved':
         whereIssues = {
-          resolution: null,
+          resolved: false,
         };
         break;
       case 'resolved':
         whereIssues = {
-          resolution: { not: null },
+          resolved: true,
         };
         break;
     }

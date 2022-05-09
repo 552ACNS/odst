@@ -98,17 +98,17 @@ describe('SurveyResponseService', () => {
   describe('determine status', () => {
     it('should return an overdue status condition check', () => {
       const surveyResponse = service.determineStatus('overdue');
-      expect(surveyResponse.resolution).toEqual(null);
+      expect(surveyResponse.resolved).toEqual(false);
       expect(surveyResponse.openedDate).toBeDefined();
     });
     it('should return an unresolved status condition check', () => {
       const surveyResponse = service.determineStatus('unresolved');
-      expect(surveyResponse.resolution).toEqual(null);
+      expect(surveyResponse.resolved).toEqual(false);
       expect(surveyResponse.openedDate).toBeUndefined();
     });
     it('should return a resolved status condition check', () => {
       const surveyResponse = service.determineStatus('resolved');
-      expect(surveyResponse.resolution).toEqual({ not: null });
+      expect(surveyResponse.resolved).toEqual(true);
     });
   });
 
@@ -117,7 +117,7 @@ describe('SurveyResponseService', () => {
       // return a json body of string IDs
       jest
         .spyOn(prisma.surveyResponse, 'findMany')
-        .mockResolvedValue(MockSurveyResponses.filter((x) => !!x.resolution));
+        .mockResolvedValue(MockSurveyResponses.filter((x) => !!x.resolved));
 
       const surveyResponse = await service.getIssuesByStatus(
         'resolved',
@@ -132,7 +132,7 @@ describe('SurveyResponseService', () => {
       // return a json body of string IDs
       jest
         .spyOn(prisma.surveyResponse, 'findMany')
-        .mockResolvedValue(MockSurveyResponses.filter((x) => !x.resolution));
+        .mockResolvedValue(MockSurveyResponses.filter((x) => !x.resolved));
 
       const surveyResponse = await service.getIssuesByStatus(
         'unresolved',
@@ -169,7 +169,7 @@ describe('SurveyResponseService', () => {
 
       expect(spy).toHaveBeenCalledWith({
         where: {
-          resolution: null,
+          resolved: false,
         },
         select: {
           id: true,
@@ -187,7 +187,7 @@ describe('SurveyResponseService', () => {
 
       expect(spy).toHaveBeenCalledWith({
         where: {
-          resolution: { not: null },
+          resolved: true,
         },
         select: {
           id: true,
@@ -208,7 +208,7 @@ describe('SurveyResponseService', () => {
           openedDate: {
             lt: new Date(Date.now() - 2592000000),
           },
-          resolution: null,
+          resolved: false,
         },
         select: {
           id: true,
