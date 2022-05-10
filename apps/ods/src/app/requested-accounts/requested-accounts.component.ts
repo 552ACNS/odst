@@ -28,7 +28,6 @@ export class RequestedAccountsComponent implements OnInit {
     this.requestedAccountsService.getRequestedAccounts().subscribe((data) => {
       this.dataSource = data.data.findManyAccountRequests;
       this.hasNoData = this.dataSource.length === 0;
-      console.log(this.hasNoData);
     });
   }
 
@@ -36,7 +35,7 @@ export class RequestedAccountsComponent implements OnInit {
     this.displayedAccountRequest = row;
     //this.displayedAccountRequest.date = new Date(formatDate(row['date'], 'shortDate', 'en-US'));
     this.displayedRequestData = {
-      'First Lame': row.firstName,
+      'First Name': row.firstName,
       'Last Name': row.lastName,
       Grade: row.grade,
       'Requested Permissions': row.role,

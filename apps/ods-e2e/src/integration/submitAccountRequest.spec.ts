@@ -73,16 +73,28 @@ describe('ods', () => {
       .focused()
       .click({ force: true })
       .type('{enter}');
-    cy.contains('span', 'Unit')
-      .click()
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
+    cy.contains('span', 'Unit').click();
+    cy.contains('mat-option', 'Scorpion Developers').click();
     cy.get('[formcontrolname="password"]').type('thisISaREALLYgreatPA$$word!3');
     cy.get('[formcontrolname="confirmPassword"]')
       .type('thisISaREALLYgreatPA$$word!3')
       .wait('@graphql');
-    cy.get('button').contains('Submit').click();
+    cy.get('button').contains('Submit').click({ waitForAnimations: true });
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
+  });
+  it('should accept a new account', () => {
+    cy.visit('/login');
+    cy.get('[formcontrolname="userEmail"]').type('admin@admin.com');
+    cy.get('[formcontrolname="userPassword"]').type('admin');
+    cy.get('odst-login').find('button').contains('Sign In').click();
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('#NavMenu').click();
+    cy.get('#RequestedAccountsButton').click();
+    cy.location('pathname').should('include', '/requested-accounts');
+    cy.reload(true);
+    cy.contains('td', 'e2e').click().wait('@graphql');
+    cy.contains('label', 'First Name: e2e').wait('@graphql');
+    cy.contains('button', 'Accept').click();
+    cy.contains('td', 'e2e').should('not.exist');
   });
 });

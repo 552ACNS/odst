@@ -51,13 +51,6 @@ enum OrgTier {
   OTHER
 }
 
-type QuestionGQL {
-  id: String!
-  prompt: String!
-  answers: [AnswerGQL!]!
-  surveys: [SurveyGQL!]!
-}
-
 type SurveyGQL {
   id: String!
   questionsHash: String
@@ -91,6 +84,13 @@ type UserGQL {
   lastName: String!
   enabled: Boolean!
   orgs: [OrgGQL!]!
+}
+
+type QuestionGQL {
+  id: String!
+  prompt: String!
+  answers: [AnswerGQL!]!
+  surveys: [SurveyGQL!]!
 }
 
 type Tokens {
