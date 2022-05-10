@@ -7,8 +7,17 @@
     <button mat-menu-item>Menu Item 1</button>
     <button mat-menu-item>Menu Item 2</button>
   </mat-menu>
+  <div *ngIf="user" class="w-screen">
+    <p id="userNameGrade" class="mb-0 flex justify-center items-center">
+      {{ this.user.firstName }} {{ this.user.lastName }}, {{ this.user.grade }}
+    </p>
+    <p id="userTitleOrg" class="mb-0 flex justify-center items-center text-sm">
+      <!-- update backend to have take/first parameter? -->
+      {{ this.userTitle }} {{ this.user.orgs[0].name }}
+    </p>
+  </div>
 
-  <div class="absolute right-4">
+  <div class="right-4">
     <button mat-button [matMenuTriggerFor]="homeMenu">
       <mat-icon>account_circle</mat-icon>
     </button>

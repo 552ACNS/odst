@@ -10,3 +10,7 @@ mutation CreateUser($userCreateInput: UserCreateInput!) {
     firstName
   }
 }
+
+query UsernameOrEmailExists($usernameOrEmail: String!) {
+  usernameOrEmailExists(usernameOrEmail: $usernameOrEmail)
+}

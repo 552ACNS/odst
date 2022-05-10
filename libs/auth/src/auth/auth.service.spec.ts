@@ -33,6 +33,7 @@ describe('AuthService', () => {
         {
           provide: USER_SERVICE,
           useValue: {
+            findMany: jest.fn().mockResolvedValue([MockUser]),
             findUnique: jest.fn().mockResolvedValue(MockUser),
             create: jest.fn().mockResolvedValue(MockUser),
             update: jest.fn().mockResolvedValue(MockUser),
