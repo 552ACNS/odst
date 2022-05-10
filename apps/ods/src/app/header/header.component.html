@@ -4,7 +4,9 @@
   </button>
 
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>Menu Item 1</button>
+    <button mat-menu-item [routerLink]="['/requested-accounts']">
+      Account requests
+    </button>
     <button mat-menu-item>Menu Item 2</button>
   </mat-menu>
   <div *ngIf="user" class="w-screen">
