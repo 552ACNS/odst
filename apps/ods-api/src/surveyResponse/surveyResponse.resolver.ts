@@ -98,15 +98,15 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
   }
 
-  @Query(() => SurveyResponseGQL, { name: 'getSurveyResponseData' })
-  async getSurveyResponseData(
-    @Args('surveyResponseWhereUniqueInput')
-    surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ) {
-    return this.surveyResponseService.getSurveyResponseData(
-      surveyResponseWhereUniqueInput
-    );
-  }
+  // @Query(() => SurveyResponseGQL, { name: 'getSurveyResponseData' })
+  // async getSurveyResponseData(
+  //   @Args('surveyResponseWhereUniqueInput')
+  //   surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
+  // ) {
+  //   return this.surveyResponseService.getSurveyResponseData(
+  //     surveyResponseWhereUniqueInput
+  //   );
+  // }
 
   @ResolveField(() => [CommentGQL])
   async comments(

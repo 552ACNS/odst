@@ -5,6 +5,7 @@ import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommentGql, UserGql } from '../../types.graphql';
+import { FindUniqueSurveyResponseQuery } from './responses.generated';
 
 @Component({
   selector: 'odst-responses',
@@ -22,7 +23,8 @@ export class ResponsesComponent implements OnInit {
   ) {}
 
   questionsAnswers: [string, string][] = [];
-  comments: [string, UserGql, any?][] = [];
+  // comments: [string, string, string, any?][] = [];
+  comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'];
   resolved: string;
   //TODO: talk to sim later and find out if there is already a way to get the current date, did not see it here
   openedDate: string;
@@ -98,19 +100,12 @@ export class ResponsesComponent implements OnInit {
             ]);
           });
 
-          if (this.resolved) {
-            data.findUniqueSurveyResponse.comments?.forEach((comment) => {
-              this.comments.push([
-                comment.value,
-                <UserGql>comment.author,
-                comment?.date,
-              ]);
-              console.log(this.comments[0]);
-            });
-            this.resolutionForm.setValue({
-              resolution: data.findUniqueSurveyResponse.comments,
-            });
-          }
+          // if (this.resolved) {
+          this.comments = data.findUniqueSurveyResponse.comments;
+          // this.resolutionForm.setValue({
+          //   resolution: data.findUniqueSurveyResponse.comments,
+          // });
+          // }
         }
       }
     );

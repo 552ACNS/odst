@@ -198,20 +198,20 @@ export class SurveyResponseService {
       .answers();
   }
 
-  async getSurveyResponseData(
-    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
-  ) {
-    return this.prisma.surveyResponse.findUnique({
-      where: surveyResponseWhereUniqueInput,
-      include: {
-        answers: {
-          include: {
-            question: true,
-          },
-        },
-      },
-    });
-  }
+  // async getSurveyResponseData(
+  //   surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+  // ) {
+  //   return this.prisma.surveyResponse.findUnique({
+  //     where: surveyResponseWhereUniqueInput,
+  //     include: {
+  //       answers: {
+  //         include: {
+  //           question: true,
+  //         },
+  //       },
+  //     },
+  //   });
+  // }
 
   async comments(
     surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
