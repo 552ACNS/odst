@@ -112,7 +112,9 @@ type Query {
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   findUsersWithRole(role: String!): [UserGQL!]!
   getCommanders: [UserGQL!]!
+  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   me: UserGQL!
+  usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
 input SurveyWhereUniqueInput {
@@ -138,6 +140,11 @@ input QuestionWhereUniqueInput {
   prompt: String
 }
 
+input UserWhereUniqueInput {
+  id: String
+  email: String
+}
+
 type Mutation {
   createSurveyWithQuestions(questionPrompts: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): SurveyGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
@@ -153,7 +160,7 @@ type Mutation {
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
   createUser(userCreateInput: UserCreateInput!): UserGQL!
-  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -342,11 +349,6 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
   prompt: String
-}
-
-input UserWhereUniqueInput {
-  id: String
-  email: String
 }
 
 input LoginUserInput {
