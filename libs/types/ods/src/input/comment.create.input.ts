@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
 import { CommentWhereUniqueInput } from './comment.unique.input';
-import { UserGQL } from '../entity/user.entity';
+import { UserCreateInput } from './user.create.input';
 
 @InputType()
 export class CommentCreateInput implements Prisma.CommentCreateInput {
@@ -9,7 +9,7 @@ export class CommentCreateInput implements Prisma.CommentCreateInput {
   value: string;
   date?: Date;
 
-  @Field(() => UserGQL)
+  @Field(() => UserCreateInput)
   author: Prisma.UserCreateNestedOneWithoutCommentsInput;
   SurveyResponse?:
     | Prisma.SurveyResponseCreateNestedOneWithoutCommentsInput
@@ -24,7 +24,7 @@ export class CommentCreateWithoutSurveyResponseInput
   value: string;
   date?: Date;
 
-  @Field(() => UserGQL)
+  @Field(() => UserCreateInput)
   author: Prisma.UserCreateNestedOneWithoutCommentsInput;
 }
 

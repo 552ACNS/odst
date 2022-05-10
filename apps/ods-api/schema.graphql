@@ -213,6 +213,7 @@ input SurveyResponseCreateManySurveyInputEnvelope {
 input SurveyResponseCreateInput {
   survey: SurveyCreateNestedOneWithoutSurveyResponsesInput!
   answers: AnswerCreateNestedManyWithoutSurveyResponseInput
+  comments: CommentCreateNestedManyWithoutSurveyResponseInput
   openedDate: DateTime
   closedDate: DateTime
   routeOutside: Boolean
@@ -247,24 +248,42 @@ input AnswerCreateManySurveyResponseInput {
   questionId: String!
 }
 
-input SurveyResponseUpdateInput {
-  comments: CommentCreateWithoutSurveyResponseInput
-  closedDate: DateTime
-  routeOutside: Boolean
+input CommentCreateNestedManyWithoutSurveyResponseInput {
+  connect: CommentWhereUniqueInput
+  create: CommentCreateWithoutSurveyResponseInput
+  createMany: CommentCreateNestedManyWithoutSurveyResponseInput
+}
+
+input CommentWhereUniqueInput {
+  id: String
 }
 
 input CommentCreateWithoutSurveyResponseInput {
-  author: UserGQLInput!
+  author: UserCreateInput!
   id: String
   value: String!
   date: DateTime
 }
 
-input UserGQLInput {
-  id: String!
-  username: String!
-  personId: String!
-  enabled: Boolean!
+input UserCreateInput {
+  role: Role!
+  orgs: OrgCreateNestedManyWithoutUsersInput!
+  email: String!
+  password: String!
+  grade: String
+  firstName: String!
+  lastName: String!
+  enabled: Boolean
+}
+
+input OrgCreateNestedManyWithoutUsersInput {
+  connect: OrgWhereUniqueInput
+}
+
+input SurveyResponseUpdateInput {
+  comments: CommentCreateWithoutSurveyResponseInput
+  closedDate: DateTime
+  routeOutside: Boolean
 }
 
 input AnswerCreateInput {
@@ -323,21 +342,6 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
   prompt: String
-}
-
-input UserCreateInput {
-  role: Role!
-  orgs: OrgCreateNestedManyWithoutUsersInput!
-  email: String!
-  password: String!
-  grade: String
-  firstName: String!
-  lastName: String!
-  enabled: Boolean
-}
-
-input OrgCreateNestedManyWithoutUsersInput {
-  connect: OrgWhereUniqueInput
 }
 
 input UserWhereUniqueInput {

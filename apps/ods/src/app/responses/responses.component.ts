@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { CommentGql } from '../../types.graphql';
+import { CommentGql, UserGql } from '../../types.graphql';
 
 @Component({
   selector: 'odst-responses',
@@ -22,9 +22,9 @@ export class ResponsesComponent implements OnInit {
   ) {}
 
   questionsAnswers: [string, string][] = [];
-  comments: any[];
+  comments: [string, UserGql, any?][] = [];
   resolved: string;
-
+  //TODO: talk to sim later and find out if there is already a way to get the current date, did not see it here
   openedDate: string;
   numberOfResponses: number;
   displayedIndex: number;
@@ -57,9 +57,11 @@ export class ResponsesComponent implements OnInit {
   submitResolutionClick() {
     // if the resolution field is not empty after a trim
     if (this.resolutionForm.value.resolution.trim() !== '') {
+      this.comments = this.comments.push([
+        this.resolutionForm.value['resolution'],
+      ]);
       this.responsesService.updateResolution(
-        this.responseIDs[this.displayedIndex],
-        this.resolutionForm.value['resolution']
+        this.responseIDs[this.displayedIndex]
       );
 
       //refresh the page
@@ -82,21 +84,6 @@ export class ResponsesComponent implements OnInit {
             'en-US'
           );
 
-          if (this.resolved) {
-            data.findUniqueSurveyResponse.comments?.forEach((comment) => {
-              this.comments.push([
-                comment.value,
-                comment.date,
-                comment.author.firstName,
-                comment.author.lastName,
-              ]);
-              console.log(this.comments[0]);
-            });
-            // this.resolutionForm.setValue({
-            //   resolution: data.findUniqueSurveyResponse.comments,
-            // });
-          }
-
           // Clear contents of QA array
           this.questionsAnswers = [];
           this.comments = [];
@@ -110,6 +97,20 @@ export class ResponsesComponent implements OnInit {
               answer.value,
             ]);
           });
+
+          if (this.resolved) {
+            data.findUniqueSurveyResponse.comments?.forEach((comment) => {
+              this.comments.push([
+                comment.value,
+                <UserGql>comment.author,
+                comment?.date,
+              ]);
+              console.log(this.comments[0]);
+            });
+            this.resolutionForm.setValue({
+              resolution: data.findUniqueSurveyResponse.comments,
+            });
+          }
         }
       }
     );

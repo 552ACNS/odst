@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { map, take } from 'rxjs';
+import { first, map, take } from 'rxjs';
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
@@ -34,8 +34,10 @@ export class ResponsesService {
   }
 
   updateResolution(
-    updateSurveyLocation: UpdateSurveyResponseMutationVariables['surveyResponseWhereUniqueInput'],
-    variablesUpdated: UpdateSurveyResponseMutationVariables['surveyResponseUpdateInput']
+    id: string,
+    value: string,
+    firstName: string,
+    lastName: string
   ) {
     return this.apollo
       .mutate<
@@ -44,8 +46,18 @@ export class ResponsesService {
       >({
         mutation: UpdateSurveyResponseDocument,
         variables: {
-          surveyResponseWhereUniqueInput: updateSurveyLocation,
-          surveyResponseUpdateInput: variablesUpdated,
+          surveyResponseWhereUniqueInput: {
+            id,
+          },
+          surveyResponseUpdateInput: {
+            comments: {
+              value: value,
+              author: {
+                firstName: firstName,
+                lastName: lastName,
+              },
+            },
+          },
           //   {
           // We can opt to not send date now and instead just do it in the
           // back end, but that would mean having to make another

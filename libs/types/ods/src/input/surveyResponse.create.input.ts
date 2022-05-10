@@ -3,6 +3,7 @@ import { Prisma } from '.prisma/ods/client';
 import { SurveyCreateNestedOneWithoutSurveyResponsesInput } from './survey.create.input';
 import { SurveyResponseWhereUniqueInput } from './surveyResponse.unique.input';
 import { AnswerCreateNestedManyWithoutSurveyResponseInput } from './answer.create.input';
+import { CommentCreateNestedManyWithoutSurveyResponseInput } from './comment.create.input';
 
 @InputType()
 export class SurveyResponseCreateInput
@@ -14,6 +15,10 @@ export class SurveyResponseCreateInput
   @Field(() => AnswerCreateNestedManyWithoutSurveyResponseInput)
   answers?: Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput;
 
+  @Field(() => CommentCreateNestedManyWithoutSurveyResponseInput)
+  comments?:
+    | Prisma.CommentCreateNestedManyWithoutSurveyResponseInput
+    | undefined;
   openedDate?: Date;
   closedDate?: Date;
   routeOutside?: boolean;
@@ -34,6 +39,17 @@ export class SurveyResponseCreateNestedManyWithoutSurveyInput
 @InputType()
 export class SurveyResponseCreateNestedOneWithoutAnswersInput
   implements Prisma.SurveyResponseCreateNestedOneWithoutAnswersInput
+{
+  @Field(() => SurveyResponseWhereUniqueInput)
+  connect?: Prisma.SurveyResponseWhereUniqueInput;
+
+  //TODO fix type
+  // @Field(() => SurveyResponseGQL)
+  // create?: Prisma.SurveyResponseCreateWithoutAnswersInput;
+}
+@InputType()
+export class SurveyResponseCreateNestedOneWithoutCommentsInput
+  implements Prisma.SurveyResponseCreateNestedOneWithoutCommentsInput
 {
   @Field(() => SurveyResponseWhereUniqueInput)
   connect?: Prisma.SurveyResponseWhereUniqueInput;
