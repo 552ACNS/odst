@@ -15,7 +15,5 @@ export class SurveyResponseUpdateInput
   //TODO Org Guard
   routeOutside?: boolean;
   @Field(() => CommentCreateWithoutSurveyResponseInput)
-  comments?:
-    | Prisma.CommentCreateNestedManyWithoutSurveyResponseInput
-    | undefined;
+  comments?: Prisma.CommentCreateNestedManyWithoutSurveyResponseInput;
 }

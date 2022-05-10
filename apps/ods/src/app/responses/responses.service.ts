@@ -50,12 +50,9 @@ export class ResponsesService {
             id,
           },
           surveyResponseUpdateInput: {
+            closedDate: Date.now(),
             comments: {
               value: value,
-              author: {
-                firstName: firstName,
-                lastName: lastName,
-              },
             },
           },
           //   {
