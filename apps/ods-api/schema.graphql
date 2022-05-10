@@ -6,7 +6,7 @@ type AccountRequestGQL {
   role: Role!
   id: String!
   email: String!
-  rank: String
+  grade: String
   firstName: String!
   lastName: String!
   date: DateTime!
@@ -353,7 +353,7 @@ input AccountRequestCreateInput {
   firstName: String!
   lastName: String!
   password: String!
-  rank: String
+  grade: String
 }
 
 input OrgCreateNestedManyWithoutAccountRequestsInput {

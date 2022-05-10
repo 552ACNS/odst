@@ -34,7 +34,7 @@ export class AccountRequestService {
         select: {
           email: true,
           password: true,
-          rank: true,
+          grade: true,
           firstName: true,
           lastName: true,
           role: true,

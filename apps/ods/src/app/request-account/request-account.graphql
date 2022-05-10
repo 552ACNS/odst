@@ -14,3 +14,11 @@ mutation CreateUser($userCreateInput: UserCreateInput!) {
 query UsernameOrEmailExists($usernameOrEmail: String!) {
   usernameOrEmailExists(usernameOrEmail: $usernameOrEmail)
 }
+
+mutation CreateAccountRequest(
+  $accountRequestCreateInput: AccountRequestCreateInput!
+) {
+  createAccountRequest(accountRequestCreateInput: $accountRequestCreateInput) {
+    id
+  }
+}

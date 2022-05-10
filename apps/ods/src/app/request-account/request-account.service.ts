@@ -11,6 +11,9 @@ import {
   UsernameOrEmailExistsDocument,
   UsernameOrEmailExistsQuery,
   UsernameOrEmailExistsQueryVariables,
+  CreateAccountRequestDocument,
+  CreateAccountRequestMutation,
+  CreateAccountRequestMutationVariables,
 } from './request-account.generated';
 
 @Injectable({
@@ -45,12 +48,15 @@ export class RequestAccountService {
   }
 
   submitAccountCreationRequest(
-    createUserMutationVariables: CreateUserMutationVariables['userCreateInput']
+    createAccountRequestMutationVariables: CreateAccountRequestMutationVariables['accountRequestCreateInput']
   ) {
-    return this.apollo.mutate<CreateUserMutation, CreateUserMutationVariables>({
-      mutation: CreateUserDocument,
+    return this.apollo.mutate<
+      CreateAccountRequestMutation,
+      CreateAccountRequestMutationVariables
+    >({
+      mutation: CreateAccountRequestDocument,
       variables: {
-        userCreateInput: createUserMutationVariables,
+        accountRequestCreateInput: createAccountRequestMutationVariables,
       },
     });
   }

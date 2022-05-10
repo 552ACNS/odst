@@ -28,7 +28,7 @@ model User {
 model AccountRequest {
   id         String   @id @default(uuid())
   email      String   @unique
-  rank       String?
+  grade       String?
   password   String
   firstName  String
   lastName   String

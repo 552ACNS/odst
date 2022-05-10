@@ -15,7 +15,7 @@ export class RequestedAccountsComponent implements OnInit {
   columnData = {
     'First Name': 'firstName',
     'Last Name': 'lastName',
-    Grade: 'rank',
+    Grade: 'grade',
     'Requested Permissions': 'role',
   };
   hasNoData: boolean;
@@ -38,7 +38,7 @@ export class RequestedAccountsComponent implements OnInit {
     this.displayedRequestData = {
       'First Lame': row.firstName,
       'Last Name': row.lastName,
-      Grade: row.rank,
+      Grade: row.grade,
       'Requested Permissions': row.role,
       'E-mail': row.email,
       Date: formatDate(row['date'], 'fullDate', 'en-US'),

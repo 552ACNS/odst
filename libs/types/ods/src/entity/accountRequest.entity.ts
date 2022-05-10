@@ -5,7 +5,7 @@ import { AccountRequest, Role } from '.prisma/ods/client';
 export class AccountRequestGQL implements AccountRequest {
   id: string;
   email: string;
-  rank: string | null;
+  grade: string | null;
 
   @HideField()
   password: string;

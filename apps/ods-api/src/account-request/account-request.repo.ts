@@ -5,7 +5,7 @@ export const MockAccountRequests: AccountRequest[] = [
   {
     id: 'account request id 1',
     email: 'valid email',
-    rank: 'O-5',
+    grade: 'O-5',
     password: 'password',
     firstName: 'firstName',
     lastName: 'lastName',
@@ -24,14 +24,14 @@ export const MockAccountRequests: AccountRequest[] = [
     role: 'ADMIN',
     approverId: null,
     denied: false,
-    rank: null,
+    grade: null,
   },
 ];
 
 export const MockAccountRequestCreateInput: AccountRequestCreateInput[] = [
   {
     email: 'valid email',
-    rank: 'O-5',
+    grade: 'O-5',
     password: 'password',
     firstName: 'firstName',
     lastName: 'lastName',
@@ -48,7 +48,7 @@ export const MockAccountRequestCreateInput: AccountRequestCreateInput[] = [
     firstName: 'firstName',
     lastName: 'lastName',
     role: 'ADMIN',
-    rank: undefined,
+    grade: undefined,
     orgs: {},
   },
 ];

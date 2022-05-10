@@ -3,7 +3,7 @@ query FindManyAccountRequests {
     email
     lastName
     firstName
-    rank
+    grade
     date
     id
     role
@@ -30,15 +30,6 @@ mutation DeclineAccountRequest(
   declineAccountRequest(
     accountRequestWhereUniqueInput: $accountRequestWhereUniqueInput
   ) {
-    id
-  }
-}
-
-#TODO move to the create account request when that gets created
-mutation CreateAccountRequest(
-  $accountRequestCreateInput: AccountRequestCreateInput!
-) {
-  createAccountRequest(accountRequestCreateInput: $accountRequestCreateInput) {
     id
   }
 }

@@ -10,7 +10,7 @@ export class AccountRequestCreateInput
   firstName: string;
   lastName: string;
   password: string;
-  rank?: string;
+  grade?: string;
 
   @Field(() => Role)
   role: Role;
