@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { first, map, take } from 'rxjs';
 import {
+  CommentCreateWithoutSurveyResponseInput,
+  SurveyResponseUpdateInput,
+} from '../../types.graphql';
+import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
   GetIssuesByStatusQueryVariables,
@@ -35,6 +39,7 @@ export class ResponsesService {
 
   updateResolution(
     id: string,
+    comments: CommentCreateWithoutSurveyResponseInput,
     value: string,
     firstName: string,
     lastName: string
@@ -51,9 +56,7 @@ export class ResponsesService {
           },
           surveyResponseUpdateInput: {
             closedDate: Date.now(),
-            comments: {
-              value: value,
-            },
+            comments: comments,
           },
           //   {
           // We can opt to not send date now and instead just do it in the
