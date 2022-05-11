@@ -24,7 +24,8 @@ export class ResponsesComponent implements OnInit {
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
-  comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'];
+  comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'] =
+    [];
   resolved: string;
   //TODO: talk to sim later and find out if there is already a way to get the current date, did not see it here
   openedDate: string;

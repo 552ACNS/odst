@@ -27,9 +27,8 @@
         <mat-card *ngFor="let comment of comments; let i = index">
           <mat-card-content class="text-sm text-left">
             <p class="text-base font-medium">
-              {{ comment[0] }}, {{ comment[1] }}
+              {{ comments.value }}
             </p>
-            <p>{{ comment[2] }} {{ i + 1 }}</p>
           </mat-card-content>
         </mat-card>
         <mat-form-field appearance="outline" class="w-full">
