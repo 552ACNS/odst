@@ -6,6 +6,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommentGql, UserGql } from '../../types.graphql';
 import { FindUniqueSurveyResponseQuery } from './responses.generated';
+import { getRefreshToken, getUserId } from '@odst/helpers';
 
 @Component({
   selector: 'odst-responses',
@@ -24,10 +25,14 @@ export class ResponsesComponent implements OnInit {
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
-  comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'];
+  comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'] =
+    [];
   resolved: string;
   //TODO: talk to sim later and find out if there is already a way to get the current date, did not see it here
-  openedDate: string;
+  openedDate: Date;
+
+  userId: string;
+
   numberOfResponses: number;
   displayedIndex: number;
 
@@ -36,6 +41,8 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   async ngOnInit() {
+    this.userId = getUserId(getRefreshToken() ?? '');
+
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
       this.resolved = params['resolved'];
@@ -80,11 +87,7 @@ export class ResponsesComponent implements OnInit {
           alert(errors);
         }
         if (data) {
-          this.openedDate = formatDate(
-            data.findUniqueSurveyResponse.openedDate,
-            'MMM d yy, h:mm a',
-            'en-US'
-          );
+          this.openedDate = data.findUniqueSurveyResponse.openedDate;
 
           // Clear contents of QA array
           this.questionsAnswers = [];

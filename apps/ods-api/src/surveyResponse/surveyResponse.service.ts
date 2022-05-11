@@ -198,27 +198,16 @@ export class SurveyResponseService {
       .answers();
   }
 
-  // async getSurveyResponseData(
-  //   surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
-  // ) {
-  //   return this.prisma.surveyResponse.findUnique({
-  //     where: surveyResponseWhereUniqueInput,
-  //     include: {
-  //       answers: {
-  //         include: {
-  //           question: true,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
-
   async comments(
     surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
   ): Promise<Comment[]> {
     return this.prisma.surveyResponse
       .findUnique({ where: surveyResponseWhereUniqueInput })
-      .comments();
+      .comments({
+        orderBy: {
+          date: 'asc',
+        },
+      });
   }
 
   //TODO refactor for complexity
@@ -266,10 +255,10 @@ export class SurveyResponseService {
   }
 
   //TODO refactor for complexity
+  // eslint-disable-next-line complexity
   private async getWhereBasedOnUserOrgs(
     user: User
   ): Promise<Prisma.SurveyResponseWhereInput> {
-    Logger.log('getOrgWhereBasedOnUser');
     const orgs = await this.getUsersOrgs(user);
 
     const whereAnswer = {
@@ -295,23 +284,29 @@ export class SurveyResponseService {
       case Role.DEI:
       case Role.EO:
         return {
-          ...whereAnswer,
-          survey: {
-            orgs: {
-              some: {
-                name: { in: orgs },
+          OR: {
+            ...whereAnswer,
+            survey: {
+              orgs: {
+                some: {
+                  name: { in: orgs },
+                },
               },
             },
           },
         };
       case Role.CC:
         return {
-          //no surveyResponses that are routed outside
-          routeOutside: false,
-          ...whereAnswer,
-          survey: {
-            orgs: {
-              some: { name: { in: orgs } },
+          AND: {
+            //no surveyResponses that are routed outside
+            routeOutside: false,
+            OR: {
+              ...whereAnswer,
+              survey: {
+                orgs: {
+                  some: { name: { in: orgs } },
+                },
+              },
             },
           },
         };

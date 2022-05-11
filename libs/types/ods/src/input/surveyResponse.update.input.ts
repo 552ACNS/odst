@@ -14,6 +14,11 @@ export class SurveyResponseUpdateInput
   // so a CC can't come in and route something to themself that they shouldn't be seen
   //TODO Org Guard
   routeOutside?: boolean;
-  @Field(() => CommentCreateWithoutSurveyResponseInput)
+
+  //  Don't do this
+  // @Field(() => CommentCreateWithoutSurveyResponseInput)
+  // comments?: Prisma.CommentCreateNestedManyWithoutSurveyResponseInput;
+
+  @Field(() => CommentCreateNestedManyWithoutSurveyResponseInput)
   comments?: Prisma.CommentCreateNestedManyWithoutSurveyResponseInput;
 }

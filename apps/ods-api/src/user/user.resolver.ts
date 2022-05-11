@@ -52,6 +52,7 @@ export class UserResolver {
     });
   }
 
+  // Is this the right place to put this? -Sim
   @ResolveField(() => [CommentGQL])
   async comments(@Parent() user: UserGQL): Promise<CommentGQL[]> {
     return this.userService.comments({ id: user.id });
