@@ -29,3 +29,7 @@ export function jsonTypeConverter(
   }
   return result;
 }
+export function getUserId(token: string): string {
+  const jwt = jwt_decode(token) as JwtPayload;
+  return jwt.sub;
+}

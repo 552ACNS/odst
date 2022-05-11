@@ -16,9 +16,14 @@ query findUniqueSurveyResponse(
       value
       date
       author {
+        id
         firstName
         lastName
-        #grade (or use auth'd user fragment)
+        grade
+        role
+        orgs {
+          name
+        }
       }
     }
   }
