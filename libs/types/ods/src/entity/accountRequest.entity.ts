@@ -3,6 +3,7 @@ import { AccountRequest, Role } from '.prisma/ods/client';
 
 @ObjectType()
 export class AccountRequestGQL implements AccountRequest {
+  userId: string | null;
   id: string;
   email: string;
   grade: string | null;

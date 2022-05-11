@@ -13,6 +13,7 @@ export const MockAccountRequests: AccountRequest[] = [
     role: 'ADMIN',
     approverId: null,
     denied: false,
+    userId: null,
   },
   {
     id: 'account request id 2',
@@ -25,6 +26,7 @@ export const MockAccountRequests: AccountRequest[] = [
     approverId: null,
     denied: false,
     grade: null,
+    userId: null,
   },
 ];
 

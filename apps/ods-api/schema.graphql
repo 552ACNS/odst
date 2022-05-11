@@ -4,6 +4,7 @@
 
 type AccountRequestGQL {
   role: Role!
+  userId: String
   id: String!
   email: String!
   grade: String
