@@ -27,4 +27,7 @@ export * from './input/surveyResponse.unique.input';
 export * from './input/user.create.input';
 export * from './input/user.update.input';
 export * from './input/user.unique.input';
+export * from './input/comment.create.input';
+export * from './input/comment.update.input';
+export * from './input/comment.unique.input';
 //#endregion

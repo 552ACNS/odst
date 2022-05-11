@@ -37,37 +37,18 @@ export class ResponsesService {
     // pluck lets me retrieve nested data.
   }
 
-  updateResolution(
-    id: string,
-    comments: CommentCreateWithoutSurveyResponseInput,
-    value: string,
-    firstName: string,
-    lastName: string
+  async updateSurveyResponseComments(
+    updateSurveyResponseMutationVariables: UpdateSurveyResponseMutationVariables
   ) {
-    return this.apollo
-      .mutate<
-        UpdateSurveyResponseMutation,
-        UpdateSurveyResponseMutationVariables
-      >({
-        mutation: UpdateSurveyResponseDocument,
-        variables: {
-          surveyResponseWhereUniqueInput: {
-            id,
-          },
-          surveyResponseUpdateInput: {
-            closedDate: Date.now(),
-            comments: comments,
-          },
-          //   {
-          // We can opt to not send date now and instead just do it in the
-          // back end, but that would mean having to make another
-          // UpdateSurveyResponse method
-          //     closedDate: Date.now(),
-          //     comments: comments,
-          // },
-        },
-      })
-      .subscribe();
+    console.log('test');
+
+    return this.apollo.mutate<
+      UpdateSurveyResponseMutation,
+      UpdateSurveyResponseMutationVariables
+    >({
+      mutation: UpdateSurveyResponseDocument,
+      variables: updateSurveyResponseMutationVariables,
+    });
   }
 
   async getResponseData(responseID: string) {

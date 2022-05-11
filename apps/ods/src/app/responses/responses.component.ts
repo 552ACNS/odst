@@ -8,6 +8,17 @@ import { CommentGql, UserGql } from '../../types.graphql';
 import { FindUniqueSurveyResponseQuery } from './responses.generated';
 import { getRefreshToken, getUserId } from '@odst/helpers';
 
+import {
+  GetIssuesByStatusDocument,
+  GetIssuesByStatusQuery,
+  GetIssuesByStatusQueryVariables,
+  FindUniqueSurveyResponseDocument,
+  FindUniqueSurveyResponseQueryVariables,
+  UpdateSurveyResponseDocument,
+  UpdateSurveyResponseMutation,
+  UpdateSurveyResponseMutationVariables,
+} from './responses.generated';
+
 @Component({
   selector: 'odst-responses',
   templateUrl: './responses.component.html',
@@ -27,6 +38,10 @@ export class ResponsesComponent implements OnInit {
   // comments: [string, string, string, any?][] = [];
   comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'] =
     [];
+
+  updateSurveyResponseMutationVariables: UpdateSurveyResponseMutationVariables;
+
+  newComment = '';
   resolved: string;
   //TODO: talk to sim later and find out if there is already a way to get the current date, did not see it here
   openedDate: Date;
@@ -63,20 +78,39 @@ export class ResponsesComponent implements OnInit {
     });
   }
 
-  // submitResolutionClick() {
-  //   // if the resolution field is not empty after a trim
-  //   if (this.resolutionForm.value.resolution.trim() !== '') {
-  //     this.comments = this.comments.push([
-  //       this.resolutionForm.value['resolution'],
-  //     ]);
-  //     this.responsesService.updateResolution(
-  //       this.responseIDs[this.displayedIndex]
-  //     );
+  submitResolutionClick() {
+    console.log(this.resolutionForm.value.resolution.trim());
+    // if the resolution field is not empty after a trim
+    if (this.resolutionForm.value.resolution.trim() !== '') {
+      this.newComment = this.resolutionForm.value.resolution.trim();
 
-  //     //refresh the page
-  //     window.location.reload();
-  //   }
-  // }
+      this.updateSurveyResponseMutationVariables = {
+        surveyResponseWhereUniqueInput: {
+          id: this.responseIDs[this.displayedIndex],
+        },
+        surveyResponseUpdateInput: {
+          comments: {
+            create: {
+              value: this.resolutionForm.value.resolution.trim(),
+              author: {
+                connect: {
+                  id: this.userId,
+                },
+              },
+            },
+          },
+        },
+      };
+
+      this.responsesService.updateSurveyResponseComments(
+        this.updateSurveyResponseMutationVariables
+      );
+      // .then(() => {
+      //   //refresh the page
+      //   window.location.reload();
+      // });
+    }
+  }
 
   async getResponseData(responseID: string) {
     (await this.responsesService.getResponseData(responseID)).subscribe(
@@ -117,9 +151,9 @@ export class ResponsesComponent implements OnInit {
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
       // Set the resolution
-      this.resolutionForm.setValue({
-        resolution: '',
-      });
+      // this.resolutionForm.setValue({
+      //   resolution: '',
+      // });
 
       //TODO rewrite with proper pagination
       this.displayedIndex = pageEvent.pageIndex;

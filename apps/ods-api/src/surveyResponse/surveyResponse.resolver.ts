@@ -20,6 +20,7 @@ import {
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
+import { Logger } from '@nestjs/common';
 
 @Resolver(() => SurveyResponseGQL)
 export class SurveyResponseResolver {
@@ -57,6 +58,7 @@ export class SurveyResponseResolver {
     @Args('SurveyResponseUpdateInput')
     surveyResponseUpdateInput: SurveyResponseUpdateInput
   ): Promise<SurveyResponseGQL> {
+    Logger.log('please work');
     return this.surveyResponseService.update(
       surveyResponseWhereUniqueInput,
       surveyResponseUpdateInput

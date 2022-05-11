@@ -33,7 +33,7 @@ query getIssuesByStatus($resolved: String!) {
   getIssuesByStatus(resolved: $resolved)
 }
 
-mutation updateSurveyResponse(
+mutation UpdateSurveyResponse(
   $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
   $surveyResponseUpdateInput: SurveyResponseUpdateInput!
 ) {
@@ -41,6 +41,7 @@ mutation updateSurveyResponse(
     SurveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
     SurveyResponseUpdateInput: $surveyResponseUpdateInput
   ) {
-    resolved
+    id
+    openedDate
   }
 }

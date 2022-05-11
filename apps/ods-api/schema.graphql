@@ -160,6 +160,7 @@ type Mutation {
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
   createUser(userCreateInput: UserCreateInput!): UserGQL!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL
+  createComment(commentCreateInput: CommentCreateInput!): CommentGQL!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -255,41 +256,23 @@ input AnswerCreateManySurveyResponseInput {
 }
 
 input CommentCreateNestedManyWithoutSurveyResponseInput {
-  connect: CommentWhereUniqueInput
   create: CommentCreateWithoutSurveyResponseInput
-  createMany: CommentCreateNestedManyWithoutSurveyResponseInput
-}
-
-input CommentWhereUniqueInput {
-  id: String
 }
 
 input CommentCreateWithoutSurveyResponseInput {
-  author: UserCreateInput!
-  id: String
+  author: UserCreateNestedOneWithoutCommentsInput!
   value: String!
-  date: DateTime
 }
 
-input UserCreateInput {
-  role: Role!
-  orgs: OrgCreateNestedManyWithoutUsersInput!
-  email: String!
-  password: String!
-  grade: String
-  firstName: String!
-  lastName: String!
-  enabled: Boolean
-}
-
-input OrgCreateNestedManyWithoutUsersInput {
-  connect: OrgWhereUniqueInput
+input UserCreateNestedOneWithoutCommentsInput {
+  connect: UserWhereUniqueInput
 }
 
 input SurveyResponseUpdateInput {
   comments: CommentCreateNestedManyWithoutSurveyResponseInput
   closedDate: DateTime
   routeOutside: Boolean
+  resolved: Boolean
 }
 
 input AnswerCreateInput {
@@ -348,6 +331,33 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
   prompt: String
+}
+
+input UserCreateInput {
+  role: Role!
+  orgs: OrgCreateNestedManyWithoutUsersInput!
+  email: String!
+  password: String!
+  grade: String
+  firstName: String!
+  lastName: String!
+  enabled: Boolean
+}
+
+input OrgCreateNestedManyWithoutUsersInput {
+  connect: OrgWhereUniqueInput
+}
+
+input CommentCreateInput {
+  author: UserCreateNestedOneWithoutCommentsInput!
+  surveyResponse: SurveyResponseCreateNestedOneWithoutCommentsInput!
+  id: String
+  value: String!
+  date: DateTime
+}
+
+input SurveyResponseCreateNestedOneWithoutCommentsInput {
+  connect: SurveyResponseWhereUniqueInput
 }
 
 input LoginUserInput {
