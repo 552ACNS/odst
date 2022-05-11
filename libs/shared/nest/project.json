@@ -1,5 +1,4 @@
 {
-  "root": "libs/shared/nest",
   "sourceRoot": "libs/shared/nest/src",
   "targets": {
     "lint": {

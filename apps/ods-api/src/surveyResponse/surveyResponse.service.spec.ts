@@ -197,26 +197,27 @@ describe('SurveyResponseService', () => {
         },
       });
     });
+    
+    // this is a bad test, date now is changing
+    // it('should return reports using overdue status', async () => {
+    //   const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
 
-    //   it('should return reports using overdue status', async () => {
-    //     const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+    //   await service.getIssuesByStatus('overdue', MockUsers[0]);
 
-    //     await service.getIssuesByStatus('overdue', MockUsers[0]);
-
-    //     expect(spy).toHaveBeenCalledWith({
-    //       where: {
-    //         openedDate: {
-    //           lt: new Date(Date.now() - 2592000000),
-    //         },
-    //         resolution: null,
+    //   expect(spy).toHaveBeenCalledWith({
+    //     where: {
+    //       openedDate: {
+    //         lt: new Date(Date.now() - 2592000000),
     //       },
-    //       select: {
-    //         id: true,
-    //       },
-    //       orderBy: {
-    //         openedDate: 'asc',
-    //       },
-    //     });
+    //       resolution: null,
+    //     },
+    //     select: {
+    //       id: true,
+    //     },
+    //     orderBy: {
+    //       openedDate: 'asc',
+    //     },
     //   });
+    // });
   });
 });
