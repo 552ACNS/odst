@@ -19,6 +19,8 @@ mutation CreateAccountRequest(
   $accountRequestCreateInput: AccountRequestCreateInput!
 ) {
   createAccountRequest(accountRequestCreateInput: $accountRequestCreateInput) {
-    id
+    grade
+    lastName
+    firstName
   }
 }

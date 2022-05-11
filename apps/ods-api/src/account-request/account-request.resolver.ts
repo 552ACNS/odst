@@ -15,6 +15,7 @@ import {
   UserGQL,
 } from '@odst/types/ods';
 import { AccountRequestService } from './account-request.service';
+import { Public } from '@odst/auth';
 
 @Resolver(() => AccountRequestGQL)
 export class AccountRequestResolver {
@@ -64,6 +65,7 @@ export class AccountRequestResolver {
     );
   }
 
+  @Public()
   @Mutation(() => AccountRequestGQL, { name: 'createAccountRequest' })
   create(
     @Args('accountRequestCreateInput')
