@@ -22,13 +22,13 @@ model User {
   role             Role
   refreshToken     RefreshToken?
   orgs             Org[]
-  approvedRequests AccountRequest[] @relation(name: "ApprovedRequests") //requests this user approved
+  approvedRequests AccountRequest[]
 }
 
 model AccountRequest {
   id         String   @id @default(uuid())
   email      String   @unique
-  grade       String?
+  grade      String?
   password   String
   firstName  String
   lastName   String
@@ -36,9 +36,10 @@ model AccountRequest {
   role       Role
   orgs       Org[]
   //TODO comments  Comment[]
-  approver   User?    @relation(name: "ApprovedRequests", fields: [approverId], references: [id]) //user that approved this request
+  approver   User?    @relation(fields: [userId], references: [id]) //user that approved this request
   approverId String?
   denied     Boolean  @default(false)
+  userId     String?
 }
 
 model RefreshToken {
