@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'waypoint-api',
 
   globals: {
@@ -13,5 +13,5 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/waypoint-api',
   setupFiles: ['./jest.setup.ts'],
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };
