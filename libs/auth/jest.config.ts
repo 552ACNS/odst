@@ -1,6 +1,6 @@
-module.exports = {
-  displayName: 'waypoint-api',
-  preset: '../../jest.preset.js',
+export default {
+  displayName: 'auth',
+
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,6 +11,6 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/waypoint-api',
-  setupFiles: ['./jest.setup.ts'],
+  coverageDirectory: '../../coverage/libs/auth',
+  preset: '../../jest.preset.js',
 };

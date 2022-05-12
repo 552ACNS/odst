@@ -3,7 +3,7 @@ import { Prisma, Role } from '.prisma/ods/client';
 
 @InputType()
 export class UserUpdateInput implements Prisma.UserUpdateInput {
-  rank?: string;
+  grade?: string;
   email?: string;
   password?: string;
   enabled?: boolean;

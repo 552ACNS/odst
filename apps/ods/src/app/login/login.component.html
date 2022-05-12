@@ -1,36 +1,38 @@
-<div
-  class="container mx-auto min-w-[360px] w-[50%] max-w-[500px] text-center mt-3"
->
-  <mat-card class="rounded-2xl shadow-md">
-    <mat-card-title class="ml-0 text-4xl font-extrabold">
+<div class="parent-div">
+  <mat-card>
+    <mat-card-title class="ml-0 text-4xl font-extrabold text-center">
       Sign In
     </mat-card-title>
     <mat-card-content
       class="mt-2 flex justify-center font-medium h-fit space-x-2"
     >
       <div>Don't have an account?</div>
-
-      <p class="underline text-right text-blue-300">Get one!</p>
+      <a
+        class="underline text-right text-link-color"
+        [routerLink]="['/request-account']"
+      >
+        Get one!
+      </a>
     </mat-card-content>
 
     <!-- Sign in form -->
     <form [formGroup]="loginForm">
       <!-- User Name field -->
       <mat-form-field class="mx-0 w-full" appearance="outline">
-        <mat-label>Username</mat-label>
+        <mat-label>Email</mat-label>
         <input
-          id="userName"
-          formcontrolname="userUsername"
+          id="email"
+          formcontrolname="userEmail"
           type="text"
           matInput
           required="true"
-          placeholder="Username"
-          [formControlName]="'userUsername'"
+          placeholder="Email"
+          [formControlName]="'userEmail'"
         />
         <mat-error
           *ngIf="
-            loginForm.controls['userUsername'].hasError('email') &&
-            !loginForm.controls['userUsername'].hasError('required')
+            loginForm.controls['userEmail'].hasError('email') &&
+            !loginForm.controls['userEmail'].hasError('required')
           "
         >
           Please enter a valid Email
@@ -59,9 +61,12 @@
           <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>
-      <mat-card-content
-        class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full"
-      >
+      <!-- <p *ngIf="passwordError" class="mb-4 text-red-500"> -->
+      <p class="mb-4 error-text text-center" *ngIf="passwordError">
+        Wrong email or password. Try again or click Forgot Password to reset it.
+      </p>
+
+      <div class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full">
         <mat-checkbox
           class="align-middle float-left"
           [color]="'primary'"
@@ -69,10 +74,11 @@
         >
           Remember Me
         </mat-checkbox>
-        <div class="pt-0.5 float-right font-medium underline text-blue-300">
+        <!-- Set link color to primary color of theme -->
+        <div class="pt-0.5 float-right font-medium underline">
           Forgot Password?
         </div>
-      </mat-card-content>
+      </div>
 
       <!-- Buttons -->
       <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
@@ -86,9 +92,10 @@
         </button>
 
         <button
-          mat-button
+          mat-raised-button
           type="submit"
-          class="w-full bg-dark-blue text-white shadow-md rounded-full"
+          color="primary"
+          class="w-full text-white shadow-md rounded-full"
           (click)="submitLoginClick()"
         >
           Sign In
