@@ -27,11 +27,11 @@ $light-theme: mat.define-light-theme(
   color: mat.get-color-from-palette($light-primary, 'text');
 }
 
+$dark-primary: mat.define-palette(mat.$teal-palette);
+$dark-accent: mat.define-palette(mat.$blue-gray-palette);
+
 // Apply the dark theme if someone's machine prefers it
 @media (prefers-color-scheme: dark) {
-  $dark-primary: mat.define-palette(mat.$teal-palette);
-  $dark-accent: mat.define-palette(mat.$blue-gray-palette);
-
   .text-link-color {
     color: mat.get-color-from-palette($dark-primary, 'text');
   }
@@ -66,9 +66,17 @@ body {
   @apply container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-6;
 }
 
+// Needs to be after the dark mode alterations
 .primary-text-contrast {
-  background-color: mat-color($light-primary);
+  background-color: mat.get-color-from-palette($light-primary, 'default');
   color: mat.get-color-from-palette($light-primary, '500-contrast');
+}
+
+@media (prefers-color-scheme: dark) {
+  .primary-text-contrast {
+    background-color: mat.get-color-from-palette($dark-primary, 'default');
+    color: mat.get-color-from-palette($dark-primary, 'default-contrast');
+  }
 }
 
 .error-text {

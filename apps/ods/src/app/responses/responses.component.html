@@ -23,6 +23,7 @@
   <section>
     <h1 class="text-center mt-3">Comments</h1>
     <div
+      class="grid"
       *ngFor="
         let comment of comments;
         let i = index;
@@ -49,6 +50,7 @@
       <!-- if the comment is mine, align the items to the right, else default the left -->
       <!-- if you did not make the comment, margins are bigger -->
       <div
+        class="flex flex-col items-start my-0.5"
         [ngClass]="{
           'items-end ': userId === comment.author.id,
           'mt-3': i > 0 && comments[i - 1].author.id !== comment.author.id
