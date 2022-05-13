@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [RequestedAccountsComponent],
@@ -19,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     MatListModule,
     MatButtonModule,
+    MatInputModule,
   ],
 })
 export class RequestedAccountsModule {}

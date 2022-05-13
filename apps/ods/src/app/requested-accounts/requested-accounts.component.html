@@ -24,16 +24,19 @@
     >
   </mat-card>
   <mat-card class="shadow-md font-medium" *ngIf="requestViewIsOpen">
-    <mat-list>
+    <mat-list class="space-y-6 mt-3">
       <mat-list-item
         *ngFor="
           let accountRequest of displayedRequestData | keyvalue: keepOrder
         "
       >
-        <label>{{ accountRequest.key }}: {{ accountRequest.value }}</label>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{accountRequest.key}}</mat-label>
+          <input matInput readonly="true" value="{{accountRequest.value}}">
+        </mat-form-field>
       </mat-list-item>
     </mat-list>
-    <mat-card-actions class="space-y-3">
+    <mat-card-actions class="space-y-3 m-1">
       <button
         mat-raised-button
         color="primary"
