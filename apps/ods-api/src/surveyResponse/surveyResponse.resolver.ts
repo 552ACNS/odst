@@ -16,6 +16,7 @@ import {
   Survey,
   ResponseCount,
   User,
+  FindManySurveyResponseArgs,
 } from '../__types__/';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
@@ -25,8 +26,11 @@ export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
 
   @Query(() => [SurveyResponse], { name: 'findManySurveyResponses' })
-  async findMany(): Promise<SurveyResponse[]> {
-    return this.surveyResponseService.findMany({});
+  async findMany(
+    @Args()
+    findManySurveyResponseArgs: FindManySurveyResponseArgs
+  ): Promise<SurveyResponse[]> {
+    return this.surveyResponseService.findMany(findManySurveyResponseArgs);
   }
 
   //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses

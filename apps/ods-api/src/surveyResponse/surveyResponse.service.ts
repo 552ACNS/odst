@@ -16,14 +16,10 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 export class SurveyResponseService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.SurveyResponseWhereUniqueInput;
-    where?: Prisma.SurveyResponseWhereInput;
-    orderBy?: Prisma.SurveyResponseOrderByWithRelationInput;
-  }): Promise<SurveyResponse[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+  async findMany(
+    surveyResponseFindManyArgs: Prisma.SurveyResponseFindManyArgs
+  ): Promise<SurveyResponse[]> {
+    const { skip, take, cursor, where, orderBy } = surveyResponseFindManyArgs;
     return this.prisma.surveyResponse.findMany({
       skip,
       take,

@@ -13,6 +13,7 @@ import {
   Role,
   UserCreateInput,
   UserWhereUniqueInput,
+  FindManyUserArgs,
 } from '../__types__/';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
@@ -35,6 +36,11 @@ export class UserResolver {
         role: role,
       },
     });
+  }
+
+  @Query(() => [User], { name: 'findManyUsers' })
+  async findMany(@Args() findManyUserArgs: FindManyUserArgs): Promise<User[]> {
+    return this.userService.findMany(findManyUserArgs);
   }
 
   //TODO write custom pipe to not need separate route for this
