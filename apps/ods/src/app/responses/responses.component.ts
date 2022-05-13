@@ -60,20 +60,18 @@ export class ResponsesComponent implements OnInit {
     });
   }
 
-  // submitResolutionClick() {
-  //   // if the resolution field is not empty after a trim
-  //   if (this.resolutionForm.value.resolution.trim() !== '') {
-  //     this.comments = this.comments.push([
-  //       this.resolutionForm.value['resolution'],
-  //     ]);
-  //     this.responsesService.updateResolution(
-  //       this.responseIDs[this.displayedIndex]
-  //     );
+  submitResolutionClick() {
+    // if the resolution field is not empty after a trim
+    if (this.resolutionForm.value.resolution.trim() !== '') {
+      this.responsesService.updateResolution(
+        this.responseIDs[this.displayedIndex],
+        this.resolutionForm.value['resolution']
+      );
 
-  //     //refresh the page
-  //     window.location.reload();
-  //   }
-  // }
+      //refresh the page
+      window.location.reload();
+    }
+  }
 
   async getResponseData(responseID: string) {
     (await this.responsesService.getResponseData(responseID)).subscribe(

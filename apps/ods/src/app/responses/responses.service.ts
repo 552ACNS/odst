@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { first, map, take } from 'rxjs';
-import {
-  CommentCreateWithoutSurveyResponseInput,
-  SurveyResponseUpdateInput,
-} from '../../types.graphql';
+import { CommentCreateNestedManyWithoutSurveyResponseInput } from '../../types.graphql';
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
@@ -39,10 +36,7 @@ export class ResponsesService {
 
   updateResolution(
     id: string,
-    comments: CommentCreateWithoutSurveyResponseInput,
-    value: string,
-    firstName: string,
-    lastName: string
+    comments: CommentCreateNestedManyWithoutSurveyResponseInput
   ) {
     return this.apollo
       .mutate<

@@ -2,6 +2,7 @@ import { InputType, Field } from '@nestjs/graphql';
 import { Prisma, Role } from '.prisma/ods/client';
 import { OrgWhereUniqueInput } from './org.unique.input';
 import { OrgCreateNestedManyWithoutUsersInput } from './org.create.input';
+import { UserWhereUniqueInput } from './user.unique.input';
 
 @InputType()
 export class UserCreateInput implements Prisma.UserCreateInput {
@@ -28,4 +29,11 @@ export class UserCreateNestedManyWithoutOrgsInput
 {
   @Field(() => OrgWhereUniqueInput)
   connect?: OrgWhereUniqueInput;
+}
+@InputType()
+export class UserCreateNestedOneWithoutCommentsInput
+  implements Prisma.UserCreateNestedOneWithoutCommentsInput
+{
+  @Field(() => UserWhereUniqueInput)
+  connect?: Prisma.UserWhereUniqueInput;
 }

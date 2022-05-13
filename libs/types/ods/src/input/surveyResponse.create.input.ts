@@ -16,9 +16,7 @@ export class SurveyResponseCreateInput
   answers?: Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput;
 
   @Field(() => CommentCreateNestedManyWithoutSurveyResponseInput)
-  comments?:
-    | Prisma.CommentCreateNestedManyWithoutSurveyResponseInput
-    | undefined;
+  comments?: Prisma.CommentCreateNestedManyWithoutSurveyResponseInput;
   openedDate?: Date;
   closedDate?: Date;
   routeOutside?: boolean;

@@ -21,20 +21,80 @@
   </mat-card>
 
   <section>
-    <mat-card *ngFor="let comment of comments; let i = index">
+    <h1 class="text-center mt-3">Comments</h1>
+    <div
+      *ngFor="
+        let comment of comments;
+        let i = index;
+        let first = first;
+        let last = last
+      "
+    >
+      <!-- Generates the DATE of a new day, if a new day has passed for the date -->
+      <!-- If the date is new, then create a date in a line -->
+      <ng-container
+        *ngIf="
+          first ||
+          (comments[i - 1].date | date: 'd') !== (comment.date | date: 'd')
+        "
+      >
+        <div class="flex items-center my-2 justify-center">
+          <div class="flex-auto border-b opacity-25"></div>
+          <div class="mx-4">
+            {{ comment.date | date: 'longDate' }}
+          </div>
+          <div class="flex-auto border-b opacity-25"></div>
+        </div>
+      </ng-container>
+      <!-- if the comment is mine, align the items to the right, else default the left -->
+      <!-- if you did not make the comment, margins are bigger -->
       <div
         [ngClass]="{
           'items-end ': userId === comment.author.id,
           'mt-3': i > 0 && comments[i - 1].author.id !== comment.author.id
         }"
       >
-        <mat-card-content class="text-sm text-left">
-          <p class="text-base font-medium">
+        <p *ngIf="userId !== comment.author.id" class="text-xs ml-3 mb-0.5">
+          {{ comment.author.lastName }}, {{ comment.author.firstName }}
+          {{ comment.author.grade }}. {{ comment.author.role }} of
+          {{ comment.author.orgs[0].name }}
+        </p>
+        <!-- TODO: Use OIDC tokens instead because you aren't a monster -->
+        <mat-card
+          [ngClass]="{ 'primary-text-contrast': userId === comment.author.id }"
+        >
+          <mat-card-content
+            class="text-sm text-left"
+            [ngClass]="{ 'text-right': userId === comment.author.id }"
+            #tooltip="matTooltip"
+            matTooltip="{{ comment.date | date: 'd MMM yy, h:mm a' }}"
+          >
             {{ comment.value }}
-          </p>
-        </mat-card-content>
+          </mat-card-content>
+        </mat-card>
+        <!-- Display the time belwo comment if first or last message -->
+        <!-- Also when identity of messages change  -->
+        <!-- Also when the day changes -->
+        <ng-container
+          *ngIf="
+            first ||
+            last ||
+            comments[i + 1].author.id !== comment.author.id ||
+            (comments[i + 1].date | date: 'd') !== (comment.date | date: 'd')
+          "
+        >
+          <div
+            class="my-0.5 text-xs"
+            [ngClass]="{
+              'mr-3 text-right': comment.author.id === userId,
+              'ml-3': comment.author.id !== userId
+            }"
+          >
+            {{ comment.date | date: 'HH:mm' }}
+          </div>
+        </ng-container>
       </div>
-    </mat-card>
+    </div>
   </section>
 
   <mat-card class="shadow-md">

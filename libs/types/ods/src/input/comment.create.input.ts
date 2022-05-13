@@ -1,7 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/ods/client';
 import { CommentWhereUniqueInput } from './comment.unique.input';
-import { UserCreateInput } from './user.create.input';
+import { UserCreateNestedOneWithoutCommentsInput } from './user.create.input';
+import { SurveyResponseCreateNestedOneWithoutCommentsInput } from './surveyResponse.create.input';
 
 @InputType()
 export class CommentCreateInput implements Prisma.CommentCreateInput {
@@ -9,22 +10,20 @@ export class CommentCreateInput implements Prisma.CommentCreateInput {
   value: string;
   date?: Date;
 
-  @Field(() => UserCreateInput)
+  @Field(() => UserCreateNestedOneWithoutCommentsInput)
   author: Prisma.UserCreateNestedOneWithoutCommentsInput;
-  SurveyResponse?:
-    | Prisma.SurveyResponseCreateNestedOneWithoutCommentsInput
-    | undefined;
+
+  @Field(() => SurveyResponseCreateNestedOneWithoutCommentsInput)
+  surveyResponse: Prisma.SurveyResponseCreateNestedOneWithoutCommentsInput;
 }
 
 @InputType()
 export class CommentCreateWithoutSurveyResponseInput
   implements Prisma.CommentCreateWithoutSurveyResponseInput
 {
-  id?: string | undefined;
   value: string;
-  date?: Date;
 
-  @Field(() => UserCreateInput)
+  @Field(() => UserCreateNestedOneWithoutCommentsInput)
   author: Prisma.UserCreateNestedOneWithoutCommentsInput;
 }
 
@@ -32,9 +31,7 @@ export class CommentCreateWithoutSurveyResponseInput
 export class CommentCreateManySurveyResponseInput
   implements Prisma.CommentCreateManySurveyResponseInput
 {
-  id?: string | undefined;
   value: string;
-  date?: Date;
   authorId: string;
 }
 
@@ -42,16 +39,8 @@ export class CommentCreateManySurveyResponseInput
 export class CommentCreateNestedManyWithoutSurveyResponseInput
   implements Prisma.CommentCreateNestedManyWithoutSurveyResponseInput
 {
-  @Field(() => CommentWhereUniqueInput, { nullable: true })
-  connect?: Prisma.CommentWhereUniqueInput;
-
   @Field(() => CommentCreateWithoutSurveyResponseInput, { nullable: true })
   create?: Prisma.CommentCreateWithoutSurveyResponseInput;
-
-  @Field(() => CommentCreateNestedManyWithoutSurveyResponseInput, {
-    nullable: true,
-  })
-  createMany?: Prisma.CommentCreateManySurveyResponseInputEnvelope;
 }
 
 @InputType()
