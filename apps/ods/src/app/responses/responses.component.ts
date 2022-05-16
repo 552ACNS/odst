@@ -4,7 +4,12 @@ import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { CommentGql, UserGql } from '../../types.graphql';
+import {
+  CommentCreateNestedManyWithoutSurveyResponseInput,
+  CommentGql,
+  UserCreateNestedOneWithoutCommentsInput,
+  UserGql,
+} from '../../types.graphql';
 import { FindUniqueSurveyResponseQuery } from './responses.generated';
 import { getRefreshToken, getUserId } from '@odst/helpers';
 
@@ -28,6 +33,7 @@ export class ResponsesComponent implements OnInit {
   comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'] =
     [];
   userId: string;
+  result: CommentCreateNestedManyWithoutSurveyResponseInput['create'];
   resolved: string;
   //TODO: talk to sim later and find out if there is already a way to get the current date, did not see it here
   openedDate: Date;
@@ -63,13 +69,22 @@ export class ResponsesComponent implements OnInit {
   submitResolutionClick() {
     // if the resolution field is not empty after a trim
     if (this.resolutionForm.value.resolution.trim() !== '') {
+      this.result = {
+        author: {
+          connect: {
+            id: this.userId,
+          },
+        },
+        value: this.resolutionForm.value['resolution'],
+      };
+
       this.responsesService.updateResolution(
         this.responseIDs[this.displayedIndex],
-        this.resolutionForm.value['resolution']
+        this.result
       );
 
       //refresh the page
-      window.location.reload();
+      //window.location.reload();
     }
   }
 
