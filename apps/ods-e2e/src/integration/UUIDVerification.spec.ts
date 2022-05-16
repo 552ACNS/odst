@@ -41,6 +41,8 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/responses');
     cy.get('[aria-label="Last page"]').click();
     cy.get('mat-card-content').contains(uuid);
+    cy.get('textarea').type('This is a response');
+    cy.get('button').contains('Submit').click();
   });
 
   it("Verify that only people with wrong permission can't view a specific survey", () => {
