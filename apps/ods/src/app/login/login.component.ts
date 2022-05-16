@@ -52,8 +52,11 @@ export class LoginComponent implements OnInit {
 
           this.router.navigate(['dashboard']);
         }
-        //TODO Need to consider redirect attacks
-        this.router.navigateByUrl(this.returnUrl);
+        //added allow list with defined acceptable results
+        const allowList = ['/dashboard', '/login'];
+        if (allowList.indexOf(this.returnUrl) > -1) {
+          this.router.navigateByUrl(this.returnUrl);
+        }
       });
   }
 }
