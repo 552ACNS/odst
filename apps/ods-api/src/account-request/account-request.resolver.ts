@@ -16,6 +16,7 @@ import {
 } from '@odst/types/ods';
 import { AccountRequestService } from './account-request.service';
 import { Public } from '@odst/auth';
+import prisma from '../prisma/client';
 
 @Resolver(() => AccountRequestGQL)
 export class AccountRequestResolver {
@@ -25,15 +26,94 @@ export class AccountRequestResolver {
   async findMany(
     @GetCurrentUser() user: UserGQL
   ): Promise<AccountRequestGQL[]> {
+    const userOrgTier = prisma.user.findUnique({
+      where: {
+        id: user.id,
+      },
+      select: {
+        orgs: {
+          select: {
+            orgTier: true,
+          },
+        },
+      },
+    });
+
+    switch (userOrgTier.toString()) {
+      case 'WING': {
+        return this.accountRequestService.findMany({
+          where: {
+            AND: {
+              denied: false,
+              orgs: {
+                some: {
+                  parent: {
+                    AND: {
+                      users: {
+                        some: {
+                          id: user.id,
+                        },
+                      },
+                      children: {
+                        some: {
+                          parent: {
+                            parent: {
+                              users: {
+                                some: {
+                                  id: user.id,
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+      case 'GROUP': {
+        return this.accountRequestService.findMany({
+          where: {
+            AND: {
+              denied: false,
+              orgs: {
+                some: {
+                  parent: {
+                    users: {
+                      some: {
+                        id: user.id,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+      case 'SQUADRON': {
+        break;
+      }
+      case 'OTHER': {
+        break;
+      }
+    }
+
     return this.accountRequestService.findMany({
       where: {
         AND: {
           denied: false,
           orgs: {
             some: {
-              users: {
-                some: {
-                  id: user.id,
+              parent: {
+                users: {
+                  some: {
+                    id: user.id,
+                  },
                 },
               },
             },

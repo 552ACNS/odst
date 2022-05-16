@@ -158,6 +158,7 @@ export class SurveyResponseService {
         };
         break;
     }
+
     return whereIssues;
   }
 
