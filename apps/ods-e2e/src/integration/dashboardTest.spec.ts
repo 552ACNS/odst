@@ -31,7 +31,6 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/dashboard');
     cy.get('#issuesCard').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
-    cy.get('[aria-label="Last page"]').click();
     cy.get('textarea').type('This is a response');
     cy.get('button').contains('Submit').click();
   });
