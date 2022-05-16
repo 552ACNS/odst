@@ -2,8 +2,9 @@
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full">
     <mat-card
       id="issuesCard"
-      class="flex flex-col flex-auto p-6 shadow-md cursor-pointer"
+      class="flex flex-col flex-auto p-6 shadow-md"
       *ngFor="let card of cardSpecs"
+      [ngClass]="{ 'cursor-pointer': isZero(card.countOf) }"
       [routerLink]="['/responses']"
       [routerLink]="isZero(card.countOf) ? ['/responses'] : null"
       [queryParams]="{ resolved: card.resolved }"
