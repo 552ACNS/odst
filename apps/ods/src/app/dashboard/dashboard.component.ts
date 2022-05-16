@@ -18,6 +18,10 @@ export class DashboardComponent implements OnInit {
     suffixStyle: string;
     resolved?: string;
   }[];
+  isZero(int: number): boolean {
+    if (int == 0) return false;
+    else return true;
+  }
 
   ngOnInit() {
     this.dashboardService.GetResponseCount().subscribe(({ data }) => {
