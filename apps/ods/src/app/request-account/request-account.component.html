@@ -1,0 +1,158 @@
+<div class="parent-div space-y-3 flex justify-center">
+  <form [formGroup]="form">
+    <mat-card>
+      <mat-card-title>Account Request</mat-card-title>
+      <mat-card-content class="mb-0">
+        <div class="flex flex-row mt-3 space-x-3">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>First Name</mat-label>
+            <input
+              matInput
+              placeholder="First Name"
+              formControlName="firstName"
+              required
+            />
+            <mat-error> Please enter your first name. </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Last Name</mat-label>
+            <input
+              matInput
+              placeholder="Last Name"
+              formControlName="lastName"
+              required
+            />
+            <mat-error> Please enter your last name. </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            placeholder="Email"
+            formControlName="email"
+            (keyup)="uniqueEmail()"
+            required
+          />
+          <!-- TODO: once custom validators no longer deprecated, make tooltip an valdiation error -->
+          <button matSuffix disabled="true">
+            <mat-icon
+              *ngIf="emailNotUnique"
+              id="emailIsNotUniqueIcon"
+              matTooltip="An account with this email already exists"
+              matTooltipPosition="right"
+              class="error-text"
+            >
+              close
+            </mat-icon>
+          </button>
+          <mat-error> Please enter your email address. </mat-error>
+        </mat-form-field>
+        <div class="flex flex-row space-x-3">
+          <mat-form-field appearance="outline" class="flex-auto">
+            <mat-label>Select Grade</mat-label>
+            <mat-select placeholder="Select Grade" formControlName="grade">
+              <mat-option *ngFor="let grade of grades" [value]="grade">
+                {{ grade }}
+              </mat-option>
+            </mat-select>
+            <mat-error> Please select a role for permissions. </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="flex-auto">
+            <mat-label>Requested Permissions</mat-label>
+            <mat-select
+              placeholder="Request Permissions"
+              formControlName="permissions"
+              required
+            >
+              <mat-option *ngFor="let role of roles" [value]="role">
+                {{ role }}
+              </mat-option>
+            </mat-select>
+            <mat-error> Please select a role for permissions. </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Unit</mat-label>
+          <mat-select placeholder="Unit" formControlName="org" required>
+            <mat-option *ngFor="let org of orgs | async" [value]="org">
+              {{ org }}
+            </mat-option>
+          </mat-select>
+          <mat-error> Please select an organization. </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Password</mat-label>
+          <!-- TODO: either fix formatting or fix using password strength library -->
+          <input
+            matInput
+            matTooltip="The password must have the following:
+            - 8 to 32 characters
+            - At least one lowercase character (a-z)
+            - At least one uppercase character (A-Z)
+            - At least one numeral (0-9)
+            - At least one special character (~!@#$%^&)
+            - No spaces or tabs allowed"
+            matTooltipClass="whitespace-pre"
+            matTooltipPosition="right"
+            placeholder="Password"
+            formControlName="password"
+            [type]="hide ? 'password' : 'text'"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+            required
+          />
+          <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            placeholder="Confirm Password"
+            formControlName="confirmPassword"
+            [errorStateMatcher]="matcher"
+            [type]="hide ? 'password' : 'text'"
+          />
+          <mat-error *ngIf="form.hasError('notSame')">
+            Please enter a matching password.
+            {{ errors['password'] }}
+          </mat-error>
+          <button
+            mat-icon-button
+            type="button"
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="flex justify-center">
+          <button
+            class="m-2 border-1 shadow-md rounded-full w-full"
+            mat-stroked-button
+            [routerLink]="['/login']"
+          >
+            Back
+          </button>
+          <button
+            id="btnSubmit"
+            class="m-2 rounded-full w-full"
+            mat-raised-button
+            color="primary"
+            (click)="submit()"
+            [disabled]="!form.valid || submitSuccess"
+          >
+            Submit
+            <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess"
+              >check</mat-icon
+            >
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

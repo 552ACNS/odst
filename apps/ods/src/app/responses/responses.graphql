@@ -1,7 +1,7 @@
-query getSurveyResponseData(
+query findUniqueSurveyResponse(
   $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
 ) {
-  getSurveyResponseData(
+  findUniqueSurveyResponse(
     surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
   ) {
     openedDate
@@ -15,7 +15,7 @@ query getSurveyResponseData(
   }
 }
 
-query getIssuesByStatus($resolved: Boolean!) {
+query getIssuesByStatus($resolved: String!) {
   getIssuesByStatus(resolved: $resolved)
 }
 

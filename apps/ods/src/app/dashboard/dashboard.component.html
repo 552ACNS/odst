@@ -1,13 +1,7 @@
 <div class="mx-auto min-w-[340px] w-[95%] mt-2 space-y-3 flex flex-col">
-  <mat-card class="my-3 shadow-md">
-    <h1 *ngIf="user" class="font-medium text-3xl">
-      {{ user.firstName }} {{ user.lastName }}, {{ user.grade }}
-    </h1>
-    <h3>{{ userTitle }}</h3>
-  </mat-card>
-
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full">
     <mat-card
+      id="issuesCard"
       class="flex flex-col flex-auto p-6 shadow-md"
       *ngFor="let card of cardSpecs"
       [routerLink]="['/responses']"

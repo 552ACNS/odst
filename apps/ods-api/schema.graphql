@@ -91,8 +91,7 @@ type Query {
   findManySurveyResponses: [SurveyResponseGQL!]!
   findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
   ResponseCount: ResponseCount!
-  getIssuesByStatus(resolved: Boolean!): [String!]!
-  getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  getIssuesByStatus(resolved: String!): [String!]!
   findManyAnswers: [AnswerGQL!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
   findManyOrgs: [OrgGQL!]!
@@ -103,7 +102,9 @@ type Query {
   findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
   findUsersWithRole(role: String!): [UserGQL!]!
   getCommanders: [UserGQL!]!
+  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
   me: UserGQL!
+  usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
 input SurveyWhereUniqueInput {
@@ -129,8 +130,13 @@ input QuestionWhereUniqueInput {
   prompt: String
 }
 
+input UserWhereUniqueInput {
+  id: String
+  email: String
+}
+
 type Mutation {
-  createSurveyWithQuestions(questionPrompts: [String!]!): SurveyGQL!
+  createSurveyWithQuestions(questionPrompts: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): SurveyGQL!
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
@@ -143,6 +149,8 @@ type Mutation {
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
   createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
   updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
+  createUser(userCreateInput: UserCreateInput!): UserGQL!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -299,6 +307,21 @@ input SurveyCreateNestedManyWithoutQuestionsInput {
 input QuestionUpdateInput {
   surveys: SurveyCreateNestedManyWithoutQuestionsInput
   prompt: String
+}
+
+input UserCreateInput {
+  role: Role!
+  orgs: OrgCreateNestedManyWithoutUsersInput!
+  email: String!
+  password: String!
+  grade: String
+  firstName: String!
+  lastName: String!
+  enabled: Boolean
+}
+
+input OrgCreateNestedManyWithoutUsersInput {
+  connect: OrgWhereUniqueInput
 }
 
 input LoginUserInput {
