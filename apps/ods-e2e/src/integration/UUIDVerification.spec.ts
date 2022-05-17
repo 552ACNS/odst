@@ -41,7 +41,7 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/responses');
     cy.get('[aria-label="Last page"]').click();
     cy.get('mat-card-content').contains(uuid);
-    cy.get('textarea').type('This is a response');
+    cy.get('textarea').type('This is a resolution');
     cy.get('button').contains('Submit').click();
   });
 
