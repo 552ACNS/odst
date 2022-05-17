@@ -37,7 +37,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
-    cy.get('p').contains('Unresolved').click();
+    cy.get('#issuesCard').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
     cy.get('[aria-label="Last page"]').click();
     cy.get('mat-card-content').contains(uuid);
@@ -53,6 +53,6 @@ describe('ods', () => {
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
-    cy.get('p').contains(0);
+    cy.get('#issuesCard').contains(0);
   });
 });
