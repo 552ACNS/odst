@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit {
         const allowList = ['/dashboard', '/login'];
         if (allowList.indexOf(this.returnUrl) > -1) {
           this.router.navigateByUrl(this.returnUrl);
+        }
       });
   }
 }
