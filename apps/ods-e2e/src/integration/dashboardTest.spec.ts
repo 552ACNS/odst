@@ -31,8 +31,6 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/dashboard');
     cy.get('#issuesCard').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
-    cy.get('textarea').type('This is a response');
-    cy.get('button').contains('Submit').click();
   });
   it('should view unresolved and resolved responses from dashboard', () => {
     cy.visit('/dashboard');
@@ -42,11 +40,14 @@ describe('ods', () => {
     cy.get('#issuesCard').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
     cy.get('h1').contains('Unresolved Responses');
+    cy.get('textarea').type('This is a resolution');
+    cy.get('button').contains('Submit').click();
     cy.get('button').contains('Back').click().wait('@graphql');
     cy.location('pathname').should('include', '/dashboard');
-    cy.get('p').contains('Resolved').click();
+    cy.get('#cardTitle').contains('Resolved').click();
     cy.location('pathname').should('include', '/responses');
     cy.get('h1').contains('Resolved Responses');
+    cy.get('textarea').contains('This is a resolution');
     cy.get('button').contains('Back').click();
     cy.location('pathname').should('include', '/dashboard');
   });

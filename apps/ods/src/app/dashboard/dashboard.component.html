@@ -5,7 +5,6 @@
       class="flex flex-col flex-auto p-6 shadow-md"
       *ngFor="let card of cardSpecs"
       [ngClass]="{ 'cursor-pointer': isZero(card.countOf) }"
-      [routerLink]="['/responses']"
       [routerLink]="isZero(card.countOf) ? ['/responses'] : null"
       [queryParams]="{ resolved: card.resolved }"
     >
