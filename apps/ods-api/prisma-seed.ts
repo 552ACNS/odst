@@ -9,6 +9,69 @@ const orgName = '552 ACNS';
 const CCEmail = 'john.doe@us.af.mil';
 
 async function main() {
+  //#region wings
+  await prisma.org.upsert({
+    where: {
+      name: '552 ACW',
+    },
+    update: {
+      orgTier: 'WING',
+    },
+    create: {
+      name: '552 ACW',
+      orgTier: 'WING',
+    },
+  });
+  //#endregion
+
+  //#region groups
+  await prisma.org.upsert({
+    where: {
+      name: '552 ACG',
+    },
+    update: {
+      orgTier: 'GROUP',
+      parent: {
+        connect: {
+          name: '552 ACW',
+        },
+      },
+    },
+    create: {
+      name: '552 ACG',
+      orgTier: 'GROUP',
+      parent: {
+        connect: {
+          name: '552 ACW',
+        },
+      },
+    },
+  });
+
+  await prisma.org.upsert({
+    where: {
+      name: '552 MXG',
+    },
+    update: {
+      orgTier: 'GROUP',
+      parent: {
+        connect: {
+          name: '552 ACW',
+        },
+      },
+    },
+    create: {
+      name: '552 MXG',
+      orgTier: 'GROUP',
+      parent: {
+        connect: {
+          name: '552 ACW',
+        },
+      },
+    },
+  });
+  //#endregion
+
   //#region org
   await prisma.org.upsert({
     where: {
@@ -28,10 +91,20 @@ async function main() {
     },
     update: {
       orgTier: 'SQUADRON',
+      parent: {
+        connect: {
+          name: '552 ACG',
+        },
+      },
     },
     create: {
       name: orgName,
       orgTier: 'SQUADRON',
+      parent: {
+        connect: {
+          name: '552 ACG',
+        },
+      },
     },
   });
   await prisma.org.upsert({
@@ -40,10 +113,20 @@ async function main() {
     },
     update: {
       orgTier: 'SQUADRON',
+      parent: {
+        connect: {
+          name: '552 MXG',
+        },
+      },
     },
     create: {
       name: '552 MXS',
       orgTier: 'SQUADRON',
+      parent: {
+        connect: {
+          name: '552 MXG',
+        },
+      },
     },
   });
   await prisma.org.upsert({
@@ -52,10 +135,20 @@ async function main() {
     },
     update: {
       orgTier: 'SQUADRON',
+      parent: {
+        connect: {
+          name: '552 ACG',
+        },
+      },
     },
     create: {
       name: '752 OSS',
       orgTier: 'SQUADRON',
+      parent: {
+        connect: {
+          name: '552 ACG',
+        },
+      },
     },
   });
   //#endregion

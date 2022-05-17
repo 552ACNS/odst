@@ -50,6 +50,24 @@ export class OrgService {
     return orgs as Org[];
   }
 
+  async getSubOrgsTest(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<Org[]> {
+    const blah = await this.prisma.org.findMany({
+      // find orgs where
+      where: {
+        // the user requesting
+        users: {
+          // is a member (or some) of the people in that org
+          some: userWhereUniqueInput,
+        },
+      },
+      include: {
+        children: true,
+      },
+    });
+  }
+
   async findUnique(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
   ): Promise<Org | null> {

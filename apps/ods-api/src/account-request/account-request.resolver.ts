@@ -23,99 +23,22 @@ export class AccountRequestResolver {
   constructor(private readonly accountRequestService: AccountRequestService) {}
 
   @Query(() => [AccountRequestGQL], { name: 'findManyAccountRequests' })
+  // eslint-disable-next-line complexity
   async findMany(
     @GetCurrentUser() user: UserGQL
   ): Promise<AccountRequestGQL[]> {
-    const userOrgTier = prisma.user.findUnique({
-      where: {
-        id: user.id,
-      },
-      select: {
-        orgs: {
-          select: {
-            orgTier: true,
-          },
-        },
-      },
-    });
-
-    switch (userOrgTier.toString()) {
-      case 'WING': {
-        return this.accountRequestService.findMany({
-          where: {
-            AND: {
-              denied: false,
-              orgs: {
-                some: {
-                  parent: {
-                    AND: {
-                      users: {
-                        some: {
-                          id: user.id,
-                        },
-                      },
-                      children: {
-                        some: {
-                          parent: {
-                            parent: {
-                              users: {
-                                some: {
-                                  id: user.id,
-                                },
-                              },
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        });
-      }
-      case 'GROUP': {
-        return this.accountRequestService.findMany({
-          where: {
-            AND: {
-              denied: false,
-              orgs: {
-                some: {
-                  parent: {
-                    users: {
-                      some: {
-                        id: user.id,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        });
-      }
-      case 'SQUADRON': {
-        break;
-      }
-      case 'OTHER': {
-        break;
-      }
-    }
-
     return this.accountRequestService.findMany({
       where: {
-        AND: {
-          denied: false,
-          orgs: {
-            some: {
-              parent: {
-                users: {
-                  some: {
-                    id: user.id,
-                  },
-                },
-              },
+        // The account request has not been denied
+        denied: false,
+        // only return orgs
+        orgs: {
+          // where some
+          some: {
+            // of the orgs names
+            name: {
+              // belong in the list child orgs that the user has access to
+              in: ['552 ACW', '552 ACG'],
             },
           },
         },
