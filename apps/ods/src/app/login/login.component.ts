@@ -59,9 +59,10 @@ export class LoginComponent implements OnInit {
         }
         //added allow list with defined acceptable results
         const allowList = ['/dashboard', '/login'];
-        if (allowList.indexOf(this.returnUrl) > -1) {
+        if (allowList.includes(this.returnUrl)) {
           this.router.navigateByUrl(this.returnUrl);
         }
+        // TODO: add an else condition to redirect to error page when implemented.
       });
   }
 }
