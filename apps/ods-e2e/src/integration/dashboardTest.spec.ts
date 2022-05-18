@@ -1,4 +1,7 @@
 describe('ods', () => {
+  beforeEach(() => {
+    cy.intercept('POST', '**/graphql').as('graphql');
+  });
   before(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
     cy.visit('/disclaimer');
@@ -33,14 +36,14 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/dashboard');
     cy.get('#userNameGrade').contains('Admin Admin, E-∞');
     cy.get('#userTitleOrg').contains('Administrator');
-    cy.get('#gridId').contains('Unresolved').click();
+    cy.get('mat-card').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
     cy.get('h1').contains('Unresolved Responses');
     cy.get('textarea').type('This is a resolution');
     cy.get('button').contains('Submit').click();
     cy.get('button').contains('Back').click().wait('@graphql');
     cy.location('pathname').should('include', '/dashboard');
-    cy.get('#gridId').contains('Resolved').click();
+    cy.get('mat-card').contains('Resolved').click();
     cy.location('pathname').should('include', '/responses');
     cy.get('h1').contains('Resolved Responses');
     // cy.get('[aria-label="Last page"]').click();

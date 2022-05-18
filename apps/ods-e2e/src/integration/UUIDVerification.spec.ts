@@ -30,22 +30,7 @@ describe('ods', () => {
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
 
-  it('Verify that only people with correct permission can view a specific survey', () => {
-    cy.visit('/login');
-    cy.location('pathname').should('include', '/login');
-    cy.get('[formcontrolname="userEmail"]').type('john.doe@us.af.mil');
-    cy.get('[formcontrolname="userPassword"]').type('admin');
-    cy.get('button').contains('Sign In').click();
-    cy.location('pathname').should('include', '/dashboard');
-    cy.get('#issuesCard').contains('Unresolved').click();
-    cy.location('pathname').should('include', '/responses');
-    cy.get('[aria-label="Last page"]').click();
-    cy.get('mat-card-content').contains(uuid);
-    cy.get('textarea').type('This is a resolution');
-    cy.get('button').contains('Submit').click();
-  });
-
-  it("Verify that only people with wrong permission can't view a specific survey", () => {
+  it("Verify that only people with wrong permission can't view a specific unresolved survey", () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
     //Login with someone who has zero responses, of any type
@@ -55,6 +40,66 @@ describe('ods', () => {
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
-    cy.get('#issuesCard').contains(0);
+    if (cy.get('mat-card').contains('Unresolved').click())
+      cy.location('pathname').then((x) => {
+        if (x.includes('/responses')) {
+          cy.get('[aria-label="Last page"]').then((x) => {
+            if (x.hasClass('[ng-reflect-disabled="true"]')) {
+              cy.get('mat-card-content').should('not.' + uuid);
+            } else {
+              cy.get('[aria-label="Last page"]').click();
+              cy.get('mat-card-content').should('not.' + uuid);
+            }
+          });
+        }
+      });
+  });
+
+  it('Verify that only people with correct permission can view a specific survey', () => {
+    cy.visit('/login');
+    cy.location('pathname').should('include', '/login');
+    cy.get('[formcontrolname="userEmail"]').type('john.doe@us.af.mil');
+    cy.get('[formcontrolname="userPassword"]').type('admin');
+    cy.get('button').contains('Sign In').click();
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Unresolved').click();
+    cy.location('pathname').should('include', '/responses');
+    cy.get('[aria-label="Last page"]').then((x) => {
+      if (x.hasClass('[ng-reflect-disabled="true"]')) {
+        cy.get('mat-card-content').contains(uuid);
+        cy.get('textarea').type('This is a resolution');
+        cy.get('button').contains('Submit').click();
+      } else {
+        cy.get('[aria-label="Last page"]').click();
+        cy.get('mat-card-content').contains(uuid);
+        cy.get('textarea').type('This is a resolution');
+        cy.get('button').contains('Submit').click();
+      }
+    });
+  });
+
+  it("Verify that only people with wrong permission can't view a specific resolved survey", () => {
+    cy.visit('/login');
+    cy.location('pathname').should('include', '/login');
+    //Login with someone who has zero responses, of any type
+    cy.get('[formcontrolname="userEmail"]').type(
+      'henry.henderson.99@us.af.mil'
+    );
+    cy.get('[formcontrolname="userPassword"]').type('admin');
+    cy.get('button').contains('Sign In').click();
+    cy.location('pathname').should('include', '/dashboard');
+    if (cy.get('mat-card').contains('Resolved').click())
+      cy.location('pathname').then((x) => {
+        if (x.includes('/responses')) {
+          cy.get('[aria-label="Last page"]').then((x) => {
+            if (x.hasClass('[ng-reflect-disabled="true"]')) {
+              cy.get('mat-card-content').should('not.' + uuid);
+            } else {
+              cy.get('[aria-label="Last page"]').click();
+              cy.get('mat-card-content').should('not.' + uuid);
+            }
+          });
+        }
+      });
   });
 });
