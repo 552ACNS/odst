@@ -1,5 +1,4 @@
-import { AnswerCreateInput } from '../__types__/';
-import { Answer } from '.prisma/ods/client';
+import { AnswerCreateInput, Answer } from '../__types__/';
 
 export const MockAnswers: Answer[] = [
   {

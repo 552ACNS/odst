@@ -19,14 +19,34 @@ export class SurveyResponseService {
   async findMany(
     surveyResponseFindManyArgs: Prisma.SurveyResponseFindManyArgs
   ): Promise<SurveyResponse[]> {
-    const { skip, take, cursor, where, orderBy } = surveyResponseFindManyArgs;
-    return this.prisma.surveyResponse.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+    return this.prisma.surveyResponse.findMany(surveyResponseFindManyArgs);
+  }
+
+  async count(
+    user: User,
+    surveyResponseCountArgs: Prisma.SurveyResponseCountArgs
+  ): Promise<number> {
+    // Please Fix
+    // this.prisma.surveyResponse.count
+
+    // modify the survey response count args to include the user's orgs
+    surveyResponseCountArgs.where = {
+      // whatever the previous where clause was, add the user's orgs to it
+      AND: {
+        // Get the original where surveyresponse count args
+        ...surveyResponseCountArgs.where,
+        // Find me the surveys
+        answers: {
+          some: {
+            value: {
+              in: {},
+            },
+          },
+        },
+      },
+    };
+
+    return this.prisma.surveyResponse.count(surveyResponseCountArgs);
   }
 
   async findUnique(

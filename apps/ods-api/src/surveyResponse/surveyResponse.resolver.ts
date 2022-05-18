@@ -3,6 +3,7 @@ import {
   Mutation,
   Args,
   Query,
+  Int,
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
@@ -17,6 +18,7 @@ import {
   ResponseCount,
   User,
   FindManySurveyResponseArgs,
+  SurveyResponseAggregateArgs,
 } from '../__types__/';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
@@ -42,6 +44,15 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.findUnique(
       surveyResponseWhereUniqueInput
     );
+  }
+
+  @Query(() => Int, { name: 'ResponseCount' })
+  async count(
+    @GetCurrentUser() user: User,
+    @Args()
+    surveyResponseAggregateArgs: SurveyResponseAggregateArgs
+  ): Promise<number> {
+    return this.surveyResponseService.count(user, surveyResponseAggregateArgs);
   }
 
   @Mutation(() => SurveyResponse, { name: 'createSurveyResponse' })
@@ -74,10 +85,10 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.delete(surveyResponseWhereUniqueInput);
   }
 
-  @Query(() => ResponseCount, { name: 'ResponseCount' })
-  async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
-    return this.surveyResponseService.countResponses(user);
-  }
+  // @Query(() => ResponseCount, { name: 'ResponseCount' })
+  // async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
+  //   return this.surveyResponseService.countResponses(user);
+  // }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
