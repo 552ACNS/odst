@@ -13,8 +13,8 @@ import {
   SurveyUpdateInput,
   SurveyWhereUniqueInput,
   OrgGQL,
-  QuestionGQL,
-  SurveyResponseGQL,
+  Question,
+  SurveyResponse,
   OrgWhereUniqueInput,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
@@ -79,15 +79,15 @@ export class SurveyResolver {
     return this.surveyService.orgs({ id: survey.id });
   }
 
-  @ResolveField(() => [QuestionGQL])
-  async questions(@Parent() survey: SurveyGQL): Promise<QuestionGQL[]> {
+  @ResolveField(() => [Question])
+  async questions(@Parent() survey: SurveyGQL): Promise<Question[]> {
     return this.surveyService.questions({ id: survey.id });
   }
 
-  @ResolveField(() => [SurveyResponseGQL])
+  @ResolveField(() => [SurveyResponse])
   async surveyResponses(
     @Parent() survey: SurveyGQL
-  ): Promise<SurveyResponseGQL[]> {
+  ): Promise<SurveyResponse[]> {
     return this.surveyService.surveyResponses({ id: survey.id });
   }
 }

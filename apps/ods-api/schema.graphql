@@ -19,17 +19,17 @@ enum OrgTier {
   OTHER
 }
 
-type AnswerGQL {
+type Answer {
   id: String!
   value: String!
-  question: QuestionGQL!
-  surveyResponse: SurveyResponseGQL!
+  question: Question!
+  surveyResponse: SurveyResponse!
 }
 
-type QuestionGQL {
+type Question {
   id: String!
   prompt: String!
-  answers: [AnswerGQL!]!
+  answers: [Answer!]!
   surveys: [SurveyGQL!]!
 }
 
@@ -37,17 +37,17 @@ type SurveyGQL {
   id: String!
   questionsHash: String
   orgs: [OrgGQL!]!
-  questions: [QuestionGQL!]!
-  surveyResponses: [SurveyResponseGQL!]!
+  questions: [Question!]!
+  surveyResponses: [SurveyResponse!]!
 }
 
-type SurveyResponseGQL {
+type SurveyResponse {
   id: String!
   openedDate: DateTime!
   closedDate: DateTime
   routeOutside: Boolean!
   resolution: String
-  answers: [AnswerGQL!]!
+  answers: [Answer!]!
   survey: SurveyGQL!
 }
 
@@ -88,18 +88,18 @@ type Tokens {
 type Query {
   findManySurveys: [SurveyGQL!]!
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
-  findManySurveyResponses: [SurveyResponseGQL!]!
-  findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  findManySurveyResponses: [SurveyResponse!]!
+  findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponse!
   ResponseCount: ResponseCount!
   getIssuesByStatus(resolved: String!): [String!]!
-  findManyAnswers: [AnswerGQL!]!
-  findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
+  findManyAnswers: [Answer!]!
+  findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): Answer!
   findManyOrgs: [OrgGQL!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  findManyQuestions: [QuestionGQL!]!
-  getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
-  findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
+  findManyQuestions: [Question!]!
+  getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [Question!]!
+  findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): Question!
   findUsersWithRole(role: String!): [UserGQL!]!
   getCommanders: [UserGQL!]!
   findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
@@ -140,15 +140,15 @@ type Mutation {
   createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
   updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
   deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
-  createSurveyResponse(surveyResponseCreateInput: SurveyResponseCreateInput!): SurveyResponseGQL!
-  updateSurveyResponse(SurveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!, SurveyResponseUpdateInput: SurveyResponseUpdateInput!): SurveyResponseGQL!
-  deleteSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
-  createAnswer(answerCreateInput: AnswerCreateInput!): AnswerGQL!
+  createSurveyResponse(surveyResponseCreateInput: SurveyResponseCreateInput!): SurveyResponse!
+  updateSurveyResponse(SurveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!, SurveyResponseUpdateInput: SurveyResponseUpdateInput!): SurveyResponse!
+  deleteSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponse!
+  createAnswer(answerCreateInput: AnswerCreateInput!): Answer!
   createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
   updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
-  updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
+  createQuestion(questionCreateInput: QuestionCreateInput!): Question!
+  updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): Question!
   createUser(userCreateInput: UserCreateInput!): UserGQL!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL
   login(loginUserInput: LoginUserInput!): Tokens!
