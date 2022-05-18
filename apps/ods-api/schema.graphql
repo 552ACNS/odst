@@ -214,6 +214,7 @@ input SurveyResponseCreateInput {
   closedDate: DateTime
   routeOutside: Boolean
   resolution: String
+  tags: [String!]
 }
 
 input SurveyCreateNestedOneWithoutSurveyResponsesInput {
