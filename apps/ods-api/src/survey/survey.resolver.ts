@@ -8,65 +8,65 @@ import {
 } from '@nestjs/graphql';
 import { SurveyService } from './survey.service';
 import {
-  SurveyGQL,
+  Survey,
   SurveyCreateInput,
   SurveyUpdateInput,
   SurveyWhereUniqueInput,
-  OrgGQL,
+  Org,
   Question,
   SurveyResponse,
   OrgWhereUniqueInput,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
-@Resolver(() => SurveyGQL)
+@Resolver(() => Survey)
 export class SurveyResolver {
   constructor(private readonly surveyService: SurveyService) {}
 
-  @Query(() => [SurveyGQL], { name: 'findManySurveys' })
-  async findMany(): Promise<SurveyGQL[]> {
+  @Query(() => [Survey], { name: 'findManySurveys' })
+  async findMany(): Promise<Survey[]> {
     return this.surveyService.findMany({});
   }
 
-  @Query(() => SurveyGQL, { name: 'findUniqueSurvey' })
+  @Query(() => Survey, { name: 'findUniqueSurvey' })
   async findUnique(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ): Promise<SurveyGQL | null> {
+  ): Promise<Survey | null> {
     return this.surveyService.findUnique(surveyWhereUniqueInput);
   }
 
   @Public()
-  @Mutation(() => SurveyGQL, { name: 'createSurveyWithQuestions' })
+  @Mutation(() => Survey, { name: 'createSurveyWithQuestions' })
   async createWithQuestions(
     @Args({ name: 'questionPrompts', type: () => [String] })
     questionPrompts: string[],
     @Args('orgWhereUniqueInput') orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<SurveyGQL | null> {
+  ): Promise<Survey | null> {
     return this.surveyService.createWithQuestions(
       questionPrompts,
       orgWhereUniqueInput
     );
   }
 
-  @Mutation(() => SurveyGQL, { name: 'createSurvey' })
+  @Mutation(() => Survey, { name: 'createSurvey' })
   create(
     @Args('surveyCreateInput') surveyCreateInput: SurveyCreateInput
-  ): Promise<SurveyGQL> {
+  ): Promise<Survey> {
     return this.surveyService.create(surveyCreateInput);
   }
 
-  @Mutation(() => SurveyGQL, { name: 'updateSurvey' })
+  @Mutation(() => Survey, { name: 'updateSurvey' })
   async update(
     @Args('SurveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput,
     @Args('SurveyUpdateInput')
     surveyUpdateInput: SurveyUpdateInput
-  ): Promise<SurveyGQL> {
+  ): Promise<Survey> {
     return this.surveyService.update(surveyWhereUniqueInput, surveyUpdateInput);
   }
 
-  @Mutation(() => SurveyGQL, { name: 'deleteSurvey' })
+  @Mutation(() => Survey, { name: 'deleteSurvey' })
   async delete(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
@@ -74,20 +74,18 @@ export class SurveyResolver {
     return this.surveyService.delete(surveyWhereUniqueInput);
   }
 
-  @ResolveField(() => [OrgGQL])
-  async orgs(@Parent() survey: SurveyGQL): Promise<OrgGQL[]> {
+  @ResolveField(() => [Org])
+  async orgs(@Parent() survey: Survey): Promise<Org[]> {
     return this.surveyService.orgs({ id: survey.id });
   }
 
   @ResolveField(() => [Question])
-  async questions(@Parent() survey: SurveyGQL): Promise<Question[]> {
+  async questions(@Parent() survey: Survey): Promise<Question[]> {
     return this.surveyService.questions({ id: survey.id });
   }
 
   @ResolveField(() => [SurveyResponse])
-  async surveyResponses(
-    @Parent() survey: SurveyGQL
-  ): Promise<SurveyResponse[]> {
+  async surveyResponses(@Parent() survey: Survey): Promise<SurveyResponse[]> {
     return this.surveyService.surveyResponses({ id: survey.id });
   }
 }

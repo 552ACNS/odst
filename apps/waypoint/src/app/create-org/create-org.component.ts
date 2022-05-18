@@ -10,7 +10,7 @@ import {
   FindManyOrgsDocument,
   FindManyOrgsQuery,
   FindManyOrgsQueryVariables,
-  OrgGql,
+  Org,
   OrgTier,
 } from '../../graphql-generated';
 
@@ -22,7 +22,7 @@ import {
 export class CreateOrgComponent implements OnInit, OnDestroy {
   orgTiers: string[] = Object.values(OrgTier);
   orgAliases: string[] = [];
-  orgs: Partial<OrgGql>[];
+  orgs: Partial<Org>[];
   querySubscription: Subscription;
   loading = true;
   submitSuccess = false;

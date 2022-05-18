@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type OrgGQL {
+type Org {
   id: String
   name: String!
   aliases: [String!]!
@@ -134,7 +134,7 @@ enum Role {
   NONE
 }
 
-type UserGQL {
+type User {
   id: String
   username: String!
   personId: String!
@@ -154,7 +154,7 @@ type IncidentGQL {
   selfReported: Boolean!
 }
 
-input OrgGQLInput {
+input OrgInput {
   id: String
   name: String!
   aliases: [String!]!
@@ -186,7 +186,7 @@ input PersonGQLInput {
   role: Role!
 }
 
-input UserGQLInput {
+input UserInput {
   id: String
   username: String!
   personId: String!
@@ -197,11 +197,11 @@ type Query {
   findManyPersons: [PersonGQL!]!
   findUniquePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
   findManyPersonsInOrg(personWhereUniqueInput: PersonWhereUniqueInput!): [PersonGQL!]!
-  findManyOrgs: [OrgGQL!]!
-  getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
-  findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  findManyUsers: [UserGQL!]!
-  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
+  findManyOrgs: [Org!]!
+  getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [Org!]!
+  findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
+  findManyUsers: [User!]!
+  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): User!
   findUniqueIncident(incidentWhereUniqueInput: IncidentWhereUniqueInput!): IncidentGQL!
 }
 
@@ -235,12 +235,12 @@ type Mutation {
   createPerson(personCreateInput: PersonCreateInput!): PersonGQL!
   updatePerson(personWhereUniqueInput: PersonWhereUniqueInput!, PersonUpdateInput: PersonUpdateInput!): PersonGQL!
   deletePerson(personWhereUniqueInput: PersonWhereUniqueInput!): PersonGQL!
-  createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
-  updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
-  removeOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  createUser(userCreateInput: UserCreateInput!): UserGQL!
-  updateUser(userWhereUniqueInput: UserWhereUniqueInput!, UserUpdateInput: UserUpdateInput!): UserGQL!
-  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
+  createOrg(orgCreateInput: OrgCreateInput!): Org!
+  updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): Org!
+  removeOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
+  createUser(userCreateInput: UserCreateInput!): User!
+  updateUser(userWhereUniqueInput: UserWhereUniqueInput!, UserUpdateInput: UserUpdateInput!): User!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User!
   createIncident(incidentCreateInput: IncidentCreateInput!): IncidentGQL!
 }
 
@@ -295,13 +295,13 @@ input PersonCreateInput {
 
 input OrgCreateNestedOneWithoutPersonsInput {
   connect: OrgWhereUniqueInput
-  create: OrgGQLInput
+  create: OrgInput
   connectOrCreate: OrgCreateOrConnectWithoutPersonsInput
 }
 
 input OrgCreateOrConnectWithoutPersonsInput {
   where: OrgWhereUniqueInput!
-  create: OrgGQLInput!
+  create: OrgInput!
 }
 
 input PersonUpdateInput {
@@ -352,7 +352,7 @@ input OrgCreateNestedOneWithoutChildrenInput {
 
 input OrgCreateOrConnectWithoutChildrenInput {
   where: OrgWhereUniqueInput!
-  create: OrgGQLInput!
+  create: OrgInput!
 }
 
 input OrgCreateNestedManyWithoutParentInput {
@@ -362,7 +362,7 @@ input OrgCreateNestedManyWithoutParentInput {
 
 input OrgCreateOrConnectWithoutParentInput {
   where: OrgWhereUniqueInput!
-  create: OrgGQLInput!
+  create: OrgInput!
 }
 
 input OrgUpdateInput {

@@ -4,7 +4,7 @@ import {
   TokensGQL,
   LoginUserInput,
   SignupUserInput,
-  UserGQL,
+  User,
 } from '@odst/types/waypoint';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -47,10 +47,10 @@ describe('AuthResolver', () => {
     // TEST PARAMS
     const methodToSpy = 'login';
 
-    const user: UserGQL = {
+    const user: User = {
       username: 'username',
       personId: 'personidString',
-    } as unknown as UserGQL;
+    } as unknown as User;
 
     const resolvedLoginResponse = {
       user: user,

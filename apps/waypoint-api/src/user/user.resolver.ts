@@ -3,13 +3,13 @@ import { UserService } from './user.service';
 import {
   UserCreateInput,
   UserUpdateInput,
-  UserGQL,
+  User,
   UserWhereUniqueInput,
 } from '@odst/types/waypoint';
 import { UseGuards } from '@nestjs/common';
 import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 
-@Resolver(() => UserGQL)
+@Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
@@ -34,50 +34,50 @@ export class UserResolver {
   // create a user
   // ths uses the guard because to make an account while unauthenticated you use the signup mutation
   // password provided must be the hashed password for user to be able to log in
-  @Mutation(() => UserGQL, { name: 'createUser' })
+  @Mutation(() => User, { name: 'createUser' })
   @UseGuards(AccessTokenAuthGuard)
   async create(
     @Args('userCreateInput') userCreateInput: UserCreateInput
-  ): Promise<UserGQL> {
+  ): Promise<User> {
     return this.userService.create(userCreateInput);
   }
 
   // find all users
-  @Query(() => [UserGQL], { name: 'findManyUsers' })
+  @Query(() => [User], { name: 'findManyUsers' })
   @UseGuards(AccessTokenAuthGuard)
-  async findMany(): Promise<UserGQL[]> {
+  async findMany(): Promise<User[]> {
     return this.userService.findMany();
   }
 
-  @Query(() => UserGQL, { name: 'findUniqueUser' })
+  @Query(() => User, { name: 'findUniqueUser' })
   @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('userWhereUniqueInput')
     userWhereUniqueInput: UserWhereUniqueInput
-  ): Promise<UserGQL | null> {
+  ): Promise<User | null> {
     return this.userService.findUnique(userWhereUniqueInput);
   }
 
-  @Mutation(() => UserGQL, { name: 'updateUser' })
+  @Mutation(() => User, { name: 'updateUser' })
   @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('userWhereUniqueInput')
     userWhereUniqueInput: UserWhereUniqueInput,
     @Args('UserUpdateInput')
     userUpdateInput: UserUpdateInput
-  ): Promise<UserGQL> {
+  ): Promise<User> {
     return (await this.userService.update(
       userWhereUniqueInput,
       userUpdateInput
-    )) as UserGQL;
+    )) as User;
   }
 
-  @Mutation(() => UserGQL, { name: 'deleteUser' })
+  @Mutation(() => User, { name: 'deleteUser' })
   @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('userWhereUniqueInput')
     userWhereUniqueInput: UserWhereUniqueInput
-  ): Promise<UserGQL> {
+  ): Promise<User> {
     return this.userService.delete(userWhereUniqueInput);
   }
 }

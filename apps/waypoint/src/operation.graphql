@@ -36,7 +36,7 @@ mutation login($loginUserInput: LoginUserInput!) {
   }
 }
 
-fragment orgFields on OrgGQL {
+fragment orgFields on Org {
   id
   name
   aliases

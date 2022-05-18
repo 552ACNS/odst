@@ -14,7 +14,7 @@ import {
   QuestionWhereUniqueInput,
   SurveyWhereUniqueInput,
   Answer,
-  SurveyGQL,
+  Survey,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
@@ -71,8 +71,8 @@ export class QuestionResolver {
     return this.questionService.answers({ id: question.id });
   }
 
-  @ResolveField(() => [SurveyGQL])
-  async surveys(@Parent() question: Question): Promise<SurveyGQL[]> {
+  @ResolveField(() => [Survey])
+  async surveys(@Parent() question: Question): Promise<Survey[]> {
     return this.questionService.surveys({ id: question.id });
   }
 }

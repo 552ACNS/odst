@@ -20,7 +20,7 @@ import {
   FindManyOrgsDocument,
   FindManyOrgsQuery,
   FindManyOrgsQueryVariables,
-  OrgGql,
+  Org,
   Role,
   EyeColor,
   BirthState,
@@ -38,7 +38,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   hairColors: string[] = Object.values(HairColor);
   eyeColors: string[] = Object.values(EyeColor);
   birthStates: string[] = Object.values(BirthState);
-  orgs: Partial<OrgGql>[];
+  orgs: Partial<Org>[];
   personGrades: number[];
   querySubscription: Subscription;
   loading = true;

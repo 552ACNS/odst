@@ -3,6 +3,7 @@ import {
   Mutation,
   Args,
   Query,
+  Int,
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
@@ -13,9 +14,11 @@ import {
   SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
   Answer,
-  SurveyGQL,
-  ResponseCount,
-  UserGQL,
+  Survey,
+  User,
+  FindManySurveyResponseArgs,
+  SurveyResponseCountAggregate,
+  SurveyResponseAggregateArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
@@ -25,8 +28,11 @@ export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
 
   @Query(() => [SurveyResponse], { name: 'findManySurveyResponses' })
-  async findMany(): Promise<SurveyResponse[]> {
-    return this.surveyResponseService.findMany({});
+  async findMany(
+    @Args()
+    findManySurveyResponseArgs: FindManySurveyResponseArgs
+  ): Promise<SurveyResponse[]> {
+    return this.surveyResponseService.findMany(findManySurveyResponseArgs);
   }
 
   //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
@@ -70,15 +76,19 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.delete(surveyResponseWhereUniqueInput);
   }
 
-  @Query(() => ResponseCount, { name: 'ResponseCount' })
-  async ResponseCount(@GetCurrentUser() user: UserGQL): Promise<ResponseCount> {
-    return this.surveyResponseService.countResponses(user);
+  @Query(() => Int, { name: 'ResponseCount' })
+  async count(
+    @GetCurrentUser() user: User,
+    @Args()
+    surveyResponseAggregateArgs: SurveyResponseAggregateArgs
+  ): Promise<number> {
+    return this.surveyResponseService.count(user, surveyResponseAggregateArgs);
   }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
     @Args('resolved') resolved: string,
-    @GetCurrentUser() user: UserGQL
+    @GetCurrentUser() user: User
   ): Promise<string[]> {
     return this.surveyResponseService.getIssuesByStatus(resolved, user);
   }
@@ -88,10 +98,10 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.answers({ id: surveyResponse.id });
   }
 
-  @ResolveField(() => SurveyGQL)
+  @ResolveField(() => Survey)
   async survey(
     @Parent() surveyResponse: SurveyResponse
-  ): Promise<SurveyGQL | null> {
+  ): Promise<Survey | null> {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
   }
 }

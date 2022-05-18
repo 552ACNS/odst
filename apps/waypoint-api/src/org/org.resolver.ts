@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { OrgService } from './org.service';
 import {
-  OrgGQL,
+  Org,
   OrgCreateInput,
   OrgUpdateInput,
   OrgWhereUniqueInput,
@@ -9,21 +9,19 @@ import {
 import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
 import { UseGuards } from '@nestjs/common';
 
-@Resolver(() => OrgGQL)
+@Resolver(() => Org)
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
-  @Mutation(() => OrgGQL, { name: 'createOrg' })
+  @Mutation(() => Org, { name: 'createOrg' })
   @UseGuards(AccessTokenAuthGuard)
-  create(
-    @Args('orgCreateInput') orgCreateInput: OrgCreateInput
-  ): Promise<OrgGQL> {
+  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput): Promise<Org> {
     return this.orgService.create(orgCreateInput);
   }
 
-  @Query(() => [OrgGQL], { name: 'findManyOrgs' })
+  @Query(() => [Org], { name: 'findManyOrgs' })
   @UseGuards(AccessTokenAuthGuard)
-  async findMany(): Promise<OrgGQL[]> {
+  async findMany(): Promise<Org[]> {
     // return this.orgService.findMany();
     return this.orgService.orgs({
       orderBy: {
@@ -32,41 +30,41 @@ export class OrgResolver {
     });
   }
 
-  @Query(() => [OrgGQL], { name: 'getSubOrgs' })
+  @Query(() => [Org], { name: 'getSubOrgs' })
   @UseGuards(AccessTokenAuthGuard)
   async getSubOrgs(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<OrgGQL[]> {
+  ): Promise<Org[]> {
     return this.orgService.getSubOrgs(orgWhereUniqueInput);
   }
 
-  @Query(() => OrgGQL, { name: 'findUniqueOrg' })
+  @Query(() => Org, { name: 'findUniqueOrg' })
   @UseGuards(AccessTokenAuthGuard)
   async findUnique(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<OrgGQL | null> {
+  ): Promise<Org | null> {
     return this.orgService.findUnique(orgWhereUniqueInput);
   }
 
-  @Mutation(() => OrgGQL, { name: 'updateOrg' })
+  @Mutation(() => Org, { name: 'updateOrg' })
   @UseGuards(AccessTokenAuthGuard)
   async update(
     @Args('OrgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput,
     @Args('OrgUpdateInput')
     orgUpdateInput: OrgUpdateInput
-  ): Promise<OrgGQL> {
+  ): Promise<Org> {
     return this.orgService.update(orgWhereUniqueInput, orgUpdateInput);
   }
 
-  @Mutation(() => OrgGQL, { name: 'deleteOrg' })
+  @Mutation(() => Org, { name: 'deleteOrg' })
   @UseGuards(AccessTokenAuthGuard)
   async delete(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<OrgGQL> {
+  ): Promise<Org> {
     return this.orgService.delete(orgWhereUniqueInput);
   }
 }

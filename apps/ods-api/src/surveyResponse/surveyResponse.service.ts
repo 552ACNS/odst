@@ -9,28 +9,16 @@ import {
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
-import { ResponseCount } from '@odst/types/ods';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class SurveyResponseService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.SurveyResponseWhereUniqueInput;
-    where?: Prisma.SurveyResponseWhereInput;
-    orderBy?: Prisma.SurveyResponseOrderByWithRelationInput;
-  }): Promise<SurveyResponse[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.surveyResponse.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+  async findMany(
+    surveyResponseFindManyArgs: Prisma.SurveyResponseFindManyArgs
+  ): Promise<SurveyResponse[]> {
+    return this.prisma.surveyResponse.findMany(surveyResponseFindManyArgs);
   }
 
   async findUnique(
@@ -57,6 +45,38 @@ export class SurveyResponseService {
       where: surveyResponseWhereUniqueInput,
       data: surveyResponseUpdateInput,
     });
+  }
+
+  async count(
+    user: User,
+    surveyResponseCountArgs: Prisma.SurveyResponseCountArgs
+  ): Promise<number> {
+    // modify the survey response count args to include the user's orgs
+    surveyResponseCountArgs.where = {
+      // whatever the previous where clause was, add the user's orgs to it
+      AND: {
+        // Get the original where surveyresponse count args
+        ...surveyResponseCountArgs.where,
+        // Find me the surveys
+        survey: {
+          // where the orgs
+          orgs: {
+            // have some
+            some: {
+              // users
+              users: {
+                // that match the user querying things
+                some: {
+                  id: user.id,
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    return this.prisma.surveyResponse.count(surveyResponseCountArgs);
   }
 
   async delete(
@@ -103,38 +123,38 @@ export class SurveyResponseService {
     }
   }
 
-  async countResponses(user: User): Promise<ResponseCount> {
-    const whereBasedOnUserOrgs = await this.getWhereBasedOnUserOrgs(user);
+  // async countResponses(user: User) {
+  //   const whereBasedOnUserOrgs = await this.getWhereBasedOnUserOrgs(user);
 
-    // TODO: Optimize at a later date, so we don't go back and forth to the server
+  //   // TODO: Optimize at a later date, so we don't go back and forth to the server
 
-    const [unresolved, overdue, resolved] = await this.prisma.$transaction([
-      this.prisma.surveyResponse.count({
-        where: {
-          resolution: null,
-          ...whereBasedOnUserOrgs,
-        },
-      }),
+  //   const [unresolved, overdue, resolved] = await this.prisma.$transaction([
+  //     this.prisma.surveyResponse.count({
+  //       where: {
+  //         resolution: null,
+  //         ...whereBasedOnUserOrgs,
+  //       },
+  //     }),
 
-      this.prisma.surveyResponse.count({
-        where: {
-          openedDate: {
-            lt: new Date(Date.now() - 2592000000),
-          },
-          ...whereBasedOnUserOrgs,
-        },
-      }),
+  //     this.prisma.surveyResponse.count({
+  //       where: {
+  //         openedDate: {
+  //           lt: new Date(Date.now() - 2592000000),
+  //         },
+  //         ...whereBasedOnUserOrgs,
+  //       },
+  //     }),
 
-      this.prisma.surveyResponse.count({
-        where: {
-          resolution: { not: null },
-          ...whereBasedOnUserOrgs,
-        },
-      }),
-    ]);
+  //     this.prisma.surveyResponse.count({
+  //       where: {
+  //         resolution: { not: null },
+  //         ...whereBasedOnUserOrgs,
+  //       },
+  //     }),
+  //   ]);
 
-    return { unresolved, overdue, resolved };
-  }
+  //   return { unresolved, overdue, resolved };
+  // }
 
   determineStatus(resolved: string): Prisma.SurveyResponseWhereInput {
     let whereIssues: Prisma.SurveyResponseWhereInput = {};
@@ -197,6 +217,7 @@ export class SurveyResponseService {
   }
 
   //TODO refactor for complexity
+  // eslint-disable-next-line complexity
   private async getUsersOrgs(user: User): Promise<string[]> {
     const whereUser = {
       users: {
@@ -241,6 +262,7 @@ export class SurveyResponseService {
   }
 
   //TODO refactor for complexity
+  // eslint-disable-next-line complexity
   private async getWhereBasedOnUserOrgs(
     user: User
   ): Promise<Prisma.SurveyResponseWhereInput> {

@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { OrgResolver } from './org.resolver';
 import { OrgService } from './org.service';
-import { OrgCreateInput, OrgGQL, OrgUpdateInput } from '@odst/types/waypoint';
+import { OrgCreateInput, Org, OrgUpdateInput } from '@odst/types/waypoint';
 import { TestOrgCreateInput } from './org.repo';
 
 describe('OrgResolver', () => {
@@ -28,10 +28,10 @@ describe('OrgResolver', () => {
     const methodToSpy = 'create';
 
     // TODO: Seems awkward to cast the org here, but I don't know how to do it otherwise
-    const resolvedOrg: OrgGQL = createdOrg as unknown as OrgGQL;
+    const resolvedOrg: Org = createdOrg as unknown as Org;
 
     // Change value of promise
-    const result: Promise<OrgGQL> = Promise.resolve(resolvedOrg);
+    const result: Promise<Org> = Promise.resolve(resolvedOrg);
 
     //Make it so that the createOrg method returns the fake org
     const spy = jest
@@ -50,12 +50,12 @@ describe('OrgResolver', () => {
     // TEST PARAMS
     const methodToSpy = 'orgs';
 
-    const resolvedOrgs: OrgGQL[] = TestOrgCreateInput.map(
-      (org) => org as unknown as OrgGQL
+    const resolvedOrgs: Org[] = TestOrgCreateInput.map(
+      (org) => org as unknown as Org
     );
 
     // Change value of promise
-    const result: Promise<OrgGQL[]> = Promise.resolve(resolvedOrgs);
+    const result: Promise<Org[]> = Promise.resolve(resolvedOrgs);
 
     //Make it so that the createOrg method returns the fake org
     const spy = jest
@@ -76,10 +76,10 @@ describe('OrgResolver', () => {
     const methodToSpy = 'findUnique';
 
     // TODO: Seems awkward to cast the Org here, but I don't know how to do it otherwise
-    const resolvedOrg: OrgGQL = orgToFind as unknown as OrgGQL;
+    const resolvedOrg: Org = orgToFind as unknown as Org;
 
     // Change value of promise
-    const result: Promise<OrgGQL> = Promise.resolve(resolvedOrg);
+    const result: Promise<Org> = Promise.resolve(resolvedOrg);
 
     //Make it so that the createOrg method returns the fake Org
     const spy = jest
@@ -96,14 +96,14 @@ describe('OrgResolver', () => {
     // TEST PARAMS
     const methodToSpy = 'getSubOrgs';
 
-    const resolvedOrgs: OrgGQL[] = TestOrgCreateInput.map(
-      (org) => org as unknown as OrgGQL
+    const resolvedOrgs: Org[] = TestOrgCreateInput.map(
+      (org) => org as unknown as Org
     );
 
-    const parentOrg: OrgGQL = TestOrgCreateInput[0] as unknown as OrgGQL;
+    const parentOrg: Org = TestOrgCreateInput[0] as unknown as Org;
 
     // Change value of promise
-    const result: Promise<OrgGQL[]> = Promise.resolve(resolvedOrgs);
+    const result: Promise<Org[]> = Promise.resolve(resolvedOrgs);
 
     //Make it so that the createOrg method returns the fake org
     const spy = jest
@@ -127,10 +127,10 @@ describe('OrgResolver', () => {
     const methodToSpy = 'update';
 
     // TODO: Seems awkward to cast the org here, but I don't know how to do it otherwise
-    const resolvedOrg: OrgGQL = originalOrg as unknown as OrgGQL;
+    const resolvedOrg: Org = originalOrg as unknown as Org;
 
     // Change value of promise
-    const result: Promise<OrgGQL> = Promise.resolve(resolvedOrg);
+    const result: Promise<Org> = Promise.resolve(resolvedOrg);
 
     //Make it so that the createOrg method returns the fake org
     const spy = jest
@@ -149,10 +149,10 @@ describe('OrgResolver', () => {
     // TEST PARAMS
     const methodToSpy = 'delete';
     //Create a GQL definition of the Org to delete
-    const deletedOrg: OrgGQL = TestOrgCreateInput[2] as unknown as OrgGQL;
+    const deletedOrg: Org = TestOrgCreateInput[2] as unknown as Org;
 
     //Create a promised result that will match the Org GQL data type that will be deleted
-    const result: Promise<OrgGQL> = Promise.resolve(deletedOrg);
+    const result: Promise<Org> = Promise.resolve(deletedOrg);
 
     //Create the spy on the service
     const spy = jest

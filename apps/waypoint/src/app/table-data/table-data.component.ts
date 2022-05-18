@@ -8,7 +8,7 @@ import {
   FindManyPersonsDocument,
   FindManyPersonsQuery,
   FindManyPersonsQueryVariables,
-  OrgGql,
+  Org,
   PersonGql,
 } from '../../graphql-generated';
 
@@ -20,7 +20,7 @@ import {
 export class TableDataComponent implements OnInit, OnDestroy {
   constructor(private apollo: Apollo) {}
   loading = true;
-  orgs: Partial<OrgGql>[];
+  orgs: Partial<Org>[];
   persons: Partial<PersonGql>[];
   querySubscription: Subscription;
   tablePropsOrg = [

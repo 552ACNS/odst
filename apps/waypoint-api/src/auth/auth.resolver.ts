@@ -1,6 +1,6 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { RefreshLoginInput, TokensGQL, UserGQL } from '@odst/types/waypoint';
+import { RefreshLoginInput, TokensGQL, User } from '@odst/types/waypoint';
 import { LoginUserInput, SignupUserInput } from '@odst/types/waypoint';
 import { UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local.authGuard';
@@ -28,7 +28,7 @@ export class AuthResolver {
 
   @Mutation(() => TokensGQL)
   @UseGuards(RefreshTokenAuthGuard)
-  async refreshTokens(@GetCurrentUser() user: UserGQL): Promise<TokensGQL> {
+  async refreshTokens(@GetCurrentUser() user: User): Promise<TokensGQL> {
     return this.authService.refreshTokens(user);
   }
 
