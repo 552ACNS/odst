@@ -1,6 +1,6 @@
 //#region Entities
-export * from './entity/answer.entity';
 export * from './entity/org.entity';
+export * from './entity/answer.entity';
 export * from './entity/question.entity';
 export * from './entity/survey.entity';
 export * from './entity/surveyResponse.entity';
