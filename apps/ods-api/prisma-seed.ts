@@ -1,64 +1,107 @@
 /* eslint-disable complexity */
-import { PrismaClient } from '.prisma/ods/client';
+import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
 import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-const orgName = '552 ACNS';
-const CCEmail = 'john.doe@us.af.mil';
+const orgSeed: Prisma.OrgCreateInput[] = [
+  // ADMIN
+  {
+    name: 'Scorpion Developers',
+    orgTier: 'OTHER',
+  },
+  // Wings
+  {
+    name: '552 ACW',
+    orgTier: 'WING',
+  },
+  {
+    name: '72 ABW',
+    orgTier: 'WING',
+  },
+  // Groups
+  {
+    name: '552 ACG',
+    orgTier: 'GROUP',
+    parent: {
+      connect: {
+        name: '552 ACW',
+      },
+    },
+  },
+  {
+    name: '72 MDG',
+    orgTier: 'GROUP',
+    parent: {
+      connect: {
+        name: '72 ABW',
+      },
+    },
+  },
+  {
+    name: '552 MXG',
+    orgTier: 'GROUP',
+    parent: {
+      connect: {
+        name: '552 ACW',
+      },
+    },
+  },
+  {
+    name: '552 ACNS',
+    orgTier: 'SQUADRON',
+    parent: {
+      connect: {
+        name: '552 ACG',
+      },
+    },
+  },
+  {
+    name: '552 MXS',
+    orgTier: 'SQUADRON',
+    parent: {
+      connect: {
+        name: '552 MXG',
+      },
+    },
+  },
+  {
+    name: '752 OSS',
+    orgTier: 'SQUADRON',
+    parent: {
+      connect: {
+        name: '552 ACG',
+      },
+    },
+  },
+];
 
 async function main() {
-  //#region org
-  await prisma.org.upsert({
-    where: {
-      name: 'Scorpion Developers',
-    },
-    update: {
-      orgTier: 'OTHER',
-    },
-    create: {
-      name: 'Scorpion Developers',
-      orgTier: 'OTHER',
-    },
-  });
-  await prisma.org.upsert({
-    where: {
-      name: orgName,
-    },
-    update: {
-      orgTier: 'SQUADRON',
-    },
-    create: {
-      name: orgName,
-      orgTier: 'SQUADRON',
-    },
-  });
-  await prisma.org.upsert({
-    where: {
-      name: '552 MXS',
-    },
-    update: {
-      orgTier: 'SQUADRON',
-    },
-    create: {
-      name: '552 MXS',
-      orgTier: 'SQUADRON',
-    },
-  });
-  await prisma.org.upsert({
-    where: {
-      name: '752 OSS',
-    },
-    update: {
-      orgTier: 'SQUADRON',
-    },
-    create: {
-      name: '752 OSS',
-      orgTier: 'SQUADRON',
-    },
-  });
-  //#endregion
+  // Upsert Orgs
+  for (const org of orgSeed) {
+    try {
+      await prisma.org.upsert({
+        where: {
+          name: org.name,
+        },
+        update: {
+          name: org.name,
+          orgTier: org.orgTier,
+          parent: org.parent,
+        },
+        create: {
+          name: org.name,
+          orgTier: org.orgTier,
+          parent: org.parent,
+        },
+      });
+    } catch (e) {
+      if (!(e instanceof PrismaClientKnownRequestError)) {
+        throw e;
+      }
+    }
+  }
 
   //#region user admin
   //delete existing user
@@ -76,9 +119,9 @@ async function main() {
 
   try {
     await prisma.refreshToken.deleteMany({
-      where: { user: { email: CCEmail } },
+      where: { user: { email: 'emmanuel.matos@us.af.mil' } },
     });
-    await prisma.user.delete({ where: { email: CCEmail } });
+    await prisma.user.delete({ where: { email: 'emmanuel.matos@us.af.mil' } });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
     if (!(e instanceof PrismaClientKnownRequestError)) {
@@ -140,12 +183,12 @@ async function main() {
       },
       update: {},
       create: {
-        email: CCEmail,
+        email: 'emmanuel.matos@us.af.mil',
         password: pw,
-        orgs: { connect: { name: orgName } },
+        orgs: { connect: { name: '552 ACNS' } },
         role: 'CC',
-        firstName: 'John',
-        lastName: 'Doe',
+        firstName: 'Emmanuel',
+        lastName: 'Matos',
         grade: 'O-6',
       },
     });
@@ -186,17 +229,9 @@ async function main() {
 
   //#region survey
   //delete existing test surveys
-  const orgNames = [
-    {
-      name: '552 ACNS',
-    },
-    {
-      name: '552 MXS',
-    },
-    {
-      name: '752 OSS',
-    },
-  ];
+  const orgNames = orgSeed.map((o) => {
+    return { name: o.name };
+  });
 
   try {
     await prisma.survey.deleteMany({

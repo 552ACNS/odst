@@ -195,16 +195,16 @@ export class SurveyResponseService {
 
       this.prisma.surveyResponse.count({
         where: {
-          resolution: { not: null },
+          openedDate: {
+            lt: new Date(Date.now() - 2592000000),
+          },
           ...whereBasedOnUserOrgs,
         },
       }),
 
       this.prisma.surveyResponse.count({
         where: {
-          openedDate: {
-            lt: new Date(Date.now() - 2592000000),
-          },
+          resolution: { not: null },
           ...whereBasedOnUserOrgs,
         },
       }),
