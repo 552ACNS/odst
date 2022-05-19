@@ -16,6 +16,7 @@ import {
   SurveyGQL,
   ResponseCount,
   UserGQL,
+  TagGQL,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
@@ -95,5 +96,10 @@ export class SurveyResponseResolver {
     @Parent() surveyResponse: SurveyResponseGQL
   ): Promise<SurveyGQL | null> {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
+  }
+
+  @ResolveField(() => [TagGQL])
+  async tags(@Parent() surveyResponse: SurveyResponseGQL): Promise<TagGQL[]> {
+    return this.surveyResponseService.tags({ id: surveyResponse.id });
   }
 }

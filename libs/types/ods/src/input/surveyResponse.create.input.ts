@@ -15,13 +15,12 @@ export class SurveyResponseCreateInput
   @Field(() => AnswerCreateNestedManyWithoutSurveyResponseInput)
   answers?: Prisma.AnswerCreateNestedManyWithoutSurveyResponseInput;
 
+  @Field(() => TagCreateNestedManyWithoutSurveyResponsesInput)
+  tags?: Prisma.TagCreateNestedManyWithoutSurveyResponsesInput;
   openedDate?: Date;
   closedDate?: Date;
   routeOutside?: boolean;
   resolution?: string;
-
-  @Field(() => TagCreateNestedManyWithoutSurveyResponsesInput)
-  tags?: Prisma.TagCreateNestedManyWithoutSurveyResponsesInput;
 }
 
 @InputType()

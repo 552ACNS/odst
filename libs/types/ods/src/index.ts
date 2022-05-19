@@ -5,6 +5,7 @@ export * from './entity/question.entity';
 export * from './entity/survey.entity';
 export * from './entity/surveyResponse.entity';
 export * from './entity/user.entity';
+export * from './entity/tag.entity';
 //#endregion
 
 //#region Input InputTypes
@@ -26,4 +27,7 @@ export * from './input/surveyResponse.unique.input';
 export * from './input/user.create.input';
 export * from './input/user.update.input';
 export * from './input/user.unique.input';
+export * from './input/tag.create.input';
+export * from './input/tag.unique.input';
+export * from './input/tag.update.input';
 //#endregion

@@ -6,6 +6,7 @@ import {
   Answer,
   Role,
   User,
+  Tag,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
@@ -194,6 +195,14 @@ export class SurveyResponseService {
     return this.prisma.surveyResponse
       .findUnique({ where: surveyResponseWhereUniqueInput })
       .answers();
+  }
+
+  async tags(
+    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+  ): Promise<Tag[]> {
+    return this.prisma.surveyResponse
+      .findUnique({ where: surveyResponseWhereUniqueInput })
+      .tags();
   }
 
   //TODO refactor for complexity

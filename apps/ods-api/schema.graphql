@@ -49,6 +49,7 @@ type SurveyResponseGQL {
   resolution: String
   answers: [AnswerGQL!]!
   survey: SurveyGQL!
+  tags: [TagGQL!]!
 }
 
 """
@@ -78,6 +79,11 @@ enum Role {
   DEI
   EO
   CC
+}
+
+type TagGQL {
+  id: String!
+  value: String!
 }
 
 type Tokens {
@@ -210,11 +216,11 @@ input SurveyResponseCreateManySurveyInputEnvelope {
 input SurveyResponseCreateInput {
   survey: SurveyCreateNestedOneWithoutSurveyResponsesInput!
   answers: AnswerCreateNestedManyWithoutSurveyResponseInput
+  tags: TagCreateNestedManyWithoutSurveyResponsesInput
   openedDate: DateTime
   closedDate: DateTime
   routeOutside: Boolean
   resolution: String
-  tags: [String!]
 }
 
 input SurveyCreateNestedOneWithoutSurveyResponsesInput {
@@ -244,6 +250,31 @@ input AnswerCreateManySurveyResponseInputEnvelope {
 input AnswerCreateManySurveyResponseInput {
   value: String!
   questionId: String!
+}
+
+input TagCreateNestedManyWithoutSurveyResponsesInput {
+  connect: TagWhereUniqueInput
+  create: TagCreateWithoutSurveyResponseInput
+  createMany: TagCreateManySurveyResponseInputEnvelope
+}
+
+input TagWhereUniqueInput {
+  id: String
+}
+
+input TagCreateWithoutSurveyResponseInput {
+  value: String!
+}
+
+input TagCreateManySurveyResponseInputEnvelope {
+  data: [TagCreateManySurveyResponseInput!]!
+  id: String
+  value: String!
+  skipDuplicates: Boolean
+}
+
+input TagCreateManySurveyResponseInput {
+  value: String!
 }
 
 input SurveyResponseUpdateInput {
