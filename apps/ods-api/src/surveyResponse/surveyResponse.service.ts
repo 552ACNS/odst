@@ -59,10 +59,15 @@ export class SurveyResponseService {
 
     // Logger.log('restrictor');
     // Logger.log(restrictor);
-
-    merge(surveyResponseFindManyArgs.where, restrictor);
+    // if the user does not specify a where clause, add the restrictor
+    if (surveyResponseFindManyArgs.where) {
+      merge(surveyResponseFindManyArgs.where, restrictor);
+    } else {
+      // if it does note exist, make it the restrictor
+      surveyResponseFindManyArgs.where = restrictor;
+    }
     // Logger.log('merged');
-    // Logger.log(surveyResponseFindManyArgs)
+    Logger.log(surveyResponseFindManyArgs);
 
     return this.prisma.surveyResponse.findMany(surveyResponseFindManyArgs);
   }
