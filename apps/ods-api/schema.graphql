@@ -49,6 +49,28 @@ type SurveyResponseGQL {
   resolution: String
   answers: [AnswerGQL!]!
   survey: SurveyGQL!
+  tag: Tags!
+}
+
+enum Tags {
+  Gender
+  Sexism
+  Race
+  Racism
+  Sexuality
+  Gender_Identity
+  Religion
+  Mental_Health
+  Minority
+  Marginalized
+  Mental_Illness
+  Rank
+  Observed
+  Experienced
+  Other
+  Harassment
+  Assault
+  Discrimination
 }
 
 """

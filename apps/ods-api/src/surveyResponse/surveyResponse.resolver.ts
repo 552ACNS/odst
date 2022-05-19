@@ -19,7 +19,7 @@ import {
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
-
+import { Tags } from '.prisma/ods/client';
 @Resolver(() => SurveyResponseGQL)
 export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}

@@ -1,9 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { Prisma } from '.prisma/ods/client';
+import { Prisma, Tags } from '.prisma/ods/client';
 import { SurveyCreateNestedOneWithoutSurveyResponsesInput } from './survey.create.input';
 import { SurveyResponseWhereUniqueInput } from './surveyResponse.unique.input';
 import { AnswerCreateNestedManyWithoutSurveyResponseInput } from './answer.create.input';
-import { TagCreateNestedManyWithoutSurveyResponsesInput } from './tag.create.input';
 
 @InputType()
 export class SurveyResponseCreateInput
@@ -20,8 +19,8 @@ export class SurveyResponseCreateInput
   routeOutside?: boolean;
   resolution?: string;
 
-  @Field(() => TagCreateNestedManyWithoutSurveyResponsesInput)
-  tags?: Prisma.TagCreateNestedManyWithoutSurveyResponsesInput;
+  @Field(() => Tags)
+  tags: Tags;
 }
 
 @InputType()

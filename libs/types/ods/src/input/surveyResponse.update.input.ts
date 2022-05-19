@@ -1,5 +1,5 @@
-import { InputType } from '@nestjs/graphql';
-import { Prisma } from '.prisma/ods/client';
+import { InputType, Field } from '@nestjs/graphql';
+import { Prisma, Tags } from '.prisma/ods/client';
 
 @InputType()
 export class SurveyResponseUpdateInput
@@ -12,4 +12,7 @@ export class SurveyResponseUpdateInput
   //TODO Org Guard
   routeOutside?: boolean;
   resolution?: string;
+
+  @Field(() => Tags)
+  tags: Tags;
 }
