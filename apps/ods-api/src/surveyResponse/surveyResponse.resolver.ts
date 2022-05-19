@@ -56,7 +56,7 @@ export class SurveyResponseResolver {
     );
   }
 
-  @Query(() => Int, { name: 'ResponseCount' })
+  @Query(() => Int, { name: 'getResponseCount' })
   async count(
     @GetCurrentUser() user: User,
     @Args()
