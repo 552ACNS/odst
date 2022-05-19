@@ -7,7 +7,6 @@ import {
   ResolveField,
 } from '@nestjs/graphql';
 // eslint-disable-next-line no-restricted-imports
-import { Prisma } from '.prisma/ods/client';
 import { SurveyService } from './survey.service';
 import {
   Survey,
