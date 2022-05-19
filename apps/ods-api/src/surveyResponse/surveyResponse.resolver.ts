@@ -15,13 +15,13 @@ import {
   SurveyResponseWhereUniqueInput,
   Answer,
   Survey,
-  ResponseCount,
   User,
   FindManySurveyResponseArgs,
   SurveyResponseAggregateArgs,
-} from '../__types__/';
+} from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
+import { ResponseCount } from '../__types__';
 
 @Resolver(() => SurveyResponse)
 export class SurveyResponseResolver {

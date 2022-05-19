@@ -13,7 +13,7 @@ import {
   AnswerWhereUniqueInput,
   Question,
   SurveyResponse,
-} from '../__types__/';
+} from '@odst/types/ods';
 
 @Resolver(() => Answer)
 export class AnswerResolver {

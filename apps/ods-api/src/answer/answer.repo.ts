@@ -1,4 +1,4 @@
-import { AnswerCreateInput, Answer } from '../__types__/';
+import { AnswerCreateInput, Answer } from '@odst/types/ods';
 
 export const MockAnswers: Answer[] = [
   {

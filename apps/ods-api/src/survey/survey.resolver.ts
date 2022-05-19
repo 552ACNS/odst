@@ -18,7 +18,7 @@ import {
   Question,
   SurveyResponse,
   OrgWhereUniqueInput,
-} from '../__types__/';
+} from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
 @Resolver(() => Survey)

@@ -9,10 +9,9 @@ import {
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
-import { ResponseCount } from '../__types__/';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { cloneDeep } from '@apollo/client/utilities';
 import { merge } from 'lodash';
+import { ResponseCount } from '../__types__';
 
 @Injectable()
 export class SurveyResponseService {

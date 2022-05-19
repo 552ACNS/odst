@@ -13,7 +13,7 @@ generator client {
 
 generator nestgraphql {
   provider    = "prisma-nestjs-graphql"
-  output      = "./src/__types__/generated/"
+  output      = "../../libs/types/ods/src"
   purgeOutput = true
   reExport    = All
 }
