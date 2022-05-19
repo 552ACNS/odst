@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AnswerGQL {
-  id: String!
-  value: String!
-  question: QuestionGQL!
-  surveyResponse: SurveyResponseGQL!
-}
-
 type OrgGQL {
   orgTier: OrgTier!
   id: String!
@@ -24,6 +17,13 @@ enum OrgTier {
   GROUP
   SQUADRON
   OTHER
+}
+
+type AnswerGQL {
+  id: String!
+  value: String!
+  question: QuestionGQL!
+  surveyResponse: SurveyResponseGQL!
 }
 
 type QuestionGQL {
