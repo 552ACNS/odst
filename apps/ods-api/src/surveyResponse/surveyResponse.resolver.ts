@@ -27,12 +27,22 @@ import { GetCurrentUser } from '@odst/shared/nest';
 export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
 
+  /**
+   * Finds the SurveyResponses that match the provided criteria
+   * @param user The user who is requesting the response count
+   * @param findManySurveyResponseArgs The arguments for the findMany query
+   * @returns The SurveyResponses that fit the findMany args set my API
+   */
   @Query(() => [SurveyResponse], { name: 'findManySurveyResponses' })
   async findMany(
+    @GetCurrentUser() user: User,
     @Args()
     findManySurveyResponseArgs: FindManySurveyResponseArgs
   ): Promise<SurveyResponse[]> {
-    return this.surveyResponseService.findMany(findManySurveyResponseArgs);
+    return this.surveyResponseService.findMany(
+      user,
+      findManySurveyResponseArgs
+    );
   }
 
   //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
@@ -85,10 +95,12 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.delete(surveyResponseWhereUniqueInput);
   }
 
-  // @Query(() => ResponseCount, { name: 'ResponseCount' })
-  // async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
-  //   return this.surveyResponseService.countResponses(user);
-  // }
+  // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
+
+  @Query(() => ResponseCount, { name: 'ResponseCount' })
+  async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
+    return this.surveyResponseService.countResponses(user);
+  }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(

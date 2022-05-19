@@ -91,7 +91,6 @@ model Question {
 enum Role {
   ADMIN
   DEI // Diversity, Equity, Inclusion
-  EO // Equal Opportunity
   CC // Commander
 }
 

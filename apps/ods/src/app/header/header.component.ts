@@ -35,8 +35,6 @@ export class HeaderComponent implements OnInit {
         return 'Commander';
       case Role.Dei:
         return 'Diversity, Equity and Inclusion';
-      case Role.Eo:
-        return 'Equal Opportunity';
     }
   }
 }

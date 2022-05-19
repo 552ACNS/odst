@@ -37,7 +37,7 @@ export class OrgResolver {
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
   ): Promise<Org[]> {
-    return this.orgService.getSubOrgs(orgWhereUniqueInput);
+    return this.orgService.getAllChildren(orgWhereUniqueInput);
   }
 
   @Query(() => Org, { name: 'findUniqueOrg' })
