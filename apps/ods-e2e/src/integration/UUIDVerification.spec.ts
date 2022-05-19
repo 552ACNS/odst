@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 describe('ods', () => {
   const uuid = uuidv4();
-  before(() => {
+  beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
   it('submit a survey with a unique uuid', () => {
@@ -38,8 +38,9 @@ describe('ods', () => {
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
     cy.get('#issuesCard').contains('Unresolved').click();
-    cy.location('pathname').should('include', '/responses');
-    cy.get('[aria-label="Last page"]').click({ force: true });
+    cy.location('pathname').should('include', '/responses').wait('@graphql');
+
+    cy.get('[aria-label="Last page"]').click();
     cy.get('mat-card-content').contains(uuid);
   });
 

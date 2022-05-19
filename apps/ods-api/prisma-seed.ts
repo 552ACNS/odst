@@ -188,7 +188,7 @@ async function main() {
         orgs: { connect: { name: '552 ACG' } },
         role: 'CC',
         firstName: 'Kenneth',
-        lastName: 'Coigt',
+        lastName: 'Voigt',
         grade: 'O-7',
       },
     });
