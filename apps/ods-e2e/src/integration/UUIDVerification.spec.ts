@@ -33,13 +33,13 @@ describe('ods', () => {
   it('Verify that only people with correct permission can view a specific survey', () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
-    cy.get('[formcontrolname="userEmail"]').type('john.doe@us.af.mil');
+    cy.get('[formcontrolname="userEmail"]').type('kenneth.voigt@us.af.mil');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
     cy.get('#issuesCard').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
-    cy.get('[aria-label="Last page"]').click();
+    cy.get('[aria-label="Last page"]').click({ force: true });
     cy.get('mat-card-content').contains(uuid);
   });
 
