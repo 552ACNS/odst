@@ -15,6 +15,7 @@ import { QuestionResolver } from './src/question/question.resolver';
 import { SurveyResolver } from './src/survey/survey.resolver';
 import { SurveyResponseResolver } from './src/surveyResponse/surveyResponse.resolver';
 import { AuthResolver } from '@odst/auth';
+import { CommentResolver } from './src/comment/comment.resolver';
 
 registerEnumType(Role, { name: 'Role' });
 // registerEnumType(Spec, { name: 'Spec' });
@@ -28,6 +29,7 @@ const resolvers = [
   SurveyResponseResolver,
   UserResolver,
   AuthResolver,
+  CommentResolver,
 ];
 
 export async function generateSchema(): Promise<void> {

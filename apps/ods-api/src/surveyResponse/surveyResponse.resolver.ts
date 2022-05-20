@@ -16,8 +16,10 @@ import {
   Answer,
   Survey,
   User,
+  Comment,
   FindManySurveyResponseArgs,
   SurveyResponseAggregateArgs,
+  UpdateOneSurveyResponseArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
@@ -76,15 +78,10 @@ export class SurveyResponseResolver {
 
   @Mutation(() => SurveyResponse, { name: 'updateSurveyResponse' })
   async update(
-    @Args('SurveyResponseWhereUniqueInput')
-    surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput,
-    @Args('SurveyResponseUpdateInput')
-    surveyResponseUpdateInput: SurveyResponseUpdateInput
+    @Args()
+    updateOneSurveyResponseArgs: UpdateOneSurveyResponseArgs
   ): Promise<SurveyResponse> {
-    return this.surveyResponseService.update(
-      surveyResponseWhereUniqueInput,
-      surveyResponseUpdateInput
-    );
+    return this.surveyResponseService.update(updateOneSurveyResponseArgs);
   }
 
   @Mutation(() => SurveyResponse, { name: 'deleteSurveyResponse' })
@@ -122,10 +119,8 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
   }
 
-  @ResolveField(() => [CommentGQL])
-  async comments(
-    @Parent() surveyResponse: SurveyResponseGQL
-  ): Promise<CommentGQL[]> {
+  @ResolveField(() => [Comment])
+  async comments(@Parent() surveyResponse: SurveyResponse): Promise<Comment[]> {
     return this.surveyResponseService.comments({ id: surveyResponse.id });
   }
 }

@@ -6,21 +6,21 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { CommentService } from './comment.service';
-import { CommentGQL, UserGQL, CommentCreateInput } from '@odst/types/ods';
+import { Comment, User, CommentCreateInput } from '@odst/types/ods';
 
-@Resolver(() => CommentGQL)
+@Resolver(() => Comment)
 export class CommentResolver {
   constructor(private readonly commentService: CommentService) {}
 
-  @Mutation(() => CommentGQL, { name: 'createComment' })
+  @Mutation(() => Comment, { name: 'createComment' })
   create(
     @Args('commentCreateInput') commentCreateInput: CommentCreateInput
-  ): Promise<CommentGQL> {
+  ): Promise<Comment> {
     return this.commentService.create(commentCreateInput);
   }
 
-  @ResolveField(() => UserGQL)
-  async author(@Parent() comment: CommentGQL): Promise<UserGQL | null> {
+  @ResolveField(() => User)
+  async author(@Parent() comment: Comment): Promise<User | null> {
     return this.commentService.author({ id: comment.id });
   }
 }
