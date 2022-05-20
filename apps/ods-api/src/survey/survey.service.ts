@@ -7,7 +7,7 @@ import {
   Org,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { getArrayHash } from '@odst/helpers';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class SurveyService {
@@ -155,6 +155,13 @@ export class SurveyService {
       .findUnique({ where: surveyWhereUniqueInput })
       .surveyResponses();
   }
-
   //TODO tests for new methods
+}
+function getArrayHash(stringArray: string[]): string {
+  return stringArray.length > 0
+    ? crypto
+        .createHash('sha256')
+        .update(stringArray.sort().join())
+        .digest('hex')
+    : '';
 }
