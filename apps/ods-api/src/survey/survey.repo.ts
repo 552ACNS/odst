@@ -1,4 +1,4 @@
-import { SurveyCreateInput, Survey } from '../__types__/';
+import { SurveyCreateInput, Survey } from '@odst/types/ods';
 
 export const MockSurveys: Survey[] = [
   { id: 'survey id 1', questionsHash: 'aaa' },

@@ -1,4 +1,4 @@
-import { UserCreateInput, User } from '../__types__/';
+import { UserCreateInput, User } from '@odst/types/ods';
 
 export const MockUsers: User[] = [
   {

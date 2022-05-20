@@ -7,7 +7,6 @@ import {
   ResolveField,
 } from '@nestjs/graphql';
 // eslint-disable-next-line no-restricted-imports
-import { Prisma } from '.prisma/ods/client';
 import { SurveyService } from './survey.service';
 import {
   Survey,
@@ -18,7 +17,7 @@ import {
   Question,
   SurveyResponse,
   OrgWhereUniqueInput,
-} from '../__types__/';
+} from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
 @Resolver(() => Survey)

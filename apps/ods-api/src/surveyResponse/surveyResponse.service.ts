@@ -9,9 +9,9 @@ import {
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
-import { ResponseCount } from '../__types__/';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { cloneDeep } from '@apollo/client/utilities';
+import { merge } from 'lodash';
+import { ResponseCount } from '../__types__';
 
 @Injectable()
 export class SurveyResponseService {
@@ -27,62 +27,10 @@ export class SurveyResponseService {
     user: User,
     surveyResponseFindManyArgs: Prisma.SurveyResponseFindManyArgs
   ): Promise<SurveyResponse[]> {
-    // const usersArgs = cloneDeep(surveyResponseFindManyArgs.where);
-
-    // Logger.log(usersArgs);
-
-    // const blah : Prisma.SurveyResponseWhereInput = {
-    //   // whatever the previous where clause was, add the user's orgs to it
-    //   AND: {
-    //     ...usersArgs,
-    //     // Get the original where surveyresponse count args
-    //     // Find me the surveys where the
-    //     answers: {
-    //       // answers have some
-    //       some: {
-    //         AND: {
-    //           // question
-    //           question: {
-    //             // where the prompt is
-    //             prompt: {
-    //               equals: 'What squadron did the event occur in?',
-    //             },
-    //           },
-    //           // and that value
-    //           value: {
-    //             // is contained in the user's orgs
-    //             in: await this.getUsersOrgs(user),
-    //           },
-    //         },
-    //       },
-    //     },
-    //   },
-    // };
-
-    // Logger.log(blah);
-
-    return this.prisma.surveyResponse.findMany(surveyResponseFindManyArgs);
-  }
-
-  /**
-   * Returns a number of responses for a based on criteria specified by API
-   * @param user Current user, obtained from resolver
-   * @param surveyResponseCountArgs Arguments for the count query, also obtained from resolver
-   * @returns A count of survey responses based on the user's orgs
-   */
-  async count(
-    user: User,
-    surveyResponseCountArgs: Prisma.SurveyResponseCountArgs
-  ): Promise<number> {
-    // Please Fix
-    // this.prisma.surveyResponse.count
-
-    // modify the survey response count args to include the user's orgs
-    surveyResponseCountArgs.where = {
+    const restrictor: Prisma.SurveyResponseWhereInput = {
       // whatever the previous where clause was, add the user's orgs to it
       AND: {
         // Get the original where surveyresponse count args
-        ...surveyResponseCountArgs.where,
         // Find me the surveys where the
         answers: {
           // answers have some
@@ -105,6 +53,73 @@ export class SurveyResponseService {
         },
       },
     };
+
+    // Logger.log('original');
+    // Logger.log(surveyResponseFindManyArgs.where);
+
+    // Logger.log('restrictor');
+    // Logger.log(restrictor);
+    // if the user does not specify a where clause, add the restrictor
+    if (surveyResponseFindManyArgs.where) {
+      merge(surveyResponseFindManyArgs.where, restrictor);
+    } else {
+      // if it does note exist, make it the restrictor
+      surveyResponseFindManyArgs.where = restrictor;
+    }
+    // Logger.log('merged');
+    Logger.log(surveyResponseFindManyArgs);
+
+    return this.prisma.surveyResponse.findMany(surveyResponseFindManyArgs);
+  }
+
+  /**
+   * Returns a number of responses for a based on criteria specified by API
+   * @param user Current user, obtained from resolver
+   * @param surveyResponseCountArgs Arguments for the count query, also obtained from resolver
+   * @returns A count of survey responses based on the user's orgs
+   */
+  async count(
+    user: User,
+    surveyResponseCountArgs: Prisma.SurveyResponseCountArgs
+  ): Promise<number> {
+    // Please Fix
+    // this.prisma.surveyResponse.count
+
+    // modify the survey response count args to include the user's orgs
+    const restrictor: Prisma.SurveyResponseWhereInput = {
+      // whatever the previous where clause was, add the user's orgs to it
+      AND: {
+        // Get the original where surveyresponse count args
+        // Find me the surveys where the
+        answers: {
+          // answers have some
+          some: {
+            AND: {
+              // question
+              question: {
+                // where the prompt is
+                prompt: {
+                  equals: 'What squadron did the event occur in?',
+                },
+              },
+              // and that value
+              value: {
+                // is contained in the user's orgs
+                in: await this.getUsersOrgs(user),
+              },
+            },
+          },
+        },
+      },
+    };
+
+    // Logger.log('original');
+    // Logger.log(surveyResponseFindManyArgs.where);
+
+    // Logger.log('restrictor');
+    // Logger.log(restrictor);
+
+    merge(surveyResponseCountArgs.where, restrictor);
 
     return this.prisma.surveyResponse.count(surveyResponseCountArgs);
   }

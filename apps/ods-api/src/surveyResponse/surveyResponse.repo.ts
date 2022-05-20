@@ -1,4 +1,4 @@
-import { SurveyResponseCreateInput } from '../__types__/';
+import { SurveyResponseCreateInput } from '@odst/types/ods';
 import { SurveyResponse } from '.prisma/ods/client';
 import { User } from '.prisma/ods/client';
 export const MockSurveyResponses: SurveyResponse[] = [
