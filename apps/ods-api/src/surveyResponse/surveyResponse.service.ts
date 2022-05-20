@@ -232,28 +232,6 @@ export class SurveyResponseService {
         // no need to do a db query for admins
         return [];
       case Role.DEI:
-      case Role.EO:
-        //get all orgs where user is either a member of it, a member of the parent or a member of the grand parent
-        return this.prisma.org
-          .findMany({
-            select: { name: true },
-            where: {
-              OR: [
-                whereUser,
-                {
-                  parent: {
-                    OR: [
-                      whereUser,
-                      {
-                        parent: whereUser,
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          })
-          .then((orgs) => orgs.map((org) => org.name));
       case Role.CC:
         return this.prisma.org
           .findMany({ where: whereUser, select: { name: true } })
