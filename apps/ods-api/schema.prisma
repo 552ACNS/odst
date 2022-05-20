@@ -11,12 +11,20 @@ generator client {
   output   = "../../node_modules/.prisma/ods/client"
 }
 
+generator nestgraphql {
+  provider    = "prisma-nestjs-graphql"
+  output      = "../../libs/types/ods/src"
+  purgeOutput = true
+  reExport    = All
+}
+
 model User {
   id           String        @id @default(uuid())
   email        String        @unique
+  /// @HideField()
   password     String
   enabled      Boolean       @default(true)
-  grade         String?
+  grade        String?
   firstName    String
   lastName     String
   role         Role
@@ -95,7 +103,6 @@ model Question {
 enum Role {
   ADMIN
   DEI // Diversity, Equity, Inclusion
-  EO // Equal Opportunity
   CC // Commander
 }
 

@@ -23,7 +23,7 @@ export class OrgService {
     });
   }
 
-  async getSubOrgs(
+  async getAllChildren(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
   ): Promise<Org[]> {
     const parentOrg = await this.prisma.org.findUnique({

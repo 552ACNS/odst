@@ -42,13 +42,15 @@ export class ResponsesService {
   ) {
     console.log('test');
 
-    return this.apollo.mutate<
-      UpdateSurveyResponseMutation,
-      UpdateSurveyResponseMutationVariables
-    >({
-      mutation: UpdateSurveyResponseDocument,
-      variables: updateSurveyResponseMutationVariables,
-    });
+    return this.apollo
+      .mutate<
+        UpdateSurveyResponseMutation,
+        UpdateSurveyResponseMutationVariables
+      >({
+        mutation: UpdateSurveyResponseDocument,
+        variables: updateSurveyResponseMutationVariables,
+      })
+      .subscribe();
   }
 
   async getResponseData(responseID: string) {
