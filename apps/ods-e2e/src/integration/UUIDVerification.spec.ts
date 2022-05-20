@@ -16,6 +16,8 @@ describe('ods', () => {
       .focused()
       .click({ force: true })
       .type('{enter}');
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
     cy.get('#cdk-overlay-0').should('not.be.visible', { timeout: 5000 });
     cy.get('[formcontrolname="event"]').type('e2e Test');
     cy.get('#mat-radio-5').click();
@@ -44,14 +46,7 @@ describe('ods', () => {
     if (cy.get('mat-card').contains('Unresolved').click())
       cy.location('pathname').then((x) => {
         if (x.includes('/responses')) {
-          cy.get('[aria-label="Last page"]').then((x) => {
-            if (x.hasClass('[ng-reflect-disabled="true"]')) {
-              cy.get('mat-card-content').should('not.' + uuid);
-            } else {
-              cy.get('[aria-label="Last page"]').click();
-              cy.get('mat-card-content').should('not.' + uuid);
-            }
-          });
+          cy.get('mat-card-content').should('not.' + uuid);
         }
       });
   });
@@ -65,18 +60,13 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
-    cy.get('[aria-label="Last page"]').then((x) => {
-      if (x.hasClass('[ng-reflect-disabled="true"]')) {
-        cy.get('mat-card-content').contains(uuid);
-        cy.get('textarea').type('This is a resolution');
-        cy.get('button').contains('Submit').click();
-      } else {
-        cy.get('[aria-label="Last page"]').click();
-        cy.get('mat-card-content').contains(uuid);
-        cy.get('textarea').type('This is a resolution');
-        cy.get('button').contains('Submit').click();
-      }
-    });
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+
+    cy.get('mat-card-content', { timeout: 5000 }).contains(uuid);
+    cy.get('textarea').type('This is a resolution');
+    cy.get('button').contains('Submit').click();
   });
 
   it("Verify that only people with wrong permission can't view a specific resolved survey", () => {
@@ -92,14 +82,7 @@ describe('ods', () => {
     if (cy.get('mat-card').contains('Resolved').click())
       cy.location('pathname').then((x) => {
         if (x.includes('/responses')) {
-          cy.get('[aria-label="Last page"]').then((x) => {
-            if (x.hasClass('[ng-reflect-disabled="true"]')) {
-              cy.get('mat-card-content').should('not.' + uuid);
-            } else {
-              cy.get('[aria-label="Last page"]').click();
-              cy.get('mat-card-content').should('not.' + uuid);
-            }
-          });
+          cy.get('mat-card-content').should('not.' + uuid);
         }
       });
   });
