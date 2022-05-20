@@ -15,7 +15,7 @@ describe('Org Resolver', () => {
           provide: OrgService,
           useValue: {
             findMany: jest.fn().mockResolvedValue(MockOrgs),
-            getSubOrgs: jest.fn().mockResolvedValue(MockOrgs),
+            getAllChildren: jest.fn().mockResolvedValue(MockOrgs),
             findUnique: jest
               .fn()
               .mockImplementation(() => Promise.resolve(MockOrgs[0])),
@@ -47,7 +47,7 @@ describe('Org Resolver', () => {
 
   describe('getSubOrgs', () => {
     it('should get an array of orgs', async () => {
-      await expect(resolver.getSubOrgs({ id: 'a uuid' })).resolves.toEqual(
+      await expect(resolver.getAllChildren({ id: 'a uuid' })).resolves.toEqual(
         MockOrgs
       );
     });

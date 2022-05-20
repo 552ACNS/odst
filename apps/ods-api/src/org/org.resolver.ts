@@ -33,7 +33,7 @@ export class OrgResolver {
 
   @Query(() => [Org], { name: 'getSubOrgs' })
   //TODO redo with findMany
-  async getSubOrgs(
+  async getAllChildren(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
   ): Promise<Org[]> {

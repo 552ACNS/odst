@@ -27,49 +27,12 @@ export class SurveyResponseService {
     user: User,
     surveyResponseFindManyArgs: Prisma.SurveyResponseFindManyArgs
   ): Promise<SurveyResponse[]> {
-    const restrictor: Prisma.SurveyResponseWhereInput = {
-      // whatever the previous where clause was, add the user's orgs to it
-      AND: {
-        // Get the original where surveyresponse count args
-        // Find me the surveys where the
-        answers: {
-          // answers have some
-          some: {
-            AND: {
-              // question
-              question: {
-                // where the prompt is
-                prompt: {
-                  equals: 'What squadron did the event occur in?',
-                },
-              },
-              // and that value
-              value: {
-                // is contained in the user's orgs
-                in: await this.getUsersOrgs(user),
-              },
-            },
-          },
-        },
-      },
-    };
-
-    // Logger.log('original');
-    // Logger.log(surveyResponseFindManyArgs.where);
-
-    // Logger.log('restrictor');
-    // Logger.log(restrictor);
-    // if the user does not specify a where clause, add the restrictor
-    if (surveyResponseFindManyArgs.where) {
-      merge(surveyResponseFindManyArgs.where, restrictor);
-    } else {
-      // if it does note exist, make it the restrictor
-      surveyResponseFindManyArgs.where = restrictor;
-    }
-    // Logger.log('merged');
-    Logger.log(surveyResponseFindManyArgs);
-
-    return this.prisma.surveyResponse.findMany(surveyResponseFindManyArgs);
+    return this.prisma.surveyResponse.findMany(
+      this.restrictor(
+        user,
+        surveyResponseFindManyArgs
+      ) as Prisma.SurveyResponseFindManyArgs
+    );
   }
 
   /**
@@ -86,6 +49,27 @@ export class SurveyResponseService {
     // this.prisma.surveyResponse.count
 
     // modify the survey response count args to include the user's orgs
+
+    return this.prisma.surveyResponse.count(
+      this.restrictor(
+        user,
+        surveyResponseCountArgs
+      ) as Prisma.SurveyResponseCountArgs
+    );
+  }
+
+  /**
+   *
+   * @param user Current user, obtained from resolver
+   * @param args Arguments for the query/mutation, obtained from resolver
+   * @returns A new query/mutation with the user's orgs added to the where clause
+   */
+  async restrictor(
+    user: User,
+    args: Prisma.SurveyResponseCountArgs | Prisma.SurveyResponseFindManyArgs
+  ): Promise<
+    Prisma.SurveyResponseCountArgs | Prisma.SurveyResponseFindManyArgs
+  > {
     const restrictor: Prisma.SurveyResponseWhereInput = {
       // whatever the previous where clause was, add the user's orgs to it
       AND: {
@@ -113,15 +97,16 @@ export class SurveyResponseService {
       },
     };
 
-    // Logger.log('original');
-    // Logger.log(surveyResponseFindManyArgs.where);
+    // if the args has a where already, merge args with the restrictor
+    if (args.where) {
+      // the merge will modify the references in the left argument (args.where)
+      merge(args.where, restrictor);
+    } else {
+      // args does not have a where, make it the restrictor
+      args.where = restrictor;
+    }
 
-    // Logger.log('restrictor');
-    // Logger.log(restrictor);
-
-    merge(surveyResponseCountArgs.where, restrictor);
-
-    return this.prisma.surveyResponse.count(surveyResponseCountArgs);
+    return args;
   }
 
   async findUnique(

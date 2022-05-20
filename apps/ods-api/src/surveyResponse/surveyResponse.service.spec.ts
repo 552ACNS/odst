@@ -6,14 +6,20 @@ import {
   MockSurveyResponses,
   MockUsers,
 } from './surveyResponse.repo';
+import { User } from '@odst/types/ods';
+import { MockOrgs } from '../org/org.repo';
 
 const db = {
   surveyResponse: {
-    findMany: jest.fn().mockReturnValue(MockSurveyResponses),
+    findMany: jest.fn().mockResolvedValue(MockSurveyResponses),
     findUnique: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
     create: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
     update: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
     delete: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
+  },
+  // Org is used to find the orgs that the user can see
+  org: {
+    findMany: jest.fn().mockResolvedValue(MockOrgs),
   },
 };
 
@@ -41,9 +47,17 @@ describe('SurveyResponseService', () => {
   });
 
   describe('findMany', () => {
-    it('should return an array of surveyResponses', async () => {
-      const surveyResponses = await service.findMany({});
+    it('should return a list of responses', async () => {
+      const surveyResponses = await service.findMany(new User(), { where: {} });
       expect(surveyResponses).toEqual(MockSurveyResponses);
+    });
+
+    it('should call the restrictor', async () => {
+      const spy = jest.spyOn(service, 'restrictor');
+
+      await service.findMany(new User(), { where: {} });
+
+      expect(spy).toBeCalled();
     });
   });
 
@@ -200,25 +214,25 @@ describe('SurveyResponseService', () => {
     });
 
     // this is a bad test, date now is changing
-    // it('should return reports using overdue status', async () => {
-    //   const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+    it('should return reports using overdue status', async () => {
+      const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
 
-    //   await service.getIssuesByStatus('overdue', MockUsers[0]);
+      await service.getIssuesByStatus('overdue', MockUsers[0]);
 
-    //   expect(spy).toHaveBeenCalledWith({
-    //     where: {
-    //       openedDate: {
-    //         lt: new Date(Date.now() - 2592000000),
-    //       },
-    //       resolution: null,
-    //     },
-    //     select: {
-    //       id: true,
-    //     },
-    //     orderBy: {
-    //       openedDate: 'asc',
-    //     },
-    //   });
-    // });
+      expect(spy).toHaveBeenCalledWith({
+        where: {
+          openedDate: {
+            lt: new Date(Date.now() - 2592000000),
+          },
+          resolution: null,
+        },
+        select: {
+          id: true,
+        },
+        orderBy: {
+          openedDate: 'asc',
+        },
+      });
+    });
   });
 });

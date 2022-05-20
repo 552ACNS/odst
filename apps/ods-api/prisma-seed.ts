@@ -195,6 +195,22 @@ async function main() {
 
     await prisma.user.upsert({
       where: {
+        email: 'keven.coyle@us.af.mil',
+      },
+      update: {},
+      create: {
+        email: 'keven.coyle@us.af.mil',
+        password: pw,
+        orgs: { connect: { name: '552 ACW' } },
+        role: 'CC',
+        firstName: 'Keven',
+        lastName: 'Coyle',
+        grade: 'O-7',
+      },
+    });
+
+    await prisma.user.upsert({
+      where: {
         email: 'emmanuel.matos@us.af.mil',
       },
       update: {},
