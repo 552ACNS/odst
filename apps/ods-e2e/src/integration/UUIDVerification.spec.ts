@@ -16,7 +16,7 @@ describe('ods', () => {
       .focused()
       .click({ force: true })
       .type('{enter}');
-    cy.get('.cdk-overlay-backdrop').should('not.exist');
+    cy.get('.cdk-overlay-backdrop').should('not.exist', { timeout: 5000 });
     cy.get('[formcontrolname="event"]').type('e2e Test');
     cy.get('#mat-radio-5').click();
     cy.get('[formcontrolname="CC')
