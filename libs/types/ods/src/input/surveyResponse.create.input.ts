@@ -6,9 +6,7 @@ import { AnswerCreateNestedManyWithoutSurveyResponseInput } from './answer.creat
 import { TagCreateNestedManyWithoutSurveyResponsesInput } from './tag.create.input';
 
 @InputType()
-export class SurveyResponseCreateInput
-  implements Prisma.SurveyResponseCreateInput
-{
+export class SurveyResponseCreateInput {
   @Field(() => SurveyCreateNestedOneWithoutSurveyResponsesInput)
   survey: Prisma.SurveyCreateNestedOneWithoutSurveyResponsesInput;
 
