@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 describe('ods', () => {
   const uuid = uuidv4();
-  before(() => {
+  beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
   it('submit a survey with a unique uuid', () => {
@@ -30,7 +30,7 @@ describe('ods', () => {
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
 
-  it("Verify that only people with wrong permission can't view a specific unresolved survey", () => {
+  it("Verify that only people with wrong permission can't view a specific survey", () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
     //Login with someone who has zero responses, of any type
@@ -58,12 +58,12 @@ describe('ods', () => {
   it('Verify that only people with correct permission can view a specific survey', () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
-    cy.get('[formcontrolname="userEmail"]').type('john.doe@us.af.mil');
+    cy.get('[formcontrolname="userEmail"]').type('kenneth.voigt@us.af.mil');
     cy.get('[formcontrolname="userPassword"]').type('admin');
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Unresolved').click();
-    cy.location('pathname').should('include', '/responses');
+    cy.location('pathname').should('include', '/responses').wait('@graphql');
     cy.get('[aria-label="Last page"]').then((x) => {
       if (x.hasClass('[ng-reflect-disabled="true"]')) {
         cy.get('mat-card-content').contains(uuid);

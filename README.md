@@ -111,3 +111,8 @@ Ensure that you marked Tailwind as "Important" under tailwind config.
 ### - No loader available on a .graphql file in frontend
 
 Don't import from the .graphql file, import from .generated file
+
+### - "excesive stack depth" error on prisma/graphql types
+
+coercion the type to the expected prisma type.
+example: `UserWhereInput as Prisma.UserWhereInput`

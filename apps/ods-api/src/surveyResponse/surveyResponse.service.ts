@@ -9,28 +9,104 @@ import {
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
-import { ResponseCount } from '@odst/types/ods';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { merge } from 'lodash';
+import { ResponseCount } from '../__types__';
 
 @Injectable()
 export class SurveyResponseService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.SurveyResponseWhereUniqueInput;
-    where?: Prisma.SurveyResponseWhereInput;
-    orderBy?: Prisma.SurveyResponseOrderByWithRelationInput;
-  }): Promise<SurveyResponse[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.surveyResponse.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+  /**
+   * Returns Survey Responses based on criteria specified by API
+   * @param user Current user, obtained from resolver
+   * @param surveyResponseFindManyArgs Arguments for the findMany query, obtained from resolver
+   * @returns A list of survey responses based on where clause
+   */
+  async findMany(
+    user: User,
+    surveyResponseFindManyArgs: Prisma.SurveyResponseFindManyArgs
+  ): Promise<SurveyResponse[]> {
+    return this.prisma.surveyResponse.findMany(
+      this.restrictor(
+        user,
+        surveyResponseFindManyArgs
+      ) as Prisma.SurveyResponseFindManyArgs
+    );
+  }
+
+  /**
+   * Returns a number of responses for a based on criteria specified by API
+   * @param user Current user, obtained from resolver
+   * @param surveyResponseCountArgs Arguments for the count query, also obtained from resolver
+   * @returns A count of survey responses based on the user's orgs
+   */
+  async count(
+    user: User,
+    surveyResponseCountArgs: Prisma.SurveyResponseCountArgs
+  ): Promise<number> {
+    // Please Fix
+    // this.prisma.surveyResponse.count
+
+    // modify the survey response count args to include the user's orgs
+
+    return this.prisma.surveyResponse.count(
+      this.restrictor(
+        user,
+        surveyResponseCountArgs
+      ) as Prisma.SurveyResponseCountArgs
+    );
+  }
+
+  /**
+   *
+   * @param user Current user, obtained from resolver
+   * @param args Arguments for the query/mutation, obtained from resolver
+   * @returns A new query/mutation with the user's orgs added to the where clause
+   */
+  async restrictor(
+    user: User,
+    args: Prisma.SurveyResponseCountArgs | Prisma.SurveyResponseFindManyArgs
+  ): Promise<
+    Prisma.SurveyResponseCountArgs | Prisma.SurveyResponseFindManyArgs
+  > {
+    const restrictor: Prisma.SurveyResponseWhereInput = {
+      // whatever the previous where clause was, add the user's orgs to it
+      AND: {
+        // Get the original where surveyresponse count args
+        // Find me the surveys where the
+        answers: {
+          // answers have some
+          some: {
+            AND: {
+              // question
+              question: {
+                // where the prompt is
+                prompt: {
+                  equals: 'What squadron did the event occur in?',
+                },
+              },
+              // and that value
+              value: {
+                // is contained in the user's orgs
+                in: await this.getUsersOrgs(user),
+              },
+            },
+          },
+        },
+      },
+    };
+
+    // if the args has a where already, merge args with the restrictor
+    if (args.where) {
+      // the merge will modify the references in the left argument (args.where)
+      merge(args.where, restrictor);
+    } else {
+      // args does not have a where, make it the restrictor
+      args.where = restrictor;
+    }
+
+    return args;
   }
 
   async findUnique(
@@ -103,8 +179,9 @@ export class SurveyResponseService {
     }
   }
 
+  // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   async countResponses(user: User): Promise<ResponseCount> {
-    const whereBasedOnUserOrgs = await this.getWhereBasedOnUserOrgs(user);
+    const whereBasedOnUserOrgs = await this.getWhere(user);
 
     // TODO: Optimize at a later date, so we don't go back and forth to the server
 
@@ -121,7 +198,6 @@ export class SurveyResponseService {
           openedDate: {
             lt: new Date(Date.now() - 2592000000),
           },
-          resolution: null,
           ...whereBasedOnUserOrgs,
         },
       }),
@@ -167,7 +243,7 @@ export class SurveyResponseService {
       .findMany({
         where: {
           ...this.determineStatus(resolved),
-          ...(await this.getWhereBasedOnUserOrgs(user)),
+          ...(await this.getWhere(user)),
         },
         select: {
           id: true,
@@ -198,8 +274,15 @@ export class SurveyResponseService {
   }
 
   //TODO refactor for complexity
+  // eslint-disable-next-line complexity
+  /**
+   *
+   * @param user Current user
+   * @returns An array of Org Names ['552 ACNS', '552 ACW', '752 OSS'] etc.
+   */
   private async getUsersOrgs(user: User): Promise<string[]> {
-    const whereUser = {
+    // represents the user's identity
+    const whereUser: Prisma.OrgWhereInput = {
       users: {
         some: {
           id: user.id,
@@ -208,46 +291,66 @@ export class SurveyResponseService {
     };
 
     switch (user.role) {
-      case Role.ADMIN:
-        // no need to do a db query for admins
-        return [];
-      case Role.DEI:
-      case Role.EO:
-        //get all orgs where user is either a member of it, a member of the parent or a member of the grand parent
+      case Role.ADMIN: {
+        // Admins see all orgs
         return this.prisma.org
           .findMany({
-            select: { name: true },
+            select: {
+              name: true,
+            },
+          })
+          .then((orgs) => orgs.map((org) => org.name));
+      }
+      // DEI and CC basically have the same logic on who sees what based on their org membership
+      case Role.DEI:
+      case Role.CC: {
+        // get all orgs where user is either a member of it,
+        // a member of the parent
+        // or a member of the grandparent
+        // Refactor to allow for (N-levels of orgs)
+        return this.prisma.org
+          .findMany({
+            select: {
+              name: true,
+            },
+            // find me the orgs where
             where: {
               OR: [
+                // where the user is a member of it
                 whereUser,
+                // where the user is a member of the parent
+                {
+                  parent: whereUser,
+                },
+                // where the user is a member of the grand parent
                 {
                   parent: {
-                    OR: [
-                      whereUser,
-                      {
-                        parent: whereUser,
-                      },
-                    ],
+                    parent: whereUser,
                   },
                 },
               ],
             },
+            // I only want the distinct results
+            distinct: 'name',
           })
           .then((orgs) => orgs.map((org) => org.name));
-      case Role.CC:
-        return this.prisma.org
-          .findMany({ where: whereUser, select: { name: true } })
-          .then((orgs) => orgs.map((org) => org.name));
+      }
+      default: {
+        // if we for some reason assign to a role that we don't define here
+        // they don't have access to anything
+        return [];
+      }
     }
   }
 
   //TODO refactor for complexity
-  private async getWhereBasedOnUserOrgs(
-    user: User
-  ): Promise<Prisma.SurveyResponseWhereInput> {
-    Logger.log('getOrgWhereBasedOnUser');
+  // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
+  // eslint-disable-next-line complexity
+  private async getWhere(user: User): Promise<Prisma.SurveyResponseWhereInput> {
+    // Get the user's Orgs
     const orgs = await this.getUsersOrgs(user);
 
+    // Only look at the surveyResponses where a specific answer contains one of the user's orgs
     const whereAnswer = {
       answers: {
         some: {
@@ -269,17 +372,6 @@ export class SurveyResponseService {
         //admin sees everything
         return {};
       case Role.DEI:
-      case Role.EO:
-        return {
-          ...whereAnswer,
-          survey: {
-            orgs: {
-              some: {
-                name: { in: orgs },
-              },
-            },
-          },
-        };
       case Role.CC:
         return {
           //no surveyResponses that are routed outside
@@ -292,8 +384,5 @@ export class SurveyResponseService {
           },
         };
     }
-    // This is here so if we define a new role,
-    // they see nothing until we define what they should see
-    return { id: { in: [] } };
   }
 }
