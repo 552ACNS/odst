@@ -1,5 +1,4 @@
-import { QuestionCreateInput } from '@odst/types/ods';
-import { Question } from '.prisma/ods/client';
+import { QuestionCreateInput, Question } from '@odst/types/ods';
 
 export const MockQuestions: Question[] = [
   {
@@ -16,25 +15,31 @@ export const MockQuestionCreateInput: QuestionCreateInput[] = [
   {
     prompt: 'Question 1',
     surveys: {
-      connect: {
-        id: 'survey1',
-      },
+      connect: [
+        {
+          id: 'survey1',
+        },
+      ],
     },
   },
   {
     prompt: 'Question 2',
     surveys: {
-      connect: {
-        id: 'survey1',
-      },
+      connect: [
+        {
+          id: 'survey1',
+        },
+      ],
     },
   },
   {
     prompt: 'Question 3',
     surveys: {
-      connect: {
-        id: 'survey2',
-      },
+      connect: [
+        {
+          id: 'survey2',
+        },
+      ],
     },
   },
 ];

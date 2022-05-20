@@ -23,7 +23,7 @@ describe('ods', () => {
       .type('{enter}');
     cy.get('[formcontrolname="event"]').type('e2e Test');
     cy.get('#mat-radio-3').click();
-    cy.get('[formcontrolname="CC')
+    cy.get('[formcontrolname="CC"]')
       .click()
       .wait('@graphql')
       .focused()
