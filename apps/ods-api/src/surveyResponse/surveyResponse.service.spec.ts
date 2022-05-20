@@ -190,7 +190,7 @@ describe('SurveyResponseService', () => {
           id: true,
         },
         orderBy: {
-          openedDate: 'asc',
+          openedDate: 'desc',
         },
       });
     });
@@ -208,7 +208,7 @@ describe('SurveyResponseService', () => {
           id: true,
         },
         orderBy: {
-          openedDate: 'asc',
+          openedDate: 'desc',
         },
       });
     });
