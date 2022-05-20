@@ -10,6 +10,8 @@
 types.graphql.ts
 schema.graphql
 /libs/types/**/src
+libs/types/**/src/*.ts
+
 
 # dependencies
 /node_modules
