@@ -249,7 +249,7 @@ export class SurveyResponseService {
           id: true,
         },
         orderBy: {
-          openedDate: 'asc',
+          openedDate: 'desc',
         },
       })
       .then((responses) => responses.map((response) => response.id));
