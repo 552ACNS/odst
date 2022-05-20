@@ -14,6 +14,7 @@ import {
   OrgWhereUniqueInput,
   User,
   Survey,
+  UpdateOneOrgArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
@@ -55,12 +56,10 @@ export class OrgResolver {
 
   @Mutation(() => Org, { name: 'updateOrg' })
   async update(
-    @Args('OrgWhereUniqueInput')
-    orgWhereUniqueInput: OrgWhereUniqueInput,
-    @Args('OrgUpdateInput')
-    orgUpdateInput: OrgUpdateInput
+    @Args()
+    updateOneOrgArgs: UpdateOneOrgArgs
   ): Promise<Org> {
-    return this.orgService.update(orgWhereUniqueInput, orgUpdateInput);
+    return this.orgService.update(updateOneOrgArgs);
   }
 
   @Mutation(() => Org, { name: 'deleteOrg' })

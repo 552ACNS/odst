@@ -13,6 +13,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
 import { ResponseCount } from '../__types__';
+import { UpdateOneSurveyResponseArgs } from '@odst/types/ods';
 
 @Injectable()
 export class SurveyResponseService {
@@ -127,9 +128,9 @@ export class SurveyResponseService {
   }
 
   async update(
-    updateOneSurveyResponseArgs: Prisma.SurveyResponseUpdateArgs
+    surveyResponseUpdateArgs: UpdateOneSurveyResponseArgs
   ): Promise<SurveyResponse> {
-    return this.prisma.surveyResponse.update(updateOneSurveyResponseArgs);
+    return this.prisma.surveyResponse.update(surveyResponseUpdateArgs);
   }
 
   async delete(

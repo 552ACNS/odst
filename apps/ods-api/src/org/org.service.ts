@@ -64,14 +64,8 @@ export class OrgService {
     });
   }
 
-  async update(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
-    orgUpdateInput: Prisma.OrgUpdateInput
-  ): Promise<Org> {
-    return this.prisma.org.update({
-      where: orgWhereUniqueInput,
-      data: orgUpdateInput,
-    });
+  async update(orgUpdateArgs: Prisma.OrgUpdateArgs): Promise<Org> {
+    return this.prisma.org.update(orgUpdateArgs);
   }
 
   async delete(
