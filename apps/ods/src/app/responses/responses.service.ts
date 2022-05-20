@@ -48,8 +48,8 @@ export class ResponsesService {
             // We can opt to not send date now and instead just do it in the
             // back end, but that would mean having to make another
             // UpdateSurveyResponse method
-            closedDate: Date.now(),
-            resolution: resolution,
+            closedDate: { set: Date.now() },
+            resolution: { set: resolution },
           },
         },
       })

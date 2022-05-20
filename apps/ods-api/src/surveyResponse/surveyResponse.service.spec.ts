@@ -6,14 +6,20 @@ import {
   MockSurveyResponses,
   MockUsers,
 } from './surveyResponse.repo';
+import { User } from '@odst/types/ods';
+import { MockOrgs } from '../org/org.repo';
 
 const db = {
   surveyResponse: {
-    findMany: jest.fn().mockReturnValue(MockSurveyResponses),
+    findMany: jest.fn().mockResolvedValue(MockSurveyResponses),
     findUnique: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
     create: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
     update: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
     delete: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
+  },
+  // Org is used to find the orgs that the user can see
+  org: {
+    findMany: jest.fn().mockResolvedValue(MockOrgs),
   },
 };
 
@@ -36,19 +42,27 @@ describe('SurveyResponseService', () => {
     prisma = module.get<PrismaService>(PrismaService);
   });
 
-  it('should be defined', () => {
+  it('should be defined', async () => {
     expect(service).toBeDefined();
   });
 
   describe('findMany', () => {
-    it('should return an array of surveyResponses', async () => {
-      const surveyResponses = await service.findMany({});
+    it('should return a list of responses', async () => {
+      const surveyResponses = await service.findMany(new User(), { where: {} });
       expect(surveyResponses).toEqual(MockSurveyResponses);
+    });
+
+    it('should call the restrictor', async () => {
+      const spy = jest.spyOn(service, 'restrictor');
+
+      await service.findMany(new User(), { where: {} });
+
+      expect(spy).toBeCalled();
     });
   });
 
   describe('findUnique', () => {
-    it('should get a single surveyResponse', () => {
+    it('should get a single surveyResponse', async () => {
       expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
         MockSurveyResponses[0]
       );
@@ -77,18 +91,18 @@ describe('SurveyResponseService', () => {
   });
 
   describe('delete', () => {
-    it('should return {deleted: true}', () => {
-      expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
+    it('should return {deleted: true}', async () => {
+      await expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
         deleted: true,
       });
     });
 
-    it('should return {deleted: false, message: err.message}', () => {
+    it('should return {deleted: false, message: err.message}', async () => {
       jest
         .spyOn(prisma.surveyResponse, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
 
-      expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
+      await expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
         deleted: false,
         message: 'Bad Delete Method.',
       });
@@ -96,17 +110,17 @@ describe('SurveyResponseService', () => {
   });
 
   describe('determine status', () => {
-    it('should return an overdue status condition check', () => {
+    it('should return an overdue status condition check', async () => {
       const surveyResponse = service.determineStatus('overdue');
       expect(surveyResponse.resolution).toEqual(null);
       expect(surveyResponse.openedDate).toBeDefined();
     });
-    it('should return an unresolved status condition check', () => {
+    it('should return an unresolved status condition check', async () => {
       const surveyResponse = service.determineStatus('unresolved');
       expect(surveyResponse.resolution).toEqual(null);
       expect(surveyResponse.openedDate).toBeUndefined();
     });
-    it('should return a resolved status condition check', () => {
+    it('should return a resolved status condition check', async () => {
       const surveyResponse = service.determineStatus('resolved');
       expect(surveyResponse.resolution).toEqual({ not: null });
     });
@@ -128,6 +142,7 @@ describe('SurveyResponseService', () => {
       expect(surveyResponse[0]).toBe('SurveyResponse id 1');
       expect(surveyResponse[1]).toBe('SurveyResponse id 2');
     });
+
     it('should return reports that are unresolved', async () => {
       // return a json body of string IDs
       jest

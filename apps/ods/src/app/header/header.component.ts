@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { removeTokens } from '@odst/helpers';
 import { HeaderService } from './header.service';
-import { AuthenticatedUserFragment } from './header.generated';
 import { Role } from '../../types.graphql';
+import { CurrentUserQuery } from './header.generated';
 
 @Component({
   selector: 'odst-header',
@@ -10,7 +10,7 @@ import { Role } from '../../types.graphql';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  user: AuthenticatedUserFragment;
+  user: CurrentUserQuery['me'];
   userTitle: string;
 
   constructor(private headerService: HeaderService) {}
@@ -35,8 +35,6 @@ export class HeaderComponent implements OnInit {
         return 'Commander';
       case Role.Dei:
         return 'Diversity, Equity and Inclusion';
-      case Role.Eo:
-        return 'Equal Opportunity';
     }
   }
 }
