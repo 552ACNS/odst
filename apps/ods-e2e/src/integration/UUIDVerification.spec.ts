@@ -63,7 +63,7 @@ describe('ods', () => {
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Unresolved').click();
-    cy.location('pathname').should('include', '/responses').wait('@graphql');
+    cy.location('pathname').should('include', '/responses');
     cy.get('[aria-label="Last page"]').then((x) => {
       if (x.hasClass('[ng-reflect-disabled="true"]')) {
         cy.get('mat-card-content').contains(uuid);
