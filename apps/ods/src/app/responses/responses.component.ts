@@ -39,7 +39,6 @@ export class ResponsesComponent implements OnInit {
   // This is for the toggle button
   actualResolution: boolean;
 
-  //TODO: talk to sim later and find out if there is already a way to get the current date, did not see it here
   openedDate: Date;
 
   userId: string;
@@ -155,12 +154,7 @@ export class ResponsesComponent implements OnInit {
             ]);
           });
 
-          // if (this.resolved) {
           this.comments = data.findUniqueSurveyResponse.comments;
-          // this.resolutionForm.setValue({
-          //   resolution: data.findUniqueSurveyResponse.comments,
-          // });
-          // }
 
           this.actualResolution = data.findUniqueSurveyResponse['resolved'];
         }
@@ -170,11 +164,6 @@ export class ResponsesComponent implements OnInit {
 
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
-      // Set the resolution
-      // this.resolutionForm.setValue({
-      //   resolution: '',
-      // });
-
       //TODO rewrite with proper pagination
       this.displayedIndex = pageEvent.pageIndex;
 

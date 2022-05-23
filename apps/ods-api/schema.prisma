@@ -7,8 +7,8 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  output          = "../../node_modules/.prisma/ods/client"
+  provider = "prisma-client-js"
+  output   = "../../node_modules/.prisma/ods/client"
 }
 
 generator nestgraphql {
