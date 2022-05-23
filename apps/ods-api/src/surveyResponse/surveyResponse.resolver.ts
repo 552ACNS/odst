@@ -83,6 +83,8 @@ export class SurveyResponseResolver {
   ): Promise<SurveyResponse> {
     const { data, where } = updateArgs;
 
+    // Logger.log(info)
+
     return this.surveyResponseService.update(
       data as Prisma.SurveyResponseUpdateInput,
       where as Prisma.SurveyResponseWhereUniqueInput
