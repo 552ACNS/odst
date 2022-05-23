@@ -15,6 +15,7 @@ import {
   SurveyWhereUniqueInput,
   Answer,
   Survey,
+  UpdateOneQuestionArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
@@ -54,16 +55,10 @@ export class QuestionResolver {
   }
 
   @Mutation(() => Question, { name: 'updateQuestion' })
-  async update(
-    @Args('QuestionWhereUniqueInput')
-    questionWhereUniqueInput: QuestionWhereUniqueInput,
-    @Args('QuestionUpdateInput')
-    questionUpdateInput: QuestionUpdateInput
-  ): Promise<Question> {
-    return this.questionService.update(
-      questionWhereUniqueInput,
-      questionUpdateInput
-    );
+  async update(@Args() updateArgs: UpdateOneQuestionArgs): Promise<Question> {
+    const { where, data } = updateArgs;
+
+    return this.questionService.update(where, data);
   }
 
   @ResolveField(() => [Answer])

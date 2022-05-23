@@ -57,9 +57,11 @@ export class OrgResolver {
   @Mutation(() => Org, { name: 'updateOrg' })
   async update(
     @Args()
-    updateOneOrgArgs: UpdateOneOrgArgs
+    updateArgs: UpdateOneOrgArgs
   ): Promise<Org> {
-    return this.orgService.update(updateOneOrgArgs);
+    const { data, where } = updateArgs;
+
+    return this.orgService.update(data, where);
   }
 
   @Mutation(() => Org, { name: 'deleteOrg' })

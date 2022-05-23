@@ -61,7 +61,10 @@ export class SurveyResolver {
   async update(@Args() updateArgs: UpdateOneSurveyArgs): Promise<Survey> {
     //Type coercion is required here because there is a bug in typescript
     //where entities with several relations overflow the stack
-    return this.surveyService.update(updateArgs);
+
+    const { data, where } = updateArgs;
+
+    return this.surveyService.update(data, where);
   }
 
   @Mutation(() => Survey, { name: 'deleteSurvey' })

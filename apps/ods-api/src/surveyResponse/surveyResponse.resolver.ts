@@ -78,9 +78,11 @@ export class SurveyResponseResolver {
   @Mutation(() => SurveyResponse, { name: 'updateSurveyResponse' })
   async update(
     @Args()
-    updateOneSurveyResponseArgs: UpdateOneSurveyResponseArgs
+    updateArgs: UpdateOneSurveyResponseArgs
   ): Promise<SurveyResponse> {
-    return this.surveyResponseService.update(updateOneSurveyResponseArgs);
+    const { data, where } = updateArgs;
+
+    return this.surveyResponseService.update(data, where);
   }
 
   @Mutation(() => SurveyResponse, { name: 'deleteSurveyResponse' })

@@ -26,8 +26,10 @@
   </section>
 
   <!-- COMMENTS -->
-  <section>
+  <ng-container *ngIf="comments">
     <h1 class="text-center mt-3">Comments</h1>
+
+    <!-- Generates comments if the response has comments -->
     <div
       class="grid"
       *ngFor="
@@ -60,13 +62,21 @@
         class="flex flex-col items-start my-0.5"
         [ngClass]="{
           'items-end ': userId === comment.author.id,
-          'mt-3': i > 0 && comments[i - 1].author.id !== comment.author.id
+          'mt-3': i > 0 && comments[i - 1].author.id !== comment.author.id,
+          'mb-3': last
         }"
       >
-        <p *ngIf="userId !== comment.author.id" class="text-xs ml-3 mb-0.5">
+        <!-- Displays the authors identity if the the identity changes. But NOT if it's the same author twice in a row -->
+        <p
+          *ngIf="
+            userId !== comment.author.id &&
+            comments[i - 1].author.id !== comment.author.id
+          "
+          class="text-xs ml-3 mb-0.5"
+        >
           {{ comment.author.lastName }}, {{ comment.author.firstName }}
-          {{ comment.author.grade }}. {{ comment.author.role }} of
-          {{ comment.author.orgs[0].name }}
+          {{ comment.author.grade }}, {{ comment.author.role }}
+          {{ comment.author.orgs ? 'of ' + comment.author.orgs[0].name : '' }}
         </p>
         <!-- TODO: Use OIDC tokens instead because you aren't a monster -->
         <mat-card
@@ -105,7 +115,7 @@
         </ng-container>
       </div>
     </div>
-  </section>
+  </ng-container>
 
   <mat-card class="shadow-md">
     <mat-card-content class="text-sm text-left">

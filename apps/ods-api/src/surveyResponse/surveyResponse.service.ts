@@ -127,9 +127,10 @@ export class SurveyResponseService {
   }
 
   async update(
-    updateArgs: Prisma.SurveyResponseUpdateArgs
+    data: Prisma.SurveyResponseUpdateInput,
+    where: Prisma.SurveyResponseWhereUniqueInput
   ): Promise<SurveyResponse> {
-    return this.prisma.surveyResponse.update(updateArgs);
+    return this.prisma.surveyResponse.update({ data, where });
   }
 
   async delete(

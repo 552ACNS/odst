@@ -86,8 +86,11 @@ export class SurveyService {
     return survey;
   }
 
-  async update(updateArgs: Prisma.SurveyUpdateArgs): Promise<Survey> {
-    const survey = await this.prisma.survey.update(updateArgs);
+  async update(
+    data: Prisma.SurveyUpdateInput,
+    where: Prisma.SurveyWhereUniqueInput
+  ): Promise<Survey> {
+    const survey = await this.prisma.survey.update({ data, where });
 
     if (survey.id) {
       await this.updateQuestionsHash({ id: survey.id });

@@ -834,7 +834,7 @@ type Mutation {
   updateOrg(data: OrgUpdateInput!, where: OrgWhereUniqueInput!): Org!
   deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
   createQuestion(questionCreateInput: QuestionCreateInput!): Question!
-  updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): Question!
+  updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question!
   createUser(userCreateInput: UserCreateInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
   createComment(commentCreateInput: CommentCreateInput!): Comment!
