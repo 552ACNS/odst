@@ -80,6 +80,7 @@
         </p>
         <!-- TODO: Use OIDC tokens instead because you aren't a monster -->
         <mat-card
+          class="p-3"
           [ngClass]="{ 'primary-text-contrast': userId === comment.author.id }"
         >
           <mat-card-content
@@ -97,7 +98,7 @@
         <!-- Also when the day changes -->
         <ng-container
           *ngIf="
-            first ||
+            (first && comments[i + 1].author.id !== comment.author.id) ||
             last ||
             comments[i + 1].author.id !== comment.author.id ||
             (comments[i + 1].date | date: 'd') !== (comment.date | date: 'd')

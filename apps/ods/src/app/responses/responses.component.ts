@@ -103,6 +103,7 @@ export class ResponsesComponent implements OnInit {
             // Refresh comments afterwards
             this.comments = data.updateSurveyResponse['comments'];
             this.actualResolution = data.updateSurveyResponse['resolved'];
+            this.resolutionForm.value.comment = '';
           }
         });
     }
