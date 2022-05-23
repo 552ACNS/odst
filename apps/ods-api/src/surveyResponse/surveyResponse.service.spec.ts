@@ -82,9 +82,7 @@ describe('SurveyResponseService', () => {
     it('should call the update method', async () => {
       const surveyResponse = await service.update(
         { id: 'a uuid' },
-        {
-          survey: { connect: { id: 'survey id' } },
-        }
+        MockSurveyResponseCreateInput[0]
       );
       expect(surveyResponse).toEqual(MockSurveyResponses[0]);
     });

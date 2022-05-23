@@ -67,7 +67,7 @@ describe('Question Resolver', () => {
   describe('update', () => {
     it('should update a question', async () => {
       await expect(
-        resolver.update({ id: 'a uuid' }, { prompt: { set: 'a new prompt' } })
+        resolver.update({ where: { id: 'a strange id' }, data: {} })
       ).resolves.toEqual(MockQuestions[0]);
     });
   });

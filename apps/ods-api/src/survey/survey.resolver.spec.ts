@@ -66,10 +66,7 @@ describe('Survey Resolver', () => {
   describe('update', () => {
     it('should update a survey', async () => {
       await expect(
-        resolver.update(
-          { id: 'a uuid' },
-          { surveyResponses: { connect: [{ id: 'surveyResponses id' }] } }
-        )
+        resolver.update({ where: { id: 'a strange id' }, data: {} })
       ).resolves.toEqual(MockSurveys[0]);
     });
   });
