@@ -80,6 +80,8 @@ export class SurveyResponseResolver {
     @Args()
     updateArgs: UpdateOneSurveyResponseArgs
   ): Promise<SurveyResponse> {
+    console.log(updateArgs);
+
     const { data, where } = updateArgs;
 
     return this.surveyResponseService.update(data, where);

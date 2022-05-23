@@ -33,15 +33,25 @@ query getIssuesByStatus($resolved: String!) {
   getIssuesByStatus(resolved: $resolved)
 }
 
-mutation UpdateSurveyResponse(
-  $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
-  $surveyResponseUpdateInput: SurveyResponseUpdateInput!
+mutation AddComment(
+  $data: SurveyResponseUpdateInput!
+  $where: SurveyResponseWhereUniqueInput!
 ) {
-  updateSurveyResponse(
-    SurveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
-    SurveyResponseUpdateInput: $surveyResponseUpdateInput
-  ) {
+  updateSurveyResponse(data: $data, where: $where) {
     id
-    openedDate
+    comments {
+      value
+      date
+      author {
+        id
+        firstName
+        lastName
+        grade
+        role
+        orgs {
+          name
+        }
+      }
+    }
   }
 }

@@ -3,10 +3,11 @@ import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FindUniqueSurveyResponseQuery } from './responses.generated';
+import {
+  AddCommentMutationVariables,
+  FindUniqueSurveyResponseQuery,
+} from './responses.generated';
 import { getRefreshToken, getUserId } from '@odst/helpers';
-
-import { UpdateSurveyResponseMutationVariables } from './responses.generated';
 
 @Component({
   selector: 'odst-responses',
@@ -28,7 +29,7 @@ export class ResponsesComponent implements OnInit {
   comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'] =
     [];
 
-  updateSurveyResponseMutationVariables: UpdateSurveyResponseMutationVariables;
+  AddCommentMutationVariables: AddCommentMutationVariables;
 
   newComment = '';
   resolved: string;
@@ -68,35 +69,46 @@ export class ResponsesComponent implements OnInit {
   }
 
   submitResolutionClick() {
-    // console.log(this.resolutionForm.value.resolution.trim());
-    // // if the resolution field is not empty after a trim
-    // if (this.resolutionForm.value.resolution.trim() !== '') {
-    //   this.newComment = this.resolutionForm.value.resolution.trim();
-    //   this.updateSurveyResponseMutationVariables = {
-    //     surveyResponseWhereUniqueInput: {
-    //       id: this.responseIDs[this.displayedIndex],
-    //     },
-    //     surveyResponseUpdateInput: {
-    //       comments: {
-    //         create: {
-    //           value: this.resolutionForm.value.resolution.trim(),
-    //           author: {
-    //             connect: {
-    //               id: this.userId,
-    //             },
-    //           },
-    //         },
-    //       },
-    //     },
-    //   };
-    //   this.responsesService.updateSurveyResponseComments(
-    //     this.updateSurveyResponseMutationVariables
-    //   );
-    //   // .then(() => {
-    //   //   //refresh the page
-    //   //   window.location.reload();
-    //   // });
-    // }
+    console.log(this.resolutionForm.value.resolution.trim());
+    // if the resolution field is not empty after a trim
+    if (this.resolutionForm.value.resolution.trim() !== '') {
+      (this.AddCommentMutationVariables = {
+        where: {
+          id: this.responseIDs[this.displayedIndex],
+        },
+        data: {
+          comments: {
+            create: [
+              {
+                value: this.resolutionForm.value.resolution.trim(),
+                author: {
+                  connect: {
+                    id: this.userId,
+                  },
+                },
+              },
+            ],
+          },
+        },
+      }),
+        // surveyResponseWhereUniqueInput: {
+        //   id: this.responseIDs[this.displayedIndex],
+        // },
+        // surveyResponseUpdateInput: {
+        //   comments: {
+        //     create: {
+        //       value: this.resolutionForm.value.resolution.trim(),
+        //       author: {
+        //         connect: {
+        //           id: this.userId,
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
+
+        this.responsesService.addComment(this.AddCommentMutationVariables);
+    }
   }
 
   async getResponseData(responseID: string) {

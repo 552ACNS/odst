@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { first, map, take } from 'rxjs';
-import {
-  CommentCreateWithoutSurveyResponseInput,
-  SurveyResponseUpdateInput,
-} from '../../types.graphql';
+import { map, take } from 'rxjs';
+
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
@@ -12,9 +9,9 @@ import {
   FindUniqueSurveyResponseDocument,
   FindUniqueSurveyResponseQuery,
   FindUniqueSurveyResponseQueryVariables,
-  UpdateSurveyResponseDocument,
-  UpdateSurveyResponseMutation,
-  UpdateSurveyResponseMutationVariables,
+  AddCommentMutationVariables,
+  AddCommentMutation,
+  AddCommentDocument,
 } from './responses.generated';
 
 @Injectable({
@@ -37,20 +34,13 @@ export class ResponsesService {
     // pluck lets me retrieve nested data.
   }
 
-  async updateSurveyResponseComments(
-    updateSurveyResponseMutationVariables: UpdateSurveyResponseMutationVariables
-  ) {
-    console.log('test');
-
+  async addComment(addCommentMutationVariables: AddCommentMutationVariables) {
     return this.apollo
-      .mutate<
-        UpdateSurveyResponseMutation,
-        UpdateSurveyResponseMutationVariables
-      >({
-        mutation: UpdateSurveyResponseDocument,
-        variables: updateSurveyResponseMutationVariables,
+      .mutate<AddCommentMutation, AddCommentMutationVariables>({
+        mutation: AddCommentDocument,
+        variables: addCommentMutationVariables,
       })
-      .subscribe();
+      .pipe(map((result) => result?.data?.updateSurveyResponse));
   }
 
   async getResponseData(responseID: string) {
