@@ -95,7 +95,7 @@ export class SurveyService {
     if (survey.id) {
       await this.updateQuestionsHash({ id: survey.id });
     }
-
+    // TODO: What if the survey is not found? What does it do?
     return survey;
   }
 
