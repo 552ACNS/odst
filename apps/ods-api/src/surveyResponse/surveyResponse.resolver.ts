@@ -11,7 +11,6 @@ import { SurveyResponseService } from './surveyResponse.service';
 import {
   SurveyResponse,
   SurveyResponseCreateInput,
-  SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
   Answer,
   Survey,

@@ -11,12 +11,12 @@ import { SurveyService } from './survey.service';
 import {
   Survey,
   SurveyCreateInput,
-  SurveyUpdateInput,
   SurveyWhereUniqueInput,
   Org,
   Question,
   SurveyResponse,
   OrgWhereUniqueInput,
+  UpdateOneSurveyArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
@@ -58,15 +58,10 @@ export class SurveyResolver {
   }
 
   @Mutation(() => Survey, { name: 'updateSurvey' })
-  async update(
-    @Args('SurveyWhereUniqueInput')
-    surveyWhereUniqueInput: SurveyWhereUniqueInput,
-    @Args('SurveyUpdateInput')
-    surveyUpdateInput: SurveyUpdateInput
-  ): Promise<Survey> {
+  async update(@Args() updateArgs: UpdateOneSurveyArgs): Promise<Survey> {
     //Type coercion is required here because there is a bug in typescript
     //where entities with several relations overflow the stack
-    return this.surveyService.update(surveyWhereUniqueInput, surveyUpdateInput);
+    return this.surveyService.update(updateArgs);
   }
 
   @Mutation(() => Survey, { name: 'deleteSurvey' })
