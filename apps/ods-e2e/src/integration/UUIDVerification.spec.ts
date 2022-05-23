@@ -35,14 +35,8 @@ describe('ods', () => {
   });
 
   it("Verify that only people with wrong permission can't view a specific survey", () => {
-    cy.visit('/login');
-    cy.location('pathname').should('include', '/login');
-    //Login with someone who has zero responses, of any type
-    cy.get('[formcontrolname="userEmail"]').type(
-      'henry.henderson.99@us.af.mil'
-    );
-    cy.get('[formcontrolname="userPassword"]').type('admin');
-    cy.get('button').contains('Sign In').click();
+    cy.login('henry.henderson.99@us.af.mil', 'admin');
+
     cy.location('pathname').should('include', '/dashboard');
     if (cy.get('mat-card').contains('Unresolved').click())
       cy.location('pathname').then((x) => {
@@ -52,12 +46,9 @@ describe('ods', () => {
       });
   });
 
-  it('Verify that only people with correct permission can view a specific survey response', () => {
-    cy.visit('/login');
-    cy.location('pathname').should('include', '/login');
-    cy.get('[formcontrolname="userEmail"]').type('kenneth.voigt@us.af.mil');
-    cy.get('[formcontrolname="userPassword"]').type('admin');
-    cy.get('button').contains('Sign In').click();
+  it('Verify that only people with correct permission can view a specific survey', () => {
+    cy.login('kenneth.voigt@us.af.mil', 'admin');
+
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
@@ -89,14 +80,8 @@ describe('ods', () => {
   });
 
   it("Verify that only people with wrong permission can't view a specific resolved survey", () => {
-    cy.visit('/login');
-    cy.location('pathname').should('include', '/login');
-    //Login with someone who has zero responses, of any type
-    cy.get('[formcontrolname="userEmail"]').type(
-      'henry.henderson.99@us.af.mil'
-    );
-    cy.get('[formcontrolname="userPassword"]').type('admin');
-    cy.get('button').contains('Sign In').click();
+    cy.login('henry.henderson.99@us.af.mil', 'admin');
+
     cy.location('pathname').should('include', '/dashboard');
     if (cy.get('mat-card').contains('Resolved').click())
       cy.location('pathname').then((x) => {

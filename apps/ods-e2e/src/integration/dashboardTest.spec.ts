@@ -28,11 +28,8 @@ describe('ods', () => {
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
   it('should view unresolved and resolved responses from dashboard', () => {
-    cy.visit('/login');
-    //email has capitalized letters in it to test case insensitivity
-    cy.get('[formcontrolname="userEmail"]').type('adMin@aDmin.com');
-    cy.get('[formcontrolname="userPassword"]').type('admin');
-    cy.get('odst-login').find('button').contains('Sign In').click();
+    cy.login('admin@admin.com', 'admin');
+
     cy.location('pathname').should('include', '/dashboard');
     cy.get('#userNameGrade').contains('Admin Admin, E-∞');
     cy.get('#userTitleOrg').contains('Administrator');
