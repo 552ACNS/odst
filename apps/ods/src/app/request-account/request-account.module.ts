@@ -10,7 +10,6 @@ import { RequestAccountComponent } from './request-account.component';
 import { RequestAccountRoutes } from './request-account.routing';
 import { RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [RequestAccountComponent],
@@ -24,7 +23,6 @@ import { MatChipsModule } from '@angular/material/chips';
     MatSelectModule,
     MatCardModule,
     MatTooltipModule,
-    MatChipsModule,
     FormsModule,
   ],
   exports: [],
