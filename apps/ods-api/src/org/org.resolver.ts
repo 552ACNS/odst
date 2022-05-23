@@ -61,7 +61,10 @@ export class OrgResolver {
   ): Promise<Org> {
     const { data, where } = updateArgs;
 
-    return this.orgService.update(data, where);
+    return this.orgService.update(
+      data as OrgUpdateInput,
+      where as OrgWhereUniqueInput
+    );
   }
 
   @Mutation(() => Org, { name: 'deleteOrg' })

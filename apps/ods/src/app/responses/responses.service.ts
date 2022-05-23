@@ -35,12 +35,11 @@ export class ResponsesService {
   }
 
   async addComment(addCommentMutationVariables: AddCommentMutationVariables) {
-    return this.apollo
-      .mutate<AddCommentMutation, AddCommentMutationVariables>({
-        mutation: AddCommentDocument,
-        variables: addCommentMutationVariables,
-      })
-      .pipe(map((result) => result?.data?.updateSurveyResponse));
+    console.log('addCommentMutationVariables', addCommentMutationVariables);
+    return this.apollo.mutate<AddCommentMutation, AddCommentMutationVariables>({
+      mutation: AddCommentDocument,
+      variables: addCommentMutationVariables,
+    });
   }
 
   async getResponseData(responseID: string) {

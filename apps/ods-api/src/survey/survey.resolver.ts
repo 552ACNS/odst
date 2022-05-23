@@ -17,6 +17,7 @@ import {
   SurveyResponse,
   OrgWhereUniqueInput,
   UpdateOneSurveyArgs,
+  SurveyUpdateInput,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 
@@ -64,7 +65,10 @@ export class SurveyResolver {
 
     const { data, where } = updateArgs;
 
-    return this.surveyService.update(data, where);
+    return this.surveyService.update(
+      data as SurveyUpdateInput,
+      where as SurveyWhereUniqueInput
+    );
   }
 
   @Mutation(() => Survey, { name: 'deleteSurvey' })

@@ -19,6 +19,7 @@ import {
   FindManySurveyResponseArgs,
   SurveyResponseAggregateArgs,
   UpdateOneSurveyResponseArgs,
+  SurveyResponseUpdateInput,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
@@ -84,7 +85,10 @@ export class SurveyResponseResolver {
 
     const { data, where } = updateArgs;
 
-    return this.surveyResponseService.update(data, where);
+    return this.surveyResponseService.update(
+      data as SurveyResponseUpdateInput,
+      where as SurveyResponseWhereUniqueInput
+    );
   }
 
   @Mutation(() => SurveyResponse, { name: 'deleteSurveyResponse' })
