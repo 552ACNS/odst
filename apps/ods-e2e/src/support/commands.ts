@@ -18,7 +18,12 @@ declare namespace Cypress {
 //
 // -- This is a parent command --
 Cypress.Commands.add('login', (email, password) => {
-  console.log('Custom command example: Login', email, password);
+  cy.visit('/login');
+  //email has capitalized letters in it to test case insensitivity
+  cy.get('[formcontrolname="userEmail"]').type(email);
+  cy.get('[formcontrolname="userPassword"]').type(password);
+
+  cy.get('odst-login').find('button').contains('Sign In').click();
 });
 //
 // -- This is a child command --

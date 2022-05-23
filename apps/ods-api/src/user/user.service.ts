@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Prisma, Org, RefreshToken } from '.prisma/ods/client';
+import { User, Comment, Prisma, Org, RefreshToken } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { hash } from 'bcrypt';
 
@@ -27,6 +27,14 @@ export class UserService {
       where: userWhereUniqueInput,
       data: userUpdateInput,
     });
+  }
+
+  async comments(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<Comment[]> {
+    return this.prisma.user
+      .findUnique({ where: userWhereUniqueInput })
+      .comments();
   }
 
   async create(data: Prisma.UserCreateInput): Promise<User> {

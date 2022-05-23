@@ -1,9 +1,14 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import {
+  AddCommentMutationVariables,
+  FindUniqueSurveyResponseQuery,
+  UpdateResolvedMutationVariables,
+} from './responses.generated';
+import { getRefreshToken, getUserId } from '@odst/helpers';
 
 @Component({
   selector: 'odst-responses',
@@ -12,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ResponsesComponent implements OnInit {
   resolutionForm = this.fb.group({
-    resolution: ['', [Validators.required]],
+    comment: ['', [Validators.required]],
   });
   constructor(
     private fb: FormBuilder,
@@ -21,10 +26,23 @@ export class ResponsesComponent implements OnInit {
   ) {}
 
   questionsAnswers: [string, string][] = [];
+  // comments: [string, string, string, any?][] = [];
+  comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'] =
+    [];
 
+  AddCommentMutationVariables: AddCommentMutationVariables;
+
+  newComment = '';
+  // TODO: Change resolved status back to bool
   resolved: string;
 
-  openedDate: string;
+  // This is for the toggle button
+  actualResolution: boolean;
+
+  openedDate: Date;
+
+  userId: string;
+
   numberOfResponses: number;
   displayedIndex: number;
 
@@ -33,6 +51,8 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   async ngOnInit() {
+    this.userId = getUserId(getRefreshToken() ?? '');
+
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
       this.resolved = params['resolved'];
@@ -53,17 +73,61 @@ export class ResponsesComponent implements OnInit {
     });
   }
 
-  submitResolutionClick() {
+  submitComment() {
     // if the resolution field is not empty after a trim
-    if (this.resolutionForm.value.resolution.trim() !== '') {
-      this.responsesService.updateResolution(
-        this.responseIDs[this.displayedIndex],
-        this.resolutionForm.value['resolution']
-      );
+    if (this.resolutionForm.value.comment.trim() !== '') {
+      this.AddCommentMutationVariables = {
+        where: {
+          id: this.responseIDs[this.displayedIndex],
+        },
+        data: {
+          comments: {
+            create: [
+              {
+                value: this.resolutionForm.value.comment.trim(),
+                author: {
+                  connect: {
+                    id: this.userId,
+                  },
+                },
+              },
+            ],
+          },
+        },
+      };
 
-      //refresh the page
-      window.location.reload();
+      this.responsesService
+        .addComment(this.AddCommentMutationVariables)
+        .subscribe(({ data, errors }) => {
+          if (!errors && data) {
+            // Refresh comments afterwards
+            this.comments = data.updateSurveyResponse['comments'];
+            this.actualResolution = data.updateSurveyResponse['resolved'];
+            this.resolutionForm.value.comment = '';
+          }
+        });
     }
+  }
+
+  updateResolved() {
+    const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
+      where: {
+        id: this.responseIDs[this.displayedIndex],
+      },
+      data: {
+        resolved: {
+          set: !this.actualResolution,
+        },
+      },
+    };
+
+    this.responsesService
+      .updateResolved(updateResolvedMutationVariables)
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.actualResolution = data.updateSurveyResponse['resolved'];
+        }
+      });
   }
 
   async getResponseData(responseID: string) {
@@ -75,20 +139,11 @@ export class ResponsesComponent implements OnInit {
           alert(errors);
         }
         if (data) {
-          this.openedDate = formatDate(
-            data.findUniqueSurveyResponse.openedDate,
-            'MMM d yy, h:mm a',
-            'en-US'
-          );
-
-          if (this.resolved) {
-            this.resolutionForm.setValue({
-              resolution: data.findUniqueSurveyResponse.resolution,
-            });
-          }
+          this.openedDate = data.findUniqueSurveyResponse.openedDate;
 
           // Clear contents of QA array
           this.questionsAnswers = [];
+          this.comments = [];
 
           // Handle the Questions & Answers
           data.findUniqueSurveyResponse.answers?.forEach((answer) => {
@@ -99,6 +154,10 @@ export class ResponsesComponent implements OnInit {
               answer.value,
             ]);
           });
+
+          this.comments = data.findUniqueSurveyResponse.comments;
+
+          this.actualResolution = data.findUniqueSurveyResponse['resolved'];
         }
       }
     );
@@ -106,11 +165,6 @@ export class ResponsesComponent implements OnInit {
 
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
-      // Set the resolution
-      this.resolutionForm.setValue({
-        resolution: '',
-      });
-
       //TODO rewrite with proper pagination
       this.displayedIndex = pageEvent.pageIndex;
 
@@ -121,5 +175,3 @@ export class ResponsesComponent implements OnInit {
 
   //TODO [ODST-133] IMPORTANT: set to first page on load
 }
-
-// Suppose our profile query took an avatar size

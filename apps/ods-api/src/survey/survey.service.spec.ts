@@ -64,12 +64,7 @@ describe('SurveyService', () => {
 
   describe('update', () => {
     it('should call the update method', async () => {
-      const survey = await service.update(
-        { id: 'a uuid' },
-        {
-          surveyResponses: { connect: { id: 'surveyResponse id' } },
-        }
-      );
+      const survey = await service.update({ id: 'a uuid' }, {});
       expect(survey).toEqual(MockSurveys[0]);
     });
   });

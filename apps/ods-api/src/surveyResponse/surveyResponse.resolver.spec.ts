@@ -78,10 +78,7 @@ describe('SurveyResponse Resolver', () => {
   describe('update', () => {
     it('should update a surveyResponse', async () => {
       await expect(
-        resolver.update(
-          { id: MockSurveyResponses[0].id },
-          { routeOutside: { set: true } }
-        )
+        resolver.update({ where: { id: 'a strange id' }, data: {} })
       ).resolves.toEqual(MockSurveyResponses[0]);
     });
   });

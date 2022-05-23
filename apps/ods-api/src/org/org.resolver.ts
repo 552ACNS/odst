@@ -10,12 +10,13 @@ import { OrgService } from './org.service';
 import {
   Org,
   OrgCreateInput,
-  OrgUpdateInput,
   OrgWhereUniqueInput,
   User,
   Survey,
+  UpdateOneOrgArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
+import { Prisma } from '.prisma/ods/client';
 
 @Resolver(() => Org)
 export class OrgResolver {
@@ -55,12 +56,15 @@ export class OrgResolver {
 
   @Mutation(() => Org, { name: 'updateOrg' })
   async update(
-    @Args('OrgWhereUniqueInput')
-    orgWhereUniqueInput: OrgWhereUniqueInput,
-    @Args('OrgUpdateInput')
-    orgUpdateInput: OrgUpdateInput
+    @Args()
+    updateArgs: UpdateOneOrgArgs
   ): Promise<Org> {
-    return this.orgService.update(orgWhereUniqueInput, orgUpdateInput);
+    const { data, where } = updateArgs;
+
+    return this.orgService.update(
+      data as Prisma.OrgUpdateInput,
+      where as Prisma.OrgWhereUniqueInput
+    );
   }
 
   @Mutation(() => Org, { name: 'deleteOrg' })

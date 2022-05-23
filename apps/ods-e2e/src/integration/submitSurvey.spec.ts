@@ -2,14 +2,7 @@ describe('ods', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
-  before(() => {
-    //TODO: Implement when login is a thing.
-    //   cy.visit('/login');
-    //   cy.get('[formcontrolname="userUsername"]').type('admin');
-    //   cy.get('[formcontrolname="userPassword"]').type('admin');
-    //   cy.get('odst-login').find('button').contains('Sign In').click();
-    //   cy.location('pathname').should('include', '/home');
-  });
+
   it('should submit a new report', () => {
     cy.visit('/disclaimer');
     cy.location('pathname').should('include', '/disclaimer');

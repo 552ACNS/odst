@@ -10,12 +10,14 @@ import { QuestionService } from './question.service';
 import {
   Question,
   QuestionCreateInput,
-  QuestionUpdateInput,
   QuestionWhereUniqueInput,
   SurveyWhereUniqueInput,
   Answer,
   Survey,
+  UpdateOneQuestionArgs,
 } from '@odst/types/ods';
+import { Prisma } from '.prisma/ods/client';
+
 import { Public } from '@odst/auth';
 
 @Resolver(() => Question)
@@ -54,15 +56,12 @@ export class QuestionResolver {
   }
 
   @Mutation(() => Question, { name: 'updateQuestion' })
-  async update(
-    @Args('QuestionWhereUniqueInput')
-    questionWhereUniqueInput: QuestionWhereUniqueInput,
-    @Args('QuestionUpdateInput')
-    questionUpdateInput: QuestionUpdateInput
-  ): Promise<Question> {
+  async update(@Args() updateArgs: UpdateOneQuestionArgs): Promise<Question> {
+    const { where, data } = updateArgs;
+
     return this.questionService.update(
-      questionWhereUniqueInput,
-      questionUpdateInput
+      where as Prisma.QuestionWhereUniqueInput,
+      data as Prisma.QuestionUpdateInput
     );
   }
 

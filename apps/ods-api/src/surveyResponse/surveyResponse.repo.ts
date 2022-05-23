@@ -8,7 +8,7 @@ export const MockSurveyResponses: SurveyResponse[] = [
     closedDate: new Date(),
     surveyId: 'surveyId',
     routeOutside: false,
-    resolution: 'resolved',
+    resolved: true,
   },
   {
     id: 'SurveyResponse id 2',
@@ -16,7 +16,7 @@ export const MockSurveyResponses: SurveyResponse[] = [
     closedDate: new Date(),
     surveyId: 'surveyId',
     routeOutside: false,
-    resolution: 'resolved',
+    resolved: true,
   },
   //add condition for unresolved
   {
@@ -25,7 +25,7 @@ export const MockSurveyResponses: SurveyResponse[] = [
     closedDate: null,
     surveyId: 'surveyId',
     routeOutside: false,
-    resolution: null,
+    resolved: false,
   },
   //add condition for overdue
   {
@@ -34,7 +34,7 @@ export const MockSurveyResponses: SurveyResponse[] = [
     closedDate: null,
     surveyId: 'surveyId',
     routeOutside: false,
-    resolution: null,
+    resolved: false,
   },
 ];
 

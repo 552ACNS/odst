@@ -69,9 +69,9 @@ describe('OrgService', () => {
   describe('update', () => {
     it('should call the update method', async () => {
       const org = await service.update(
-        { id: 'a uuid' },
+        { orgTier: 'WING' },
         {
-          orgTier: 'WING',
+          name: 'a new name',
         }
       );
       expect(org).toEqual(MockOrgs[0]);

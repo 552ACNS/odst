@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, take } from 'rxjs';
+
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
@@ -8,9 +9,12 @@ import {
   FindUniqueSurveyResponseDocument,
   FindUniqueSurveyResponseQuery,
   FindUniqueSurveyResponseQueryVariables,
-  UpdateSurveyResponseDocument,
-  UpdateSurveyResponseMutation,
-  UpdateSurveyResponseMutationVariables,
+  AddCommentMutationVariables,
+  AddCommentMutation,
+  AddCommentDocument,
+  UpdateResolvedMutation,
+  UpdateResolvedMutationVariables,
+  UpdateResolvedDocument,
 } from './responses.generated';
 
 @Injectable({
@@ -33,27 +37,23 @@ export class ResponsesService {
     // pluck lets me retrieve nested data.
   }
 
-  updateResolution(id: string, resolution: string) {
-    return this.apollo
-      .mutate<
-        UpdateSurveyResponseMutation,
-        UpdateSurveyResponseMutationVariables
-      >({
-        mutation: UpdateSurveyResponseDocument,
-        variables: {
-          surveyResponseWhereUniqueInput: {
-            id: id,
-          },
-          surveyResponseUpdateInput: {
-            // We can opt to not send date now and instead just do it in the
-            // back end, but that would mean having to make another
-            // UpdateSurveyResponse method
-            closedDate: { set: Date.now() },
-            resolution: { set: resolution },
-          },
-        },
-      })
-      .subscribe();
+  addComment(addCommentMutationVariables: AddCommentMutationVariables) {
+    return this.apollo.mutate<AddCommentMutation, AddCommentMutationVariables>({
+      mutation: AddCommentDocument,
+      variables: addCommentMutationVariables,
+    });
+  }
+
+  updateResolved(
+    updateResolvedMutationVariables: UpdateResolvedMutationVariables
+  ) {
+    return this.apollo.mutate<
+      UpdateResolvedMutation,
+      UpdateResolvedMutationVariables
+    >({
+      mutation: UpdateResolvedDocument,
+      variables: updateResolvedMutationVariables,
+    });
   }
 
   async getResponseData(responseID: string) {

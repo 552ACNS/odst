@@ -11,14 +11,16 @@ import { SurveyResponseService } from './surveyResponse.service';
 import {
   SurveyResponse,
   SurveyResponseCreateInput,
-  SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
   Answer,
   Survey,
   User,
+  Comment,
   FindManySurveyResponseArgs,
   SurveyResponseAggregateArgs,
+  UpdateOneSurveyResponseArgs,
 } from '@odst/types/ods';
+import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
 import { ResponseCount } from '../__types__';
@@ -76,14 +78,16 @@ export class SurveyResponseResolver {
 
   @Mutation(() => SurveyResponse, { name: 'updateSurveyResponse' })
   async update(
-    @Args('SurveyResponseWhereUniqueInput')
-    surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput,
-    @Args('SurveyResponseUpdateInput')
-    surveyResponseUpdateInput: SurveyResponseUpdateInput
+    @Args()
+    updateArgs: UpdateOneSurveyResponseArgs
   ): Promise<SurveyResponse> {
+    const { data, where } = updateArgs;
+
+    // Logger.log(info)
+
     return this.surveyResponseService.update(
-      surveyResponseWhereUniqueInput,
-      surveyResponseUpdateInput
+      data as Prisma.SurveyResponseUpdateInput,
+      where as Prisma.SurveyResponseWhereUniqueInput
     );
   }
 
@@ -120,5 +124,10 @@ export class SurveyResponseResolver {
     @Parent() surveyResponse: SurveyResponse
   ): Promise<Survey | null> {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
+  }
+
+  @ResolveField(() => [Comment])
+  async comments(@Parent() surveyResponse: SurveyResponse): Promise<Comment[]> {
+    return this.surveyResponseService.comments({ id: surveyResponse.id });
   }
 }

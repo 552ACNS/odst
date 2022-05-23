@@ -6,6 +6,7 @@ import {
   Answer,
   Role,
   User,
+  Comment,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
@@ -126,13 +127,10 @@ export class SurveyResponseService {
   }
 
   async update(
-    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput,
-    surveyResponseUpdateInput: Prisma.SurveyResponseUpdateInput
+    data: Prisma.SurveyResponseUpdateInput,
+    where: Prisma.SurveyResponseWhereUniqueInput
   ): Promise<SurveyResponse> {
-    return this.prisma.surveyResponse.update({
-      where: surveyResponseWhereUniqueInput,
-      data: surveyResponseUpdateInput,
-    });
+    return this.prisma.surveyResponse.update({ data, where });
   }
 
   async delete(
@@ -188,7 +186,7 @@ export class SurveyResponseService {
     const [unresolved, overdue, resolved] = await this.prisma.$transaction([
       this.prisma.surveyResponse.count({
         where: {
-          resolution: null,
+          resolved: false,
           ...whereBasedOnUserOrgs,
         },
       }),
@@ -198,13 +196,14 @@ export class SurveyResponseService {
           openedDate: {
             lt: new Date(Date.now() - 2592000000),
           },
+          resolved: false,
           ...whereBasedOnUserOrgs,
         },
       }),
 
       this.prisma.surveyResponse.count({
         where: {
-          resolution: { not: null },
+          resolved: true,
           ...whereBasedOnUserOrgs,
         },
       }),
@@ -221,17 +220,17 @@ export class SurveyResponseService {
           openedDate: {
             lt: new Date(Date.now() - 2592000000),
           },
-          resolution: null,
+          resolved: false,
         };
         break;
       case 'unresolved':
         whereIssues = {
-          resolution: null,
+          resolved: false,
         };
         break;
       case 'resolved':
         whereIssues = {
-          resolution: { not: null },
+          resolved: true,
         };
         break;
     }
@@ -271,6 +270,18 @@ export class SurveyResponseService {
     return this.prisma.surveyResponse
       .findUnique({ where: surveyResponseWhereUniqueInput })
       .answers();
+  }
+
+  async comments(
+    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+  ): Promise<Comment[]> {
+    return this.prisma.surveyResponse
+      .findUnique({ where: surveyResponseWhereUniqueInput })
+      .comments({
+        orderBy: {
+          date: 'asc',
+        },
+      });
   }
 
   //TODO refactor for complexity
@@ -374,12 +385,16 @@ export class SurveyResponseService {
       case Role.DEI:
       case Role.CC:
         return {
-          //no surveyResponses that are routed outside
-          routeOutside: false,
-          ...whereAnswer,
-          survey: {
-            orgs: {
-              some: { name: { in: orgs } },
+          AND: {
+            //no surveyResponses that are routed outside
+            routeOutside: false,
+            OR: {
+              ...whereAnswer,
+              survey: {
+                orgs: {
+                  some: { name: { in: orgs } },
+                },
+              },
             },
           },
         };
