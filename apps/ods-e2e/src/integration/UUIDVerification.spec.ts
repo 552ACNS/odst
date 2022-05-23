@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
 describe('ods', () => {
-  const uuid = uuidv4();
+  const surveyResponseUUID = uuidv4();
+  const commentUUID = uuidv4();
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
@@ -28,7 +29,7 @@ describe('ods', () => {
       .click({ force: true })
       .type('{enter}');
     cy.get('#mat-radio-8').click();
-    cy.get('[formcontrolname="impact"]').type(uuid);
+    cy.get('[formcontrolname="impact"]').type(surveyResponseUUID);
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
@@ -46,12 +47,12 @@ describe('ods', () => {
     if (cy.get('mat-card').contains('Unresolved').click())
       cy.location('pathname').then((x) => {
         if (x.includes('/responses')) {
-          cy.get('mat-card-content').should('not.' + uuid);
+          cy.get('mat-card-content').should('not.' + surveyResponseUUID);
         }
       });
   });
 
-  it('Verify that only people with correct permission can view a specific survey', () => {
+  it('Verify that only people with correct permission can view a specific survey response', () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
     cy.get('[formcontrolname="userEmail"]').type('kenneth.voigt@us.af.mil');
@@ -64,9 +65,27 @@ describe('ods', () => {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
 
-    cy.get('mat-card-content', { timeout: 5000 }).contains(uuid);
-    cy.get('textarea').type('This is a resolution');
+    cy.get('mat-card-content', { timeout: 5000 }).contains(surveyResponseUUID);
+    cy.get('textarea').type(commentUUID);
     cy.get('button').contains('Submit').click();
+    cy.get('mat-slide-toggle').click();
+  });
+
+  it('Verify that a comment was mad and that the survey was catagorized as resolved', () => {
+    cy.visit('/login');
+    cy.location('pathname').should('include', '/login');
+    cy.get('[formcontrolname="userEmail"]').type('kenneth.voigt@us.af.mil');
+    cy.get('[formcontrolname="userPassword"]').type('admin');
+    cy.get('button').contains('Sign In').click();
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Resolved').click();
+    cy.location('pathname').should('include', '/responses');
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+
+    cy.get('mat-card-content', { timeout: 5000 }).contains(surveyResponseUUID);
+    cy.get('mat-card-content').contains(commentUUID);
   });
 
   it("Verify that only people with wrong permission can't view a specific resolved survey", () => {
@@ -82,7 +101,7 @@ describe('ods', () => {
     if (cy.get('mat-card').contains('Resolved').click())
       cy.location('pathname').then((x) => {
         if (x.includes('/responses')) {
-          cy.get('mat-card-content').should('not.' + uuid);
+          cy.get('mat-card-content').should('not.' + surveyResponseUUID);
         }
       });
   });
