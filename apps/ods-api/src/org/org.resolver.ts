@@ -10,13 +10,13 @@ import { OrgService } from './org.service';
 import {
   Org,
   OrgCreateInput,
-  OrgUpdateInput,
   OrgWhereUniqueInput,
   User,
   Survey,
   UpdateOneOrgArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
+import { Prisma } from '.prisma/ods/client';
 
 @Resolver(() => Org)
 export class OrgResolver {
@@ -62,8 +62,8 @@ export class OrgResolver {
     const { data, where } = updateArgs;
 
     return this.orgService.update(
-      data as OrgUpdateInput,
-      where as OrgWhereUniqueInput
+      data as Prisma.OrgUpdateInput,
+      where as Prisma.OrgWhereUniqueInput
     );
   }
 

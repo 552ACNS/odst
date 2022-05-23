@@ -19,6 +19,8 @@ import {
   UpdateOneSurveyArgs,
   SurveyUpdateInput,
 } from '@odst/types/ods';
+import { Prisma } from '.prisma/ods/client';
+
 import { Public } from '@odst/auth';
 
 @Resolver(() => Survey)
@@ -66,8 +68,8 @@ export class SurveyResolver {
     const { data, where } = updateArgs;
 
     return this.surveyService.update(
-      data as SurveyUpdateInput,
-      where as SurveyWhereUniqueInput
+      data as Prisma.SurveyUpdateInput,
+      where as Prisma.SurveyWhereUniqueInput
     );
   }
 

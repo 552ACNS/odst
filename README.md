@@ -114,5 +114,5 @@ Don't import from the .graphql file, import from .generated file
 
 ### - "excesive stack depth" error on prisma/graphql types
 
-coercion the type to the expected prisma type.
+coercion the type to the expected prisma type. Will probably need to do it on resolver.
 example: `UserWhereInput as Prisma.UserWhereInput`

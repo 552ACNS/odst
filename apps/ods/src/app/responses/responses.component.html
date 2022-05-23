@@ -70,7 +70,7 @@
         <p
           *ngIf="
             userId !== comment.author.id &&
-            comments[i - 1].author.id !== comment.author.id
+            comments[i - 1]?.author?.id !== comment.author.id
           "
           class="text-xs ml-3 mb-0.5"
         >

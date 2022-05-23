@@ -23,30 +23,7 @@
       "parser": "@typescript-eslint/parser",
       "plugins": ["@typescript-eslint"],
       "rules": {
-        //TODO would like to make up this to error eventually
         "@typescript-eslint/explicit-function-return-type": "warn"
-      }
-    },
-    {
-      "files": ["*.resolver.ts"],
-      "rules": {
-        "no-restricted-imports": [
-          "error",
-          {
-            "patterns": [
-              {
-                //I don't know how to gg (glob good)
-                "group": [
-                  ".prisma/*/client",
-                  "@prisma/*/client",
-                  ".prisma/client",
-                  "@prisma/client"
-                ],
-                "message": "Do not import types from prisma in resolver, use GQL types instead"
-              }
-            ]
-          }
-        ]
       }
     },
     {

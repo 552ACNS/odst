@@ -19,8 +19,8 @@ import {
   FindManySurveyResponseArgs,
   SurveyResponseAggregateArgs,
   UpdateOneSurveyResponseArgs,
-  SurveyResponseUpdateInput,
 } from '@odst/types/ods';
+import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
 import { ResponseCount } from '../__types__';
@@ -86,8 +86,8 @@ export class SurveyResponseResolver {
     const { data, where } = updateArgs;
 
     return this.surveyResponseService.update(
-      data as SurveyResponseUpdateInput,
-      where as SurveyResponseWhereUniqueInput
+      data as Prisma.SurveyResponseUpdateInput,
+      where as Prisma.SurveyResponseWhereUniqueInput
     );
   }
 
