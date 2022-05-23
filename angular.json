@@ -230,15 +230,8 @@
             "command": "env-cmd -f apps/ods-api/.env.local npx prisma studio",
             "schema": "apps/ods-api/schema.prisma"
           }
-        },
-        "graphql-generate": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "command": "ts-node -r tsconfig-paths/register --project apps/ods-api/tsconfig.app.json apps/ods-api/graphql-generate.ts"
-          }
         }
       },
-
       "tags": []
     },
     "ods-e2e": {

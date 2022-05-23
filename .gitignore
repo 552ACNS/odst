@@ -8,9 +8,8 @@
 #generated files
 *[-|.]generated.ts
 types.graphql.ts
-schema.graphql
+# schema.graphql
 /libs/types/**/src
-libs/types/**/src/*.ts
 
 
 # dependencies
