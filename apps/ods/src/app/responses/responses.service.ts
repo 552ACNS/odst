@@ -12,6 +12,9 @@ import {
   AddCommentMutationVariables,
   AddCommentMutation,
   AddCommentDocument,
+  UpdateResolvedMutation,
+  UpdateResolvedMutationVariables,
+  UpdateResolvedDocument,
 } from './responses.generated';
 
 @Injectable({
@@ -34,11 +37,22 @@ export class ResponsesService {
     // pluck lets me retrieve nested data.
   }
 
-  async addComment(addCommentMutationVariables: AddCommentMutationVariables) {
-    console.log('addCommentMutationVariables', addCommentMutationVariables);
+  addComment(addCommentMutationVariables: AddCommentMutationVariables) {
     return this.apollo.mutate<AddCommentMutation, AddCommentMutationVariables>({
       mutation: AddCommentDocument,
       variables: addCommentMutationVariables,
+    });
+  }
+
+  updateResolved(
+    updateResolvedMutationVariables: UpdateResolvedMutationVariables
+  ) {
+    return this.apollo.mutate<
+      UpdateResolvedMutation,
+      UpdateResolvedMutationVariables
+    >({
+      mutation: UpdateResolvedDocument,
+      variables: updateResolvedMutationVariables,
     });
   }
 

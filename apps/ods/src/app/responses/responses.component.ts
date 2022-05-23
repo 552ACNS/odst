@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import {
   AddCommentMutationVariables,
   FindUniqueSurveyResponseQuery,
+  UpdateResolvedMutationVariables,
 } from './responses.generated';
 import { getRefreshToken, getUserId } from '@odst/helpers';
 
@@ -16,7 +17,7 @@ import { getRefreshToken, getUserId } from '@odst/helpers';
 })
 export class ResponsesComponent implements OnInit {
   resolutionForm = this.fb.group({
-    resolution: ['', [Validators.required]],
+    comment: ['', [Validators.required]],
   });
   constructor(
     private fb: FormBuilder,
@@ -32,7 +33,12 @@ export class ResponsesComponent implements OnInit {
   AddCommentMutationVariables: AddCommentMutationVariables;
 
   newComment = '';
+  // TODO: Change resolved status back to bool
   resolved: string;
+
+  // This is for the toggle button
+  actualResolution: boolean;
+
   //TODO: talk to sim later and find out if there is already a way to get the current date, did not see it here
   openedDate: Date;
 
@@ -68,11 +74,10 @@ export class ResponsesComponent implements OnInit {
     });
   }
 
-  submitResolutionClick() {
-    console.log(this.resolutionForm.value.resolution.trim());
+  submitComment() {
     // if the resolution field is not empty after a trim
-    if (this.resolutionForm.value.resolution.trim() !== '') {
-      (this.AddCommentMutationVariables = {
+    if (this.resolutionForm.value.comment.trim() !== '') {
+      this.AddCommentMutationVariables = {
         where: {
           id: this.responseIDs[this.displayedIndex],
         },
@@ -80,7 +85,7 @@ export class ResponsesComponent implements OnInit {
           comments: {
             create: [
               {
-                value: this.resolutionForm.value.resolution.trim(),
+                value: this.resolutionForm.value.comment.trim(),
                 author: {
                   connect: {
                     id: this.userId,
@@ -90,25 +95,39 @@ export class ResponsesComponent implements OnInit {
             ],
           },
         },
-      }),
-        // surveyResponseWhereUniqueInput: {
-        //   id: this.responseIDs[this.displayedIndex],
-        // },
-        // surveyResponseUpdateInput: {
-        //   comments: {
-        //     create: {
-        //       value: this.resolutionForm.value.resolution.trim(),
-        //       author: {
-        //         connect: {
-        //           id: this.userId,
-        //         },
-        //       },
-        //     },
-        //   },
-        // },
+      };
 
-        this.responsesService.addComment(this.AddCommentMutationVariables);
+      this.responsesService
+        .addComment(this.AddCommentMutationVariables)
+        .subscribe(({ data, errors }) => {
+          if (!errors && data) {
+            // Refresh comments afterwards
+            this.comments = data.updateSurveyResponse['comments'];
+            this.actualResolution = data.updateSurveyResponse['resolved'];
+          }
+        });
     }
+  }
+
+  updateResolved() {
+    const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
+      where: {
+        id: this.responseIDs[this.displayedIndex],
+      },
+      data: {
+        resolved: {
+          set: !this.actualResolution,
+        },
+      },
+    };
+
+    this.responsesService
+      .updateResolved(updateResolvedMutationVariables)
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.actualResolution = data.updateSurveyResponse['resolved'];
+        }
+      });
   }
 
   async getResponseData(responseID: string) {
@@ -142,6 +161,8 @@ export class ResponsesComponent implements OnInit {
           //   resolution: data.findUniqueSurveyResponse.comments,
           // });
           // }
+
+          this.actualResolution = data.findUniqueSurveyResponse['resolved'];
         }
       }
     );
@@ -164,5 +185,3 @@ export class ResponsesComponent implements OnInit {
 
   //TODO [ODST-133] IMPORTANT: set to first page on load
 }
-
-// Suppose our profile query took an avatar size

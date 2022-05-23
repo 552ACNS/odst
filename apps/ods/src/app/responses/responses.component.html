@@ -122,10 +122,17 @@
       <form [formGroup]="resolutionForm">
         <p class="text-base font-medium text-center">Add a comment</p>
         <!-- Not empty validator -->
+        <mat-slide-toggle
+          color="primary"
+          [checked]="actualResolution"
+          (change)="updateResolved()"
+        >
+          Mark this issue as resolved</mat-slide-toggle
+        >
+
         <mat-form-field appearance="outline" class="w-full">
           <!-- <mat-label>I took the following actions...</mat-label> -->
-          <textarea matInput [formControlName]="'resolution'" rows="3">
-          </textarea>
+          <textarea matInput [formControlName]="'comment'" rows="3"> </textarea>
         </mat-form-field>
         <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
           <button
@@ -141,7 +148,7 @@
             color="primary"
             class="w-full text-white shadow-md rounded-full"
             type="submit"
-            (click)="submitResolutionClick()"
+            (click)="submitComment()"
           >
             <!-- TODO: redirect to dashboard when there are no more reports to address -->
             Submit

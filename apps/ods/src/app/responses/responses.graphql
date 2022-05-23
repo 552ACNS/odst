@@ -55,3 +55,13 @@ mutation AddComment(
     }
   }
 }
+
+mutation UpdateResolved(
+  $data: SurveyResponseUpdateInput!
+  $where: SurveyResponseWhereUniqueInput!
+) {
+  updateSurveyResponse(data: $data, where: $where) {
+    resolved
+    id
+  }
+}
