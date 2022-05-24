@@ -1,32 +1,67 @@
-query findUniqueSurveyResponse(
-  $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
-) {
-  findUniqueSurveyResponse(
-    surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
-  ) {
-    openedDate
-    resolution
-    answers {
-      value
-      question {
-        prompt
-      }
-    }
-  }
-}
+# query findUniqueSurveyResponse(
+#   $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
+# ) {
+#   findUniqueSurveyResponse(
+#     surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
+#   ) {
+#     openedDate
+#     answers {
+#       value
+#       question {
+#         prompt
+#       }
+#     }
+#     resolved
+#     comments {
+#       value
+#       date
+#       author {
+#         id
+#         firstName
+#         lastName
+#         grade
+#         role
+#         orgs {
+#           name
+#         }
+#       }
+#     }
+#   }
+# }
 
-query getIssuesByStatus($resolved: String!) {
-  getIssuesByStatus(resolved: $resolved)
-}
+# query getIssuesByStatus($resolved: String!) {
+#   getIssuesByStatus(resolved: $resolved)
+# }
 
-mutation updateSurveyResponse(
-  $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
-  $surveyResponseUpdateInput: SurveyResponseUpdateInput!
-) {
-  updateSurveyResponse(
-    SurveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
-    SurveyResponseUpdateInput: $surveyResponseUpdateInput
-  ) {
-    resolution
-  }
-}
+# mutation AddComment(
+#   $data: SurveyResponseUpdateInput!
+#   $where: SurveyResponseWhereUniqueInput!
+# ) {
+#   updateSurveyResponse(data: $data, where: $where) {
+#     id
+#     comments {
+#       value
+#       date
+#       author {
+#         id
+#         firstName
+#         lastName
+#         grade
+#         role
+#         orgs {
+#           name
+#         }
+#       }
+#     }
+#   }
+# }
+
+# mutation UpdateResolved(
+#   $data: SurveyResponseUpdateInput!
+#   $where: SurveyResponseWhereUniqueInput!
+# ) {
+#   updateSurveyResponse(data: $data, where: $where) {
+#     resolved
+#     id
+#   }
+# }

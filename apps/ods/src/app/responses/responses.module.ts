@@ -12,7 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @NgModule({
   declarations: [ResponsesComponent],
   imports: [
@@ -20,9 +21,11 @@ import { MatIconModule } from '@angular/material/icon';
     RouterModule.forChild(ResponsesRoutes),
     MatPaginatorModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
     MatCardModule,
     MatInputModule,
     MatButtonModule,
+    MatTooltipModule,
     //temporary
     MatFormFieldModule,
     MatChipsModule,

@@ -11,17 +11,26 @@ generator client {
   output   = "../../node_modules/.prisma/ods/client"
 }
 
+generator nestgraphql {
+  provider    = "prisma-nestjs-graphql"
+  output      = "../../libs/types/ods/src"
+  purgeOutput = true
+  reExport    = All
+}
+
 model User {
   id           String        @id @default(uuid())
   email        String        @unique
+  /// @HideField()
   password     String
   enabled      Boolean       @default(true)
-  grade         String?
+  grade        String?
   firstName    String
   lastName     String
   role         Role
   refreshToken RefreshToken?
   orgs         Org[]
+  comments     Comment[]
 }
 
 model RefreshToken {
@@ -55,6 +64,18 @@ model SurveyResponse {
   routeOutside Boolean   @default(false)
   resolution   String?
   tags         Tag[]
+  comments     Comment[]
+  resolved     Boolean   @default(false)
+}
+
+model Comment {
+  id               String          @id @default(uuid())
+  value            String
+  date             DateTime        @default(now())
+  author           User            @relation(fields: [authorId], references: [id])
+  authorId         String
+  SurveyResponse   SurveyResponse? @relation(fields: [surveyResponseId], references: [id])
+  surveyResponseId String
 }
 
 model Answer {
@@ -90,7 +111,6 @@ model Tag {
 enum Role {
   ADMIN
   DEI // Diversity, Equity, Inclusion
-  EO // Equal Opportunity
   CC // Commander
 }
 

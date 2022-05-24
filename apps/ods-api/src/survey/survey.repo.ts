@@ -1,5 +1,4 @@
-import { SurveyCreateInput } from '@odst/types/ods';
-import { Survey } from '.prisma/ods/client';
+import { SurveyCreateInput, Survey } from '@odst/types/ods';
 
 export const MockSurveys: Survey[] = [
   { id: 'survey id 1', questionsHash: 'aaa' },
@@ -7,6 +6,6 @@ export const MockSurveys: Survey[] = [
 ];
 
 export const MockSurveyCreateInput: SurveyCreateInput[] = [
-  { orgs: { connect: { name: '552 ACW' } } },
-  { orgs: { connect: { name: '552 ACNS' } } },
+  { orgs: { connect: [{ name: '552 ACW' }] } },
+  { orgs: { connect: [{ name: '552 ACNS' }] } },
 ];

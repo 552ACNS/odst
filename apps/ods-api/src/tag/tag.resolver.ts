@@ -8,38 +8,36 @@ import {
 } from '@nestjs/graphql';
 import { TagService } from './tag.service';
 import {
-  TagGQL,
+  Tag,
   TagCreateInput,
   TagWhereUniqueInput,
-  SurveyResponseGQL,
+  SurveyResponse,
 } from '@odst/types/ods';
 
-@Resolver(() => TagGQL)
+@Resolver(() => Tag)
 export class TagResolver {
   constructor(private readonly tagService: TagService) {}
 
-  @Query(() => [TagGQL], { name: 'findManyTags' })
-  async findMany(): Promise<TagGQL[]> {
+  @Query(() => [Tag], { name: 'findManyTags' })
+  async findMany(): Promise<Tag[]> {
     return this.tagService.findMany({});
   }
 
-  @Query(() => TagGQL, { name: 'findUniqueTag' })
+  @Query(() => Tag, { name: 'findUniqueTag' })
   async findUnique(
     @Args('tagWhereUniqueInput')
     tagWhereUniqueInput: TagWhereUniqueInput
-  ): Promise<TagGQL | null> {
+  ): Promise<Tag | null> {
     return this.tagService.findUnique(tagWhereUniqueInput);
   }
 
-  @Mutation(() => TagGQL, { name: 'createTag' })
-  create(
-    @Args('tagCreateInput') tagCreateInput: TagCreateInput
-  ): Promise<TagGQL> {
+  @Mutation(() => Tag, { name: 'createTag' })
+  create(@Args('tagCreateInput') tagCreateInput: TagCreateInput): Promise<Tag> {
     return this.tagService.create(tagCreateInput);
   }
 
-  @ResolveField(() => [SurveyResponseGQL])
-  async surveyResponses(@Parent() tag: TagGQL): Promise<SurveyResponseGQL[]> {
+  @ResolveField(() => [SurveyResponse])
+  async surveyResponses(@Parent() tag: Tag): Promise<SurveyResponse[]> {
     return this.tagService.surveyResponses({ id: tag.id });
   }
 }
