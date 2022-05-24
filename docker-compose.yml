@@ -11,6 +11,27 @@ services:
       - '5432:5432/tcp'
     networks:
       - waypoint-network
+  ods-api:
+    container_name: ods-api
+    build:
+      context: .
+      dockerfile: ./apps/ods-api/Dockerfile
+      target: development
+    command: nx serve ods-api
+    volumes:
+      - .:/usr/src/app
+      #anonymous volume
+      - /usr/src/app/node_modules
+    env_file:
+      - ./apps/ods-api/.env.local
+    environment:
+      NODE_ENV: production
+      PORT: 3343
+    ports:
+      # - '${PORT}:${PORT}'
+      - 3343:3343
+    depends_on:
+      - postgres
 
 networks:
   waypoint-network:
