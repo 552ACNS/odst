@@ -39,8 +39,9 @@
         let last = last
       "
     >
-      <!-- Generates the DATE of a new day, if a new day has passed for the date -->
-      <!-- If the date is new, then create a date in a line -->
+      <!-- Generates the DATE of a new day -->
+      <!-- if it's the first comment -->
+      <!-- or if the day of the comment changes -->
       <ng-container
         *ngIf="
           first ||
@@ -56,8 +57,9 @@
         </div>
       </ng-container>
 
-      <!-- if the comment is mine, align the items to the right, else default the left -->
-      <!-- if you did not make the comment, margins are bigger -->
+      <!-- align comments to the left by default -->
+      <!-- If the user is equal to the comment's author, then align to the right -->
+      <!-- Adjust margins depending on ownership -->
       <div
         class="flex flex-col items-start my-0.5"
         [ngClass]="{
@@ -66,7 +68,9 @@
           'mb-3': last
         }"
       >
-        <!-- Displays the authors identity if the the identity changes. But NOT if it's the same author twice in a row -->
+        <!-- Displays the authors identity-->
+        <!-- if the comment's author is not the user -->
+        <!-- if the previous comment's author is not the same as the current one -->
         <p
           *ngIf="
             userId !== comment.author.id &&
@@ -93,13 +97,14 @@
           </mat-card-content>
         </mat-card>
 
-        <!-- Display the time below comment if first or last message -->
-        <!-- Also when identity of messages change  -->
-        <!-- Also when the day changes -->
+        <!-- Display the time below comment -->
+        <!-- If there's only 1 comment -->
+        <!-- If it's the last comment  -->
+        <!-- if the next comment is a different author -->
+        <!-- if the next comment's date is on a different day than the previous one  -->
         <ng-container
           *ngIf="
-            first === last ||
-            (first && comments[i + 1].author.id !== comment.author.id) ||
+            comments.length === 1 ||
             last ||
             comments[i + 1].author.id !== comment.author.id ||
             (comments[i + 1].date | date: 'd') !== (comment.date | date: 'd')
