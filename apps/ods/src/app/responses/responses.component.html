@@ -106,7 +106,7 @@
             <!-- Also when the day changes -->
             <ng-container
               *ngIf="
-                comments.length === 0 ||
+                comments.length === 1 ||
                 (first && comments[i + 1].author.id !== comment.author.id) ||
                 last ||
                 comments[i + 1].author.id !== comment.author.id ||
