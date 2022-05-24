@@ -341,7 +341,8 @@ type Query {
   getIssuesByStatus(resolved: String!): [String!]!
   findManyAnswers: [Answer!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): Answer!
-  findManyOrgs: [Org!]!
+  getOrgLineage: [Org!]!
+  findManyOrgs(where: OrgWhereInput, orderBy: [OrgOrderByWithRelationInput!], cursor: OrgWhereUniqueInput, take: Int, skip: Int, distinct: [OrgScalarFieldEnum!]): [Org!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [Org!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
   findManyQuestions: [Question!]!
@@ -771,9 +772,35 @@ input AnswerWhereUniqueInput {
   id: String
 }
 
+input OrgOrderByWithRelationInput {
+  id: SortOrder
+  name: SortOrder
+  orgTier: SortOrder
+  users: UserOrderByRelationAggregateInput
+  parentId: SortOrder
+  parent: OrgOrderByWithRelationInput
+  children: OrgOrderByRelationAggregateInput
+  surveys: SurveyOrderByRelationAggregateInput
+}
+
+input UserOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input SurveyOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
 input OrgWhereUniqueInput {
   id: String
   name: String
+}
+
+enum OrgScalarFieldEnum {
+  id
+  name
+  orgTier
+  parentId
 }
 
 input QuestionWhereUniqueInput {

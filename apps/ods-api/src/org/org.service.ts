@@ -6,21 +6,8 @@ import { PrismaService } from '../prisma/prisma.service';
 export class OrgService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.OrgWhereUniqueInput;
-    where?: Prisma.OrgWhereInput;
-    orderBy?: Prisma.OrgOrderByWithRelationInput;
-  }): Promise<Org[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.org.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+  async findMany(args: Prisma.OrgFindManyArgs): Promise<Org[]> {
+    return this.prisma.org.findMany(args);
   }
 
   async getAllChildren(

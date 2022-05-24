@@ -14,6 +14,7 @@ import {
   User,
   Survey,
   UpdateOneOrgArgs,
+  FindManyOrgArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { Prisma } from '.prisma/ods/client';
@@ -23,13 +24,24 @@ export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
   @Public()
-  @Query(() => [Org], { name: 'findManyOrgs' })
-  async findMany(): Promise<Org[]> {
+  @Query(() => [Org], { name: 'getOrgLineage' })
+  async getOrgLineage(): Promise<Org[]> {
     return this.orgService.findMany({
-      orderBy: {
-        name: 'asc',
+      where: {
+        name: {
+          equals: '552 ACW',
+        },
       },
     });
+  }
+
+  @Public()
+  @Query(() => [Org], { name: 'findManyOrgs' })
+  async findMany(
+    @Args()
+    args: FindManyOrgArgs
+  ): Promise<Org[]> {
+    return this.orgService.findMany({});
   }
 
   @Query(() => [Org], { name: 'getSubOrgs' })
