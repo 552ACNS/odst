@@ -13,21 +13,19 @@
     </mat-paginator>
   </div>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-    <div>
-      <!-- QUESTIONS & ANSWERS -->
-      <section class="space-y-3">
-        <p class="text-center">
-          Date Submitted: {{ openedDate | date: 'd MMM yy, h:mm a' }}
-        </p>
-        <!-- Will create arrays of questions and answers and generate the proper amount of cards for them -->
-        <mat-card *ngFor="let qa of questionsAnswers; let i = index">
-          <mat-card-content class="text-sm text-left">
-            <p class="text-base font-medium">{{ i + 1 }}. {{ qa[0] }}</p>
-            <p>{{ qa[1] }}</p>
-          </mat-card-content>
-        </mat-card>
-      </section>
-    </div>
+    <!-- QUESTIONS & ANSWERS -->
+    <section class="space-y-3">
+      <p class="text-center">
+        Date Submitted: {{ openedDate | date: 'd MMM yy, h:mm a' }}
+      </p>
+      <!-- Will create arrays of questions and answers and generate the proper amount of cards for them -->
+      <mat-card *ngFor="let qa of questionsAnswers; let i = index">
+        <mat-card-content class="text-sm text-left">
+          <p class="text-base font-medium">{{ i + 1 }}. {{ qa[0] }}</p>
+          <p>{{ qa[1] }}</p>
+        </mat-card-content>
+      </mat-card>
+    </section>
     <div>
       <!-- COMMENTS -->
       <ng-container *ngIf="comments">
@@ -43,8 +41,9 @@
             let last = last
           "
         >
-          <!-- Generates the DATE of a new day, if a new day has passed for the date -->
-          <!-- If the date is new, then create a date in a line -->
+          <!-- Generates the DATE of a new day -->
+          <!-- if it's the first comment -->
+          <!-- or if the day of the comment changes -->
           <ng-container
             *ngIf="
               first ||
@@ -53,15 +52,14 @@
           >
             <div class="flex items-center my-2 justify-center">
               <div class="flex-auto border-b opacity-25"></div>
-              <div class="mx-4">
-                {{ comment.date | date: 'longDate' }}
-              </div>
+              <div class="mx-4">{{ comment.date | date: 'longDate' }}</div>
               <div class="flex-auto border-b opacity-25"></div>
             </div>
           </ng-container>
 
-          <!-- if the comment is mine, align the items to the right, else default the left -->
-          <!-- if you did not make the comment, margins are bigger -->
+          <!-- align comments to the left by default -->
+          <!-- If the user is equal to the comment's author, then align to the right -->
+          <!-- Adjust margins depending on ownership -->
           <div
             class="flex flex-col items-start my-0.5"
             [ngClass]="{
@@ -70,7 +68,9 @@
               'mb-3': last
             }"
           >
-            <!-- Displays the authors identity if the the identity changes. But NOT if it's the same author twice in a row -->
+            <!-- Displays the authors identity-->
+            <!-- if the comment's author is not the user -->
+            <!-- if the previous comment's author is not the same as the current one -->
             <p
               *ngIf="
                 userId !== comment.author.id &&
@@ -101,13 +101,14 @@
               </mat-card-content>
             </mat-card>
 
-            <!-- Display the time below comment if first or last message -->
-            <!-- Also when identity of messages change  -->
-            <!-- Also when the day changes -->
+            <!-- Display the time below comment -->
+            <!-- If there's only 1 comment -->
+            <!-- If it's the last comment  -->
+            <!-- if the next comment is a different author -->
+            <!-- if the next comment's date is on a different day than the previous one  -->
             <ng-container
               *ngIf="
                 comments.length === 1 ||
-                (first && comments[i + 1].author.id !== comment.author.id) ||
                 last ||
                 comments[i + 1].author.id !== comment.author.id ||
                 (comments[i + 1].date | date: 'd') !==
@@ -143,12 +144,7 @@
 
             <mat-form-field appearance="outline" class="w-full">
               <!-- <mat-label>I took the following actions...</mat-label> -->
-              <textarea
-                (keydown.enter)="submitComment()"
-                matInput
-                [formControlName]="'comment'"
-                rows="3"
-              >
+              <textarea matInput [formControlName]="'comment'" rows="3">
               </textarea>
             </mat-form-field>
             <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
