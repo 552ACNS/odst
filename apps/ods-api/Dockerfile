@@ -1,32 +1,43 @@
 # First Stage
+# 1
 FROM node:lts-alpine AS development
 
+# 2
 ENV APP="ods-api"
 
+# 3
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+# 4
+EXPOSE 3343
 
-RUN npm install --omit=optional --legacy-peer-deps
+# 5
+COPY package*.json yarn.lock ./
 
+#6
 COPY . .
 
-RUN nx build ${APP}
+# 7
+#RUN npm install --omit=optional --legacy-peer-deps --ignore-scripts
+RUN yarn
+#--mode skip-build
 
-# Second Stage
-FROM node:lts-alpine AS production
+RUN yarn build ${APP}
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+# # Second Stage
+# FROM node:lts-alpine AS production
 
-WORKDIR /usr/src/app
+# ARG NODE_ENV=production
+# ENV NODE_ENV=${NODE_ENV}
 
-COPY package*.json ./
+# WORKDIR /usr/src/app
 
-RUN npm install --omit=dev
+# COPY package*.json ./
 
-COPY . .
+# RUN npm install --omit=dev
 
-COPY --from=development /usr/src/app/dist ./dist
+# COPY . .
 
-CMD nx serve ${APP}
+# COPY --from=development /usr/src/app/dist ./dist
+
+# CMD nx serve ${APP}

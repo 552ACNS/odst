@@ -5,22 +5,23 @@ services:
   postgres:
     container_name: postgres
     image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
+    # network_mode: "bridge"
     environment:
       - POSTGRES_PASSWORD=H@CK3YITPL3ASE
     ports:
       - '5432:5432/tcp'
     networks:
-      - waypoint-network
+      - odst-network
   ods-api:
     container_name: ods-api
     build:
       context: .
       dockerfile: ./apps/ods-api/Dockerfile
       target: development
-    command: nx serve ods-api
+    # network_mode: "bridge"
+    command: yarn start ods-api
     volumes:
       - .:/usr/src/app
-      #anonymous volume
       - /usr/src/app/node_modules
     env_file:
       - ./apps/ods-api/.env.local
@@ -32,6 +33,13 @@ services:
       - 3343:3343
     depends_on:
       - postgres
+    networks:
+      - odst-network
 
 networks:
-  waypoint-network:
+  odst-network:
+    # driver:
+    #   bridge
+    # driver_opts:
+    #   com.docker.network.bridge.name: odst-network
+    #   com.docker.network.bridge.enable_icc: "true"
