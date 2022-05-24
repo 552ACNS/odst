@@ -98,6 +98,7 @@
         <!-- Also when the day changes -->
         <ng-container
           *ngIf="
+            first === last ||
             (first && comments[i + 1].author.id !== comment.author.id) ||
             last ||
             comments[i + 1].author.id !== comment.author.id ||

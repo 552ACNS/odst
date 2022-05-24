@@ -63,7 +63,7 @@ body {
 
 // declares a parent-div attribute that can be reused in multiple places
 .parent-div {
-  @apply container mx-auto min-w-[360px] w-[50%] max-w-[500px] mt-6;
+  @apply container mx-auto min-w-[360px] w-[85%] max-w-[500px] mt-6;
 }
 
 // Needs to be after the dark mode alterations

@@ -17,7 +17,7 @@ import { getRefreshToken, getUserId } from '@odst/helpers';
 })
 export class ResponsesComponent implements OnInit {
   resolutionForm = this.fb.group({
-    comment: ['', [Validators.required]],
+    comment: [''],
   });
   constructor(
     private fb: FormBuilder,
@@ -103,7 +103,7 @@ export class ResponsesComponent implements OnInit {
             // Refresh comments afterwards
             this.comments = data.updateSurveyResponse['comments'];
             this.actualResolution = data.updateSurveyResponse['resolved'];
-            this.resolutionForm.value.comment = '';
+            this.resolutionForm.reset();
           }
         });
     }
