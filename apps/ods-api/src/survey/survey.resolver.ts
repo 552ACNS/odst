@@ -6,68 +6,74 @@ import {
   Parent,
   ResolveField,
 } from '@nestjs/graphql';
+// eslint-disable-next-line no-restricted-imports
 import { SurveyService } from './survey.service';
 import {
-  SurveyGQL,
+  Survey,
   SurveyCreateInput,
-  SurveyUpdateInput,
   SurveyWhereUniqueInput,
-  OrgGQL,
-  QuestionGQL,
-  SurveyResponseGQL,
+  Org,
+  Question,
+  SurveyResponse,
+  OrgWhereUniqueInput,
+  UpdateOneSurveyArgs,
+  SurveyUpdateInput,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
+import { Prisma } from '.prisma/ods/client';
 
-@Resolver(() => SurveyGQL)
+import { Public } from '@odst/auth';
+
+@Resolver(() => Survey)
 export class SurveyResolver {
   constructor(private readonly surveyService: SurveyService) {}
 
-  @Query(() => [SurveyGQL], { name: 'findManySurveys' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async findMany(): Promise<SurveyGQL[]> {
+  @Query(() => [Survey], { name: 'findManySurveys' })
+  async findMany(): Promise<Survey[]> {
     return this.surveyService.findMany({});
   }
 
-  @Query(() => SurveyGQL, { name: 'findUniqueSurvey' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Query(() => Survey, { name: 'findUniqueSurvey' })
   async findUnique(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ): Promise<SurveyGQL | null> {
+  ): Promise<Survey | null> {
     return this.surveyService.findUnique(surveyWhereUniqueInput);
   }
 
-  @Mutation(() => SurveyGQL, { name: 'createSurveyWithQuestions' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Public()
+  @Mutation(() => Survey, { name: 'createSurveyWithQuestions' })
   async createWithQuestions(
     @Args({ name: 'questionPrompts', type: () => [String] })
-    questionPrompts: string[]
-  ): Promise<SurveyGQL | null> {
-    return this.surveyService.createWithQuestions(questionPrompts);
+    questionPrompts: string[],
+    @Args('orgWhereUniqueInput') orgWhereUniqueInput: OrgWhereUniqueInput
+  ): Promise<Survey | null> {
+    return this.surveyService.createWithQuestions(
+      questionPrompts,
+      orgWhereUniqueInput
+    );
   }
 
-  @Mutation(() => SurveyGQL, { name: 'createSurvey' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Mutation(() => Survey, { name: 'createSurvey' })
   create(
     @Args('surveyCreateInput') surveyCreateInput: SurveyCreateInput
-  ): Promise<SurveyGQL> {
+  ): Promise<Survey> {
     return this.surveyService.create(surveyCreateInput);
   }
 
-  @Mutation(() => SurveyGQL, { name: 'updateSurvey' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async update(
-    @Args('SurveyWhereUniqueInput')
-    surveyWhereUniqueInput: SurveyWhereUniqueInput,
-    @Args('SurveyUpdateInput')
-    surveyUpdateInput: SurveyUpdateInput
-  ): Promise<SurveyGQL> {
-    return this.surveyService.update(surveyWhereUniqueInput, surveyUpdateInput);
+  @Mutation(() => Survey, { name: 'updateSurvey' })
+  async update(@Args() updateArgs: UpdateOneSurveyArgs): Promise<Survey> {
+    //Type coercion is required here because there is a bug in typescript
+    //where entities with several relations overflow the stack
+
+    const { data, where } = updateArgs;
+
+    return this.surveyService.update(
+      data as Prisma.SurveyUpdateInput,
+      where as Prisma.SurveyWhereUniqueInput
+    );
   }
 
-  @Mutation(() => SurveyGQL, { name: 'deleteSurvey' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Mutation(() => Survey, { name: 'deleteSurvey' })
   async delete(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
@@ -75,20 +81,18 @@ export class SurveyResolver {
     return this.surveyService.delete(surveyWhereUniqueInput);
   }
 
-  @ResolveField(() => [OrgGQL])
-  async orgs(@Parent() survey: SurveyGQL): Promise<OrgGQL[]> {
+  @ResolveField(() => [Org])
+  async orgs(@Parent() survey: Survey): Promise<Org[]> {
     return this.surveyService.orgs({ id: survey.id });
   }
 
-  @ResolveField(() => [QuestionGQL])
-  async questions(@Parent() survey: SurveyGQL): Promise<QuestionGQL[]> {
+  @ResolveField(() => [Question])
+  async questions(@Parent() survey: Survey): Promise<Question[]> {
     return this.surveyService.questions({ id: survey.id });
   }
 
-  @ResolveField(() => [SurveyResponseGQL])
-  async surveyResponses(
-    @Parent() survey: SurveyGQL
-  ): Promise<SurveyResponseGQL[]> {
+  @ResolveField(() => [SurveyResponse])
+  async surveyResponses(@Parent() survey: Survey): Promise<SurveyResponse[]> {
     return this.surveyService.surveyResponses({ id: survey.id });
   }
 }

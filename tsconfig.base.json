@@ -15,8 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@odst/auth": ["libs/auth/src/index.ts"],
       "@odst/gql": ["libs/gql/src/index.ts"],
       "@odst/helpers": ["libs/helpers/src/index.ts"],
+      "@odst/shared/angular": ["libs/shared/angular/src/index.ts"],
       "@odst/shared/nest": ["libs/shared/nest/src/index.ts"],
       "@odst/types/ods": ["libs/types/ods/src/index.ts"],
       "@odst/types/waypoint": ["libs/types/waypoint/src/index.ts"]

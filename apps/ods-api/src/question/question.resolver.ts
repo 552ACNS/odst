@@ -8,83 +8,70 @@ import {
 } from '@nestjs/graphql';
 import { QuestionService } from './question.service';
 import {
-  QuestionGQL,
+  Question,
   QuestionCreateInput,
-  QuestionUpdateInput,
   QuestionWhereUniqueInput,
   SurveyWhereUniqueInput,
-  AnswerGQL,
-  SurveyGQL,
+  Answer,
+  Survey,
+  UpdateOneQuestionArgs,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
+import { Prisma } from '.prisma/ods/client';
 
-@Resolver(() => QuestionGQL)
+import { Public } from '@odst/auth';
+
+@Resolver(() => Question)
 export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Query(() => [QuestionGQL], { name: 'findManyQuestions' })
-  async findMany(): Promise<QuestionGQL[]> {
+  @Query(() => [Question], { name: 'findManyQuestions' })
+  async findMany(): Promise<Question[]> {
     return this.questionService.findMany({});
   }
 
-  @Query(() => [QuestionGQL], { name: 'getSubQuestions' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Query(() => [Question], { name: 'getSubQuestions' })
+  @Public()
+
   //TODO redo with findMany
   async getSubQuestions(
     @Args('surveyWhereUniqueInput')
     surveyWhereUniqueInput: SurveyWhereUniqueInput
-  ): Promise<QuestionGQL[]> {
+  ): Promise<Question[]> {
     return this.questionService.findQuestionsInSurvey(surveyWhereUniqueInput);
   }
 
-  @Query(() => QuestionGQL, { name: 'findUniqueQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Query(() => Question, { name: 'findUniqueQuestion' })
   async findUnique(
     @Args('questionWhereUniqueInput')
     questionWhereUniqueInput: QuestionWhereUniqueInput
-  ): Promise<QuestionGQL | null> {
+  ): Promise<Question | null> {
     return this.questionService.findUnique(questionWhereUniqueInput);
   }
 
-  @Mutation(() => QuestionGQL, { name: 'createQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Mutation(() => Question, { name: 'createQuestion' })
   create(
     @Args('questionCreateInput') questionCreateInput: QuestionCreateInput
-  ): Promise<QuestionGQL> {
+  ): Promise<Question> {
     return this.questionService.create(questionCreateInput);
   }
 
-  @Mutation(() => QuestionGQL, { name: 'updateQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async update(
-    @Args('QuestionWhereUniqueInput')
-    questionWhereUniqueInput: QuestionWhereUniqueInput,
-    @Args('QuestionUpdateInput')
-    questionUpdateInput: QuestionUpdateInput
-  ): Promise<QuestionGQL> {
+  @Mutation(() => Question, { name: 'updateQuestion' })
+  async update(@Args() updateArgs: UpdateOneQuestionArgs): Promise<Question> {
+    const { where, data } = updateArgs;
+
     return this.questionService.update(
-      questionWhereUniqueInput,
-      questionUpdateInput
+      where as Prisma.QuestionWhereUniqueInput,
+      data as Prisma.QuestionUpdateInput
     );
   }
 
-  @Mutation(() => QuestionGQL, { name: 'removeQuestion' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async delete(
-    @Args('questionWhereUniqueInput')
-    questionWhereUniqueInput: QuestionWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    return this.questionService.delete(questionWhereUniqueInput);
-  }
-
-  @ResolveField(() => [AnswerGQL])
-  async answers(@Parent() question: QuestionGQL): Promise<AnswerGQL[]> {
+  @ResolveField(() => [Answer])
+  async answers(@Parent() question: Question): Promise<Answer[]> {
     return this.questionService.answers({ id: question.id });
   }
 
-  @ResolveField(() => [SurveyGQL])
-  async surveys(@Parent() question: QuestionGQL): Promise<SurveyGQL[]> {
+  @ResolveField(() => [Survey])
+  async surveys(@Parent() question: Question): Promise<Survey[]> {
     return this.questionService.surveys({ id: question.id });
   }
 }

@@ -2,24 +2,24 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs';
 import {
-  CreateSurveyWithQuestions_FormDocument,
-  CreateSurveyWithQuestions_FormMutation,
-  CreateSurveyWithQuestions_FormMutationVariables,
-  FindManyOrgs_FormDocument,
-  FindManyOrgs_FormQuery,
-  FindManyOrgs_FormQueryVariables,
-  CreateSurveyResponse_FormMutation,
-  CreateSurveyResponse_FormMutationVariables,
-  CreateSurveyResponse_FormDocument,
-  FindQuestionsBySurvey_FormQuery,
-  FindQuestionsBySurvey_FormQueryVariables,
-  FindQuestionsBySurvey_FormDocument,
-  FindUsersWithRole_FormQuery,
-  FindUsersWithRole_FormQueryVariables,
-  FindUsersWithRole_FormDocument,
-  Role,
-} from '../../graphql-generated';
+  CreateSurveyWithQuestionsDocument,
+  CreateSurveyWithQuestionsMutation,
+  CreateSurveyWithQuestionsMutationVariables,
+  FindManyOrgsDocument,
+  FindManyOrgsQuery,
+  FindManyOrgsQueryVariables,
+  CreateSurveyResponseMutation,
+  CreateSurveyResponseMutationVariables,
+  CreateSurveyResponseDocument,
+  FindQuestionsBySurveyQuery,
+  FindQuestionsBySurveyQueryVariables,
+  FindQuestionsBySurveyDocument,
+  GetCommandersQuery,
+  GetCommandersQueryVariables,
+  GetCommandersDocument,
+} from './survey-questions.generated';
 import { jsonTypeConverter } from '@odst/helpers';
+import { OrgWhereUniqueInput } from '../../types.graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -30,44 +30,42 @@ export class SurveyQuestionsService {
   //a query to find all of the orgs available for the selector
   async getManyOrgs() {
     return this.apollo
-      .watchQuery<FindManyOrgs_FormQuery, FindManyOrgs_FormQueryVariables>({
-        query: FindManyOrgs_FormDocument,
+      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
+        query: FindManyOrgsDocument,
       })
       .valueChanges.pipe(
         map((result) => result.data.findManyOrgs.map((x) => x.name))
       );
   }
 
-  async findUsersWithRole(role: Role) {
+  async getCommanders() {
     return this.apollo
-      .watchQuery<
-        FindUsersWithRole_FormQuery,
-        FindUsersWithRole_FormQueryVariables
-      >({
-        query: FindUsersWithRole_FormDocument,
-        variables: {
-          role: role,
-        },
+      .watchQuery<GetCommandersQuery, GetCommandersQueryVariables>({
+        query: GetCommandersDocument,
       })
       .valueChanges.pipe(
-        //TODO: fix this later when adding rank to user.
         map((result) =>
-          result.data.findUsersWithRole
-            .map((x) => `${x.rank} ${x.lastName}, ${x.firstName}`)
+          result.data.getCommanders
+            .map((x) => `${x.grade} ${x.lastName}, ${x.firstName}`)
             .sort()
         )
       );
   }
   //Takes questions that are in an array and connectsOrCreates to a survey ID based on question set and returns the survey ID
   //that was found or created
-  submitWithQuestions(questions: string[]) {
+  submitWithQuestions(
+    questions: string[],
+    orgWhereUniqueInput: OrgWhereUniqueInput
+  ) {
     return this.apollo.mutate<
-      CreateSurveyWithQuestions_FormMutation,
-      CreateSurveyWithQuestions_FormMutationVariables
+      CreateSurveyWithQuestionsMutation,
+      CreateSurveyWithQuestionsMutationVariables
     >({
-      mutation: CreateSurveyWithQuestions_FormDocument,
+      mutation: CreateSurveyWithQuestionsDocument,
       variables: {
         questionPrompts: questions,
+        //TODO don't hardcode org
+        orgWhereUniqueInput,
       },
     });
   }
@@ -76,10 +74,10 @@ export class SurveyQuestionsService {
   getQuestionsFromSurvey(surveyID: string) {
     return this.apollo
       .watchQuery<
-        FindQuestionsBySurvey_FormQuery,
-        FindQuestionsBySurvey_FormQueryVariables
+        FindQuestionsBySurveyQuery,
+        FindQuestionsBySurveyQueryVariables
       >({
-        query: FindQuestionsBySurvey_FormDocument,
+        query: FindQuestionsBySurveyDocument,
         variables: {
           surveyWhereUniqueInput: {
             id: surveyID,
@@ -99,10 +97,10 @@ export class SurveyQuestionsService {
     surveyID: string | undefined
   ) {
     return this.apollo.mutate<
-      CreateSurveyResponse_FormMutation,
-      CreateSurveyResponse_FormMutationVariables
+      CreateSurveyResponseMutation,
+      CreateSurveyResponseMutationVariables
     >({
-      mutation: CreateSurveyResponse_FormDocument,
+      mutation: CreateSurveyResponseDocument,
       variables: {
         surveyResponseCreateInput: {
           routeOutside: outsideRouting,

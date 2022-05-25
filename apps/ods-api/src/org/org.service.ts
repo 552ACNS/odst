@@ -23,7 +23,7 @@ export class OrgService {
     });
   }
 
-  async getSubOrgs(
+  async getAllChildren(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
   ): Promise<Org[]> {
     const parentOrg = await this.prisma.org.findUnique({
@@ -65,13 +65,10 @@ export class OrgService {
   }
 
   async update(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
-    orgUpdateInput: Prisma.OrgUpdateInput
+    data: Prisma.OrgUpdateInput,
+    where: Prisma.OrgWhereUniqueInput
   ): Promise<Org> {
-    return this.prisma.org.update({
-      where: orgWhereUniqueInput,
-      data: orgUpdateInput,
-    });
+    return this.prisma.org.update({ data, where });
   }
 
   async delete(

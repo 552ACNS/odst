@@ -3,71 +3,95 @@ import {
   Mutation,
   Args,
   Query,
+  Int,
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
 import { SurveyResponseService } from './surveyResponse.service';
 import {
-  SurveyResponseGQL,
+  SurveyResponse,
   SurveyResponseCreateInput,
-  SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
-  AnswerGQL,
-  SurveyGQL,
-  ResponseCount,
+  Answer,
+  Survey,
+  User,
+  Comment,
+  FindManySurveyResponseArgs,
+  SurveyResponseAggregateArgs,
+  UpdateOneSurveyResponseArgs,
 } from '@odst/types/ods';
+import { Prisma } from '.prisma/ods/client';
+import { Public } from '@odst/auth';
+import { GetCurrentUser } from '@odst/shared/nest';
+import { ResponseCount } from '../__types__';
 
-// import { GetCurrentUserId } from '@odst/shared/nest';
-// import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
-
-@Resolver(() => SurveyResponseGQL)
+@Resolver(() => SurveyResponse)
 export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
 
-  @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async findMany(): Promise<SurveyResponseGQL[]> {
-    // return this.surveyResponseService.findMany();
-    return this.surveyResponseService.findMany({});
+  /**
+   * Finds the SurveyResponses that match the provided criteria
+   * @param user The user who is requesting the response count
+   * @param findManySurveyResponseArgs The arguments for the findMany query
+   * @returns The SurveyResponses that fit the findMany args set my API
+   */
+  @Query(() => [SurveyResponse], { name: 'findManySurveyResponses' })
+  async findMany(
+    @GetCurrentUser() user: User,
+    @Args()
+    findManySurveyResponseArgs: FindManySurveyResponseArgs
+  ): Promise<SurveyResponse[]> {
+    return this.surveyResponseService.findMany(
+      user,
+      findManySurveyResponseArgs
+    );
   }
 
-  @Query(() => SurveyResponseGQL, { name: 'findUniqueSurveyResponse' })
-  // @UseGuards(AccessTokenAuthGuard)
+  //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
+  @Query(() => SurveyResponse, { name: 'findUniqueSurveyResponse' })
   async findUnique(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ): Promise<SurveyResponseGQL | null> {
+  ): Promise<SurveyResponse | null> {
     return this.surveyResponseService.findUnique(
       surveyResponseWhereUniqueInput
     );
   }
 
-  @Mutation(() => SurveyResponseGQL, { name: 'createSurveyResponse' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Query(() => Int, { name: 'getResponseCount' })
+  async count(
+    @GetCurrentUser() user: User,
+    @Args()
+    surveyResponseAggregateArgs: SurveyResponseAggregateArgs
+  ): Promise<number> {
+    return this.surveyResponseService.count(user, surveyResponseAggregateArgs);
+  }
+
+  @Mutation(() => SurveyResponse, { name: 'createSurveyResponse' })
+  @Public()
   async create(
     @Args('surveyResponseCreateInput')
     surveyResponseCreateInput: SurveyResponseCreateInput
-  ): Promise<SurveyResponseGQL> {
+  ): Promise<SurveyResponse> {
     return this.surveyResponseService.create(surveyResponseCreateInput);
   }
 
-  @Mutation(() => SurveyResponseGQL, { name: 'updateSurveyResponse' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Mutation(() => SurveyResponse, { name: 'updateSurveyResponse' })
   async update(
-    @Args('SurveyResponseWhereUniqueInput')
-    surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput,
-    @Args('SurveyResponseUpdateInput')
-    surveyResponseUpdateInput: SurveyResponseUpdateInput
-  ): Promise<SurveyResponseGQL> {
+    @Args()
+    updateArgs: UpdateOneSurveyResponseArgs
+  ): Promise<SurveyResponse> {
+    const { data, where } = updateArgs;
+
+    // Logger.log(info)
+
     return this.surveyResponseService.update(
-      surveyResponseWhereUniqueInput,
-      surveyResponseUpdateInput
+      data as Prisma.SurveyResponseUpdateInput,
+      where as Prisma.SurveyResponseWhereUniqueInput
     );
   }
 
-  @Mutation(() => SurveyResponseGQL, { name: 'deleteSurveyResponse' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Mutation(() => SurveyResponse, { name: 'deleteSurveyResponse' })
   async delete(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
@@ -75,46 +99,35 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.delete(surveyResponseWhereUniqueInput);
   }
 
+  // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
+
   @Query(() => ResponseCount, { name: 'ResponseCount' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async ResponseCount(): Promise<ResponseCount> {
-    return this.surveyResponseService.countResponses();
+  async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
+    return this.surveyResponseService.countResponses(user);
   }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
-  // @UseGuards(AccessTokenAuthGuard)
-
-  // TODO This line gets the current user ID but it requires a login system to exist first.
-  // async getUnresolvedIssues(@GetCurrentUserId() userId: string): Promise<string[]> {
   async getIssuesByStatus(
-    @Args('resolved') resolved: boolean
+    @Args('resolved') resolved: string,
+    @GetCurrentUser() user: User
   ): Promise<string[]> {
-    // return this.surveyResponseService.getUnresolvedIssues(userId);
-    return this.surveyResponseService.getIssuesByStatus(resolved);
+    return this.surveyResponseService.getIssuesByStatus(resolved, user);
   }
 
-  @Query(() => SurveyResponseGQL, { name: 'getSurveyResponseData' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async getSurveyResponseData(
-    @Args('surveyResponseWhereUniqueInput')
-    surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ) {
-    return this.surveyResponseService.getSurveyResponseData(
-      surveyResponseWhereUniqueInput
-    );
-  }
-
-  @ResolveField(() => [AnswerGQL])
-  async answers(
-    @Parent() surveyResponse: SurveyResponseGQL
-  ): Promise<AnswerGQL[]> {
+  @ResolveField(() => [Answer])
+  async answers(@Parent() surveyResponse: SurveyResponse): Promise<Answer[]> {
     return this.surveyResponseService.answers({ id: surveyResponse.id });
   }
 
-  @ResolveField(() => SurveyGQL)
+  @ResolveField(() => Survey)
   async survey(
-    @Parent() surveyResponse: SurveyResponseGQL
-  ): Promise<SurveyGQL | null> {
+    @Parent() surveyResponse: SurveyResponse
+  ): Promise<Survey | null> {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
+  }
+
+  @ResolveField(() => [Comment])
+  async comments(@Parent() surveyResponse: SurveyResponse): Promise<Comment[]> {
+    return this.surveyResponseService.comments({ id: surveyResponse.id });
   }
 }

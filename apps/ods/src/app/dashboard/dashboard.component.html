@@ -1,14 +1,13 @@
 <div class="mx-auto min-w-[340px] w-[95%] mt-2 space-y-3 flex flex-col">
-  <mat-card class="my-3 rounded-2xl shadow-md">
-    <h1 class="font-medium text-3xl">Lt Col John Doe</h1>
-    <h3>Squadron Commander</h3>
-  </mat-card>
-
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full">
+  <div
+    id="gridId"
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full"
+  >
     <mat-card
-      class="flex flex-col flex-auto p-6 rounded-2xl shadow-md bg-white dark:bg-gray-200"
+      class="flex flex-col flex-auto p-6 shadow-md"
       *ngFor="let card of cardSpecs"
-      [routerLink]="['/responses']"
+      [ngClass]="{ 'cursor-pointer': card.countOf !== 0 }"
+      [routerLink]="card.countOf !== 0 ? ['/responses'] : null"
       [queryParams]="{ resolved: card.resolved }"
     >
       <div class="flex items-start justify-between">

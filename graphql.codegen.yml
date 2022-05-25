@@ -1,21 +1,29 @@
 generates:
   apps/waypoint/src/graphql-generated.ts:
     schema: apps/waypoint-api/schema.graphql
-    documents: ['apps/waypoint/**/*.graphql']
+    documents: ['apps/waypoint/src/**/*.graphql']
     plugins:
       - typescript
       - typescript-operations
       - typed-document-node
-  apps/ods/src/graphql-generated.ts:
+  apps/ods/src/types.graphql.ts:
     schema: apps/ods-api/schema.graphql
-    documents: ['apps/ods/**/*.graphql']
     plugins:
       - typescript
+  apps/ods/src/:
+    schema: apps/ods-api/schema.graphql
+    documents: ['apps/ods/src/**/*.graphql']
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: types.graphql.ts
+    plugins:
       - typescript-operations
       - typed-document-node
+  # TODO login functionality is dependent on a specific graphql schema implementation
   libs/gql/src/graphql-generated.ts:
-    schema: apps/waypoint-api/schema.graphql
-    documents: ['libs/gql/**/*.graphql']
+    schema: apps/ods-api/schema.graphql
+    documents: ['libs/gql/src/**/*.graphql']
     plugins:
       - typescript
       - typescript-operations

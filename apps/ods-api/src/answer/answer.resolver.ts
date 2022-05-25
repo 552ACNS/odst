@@ -8,71 +8,46 @@ import {
 } from '@nestjs/graphql';
 import { AnswerService } from './answer.service';
 import {
-  AnswerGQL,
+  Answer,
   AnswerCreateInput,
-  AnswerUpdateInput,
   AnswerWhereUniqueInput,
-  QuestionGQL,
-  SurveyResponseGQL,
+  Question,
+  SurveyResponse,
 } from '@odst/types/ods';
-//import { AccessTokenAuthGuard } from '../auth/guards/accessToken.authGuard';
-// import { UseGuards } from '@nestjs/common';
 
-@Resolver(() => AnswerGQL)
+@Resolver(() => Answer)
 export class AnswerResolver {
   constructor(private readonly answerService: AnswerService) {}
 
-  @Query(() => [AnswerGQL], { name: 'findManyAnswers' })
-  async findMany(): Promise<AnswerGQL[]> {
+  @Query(() => [Answer], { name: 'findManyAnswers' })
+  async findMany(): Promise<Answer[]> {
     return this.answerService.findMany({});
   }
 
-  @Query(() => AnswerGQL, { name: 'findUniqueAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Query(() => Answer, { name: 'findUniqueAnswer' })
   async findUnique(
     @Args('answerWhereUniqueInput')
     answerWhereUniqueInput: AnswerWhereUniqueInput
-  ): Promise<AnswerGQL | null> {
+  ): Promise<Answer | null> {
     return this.answerService.findUnique(answerWhereUniqueInput);
   }
 
-  @Mutation(() => AnswerGQL, { name: 'createAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
+  @Mutation(() => Answer, { name: 'createAnswer' })
   create(
     @Args('answerCreateInput') answerCreateInput: AnswerCreateInput
-  ): Promise<AnswerGQL> {
+  ): Promise<Answer> {
     return this.answerService.create(answerCreateInput);
   }
 
-  @Mutation(() => AnswerGQL, { name: 'updateAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async update(
-    @Args('AnswerWhereUniqueInput')
-    answerWhereUniqueInput: AnswerWhereUniqueInput,
-    @Args('AnswerUpdateInput')
-    answerUpdateInput: AnswerUpdateInput
-  ): Promise<AnswerGQL> {
-    return this.answerService.update(answerWhereUniqueInput, answerUpdateInput);
-  }
-
-  @Mutation(() => AnswerGQL, { name: 'deleteAnswer' })
-  // @UseGuards(AccessTokenAuthGuard)
-  async delete(
-    @Args('answerWhereUniqueInput')
-    answerWhereUniqueInput: AnswerWhereUniqueInput
-  ): Promise<{ deleted: boolean }> {
-    return this.answerService.delete(answerWhereUniqueInput);
-  }
-
-  @ResolveField(() => QuestionGQL)
-  async question(@Parent() answer: AnswerGQL): Promise<QuestionGQL | null> {
+  @ResolveField(() => Question)
+  async question(@Parent() answer: Answer): Promise<Question | null> {
     return this.answerService.question({ id: answer.id });
   }
 
-  @ResolveField(() => SurveyResponseGQL)
+  @ResolveField(() => SurveyResponse)
   async surveyResponse(
-    @Parent() answer: AnswerGQL
-  ): Promise<SurveyResponseGQL | null> {
+    @Parent() answer: Answer
+  ): Promise<SurveyResponse | null> {
     return this.answerService.surveyResponse({ id: answer.id });
   }
 }

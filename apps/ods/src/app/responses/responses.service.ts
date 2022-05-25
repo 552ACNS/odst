@@ -1,24 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { map, pluck, take } from 'rxjs';
+import { map, take } from 'rxjs';
+
 import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
   GetIssuesByStatusQueryVariables,
-  GetSurveyResponseDataDocument,
-  GetSurveyResponseDataQuery,
-  GetSurveyResponseDataQueryVariables,
-  UpdateSurveyResponse_ResolutionDocument,
-  UpdateSurveyResponse_ResolutionMutation,
-  UpdateSurveyResponse_ResolutionMutationVariables,
-} from '../../graphql-generated';
+  FindUniqueSurveyResponseDocument,
+  FindUniqueSurveyResponseQuery,
+  FindUniqueSurveyResponseQueryVariables,
+  AddCommentMutationVariables,
+  AddCommentMutation,
+  AddCommentDocument,
+  UpdateResolvedMutation,
+  UpdateResolvedMutationVariables,
+  UpdateResolvedDocument,
+} from './responses.generated';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getResponseIDsByStatus(resolved: boolean) {
+  async getResponseIDsByStatus(resolved: string) {
     return this.apollo
       .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
         query: GetIssuesByStatusDocument,
@@ -33,42 +37,36 @@ export class ResponsesService {
     // pluck lets me retrieve nested data.
   }
 
-  updateResolution(id: string, resolution: string) {
-    return this.apollo
-      .mutate<
-        UpdateSurveyResponse_ResolutionMutation,
-        UpdateSurveyResponse_ResolutionMutationVariables
-      >({
-        mutation: UpdateSurveyResponse_ResolutionDocument,
-        variables: {
-          surveyResponseWhereUniqueInput: {
-            id: id,
-          },
-          surveyResponseUpdateInput: {
-            // We can opt to not send date now and instead just do it in the
-            // back end, but that would mean having to make another
-            // UpdateSurveyResponse method
-            closedDate: Date.now(),
-            resolution: resolution,
-          },
-        },
-      })
-      .subscribe();
+  addComment(addCommentMutationVariables: AddCommentMutationVariables) {
+    return this.apollo.mutate<AddCommentMutation, AddCommentMutationVariables>({
+      mutation: AddCommentDocument,
+      variables: addCommentMutationVariables,
+    });
+  }
+
+  updateResolved(
+    updateResolvedMutationVariables: UpdateResolvedMutationVariables
+  ) {
+    return this.apollo.mutate<
+      UpdateResolvedMutation,
+      UpdateResolvedMutationVariables
+    >({
+      mutation: UpdateResolvedDocument,
+      variables: updateResolvedMutationVariables,
+    });
   }
 
   async getResponseData(responseID: string) {
-    return this.apollo
-      .watchQuery<
-        GetSurveyResponseDataQuery,
-        GetSurveyResponseDataQueryVariables
-      >({
-        query: GetSurveyResponseDataDocument,
-        variables: {
-          surveyResponseWhereUniqueInput: {
-            id: responseID,
-          },
+    return this.apollo.watchQuery<
+      FindUniqueSurveyResponseQuery,
+      FindUniqueSurveyResponseQueryVariables
+    >({
+      query: FindUniqueSurveyResponseDocument,
+      variables: {
+        surveyResponseWhereUniqueInput: {
+          id: responseID,
         },
-      })
-      .valueChanges.pipe(pluck('data', 'getSurveyResponseData'));
+      },
+    }).valueChanges;
   }
 }

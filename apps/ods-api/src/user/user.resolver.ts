@@ -1,57 +1,82 @@
-import { Resolver, Parent, ResolveField, Args, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Parent,
+  ResolveField,
+  Query,
+  Args,
+  Mutation,
+} from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { OrgGQL, UserGQL } from '@odst/types/ods';
-// fix this when we have a better solution
-// eslint-disable-next-line no-restricted-imports
-import { Role } from '.prisma/ods/client';
-import { Logger } from '@nestjs/common';
-import { FieldMap } from '@jenyus-org/nestjs-graphql-utils';
-import { FieldMap as FieldMapType } from '@jenyus-org/graphql-utils';
+import {
+  User,
+  Org,
+  Role,
+  UserCreateInput,
+  UserWhereUniqueInput,
+  FindManyUserArgs,
+} from '@odst/types/ods';
+import { Public } from '@odst/auth';
+import { GetCurrentUser } from '@odst/shared/nest';
 
-@Resolver(() => UserGQL)
+@Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  //forget why I did this on findManyUsers
-  @Query(() => [UserGQL], { name: 'findManyUsers' })
-  //at least it isn't :Promise<any>
-  async findManyUsers(@FieldMap() fieldMap: FieldMapType): Promise<unknown> {
-    Logger.log('fields requested by graphql');
-    Logger.log(fieldMap);
+  // Refactor this to include Cater's Where command when we implement it
+  // @Query(() => [User], { name: 'findManyUsers' })
 
-    //going into fieldMap to get fields
-    //only the safest of types
-    const fields: any = Object.values(fieldMap)[0];
+  // async findManyInOrg() {
+  //   return this.userService.findMany({});
+  // }
 
-    for (const k in fields) {
-      if (Object.keys(fields[k]).length === 0) {
-        fields[k] = true;
-      } else {
-        //delete nested fields, which will be resolved later
-        delete fields[k];
-      }
-    }
-    //not including id breaks graphql ResolveFields
-    fields['id'] = true;
-
-    Logger.log('fields requested by prisma');
-    Logger.log(fields);
-    return this.userService.findMany({ select: fields });
-
-    //origonal raw sql executed
-    //SELECT "public"."User"."id", "public"."User"."role" FROM "public"."User" WHERE 1=1 OFFSET $1 [0]
-
-    //modified raw sql executed
-    //SELECT "public"."User"."id", "public"."User"."email", "public"."User"."password", "public"."User"."enabled", "public"."User"."rank", "public"."User"."firstName", "public"."User"."lastName", "public"."User"."role" FROM "public"."User" WHERE 1=1 OFFSET $1 [0]
+  @Query(() => [User])
+  async findUsersWithRole(@Args('role') role: Role): Promise<User[]> {
+    return this.userService.findMany({
+      where: {
+        role: role,
+      },
+    });
   }
 
-  @Query(() => [UserGQL], { name: 'findUsersWithRole' })
-  async findUsersWithRole(@Args('role') role: Role): Promise<UserGQL[]> {
-    return this.userService.findUsersWithRole(role);
+  @Query(() => [User], { name: 'findManyUsers' })
+  async findMany(@Args() findManyUserArgs: FindManyUserArgs): Promise<User[]> {
+    return this.userService.findMany(findManyUserArgs);
   }
 
-  @ResolveField(() => [OrgGQL])
-  async orgs(@Parent() user: UserGQL) {
+  //TODO write custom pipe to not need separate route for this
+  @Public()
+  @Query(() => [User])
+  async getCommanders(): Promise<User[]> {
+    return this.userService.findMany({
+      where: {
+        role: Role.CC,
+      },
+    });
+  }
+
+  @Public()
+  @Mutation(() => User, { name: 'createUser' })
+  create(
+    @Args('userCreateInput') userCreateInput: UserCreateInput
+  ): Promise<User> {
+    return this.userService.create(userCreateInput);
+  }
+
+  @Mutation(() => User, { name: 'deleteUser', nullable: true })
+  async delete(
+    @Args('userWhereUniqueInput')
+    userWhereUniqueInput: UserWhereUniqueInput
+  ): Promise<User | null> {
+    return this.userService.delete(userWhereUniqueInput);
+  }
+
+  @ResolveField(() => [Org])
+  async orgs(@Parent() user: User): Promise<Org[]> {
     return this.userService.orgs({ id: user.id });
+  }
+
+  @Query(() => User)
+  async me(@GetCurrentUser() user: User): Promise<User> {
+    return user;
   }
 }

@@ -5,5 +5,5 @@ export * from './lib/types/jwtPayload.type';
 //#endregion
 
 //#region Decorators
-export * from './lib/decorators/getCurrentUserID.decorator';
+export * from './lib/decorators/getCurrentUser.decorator';
 //#endregion

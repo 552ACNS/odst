@@ -11,23 +11,32 @@ generator client {
   output   = "../../node_modules/.prisma/ods/client"
 }
 
+generator nestgraphql {
+  provider    = "prisma-nestjs-graphql"
+  output      = "../../libs/types/ods/src"
+  purgeOutput = true
+  reExport    = All
+}
+
 model User {
-  id            String         @id @default(uuid())
-  email         String         @unique
-  password      String
-  enabled       Boolean        @default(true)
-  rank          String?
-  firstName     String
-  lastName      String
-  role          Role
-  refreshTokens RefreshToken[] //many RefreshToken to user
-  orgs          Org[] // MANY TO MANY
+  id           String        @id @default(uuid())
+  email        String        @unique
+  /// @HideField()
+  password     String
+  enabled      Boolean       @default(true)
+  grade        String?
+  firstName    String
+  lastName     String
+  role         Role
+  refreshToken RefreshToken?
+  orgs         Org[]
+  comments     Comment[]
 }
 
 model RefreshToken {
   id          String   @id @default(uuid())
   user        User     @relation(fields: [userId], references: [id])
-  userId      String
+  userId      String   @unique
   isRevoked   Boolean  @default(false)
   issuedDate  DateTime @default(now())
   expiredDate DateTime
@@ -53,7 +62,18 @@ model SurveyResponse {
   closedDate   DateTime?
   answers      Answer[]
   routeOutside Boolean   @default(false)
-  resolution   String?
+  comments     Comment[]
+  resolved     Boolean   @default(false)
+}
+
+model Comment {
+  id               String          @id @default(uuid())
+  value            String
+  date             DateTime        @default(now())
+  author           User            @relation(fields: [authorId], references: [id])
+  authorId         String
+  SurveyResponse   SurveyResponse? @relation(fields: [surveyResponseId], references: [id])
+  surveyResponseId String
 }
 
 model Answer {
@@ -69,7 +89,7 @@ model Survey {
   id              String           @id @default(uuid())
   orgs            Org[]
   questions       Question[]
-  questionsHash   String?           @unique
+  questionsHash   String?          @unique
   surveyResponses SurveyResponse[]
 }
 
@@ -83,7 +103,6 @@ model Question {
 enum Role {
   ADMIN
   DEI // Diversity, Equity, Inclusion
-  EO // Equal Opportunity
   CC // Commander
 }
 

@@ -107,3 +107,12 @@ When creating a new prisma database, you need to specify what project it is made
 ### - Tailwind isn't working w/ Material
 
 Ensure that you marked Tailwind as "Important" under tailwind config.
+
+### - No loader available on a .graphql file in frontend
+
+Don't import from the .graphql file, import from .generated file
+
+### - "excesive stack depth" error on prisma/graphql types
+
+coercion the type to the expected prisma type. Will probably need to do it on resolver.
+example: `UserWhereInput as Prisma.UserWhereInput`
