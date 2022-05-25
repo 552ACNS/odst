@@ -6,10 +6,45 @@ import { PrismaService } from '../prisma/prisma.service';
 export class OrgService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(args: Prisma.OrgFindManyArgs): Promise<Org[]> {
+  async findMany(args: Prisma.OrgFindManyArgs) {
     return this.prisma.org.findMany(args);
   }
 
+  async getLineage(): Promise<string[]> {
+    const orgs = await this.prisma.org.findMany({
+      where: {
+        name: {
+          equals: '552 ACW',
+        },
+      },
+      include: {
+        children: {
+          select: {
+            name: true,
+            children: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return this.getFamily(orgs);
+  }
+
+  getFamily(orgs: any): string[] {
+    const orgNames: string[] = [];
+    orgs.forEach((org) => {
+      orgNames.push(org.name);
+      if (org.children) {
+        this.getFamily(org.children).forEach((result) => {
+          orgNames.push(result);
+        });
+      }
+    });
+    return orgNames;
+  }
   async getAllChildren(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
   ): Promise<Org[]> {

@@ -26,15 +26,7 @@ export class OrgResolver {
   @Public()
   @Query(() => [String], { name: 'getOrgLineage' })
   async getOrgLineage(): Promise<string[]> {
-    const org = this.orgService.findMany({
-      where: {
-        name: {
-          equals: '552 ACW',
-        },
-      },
-    });
-    return [''];
-    // let result = (await org).map((x) => x.)
+    return this.orgService.getLineage();
   }
 
   @Public()
