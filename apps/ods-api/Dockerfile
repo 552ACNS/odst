@@ -1,43 +1,44 @@
 # First Stage
-# 1
-FROM node:lts-alpine AS development
+FROM node:lts-alpine AS develope
 
-# 2
-ENV APP="ods-api"
+ARG APP="ods-api"
 
-# 3
+ARG NODE_ENV=development
+
+ENV NODE_ENV=${NODE_ENV}
+
 WORKDIR /usr/src/app
 
-# 4
-EXPOSE 3343
+COPY package*.json yarn.lock angular.json nx.json ./
 
-# 5
-COPY package*.json yarn.lock ./
+# TODO remove legeacy-peer-deps
+RUN npm install --ignore-scripts --omit=optional --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
-#6
 COPY . .
 
-# 7
-#RUN npm install --omit=optional --legacy-peer-deps --ignore-scripts
-RUN yarn
-#--mode skip-build
+#tree shaking is requring waypoint to be run still
+RUN npx nx run-many --target=prisma-generate --all
 
-RUN yarn build ${APP}
+RUN npm run build ${APP}:build:${NODE_ENV}
 
-# # Second Stage
-# FROM node:lts-alpine AS production
 
-# ARG NODE_ENV=production
-# ENV NODE_ENV=${NODE_ENV}
+# Second Stage
+FROM node:lts-alpine AS deploy
 
-# WORKDIR /usr/src/app
+ARG APP="ods-api"
 
-# COPY package*.json ./
+ARG NODE_ENV=production
 
-# RUN npm install --omit=dev
+ENV NODE_ENV=${NODE_ENV}
 
-# COPY . .
+WORKDIR /usr/src/app
 
-# COPY --from=development /usr/src/app/dist ./dist
+COPY package*.json yarn.lock angular.json nx.json ./
 
-# CMD nx serve ${APP}
+RUN npm install --ignore-scripts --omit=dev --legacy-peer-deps --progress=false --audit=false --loglevel=error
+
+COPY . .
+
+COPY --from=develope /usr/src/app/dist/apps/${APP} ./dist
+
+CMD ["node", "./dist/main"]

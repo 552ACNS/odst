@@ -5,41 +5,40 @@ services:
   postgres:
     container_name: postgres
     image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
-    # network_mode: "bridge"
-    environment:
-      - POSTGRES_PASSWORD=H@CK3YITPL3ASE
     ports:
       - '5432:5432/tcp'
     networks:
       - odst-network
+
   ods-api:
     container_name: ods-api
     build:
       context: .
       dockerfile: ./apps/ods-api/Dockerfile
-      target: development
-    # network_mode: "bridge"
-    command: yarn start ods-api
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    env_file:
-      - ./apps/ods-api/.env.local
-    environment:
-      NODE_ENV: production
-      PORT: 3343
     ports:
-      # - '${PORT}:${PORT}'
-      - 3343:3343
+      - '${PORT:-3343}:${PORT:-3343}'
     depends_on:
       - postgres
+    networks:
+      - odst-network
+  ods:
+    container_name: ods
+    build:
+      context: .
+      dockerfile: ./apps/ods/Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '${PORT:-4210}:${PORT:-4210}'
+      - "80:80"
+    depends_on:
+      - ods-api
     networks:
       - odst-network
 
 networks:
   odst-network:
-    # driver:
-    #   bridge
-    # driver_opts:
-    #   com.docker.network.bridge.name: odst-network
-    #   com.docker.network.bridge.enable_icc: "true"
