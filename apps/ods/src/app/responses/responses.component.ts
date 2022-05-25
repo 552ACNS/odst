@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -7,11 +6,17 @@ import {
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { ResponsesService } from './responses.service';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs';
+import {
+  AddCommentMutationVariables,
+  FindUniqueSurveyResponseQuery,
+  UpdateResolvedMutationVariables,
+} from './responses.generated';
+import { getRefreshToken, getUserId } from '@odst/helpers';
 
 @Component({
   selector: 'odst-responses',
