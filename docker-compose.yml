@@ -34,7 +34,7 @@ services:
       - /usr/src/app/node_modules
     ports:
       - '${PORT:-4210}:${PORT:-4210}'
-      - "80:80"
+      - '8080:80'
     depends_on:
       - ods-api
     networks:

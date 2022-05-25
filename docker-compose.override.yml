@@ -15,6 +15,6 @@ services:
   ods:
     build:
       target: develope
-    command: yarn start ods
+    command: yarn start ods --host=0.0.0.0 --disable-host-check
     environment:
       - NODE_ENV=development

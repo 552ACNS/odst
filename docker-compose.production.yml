@@ -6,15 +6,13 @@ services:
       - POSTGRES_PASSWORD=H@CK3YITPL3ASE
   ods-api:
     build:
-      target: develope
-    command: yarn start ods-api
+      target: deploy
     env_file:
       - ./apps/ods-api/.env.local
     environment:
       - NODE_ENV=production
   ods:
     build:
-      target: develope
-    command: yarn start ods
+      target: deploy
     environment:
       - NODE_ENV=production

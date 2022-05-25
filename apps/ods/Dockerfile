@@ -9,12 +9,15 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
 
-COPY package*.json yarn.lock angular.json nx.json graphql.codegen.yml ./
+COPY package*.json yarn.lock angular.json nx.json decorate-angular-cli.js graphql.codegen.yml ./
 
 # TODO remove legeacy-peer-deps
-RUN npm install --ignore-scripts --omit=optional --legacy-peer-deps --progress=false --audit=false --loglevel=error
+# TODO add --omit=dev, but ngcc doesn't get installed then
+RUN npm install --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
 COPY . .
+RUN node ./decorate-angular-cli.js
+RUN yarn ngcc --properties es2015 browser module main
 
 RUN npx graphql-codegen --config graphql.codegen.yml
 
