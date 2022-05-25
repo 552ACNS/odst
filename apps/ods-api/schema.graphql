@@ -341,7 +341,7 @@ type Query {
   getIssuesByStatus(resolved: String!): [String!]!
   findManyAnswers: [Answer!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): Answer!
-  getOrgLineage: [Org!]!
+  getOrgLineage: [String!]!
   findManyOrgs(where: OrgWhereInput, orderBy: [OrgOrderByWithRelationInput!], cursor: OrgWhereUniqueInput, take: Int, skip: Int, distinct: [OrgScalarFieldEnum!]): [Org!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [Org!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
