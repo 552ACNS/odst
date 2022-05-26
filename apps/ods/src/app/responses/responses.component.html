@@ -81,10 +81,8 @@
               <!-- Always displays the author if it's a new day -->
               <p
                 *ngIf="
-                  (userId !== comment.author.id &&
-                    comments[i - 1]?.author?.id !== comment.author.id) ||
-                  (comments[i - 1].date | date: 'd') !==
-                    (comment.date | date: 'd')
+                  userId !== comment.author.id &&
+                  comments[i - 1]?.author?.id !== comment.author.id
                 "
                 class="text-xs ml-3 mb-0.5"
               >
