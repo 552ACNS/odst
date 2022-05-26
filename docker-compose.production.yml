@@ -9,6 +9,7 @@ services:
       target: deploy
     env_file:
       - ./apps/ods-api/.env.local
+      - ./apps/ods-api/.env.prod
     environment:
       - NODE_ENV=production
   ods:

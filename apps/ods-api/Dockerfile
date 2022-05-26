@@ -1,15 +1,15 @@
 # First Stage
-FROM node:lts-alpine AS develope
+FROM node:lts-alpine AS develop
 
 ARG APP="ods-api"
 
-ARG NODE_ENV=development
+ARG ARG_NODE_ENV=development
 
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=${ARG_NODE_ENV}
 
 WORKDIR /usr/src/app
 
-COPY package*.json yarn.lock angular.json nx.json ./
+COPY package.json ./
 
 # TODO remove legeacy-peer-deps
 RUN npm install --ignore-scripts --omit=optional --legacy-peer-deps --progress=false --audit=false --loglevel=error
@@ -27,18 +27,18 @@ FROM node:lts-alpine AS deploy
 
 ARG APP="ods-api"
 
-ARG NODE_ENV=production
+ARG ARG_NODE_ENV=development
 
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=${ARG_NODE_ENV}
 
 WORKDIR /usr/src/app
 
-COPY package*.json yarn.lock angular.json nx.json ./
+COPY package.json ./
 
 RUN npm install --ignore-scripts --omit=dev --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
 COPY . .
 
-COPY --from=develope /usr/src/app/dist/apps/${APP} ./dist/apps/${APP}
+COPY --from=develop /usr/src/app/dist/apps/${APP} ./dist/apps/${APP}
 
-CMD ["node", "./dist/apps/ods-api/main"]
+CMD ["node", "./dist/apps/${APP}/main"]

@@ -1,22 +1,26 @@
 # First Stage
-FROM node:lts-alpine AS develope
+FROM node:lts-alpine AS develop
 
 ARG APP="ods"
 
-ARG NODE_ENV=development
+ARG ARG_NODE_ENV=development
 
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=${ARG_NODE_ENV}
+
+ENV NX_ENV_NAME=${NX_ENV_NAME}
 
 WORKDIR /usr/src/app
 
-COPY package*.json yarn.lock angular.json nx.json decorate-angular-cli.js graphql.codegen.yml ./
+COPY package.json ./
 
 # TODO remove legeacy-peer-deps
 # TODO add --omit=dev, but ngcc doesn't get installed then
 RUN npm install --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
 COPY . .
+
 RUN node ./decorate-angular-cli.js
+
 RUN yarn ngcc --properties es2015 browser module main
 
 RUN npx graphql-codegen --config graphql.codegen.yml
@@ -29,11 +33,11 @@ FROM nginx:alpine AS deploy
 
 ARG APP="ods"
 
-ARG NODE_ENV=production
+ARG ARG_NODE_ENV=development
 
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=${ARG_NODE_ENV}
 
 WORKDIR /usr/src/app
 
-COPY --from=develope /usr/src/app/dist/apps/${APP} /usr/share/nginx/html
+COPY --from=develop /usr/src/app/dist/apps/${APP} /usr/share/nginx/html
 
