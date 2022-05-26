@@ -35,11 +35,13 @@ export class OrgService {
 
   getFamily(orgs: any): string[] {
     const orgNames: string[] = [];
+    // for each org in the list
     orgs.forEach((org) => {
+      // add the org name to the list of orgnames
       orgNames.push(org.name);
       if (org.children) {
-        this.getFamily(org.children).forEach((result) => {
-          orgNames.push(result);
+        this.getFamily(org.children).forEach((child) => {
+          orgNames.push(child);
         });
       }
     });
