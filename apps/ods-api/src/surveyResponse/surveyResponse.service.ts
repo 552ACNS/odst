@@ -62,7 +62,7 @@ export class SurveyResponseService {
   /**
    *
    * @param user Current user, obtained from resolver
-   * @param args Arguments for the query/mutation, obtained from resolver
+   * @param args Arguments for the query/mutation, obtained from resolver, generic, it must implement an optional where object
    * @returns A new query/mutation with the user's orgs added to the where clause
    */
   private async restrictor<
