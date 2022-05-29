@@ -65,12 +65,9 @@ export class SurveyResponseService {
    * @param args Arguments for the query/mutation, obtained from resolver
    * @returns A new query/mutation with the user's orgs added to the where clause
    */
-  async restrictor(
-    user: User,
-    args: Prisma.SurveyResponseCountArgs | Prisma.SurveyResponseFindManyArgs
-  ): Promise<
-    Prisma.SurveyResponseCountArgs | Prisma.SurveyResponseFindManyArgs
-  > {
+  private async restrictor<
+    T extends { where?: Prisma.SurveyResponseWhereInput }
+  >(user: User, args: T): Promise<T> {
     const restrictor: Prisma.SurveyResponseWhereInput = {
       // whatever the previous where clause was, add the user's orgs to it
       AND: {
