@@ -21,7 +21,6 @@
     <!-- QUESTIONS & ANSWERS -->
     <section class="space-y-3">
       <h2 class="text-center">Response</h2>
-
       <!-- Will create arrays of questions and answers and generate the proper amount of cards for them -->
       <mat-card *ngFor="let qa of questionsAnswers; let i = index">
         <mat-card-content class="text-sm text-left">
@@ -30,8 +29,9 @@
         </mat-card-content>
       </mat-card>
     </section>
-    <div class="space-y-3">
-      <!-- COMMENTS -->
+
+    <!-- COMMENTS -->
+    <section class="space-y-3">
       <ng-container *ngIf="comments">
         <h2 class="text-center">Comments</h2>
 
@@ -185,6 +185,6 @@
           </form>
         </mat-card-content>
       </mat-card>
-    </div>
+    </section>
   </div>
 </div>
