@@ -76,13 +76,16 @@
               }"
             >
               <!-- Displays the authors identity-->
-              <!-- if the comment's author is not the user -->
-              <!-- if the previous comment's author is not the same as the current one -->
+              <!-- if the comment's author is not the user and if the previous comment's
+                   author is not the same as the current one -->
               <!-- Always displays the author if it's a new day -->
               <p
                 *ngIf="
-                  userId !== comment.author.id &&
-                  comments[i - 1]?.author?.id !== comment.author.id
+                  (userId !== comment.author.id &&
+                    comments[i - 1]?.author?.id !== comment.author.id) ||
+                  first ||
+                  (comments[i - 1].date | date: 'd') !==
+                    (comment.date | date: 'd')
                 "
                 class="text-xs ml-3 mb-0.5"
               >
