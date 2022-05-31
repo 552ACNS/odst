@@ -29,7 +29,6 @@ export class OrgResolver {
     return this.orgService.getLineage();
   }
 
-  @Public()
   @Query(() => [Org], { name: 'findManyOrgs' })
   async findMany(
     @Args()

@@ -26,6 +26,9 @@ describe('Org Resolver', () => {
               .fn()
               .mockImplementation(() => Promise.resolve(MockOrgs[0])),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
+            getLineage: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(MockOrgs[0].name)),
           },
         },
       ],
@@ -39,9 +42,9 @@ describe('Org Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
-  describe('findMany', () => {
-    it('should get an array of orgs', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(MockOrgs);
+  describe('getOrgLineage', () => {
+    it('should get an array of orgs names', async () => {
+      await expect(resolver.getOrgLineage()).resolves.toEqual(MockOrgs[0].name);
     });
   });
 
