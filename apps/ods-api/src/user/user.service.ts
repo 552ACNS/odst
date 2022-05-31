@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Prisma, Org, RefreshToken } from '.prisma/ods/client';
+import { User, Comment, Prisma, Org, RefreshToken } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { hash } from 'bcrypt';
 
@@ -7,21 +7,8 @@ import { hash } from 'bcrypt';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<User[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.user.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+  async findMany(findManyUserArgs: Prisma.UserFindManyArgs): Promise<User[]> {
+    return this.prisma.user.findMany(findManyUserArgs);
   }
 
   async findUnique(
@@ -42,6 +29,39 @@ export class UserService {
     });
   }
 
+  async comments(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<Comment[]> {
+    return this.prisma.user
+      .findUnique({ where: userWhereUniqueInput })
+      .comments();
+  }
+
+  async create(data: Prisma.UserCreateInput): Promise<User> {
+    data.password = await hash(data.password, 10);
+
+    return this.prisma.user.create({
+      data,
+    });
+  }
+
+  async delete(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<User | null> {
+    let deletedUser: User | null = null;
+
+    try {
+      deletedUser = await this.prisma.user.delete({
+        where: userWhereUniqueInput,
+      });
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        console.log(err?.meta?.cause);
+      }
+    }
+    return deletedUser;
+  }
+
   async orgs(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<Org[]> {
@@ -56,21 +76,5 @@ export class UserService {
         where: userWhereUniqueInput,
       })
       .refreshToken();
-  }
-
-  async create(data: Prisma.UserCreateInput): Promise<User> {
-    data.password = await hash(data.password, 10);
-
-    return this.prisma.user.create({
-      data,
-    });
-  }
-
-  async delete(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<User> {
-    return this.prisma.user.delete({
-      where: userWhereUniqueInput,
-    });
   }
 }

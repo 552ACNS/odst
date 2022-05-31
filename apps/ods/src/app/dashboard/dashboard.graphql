@@ -9,12 +9,9 @@ query ResponseCount {
 # TODO [ODST-173] the proper way to do this is with ID tokens https://auth0.com/docs/secure/tokens/id-tokens/id-token-structure
 query CurrentUser {
   me {
-    ...AuthenticatedUser
+    firstName
+    lastName
+    grade
+    role
   }
-}
-fragment AuthenticatedUser on UserGQL {
-  firstName
-  lastName
-  grade
-  role
 }

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'auth',
 
   globals: {
@@ -12,5 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/libs/auth',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };

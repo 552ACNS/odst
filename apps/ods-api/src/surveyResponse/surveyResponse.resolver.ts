@@ -3,66 +3,95 @@ import {
   Mutation,
   Args,
   Query,
+  Int,
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
 import { SurveyResponseService } from './surveyResponse.service';
 import {
-  SurveyResponseGQL,
+  SurveyResponse,
   SurveyResponseCreateInput,
-  SurveyResponseUpdateInput,
   SurveyResponseWhereUniqueInput,
-  AnswerGQL,
-  SurveyGQL,
-  ResponseCount,
-  UserGQL,
+  Answer,
+  Survey,
+  User,
+  Comment,
+  FindManySurveyResponseArgs,
+  SurveyResponseAggregateArgs,
+  UpdateOneSurveyResponseArgs,
 } from '@odst/types/ods';
+import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
+import { ResponseCount } from '../__types__';
 
-@Resolver(() => SurveyResponseGQL)
+@Resolver(() => SurveyResponse)
 export class SurveyResponseResolver {
   constructor(private readonly surveyResponseService: SurveyResponseService) {}
 
-  @Query(() => [SurveyResponseGQL], { name: 'findManySurveyResponses' })
-  async findMany(): Promise<SurveyResponseGQL[]> {
-    return this.surveyResponseService.findMany({});
+  /**
+   * Finds the SurveyResponses that match the provided criteria
+   * @param user The user who is requesting the response count
+   * @param findManySurveyResponseArgs The arguments for the findMany query
+   * @returns The SurveyResponses that fit the findMany args set my API
+   */
+  @Query(() => [SurveyResponse], { name: 'findManySurveyResponses' })
+  async findMany(
+    @GetCurrentUser() user: User,
+    @Args()
+    findManySurveyResponseArgs: FindManySurveyResponseArgs
+  ): Promise<SurveyResponse[]> {
+    return this.surveyResponseService.findMany(
+      user,
+      findManySurveyResponseArgs
+    );
   }
 
   //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
-  @Query(() => SurveyResponseGQL, { name: 'findUniqueSurveyResponse' })
+  @Query(() => SurveyResponse, { name: 'findUniqueSurveyResponse' })
   async findUnique(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
-  ): Promise<SurveyResponseGQL | null> {
+  ): Promise<SurveyResponse | null> {
     return this.surveyResponseService.findUnique(
       surveyResponseWhereUniqueInput
     );
   }
 
-  @Mutation(() => SurveyResponseGQL, { name: 'createSurveyResponse' })
+  @Query(() => Int, { name: 'getResponseCount' })
+  async count(
+    @GetCurrentUser() user: User,
+    @Args()
+    surveyResponseAggregateArgs: SurveyResponseAggregateArgs
+  ): Promise<number> {
+    return this.surveyResponseService.count(user, surveyResponseAggregateArgs);
+  }
+
+  @Mutation(() => SurveyResponse, { name: 'createSurveyResponse' })
   @Public()
   async create(
     @Args('surveyResponseCreateInput')
     surveyResponseCreateInput: SurveyResponseCreateInput
-  ): Promise<SurveyResponseGQL> {
+  ): Promise<SurveyResponse> {
     return this.surveyResponseService.create(surveyResponseCreateInput);
   }
 
-  @Mutation(() => SurveyResponseGQL, { name: 'updateSurveyResponse' })
+  @Mutation(() => SurveyResponse, { name: 'updateSurveyResponse' })
   async update(
-    @Args('SurveyResponseWhereUniqueInput')
-    surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput,
-    @Args('SurveyResponseUpdateInput')
-    surveyResponseUpdateInput: SurveyResponseUpdateInput
-  ): Promise<SurveyResponseGQL> {
+    @Args()
+    updateArgs: UpdateOneSurveyResponseArgs
+  ): Promise<SurveyResponse> {
+    const { data, where } = updateArgs;
+
+    // Logger.log(info)
+
     return this.surveyResponseService.update(
-      surveyResponseWhereUniqueInput,
-      surveyResponseUpdateInput
+      data as Prisma.SurveyResponseUpdateInput,
+      where as Prisma.SurveyResponseWhereUniqueInput
     );
   }
 
-  @Mutation(() => SurveyResponseGQL, { name: 'deleteSurveyResponse' })
+  @Mutation(() => SurveyResponse, { name: 'deleteSurveyResponse' })
   async delete(
     @Args('surveyResponseWhereUniqueInput')
     surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput
@@ -70,30 +99,35 @@ export class SurveyResponseResolver {
     return this.surveyResponseService.delete(surveyResponseWhereUniqueInput);
   }
 
+  // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
+
   @Query(() => ResponseCount, { name: 'ResponseCount' })
-  async ResponseCount(@GetCurrentUser() user: UserGQL): Promise<ResponseCount> {
+  async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
     return this.surveyResponseService.countResponses(user);
   }
 
   @Query(() => [String], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
     @Args('resolved') resolved: string,
-    @GetCurrentUser() user: UserGQL
+    @GetCurrentUser() user: User
   ): Promise<string[]> {
     return this.surveyResponseService.getIssuesByStatus(resolved, user);
   }
 
-  @ResolveField(() => [AnswerGQL])
-  async answers(
-    @Parent() surveyResponse: SurveyResponseGQL
-  ): Promise<AnswerGQL[]> {
+  @ResolveField(() => [Answer])
+  async answers(@Parent() surveyResponse: SurveyResponse): Promise<Answer[]> {
     return this.surveyResponseService.answers({ id: surveyResponse.id });
   }
 
-  @ResolveField(() => SurveyGQL)
+  @ResolveField(() => Survey)
   async survey(
-    @Parent() surveyResponse: SurveyResponseGQL
-  ): Promise<SurveyGQL | null> {
+    @Parent() surveyResponse: SurveyResponse
+  ): Promise<Survey | null> {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
+  }
+
+  @ResolveField(() => [Comment])
+  async comments(@Parent() surveyResponse: SurveyResponse): Promise<Comment[]> {
+    return this.surveyResponseService.comments({ id: surveyResponse.id });
   }
 }

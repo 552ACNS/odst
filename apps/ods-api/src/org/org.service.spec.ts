@@ -46,7 +46,7 @@ describe('OrgService', () => {
 
   describe('getSubOrgs', () => {
     it('should call the getSubOrgs method', async () => {
-      const org = await service.getSubOrgs({ id: 'a uuid' });
+      const org = await service.getAllChildren({ id: 'a uuid' });
       expect(org).toEqual(MockOrgs);
     });
   });
@@ -69,9 +69,9 @@ describe('OrgService', () => {
   describe('update', () => {
     it('should call the update method', async () => {
       const org = await service.update(
-        { id: 'a uuid' },
+        { orgTier: 'WING' },
         {
-          orgTier: 'WING',
+          name: 'a new name',
         }
       );
       expect(org).toEqual(MockOrgs[0]);

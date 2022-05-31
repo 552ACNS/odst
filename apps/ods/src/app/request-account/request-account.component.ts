@@ -47,6 +47,7 @@ export class RequestAccountComponent implements OnInit {
   // })
 
   hide = true;
+  emailNotUnique = false;
   errors = errorMessages;
   matcher = new MyErrorStateMatcher();
   grades = [
@@ -73,6 +74,19 @@ export class RequestAccountComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.orgs = await this.requestService.getManyOrgs();
   }
+
+  async uniqueEmail() {
+    //TODO: optimize the way it determines the amount of queries to send to the backend
+    if (this.form.value['email'].trim().includes('@') == true) {
+      (
+        await this.requestService.emailExists(this.form.value['email'].trim())
+      ).subscribe((data) => {
+        this.emailNotUnique = data;
+        console.log(this.emailNotUnique);
+        console.log(this.form.value['email'].trim());
+      });
+    }
+  }
   gradeCheck(grade?: string) {
     if (grade == 'N/A') {
       grade = undefined;
@@ -90,9 +104,9 @@ export class RequestAccountComponent implements OnInit {
     }
   }
 
+  //prerequisite: email must be unique
   submit() {
     this.grade = this.gradeCheck(this.form.get(['grade'])?.value);
-
     this.requestService
       .submitAccountCreationRequest({
         firstName: this.form.value['firstName'].trim(),
@@ -101,9 +115,11 @@ export class RequestAccountComponent implements OnInit {
         grade: this.grade,
         role: this.determineRole(this.form.get(['permissions'])?.value),
         orgs: {
-          connect: {
-            name: this.form.get(['org'])?.value,
-          },
+          connect: [
+            {
+              name: this.form.get(['org'])?.value,
+            },
+          ],
         },
         password: this.form.value['confirmPassword'].trim(),
       })
