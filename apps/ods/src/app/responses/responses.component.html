@@ -1,167 +1,190 @@
-<div class="mx-auto min-w-[340px] w-[95%] max-w-[500px] mt-2">
-  <h1 class="text-center">{{ resolved | titlecase }} Responses</h1>
-  <mat-paginator
-    class="flex justify-center border-1 border-solid rounded-2xl shadow-md mb-3"
-    [length]="numberOfResponses"
-    [pageIndex]="displayedIndex"
-    [pageSize]="1"
-    [hidePageSize]="true"
-    [showFirstLastButtons]="true"
-    (page)="pageEvent = displayIssue($event)"
-  >
-  </mat-paginator>
-
-  <!-- QUESTIONS & ANSWERS -->
-  <section class="space-y-3">
+<div class="mx-auto min-w-[340px] w-[95%] max-w-[500px] sm:max-w-[1000px] mt-2">
+  <div class="flex justify-center flex-col items-center">
+    <h1 class="text-center">{{ resolved | titlecase }} Responses</h1>
+    <mat-paginator
+      class="border-1 border-solid rounded-2xl shadow-md mb-3 w-fit"
+      [length]="numberOfResponses"
+      [pageIndex]="displayedIndex"
+      [pageSize]="1"
+      [hidePageSize]="true"
+      [showFirstLastButtons]="true"
+      (page)="pageEvent = displayIssue($event)"
+    >
+    </mat-paginator>
     <p class="text-center">
       Date Submitted: {{ openedDate | date: 'd MMM yy, h:mm a' }}
     </p>
-    <!-- Will create arrays of questions and answers and generate the proper amount of cards for them -->
-    <mat-card *ngFor="let qa of questionsAnswers; let i = index">
-      <mat-card-content class="text-sm text-left">
-        <p class="text-base font-medium">{{ i + 1 }}. {{ qa[0] }}</p>
-        <p>{{ qa[1] }}</p>
-      </mat-card-content>
-    </mat-card>
-  </section>
+  </div>
 
-  <!-- COMMENTS -->
-  <ng-container *ngIf="comments">
-    <h1 class="text-center mt-3">Comments</h1>
+  <!-- Possible Columns -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+    <!-- QUESTIONS & ANSWERS -->
+    <section class="space-y-3">
+      <h2 class="text-center">Response</h2>
 
-    <!-- Generates comments if the response has comments -->
-    <div
-      class="grid"
-      *ngFor="
-        let comment of comments;
-        let i = index;
-        let first = first;
-        let last = last
-      "
-    >
-      <!-- Generates the DATE of a new day -->
-      <!-- if it's the first comment -->
-      <!-- or if the day of the comment changes -->
-      <ng-container
-        *ngIf="
-          first ||
-          (comments[i - 1].date | date: 'd') !== (comment.date | date: 'd')
-        "
-      >
-        <div class="flex items-center my-2 justify-center">
-          <div class="flex-auto border-b opacity-25"></div>
-          <div class="mx-4">
-            {{ comment.date | date: 'longDate' }}
+      <!-- Will create arrays of questions and answers and generate the proper amount of cards for them -->
+      <mat-card *ngFor="let qa of questionsAnswers; let i = index">
+        <mat-card-content class="text-sm text-left">
+          <p class="text-base font-medium">{{ i + 1 }}. {{ qa[0] }}</p>
+          <p>{{ qa[1] }}</p>
+        </mat-card-content>
+      </mat-card>
+    </section>
+    <div class="space-y-3">
+      <!-- COMMENTS -->
+      <ng-container *ngIf="comments">
+        <h2 class="text-center">Comments</h2>
+
+        <mat-card *ngIf="comments.length">
+          <!-- Generates comments if the response has comments -->
+          <div
+            class="grid"
+            *ngFor="
+              let comment of comments;
+              let i = index;
+              let first = first;
+              let last = last
+            "
+          >
+            <!-- Generates the DATE of a new day -->
+            <!-- if it's the first comment -->
+            <!-- or if the day of the comment changes -->
+            <ng-container
+              *ngIf="
+                first ||
+                (comments[i - 1].date | date: 'd') !==
+                  (comment.date | date: 'd')
+              "
+            >
+              <div class="flex items-center my-2 justify-center">
+                <div class="flex-auto border-b opacity-25"></div>
+                <div class="mx-4">{{ comment.date | date: 'longDate' }}</div>
+                <div class="flex-auto border-b opacity-25"></div>
+              </div>
+            </ng-container>
+
+            <!-- align comments to the left by default -->
+            <!-- If the user is equal to the comment's author, then align to the right -->
+            <!-- Adjust margins depending on ownership -->
+            <div
+              class="flex flex-col items-start my-0.5"
+              [ngClass]="{
+                'items-end ': userId === comment.author.id,
+                'mt-3':
+                  i > 0 && comments[i - 1].author.id !== comment.author.id,
+                'mb-3': last
+              }"
+            >
+              <!-- Displays the authors identity-->
+              <!-- if the comment's author is not the user and if the previous comment's
+                   author is not the same as the current one -->
+              <!-- Always displays the author if it's a new day -->
+              <p
+                *ngIf="
+                  (userId !== comment.author.id &&
+                    comments[i - 1]?.author?.id !== comment.author.id) ||
+                  first ||
+                  (comments[i - 1].date | date: 'd') !==
+                    (comment.date | date: 'd')
+                "
+                class="text-xs ml-3 mb-0.5"
+              >
+                {{ comment.author.lastName }}, {{ comment.author.firstName }}
+                {{ comment.author.grade }}, {{ comment.author.role }}
+                {{
+                  comment.author.orgs ? 'of ' + comment.author.orgs[0].name : ''
+                }}
+              </p>
+              <!-- TODO: Use OIDC tokens instead because you aren't a monster -->
+              <mat-card
+                class="p-3"
+                [ngClass]="{
+                  'primary-text-contrast': userId === comment.author.id,
+                  'dark:bg-gray-500 bg-gray-100 shadow-none':
+                    userId !== comment.author.id
+                }"
+              >
+                <mat-card-content
+                  class="text-sm text-left"
+                  [ngClass]="{ 'text-right': userId === comment.author.id }"
+                  #tooltip="matTooltip"
+                  matTooltip="{{ comment.date | date: 'd MMM yy, h:mm a' }}"
+                >
+                  {{ comment.value }}
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Display the time below comment -->
+              <!-- If there's only 1 comment -->
+              <!-- If it's the last comment  -->
+              <!-- if the next comment is a different author -->
+              <!-- if the next comment's date is on a different day than the previous one  -->
+              <ng-container
+                *ngIf="
+                  comments.length === 1 ||
+                  last ||
+                  comments[i + 1].author.id !== comment.author.id ||
+                  (comments[i + 1].date | date: 'd') !==
+                    (comment.date | date: 'd')
+                "
+              >
+                <!-- Put the time in a different margin depending on who made it -->
+                <div
+                  class="my-0.5 text-xs"
+                  [ngClass]="{
+                    'mr-3': comment.author.id === userId,
+                    'ml-3': comment.author.id !== userId
+                  }"
+                >
+                  {{ comment.date | date: 'HH:mm' }}
+                </div>
+              </ng-container>
+            </div>
           </div>
-          <div class="flex-auto border-b opacity-25"></div>
-        </div>
+        </mat-card>
       </ng-container>
 
-      <!-- align comments to the left by default -->
-      <!-- If the user is equal to the comment's author, then align to the right -->
-      <!-- Adjust margins depending on ownership -->
-      <div
-        class="flex flex-col items-start my-0.5"
-        [ngClass]="{
-          'items-end ': userId === comment.author.id,
-          'mt-3': i > 0 && comments[i - 1].author.id !== comment.author.id,
-          'mb-3': last
-        }"
-      >
-        <!-- Displays the authors identity-->
-        <!-- if the comment's author is not the user -->
-        <!-- if the previous comment's author is not the same as the current one -->
-        <p
-          *ngIf="
-            userId !== comment.author.id &&
-            comments[i - 1]?.author?.id !== comment.author.id
-          "
-          class="text-xs ml-3 mb-0.5"
-        >
-          {{ comment.author.lastName }}, {{ comment.author.firstName }}
-          {{ comment.author.grade }}, {{ comment.author.role }}
-          {{ comment.author.orgs ? 'of ' + comment.author.orgs[0].name : '' }}
-        </p>
-        <!-- TODO: Use OIDC tokens instead because you aren't a monster -->
-        <mat-card
-          class="p-3"
-          [ngClass]="{ 'primary-text-contrast': userId === comment.author.id }"
-        >
-          <mat-card-content
-            class="text-sm text-left"
-            [ngClass]="{ 'text-right': userId === comment.author.id }"
-            #tooltip="matTooltip"
-            matTooltip="{{ comment.date | date: 'd MMM yy, h:mm a' }}"
-          >
-            {{ comment.value }}
-          </mat-card-content>
-        </mat-card>
+      <mat-card class="shadow-md">
+        <mat-card-content class="text-sm text-left">
+          <form [formGroup]="resolutionForm">
+            <p class="text-base font-medium text-center">Add a Comment</p>
+            <!-- Not empty validator -->
+            <mat-slide-toggle
+              color="primary"
+              [checked]="actualResolution"
+              (change)="updateResolved()"
+            >
+              Mark this issue as resolved
+            </mat-slide-toggle>
 
-        <!-- Display the time below comment -->
-        <!-- If there's only 1 comment -->
-        <!-- If it's the last comment  -->
-        <!-- if the next comment is a different author -->
-        <!-- if the next comment's date is on a different day than the previous one  -->
-        <ng-container
-          *ngIf="
-            comments.length === 1 ||
-            last ||
-            comments[i + 1].author.id !== comment.author.id ||
-            (comments[i + 1].date | date: 'd') !== (comment.date | date: 'd')
-          "
-        >
-          <div
-            class="my-0.5 text-xs"
-            [ngClass]="{
-              'mr-3': comment.author.id === userId,
-              'ml-3': comment.author.id !== userId
-            }"
-          >
-            {{ comment.date | date: 'HH:mm' }}
-          </div>
-        </ng-container>
-      </div>
+            <mat-form-field appearance="outline" class="w-full">
+              <!-- <mat-label>I took the following actions...</mat-label> -->
+              <textarea matInput [formControlName]="'comment'" rows="3">
+              </textarea>
+            </mat-form-field>
+            <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
+              <button
+                mat-stroked-button
+                class="w-full shadow-md rounded-full"
+                type="reset"
+                [routerLink]="['/dashboard']"
+              >
+                Back
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                class="w-full text-white shadow-md rounded-full"
+                type="submit"
+                (click)="submitComment()"
+              >
+                <!-- TODO: redirect to dashboard when there are no more reports to address -->
+                Submit
+              </button>
+            </mat-card-actions>
+          </form>
+        </mat-card-content>
+      </mat-card>
     </div>
-  </ng-container>
-
-  <mat-card class="shadow-md">
-    <mat-card-content class="text-sm text-left">
-      <form [formGroup]="resolutionForm">
-        <p class="text-base font-medium text-center">Add a comment</p>
-        <!-- Not empty validator -->
-        <mat-slide-toggle
-          color="primary"
-          [checked]="actualResolution"
-          (change)="updateResolved()"
-        >
-          Mark this issue as resolved</mat-slide-toggle
-        >
-
-        <mat-form-field appearance="outline" class="w-full">
-          <!-- <mat-label>I took the following actions...</mat-label> -->
-          <textarea matInput [formControlName]="'comment'" rows="3"> </textarea>
-        </mat-form-field>
-        <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
-          <button
-            mat-stroked-button
-            class="w-full shadow-md rounded-full"
-            type="reset"
-            [routerLink]="['/dashboard']"
-          >
-            Back
-          </button>
-          <button
-            mat-raised-button
-            color="primary"
-            class="w-full text-white shadow-md rounded-full"
-            type="submit"
-            (click)="submitComment()"
-          >
-            <!-- TODO: redirect to dashboard when there are no more reports to address -->
-            Submit
-          </button>
-        </mat-card-actions>
-      </form>
-    </mat-card-content>
-  </mat-card>
+  </div>
 </div>
