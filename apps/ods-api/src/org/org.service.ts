@@ -9,7 +9,7 @@ export class OrgService {
   async findMany(args: Prisma.OrgFindManyArgs) {
     return this.prisma.org.findMany(args);
   }
-
+  //TODO: accept method parameter for organization name.
   async getLineage(): Promise<string[]> {
     const orgs = await this.prisma.org.findMany({
       where: {
