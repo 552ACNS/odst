@@ -1,5 +1,4 @@
 {
-  "root": "apps/ods-api",
   "sourceRoot": "apps/ods-api/src",
   "projectType": "application",
   "targets": {

@@ -1,6 +1,5 @@
 {
   "projectType": "application",
-  "root": "apps/ods",
   "sourceRoot": "apps/ods/src",
   "prefix": "odst",
   "targets": {

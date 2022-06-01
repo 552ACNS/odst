@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/shared/angular",
   "sourceRoot": "libs/shared/angular/src",
   "prefix": "odst",
   "targets": {

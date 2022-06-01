@@ -1,5 +1,4 @@
 {
-  "root": "apps/waypoint-api",
   "sourceRoot": "apps/waypoint-api/src",
   "projectType": "application",
   "targets": {

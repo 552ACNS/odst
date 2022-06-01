@@ -1,6 +1,5 @@
 {
   "projectType": "application",
-  "root": "apps/waypoint",
   "sourceRoot": "apps/waypoint/src",
   "prefix": "odst",
   "targets": {

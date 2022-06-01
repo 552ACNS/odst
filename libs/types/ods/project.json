@@ -1,5 +1,4 @@
 {
-  "root": "libs/types/ods",
   "sourceRoot": "libs/types/ods/src",
   "projectType": "library",
   "targets": {

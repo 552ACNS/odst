@@ -1,5 +1,4 @@
 {
-  "root": "libs/types/waypoint",
   "sourceRoot": "libs/types/waypoint/src",
   "projectType": "library",
   "targets": {

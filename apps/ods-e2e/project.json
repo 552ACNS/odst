@@ -1,5 +1,4 @@
 {
-  "root": "apps/ods-e2e",
   "sourceRoot": "apps/ods-e2e/src",
   "projectType": "application",
   "targets": {

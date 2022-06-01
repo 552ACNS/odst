@@ -1,5 +1,4 @@
 {
-  "root": "apps/waypoint-e2e",
   "sourceRoot": "apps/waypoint-e2e/src",
   "projectType": "application",
   "targets": {

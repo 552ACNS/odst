@@ -1,5 +1,4 @@
 {
-  "root": "libs/helpers",
   "sourceRoot": "libs/helpers/src",
   "projectType": "library",
   "targets": {

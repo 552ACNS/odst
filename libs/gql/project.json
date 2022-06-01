@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/gql",
   "sourceRoot": "libs/gql/src",
   "prefix": "odst",
   "targets": {
