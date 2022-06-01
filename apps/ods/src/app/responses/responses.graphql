@@ -56,6 +56,18 @@ mutation AddComment(
   }
 }
 
+mutation AddTag(
+  $data: SurveyResponseUpdateInput!
+  $where: SurveyResponseWhereUniqueInput!
+) {
+  updateSurveyResponse(data: $data, where: $where) {
+    id
+    tags {
+      value
+    }
+  }
+}
+
 mutation UpdateResolved(
   $data: SurveyResponseUpdateInput!
   $where: SurveyResponseWhereUniqueInput!

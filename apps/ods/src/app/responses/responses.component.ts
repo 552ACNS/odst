@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs';
 import {
   AddCommentMutationVariables,
+  AddTagMutationVariables,
   FindUniqueSurveyResponseQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
@@ -26,6 +27,7 @@ import { getRefreshToken, getUserId } from '@odst/helpers';
 export class ResponsesComponent implements OnInit {
   resolutionForm = this.fb.group({
     comment: [''],
+    tags: [''],
   });
   //start for tags
   visible = true;
@@ -78,6 +80,7 @@ export class ResponsesComponent implements OnInit {
     [];
 
   AddCommentMutationVariables: AddCommentMutationVariables;
+  AddTagMutationVariables: AddTagMutationVariables;
 
   newComment = '';
   // TODO: Change resolved status back to bool
@@ -121,7 +124,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   submitComment() {
-    // if the resolution field is not empty after a trim
+    //if the resolution field is not empty after a trim
     if (this.resolutionForm.value.comment.trim() !== '') {
       this.AddCommentMutationVariables = {
         where: {
@@ -149,11 +152,39 @@ export class ResponsesComponent implements OnInit {
           if (!errors && data) {
             // Refresh comments afterwards
             this.comments = data.updateSurveyResponse['comments'];
+            this.tags = data.updateSurveyResponse['tags'];
             this.actualResolution = data.updateSurveyResponse['resolved'];
             this.resolutionForm.reset();
           }
         });
     }
+  }
+
+  updateTags() {
+    if (this.resolutionForm.value.tag.trim() !== '') {
+      this.AddTagMutationVariables = {
+        where: {
+          id: this.responseIDs[this.displayedIndex],
+        },
+        data: {
+          tags: {
+            set: [
+              {
+                value: this.resolutionForm.value.tag.trim(),
+              },
+            ],
+          },
+        },
+      };
+    }
+
+    this.responsesService
+      .addTag(this.AddTagMutationVariables)
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.tags = data.updateSurveyResponse['tags'] as [];
+        }
+      });
   }
 
   updateResolved() {

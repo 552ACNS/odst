@@ -12,6 +12,9 @@ import {
   AddCommentMutationVariables,
   AddCommentMutation,
   AddCommentDocument,
+  AddTagMutationVariables,
+  AddTagMutation,
+  AddTagDocument,
   UpdateResolvedMutation,
   UpdateResolvedMutationVariables,
   UpdateResolvedDocument,
@@ -41,6 +44,13 @@ export class ResponsesService {
     return this.apollo.mutate<AddCommentMutation, AddCommentMutationVariables>({
       mutation: AddCommentDocument,
       variables: addCommentMutationVariables,
+    });
+  }
+
+  addTag(addTagMutationVariables: AddTagMutationVariables) {
+    return this.apollo.mutate<AddTagMutation, AddTagMutationVariables>({
+      mutation: AddTagDocument,
+      variables: addTagMutationVariables,
     });
   }
 
