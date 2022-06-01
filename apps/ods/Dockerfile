@@ -7,11 +7,9 @@ ARG ARG_NODE_ENV=development
 
 ENV NODE_ENV=${ARG_NODE_ENV}
 
-ENV NX_ENV_NAME=${NX_ENV_NAME}
-
-RUN git clone https://github.com/552ACNS/odst /usr/src/app
-
 WORKDIR /usr/src/app
+
+COPY package.json ./
 
 # TODO remove legeacy-peer-deps
 # TODO add --omit=dev, but ngcc doesn't get installed then
