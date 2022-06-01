@@ -47,7 +47,7 @@ describe('ods', () => {
   });
 
   it('Verify that only people with correct permission can view a specific survey', () => {
-    cy.login('kenneth.voigt@us.af.mil', 'admin');
+    cy.login('keven.coyle@us.af.mil', 'admin');
 
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Unresolved').click();
@@ -55,18 +55,21 @@ describe('ods', () => {
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-
+    cy.scrollTo('bottom');
     cy.get('mat-card-content', { timeout: 5000 }).contains(surveyResponseUUID);
+    cy.scrollTo('top');
     cy.get('textarea').type(commentUUID);
     cy.get('button').contains('Submit').click();
     cy.get('mat-slide-toggle').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    cy.get('button').contains('Back').click();
   });
 
   it('Verify that a comment was mad and that the survey was catagorized as resolved', () => {
     cy.visit('/login');
     cy.location('pathname').should('include', '/login');
-    cy.get('[formcontrolname="userEmail"]').type('kenneth.voigt@us.af.mil');
-    cy.get('[formcontrolname="userPassword"]').type('admin');
+    cy.login('keven.coyle@us.af.mil', 'admin');
     cy.get('button').contains('Sign In').click();
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Resolved').click();
@@ -74,8 +77,9 @@ describe('ods', () => {
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-
+    cy.scrollTo('bottom');
     cy.get('mat-card-content', { timeout: 5000 }).contains(surveyResponseUUID);
+    cy.scrollTo('top');
     cy.get('mat-card-content').contains(commentUUID);
   });
 
