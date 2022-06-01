@@ -5,12 +5,40 @@ services:
   postgres:
     container_name: postgres
     image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
-    environment:
-      - POSTGRES_PASSWORD=H@CK3YITPL3ASE
     ports:
       - '5432:5432/tcp'
     networks:
-      - waypoint-network
+      - odst-network
+
+  ods-api:
+    container_name: ods-api
+    build:
+      context: .
+      dockerfile: ./apps/ods-api/Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '${PORT:-3343}:${PORT:-3343}'
+    depends_on:
+      - postgres
+    networks:
+      - odst-network
+  ods:
+    container_name: ods
+    build:
+      context: .
+      dockerfile: ./apps/ods/Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '${PORT:-4210}:${PORT:-4210}'
+      - '8080:80'
+    depends_on:
+      - ods-api
+    networks:
+      - odst-network
 
 networks:
-  waypoint-network:
+  odst-network:

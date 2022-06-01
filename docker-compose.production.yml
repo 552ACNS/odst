@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  postgres:
+    environment:
+      - POSTGRES_PASSWORD=H@CK3YITPL3ASE
+  ods-api:
+    build:
+      target: deploy
+    env_file:
+      - ./apps/ods-api/.env.local
+      - ./apps/ods-api/.env.prod
+    environment:
+      - NODE_ENV=production
+  ods:
+    build:
+      target: deploy
+    environment:
+      - NODE_ENV=production
