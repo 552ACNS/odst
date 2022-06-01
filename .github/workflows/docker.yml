@@ -15,4 +15,4 @@ jobs:
         with:
           registry: ghcr.io
           push: true
-          tags: 552acns/ods:latest
+          tags: ericcater/ods:latest
