@@ -15,6 +15,8 @@ COPY package.json ./
 # TODO add --omit=dev, but ngcc doesn't get installed then
 RUN npm install --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
+COPY . .
+
 RUN node ./decorate-angular-cli.js
 
 RUN yarn ngcc --properties es2015 browser module main
