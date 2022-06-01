@@ -10,6 +10,7 @@ env:
   REGISTRY: ghcr.io
 jobs:
   build-and-push-image:
+    if: always()
     runs-on: ubuntu-latest
 
     permissions:
@@ -20,7 +21,8 @@ jobs:
       matrix:
         app:
           - ods
-          # - ods-api
+          - ods-api
+          
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
