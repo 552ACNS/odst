@@ -18,6 +18,7 @@ import {
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { Prisma } from '.prisma/ods/client';
+import { publicDecrypt } from 'crypto';
 
 @Resolver(() => Org)
 export class OrgResolver {
@@ -28,12 +29,11 @@ export class OrgResolver {
   async getOrgLineage(): Promise<string[]> {
     return this.orgService.getLineage();
   }
-
-  // @Query(() => [Org], { name: 'findManyOrgs' })
-  // async findMany(
-  // ): Promise<Org[]> {
-  //   return this.orgService.findMany({});
-  // }
+  @Public()
+  @Query(() => [String], { name: 'getOrgNames' })
+  async getOrgNames(): Promise<string[]> {
+    return this.orgService.getOrgNames();
+  }
 
   @Query(() => [Org], { name: 'getSubOrgs' })
   //TODO redo with findMany

@@ -5,7 +5,7 @@ import { MockOrgCreateInput, MockOrgs } from './org.repo';
 
 const db = {
   org: {
-    // findMany: jest.fn().mockReturnValue(MockOrgs),
+    getOrgNames: jest.fn().mockReturnValue(MockOrgs.map((orgs) => orgs.name)),
     getSubOrgs: jest.fn().mockReturnValue(MockOrgs),
     findUnique: jest.fn().mockResolvedValue(MockOrgs[0]),
     create: jest.fn().mockResolvedValue(MockOrgs[0]),
@@ -37,12 +37,12 @@ describe('OrgService', () => {
     expect(service).toBeDefined();
   });
 
-  // describe('findMany', () => {
-  //   it('should return an array of orgs', async () => {
-  //     const orgs = await service.findMany({});
-  //     expect(orgs).toEqual(MockOrgs);
-  //   });
-  // });
+  describe('getOrgNames', () => {
+    it('should return an array of orgs', async () => {
+      const orgs = await service.getOrgNames();
+      expect(orgs).toEqual(MockOrgs.map((orgs) => orgs.name));
+    });
+  });
 
   describe('getSubOrgs', () => {
     it('should call the getSubOrgs method', async () => {

@@ -342,6 +342,7 @@ type Query {
   findManyAnswers: [Answer!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): Answer!
   getOrgLineage: [String!]!
+  getOrgNames: [String!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [Org!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
   findManyQuestions: [Question!]!
