@@ -1,5 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { User, Comment, Prisma, Org, RefreshToken } from '.prisma/ods/client';
+import {
+  User,
+  Comment,
+  Prisma,
+  Org,
+  RefreshToken,
+  Role,
+} from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { hash } from 'bcrypt';
 
@@ -76,5 +83,75 @@ export class UserService {
         where: userWhereUniqueInput,
       })
       .refreshToken();
+  }
+
+  async findManyRequestedAccounts(user: User) {
+    const whereUser: Prisma.OrgWhereInput = {
+      users: {
+        some: {
+          id: user.id,
+        },
+      },
+    };
+
+    switch (user.role) {
+      case Role.ADMIN: {
+        return this.prisma.user.findMany({
+          where: {
+            enabled: false,
+          },
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            grade: true,
+            role: true,
+            email: true,
+            orgs: true,
+            enabled: true,
+          },
+        });
+      }
+      case Role.DEI:
+      case Role.CC: {
+        return this.prisma.user.findMany({
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            grade: true,
+            role: true,
+            email: true,
+            orgs: true,
+            enabled: true,
+          },
+          where: {
+            enabled: false,
+            AND: {
+              orgs: {
+                some: {
+                  OR: [
+                    whereUser,
+
+                    {
+                      parent: whereUser,
+                    },
+
+                    {
+                      parent: {
+                        parent: whereUser,
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        });
+      }
+      default: {
+        return [];
+      }
+    }
   }
 }
