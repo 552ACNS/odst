@@ -66,11 +66,9 @@ describe('ods', () => {
     cy.get('button').contains('Back').click();
   });
 
-  it('Verify that a comment was mad and that the survey was catagorized as resolved', () => {
-    cy.visit('/login');
-    cy.location('pathname').should('include', '/login');
+  it('Verify that a comment was made and that the survey was catagorized as resolved', () => {
     cy.login('keven.coyle@us.af.mil', 'admin');
-    cy.get('button').contains('Sign In').click();
+
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Resolved').click();
     cy.location('pathname').should('include', '/responses');
