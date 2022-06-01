@@ -15,6 +15,6 @@ jobs:
         with:
           registry: ghcr.io
           push: true
-          username: ${{ github.actor}}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ericcater
+          password: ${{ secrets.GH_SECRET }}
           tags: 552acns/ods:latest
