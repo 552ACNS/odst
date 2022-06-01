@@ -6,9 +6,9 @@ import { PrismaService } from '../prisma/prisma.service';
 export class OrgService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(args: Prisma.OrgFindManyArgs) {
-    return this.prisma.org.findMany(args);
-  }
+  // async findMany(args: Prisma.OrgFindManyArgs) {
+  //   return this.prisma.org.findMany(args);
+  // }
   //TODO: accept method parameter for organization name.
   async getLineage(): Promise<string[]> {
     const orgs = await this.prisma.org.findMany({
