@@ -9,24 +9,19 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  APP: ods-api
-
 jobs:
-  monorepo_split:
-        runs-on: ubuntu-latest
-
-        strategy:
-            matrix:
-                app:
-                    - ods
-                    - ods-api
-
   build-and-push-image:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
 
+    strategy:
+        matrix:
+            app:
+                - ods
+                - ods-api
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
