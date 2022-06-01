@@ -173,7 +173,7 @@ async function main() {
         role: 'ADMIN',
         firstName: 'Admin',
         lastName: 'Admin',
-        grade: 'E-√∞',
+        grade: 'E-∞',
       },
     });
 
