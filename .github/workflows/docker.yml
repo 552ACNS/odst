@@ -10,7 +10,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Build and push
+      - name: Build and push update
         uses: docker/build-push-action@v3
         with:
           registry: ghcr.io
