@@ -25,10 +25,10 @@ export class RequestedAccountsComponent implements OnInit {
   displayedRequestData;
 
   ngOnInit(): void {
-    this.requestedAccountsService.getRequestedAccounts().subscribe((data) => {
-      this.dataSource = data.data.findManyAccountRequests;
-      this.hasNoData = this.dataSource.length === 0;
-    });
+    // this.requestedAccountsService.getRequestedAccounts().subscribe((data) => {
+    //   this.dataSource = data.data.findManyAccountRequests;
+    //   this.hasNoData = this.dataSource.length === 0;
+    // });
   }
 
   viewAccountRequest(row) {
