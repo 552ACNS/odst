@@ -29,13 +29,11 @@ export class OrgResolver {
     return this.orgService.getLineage();
   }
 
-  @Query(() => [Org], { name: 'findManyOrgs' })
-  async findMany(
-    @Args()
-    args: FindManyOrgArgs
-  ): Promise<Org[]> {
-    return this.orgService.findMany({});
-  }
+  // @Query(() => [Org], { name: 'findManyOrgs' })
+  // async findMany(
+  // ): Promise<Org[]> {
+  //   return this.orgService.findMany({});
+  // }
 
   @Query(() => [Org], { name: 'getSubOrgs' })
   //TODO redo with findMany
