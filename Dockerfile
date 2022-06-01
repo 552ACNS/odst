@@ -1,1 +1,2 @@
-./apps/ods-api/Dockerfile
+FROM alpine
+CMD ["echo", "Hello World!"]

@@ -9,15 +9,13 @@ ENV NODE_ENV=${ARG_NODE_ENV}
 
 ENV NX_ENV_NAME=${NX_ENV_NAME}
 
-WORKDIR /usr/src/app
+RUN git clone https://github.com/552ACNS/odst /usr/src/app
 
-COPY package.json ./
+WORKDIR /usr/src/app
 
 # TODO remove legeacy-peer-deps
 # TODO add --omit=dev, but ngcc doesn't get installed then
 RUN npm install --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
-
-COPY . .
 
 RUN node ./decorate-angular-cli.js
 
