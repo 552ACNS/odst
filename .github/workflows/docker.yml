@@ -20,7 +20,7 @@ jobs:
       matrix:
         app:
           - ods
-          - ods-api
+          # - ods-api
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
