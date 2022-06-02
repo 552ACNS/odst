@@ -7,9 +7,9 @@ import {
   FindManyAccountRequestsDocument,
   FindManyAccountRequestsQuery,
   FindManyAccountRequestsQueryVariables,
-  DeclineAccountRequestDocument,
-  DeclineAccountRequestMutation,
-  DeclineAccountRequestMutationVariables,
+  // DeclineAccountRequestDocument,
+  // DeclineAccountRequestMutation,
+  // DeclineAccountRequestMutationVariables,
 } from './requested-accounts.generated';
 
 @Injectable({
@@ -34,24 +34,24 @@ export class RequestedAccountsService {
     >({
       mutation: ApproveAccountRequestDocument,
       variables: {
-        accountRequestWhereUniqueInput: {
+        userWhereUniqueInput: {
           id: id,
         },
       },
     });
   }
-
-  denyAccountRequest(id: string) {
-    return this.apollo.mutate<
-      DeclineAccountRequestMutation,
-      DeclineAccountRequestMutationVariables
-    >({
-      mutation: DeclineAccountRequestDocument,
-      variables: {
-        accountRequestWhereUniqueInput: {
-          id: id,
-        },
-      },
-    });
-  }
+  //
+  // denyAccountRequest(id: string) {
+  //   return this.apollo.mutate<
+  //     DeclineAccountRequestMutation,
+  //     DeclineAccountRequestMutationVariables
+  //   >({
+  //     mutation: DeclineAccountRequestDocument,
+  //     variables: {
+  //       accountRequestWhereUniqueInput: {
+  //         id: id,
+  //       },
+  //     },
+  //   });
+  // }
 }

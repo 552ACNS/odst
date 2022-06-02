@@ -25,10 +25,10 @@ export class RequestedAccountsComponent implements OnInit {
   displayedRequestData;
 
   ngOnInit(): void {
-    // this.requestedAccountsService.getRequestedAccounts().subscribe((data) => {
-    //   this.dataSource = data.data.findManyAccountRequests;
-    //   this.hasNoData = this.dataSource.length === 0;
-    // });
+    this.requestedAccountsService.getRequestedAccounts().subscribe((data) => {
+      this.dataSource = data.data.findManyAccountRequests;
+      this.hasNoData = this.dataSource.length === 0;
+    });
   }
 
   viewAccountRequest(row) {
@@ -40,7 +40,6 @@ export class RequestedAccountsComponent implements OnInit {
       Grade: row.grade,
       'Requested Permissions': row.role,
       'E-mail': row.email,
-      Date: formatDate(row['date'], 'fullDate', 'en-US'),
       Organization: row.orgs[0].name,
     };
     this.requestViewIsOpen = true;
@@ -55,13 +54,13 @@ export class RequestedAccountsComponent implements OnInit {
     alert('Account successfully created.');
   }
 
-  denyRequest() {
-    this.requestedAccountsService
-      .denyAccountRequest(this.displayedAccountRequest['id'])
-      .subscribe();
-    this.removeRow();
-    alert('Account request Denied.');
-  }
+  // denyRequest() {
+  //   this.requestedAccountsService
+  //     .denyAccountRequest(this.displayedAccountRequest['id'])
+  //     .subscribe();
+  //   this.removeRow();
+  //   alert('Account request Denied.');
+  // }
 
   removeRow(): void {
     this.dataSource = this.dataSource.filter(
@@ -72,6 +71,8 @@ export class RequestedAccountsComponent implements OnInit {
     this.displayedAccountRequest = {};
     this.displayedRequestData = {};
     this.hasNoData = this.dataSource.length === 0;
+    //TODO: cached issue affecting rows being removed on UI when they are updated in database. Remove this quick fix when issues is solved
+    window.location.reload();
   }
 
   //This function preserves the original order of objects when called by the 'keyvalue' function

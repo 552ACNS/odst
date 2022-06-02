@@ -1,0 +1,21 @@
+query FindManyAccountRequests {
+  findManyAccountRequests {
+    firstName
+    lastName
+    id
+    role
+    grade
+    email
+    enabled
+    orgs {
+      name
+    }
+  }
+}
+
+mutation ApproveAccountRequest($userWhereUniqueInput: UserWhereUniqueInput!) {
+  enableAccount(userWhereUniqueInput: $userWhereUniqueInput) {
+    id
+    enabled
+  }
+}
