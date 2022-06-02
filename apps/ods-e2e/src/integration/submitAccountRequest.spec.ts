@@ -96,7 +96,7 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/requested-accounts');
     cy.reload(true);
     cy.contains('td', 'e2e').click().wait('@graphql');
-    cy.contains('label', 'First Name: e2e').wait('@graphql');
+    cy.contains('div', 'e2e').wait('@graphql');
     cy.contains('button', 'Accept').click();
     cy.contains('td', 'e2e').should('not.exist');
   });
