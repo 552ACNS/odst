@@ -3,7 +3,8 @@ FROM node:lts-alpine AS develop
 
 ARG APP="ods"
 
-ARG ARG_NODE_ENV=production
+#TODO change to prod, but it breaks ngcc step
+ARG ARG_NODE_ENV=development
 
 ENV NODE_ENV=${ARG_NODE_ENV}
 
@@ -38,4 +39,3 @@ ENV NODE_ENV=${ARG_NODE_ENV}
 WORKDIR /usr/src/app
 
 COPY --from=develop /usr/src/app/dist/apps/${APP} /usr/share/nginx/html
-
