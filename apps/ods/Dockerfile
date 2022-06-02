@@ -3,7 +3,7 @@ FROM node:lts-alpine AS develop
 
 ARG APP="ods"
 
-ARG ARG_NODE_ENV=development
+ARG ARG_NODE_ENV=production
 
 ENV NODE_ENV=${ARG_NODE_ENV}
 
@@ -31,7 +31,7 @@ FROM nginx:alpine AS deploy
 
 ARG APP="ods"
 
-ARG ARG_NODE_ENV=development
+ARG ARG_NODE_ENV=production
 
 ENV NODE_ENV=${ARG_NODE_ENV}
 

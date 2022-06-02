@@ -1,6 +1,6 @@
 import { PrismaClient } from '.prisma/waypoint/client';
 import { PrismaClientKnownRequestError } from '.prisma/waypoint/client/runtime';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 

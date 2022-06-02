@@ -3,7 +3,7 @@ FROM node:lts-alpine AS develop
 
 ARG APP="ods-api"
 
-ARG ARG_NODE_ENV=development
+ARG ARG_NODE_ENV=production
 
 ENV NODE_ENV=${ARG_NODE_ENV}
 
@@ -27,18 +27,24 @@ FROM node:lts-alpine AS deploy
 
 ARG APP="ods-api"
 
-ARG ARG_NODE_ENV=development
+ARG ARG_NODE_ENV=production
 
 ENV NODE_ENV=${ARG_NODE_ENV}
 
 WORKDIR /usr/src/app
 
+COPY --from=develop /usr/src/app/node_modules/.prisma ./node_modules/.prisma
+
 COPY package.json ./
 
+#TODO --omit=dev
+#ideally we'd omit dev dependencies, but typescript is required for prisma generate and bcrypt was throwing an error
 RUN npm install --ignore-scripts --omit=dev --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
-COPY . .
+# RUN npm i typescript@4.6.2
 
-COPY --from=develop /usr/src/app/dist/apps/${APP} ./dist/apps/${APP}
+# RUN npx nx run-many --target=prisma-generate --all --parallel=false
 
-CMD ["node", "./dist/apps/${APP}/main"]
+COPY --from=develop /usr/src/app/dist/apps/${APP} ./
+
+CMD ["node", "./main"]

@@ -12,6 +12,8 @@ jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
 
+    continue-on-error: true
+
     permissions:
       contents: read
       packages: write
@@ -20,7 +22,7 @@ jobs:
       matrix:
         app:
           - ods
-          # - ods-api
+          - ods-api
 
     steps:
       - name: Checkout repository

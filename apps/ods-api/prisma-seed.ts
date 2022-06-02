@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
