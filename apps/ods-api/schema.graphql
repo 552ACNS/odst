@@ -365,6 +365,7 @@ type ResponseCount {
 }
 
 type Query {
+  getTags: [String!]!
   findManySurveys: [Survey!]!
   findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): Survey!
   findManySurveyResponses(where: SurveyResponseWhereInput, orderBy: [SurveyResponseOrderByWithRelationInput!], cursor: SurveyResponseWhereUniqueInput, take: Int, skip: Int, distinct: [SurveyResponseScalarFieldEnum!]): [SurveyResponse!]!

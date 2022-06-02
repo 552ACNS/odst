@@ -168,7 +168,7 @@ export class ResponsesComponent implements OnInit {
         },
         data: {
           tags: {
-            set: [
+            create: [
               {
                 value: this.resolutionForm.value.tag.trim(),
               },

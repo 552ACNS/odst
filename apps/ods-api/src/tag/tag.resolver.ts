@@ -9,35 +9,35 @@ import {
 import { TagService } from './tag.service';
 import {
   Tag,
-  TagCreateInput,
-  TagWhereUniqueInput,
-  SurveyResponse,
+  // TagCreateInput,
+  // TagWhereUniqueInput,
+  //SurveyResponse,
 } from '@odst/types/ods';
 
 @Resolver(() => Tag)
 export class TagResolver {
   constructor(private readonly tagService: TagService) {}
 
-  @Query(() => [Tag], { name: 'findManyTags' })
-  async findMany(): Promise<Tag[]> {
-    return this.tagService.findMany({});
+  @Query(() => [String], { name: 'getTags' })
+  async getTags(): Promise<string[]> {
+    return this.tagService.getTags();
   }
 
-  @Query(() => Tag, { name: 'findUniqueTag' })
-  async findUnique(
-    @Args('tagWhereUniqueInput')
-    tagWhereUniqueInput: TagWhereUniqueInput
-  ): Promise<Tag | null> {
-    return this.tagService.findUnique(tagWhereUniqueInput);
-  }
+  //@Query(() => Tag, { name: 'findUniqueTag' })
+  // async findUnique(
+  //   @Args('tagWhereUniqueInput')
+  //   tagWhereUniqueInput: TagWhereUniqueInput
+  // ): Promise<Tag | null> {
+  //   return this.tagService.findUnique(tagWhereUniqueInput);
+  // }
 
-  @Mutation(() => Tag, { name: 'createTag' })
-  create(@Args('tagCreateInput') tagCreateInput: TagCreateInput): Promise<Tag> {
-    return this.tagService.create(tagCreateInput);
-  }
+  // @Mutation(() => Tag, { name: 'createTag' })
+  // create(@Args('tagCreateInput') tagCreateInput: TagCreateInput): Promise<Tag> {
+  //   return this.tagService.create(tagCreateInput);
+  // }
 
-  @ResolveField(() => [SurveyResponse])
-  async surveyResponses(@Parent() tag: Tag): Promise<SurveyResponse[]> {
-    return this.tagService.surveyResponses({ id: tag.id });
-  }
+  // @ResolveField(() => [SurveyResponse])
+  // async surveyResponses(@Parent() tag: Tag): Promise<SurveyResponse[]> {
+  //   return this.tagService.surveyResponses({ id: tag.id });
+  // }
 }
