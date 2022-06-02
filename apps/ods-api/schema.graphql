@@ -387,7 +387,6 @@ type Query {
   getCommanders: [User!]!
   me: User!
   usernameOrEmailExists(usernameOrEmail: String!): Boolean!
-  getTags: [String!]!
 }
 
 input SurveyWhereUniqueInput {
