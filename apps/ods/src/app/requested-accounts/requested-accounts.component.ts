@@ -53,14 +53,6 @@ export class RequestedAccountsComponent implements OnInit {
     alert('Account successfully created.');
   }
 
-  // denyRequest() {
-  //   this.requestedAccountsService
-  //     .denyAccountRequest(this.displayedAccountRequest['id'])
-  //     .subscribe();
-  //   this.removeRow();
-  //   alert('Account request Denied.');
-  // }
-
   removeRow(): void {
     this.dataSource = this.dataSource.filter(
       (item, index) =>
