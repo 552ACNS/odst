@@ -58,6 +58,7 @@ describe('ods', () => {
     });
   });
   it('submit a account creation request', () => {
+    //window.localStorage.removeItem('refreshToken');
     cy.visit('/request-account');
     cy.location('pathname').should('include', '/request-account');
     cy.get('[formcontrolname="firstName"]').type('e2e');

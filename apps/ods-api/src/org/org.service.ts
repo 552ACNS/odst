@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Org, Prisma, User, Survey } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -6,23 +6,63 @@ import { PrismaService } from '../prisma/prisma.service';
 export class OrgService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.OrgWhereUniqueInput;
-    where?: Prisma.OrgWhereInput;
-    orderBy?: Prisma.OrgOrderByWithRelationInput;
-  }): Promise<Org[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.org.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
+  async getOrgNames(): Promise<string[]> {
+    return this.prisma.org
+      .findMany({
+        select: {
+          name: true,
+        },
+      })
+      .then((responses) => responses.map((response) => response.name));
+  }
+  /**
+   *
+   * @returns a list of Org Names that are descendents from a given org.
+   * TODO: accept method parameter for organization name. Right now is hardcoded to '552 ACW'
+   */
+  async getLineage(): Promise<string[]> {
+    const orgs = await this.prisma.org.findMany({
+      where: {
+        name: {
+          in: ['552 ACW'],
+        },
+      },
+      include: {
+        children: {
+          select: {
+            name: true,
+            children: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
     });
+    return this.getFamily(orgs);
   }
 
+  getFamily<T extends { name: string; children: any[] }>(orgs: T[]): string[] {
+    const orgNames: string[] = [];
+
+    // for each org in the list
+    orgs.forEach((org) => {
+      // add the org name to the list of orgnames
+      orgNames.push(org.name);
+
+      // if the org has children
+      if (org.children) {
+        // get the family of the children
+        this.getFamily(org.children).forEach((child) => {
+          // then for each child of the children, add the name to the return list
+          orgNames.push(child);
+        });
+      }
+    });
+
+    return orgNames;
+  }
   async getAllChildren(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
   ): Promise<Org[]> {
