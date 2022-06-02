@@ -342,7 +342,7 @@ type Query {
   findManyAnswers: [Answer!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): Answer!
   getOrgLineage: [String!]!
-  findManyOrgs(where: OrgWhereInput, orderBy: [OrgOrderByWithRelationInput!], cursor: OrgWhereUniqueInput, take: Int, skip: Int, distinct: [OrgScalarFieldEnum!]): [Org!]!
+  getOrgNames: [String!]!
   getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [Org!]!
   findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
   findManyQuestions: [Question!]!

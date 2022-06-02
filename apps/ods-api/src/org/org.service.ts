@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Org, Prisma, User, Survey } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -6,15 +6,25 @@ import { PrismaService } from '../prisma/prisma.service';
 export class OrgService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(args: Prisma.OrgFindManyArgs) {
-    return this.prisma.org.findMany(args);
+  async getOrgNames(): Promise<string[]> {
+    return this.prisma.org
+      .findMany({
+        select: {
+          name: true,
+        },
+      })
+      .then((responses) => responses.map((response) => response.name));
   }
-  //TODO: accept method parameter for organization name.
+  /**
+   *
+   * @returns a list of Org Names that are descendents from a given org.
+   * TODO: accept method parameter for organization name. Right now is hardcoded to '552 ACW'
+   */
   async getLineage(): Promise<string[]> {
     const orgs = await this.prisma.org.findMany({
       where: {
         name: {
-          equals: '552 ACW',
+          in: ['552 ACW'],
         },
       },
       include: {
@@ -33,18 +43,25 @@ export class OrgService {
     return this.getFamily(orgs);
   }
 
-  getFamily(orgs: any): string[] {
+  getFamily<T extends { name: string; children: any[] }>(orgs: T[]): string[] {
     const orgNames: string[] = [];
+
     // for each org in the list
     orgs.forEach((org) => {
       // add the org name to the list of orgnames
       orgNames.push(org.name);
+
+      // if the org has children
       if (org.children) {
+        // get the family of the children
         this.getFamily(org.children).forEach((child) => {
+          // then for each child of the children, add the name to the return list
           orgNames.push(child);
         });
+        return this.getFamily(orgs);
       }
     });
+
     return orgNames;
   }
   async getAllChildren(
