@@ -22,22 +22,4 @@ export class TagResolver {
   async getTags(): Promise<string[]> {
     return this.tagService.getTags();
   }
-
-  //@Query(() => Tag, { name: 'findUniqueTag' })
-  // async findUnique(
-  //   @Args('tagWhereUniqueInput')
-  //   tagWhereUniqueInput: TagWhereUniqueInput
-  // ): Promise<Tag | null> {
-  //   return this.tagService.findUnique(tagWhereUniqueInput);
-  // }
-
-  // @Mutation(() => Tag, { name: 'createTag' })
-  // create(@Args('tagCreateInput') tagCreateInput: TagCreateInput): Promise<Tag> {
-  //   return this.tagService.create(tagCreateInput);
-  // }
-
-  // @ResolveField(() => [SurveyResponse])
-  // async surveyResponses(@Parent() tag: Tag): Promise<SurveyResponse[]> {
-  //   return this.tagService.surveyResponses({ id: tag.id });
-  // }
 }

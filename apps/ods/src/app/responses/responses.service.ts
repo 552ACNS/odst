@@ -70,6 +70,11 @@ export class ResponsesService {
     });
   }
 
+  /**
+   *
+   * @param addTagMutationVariables variables required to connect tags to a response
+   * @returns the new response with the updated tags
+   */
   addTag(addTagMutationVariables: AddTagMutationVariables) {
     return this.apollo.mutate<AddTagMutation, AddTagMutationVariables>({
       mutation: AddTagDocument,
