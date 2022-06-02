@@ -12,6 +12,9 @@ query findUniqueSurveyResponse(
       }
     }
     resolved
+    tags {
+      value
+    }
     comments {
       value
       date

@@ -67,6 +67,20 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
+          <mat-card-actions
+            class="grid h-8 space-x-4 mb-0 py-0 mx-1 justify-items-center"
+          >
+            <button
+              mat-raised-button
+              color="primary"
+              class="w-1/2 text-white shadow-md rounded-full"
+              type="submit"
+              (click)="submitTags()"
+            >
+              <!-- TODO: redirect to dashboard when there are no more reports to address -->
+              Submit
+            </button>
+          </mat-card-actions>
         </mat-card>
       </ng-container>
       <!-- COMMENTS -->

@@ -27,7 +27,7 @@ export class ResponsesComponent implements OnInit {
 
   possibleTags: string[] = [];
 
-  selectedTags: string[] = [];
+  selectedTags: string[] | undefined = [];
 
   allTags: string[] = [];
 
@@ -101,7 +101,7 @@ export class ResponsesComponent implements OnInit {
   }
   generatePossibleTags() {
     this.possibleTags = this.allTags.filter(
-      (tag) => !this.selectedTags.includes(tag)
+      (tag) => !this.selectedTags?.includes(tag)
     );
   }
 
@@ -190,6 +190,11 @@ export class ResponsesComponent implements OnInit {
           this.comments = data.findUniqueSurveyResponse.comments;
 
           this.actualResolution = data.findUniqueSurveyResponse['resolved'];
+
+          this.selectedTags = data.findUniqueSurveyResponse['tags']?.map(
+            (x) => x.value
+          );
+          this.generatePossibleTags();
         }
       }
     );
@@ -206,7 +211,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   remove(tagToRemove: string): void {
-    this.selectedTags = this.selectedTags.filter(
+    this.selectedTags = this.selectedTags?.filter(
       (selectedtag) => selectedtag !== tagToRemove
     );
 
@@ -219,7 +224,7 @@ export class ResponsesComponent implements OnInit {
 
     // Add our tag
     if (value) {
-      this.selectedTags.push(value);
+      this.selectedTags?.push(value);
     }
 
     // Clear the input values
@@ -232,10 +237,12 @@ export class ResponsesComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedTags.push(event.option.viewValue);
+    this.selectedTags?.push(event.option.viewValue);
     this.tagInput.nativeElement.value = '';
     this.tagCtrl.setValue(null);
 
     this.generatePossibleTags();
   }
+
+  submitTags() {}
 }
