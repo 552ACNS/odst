@@ -11,6 +11,7 @@ const db = {
     create: jest.fn().mockResolvedValue(MockOrgs[0]),
     update: jest.fn().mockResolvedValue(MockOrgs[0]),
     delete: jest.fn().mockResolvedValue(MockOrgs[0]),
+    findMany: jest.fn().mockResolvedValue(MockOrgs),
   },
 };
 
