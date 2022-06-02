@@ -58,7 +58,6 @@ export class OrgService {
           // then for each child of the children, add the name to the return list
           orgNames.push(child);
         });
-        return this.getFamily(orgs);
       }
     });
 

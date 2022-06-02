@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestedAccountsService } from './requested-accounts.service';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'odst-requested-accounts',

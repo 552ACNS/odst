@@ -773,35 +773,9 @@ input AnswerWhereUniqueInput {
   id: String
 }
 
-input OrgOrderByWithRelationInput {
-  id: SortOrder
-  name: SortOrder
-  orgTier: SortOrder
-  users: UserOrderByRelationAggregateInput
-  parentId: SortOrder
-  parent: OrgOrderByWithRelationInput
-  children: OrgOrderByRelationAggregateInput
-  surveys: SurveyOrderByRelationAggregateInput
-}
-
-input UserOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input SurveyOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
 input OrgWhereUniqueInput {
   id: String
   name: String
-}
-
-enum OrgScalarFieldEnum {
-  id
-  name
-  orgTier
-  parentId
 }
 
 input QuestionWhereUniqueInput {
