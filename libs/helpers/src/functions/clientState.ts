@@ -7,7 +7,7 @@ export function setAccessToken(token: string): void {
 }
 
 export function removeAccessToken(): void {
-  localStorage.removeItem('refreshToken');
+  sessionStorage.removeItem('accessToken');
 }
 
 export function getRefreshToken(): string | null {

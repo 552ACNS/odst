@@ -72,7 +72,7 @@ export class RequestAccountComponent implements OnInit {
     private requestService: RequestAccountService
   ) {}
   async ngOnInit(): Promise<void> {
-    this.orgs = await this.requestService.getManyOrgs();
+    this.orgs = await this.requestService.getOrgNames();
   }
 
   async uniqueEmail() {

@@ -14,7 +14,9 @@ describe('Org Resolver', () => {
         {
           provide: OrgService,
           useValue: {
-            findMany: jest.fn().mockResolvedValue(MockOrgs),
+            getOrgNames: jest
+              .fn()
+              .mockResolvedValue(MockOrgs.map((orgs) => orgs.name)),
             getAllChildren: jest.fn().mockResolvedValue(MockOrgs),
             findUnique: jest
               .fn()
@@ -26,6 +28,9 @@ describe('Org Resolver', () => {
               .fn()
               .mockImplementation(() => Promise.resolve(MockOrgs[0])),
             delete: jest.fn().mockResolvedValue({ deleted: true }),
+            getLineage: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(MockOrgs[0].name)),
           },
         },
       ],
@@ -39,9 +44,17 @@ describe('Org Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
-  describe('findMany', () => {
-    it('should get an array of orgs', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(MockOrgs);
+  describe('getOrgNames', () => {
+    it('should get an array of orgs names', async () => {
+      await expect(resolver.getOrgNames()).resolves.toEqual(
+        MockOrgs.map((orgs) => orgs.name)
+      );
+    });
+  });
+
+  describe('getOrgLineage', () => {
+    it('should get an array of orgs names under a wing', async () => {
+      await expect(resolver.getOrgLineage()).resolves.toEqual(MockOrgs[0].name);
     });
   });
 
