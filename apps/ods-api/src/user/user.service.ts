@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  User,
   Comment,
-  Prisma,
   Org,
+  Prisma,
   RefreshToken,
   Role,
+  User,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { hash } from 'bcrypt';
@@ -33,6 +33,19 @@ export class UserService {
     return this.prisma.user.update({
       where: userWhereUniqueInput,
       data: userUpdateInput,
+    });
+  }
+
+  async enableAccount(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<User> {
+    return this.prisma.user.update({
+      where: userWhereUniqueInput,
+      data: {
+        enabled: {
+          set: true,
+        },
+      },
     });
   }
 

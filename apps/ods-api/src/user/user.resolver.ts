@@ -1,19 +1,19 @@
 import {
-  Resolver,
-  Parent,
-  ResolveField,
-  Query,
   Args,
   Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import {
-  User,
+  FindManyUserArgs,
   Org,
   Role,
+  User,
   UserCreateInput,
   UserWhereUniqueInput,
-  FindManyUserArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
@@ -60,6 +60,14 @@ export class UserResolver {
     @Args('userCreateInput') userCreateInput: UserCreateInput
   ): Promise<User> {
     return this.userService.create(userCreateInput);
+  }
+
+  @Mutation(() => User, { name: 'enableAccount' })
+  async enableAccount(
+    @Args('userWhereUniqueInput')
+    userWhereUniqueInput: UserWhereUniqueInput
+  ): Promise<User> {
+    return this.userService.enableAccount(userWhereUniqueInput);
   }
 
   @Mutation(() => User, { name: 'deleteUser', nullable: true })
