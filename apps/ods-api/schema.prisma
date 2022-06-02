@@ -62,7 +62,6 @@ model SurveyResponse {
   closedDate   DateTime?
   answers      Answer[]
   routeOutside Boolean   @default(false)
-  resolution   String?
   tags         Tag[]
   comments     Comment[]
   resolved     Boolean   @default(false)
@@ -103,8 +102,8 @@ model Question {
 }
 
 model Tag {
-  id      String   @id @default(uuid())
-  value   String   @unique
+  id              String           @id @default(uuid())
+  value           String           @unique
   surveyResponses SurveyResponse[]
 }
 
