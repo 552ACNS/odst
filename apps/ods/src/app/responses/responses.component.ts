@@ -1,19 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { MatChipInputEvent } from '@angular/material/chips';
-import {
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-} from '@angular/material/autocomplete';
 import { ResponsesService } from './responses.service';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs';
 import {
   AddCommentMutationVariables,
-  AddTagMutationVariables,
   FindUniqueSurveyResponseQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
@@ -27,33 +18,12 @@ import { getRefreshToken, getUserId } from '@odst/helpers';
 export class ResponsesComponent implements OnInit {
   resolutionForm = this.fb.group({
     comment: [''],
-    tags: [''],
   });
-  //start for tags
-  visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
-  separatorKeyCodes: number[] = [ENTER, COMMA];
-  tagCtrl = new FormControl();
-  filteredTags: Observable<string[]>;
-  tags: string[] = ['Gender'];
-  allTags: string[] = [];
-  @ViewChild('tagInput') tagInput: ElementRef<HTMLElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
-  //end for tags
   constructor(
     private fb: FormBuilder,
     private responsesService: ResponsesService,
     private route: ActivatedRoute
-  ) {
-    this.filteredTags = this.tagCtrl.valueChanges.pipe(
-      startWith(null),
-      map((tag: string | null) =>
-        tag ? this._filter(tag) : this.allTags.slice()
-      )
-    );
-  }
+  ) {}
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
@@ -61,7 +31,6 @@ export class ResponsesComponent implements OnInit {
     [];
 
   AddCommentMutationVariables: AddCommentMutationVariables;
-  AddTagMutationVariables: AddTagMutationVariables;
 
   newComment = '';
   // TODO: Change resolved status back to bool
@@ -105,7 +74,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   submitComment() {
-    //if the resolution field is not empty after a trim
+    // if the resolution field is not empty after a trim
     if (this.resolutionForm.value.comment.trim() !== '') {
       this.AddCommentMutationVariables = {
         where: {
@@ -133,39 +102,11 @@ export class ResponsesComponent implements OnInit {
           if (!errors && data) {
             // Refresh comments afterwards
             this.comments = data.updateSurveyResponse['comments'];
-            this.tags = data.updateSurveyResponse['tags'];
             this.actualResolution = data.updateSurveyResponse['resolved'];
             this.resolutionForm.reset();
           }
         });
     }
-  }
-
-  updateTags() {
-    if (this.resolutionForm.value.tag.trim() !== '') {
-      this.AddTagMutationVariables = {
-        where: {
-          id: this.responseIDs[this.displayedIndex],
-        },
-        data: {
-          tags: {
-            create: [
-              {
-                value: this.resolutionForm.value.tag.trim(),
-              },
-            ],
-          },
-        },
-      };
-    }
-
-    this.responsesService
-      .addTag(this.AddTagMutationVariables)
-      .subscribe(({ data, errors }) => {
-        if (!errors && data) {
-          this.tags = data.updateSurveyResponse['tags'] as [];
-        }
-      });
   }
 
   updateResolved() {
@@ -231,45 +172,6 @@ export class ResponsesComponent implements OnInit {
     }
     return pageEvent;
   }
-  //start code for tags
 
-  // eslint-disable-next-line complexity
-  add(event: MatChipInputEvent): void {
-    if (!this.matAutocomplete.isOpen) {
-      const input = event.chipInput?.inputElement;
-      const value = event.value;
-
-      if ((value || '').trim()) {
-        this.tags.push(value.trim());
-      }
-
-      if (input) {
-        input.value = '';
-      }
-
-      this.tagCtrl.setValue(null);
-    }
-  }
-
-  remove(tag: string): void {
-    const index = this.tags.indexOf(tag);
-
-    if (index >= 0) {
-      this.tags.splice(index, 1);
-    }
-  }
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.tags.push(event.option.viewValue);
-    this.tagInput.nativeElement.ariaValueText = '';
-    this.tagCtrl.setValue(null);
-  }
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allTags.filter(
-      (tag) => tag.toLowerCase().indexOf(filterValue) === 0
-    );
-  }
-  //end code for tags
   //TODO [ODST-133] IMPORTANT: set to first page on load
 }

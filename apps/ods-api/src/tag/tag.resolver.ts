@@ -1,11 +1,4 @@
-import {
-  Resolver,
-  Mutation,
-  Args,
-  Query,
-  ResolveField,
-  Parent,
-} from '@nestjs/graphql';
+import { Resolver, Query } from '@nestjs/graphql';
 import { TagService } from './tag.service';
 import {
   Tag,
