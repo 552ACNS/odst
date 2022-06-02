@@ -38,26 +38,7 @@ export class ResponsesComponent implements OnInit {
   tagCtrl = new FormControl();
   filteredTags: Observable<string[]>;
   tags: string[] = ['Gender'];
-  allTags: string[] = [
-    'Gender',
-    'Sexism',
-    'Race',
-    'Racism',
-    'Sexuality',
-    'Gender Identity',
-    'Religion',
-    'Mental Health',
-    'Minority',
-    'Marginalized',
-    'Mental Illness',
-    'Rank',
-    'Observed',
-    'Experienced',
-    'Other',
-    'Harassment *',
-    'Assault *',
-    'Discrimination *',
-  ];
+  allTags: string[] = [];
   @ViewChild('tagInput') tagInput: ElementRef<HTMLElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
   //end for tags

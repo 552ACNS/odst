@@ -40,6 +40,29 @@ export class ResponsesService {
     // pluck lets me retrieve nested data.
   }
 
+  getTags() {
+    return [
+      'Gender',
+      'Sexism',
+      'Race',
+      'Racism',
+      'Sexuality',
+      'Gender Identity',
+      'Religion',
+      'Mental Health',
+      'Minority',
+      'Marginalized',
+      'Mental Illness',
+      'Rank',
+      'Observed',
+      'Experienced',
+      'Other',
+      'Harassment',
+      'Assault',
+      'Discrimination',
+    ];
+  }
+
   addComment(addCommentMutationVariables: AddCommentMutationVariables) {
     return this.apollo.mutate<AddCommentMutation, AddCommentMutationVariables>({
       mutation: AddCommentDocument,
