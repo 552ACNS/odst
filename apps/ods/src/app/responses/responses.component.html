@@ -31,6 +31,44 @@
       </mat-card>
     </section>
     <div class="space-y-3">
+      <!-- TAGS -->
+      <ng-container>
+        <h2 class="text-center">Tags</h2>
+        <mat-card>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Tags for Response</mat-label>
+            <!-- Represents all the chips that are selected -->
+            <mat-chip-list #chipList>
+              <mat-chip
+                *ngFor="let tags of selectedTags"
+                (removed)="remove(tags)"
+              >
+                {{ tags }}
+                <button matChipRemove>
+                  <!-- When a tag is removed, call the remove function for that tag -->
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip>
+              <input
+                placeholder="Add Another Tag..."
+                #tagInput
+                [formControl]="tagCtrl"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList"
+                (matChipInputTokenEnd)="add($event)"
+              />
+            </mat-chip-list>
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              (optionSelected)="selected($event)"
+            >
+              <mat-option *ngFor="let tag of possibleTags" [value]="tag">
+                {{ tag }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </mat-card>
+      </ng-container>
       <!-- COMMENTS -->
       <ng-container *ngIf="comments">
         <h2 class="text-center">Comments</h2>
@@ -155,6 +193,7 @@
         </mat-card>
       </ng-container>
 
+      <!-- ADD A COMMENT -->
       <mat-card class="shadow-md">
         <mat-card-content class="text-sm text-left">
           <form [formGroup]="resolutionForm">

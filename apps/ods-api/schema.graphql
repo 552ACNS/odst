@@ -64,7 +64,6 @@ type SurveyResponse {
   closedDate: DateTime
   answers: [Answer!]
   routeOutside: Boolean!
-  resolution: String
   tags: [Tag!]
   comments: [Comment!]
   resolved: Boolean!
@@ -281,7 +280,6 @@ type SurveyResponseCountAggregate {
   openedDate: Int!
   closedDate: Int!
   routeOutside: Int!
-  resolution: Int!
   resolved: Int!
   _all: Int!
 }
@@ -292,7 +290,6 @@ type SurveyResponseMinAggregate {
   openedDate: DateTime
   closedDate: DateTime
   routeOutside: Boolean
-  resolution: String
   resolved: Boolean
 }
 
@@ -302,7 +299,6 @@ type SurveyResponseMaxAggregate {
   openedDate: DateTime
   closedDate: DateTime
   routeOutside: Boolean
-  resolution: String
   resolved: Boolean
 }
 
@@ -405,7 +401,6 @@ input SurveyResponseWhereInput {
   closedDate: DateTimeNullableFilter
   answers: AnswerListRelationFilter
   routeOutside: BoolFilter
-  resolution: StringNullableFilter
   tags: TagListRelationFilter
   comments: CommentListRelationFilter
   resolved: BoolFilter
@@ -741,7 +736,6 @@ input SurveyResponseOrderByWithRelationInput {
   closedDate: SortOrder
   answers: AnswerOrderByRelationAggregateInput
   routeOutside: SortOrder
-  resolution: SortOrder
   tags: TagOrderByRelationAggregateInput
   comments: CommentOrderByRelationAggregateInput
   resolved: SortOrder
@@ -794,7 +788,6 @@ enum SurveyResponseScalarFieldEnum {
   openedDate
   closedDate
   routeOutside
-  resolution
   resolved
 }
 
@@ -804,7 +797,6 @@ input SurveyResponseCountAggregateInput {
   openedDate: Boolean
   closedDate: Boolean
   routeOutside: Boolean
-  resolution: Boolean
   resolved: Boolean
   _all: Boolean
 }
@@ -815,7 +807,6 @@ input SurveyResponseMinAggregateInput {
   openedDate: Boolean
   closedDate: Boolean
   routeOutside: Boolean
-  resolution: Boolean
   resolved: Boolean
 }
 
@@ -825,7 +816,6 @@ input SurveyResponseMaxAggregateInput {
   openedDate: Boolean
   closedDate: Boolean
   routeOutside: Boolean
-  resolution: Boolean
   resolved: Boolean
 }
 
@@ -997,7 +987,6 @@ input SurveyResponseCreateWithoutCommentsInput {
   closedDate: DateTime
   answers: AnswerCreateNestedManyWithoutSurveyResponseInput
   routeOutside: Boolean
-  resolution: String
   tags: TagCreateNestedManyWithoutSurveyResponsesInput
   resolved: Boolean
 }
@@ -1052,7 +1041,6 @@ input SurveyResponseCreateWithoutAnswersInput {
   openedDate: DateTime
   closedDate: DateTime
   routeOutside: Boolean
-  resolution: String
   tags: TagCreateNestedManyWithoutSurveyResponsesInput
   comments: CommentCreateNestedManyWithoutSurveyResponseInput
   resolved: Boolean
@@ -1168,7 +1156,6 @@ input SurveyResponseCreateWithoutSurveyInput {
   closedDate: DateTime
   answers: AnswerCreateNestedManyWithoutSurveyResponseInput
   routeOutside: Boolean
-  resolution: String
   tags: TagCreateNestedManyWithoutSurveyResponsesInput
   comments: CommentCreateNestedManyWithoutSurveyResponseInput
   resolved: Boolean
@@ -1253,7 +1240,6 @@ input SurveyResponseCreateManySurveyInput {
   openedDate: DateTime
   closedDate: DateTime
   routeOutside: Boolean
-  resolution: String
   resolved: Boolean
 }
 
@@ -1557,7 +1543,6 @@ input SurveyResponseUpdateWithoutCommentsInput {
   closedDate: NullableDateTimeFieldUpdateOperationsInput
   answers: AnswerUpdateManyWithoutSurveyResponseInput
   routeOutside: BoolFieldUpdateOperationsInput
-  resolution: NullableStringFieldUpdateOperationsInput
   tags: TagUpdateManyWithoutSurveyResponsesInput
   resolved: BoolFieldUpdateOperationsInput
 }
@@ -1652,7 +1637,6 @@ input SurveyResponseUpdateWithoutAnswersInput {
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
   routeOutside: BoolFieldUpdateOperationsInput
-  resolution: NullableStringFieldUpdateOperationsInput
   tags: TagUpdateManyWithoutSurveyResponsesInput
   comments: CommentUpdateManyWithoutSurveyResponseInput
   resolved: BoolFieldUpdateOperationsInput
@@ -1866,7 +1850,6 @@ input SurveyResponseUpdateWithoutSurveyInput {
   closedDate: NullableDateTimeFieldUpdateOperationsInput
   answers: AnswerUpdateManyWithoutSurveyResponseInput
   routeOutside: BoolFieldUpdateOperationsInput
-  resolution: NullableStringFieldUpdateOperationsInput
   tags: TagUpdateManyWithoutSurveyResponsesInput
   comments: CommentUpdateManyWithoutSurveyResponseInput
   resolved: BoolFieldUpdateOperationsInput
@@ -2010,7 +1993,6 @@ input SurveyResponseScalarWhereInput {
   openedDate: DateTimeFilter
   closedDate: DateTimeNullableFilter
   routeOutside: BoolFilter
-  resolution: StringNullableFilter
   resolved: BoolFilter
 }
 
@@ -2019,7 +2001,6 @@ input SurveyResponseUpdateManyMutationInput {
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
   routeOutside: BoolFieldUpdateOperationsInput
-  resolution: NullableStringFieldUpdateOperationsInput
   resolved: BoolFieldUpdateOperationsInput
 }
 
@@ -2220,7 +2201,6 @@ input SurveyResponseCreateInput {
   closedDate: DateTime
   answers: AnswerCreateNestedManyWithoutSurveyResponseInput
   routeOutside: Boolean
-  resolution: String
   tags: TagCreateNestedManyWithoutSurveyResponsesInput
   comments: CommentCreateNestedManyWithoutSurveyResponseInput
   resolved: Boolean
@@ -2233,7 +2213,6 @@ input SurveyResponseUpdateInput {
   closedDate: NullableDateTimeFieldUpdateOperationsInput
   answers: AnswerUpdateManyWithoutSurveyResponseInput
   routeOutside: BoolFieldUpdateOperationsInput
-  resolution: NullableStringFieldUpdateOperationsInput
   tags: TagUpdateManyWithoutSurveyResponsesInput
   comments: CommentUpdateManyWithoutSurveyResponseInput
   resolved: BoolFieldUpdateOperationsInput

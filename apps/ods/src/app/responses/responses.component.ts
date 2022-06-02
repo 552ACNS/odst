@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AddCommentMutationVariables,
@@ -9,6 +9,9 @@ import {
   UpdateResolvedMutationVariables,
 } from './responses.generated';
 import { getRefreshToken, getUserId } from '@odst/helpers';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { map, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'odst-responses',
@@ -19,11 +22,30 @@ export class ResponsesComponent implements OnInit {
   resolutionForm = this.fb.group({
     comment: [''],
   });
+
+  tagCtrl = new FormControl();
+
+  possibleTags: string[] = [];
+
+  selectedTags: string[] = [];
+
+  allTags: string[] = [];
+
   constructor(
     private fb: FormBuilder,
     private responsesService: ResponsesService,
     private route: ActivatedRoute
   ) {}
+
+  // randomMethod() {
+  //   const blah = map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allTags.slice())),
+  // }
+
+  // private _filter(value: string): string[] {
+  //   const filterValue = value.toLowerCase();
+
+  //   return this.allTags.filter(fruit => fruit.toLowerCase().includes(filterValue));
+  // }
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
@@ -50,8 +72,13 @@ export class ResponsesComponent implements OnInit {
 
   pageEvent: PageEvent;
 
+  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+
   async ngOnInit() {
     this.userId = getUserId(getRefreshToken() ?? '');
+
+    this.allTags = this.responsesService.getTags();
+    this.generatePossibleTags();
 
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
@@ -71,6 +98,11 @@ export class ResponsesComponent implements OnInit {
         this.displayIssue(this.pageEvent);
       }
     });
+  }
+  generatePossibleTags() {
+    this.possibleTags = this.allTags.filter(
+      (tag) => !this.selectedTags.includes(tag)
+    );
   }
 
   submitComment() {
@@ -173,5 +205,37 @@ export class ResponsesComponent implements OnInit {
     return pageEvent;
   }
 
-  //TODO [ODST-133] IMPORTANT: set to first page on load
+  remove(tagToRemove: string): void {
+    this.selectedTags = this.selectedTags.filter(
+      (selectedtag) => selectedtag !== tagToRemove
+    );
+
+    this.generatePossibleTags();
+  }
+
+  add(event: MatChipInputEvent): void {
+    // Trim the input so that empty values aren't there
+    const value = (event.value || '').trim();
+
+    // Add our tag
+    if (value) {
+      this.selectedTags.push(value);
+    }
+
+    // Clear the input values
+    if (event.chipInput) {
+      event.chipInput.clear();
+    }
+
+    this.tagCtrl.setValue(null);
+    this.generatePossibleTags();
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedTags.push(event.option.viewValue);
+    this.tagInput.nativeElement.value = '';
+    this.tagCtrl.setValue(null);
+
+    this.generatePossibleTags();
+  }
 }
