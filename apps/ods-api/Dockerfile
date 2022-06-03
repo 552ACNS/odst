@@ -3,7 +3,8 @@ FROM node:lts-alpine AS build
 
 ARG APP="ods-api"
 
-ARG ARG_NODE_ENV=production
+#TODO set to prod, but it makes npm run build fail
+ARG ARG_NODE_ENV=development
 
 ENV NODE_ENV=${ARG_NODE_ENV}
 
@@ -27,7 +28,7 @@ FROM node:lts-alpine AS deploy
 
 ARG APP="ods-api"
 
-ARG ARG_NODE_ENV=production
+ARG ARG_NODE_ENV=development
 
 ENV NODE_ENV=${ARG_NODE_ENV}
 
