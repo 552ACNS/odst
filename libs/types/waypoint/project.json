@@ -1,0 +1,17 @@
+{
+  "sourceRoot": "libs/types/waypoint/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/types/waypoint/src/**/*.ts",
+          "libs/types/waypoint/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

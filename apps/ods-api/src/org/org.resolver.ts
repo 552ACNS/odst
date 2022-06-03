@@ -14,22 +14,25 @@ import {
   User,
   Survey,
   UpdateOneOrgArgs,
+  FindManyOrgArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { Prisma } from '.prisma/ods/client';
+import { publicDecrypt } from 'crypto';
 
 @Resolver(() => Org)
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
   @Public()
-  @Query(() => [Org], { name: 'findManyOrgs' })
-  async findMany(): Promise<Org[]> {
-    return this.orgService.findMany({
-      orderBy: {
-        name: 'asc',
-      },
-    });
+  @Query(() => [String], { name: 'getOrgLineage' })
+  async getOrgLineage(): Promise<string[]> {
+    return this.orgService.getLineage();
+  }
+  @Public()
+  @Query(() => [String], { name: 'getOrgNames' })
+  async getOrgNames(): Promise<string[]> {
+    return this.orgService.getOrgNames();
   }
 
   @Query(() => [Org], { name: 'getSubOrgs' })

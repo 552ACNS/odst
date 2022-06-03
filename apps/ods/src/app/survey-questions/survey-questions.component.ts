@@ -69,7 +69,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   });
 
   async ngOnInit() {
-    this.orgs = await this.surveyService.getManyOrgs();
+    this.orgs = await this.surveyService.getOrgLineage();
     this.CCs = await this.surveyService.getCommanders();
   }
   //TODO find out a way to fix without this
@@ -104,8 +104,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
                 this.questionIDs,
                 this.surveyID
               )
-              .subscribe(({ errors }) => {
-                this.submitSuccess = !errors;
+              .subscribe(({ errors, data }) => {
+                this.submitSuccess = !errors && !!data;
               });
           });
       });

@@ -23,7 +23,7 @@ model User {
   email        String        @unique
   /// @HideField()
   password     String
-  enabled      Boolean       @default(true)
+  enabled      Boolean       @default(false)
   grade        String?
   firstName    String
   lastName     String
@@ -62,6 +62,7 @@ model SurveyResponse {
   closedDate   DateTime?
   answers      Answer[]
   routeOutside Boolean   @default(false)
+  tags         Tag[]
   comments     Comment[]
   resolved     Boolean   @default(false)
 }
@@ -98,6 +99,12 @@ model Question {
   prompt  String   @unique
   surveys Survey[]
   answers Answer[]
+}
+
+model Tag {
+  id              String           @id @default(uuid())
+  value           String           @unique
+  surveyResponses SurveyResponse[]
 }
 
 enum Role {
