@@ -111,7 +111,10 @@
           "executor": "@nx-tools/nx-docker:build",
           "options": {
             "push": true,
-            "tags": ["ericcater/ods:latest", "ericcater/ods:v1"]
+            "tags": [
+              "ghcr.io/ericcater/{prefix}:latest",
+              "ghcr.io/ericcater/ods:v1"
+            ]
           }
         },
         "lint": {
@@ -190,7 +193,10 @@
           "executor": "@nx-tools/nx-docker:build",
           "options": {
             "push": true,
-            "tags": ["ericcater/ods-api:latest", "ericcater/ods-api:v1"]
+            "tags": [
+              "ghcr.io/ericcater/ods-api:latest",
+              "ghcr.io/ericcater/ods-api:v1"
+            ]
           }
         },
         "lint": {
