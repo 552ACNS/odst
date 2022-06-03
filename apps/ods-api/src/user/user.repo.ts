@@ -1,4 +1,4 @@
-import { UserCreateInput, User } from '@odst/types/ods';
+import { User, UserCreateInput } from '@odst/types/ods';
 
 export const MockUsers: User[] = [
   {
@@ -7,6 +7,17 @@ export const MockUsers: User[] = [
     password: 'password',
     role: 'ADMIN',
     enabled: true,
+    grade: 'grade',
+    firstName: 'firstName',
+    lastName: 'lastName',
+  },
+
+  {
+    id: 'user id 2',
+    email: 'email2',
+    password: 'password2',
+    role: 'ADMIN',
+    enabled: false,
     grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',

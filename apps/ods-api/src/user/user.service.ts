@@ -1,5 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { User, Comment, Prisma, Org, RefreshToken } from '.prisma/ods/client';
+import {
+  Comment,
+  Org,
+  Prisma,
+  RefreshToken,
+  Role,
+  User,
+} from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { hash } from 'bcrypt';
 
@@ -26,6 +33,20 @@ export class UserService {
     return this.prisma.user.update({
       where: userWhereUniqueInput,
       data: userUpdateInput,
+    });
+  }
+
+  // Intercept this
+  async enableAccount(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<User> {
+    return this.prisma.user.update({
+      where: userWhereUniqueInput,
+      data: {
+        enabled: {
+          set: true,
+        },
+      },
     });
   }
 
@@ -76,5 +97,76 @@ export class UserService {
         where: userWhereUniqueInput,
       })
       .refreshToken();
+  }
+
+  //TODO: Reuse the org functions in the survey response module to filter down
+  // instead of duplicating code in account request
+  async findManyRequestedAccounts(user: User): Promise<Partial<User>[]> {
+    const whereUser: Prisma.OrgWhereInput = {
+      users: {
+        some: {
+          id: user.id,
+        },
+      },
+    };
+
+    switch (user.role) {
+      case Role.ADMIN: {
+        return this.prisma.user.findMany({
+          where: {
+            enabled: false,
+          },
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            grade: true,
+            role: true,
+            email: true,
+            orgs: true,
+            enabled: true,
+          },
+        });
+      }
+      case Role.DEI:
+      case Role.CC: {
+        return this.prisma.user.findMany({
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            grade: true,
+            role: true,
+            email: true,
+            orgs: true,
+            enabled: true,
+          },
+          where: {
+            enabled: false,
+            AND: {
+              orgs: {
+                some: {
+                  OR: [
+                    whereUser,
+                    {
+                      parent: whereUser,
+                    },
+
+                    {
+                      parent: {
+                        parent: whereUser,
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        });
+      }
+      default: {
+        return [];
+      }
+    }
   }
 }

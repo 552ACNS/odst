@@ -382,6 +382,7 @@ type Query {
   findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   getCommanders: [User!]!
   me: User!
+  findManyAccountRequests: [User!]!
   usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
@@ -888,6 +889,7 @@ type Mutation {
   createQuestion(questionCreateInput: QuestionCreateInput!): Question!
   updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question!
   createUser(userCreateInput: UserCreateInput!): User!
+  enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
   createComment(commentCreateInput: CommentCreateInput!): Comment!
   login(loginUserInput: LoginUserInput!): Tokens!
