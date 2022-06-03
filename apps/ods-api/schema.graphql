@@ -39,12 +39,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type SurveyResponseCount {
-  answers: Int!
-  tags: Int!
-  comments: Int!
-}
-
 type TagCount {
   surveyResponses: Int!
 }
@@ -54,6 +48,12 @@ type Tag {
   value: String!
   surveyResponses: [SurveyResponse!]
   _count: TagCount!
+}
+
+type SurveyResponseCount {
+  answers: Int!
+  tags: Int!
+  comments: Int!
 }
 
 type SurveyResponse {

@@ -236,8 +236,8 @@ export class ResponsesComponent implements OnInit {
     // Convert to title case
     value = value[0].toUpperCase() + value.slice(1);
 
-    // If the hand typed value is one of the elgal tags
-    if (this.allTags.includes(value)) {
+    // If the hand typed value is one of the legal tags
+    if (this.allTags.includes(value) && !this.selectedTags?.includes(value)) {
       this.responsesService
         .modifyTag({
           where: { id: this.responseIDs[this.displayedIndex] },
@@ -262,6 +262,9 @@ export class ResponsesComponent implements OnInit {
 
   // There's some duplciation in this code
   selected(event: MatAutocompleteSelectedEvent): void {
+    // If the user already has the tag, don't add it again
+    if (this.selectedTags?.includes(event.option.value)) return;
+
     this.responsesService
       .modifyTag({
         where: { id: this.responseIDs[this.displayedIndex] },
