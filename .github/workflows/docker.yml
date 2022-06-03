@@ -60,7 +60,7 @@ jobs:
 
       - name: 'Install Dependencies'
         # TODO slim down what deps are installed?
-        run: npm i
+        run: npm i nx --ignore-scripts --progress=false --audit=false --loglevel=error
 
       - name: 'nx build'
         run: npx nx affected --target=docker
