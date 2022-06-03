@@ -12,9 +12,7 @@
 
   <div *ngIf="user && user.orgs" class="w-screen">
     <p id="userNameGrade" class="mb-0 flex justify-center items-center">
-      {{ this.user.firstName }} {{ this.user.lastName }}
-      <!-- If the user has a grade, then display with a comma, otherwise don't do anything -->
-      {{ this.user.grade ? ', ' + this.user.grade : '' }}
+      {{ this.user.firstName }} {{ this.user.lastName }}, {{ this.user.grade }}
     </p>
     <p id="userTitleOrg" class="mb-0 flex justify-center items-center text-sm">
       <!-- update backend to have take/first parameter? -->
