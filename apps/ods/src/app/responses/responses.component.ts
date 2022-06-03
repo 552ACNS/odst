@@ -210,39 +210,72 @@ export class ResponsesComponent implements OnInit {
     return pageEvent;
   }
 
+  // there's some duplication in this code
   remove(tagToRemove: string): void {
-    this.selectedTags = this.selectedTags?.filter(
-      (selectedtag) => selectedtag !== tagToRemove
-    );
+    this.responsesService
+      .modifyTag({
+        where: { id: this.responseIDs[this.displayedIndex] },
+        data: { tags: { disconnect: [{ value: tagToRemove }] } },
+      })
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.selectedTags = this.selectedTags?.filter(
+            (selectedtag) => selectedtag !== tagToRemove
+          );
+        }
+      });
 
     this.generatePossibleTags();
   }
 
+  // there's some duplication in this code
   add(event: MatChipInputEvent): void {
     // Trim the input so that empty values aren't there
-    const value = (event.value || '').trim();
+    let value = (event.value || '').trim().toLowerCase();
 
-    // Add our tag
-    if (value) {
-      this.selectedTags?.push(value);
-    }
+    // Convert to title case
+    value = value[0].toUpperCase() + value.slice(1);
 
-    // Clear the input values
-    if (event.chipInput) {
-      event.chipInput.clear();
+    // If the hand typed value is one of the elgal tags
+    if (this.allTags.includes(value)) {
+      this.responsesService
+        .modifyTag({
+          where: { id: this.responseIDs[this.displayedIndex] },
+          data: { tags: { connect: [{ value: value }] } },
+        })
+        .subscribe(({ data, errors }) => {
+          if (!errors && data) {
+            // Add our tag
+            this.selectedTags?.push(value);
+
+            // Clear the input values
+            if (event.chipInput) {
+              event.chipInput.clear();
+            }
+          }
+        });
     }
 
     this.tagCtrl.setValue(null);
     this.generatePossibleTags();
   }
 
+  // There's some duplciation in this code
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedTags?.push(event.option.viewValue);
-    this.tagInput.nativeElement.value = '';
-    this.tagCtrl.setValue(null);
+    this.responsesService
+      .modifyTag({
+        where: { id: this.responseIDs[this.displayedIndex] },
+        data: { tags: { connect: [{ value: event.option.viewValue }] } },
+      })
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.selectedTags?.push(event.option.viewValue);
+
+          this.tagInput.nativeElement.value = '';
+          this.tagCtrl.setValue(null);
+        }
+      });
 
     this.generatePossibleTags();
   }
-
-  submitTags() {}
 }

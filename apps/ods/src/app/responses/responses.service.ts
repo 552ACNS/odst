@@ -12,12 +12,12 @@ import {
   AddCommentMutationVariables,
   AddCommentMutation,
   AddCommentDocument,
-  AddTagMutationVariables,
-  AddTagMutation,
-  AddTagDocument,
   UpdateResolvedMutation,
   UpdateResolvedMutationVariables,
   UpdateResolvedDocument,
+  ModifyTagMutationVariables,
+  ModifyTagMutation,
+  ModifyTagDocument,
 } from './responses.generated';
 
 @Injectable({
@@ -70,18 +70,6 @@ export class ResponsesService {
     });
   }
 
-  /**
-   *
-   * @param addTagMutationVariables variables required to connect tags to a response
-   * @returns the new response with the updated tags
-   */
-  addTag(addTagMutationVariables: AddTagMutationVariables) {
-    return this.apollo.mutate<AddTagMutation, AddTagMutationVariables>({
-      mutation: AddTagDocument,
-      variables: addTagMutationVariables,
-    });
-  }
-
   updateResolved(
     updateResolvedMutationVariables: UpdateResolvedMutationVariables
   ) {
@@ -106,5 +94,12 @@ export class ResponsesService {
         },
       },
     }).valueChanges;
+  }
+
+  modifyTag(modifyTagMutationVariables: ModifyTagMutationVariables) {
+    return this.apollo.mutate<ModifyTagMutation, ModifyTagMutationVariables>({
+      mutation: ModifyTagDocument,
+      variables: modifyTagMutationVariables,
+    });
   }
 }
