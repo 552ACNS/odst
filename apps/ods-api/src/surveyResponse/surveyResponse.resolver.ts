@@ -12,6 +12,7 @@ import {
   SurveyResponse,
   SurveyResponseCreateInput,
   SurveyResponseWhereUniqueInput,
+  Tag,
   Answer,
   Survey,
   User,
@@ -124,6 +125,11 @@ export class SurveyResponseResolver {
     @Parent() surveyResponse: SurveyResponse
   ): Promise<Survey | null> {
     return this.surveyResponseService.survey({ id: surveyResponse.id });
+  }
+
+  @ResolveField(() => [Tag])
+  async tags(@Parent() surveyResponse: SurveyResponse): Promise<Tag[]> {
+    return this.surveyResponseService.tags({ id: surveyResponse.id });
   }
 
   @ResolveField(() => [Comment])

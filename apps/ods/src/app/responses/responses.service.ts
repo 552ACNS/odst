@@ -15,6 +15,9 @@ import {
   UpdateResolvedMutation,
   UpdateResolvedMutationVariables,
   UpdateResolvedDocument,
+  ModifyTagMutationVariables,
+  ModifyTagMutation,
+  ModifyTagDocument,
 } from './responses.generated';
 
 @Injectable({
@@ -35,6 +38,29 @@ export class ResponsesService {
         take(1)
       );
     // pluck lets me retrieve nested data.
+  }
+
+  getTags() {
+    return [
+      'Gender',
+      'Sexism',
+      'Race',
+      'Racism',
+      'Sexuality',
+      'Gender Identity',
+      'Religion',
+      'Mental Health',
+      'Minority',
+      'Marginalized',
+      'Mental Illness',
+      'Rank',
+      'Observed',
+      'Experienced',
+      'Other',
+      'Harassment',
+      'Assault',
+      'Discrimination',
+    ];
   }
 
   addComment(addCommentMutationVariables: AddCommentMutationVariables) {
@@ -68,5 +94,12 @@ export class ResponsesService {
         },
       },
     }).valueChanges;
+  }
+
+  modifyTag(modifyTagMutationVariables: ModifyTagMutationVariables) {
+    return this.apollo.mutate<ModifyTagMutation, ModifyTagMutationVariables>({
+      mutation: ModifyTagDocument,
+      variables: modifyTagMutationVariables,
+    });
   }
 }
