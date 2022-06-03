@@ -1,5 +1,5 @@
 # First Stage
-FROM node:lts-alpine AS develop
+FROM node:lts AS develop
 
 ARG APP="ods-api"
 
@@ -23,7 +23,7 @@ RUN npm run build ${APP}:build:${NODE_ENV}
 
 
 # Second Stage
-FROM node:lts-alpine AS deploy
+FROM node:lts AS deploy
 
 ARG APP="ods-api"
 
