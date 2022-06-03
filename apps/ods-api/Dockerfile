@@ -45,6 +45,6 @@ RUN npm install --ignore-scripts --omit=dev --legacy-peer-deps --progress=false 
 
 # RUN npx nx run-many --target=prisma-generate --all --parallel=false
 
-COPY --from=develop /usr/src/app/dist/apps/${APP} ./
+COPY --from=build /usr/src/app/dist/apps/${APP} ./
 
 CMD ["node", "./main"]
