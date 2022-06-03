@@ -8,6 +8,10 @@ ARG ARG_NODE_ENV=development
 
 ENV NODE_ENV=${ARG_NODE_ENV}
 
+ARG ARG_NX_GQL_ENDPOINT=http://ods-api:3343/graphql
+
+ENV NX_GQL_ENDPOINT=${ARG_NX_GQL_ENDPOINT}
+
 WORKDIR /usr/src/app
 
 COPY package.json ./

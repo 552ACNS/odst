@@ -14,11 +14,13 @@ services:
       - odst-network
 
   ods-api:
-    image: ghcr.io/ericcater/ods-api:dev
+    container_name: ods-api
+    # image: ghcr.io/ericcater/ods-api:dev
+    image: ods-api:latest
     ports:
       - '${PORT:-3343}:${PORT:-3343}'
     environment:
-      - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_other
+      - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
       - NX_CHECKOINT_DISABLE=1
       - NX_JWT_SECRET=dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$$%
       - NX_JWT_REFRESH_SECRET=Wk)6PP&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF
@@ -30,7 +32,8 @@ services:
 
   ods:
     container_name: ods
-    image: ghcr.io/ericcater/ods:dev
+    # image: ghcr.io/ericcater/ods:dev
+    image: ods:latest
     ports:
       - '8080:80'
     depends_on:

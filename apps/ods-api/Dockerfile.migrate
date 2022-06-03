@@ -7,4 +7,4 @@ RUN npm install -g prisma
 #TODO should also be copying migration folder, etc
 ADD ./schema.prisma ./
 
-CMD [ "prisma", "migrate", "deploy"]
+CMD ["prisma", "migrate", "deploy"]

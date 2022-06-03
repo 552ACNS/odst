@@ -6,7 +6,7 @@ services:
       context: apps/ods-api/
       dockerfile: Dockerfile.migrate
     environment:
-      - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_other
+      - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
     depends_on:
       - postgres
     networks:
