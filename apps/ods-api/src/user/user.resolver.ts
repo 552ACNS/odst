@@ -1,19 +1,19 @@
 import {
-  Resolver,
-  Parent,
-  ResolveField,
-  Query,
   Args,
   Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import {
-  User,
+  FindManyUserArgs,
   Org,
   Role,
+  User,
   UserCreateInput,
   UserWhereUniqueInput,
-  FindManyUserArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
@@ -22,13 +22,7 @@ import { GetCurrentUser } from '@odst/shared/nest';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  // Refactor this to include Cater's Where command when we implement it
-  // @Query(() => [User], { name: 'findManyUsers' })
-
-  // async findManyInOrg() {
-  //   return this.userService.findMany({});
-  // }
-
+  // TODO: Is this used anywhere? -Sim
   @Query(() => [User])
   async findUsersWithRole(@Args('role') role: Role): Promise<User[]> {
     return this.userService.findMany({
@@ -38,6 +32,7 @@ export class UserResolver {
     });
   }
 
+  // Add interceptors/manual restrictor
   @Query(() => [User], { name: 'findManyUsers' })
   async findMany(@Args() findManyUserArgs: FindManyUserArgs): Promise<User[]> {
     return this.userService.findMany(findManyUserArgs);
@@ -62,6 +57,14 @@ export class UserResolver {
     return this.userService.create(userCreateInput);
   }
 
+  @Mutation(() => User, { name: 'enableAccount' })
+  async enableAccount(
+    @Args('userWhereUniqueInput')
+    userWhereUniqueInput: UserWhereUniqueInput
+  ): Promise<User> {
+    return this.userService.enableAccount(userWhereUniqueInput);
+  }
+
   @Mutation(() => User, { name: 'deleteUser', nullable: true })
   async delete(
     @Args('userWhereUniqueInput')
@@ -78,5 +81,10 @@ export class UserResolver {
   @Query(() => User)
   async me(@GetCurrentUser() user: User): Promise<User> {
     return user;
+  }
+
+  @Query(() => [User], { name: 'findManyAccountRequests' })
+  async findManyAccountRequests(@GetCurrentUser() user: User) {
+    return this.userService.findManyRequestedAccounts(user);
   }
 }

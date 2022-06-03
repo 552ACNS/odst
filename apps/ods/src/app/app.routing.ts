@@ -36,6 +36,13 @@ const routes: Routes = [
         (m) => m.RequestAccountModule
       ),
   },
+  {
+    path: 'requested-accounts',
+    loadChildren: () =>
+      import('./requested-accounts/requested-accounts.module').then(
+        (m) => m.RequestedAccountsModule
+      ),
+  },
   //TODO: add functionality to auto redirect to login if refresh token not found
   {
     path: 'login',
