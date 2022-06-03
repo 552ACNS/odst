@@ -17,8 +17,10 @@
 //   });
 // });
 
-it('should be defined', () => {
-  expect(true).toBe(true);
+describe('TagResolver', () => {
+  it('should be defined', () => {
+    expect(true).toBe(true);
+  });
 });
 
 // Preston this is not how you make spec files for Nest
