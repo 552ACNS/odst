@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AddCommentMutationVariables,
@@ -11,7 +11,6 @@ import {
 import { getRefreshToken, getUserId } from '@odst/helpers';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { map, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'odst-responses',
@@ -36,16 +35,6 @@ export class ResponsesComponent implements OnInit {
     private responsesService: ResponsesService,
     private route: ActivatedRoute
   ) {}
-
-  // randomMethod() {
-  //   const blah = map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allTags.slice())),
-  // }
-
-  // private _filter(value: string): string[] {
-  //   const filterValue = value.toLowerCase();
-
-  //   return this.allTags.filter(fruit => fruit.toLowerCase().includes(filterValue));
-  // }
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
@@ -99,10 +88,19 @@ export class ResponsesComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Creates a list of tags that can be added by filtering out those already in use
+   */
   generatePossibleTags() {
     this.possibleTags = this.allTags.filter(
       (tag) => !this.selectedTags?.includes(tag)
     );
+    if (this.tagInput?.nativeElement.value.trim()) {
+      this.possibleTags = this.possibleTags.filter((tag) =>
+        tag.includes(this.tagInput?.nativeElement.value.trim())
+      );
+    }
   }
 
   submitComment() {
@@ -210,6 +208,11 @@ export class ResponsesComponent implements OnInit {
     return pageEvent;
   }
 
+  /**
+   * Removes tag deselected by the user and adds it back to the list of tags not in use
+   * @param tagToRemove tag that's been deselected by the user
+   */
+
   // there's some duplication in this code
   remove(tagToRemove: string): void {
     this.responsesService
@@ -227,6 +230,11 @@ export class ResponsesComponent implements OnInit {
 
     this.generatePossibleTags();
   }
+
+  /**
+   * User selects tag or tags and pushes to the database, reset the controller and generate list of unused tags
+   * @param event user added a tag
+   */
 
   // there's some duplication in this code
   add(event: MatChipInputEvent): void {
@@ -259,6 +267,12 @@ export class ResponsesComponent implements OnInit {
     this.tagCtrl.setValue(null);
     this.generatePossibleTags();
   }
+
+  /**
+   * User selects a tag from the list of unused and the list of unused tags is updated
+   * @param event
+   * @returns list of tags to push to server
+   */
 
   // There's some duplciation in this code
   selected(event: MatAutocompleteSelectedEvent): void {
