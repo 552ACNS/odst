@@ -50,6 +50,8 @@ export class RequestedAccountsComponent implements OnInit {
       .acceptAccountRequest(this.displayedAccountRequest['id'])
       .subscribe();
     this.removeRow();
+
+    // A. We don't use alerts in the program. B. This will always give this alert even when it fails.
     alert('Account successfully created.');
   }
 

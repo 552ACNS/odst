@@ -36,6 +36,7 @@ export class UserService {
     });
   }
 
+  // Intercept this
   async enableAccount(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User> {
@@ -98,7 +99,9 @@ export class UserService {
       .refreshToken();
   }
 
-  async findManyRequestedAccounts(user: User) {
+  //TODO: Reuse the org functions in the survey response module to filter down
+  // instead of duplicating code in account request
+  async findManyRequestedAccounts(user: User): Promise<Partial<User>[]> {
     const whereUser: Prisma.OrgWhereInput = {
       users: {
         some: {
@@ -145,7 +148,6 @@ export class UserService {
                 some: {
                   OR: [
                     whereUser,
-
                     {
                       parent: whereUser,
                     },

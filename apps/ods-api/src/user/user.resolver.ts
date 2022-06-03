@@ -22,13 +22,7 @@ import { GetCurrentUser } from '@odst/shared/nest';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  // Refactor this to include Cater's Where command when we implement it
-  // @Query(() => [User], { name: 'findManyUsers' })
-
-  // async findManyInOrg() {
-  //   return this.userService.findMany({});
-  // }
-
+  // TODO: Is this used anywhere? -Sim
   @Query(() => [User])
   async findUsersWithRole(@Args('role') role: Role): Promise<User[]> {
     return this.userService.findMany({
@@ -38,6 +32,7 @@ export class UserResolver {
     });
   }
 
+  // Add interceptors/manual restrictor
   @Query(() => [User], { name: 'findManyUsers' })
   async findMany(@Args() findManyUserArgs: FindManyUserArgs): Promise<User[]> {
     return this.userService.findMany(findManyUserArgs);
