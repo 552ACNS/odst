@@ -25,10 +25,10 @@ jobs:
     #       - ods-api
 
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          buildkitd-flags: --debug
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v2
+      #   with:
+      #     buildkitd-flags: --debug
 
       - name: Checkout repository
         uses: actions/checkout@v3
