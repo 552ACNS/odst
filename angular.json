@@ -107,6 +107,13 @@
           },
           "defaultConfiguration": "production"
         },
+        "docker": {
+          "executor": "@nx-tools/nx-docker:build",
+          "options": {
+            "push": true,
+            "tags": ["ericcater/ods:latest", "ericcater/ods:v1"]
+          }
+        },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
@@ -177,6 +184,13 @@
               ]
             },
             "development": {}
+          }
+        },
+        "docker": {
+          "executor": "@nx-tools/nx-docker:build",
+          "options": {
+            "push": true,
+            "tags": ["ericcater/ods-api:latest", "ericcater/ods-api:v1"]
           }
         },
         "lint": {

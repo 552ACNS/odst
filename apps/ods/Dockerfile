@@ -1,5 +1,5 @@
 # First Stage
-FROM node:lts-alpine AS develop
+FROM node:lts-alpine AS build
 
 ARG APP="ods"
 
@@ -42,4 +42,4 @@ ENV NODE_ENV=${ARG_NODE_ENV}
 
 WORKDIR /usr/src/app
 
-COPY --from=develop /usr/src/app/dist/apps/${APP} /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist/apps/${APP} /usr/share/nginx/html

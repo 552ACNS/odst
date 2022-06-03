@@ -82,6 +82,7 @@
     "@nrwl/nest": "14.1.9",
     "@nrwl/node": "14.1.9",
     "@nrwl/workspace": "14.1.9",
+    "@nx-tools/nx-docker": "^2.3.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/cron": "^2.0.0",
     "@types/jest": "27.5.1",

@@ -1,5 +1,5 @@
 # First Stage
-FROM node:lts-alpine AS develop
+FROM node:lts-alpine AS build
 
 ARG APP="ods-api"
 
@@ -33,7 +33,7 @@ ENV NODE_ENV=${ARG_NODE_ENV}
 
 WORKDIR /usr/src/app
 
-COPY --from=develop /usr/src/app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
 COPY package.json ./
 
