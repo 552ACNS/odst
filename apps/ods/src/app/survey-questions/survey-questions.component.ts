@@ -104,8 +104,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
                 this.questionIDs,
                 this.surveyID
               )
-              .subscribe(({ errors }) => {
-                this.submitSuccess = !errors;
+              .subscribe(({ errors, data }) => {
+                this.submitSuccess = !errors && !!data;
               });
           });
       });
