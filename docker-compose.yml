@@ -14,7 +14,7 @@ services:
       - odst-network
 
   ods-api:
-    image: ods-api:latest
+    image: ghcr.io/ericcater/ods-api:dev
     ports:
       - '${PORT:-3343}:${PORT:-3343}'
     environment:
