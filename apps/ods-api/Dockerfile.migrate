@@ -2,7 +2,7 @@ FROM node:lts-alpine
 
 WORKDIR /usr/src/app
 
-RUN npm install -g prisma
+RUN npm install -g prisma ts-node env-cmd
 
 #TODO should also be copying migration folder, etc
 ADD ./schema.prisma ./
