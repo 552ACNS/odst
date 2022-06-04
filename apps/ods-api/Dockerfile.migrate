@@ -7,4 +7,9 @@ RUN npm install -g prisma
 #TODO should also be copying migration folder, etc
 ADD ./schema.prisma ./
 
+# Add wait-for tool -------------------
+ENV WAIT_VERSION v2.2.3
+ADD https://github.com/eficode/wait-for/releases/download/${WAIT_VERSION}/wait-for ./wait
+RUN chmod +x ./wait
+
 CMD ["prisma", "migrate", "deploy"]

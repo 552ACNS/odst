@@ -100,11 +100,11 @@ username: `admin`
 
 `nx docker {app}`
 
-add `--outputs=type=local` to not push built images up to registry
+Careful with this, due to that it pushes it up with the `:latest` tag. Add `--outputs=type=local` to not push built images up to registry.
 
 ## Migrate database via docker
 
-`docker-compose -f ./docker-compose.yml -f ./docker-compose.migrate.yml up --build prisma-migrate`
+`docker-compose -f ./docker-compose.yml -f ./docker-compose.migrate.yml up prisma-migrate`
 
 ## start all services listed in docker-compose
 

@@ -5,26 +5,22 @@ services:
   postgres:
     container_name: postgres
     image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
+    restart: unless-stopped
     ports:
       - '5432:5432/tcp'
     environment:
       - POSTGRES_PASSWORD=H@CK3YITPL3ASE
-      - NX_GQL_ENDPOINT=http://ods-api:3343/graphql
     networks:
       - odst-network
 
   ods-api:
     container_name: ods-api
-    # image: ghcr.io/ericcater/ods-api:dev
-    image: ods-api:latest
+    image: ghcr.io/ericcater/ods-api:latest
+    # image: ods-api:latest
     ports:
       - '${PORT:-3343}:${PORT:-3343}'
-    environment:
-      - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
-      - NX_CHECKOINT_DISABLE=1
-      - NX_JWT_SECRET=dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$$%
-      - NX_JWT_REFRESH_SECRET=Wk)6PP&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF
-      - NX_DEV_ACCOUNT_PASSWORD=admin
+    env_file:
+      - apps/ods-api/.env.prod
     depends_on:
       - postgres
     networks:
@@ -32,8 +28,10 @@ services:
 
   ods:
     container_name: ods
-    # image: ghcr.io/ericcater/ods:dev
-    image: ods:latest
+    image: ghcr.io/ericcater/ods:latest
+    # image: ods:latest
+    environment:
+      - NX_GQL_ENDPOINT=http://postgres:3343/graphql
     ports:
       - '8080:80'
     depends_on:

@@ -7,7 +7,9 @@ services:
       dockerfile: Dockerfile.migrate
     environment:
       - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
+    command: sh -c './wait postgres:5432 -- prisma migrate deploy'
     depends_on:
       - postgres
+    # restart: on-failure
     networks:
       odst-network:
