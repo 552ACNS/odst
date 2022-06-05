@@ -96,23 +96,39 @@ username: `admin`
 
 `docker build . --file ./apps/{app}/Dockerfile`
 
-## Build & push via nx
+### Build & push via nx
 
 `nx docker {app}`
 
 Careful with this, due to that it pushes it up with the `:latest` tag. Add `--outputs=type=local` to not push built images up to registry.
 
-## Migrate database via docker
+### Migrate database via docker
 
 `docker-compose -f ./docker-compose.yml -f ./docker-compose.migrate.yml up prisma-migrate`
 
-## start all services listed in docker-compose
+But first you need a migration to apply - run `nx run ods-api:prisma-migrate:migrate`
+
+### start all services listed in docker-compose
 
 `docker-compose up`
 
 add `-d` to start them in the background; add `{app}` to the end to start only a specific app.
 
-## Why is `npm` being used in Dockerfiles instead of `yarn`?
+### Start to finish full docker stack
+
+```bash
+# datbase
+docker-compose up -d postgres
+# create migration
+nx run {app}:prisma-migrate:migrate
+# deploy migration
+docker-compose -f ./docker-compose.yml -f ./docker-compose.migrate.yml up prisma-migrate
+# start services
+docker-compose up -d
+
+```
+
+### Why is `npm` being used in Dockerfiles instead of `yarn`?
 
 `npm` allows skipping post install script, whichs increases likelihood of caching, along with not running pointless commands (i.e. ngcc while building backend).
 

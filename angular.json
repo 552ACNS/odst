@@ -243,6 +243,9 @@
                 "env-cmd -f apps/ods-api/.env.prod prisma migrate deploy",
                 "yarn ts-node ./apps/ods-api/prisma-seed.ts"
               ]
+            },
+            "migrate": {
+              "command": "env-cmd -f apps/ods-api/.env.local prisma migrate dev"
             }
           }
         },

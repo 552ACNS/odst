@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 const orgSeed: Prisma.OrgCreateInput[] = [
   // ADMIN
   {
-    name: 'Scorpion Developers',
+    name: 'Scorpion Developers2',
     orgTier: 'OTHER',
   },
   // Wings
