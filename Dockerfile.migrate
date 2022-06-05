@@ -4,6 +4,8 @@ WORKDIR /usr/src/app
 
 ARG APP
 
+ENV ENV_APP=${APP}
+
 COPY package.json ./
 
 RUN npm install --ignore-scripts --omit=optional --legacy-peer-deps --progress=false --audit=false --loglevel=error
@@ -20,7 +22,7 @@ RUN chmod +x ./wait
 
 COPY . .
 
-RUN npx nx prisma-generate ${APP}
+RUN npx nx prisma-generate ${ENV_APP}
 
 # CMD npx nx run ods-api:prisma-migrate:production
 
@@ -28,6 +30,6 @@ RUN npx nx prisma-generate ${APP}
 
 # RUN chmod +x prisma.sh
 
-CMD ./wait postgres:5432 -- npx nx run ods-api:prisma-migrate:production
+CMD ./wait postgres:5432 -- npx nx run ${ENV_APP}:prisma-migrate:production
 
 
