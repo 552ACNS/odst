@@ -22,12 +22,12 @@ COPY . .
 
 RUN npx nx prisma-generate ${APP}
 
-CMD npx nx run ods-api:prisma-migrate:production
+# CMD npx nx run ods-api:prisma-migrate:production
 
 # RUN echo "nx run ods-api:prisma-migrate:production" > prisma.sh
 
 # RUN chmod +x prisma.sh
 
-# CMD ./wait postgres:5432 -- ./prisma.sh
+CMD ./wait postgres:5432 -- npx nx run ods-api:prisma-migrate:production
 
 
