@@ -240,7 +240,7 @@
             },
             "production": {
               "commands": [
-                "env-cmd -f apps/ods-api/.env.prod prisma migrate dev",
+                "env-cmd -f apps/ods-api/.env.prod prisma migrate deploy",
                 "yarn ts-node ./apps/ods-api/prisma-seed.ts"
               ]
             }

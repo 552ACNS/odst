@@ -3,10 +3,6 @@ FROM node:lts-alpine AS build
 
 ARG APP="ods"
 
-ARG ARG_NX_GQL_ENDPOINT=http://ods-api:3343/graphql
-
-ENV NX_GQL_ENDPOINT=${ARG_NX_GQL_ENDPOINT}
-
 WORKDIR /usr/src/app
 
 COPY package.json ./
