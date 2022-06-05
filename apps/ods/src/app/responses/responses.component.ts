@@ -96,9 +96,12 @@ export class ResponsesComponent implements OnInit {
     this.possibleTags = this.allTags.filter(
       (tag) => !this.selectedTags?.includes(tag)
     );
-    if (this.tagInput?.nativeElement.value.trim()) {
+
+    const input = this.tagInput?.nativeElement.value.trim().toLowerCase();
+
+    if (input) {
       this.possibleTags = this.possibleTags.filter((tag) =>
-        tag.includes(this.tagInput?.nativeElement.value.trim())
+        tag.toLowerCase().includes(input)
       );
     }
   }
