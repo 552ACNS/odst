@@ -184,7 +184,8 @@
               ]
             },
             "development": {}
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "docker": {
           "executor": "@nx-tools/nx-docker:build",
@@ -238,7 +239,10 @@
               "command": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
             },
             "production": {
-              "command": "env-cmd -f apps/ods-api/.env.prod prisma migrate dev"
+              "commands": [
+                "env-cmd -f apps/ods-api/.env.prod prisma migrate dev",
+                "yarn ts-node ./apps/ods-api/prisma-seed.ts"
+              ]
             }
           }
         },

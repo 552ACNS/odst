@@ -3,10 +3,13 @@ services:
   prisma-migrate:
     container_name: prisma-migrate
     build:
-      context: apps/ods-api/
-      dockerfile: Dockerfile.migrate
+      context: .
+      dockerfile: ./Dockerfile.migrate
+      args:
+        APP: ods-api
     environment:
       - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
+
     depends_on:
       - postgres
     # restart: on-failure
