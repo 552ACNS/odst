@@ -6,9 +6,9 @@ import {
   GetIssuesByStatusDocument,
   GetIssuesByStatusQuery,
   GetIssuesByStatusQueryVariables,
-  FindUniqueSurveyResponseDocument,
-  FindUniqueSurveyResponseQuery,
-  FindUniqueSurveyResponseQueryVariables,
+  FindUniqueFeedbackResponseDocument,
+  FindUniqueFeedbackResponseQuery,
+  FindUniqueFeedbackResponseQueryVariables,
   AddCommentMutationVariables,
   AddCommentMutation,
   AddCommentDocument,
@@ -84,12 +84,12 @@ export class ResponsesService {
 
   async getResponseData(responseID: string) {
     return this.apollo.watchQuery<
-      FindUniqueSurveyResponseQuery,
-      FindUniqueSurveyResponseQueryVariables
+      FindUniqueFeedbackResponseQuery,
+      FindUniqueFeedbackResponseQueryVariables
     >({
-      query: FindUniqueSurveyResponseDocument,
+      query: FindUniqueFeedbackResponseDocument,
       variables: {
-        surveyResponseWhereUniqueInput: {
+        feedbackResponseWhereUniqueInput: {
           id: responseID,
         },
       },

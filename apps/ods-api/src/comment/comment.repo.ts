@@ -6,7 +6,7 @@ export const MockComments: Comment[] = [
     value: 'comment value',
     date: new Date(),
     authorId: 'author id',
-    surveyResponseId: 'survey response id',
+    feedbackResponseId: 'feedback response id',
   },
 ];
 
@@ -15,6 +15,6 @@ export const MockCommentCreateInput: Prisma.CommentCreateInput[] = [
     value: 'comment value',
     date: new Date(),
     author: { connect: { id: 'author id' } },
-    SurveyResponse: { connect: { id: 'survey response id' } },
+    FeedbackResponse: { connect: { id: 'feedback response id' } },
   },
 ];

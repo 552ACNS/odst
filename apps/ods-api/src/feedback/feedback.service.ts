@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
-  Survey,
+  Feedback,
   Prisma,
-  SurveyResponse,
+  FeedbackResponse,
   Question,
   Org,
 } from '.prisma/ods/client';
@@ -10,18 +10,18 @@ import { PrismaService } from '../prisma/prisma.service';
 import * as crypto from 'crypto';
 
 @Injectable()
-export class SurveyService {
+export class FeedbackService {
   constructor(private prisma: PrismaService) {}
 
   async findMany(params: {
     skip?: number;
     take?: number;
-    cursor?: Prisma.SurveyWhereUniqueInput;
-    where?: Prisma.SurveyWhereInput;
-    orderBy?: Prisma.SurveyOrderByWithRelationInput;
-  }): Promise<Survey[]> {
+    cursor?: Prisma.FeedbackWhereUniqueInput;
+    where?: Prisma.FeedbackWhereInput;
+    orderBy?: Prisma.FeedbackOrderByWithRelationInput;
+  }): Promise<Feedback[]> {
     const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.survey.findMany({
+    return this.prisma.feedback.findMany({
       skip,
       take,
       cursor,
@@ -31,30 +31,30 @@ export class SurveyService {
   }
 
   async findUnique(
-    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
-  ): Promise<Survey | null> {
-    return this.prisma.survey.findUnique({
-      where: surveyWhereUniqueInput,
+    feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
+  ): Promise<Feedback | null> {
+    return this.prisma.feedback.findUnique({
+      where: feedbackWhereUniqueInput,
     });
   }
 
   async createWithQuestions(
-    questionPrompts: string[],
+    questionValues: string[],
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Survey> {
-    if (questionPrompts.length <= 0) {
-      throw new BadRequestException('No question prompts provided');
+  ): Promise<Feedback> {
+    if (questionValues.length <= 0) {
+      throw new BadRequestException('No question values provided');
     }
     const questionIds: string[] = [];
 
     //Could not resolve questions and only hash by string, since it's unique also
-    for (const prompt of questionPrompts) {
+    for (const value of questionValues) {
       //don't use forEach,etc. awaits won't act as expected
       questionIds.push(
         (
           await this.prisma.question.upsert({
-            where: { prompt },
-            create: { prompt },
+            where: { value },
+            create: { value },
             update: {},
           })
         ).id
@@ -63,7 +63,7 @@ export class SurveyService {
 
     const questionsHash = getArrayHash(questionIds);
 
-    return this.prisma.survey.upsert({
+    return this.prisma.feedback.upsert({
       where: { questionsHash },
       create: {
         questionsHash,
@@ -76,34 +76,34 @@ export class SurveyService {
     });
   }
 
-  async create(data: Prisma.SurveyCreateInput): Promise<Survey> {
-    const survey = await this.prisma.survey.create({
+  async create(data: Prisma.FeedbackCreateInput): Promise<Feedback> {
+    const feedback = await this.prisma.feedback.create({
       data,
     });
 
-    await this.updateQuestionsHash({ id: survey.id });
+    await this.updateQuestionsHash({ id: feedback.id });
 
-    return survey;
+    return feedback;
   }
 
   async update(
-    data: Prisma.SurveyUpdateInput,
-    where: Prisma.SurveyWhereUniqueInput
-  ): Promise<Survey> {
-    const survey = await this.prisma.survey.update({ data, where });
+    data: Prisma.FeedbackUpdateInput,
+    where: Prisma.FeedbackWhereUniqueInput
+  ): Promise<Feedback> {
+    const feedback = await this.prisma.feedback.update({ data, where });
 
-    if (survey.id) {
-      await this.updateQuestionsHash({ id: survey.id });
+    if (feedback.id) {
+      await this.updateQuestionsHash({ id: feedback.id });
     }
-    // TODO: What if the survey is not found? What does it do?
-    return survey;
+    // TODO: What if the feedback is not found? What does it do?
+    return feedback;
   }
 
   async delete(
-    orgWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+    orgWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
   ): Promise<{ deleted: boolean; message?: string }> {
     try {
-      await this.prisma.survey.delete({
+      await this.prisma.feedback.delete({
         where: orgWhereUniqueInput,
       });
       return { deleted: true };
@@ -112,47 +112,47 @@ export class SurveyService {
     }
   }
 
-  //TODO optimize database calls. each survey create/update requires 3 database calls.
+  //TODO optimize database calls. each feedback create/update requires 3 database calls.
   //TODO only call if questions is being updated
   //TODO move this to prisma hook
   private async updateQuestionsHash(
-    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+    feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
   ): Promise<void> {
     const questions = await this.prisma.question.findMany({
-      where: { surveys: { every: surveyWhereUniqueInput } },
+      where: { feedbacks: { every: feedbackWhereUniqueInput } },
     });
 
     const questionStr = questions.map((question) => question.id);
     const questionsHash = getArrayHash(questionStr);
 
-    await this.prisma.survey.update({
-      where: surveyWhereUniqueInput,
+    await this.prisma.feedback.update({
+      where: feedbackWhereUniqueInput,
       data: { questionsHash },
     });
   }
 
   async orgs(
-    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+    feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
   ): Promise<Org[]> {
-    return this.prisma.survey
-      .findUnique({ where: surveyWhereUniqueInput })
+    return this.prisma.feedback
+      .findUnique({ where: feedbackWhereUniqueInput })
       .orgs();
   }
 
   async questions(
-    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+    feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
   ): Promise<Question[]> {
-    return this.prisma.survey
-      .findUnique({ where: surveyWhereUniqueInput })
+    return this.prisma.feedback
+      .findUnique({ where: feedbackWhereUniqueInput })
       .questions();
   }
 
-  async surveyResponses(
-    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
-  ): Promise<SurveyResponse[]> {
-    return this.prisma.survey
-      .findUnique({ where: surveyWhereUniqueInput })
-      .surveyResponses();
+  async feedbackResponses(
+    feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
+  ): Promise<FeedbackResponse[]> {
+    return this.prisma.feedback
+      .findUnique({ where: feedbackWhereUniqueInput })
+      .feedbackResponses();
   }
   //TODO tests for new methods
 }

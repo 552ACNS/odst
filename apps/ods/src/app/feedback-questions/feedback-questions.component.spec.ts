@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { SurveyQuestionsComponent } from './survey-questions.component';
+import { FeedbackQuestionsComponent } from './feedback-questions.component';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -14,13 +14,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('SurveyQuestionsComponent', () => {
-  let component: SurveyQuestionsComponent;
-  let fixture: ComponentFixture<SurveyQuestionsComponent>;
+describe('FeedbackQuestionsComponent', () => {
+  let component: FeedbackQuestionsComponent;
+  let fixture: ComponentFixture<FeedbackQuestionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SurveyQuestionsComponent],
+      declarations: [FeedbackQuestionsComponent],
       imports: [
         ReactiveFormsModule,
         FormsModule,
@@ -41,7 +41,7 @@ describe('SurveyQuestionsComponent', () => {
   });
 
   // beforeEach(() => {
-  //   fixture = TestBed.createComponent(SurveyQuestionsComponent);
+  //   fixture = TestBed.createComponent(FeedbackQuestionsComponent);
   //   component = fixture.componentInstance;
   //   fixture.detectChanges();
   // });
