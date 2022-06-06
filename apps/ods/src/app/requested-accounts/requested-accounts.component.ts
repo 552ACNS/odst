@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestedAccountsService } from './requested-accounts.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'odst-requested-accounts',
@@ -7,7 +8,10 @@ import { RequestedAccountsService } from './requested-accounts.service';
   styleUrls: ['./requested-accounts.component.scss'],
 })
 export class RequestedAccountsComponent implements OnInit {
-  constructor(private requestedAccountsService: RequestedAccountsService) {}
+  constructor(
+    private requestedAccountsService: RequestedAccountsService,
+    private snak: MatSnackBar
+  ) {}
 
   objectKeys = Object.keys;
   dataSource;
@@ -19,6 +23,7 @@ export class RequestedAccountsComponent implements OnInit {
   };
   hasNoData: boolean;
 
+  submitSuccess: boolean;
   requestViewIsOpen = false;
   displayedAccountRequest;
   displayedRequestData;
@@ -48,24 +53,27 @@ export class RequestedAccountsComponent implements OnInit {
   acceptRequest() {
     this.requestedAccountsService
       .acceptAccountRequest(this.displayedAccountRequest['id'])
-      .subscribe();
-    this.removeRow();
-
+      .subscribe(({ errors, data }) => {
+        this.submitSuccess = !errors && !!data;
+        if (this.submitSuccess) {
+          this.removeRow();
+          this.snak.open('Account successfully approved', '', {
+            duration: 5000,
+          });
+        } else {
+          this.snak.open('Oops! Something went wrong!');
+        }
+      });
     // A. We don't use alerts in the program. B. This will always give this alert even when it fails.
-    alert('Account successfully created.');
+    // alert('Account successfully created.');
   }
 
   removeRow(): void {
-    this.dataSource = this.dataSource.filter(
-      (item, index) =>
-        index !== this.dataSource.indexOf(this.displayedAccountRequest)
-    );
+    this.dataSource = this.dataSource.filter((item) => item.enabled === false);
     this.requestViewIsOpen = false;
     this.displayedAccountRequest = {};
     this.displayedRequestData = {};
     this.hasNoData = this.dataSource.length === 0;
-    //TODO: cached issue affecting rows being removed on UI when they are updated in database. Remove this quick fix when issues is solved
-    window.location.reload();
   }
 
   //This function preserves the original order of objects when called by the 'keyvalue' function
