@@ -5,6 +5,7 @@ import {
   MockSurveyResponses,
   MockSurveyResponseCreateInput,
 } from './surveyResponse.repo';
+import { User } from '@odst/types/ods';
 
 describe('SurveyResponse Resolver', () => {
   let resolver: SurveyResponseResolver;
@@ -49,7 +50,9 @@ describe('SurveyResponse Resolver', () => {
 
   describe('findMany', () => {
     it('should get an array of surveyResponses', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(MockSurveyResponses);
+      await expect(
+        resolver.findMany(new User(), { where: {} })
+      ).resolves.toEqual(MockSurveyResponses);
     });
   });
 
@@ -75,10 +78,7 @@ describe('SurveyResponse Resolver', () => {
   describe('update', () => {
     it('should update a surveyResponse', async () => {
       await expect(
-        resolver.update(
-          { id: MockSurveyResponses[0].id },
-          { routeOutside: true }
-        )
+        resolver.update({ where: { id: 'a strange id' }, data: {} })
       ).resolves.toEqual(MockSurveyResponses[0]);
     });
   });

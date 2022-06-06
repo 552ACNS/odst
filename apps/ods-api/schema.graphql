@@ -2,21 +2,125 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AnswerGQL {
-  id: String!
-  value: String!
-  question: QuestionGQL!
-  surveyResponse: SurveyResponseGQL!
+type AnswerCountAggregate {
+  id: Int!
+  value: Int!
+  questionId: Int!
+  surveyResponseId: Int!
+  _all: Int!
 }
 
-type OrgGQL {
-  orgTier: OrgTier!
-  id: String!
+type AnswerMinAggregate {
+  id: String
+  value: String
+  questionId: String
+  surveyResponseId: String
+}
+
+type AnswerMaxAggregate {
+  id: String
+  value: String
+  questionId: String
+  surveyResponseId: String
+}
+
+type RefreshToken {
+  id: ID!
+  user: User!
+  userId: String!
+  isRevoked: Boolean!
+  issuedDate: DateTime!
+  expiredDate: DateTime!
+  hash: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type TagCount {
+  surveyResponses: Int!
+}
+
+type Tag {
+  id: ID!
+  value: String!
+  surveyResponses: [SurveyResponse!]
+  _count: TagCount!
+}
+
+type SurveyResponseCount {
+  answers: Int!
+  tags: Int!
+  comments: Int!
+}
+
+type SurveyResponse {
+  id: ID!
+  survey: Survey!
+  surveyId: String!
+  openedDate: DateTime!
+  closedDate: DateTime
+  answers: [Answer!]
+  routeOutside: Boolean!
+  tags: [Tag!]
+  comments: [Comment!]
+  resolved: Boolean!
+  _count: SurveyResponseCount!
+}
+
+type Comment {
+  id: ID!
+  value: String!
+  date: DateTime!
+  author: User!
+  authorId: String!
+  SurveyResponse: SurveyResponse
+  surveyResponseId: String!
+}
+
+type UserCount {
+  orgs: Int!
+  comments: Int!
+}
+
+type User {
+  id: ID!
+  email: String!
+  enabled: Boolean!
+  grade: String
+  firstName: String!
+  lastName: String!
+  role: Role!
+  refreshToken: RefreshToken
+  orgs: [Org!]
+  comments: [Comment!]
+  _count: UserCount!
+}
+
+enum Role {
+  ADMIN
+  DEI
+  CC
+}
+
+type OrgCount {
+  users: Int!
+  children: Int!
+  surveys: Int!
+}
+
+type Org {
+  id: ID!
   name: String!
-  users: [UserGQL!]!
-  children: [OrgGQL!]!
-  parent: OrgGQL!
-  surveys: [SurveyGQL!]!
+  orgTier: OrgTier!
+  users: [User!]
+  parentId: String
+  parent: Org
+  children: [Org!]
+  surveys: [Survey!]
+  _count: OrgCount!
 }
 
 enum OrgTier {
@@ -26,58 +130,223 @@ enum OrgTier {
   OTHER
 }
 
-type QuestionGQL {
-  id: String!
-  prompt: String!
-  answers: [AnswerGQL!]!
-  surveys: [SurveyGQL!]!
+type SurveyCount {
+  orgs: Int!
+  questions: Int!
+  surveyResponses: Int!
 }
 
-type SurveyGQL {
-  id: String!
+type Survey {
+  id: ID!
+  orgs: [Org!]
+  questions: [Question!]
   questionsHash: String
-  orgs: [OrgGQL!]!
-  questions: [QuestionGQL!]!
-  surveyResponses: [SurveyResponseGQL!]!
+  surveyResponses: [SurveyResponse!]
+  _count: SurveyCount!
 }
 
-type SurveyResponseGQL {
-  id: String!
-  openedDate: DateTime!
+type QuestionCount {
+  surveys: Int!
+  answers: Int!
+}
+
+type Question {
+  id: ID!
+  prompt: String!
+  surveys: [Survey!]
+  answers: [Answer!]
+  _count: QuestionCount!
+}
+
+type Answer {
+  id: ID!
+  value: String!
+  question: Question!
+  questionId: String!
+  surveyResponse: SurveyResponse!
+  surveyResponseId: String!
+}
+
+type CommentCountAggregate {
+  id: Int!
+  value: Int!
+  date: Int!
+  authorId: Int!
+  surveyResponseId: Int!
+  _all: Int!
+}
+
+type CommentMinAggregate {
+  id: String
+  value: String
+  date: DateTime
+  authorId: String
+  surveyResponseId: String
+}
+
+type CommentMaxAggregate {
+  id: String
+  value: String
+  date: DateTime
+  authorId: String
+  surveyResponseId: String
+}
+
+type OrgCountAggregate {
+  id: Int!
+  name: Int!
+  orgTier: Int!
+  parentId: Int!
+  _all: Int!
+}
+
+type OrgMinAggregate {
+  id: String
+  name: String
+  orgTier: OrgTier
+  parentId: String
+}
+
+type OrgMaxAggregate {
+  id: String
+  name: String
+  orgTier: OrgTier
+  parentId: String
+}
+
+type QuestionCountAggregate {
+  id: Int!
+  prompt: Int!
+  _all: Int!
+}
+
+type QuestionMinAggregate {
+  id: String
+  prompt: String
+}
+
+type QuestionMaxAggregate {
+  id: String
+  prompt: String
+}
+
+type RefreshTokenCountAggregate {
+  id: Int!
+  userId: Int!
+  isRevoked: Int!
+  issuedDate: Int!
+  expiredDate: Int!
+  hash: Int!
+  _all: Int!
+}
+
+type RefreshTokenMinAggregate {
+  id: String
+  userId: String
+  isRevoked: Boolean
+  issuedDate: DateTime
+  expiredDate: DateTime
+  hash: String
+}
+
+type RefreshTokenMaxAggregate {
+  id: String
+  userId: String
+  isRevoked: Boolean
+  issuedDate: DateTime
+  expiredDate: DateTime
+  hash: String
+}
+
+type SurveyCountAggregate {
+  id: Int!
+  questionsHash: Int!
+  _all: Int!
+}
+
+type SurveyMinAggregate {
+  id: String
+  questionsHash: String
+}
+
+type SurveyMaxAggregate {
+  id: String
+  questionsHash: String
+}
+
+type SurveyResponseCountAggregate {
+  id: Int!
+  surveyId: Int!
+  openedDate: Int!
+  closedDate: Int!
+  routeOutside: Int!
+  resolved: Int!
+  _all: Int!
+}
+
+type SurveyResponseMinAggregate {
+  id: String
+  surveyId: String
+  openedDate: DateTime
   closedDate: DateTime
-  routeOutside: Boolean!
-  resolution: String
-  answers: [AnswerGQL!]!
-  survey: SurveyGQL!
+  routeOutside: Boolean
+  resolved: Boolean
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type ResponseCount {
-  unresolved: Float!
-  overdue: Float!
-  resolved: Float!
+type SurveyResponseMaxAggregate {
+  id: String
+  surveyId: String
+  openedDate: DateTime
+  closedDate: DateTime
+  routeOutside: Boolean
+  resolved: Boolean
 }
 
-type UserGQL {
-  role: Role!
-  id: String!
-  email: String!
+type TagCountAggregate {
+  id: Int!
+  value: Int!
+  _all: Int!
+}
+
+type TagMinAggregate {
+  id: String
+  value: String
+}
+
+type TagMaxAggregate {
+  id: String
+  value: String
+}
+
+type UserCountAggregate {
+  id: Int!
+  email: Int!
+  enabled: Int!
+  grade: Int!
+  firstName: Int!
+  lastName: Int!
+  role: Int!
+  _all: Int!
+}
+
+type UserMinAggregate {
+  id: String
+  email: String
+  enabled: Boolean
   grade: String
-  firstName: String!
-  lastName: String!
-  enabled: Boolean!
-  orgs: [OrgGQL!]!
+  firstName: String
+  lastName: String
+  role: Role
 }
 
-enum Role {
-  ADMIN
-  DEI
-  EO
-  CC
+type UserMaxAggregate {
+  id: String
+  email: String
+  enabled: Boolean
+  grade: String
+  firstName: String
+  lastName: String
+  role: Role
 }
 
 type Tokens {
@@ -85,25 +354,36 @@ type Tokens {
   refreshToken: String!
 }
 
+type ResponseCount {
+  unresolved: Float!
+  overdue: Float!
+  resolved: Float!
+}
+
 type Query {
-  findManySurveys: [SurveyGQL!]!
-  findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
-  findManySurveyResponses: [SurveyResponseGQL!]!
-  findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  getTags: [String!]!
+  findManySurveys: [Survey!]!
+  findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): Survey!
+  findManySurveyResponses(where: SurveyResponseWhereInput, orderBy: [SurveyResponseOrderByWithRelationInput!], cursor: SurveyResponseWhereUniqueInput, take: Int, skip: Int, distinct: [SurveyResponseScalarFieldEnum!]): [SurveyResponse!]!
+  findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponse!
+  getResponseCount(where: SurveyResponseWhereInput, orderBy: [SurveyResponseOrderByWithRelationInput!], cursor: SurveyResponseWhereUniqueInput, take: Int, skip: Int, _count: SurveyResponseCountAggregateInput, _min: SurveyResponseMinAggregateInput, _max: SurveyResponseMaxAggregateInput): Int!
   ResponseCount: ResponseCount!
-  getIssuesByStatus(resolved: Boolean!): [String!]!
-  getSurveyResponseData(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
-  findManyAnswers: [AnswerGQL!]!
-  findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
-  findManyOrgs: [OrgGQL!]!
-  getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
-  findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  findManyQuestions: [QuestionGQL!]!
-  getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
-  findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
-  findUsersWithRole(role: String!): [UserGQL!]!
-  getCommanders: [UserGQL!]!
-  me: UserGQL!
+  getIssuesByStatus(resolved: String!): [String!]!
+  findManyAnswers: [Answer!]!
+  findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): Answer!
+  getOrgLineage: [String!]!
+  getOrgNames: [String!]!
+  getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [Org!]!
+  findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
+  findManyQuestions: [Question!]!
+  getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [Question!]!
+  findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): Question!
+  findUsersWithRole(role: String!): [User!]!
+  findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
+  getCommanders: [User!]!
+  me: User!
+  findManyAccountRequests: [User!]!
+  usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
 input SurveyWhereUniqueInput {
@@ -111,8 +391,433 @@ input SurveyWhereUniqueInput {
   questionsHash: String
 }
 
+input SurveyResponseWhereInput {
+  AND: [SurveyResponseWhereInput!]
+  OR: [SurveyResponseWhereInput!]
+  NOT: [SurveyResponseWhereInput!]
+  id: StringFilter
+  survey: SurveyRelationFilter
+  surveyId: StringFilter
+  openedDate: DateTimeFilter
+  closedDate: DateTimeNullableFilter
+  answers: AnswerListRelationFilter
+  routeOutside: BoolFilter
+  tags: TagListRelationFilter
+  comments: CommentListRelationFilter
+  resolved: BoolFilter
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
+}
+
+input SurveyRelationFilter {
+  is: SurveyWhereInput
+  isNot: SurveyWhereInput
+}
+
+input SurveyWhereInput {
+  AND: [SurveyWhereInput!]
+  OR: [SurveyWhereInput!]
+  NOT: [SurveyWhereInput!]
+  id: StringFilter
+  orgs: OrgListRelationFilter
+  questions: QuestionListRelationFilter
+  questionsHash: StringNullableFilter
+  surveyResponses: SurveyResponseListRelationFilter
+}
+
+input OrgListRelationFilter {
+  every: OrgWhereInput
+  some: OrgWhereInput
+  none: OrgWhereInput
+}
+
+input OrgWhereInput {
+  AND: [OrgWhereInput!]
+  OR: [OrgWhereInput!]
+  NOT: [OrgWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  orgTier: EnumOrgTierFilter
+  users: UserListRelationFilter
+  parentId: StringNullableFilter
+  parent: OrgRelationFilter
+  children: OrgListRelationFilter
+  surveys: SurveyListRelationFilter
+}
+
+input EnumOrgTierFilter {
+  equals: OrgTier
+  in: [OrgTier!]
+  notIn: [OrgTier!]
+  not: NestedEnumOrgTierFilter
+}
+
+input NestedEnumOrgTierFilter {
+  equals: OrgTier
+  in: [OrgTier!]
+  notIn: [OrgTier!]
+  not: NestedEnumOrgTierFilter
+}
+
+input UserListRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  id: StringFilter
+  email: StringFilter
+  password: StringFilter
+  enabled: BoolFilter
+  grade: StringNullableFilter
+  firstName: StringFilter
+  lastName: StringFilter
+  role: EnumRoleFilter
+  refreshToken: RefreshTokenRelationFilter
+  orgs: OrgListRelationFilter
+  comments: CommentListRelationFilter
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
+input EnumRoleFilter {
+  equals: Role
+  in: [Role!]
+  notIn: [Role!]
+  not: NestedEnumRoleFilter
+}
+
+input NestedEnumRoleFilter {
+  equals: Role
+  in: [Role!]
+  notIn: [Role!]
+  not: NestedEnumRoleFilter
+}
+
+input RefreshTokenRelationFilter {
+  is: RefreshTokenWhereInput
+  isNot: RefreshTokenWhereInput
+}
+
+input RefreshTokenWhereInput {
+  AND: [RefreshTokenWhereInput!]
+  OR: [RefreshTokenWhereInput!]
+  NOT: [RefreshTokenWhereInput!]
+  id: StringFilter
+  user: UserRelationFilter
+  userId: StringFilter
+  isRevoked: BoolFilter
+  issuedDate: DateTimeFilter
+  expiredDate: DateTimeFilter
+  hash: StringFilter
+}
+
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input CommentListRelationFilter {
+  every: CommentWhereInput
+  some: CommentWhereInput
+  none: CommentWhereInput
+}
+
+input CommentWhereInput {
+  AND: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
+  NOT: [CommentWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  date: DateTimeFilter
+  author: UserRelationFilter
+  authorId: StringFilter
+  SurveyResponse: SurveyResponseRelationFilter
+  surveyResponseId: StringFilter
+}
+
+input SurveyResponseRelationFilter {
+  is: SurveyResponseWhereInput
+  isNot: SurveyResponseWhereInput
+}
+
+input OrgRelationFilter {
+  is: OrgWhereInput
+  isNot: OrgWhereInput
+}
+
+input SurveyListRelationFilter {
+  every: SurveyWhereInput
+  some: SurveyWhereInput
+  none: SurveyWhereInput
+}
+
+input QuestionListRelationFilter {
+  every: QuestionWhereInput
+  some: QuestionWhereInput
+  none: QuestionWhereInput
+}
+
+input QuestionWhereInput {
+  AND: [QuestionWhereInput!]
+  OR: [QuestionWhereInput!]
+  NOT: [QuestionWhereInput!]
+  id: StringFilter
+  prompt: StringFilter
+  surveys: SurveyListRelationFilter
+  answers: AnswerListRelationFilter
+}
+
+input AnswerListRelationFilter {
+  every: AnswerWhereInput
+  some: AnswerWhereInput
+  none: AnswerWhereInput
+}
+
+input AnswerWhereInput {
+  AND: [AnswerWhereInput!]
+  OR: [AnswerWhereInput!]
+  NOT: [AnswerWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  question: QuestionRelationFilter
+  questionId: StringFilter
+  surveyResponse: SurveyResponseRelationFilter
+  surveyResponseId: StringFilter
+}
+
+input QuestionRelationFilter {
+  is: QuestionWhereInput
+  isNot: QuestionWhereInput
+}
+
+input SurveyResponseListRelationFilter {
+  every: SurveyResponseWhereInput
+  some: SurveyResponseWhereInput
+  none: SurveyResponseWhereInput
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableFilter
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableFilter
+}
+
+input TagListRelationFilter {
+  every: TagWhereInput
+  some: TagWhereInput
+  none: TagWhereInput
+}
+
+input TagWhereInput {
+  AND: [TagWhereInput!]
+  OR: [TagWhereInput!]
+  NOT: [TagWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  surveyResponses: SurveyResponseListRelationFilter
+}
+
+input SurveyResponseOrderByWithRelationInput {
+  id: SortOrder
+  survey: SurveyOrderByWithRelationInput
+  surveyId: SortOrder
+  openedDate: SortOrder
+  closedDate: SortOrder
+  answers: AnswerOrderByRelationAggregateInput
+  routeOutside: SortOrder
+  tags: TagOrderByRelationAggregateInput
+  comments: CommentOrderByRelationAggregateInput
+  resolved: SortOrder
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input SurveyOrderByWithRelationInput {
+  id: SortOrder
+  orgs: OrgOrderByRelationAggregateInput
+  questions: QuestionOrderByRelationAggregateInput
+  questionsHash: SortOrder
+  surveyResponses: SurveyResponseOrderByRelationAggregateInput
+}
+
+input OrgOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input QuestionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input SurveyResponseOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input AnswerOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TagOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input CommentOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
 input SurveyResponseWhereUniqueInput {
   id: String
+}
+
+enum SurveyResponseScalarFieldEnum {
+  id
+  surveyId
+  openedDate
+  closedDate
+  routeOutside
+  resolved
+}
+
+input SurveyResponseCountAggregateInput {
+  id: Boolean
+  surveyId: Boolean
+  openedDate: Boolean
+  closedDate: Boolean
+  routeOutside: Boolean
+  resolved: Boolean
+  _all: Boolean
+}
+
+input SurveyResponseMinAggregateInput {
+  id: Boolean
+  surveyId: Boolean
+  openedDate: Boolean
+  closedDate: Boolean
+  routeOutside: Boolean
+  resolved: Boolean
+}
+
+input SurveyResponseMaxAggregateInput {
+  id: Boolean
+  surveyId: Boolean
+  openedDate: Boolean
+  closedDate: Boolean
+  routeOutside: Boolean
+  resolved: Boolean
 }
 
 input AnswerWhereUniqueInput {
@@ -129,102 +834,386 @@ input QuestionWhereUniqueInput {
   prompt: String
 }
 
+input UserOrderByWithRelationInput {
+  id: SortOrder
+  email: SortOrder
+  password: SortOrder
+  enabled: SortOrder
+  grade: SortOrder
+  firstName: SortOrder
+  lastName: SortOrder
+  role: SortOrder
+  refreshToken: RefreshTokenOrderByWithRelationInput
+  orgs: OrgOrderByRelationAggregateInput
+  comments: CommentOrderByRelationAggregateInput
+}
+
+input RefreshTokenOrderByWithRelationInput {
+  id: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+  isRevoked: SortOrder
+  issuedDate: SortOrder
+  expiredDate: SortOrder
+  hash: SortOrder
+}
+
+input UserWhereUniqueInput {
+  id: String
+  email: String
+}
+
+enum UserScalarFieldEnum {
+  id
+  email
+  password
+  enabled
+  grade
+  firstName
+  lastName
+  role
+}
+
 type Mutation {
-  createSurveyWithQuestions(questionPrompts: [String!]!): SurveyGQL!
-  createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
-  updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
-  deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
-  createSurveyResponse(surveyResponseCreateInput: SurveyResponseCreateInput!): SurveyResponseGQL!
-  updateSurveyResponse(SurveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!, SurveyResponseUpdateInput: SurveyResponseUpdateInput!): SurveyResponseGQL!
-  deleteSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
-  createAnswer(answerCreateInput: AnswerCreateInput!): AnswerGQL!
-  createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
-  updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
-  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
-  updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
+  createSurveyWithQuestions(questionPrompts: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): Survey!
+  createSurvey(surveyCreateInput: SurveyCreateInput!): Survey!
+  updateSurvey(data: SurveyUpdateInput!, where: SurveyWhereUniqueInput!): Survey!
+  deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): Survey!
+  createSurveyResponse(surveyResponseCreateInput: SurveyResponseCreateInput!): SurveyResponse!
+  updateSurveyResponse(data: SurveyResponseUpdateInput!, where: SurveyResponseWhereUniqueInput!): SurveyResponse!
+  deleteSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponse!
+  createAnswer(answerCreateInput: AnswerCreateInput!): Answer!
+  createOrg(orgCreateInput: OrgCreateInput!): Org!
+  updateOrg(data: OrgUpdateInput!, where: OrgWhereUniqueInput!): Org!
+  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
+  createQuestion(questionCreateInput: QuestionCreateInput!): Question!
+  updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question!
+  createUser(userCreateInput: UserCreateInput!): User!
+  enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
+  createComment(commentCreateInput: CommentCreateInput!): Comment!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
 
 input SurveyCreateInput {
+  id: String
   orgs: OrgCreateNestedManyWithoutSurveysInput
   questions: QuestionCreateNestedManyWithoutSurveysInput
-  surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
   questionsHash: String
+  surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
 }
 
 input OrgCreateNestedManyWithoutSurveysInput {
-  connect: OrgWhereUniqueInput
+  create: [OrgCreateWithoutSurveysInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutSurveysInput!]
+  connect: [OrgWhereUniqueInput!]
 }
 
-input QuestionCreateNestedManyWithoutSurveysInput {
-  connect: [QuestionWhereUniqueInput!]
+input OrgCreateWithoutSurveysInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  users: UserCreateNestedManyWithoutOrgsInput
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  children: OrgCreateNestedManyWithoutParentInput
 }
 
-input SurveyResponseCreateNestedManyWithoutSurveyInput {
+input UserCreateNestedManyWithoutOrgsInput {
+  create: [UserCreateWithoutOrgsInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutOrgsInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateWithoutOrgsInput {
+  id: String
+  email: String!
+  password: String!
+  enabled: Boolean
+  grade: String
+  firstName: String!
+  lastName: String!
+  role: Role!
+  refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
+  comments: CommentCreateNestedManyWithoutAuthorInput
+}
+
+input RefreshTokenCreateNestedOneWithoutUserInput {
+  create: RefreshTokenCreateWithoutUserInput
+  connectOrCreate: RefreshTokenCreateOrConnectWithoutUserInput
+  connect: RefreshTokenWhereUniqueInput
+}
+
+input RefreshTokenCreateWithoutUserInput {
+  id: String
+  isRevoked: Boolean
+  issuedDate: DateTime
+  expiredDate: DateTime!
+  hash: String!
+}
+
+input RefreshTokenCreateOrConnectWithoutUserInput {
+  where: RefreshTokenWhereUniqueInput!
+  create: RefreshTokenCreateWithoutUserInput!
+}
+
+input RefreshTokenWhereUniqueInput {
+  id: String
+  userId: String
+}
+
+input CommentCreateNestedManyWithoutAuthorInput {
+  create: [CommentCreateWithoutAuthorInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutAuthorInput!]
+  createMany: CommentCreateManyAuthorInputEnvelope
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutAuthorInput {
+  id: String
+  value: String!
+  date: DateTime
+  SurveyResponse: SurveyResponseCreateNestedOneWithoutCommentsInput
+}
+
+input SurveyResponseCreateNestedOneWithoutCommentsInput {
+  create: SurveyResponseCreateWithoutCommentsInput
+  connectOrCreate: SurveyResponseCreateOrConnectWithoutCommentsInput
   connect: SurveyResponseWhereUniqueInput
 }
 
-input SurveyUpdateInput {
-  questions: QuestionUpdateManyWithoutSurveysInput
-  surveyResponses: SurveyResponseUpdateManyWithoutSurveyInput
-}
-
-input QuestionUpdateManyWithoutSurveysInput {
-  connect: [QuestionWhereUniqueInput!]
-  connectOrCreate: [QuestionCreateOrConnectWithoutSurveysInput!]
-}
-
-input QuestionCreateOrConnectWithoutSurveysInput {
-  where: QuestionWhereUniqueInput!
-  create: QuestionCreateWithoutSurveysInput!
-}
-
-input QuestionCreateWithoutSurveysInput {
-  answers: AnswerCreateNestedManyWithoutQuestionInput
-  prompt: String!
-}
-
-input AnswerCreateNestedManyWithoutQuestionInput {
-  connect: [AnswerWhereUniqueInput!]
-}
-
-input SurveyResponseUpdateManyWithoutSurveyInput {
-  createMany: SurveyResponseCreateManySurveyInputEnvelope
-}
-
-input SurveyResponseCreateManySurveyInputEnvelope {
-  data: [SurveyResponseCreateInput!]!
-  skipDuplicates: Boolean
-}
-
-input SurveyResponseCreateInput {
+input SurveyResponseCreateWithoutCommentsInput {
+  id: String
   survey: SurveyCreateNestedOneWithoutSurveyResponsesInput!
-  answers: AnswerCreateNestedManyWithoutSurveyResponseInput
   openedDate: DateTime
   closedDate: DateTime
+  answers: AnswerCreateNestedManyWithoutSurveyResponseInput
   routeOutside: Boolean
-  resolution: String
+  tags: TagCreateNestedManyWithoutSurveyResponsesInput
+  resolved: Boolean
 }
 
 input SurveyCreateNestedOneWithoutSurveyResponsesInput {
+  create: SurveyCreateWithoutSurveyResponsesInput
+  connectOrCreate: SurveyCreateOrConnectWithoutSurveyResponsesInput
   connect: SurveyWhereUniqueInput
 }
 
-input AnswerCreateNestedManyWithoutSurveyResponseInput {
-  connect: AnswerWhereUniqueInput
-  create: AnswerCreateWithoutSurveyResponseInput
-  createMany: AnswerCreateManySurveyResponseInputEnvelope
+input SurveyCreateWithoutSurveyResponsesInput {
+  id: String
+  orgs: OrgCreateNestedManyWithoutSurveysInput
+  questions: QuestionCreateNestedManyWithoutSurveysInput
+  questionsHash: String
 }
 
-input AnswerCreateWithoutSurveyResponseInput {
-  question: QuestionCreateNestedOneWithoutAnswersInput!
+input QuestionCreateNestedManyWithoutSurveysInput {
+  create: [QuestionCreateWithoutSurveysInput!]
+  connectOrCreate: [QuestionCreateOrConnectWithoutSurveysInput!]
+  connect: [QuestionWhereUniqueInput!]
+}
+
+input QuestionCreateWithoutSurveysInput {
+  id: String
+  prompt: String!
+  answers: AnswerCreateNestedManyWithoutQuestionInput
+}
+
+input AnswerCreateNestedManyWithoutQuestionInput {
+  create: [AnswerCreateWithoutQuestionInput!]
+  connectOrCreate: [AnswerCreateOrConnectWithoutQuestionInput!]
+  createMany: AnswerCreateManyQuestionInputEnvelope
+  connect: [AnswerWhereUniqueInput!]
+}
+
+input AnswerCreateWithoutQuestionInput {
+  id: String
+  value: String!
+  surveyResponse: SurveyResponseCreateNestedOneWithoutAnswersInput!
+}
+
+input SurveyResponseCreateNestedOneWithoutAnswersInput {
+  create: SurveyResponseCreateWithoutAnswersInput
+  connectOrCreate: SurveyResponseCreateOrConnectWithoutAnswersInput
+  connect: SurveyResponseWhereUniqueInput
+}
+
+input SurveyResponseCreateWithoutAnswersInput {
+  id: String
+  survey: SurveyCreateNestedOneWithoutSurveyResponsesInput!
+  openedDate: DateTime
+  closedDate: DateTime
+  routeOutside: Boolean
+  tags: TagCreateNestedManyWithoutSurveyResponsesInput
+  comments: CommentCreateNestedManyWithoutSurveyResponseInput
+  resolved: Boolean
+}
+
+input TagCreateNestedManyWithoutSurveyResponsesInput {
+  create: [TagCreateWithoutSurveyResponsesInput!]
+  connectOrCreate: [TagCreateOrConnectWithoutSurveyResponsesInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateWithoutSurveyResponsesInput {
+  id: String
   value: String!
 }
 
+input TagCreateOrConnectWithoutSurveyResponsesInput {
+  where: TagWhereUniqueInput!
+  create: TagCreateWithoutSurveyResponsesInput!
+}
+
+input TagWhereUniqueInput {
+  id: String
+  value: String
+}
+
+input CommentCreateNestedManyWithoutSurveyResponseInput {
+  create: [CommentCreateWithoutSurveyResponseInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutSurveyResponseInput!]
+  createMany: CommentCreateManySurveyResponseInputEnvelope
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutSurveyResponseInput {
+  id: String
+  value: String!
+  date: DateTime
+  author: UserCreateNestedOneWithoutCommentsInput!
+}
+
+input UserCreateNestedOneWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  connectOrCreate: UserCreateOrConnectWithoutCommentsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutCommentsInput {
+  id: String
+  email: String!
+  password: String!
+  enabled: Boolean
+  grade: String
+  firstName: String!
+  lastName: String!
+  role: Role!
+  refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
+  orgs: OrgCreateNestedManyWithoutUsersInput
+}
+
+input OrgCreateNestedManyWithoutUsersInput {
+  create: [OrgCreateWithoutUsersInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutUsersInput!]
+  connect: [OrgWhereUniqueInput!]
+}
+
+input OrgCreateWithoutUsersInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  children: OrgCreateNestedManyWithoutParentInput
+  surveys: SurveyCreateNestedManyWithoutOrgsInput
+}
+
+input OrgCreateNestedOneWithoutChildrenInput {
+  create: OrgCreateWithoutChildrenInput
+  connectOrCreate: OrgCreateOrConnectWithoutChildrenInput
+  connect: OrgWhereUniqueInput
+}
+
+input OrgCreateWithoutChildrenInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  users: UserCreateNestedManyWithoutOrgsInput
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  surveys: SurveyCreateNestedManyWithoutOrgsInput
+}
+
+input SurveyCreateNestedManyWithoutOrgsInput {
+  create: [SurveyCreateWithoutOrgsInput!]
+  connectOrCreate: [SurveyCreateOrConnectWithoutOrgsInput!]
+  connect: [SurveyWhereUniqueInput!]
+}
+
+input SurveyCreateWithoutOrgsInput {
+  id: String
+  questions: QuestionCreateNestedManyWithoutSurveysInput
+  questionsHash: String
+  surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
+}
+
+input SurveyResponseCreateNestedManyWithoutSurveyInput {
+  create: [SurveyResponseCreateWithoutSurveyInput!]
+  connectOrCreate: [SurveyResponseCreateOrConnectWithoutSurveyInput!]
+  createMany: SurveyResponseCreateManySurveyInputEnvelope
+  connect: [SurveyResponseWhereUniqueInput!]
+}
+
+input SurveyResponseCreateWithoutSurveyInput {
+  id: String
+  openedDate: DateTime
+  closedDate: DateTime
+  answers: AnswerCreateNestedManyWithoutSurveyResponseInput
+  routeOutside: Boolean
+  tags: TagCreateNestedManyWithoutSurveyResponsesInput
+  comments: CommentCreateNestedManyWithoutSurveyResponseInput
+  resolved: Boolean
+}
+
+input AnswerCreateNestedManyWithoutSurveyResponseInput {
+  create: [AnswerCreateWithoutSurveyResponseInput!]
+  connectOrCreate: [AnswerCreateOrConnectWithoutSurveyResponseInput!]
+  createMany: AnswerCreateManySurveyResponseInputEnvelope
+  connect: [AnswerWhereUniqueInput!]
+}
+
+input AnswerCreateWithoutSurveyResponseInput {
+  id: String
+  value: String!
+  question: QuestionCreateNestedOneWithoutAnswersInput!
+}
+
 input QuestionCreateNestedOneWithoutAnswersInput {
+  create: QuestionCreateWithoutAnswersInput
+  connectOrCreate: QuestionCreateOrConnectWithoutAnswersInput
   connect: QuestionWhereUniqueInput
+}
+
+input QuestionCreateWithoutAnswersInput {
+  id: String
+  prompt: String!
+  surveys: SurveyCreateNestedManyWithoutQuestionsInput
+}
+
+input SurveyCreateNestedManyWithoutQuestionsInput {
+  create: [SurveyCreateWithoutQuestionsInput!]
+  connectOrCreate: [SurveyCreateOrConnectWithoutQuestionsInput!]
+  connect: [SurveyWhereUniqueInput!]
+}
+
+input SurveyCreateWithoutQuestionsInput {
+  id: String
+  orgs: OrgCreateNestedManyWithoutSurveysInput
+  questionsHash: String
+  surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
+}
+
+input SurveyCreateOrConnectWithoutQuestionsInput {
+  where: SurveyWhereUniqueInput!
+  create: SurveyCreateWithoutQuestionsInput!
+}
+
+input QuestionCreateOrConnectWithoutAnswersInput {
+  where: QuestionWhereUniqueInput!
+  create: QuestionCreateWithoutAnswersInput!
+}
+
+input AnswerCreateOrConnectWithoutSurveyResponseInput {
+  where: AnswerWhereUniqueInput!
+  create: AnswerCreateWithoutSurveyResponseInput!
 }
 
 input AnswerCreateManySurveyResponseInputEnvelope {
@@ -233,72 +1222,1065 @@ input AnswerCreateManySurveyResponseInputEnvelope {
 }
 
 input AnswerCreateManySurveyResponseInput {
+  id: String
   value: String!
   questionId: String!
 }
 
-input SurveyResponseUpdateInput {
+input SurveyResponseCreateOrConnectWithoutSurveyInput {
+  where: SurveyResponseWhereUniqueInput!
+  create: SurveyResponseCreateWithoutSurveyInput!
+}
+
+input SurveyResponseCreateManySurveyInputEnvelope {
+  data: [SurveyResponseCreateManySurveyInput!]!
+  skipDuplicates: Boolean
+}
+
+input SurveyResponseCreateManySurveyInput {
+  id: String
+  openedDate: DateTime
   closedDate: DateTime
   routeOutside: Boolean
-  resolution: String
+  resolved: Boolean
+}
+
+input SurveyCreateOrConnectWithoutOrgsInput {
+  where: SurveyWhereUniqueInput!
+  create: SurveyCreateWithoutOrgsInput!
+}
+
+input OrgCreateOrConnectWithoutChildrenInput {
+  where: OrgWhereUniqueInput!
+  create: OrgCreateWithoutChildrenInput!
+}
+
+input OrgCreateNestedManyWithoutParentInput {
+  create: [OrgCreateWithoutParentInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutParentInput!]
+  createMany: OrgCreateManyParentInputEnvelope
+  connect: [OrgWhereUniqueInput!]
+}
+
+input OrgCreateWithoutParentInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  users: UserCreateNestedManyWithoutOrgsInput
+  children: OrgCreateNestedManyWithoutParentInput
+  surveys: SurveyCreateNestedManyWithoutOrgsInput
+}
+
+input OrgCreateOrConnectWithoutParentInput {
+  where: OrgWhereUniqueInput!
+  create: OrgCreateWithoutParentInput!
+}
+
+input OrgCreateManyParentInputEnvelope {
+  data: [OrgCreateManyParentInput!]!
+  skipDuplicates: Boolean
+}
+
+input OrgCreateManyParentInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+}
+
+input OrgCreateOrConnectWithoutUsersInput {
+  where: OrgWhereUniqueInput!
+  create: OrgCreateWithoutUsersInput!
+}
+
+input UserCreateOrConnectWithoutCommentsInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutCommentsInput!
+}
+
+input CommentCreateOrConnectWithoutSurveyResponseInput {
+  where: CommentWhereUniqueInput!
+  create: CommentCreateWithoutSurveyResponseInput!
+}
+
+input CommentWhereUniqueInput {
+  id: String
+}
+
+input CommentCreateManySurveyResponseInputEnvelope {
+  data: [CommentCreateManySurveyResponseInput!]!
+  skipDuplicates: Boolean
+}
+
+input CommentCreateManySurveyResponseInput {
+  id: String
+  value: String!
+  date: DateTime
+  authorId: String!
+}
+
+input SurveyResponseCreateOrConnectWithoutAnswersInput {
+  where: SurveyResponseWhereUniqueInput!
+  create: SurveyResponseCreateWithoutAnswersInput!
+}
+
+input AnswerCreateOrConnectWithoutQuestionInput {
+  where: AnswerWhereUniqueInput!
+  create: AnswerCreateWithoutQuestionInput!
+}
+
+input AnswerCreateManyQuestionInputEnvelope {
+  data: [AnswerCreateManyQuestionInput!]!
+  skipDuplicates: Boolean
+}
+
+input AnswerCreateManyQuestionInput {
+  id: String
+  value: String!
+  surveyResponseId: String!
+}
+
+input QuestionCreateOrConnectWithoutSurveysInput {
+  where: QuestionWhereUniqueInput!
+  create: QuestionCreateWithoutSurveysInput!
+}
+
+input SurveyCreateOrConnectWithoutSurveyResponsesInput {
+  where: SurveyWhereUniqueInput!
+  create: SurveyCreateWithoutSurveyResponsesInput!
+}
+
+input SurveyResponseCreateOrConnectWithoutCommentsInput {
+  where: SurveyResponseWhereUniqueInput!
+  create: SurveyResponseCreateWithoutCommentsInput!
+}
+
+input CommentCreateOrConnectWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  create: CommentCreateWithoutAuthorInput!
+}
+
+input CommentCreateManyAuthorInputEnvelope {
+  data: [CommentCreateManyAuthorInput!]!
+  skipDuplicates: Boolean
+}
+
+input CommentCreateManyAuthorInput {
+  id: String
+  value: String!
+  date: DateTime
+  surveyResponseId: String!
+}
+
+input UserCreateOrConnectWithoutOrgsInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutOrgsInput!
+}
+
+input OrgCreateOrConnectWithoutSurveysInput {
+  where: OrgWhereUniqueInput!
+  create: OrgCreateWithoutSurveysInput!
+}
+
+input SurveyUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  orgs: OrgUpdateManyWithoutSurveysInput
+  questions: QuestionUpdateManyWithoutSurveysInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+  surveyResponses: SurveyResponseUpdateManyWithoutSurveyInput
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
+input OrgUpdateManyWithoutSurveysInput {
+  create: [OrgCreateWithoutSurveysInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutSurveysInput!]
+  upsert: [OrgUpsertWithWhereUniqueWithoutSurveysInput!]
+  set: [OrgWhereUniqueInput!]
+  disconnect: [OrgWhereUniqueInput!]
+  delete: [OrgWhereUniqueInput!]
+  connect: [OrgWhereUniqueInput!]
+  update: [OrgUpdateWithWhereUniqueWithoutSurveysInput!]
+  updateMany: [OrgUpdateManyWithWhereWithoutSurveysInput!]
+  deleteMany: [OrgScalarWhereInput!]
+}
+
+input OrgUpsertWithWhereUniqueWithoutSurveysInput {
+  where: OrgWhereUniqueInput!
+  update: OrgUpdateWithoutSurveysInput!
+  create: OrgCreateWithoutSurveysInput!
+}
+
+input OrgUpdateWithoutSurveysInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  children: OrgUpdateManyWithoutParentInput
+}
+
+input EnumOrgTierFieldUpdateOperationsInput {
+  set: OrgTier
+}
+
+input UserUpdateManyWithoutOrgsInput {
+  create: [UserCreateWithoutOrgsInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutOrgsInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutOrgsInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutOrgsInput!]
+  updateMany: [UserUpdateManyWithWhereWithoutOrgsInput!]
+  deleteMany: [UserScalarWhereInput!]
+}
+
+input UserUpsertWithWhereUniqueWithoutOrgsInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutOrgsInput!
+  create: UserCreateWithoutOrgsInput!
+}
+
+input UserUpdateWithoutOrgsInput {
+  id: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  enabled: BoolFieldUpdateOperationsInput
+  grade: NullableStringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
+  refreshToken: RefreshTokenUpdateOneWithoutUserInput
+  comments: CommentUpdateManyWithoutAuthorInput
+}
+
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
+input NullableStringFieldUpdateOperationsInput {
+  set: String
+}
+
+input EnumRoleFieldUpdateOperationsInput {
+  set: Role
+}
+
+input RefreshTokenUpdateOneWithoutUserInput {
+  create: RefreshTokenCreateWithoutUserInput
+  connectOrCreate: RefreshTokenCreateOrConnectWithoutUserInput
+  upsert: RefreshTokenUpsertWithoutUserInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: RefreshTokenWhereUniqueInput
+  update: RefreshTokenUpdateWithoutUserInput
+}
+
+input RefreshTokenUpsertWithoutUserInput {
+  update: RefreshTokenUpdateWithoutUserInput!
+  create: RefreshTokenCreateWithoutUserInput!
+}
+
+input RefreshTokenUpdateWithoutUserInput {
+  id: StringFieldUpdateOperationsInput
+  isRevoked: BoolFieldUpdateOperationsInput
+  issuedDate: DateTimeFieldUpdateOperationsInput
+  expiredDate: DateTimeFieldUpdateOperationsInput
+  hash: StringFieldUpdateOperationsInput
+}
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input CommentUpdateManyWithoutAuthorInput {
+  create: [CommentCreateWithoutAuthorInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutAuthorInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutAuthorInput!]
+  createMany: CommentCreateManyAuthorInputEnvelope
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [CommentUpdateManyWithWhereWithoutAuthorInput!]
+  deleteMany: [CommentScalarWhereInput!]
+}
+
+input CommentUpsertWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutAuthorInput!
+  create: CommentCreateWithoutAuthorInput!
+}
+
+input CommentUpdateWithoutAuthorInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+  SurveyResponse: SurveyResponseUpdateOneWithoutCommentsInput
+}
+
+input SurveyResponseUpdateOneWithoutCommentsInput {
+  create: SurveyResponseCreateWithoutCommentsInput
+  connectOrCreate: SurveyResponseCreateOrConnectWithoutCommentsInput
+  upsert: SurveyResponseUpsertWithoutCommentsInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: SurveyResponseWhereUniqueInput
+  update: SurveyResponseUpdateWithoutCommentsInput
+}
+
+input SurveyResponseUpsertWithoutCommentsInput {
+  update: SurveyResponseUpdateWithoutCommentsInput!
+  create: SurveyResponseCreateWithoutCommentsInput!
+}
+
+input SurveyResponseUpdateWithoutCommentsInput {
+  id: StringFieldUpdateOperationsInput
+  survey: SurveyUpdateOneRequiredWithoutSurveyResponsesInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  answers: AnswerUpdateManyWithoutSurveyResponseInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  tags: TagUpdateManyWithoutSurveyResponsesInput
+  resolved: BoolFieldUpdateOperationsInput
+}
+
+input SurveyUpdateOneRequiredWithoutSurveyResponsesInput {
+  create: SurveyCreateWithoutSurveyResponsesInput
+  connectOrCreate: SurveyCreateOrConnectWithoutSurveyResponsesInput
+  upsert: SurveyUpsertWithoutSurveyResponsesInput
+  connect: SurveyWhereUniqueInput
+  update: SurveyUpdateWithoutSurveyResponsesInput
+}
+
+input SurveyUpsertWithoutSurveyResponsesInput {
+  update: SurveyUpdateWithoutSurveyResponsesInput!
+  create: SurveyCreateWithoutSurveyResponsesInput!
+}
+
+input SurveyUpdateWithoutSurveyResponsesInput {
+  id: StringFieldUpdateOperationsInput
+  orgs: OrgUpdateManyWithoutSurveysInput
+  questions: QuestionUpdateManyWithoutSurveysInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+}
+
+input QuestionUpdateManyWithoutSurveysInput {
+  create: [QuestionCreateWithoutSurveysInput!]
+  connectOrCreate: [QuestionCreateOrConnectWithoutSurveysInput!]
+  upsert: [QuestionUpsertWithWhereUniqueWithoutSurveysInput!]
+  set: [QuestionWhereUniqueInput!]
+  disconnect: [QuestionWhereUniqueInput!]
+  delete: [QuestionWhereUniqueInput!]
+  connect: [QuestionWhereUniqueInput!]
+  update: [QuestionUpdateWithWhereUniqueWithoutSurveysInput!]
+  updateMany: [QuestionUpdateManyWithWhereWithoutSurveysInput!]
+  deleteMany: [QuestionScalarWhereInput!]
+}
+
+input QuestionUpsertWithWhereUniqueWithoutSurveysInput {
+  where: QuestionWhereUniqueInput!
+  update: QuestionUpdateWithoutSurveysInput!
+  create: QuestionCreateWithoutSurveysInput!
+}
+
+input QuestionUpdateWithoutSurveysInput {
+  id: StringFieldUpdateOperationsInput
+  prompt: StringFieldUpdateOperationsInput
+  answers: AnswerUpdateManyWithoutQuestionInput
+}
+
+input AnswerUpdateManyWithoutQuestionInput {
+  create: [AnswerCreateWithoutQuestionInput!]
+  connectOrCreate: [AnswerCreateOrConnectWithoutQuestionInput!]
+  upsert: [AnswerUpsertWithWhereUniqueWithoutQuestionInput!]
+  createMany: AnswerCreateManyQuestionInputEnvelope
+  set: [AnswerWhereUniqueInput!]
+  disconnect: [AnswerWhereUniqueInput!]
+  delete: [AnswerWhereUniqueInput!]
+  connect: [AnswerWhereUniqueInput!]
+  update: [AnswerUpdateWithWhereUniqueWithoutQuestionInput!]
+  updateMany: [AnswerUpdateManyWithWhereWithoutQuestionInput!]
+  deleteMany: [AnswerScalarWhereInput!]
+}
+
+input AnswerUpsertWithWhereUniqueWithoutQuestionInput {
+  where: AnswerWhereUniqueInput!
+  update: AnswerUpdateWithoutQuestionInput!
+  create: AnswerCreateWithoutQuestionInput!
+}
+
+input AnswerUpdateWithoutQuestionInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  surveyResponse: SurveyResponseUpdateOneRequiredWithoutAnswersInput
+}
+
+input SurveyResponseUpdateOneRequiredWithoutAnswersInput {
+  create: SurveyResponseCreateWithoutAnswersInput
+  connectOrCreate: SurveyResponseCreateOrConnectWithoutAnswersInput
+  upsert: SurveyResponseUpsertWithoutAnswersInput
+  connect: SurveyResponseWhereUniqueInput
+  update: SurveyResponseUpdateWithoutAnswersInput
+}
+
+input SurveyResponseUpsertWithoutAnswersInput {
+  update: SurveyResponseUpdateWithoutAnswersInput!
+  create: SurveyResponseCreateWithoutAnswersInput!
+}
+
+input SurveyResponseUpdateWithoutAnswersInput {
+  id: StringFieldUpdateOperationsInput
+  survey: SurveyUpdateOneRequiredWithoutSurveyResponsesInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  tags: TagUpdateManyWithoutSurveyResponsesInput
+  comments: CommentUpdateManyWithoutSurveyResponseInput
+  resolved: BoolFieldUpdateOperationsInput
+}
+
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input TagUpdateManyWithoutSurveyResponsesInput {
+  create: [TagCreateWithoutSurveyResponsesInput!]
+  connectOrCreate: [TagCreateOrConnectWithoutSurveyResponsesInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutSurveyResponsesInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  connect: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutSurveyResponsesInput!]
+  updateMany: [TagUpdateManyWithWhereWithoutSurveyResponsesInput!]
+  deleteMany: [TagScalarWhereInput!]
+}
+
+input TagUpsertWithWhereUniqueWithoutSurveyResponsesInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutSurveyResponsesInput!
+  create: TagCreateWithoutSurveyResponsesInput!
+}
+
+input TagUpdateWithoutSurveyResponsesInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+}
+
+input TagUpdateWithWhereUniqueWithoutSurveyResponsesInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutSurveyResponsesInput!
+}
+
+input TagUpdateManyWithWhereWithoutSurveyResponsesInput {
+  where: TagScalarWhereInput!
+  data: TagUpdateManyMutationInput!
+}
+
+input TagScalarWhereInput {
+  AND: [TagScalarWhereInput!]
+  OR: [TagScalarWhereInput!]
+  NOT: [TagScalarWhereInput!]
+  id: StringFilter
+  value: StringFilter
+}
+
+input TagUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+}
+
+input CommentUpdateManyWithoutSurveyResponseInput {
+  create: [CommentCreateWithoutSurveyResponseInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutSurveyResponseInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutSurveyResponseInput!]
+  createMany: CommentCreateManySurveyResponseInputEnvelope
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutSurveyResponseInput!]
+  updateMany: [CommentUpdateManyWithWhereWithoutSurveyResponseInput!]
+  deleteMany: [CommentScalarWhereInput!]
+}
+
+input CommentUpsertWithWhereUniqueWithoutSurveyResponseInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutSurveyResponseInput!
+  create: CommentCreateWithoutSurveyResponseInput!
+}
+
+input CommentUpdateWithoutSurveyResponseInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+  author: UserUpdateOneRequiredWithoutCommentsInput
+}
+
+input UserUpdateOneRequiredWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  connectOrCreate: UserCreateOrConnectWithoutCommentsInput
+  upsert: UserUpsertWithoutCommentsInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutCommentsInput
+}
+
+input UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsInput!
+  create: UserCreateWithoutCommentsInput!
+}
+
+input UserUpdateWithoutCommentsInput {
+  id: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  enabled: BoolFieldUpdateOperationsInput
+  grade: NullableStringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
+  refreshToken: RefreshTokenUpdateOneWithoutUserInput
+  orgs: OrgUpdateManyWithoutUsersInput
+}
+
+input OrgUpdateManyWithoutUsersInput {
+  create: [OrgCreateWithoutUsersInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutUsersInput!]
+  upsert: [OrgUpsertWithWhereUniqueWithoutUsersInput!]
+  set: [OrgWhereUniqueInput!]
+  disconnect: [OrgWhereUniqueInput!]
+  delete: [OrgWhereUniqueInput!]
+  connect: [OrgWhereUniqueInput!]
+  update: [OrgUpdateWithWhereUniqueWithoutUsersInput!]
+  updateMany: [OrgUpdateManyWithWhereWithoutUsersInput!]
+  deleteMany: [OrgScalarWhereInput!]
+}
+
+input OrgUpsertWithWhereUniqueWithoutUsersInput {
+  where: OrgWhereUniqueInput!
+  update: OrgUpdateWithoutUsersInput!
+  create: OrgCreateWithoutUsersInput!
+}
+
+input OrgUpdateWithoutUsersInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  children: OrgUpdateManyWithoutParentInput
+  surveys: SurveyUpdateManyWithoutOrgsInput
+}
+
+input OrgUpdateOneWithoutChildrenInput {
+  create: OrgCreateWithoutChildrenInput
+  connectOrCreate: OrgCreateOrConnectWithoutChildrenInput
+  upsert: OrgUpsertWithoutChildrenInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: OrgWhereUniqueInput
+  update: OrgUpdateWithoutChildrenInput
+}
+
+input OrgUpsertWithoutChildrenInput {
+  update: OrgUpdateWithoutChildrenInput!
+  create: OrgCreateWithoutChildrenInput!
+}
+
+input OrgUpdateWithoutChildrenInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  surveys: SurveyUpdateManyWithoutOrgsInput
+}
+
+input SurveyUpdateManyWithoutOrgsInput {
+  create: [SurveyCreateWithoutOrgsInput!]
+  connectOrCreate: [SurveyCreateOrConnectWithoutOrgsInput!]
+  upsert: [SurveyUpsertWithWhereUniqueWithoutOrgsInput!]
+  set: [SurveyWhereUniqueInput!]
+  disconnect: [SurveyWhereUniqueInput!]
+  delete: [SurveyWhereUniqueInput!]
+  connect: [SurveyWhereUniqueInput!]
+  update: [SurveyUpdateWithWhereUniqueWithoutOrgsInput!]
+  updateMany: [SurveyUpdateManyWithWhereWithoutOrgsInput!]
+  deleteMany: [SurveyScalarWhereInput!]
+}
+
+input SurveyUpsertWithWhereUniqueWithoutOrgsInput {
+  where: SurveyWhereUniqueInput!
+  update: SurveyUpdateWithoutOrgsInput!
+  create: SurveyCreateWithoutOrgsInput!
+}
+
+input SurveyUpdateWithoutOrgsInput {
+  id: StringFieldUpdateOperationsInput
+  questions: QuestionUpdateManyWithoutSurveysInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+  surveyResponses: SurveyResponseUpdateManyWithoutSurveyInput
+}
+
+input SurveyResponseUpdateManyWithoutSurveyInput {
+  create: [SurveyResponseCreateWithoutSurveyInput!]
+  connectOrCreate: [SurveyResponseCreateOrConnectWithoutSurveyInput!]
+  upsert: [SurveyResponseUpsertWithWhereUniqueWithoutSurveyInput!]
+  createMany: SurveyResponseCreateManySurveyInputEnvelope
+  set: [SurveyResponseWhereUniqueInput!]
+  disconnect: [SurveyResponseWhereUniqueInput!]
+  delete: [SurveyResponseWhereUniqueInput!]
+  connect: [SurveyResponseWhereUniqueInput!]
+  update: [SurveyResponseUpdateWithWhereUniqueWithoutSurveyInput!]
+  updateMany: [SurveyResponseUpdateManyWithWhereWithoutSurveyInput!]
+  deleteMany: [SurveyResponseScalarWhereInput!]
+}
+
+input SurveyResponseUpsertWithWhereUniqueWithoutSurveyInput {
+  where: SurveyResponseWhereUniqueInput!
+  update: SurveyResponseUpdateWithoutSurveyInput!
+  create: SurveyResponseCreateWithoutSurveyInput!
+}
+
+input SurveyResponseUpdateWithoutSurveyInput {
+  id: StringFieldUpdateOperationsInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  answers: AnswerUpdateManyWithoutSurveyResponseInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  tags: TagUpdateManyWithoutSurveyResponsesInput
+  comments: CommentUpdateManyWithoutSurveyResponseInput
+  resolved: BoolFieldUpdateOperationsInput
+}
+
+input AnswerUpdateManyWithoutSurveyResponseInput {
+  create: [AnswerCreateWithoutSurveyResponseInput!]
+  connectOrCreate: [AnswerCreateOrConnectWithoutSurveyResponseInput!]
+  upsert: [AnswerUpsertWithWhereUniqueWithoutSurveyResponseInput!]
+  createMany: AnswerCreateManySurveyResponseInputEnvelope
+  set: [AnswerWhereUniqueInput!]
+  disconnect: [AnswerWhereUniqueInput!]
+  delete: [AnswerWhereUniqueInput!]
+  connect: [AnswerWhereUniqueInput!]
+  update: [AnswerUpdateWithWhereUniqueWithoutSurveyResponseInput!]
+  updateMany: [AnswerUpdateManyWithWhereWithoutSurveyResponseInput!]
+  deleteMany: [AnswerScalarWhereInput!]
+}
+
+input AnswerUpsertWithWhereUniqueWithoutSurveyResponseInput {
+  where: AnswerWhereUniqueInput!
+  update: AnswerUpdateWithoutSurveyResponseInput!
+  create: AnswerCreateWithoutSurveyResponseInput!
+}
+
+input AnswerUpdateWithoutSurveyResponseInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  question: QuestionUpdateOneRequiredWithoutAnswersInput
+}
+
+input QuestionUpdateOneRequiredWithoutAnswersInput {
+  create: QuestionCreateWithoutAnswersInput
+  connectOrCreate: QuestionCreateOrConnectWithoutAnswersInput
+  upsert: QuestionUpsertWithoutAnswersInput
+  connect: QuestionWhereUniqueInput
+  update: QuestionUpdateWithoutAnswersInput
+}
+
+input QuestionUpsertWithoutAnswersInput {
+  update: QuestionUpdateWithoutAnswersInput!
+  create: QuestionCreateWithoutAnswersInput!
+}
+
+input QuestionUpdateWithoutAnswersInput {
+  id: StringFieldUpdateOperationsInput
+  prompt: StringFieldUpdateOperationsInput
+  surveys: SurveyUpdateManyWithoutQuestionsInput
+}
+
+input SurveyUpdateManyWithoutQuestionsInput {
+  create: [SurveyCreateWithoutQuestionsInput!]
+  connectOrCreate: [SurveyCreateOrConnectWithoutQuestionsInput!]
+  upsert: [SurveyUpsertWithWhereUniqueWithoutQuestionsInput!]
+  set: [SurveyWhereUniqueInput!]
+  disconnect: [SurveyWhereUniqueInput!]
+  delete: [SurveyWhereUniqueInput!]
+  connect: [SurveyWhereUniqueInput!]
+  update: [SurveyUpdateWithWhereUniqueWithoutQuestionsInput!]
+  updateMany: [SurveyUpdateManyWithWhereWithoutQuestionsInput!]
+  deleteMany: [SurveyScalarWhereInput!]
+}
+
+input SurveyUpsertWithWhereUniqueWithoutQuestionsInput {
+  where: SurveyWhereUniqueInput!
+  update: SurveyUpdateWithoutQuestionsInput!
+  create: SurveyCreateWithoutQuestionsInput!
+}
+
+input SurveyUpdateWithoutQuestionsInput {
+  id: StringFieldUpdateOperationsInput
+  orgs: OrgUpdateManyWithoutSurveysInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+  surveyResponses: SurveyResponseUpdateManyWithoutSurveyInput
+}
+
+input SurveyUpdateWithWhereUniqueWithoutQuestionsInput {
+  where: SurveyWhereUniqueInput!
+  data: SurveyUpdateWithoutQuestionsInput!
+}
+
+input SurveyUpdateManyWithWhereWithoutQuestionsInput {
+  where: SurveyScalarWhereInput!
+  data: SurveyUpdateManyMutationInput!
+}
+
+input SurveyScalarWhereInput {
+  AND: [SurveyScalarWhereInput!]
+  OR: [SurveyScalarWhereInput!]
+  NOT: [SurveyScalarWhereInput!]
+  id: StringFilter
+  questionsHash: StringNullableFilter
+}
+
+input SurveyUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+}
+
+input AnswerUpdateWithWhereUniqueWithoutSurveyResponseInput {
+  where: AnswerWhereUniqueInput!
+  data: AnswerUpdateWithoutSurveyResponseInput!
+}
+
+input AnswerUpdateManyWithWhereWithoutSurveyResponseInput {
+  where: AnswerScalarWhereInput!
+  data: AnswerUpdateManyMutationInput!
+}
+
+input AnswerScalarWhereInput {
+  AND: [AnswerScalarWhereInput!]
+  OR: [AnswerScalarWhereInput!]
+  NOT: [AnswerScalarWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  questionId: StringFilter
+  surveyResponseId: StringFilter
+}
+
+input AnswerUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+}
+
+input SurveyResponseUpdateWithWhereUniqueWithoutSurveyInput {
+  where: SurveyResponseWhereUniqueInput!
+  data: SurveyResponseUpdateWithoutSurveyInput!
+}
+
+input SurveyResponseUpdateManyWithWhereWithoutSurveyInput {
+  where: SurveyResponseScalarWhereInput!
+  data: SurveyResponseUpdateManyMutationInput!
+}
+
+input SurveyResponseScalarWhereInput {
+  AND: [SurveyResponseScalarWhereInput!]
+  OR: [SurveyResponseScalarWhereInput!]
+  NOT: [SurveyResponseScalarWhereInput!]
+  id: StringFilter
+  surveyId: StringFilter
+  openedDate: DateTimeFilter
+  closedDate: DateTimeNullableFilter
+  routeOutside: BoolFilter
+  resolved: BoolFilter
+}
+
+input SurveyResponseUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  resolved: BoolFieldUpdateOperationsInput
+}
+
+input SurveyUpdateWithWhereUniqueWithoutOrgsInput {
+  where: SurveyWhereUniqueInput!
+  data: SurveyUpdateWithoutOrgsInput!
+}
+
+input SurveyUpdateManyWithWhereWithoutOrgsInput {
+  where: SurveyScalarWhereInput!
+  data: SurveyUpdateManyMutationInput!
+}
+
+input OrgUpdateManyWithoutParentInput {
+  create: [OrgCreateWithoutParentInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutParentInput!]
+  upsert: [OrgUpsertWithWhereUniqueWithoutParentInput!]
+  createMany: OrgCreateManyParentInputEnvelope
+  set: [OrgWhereUniqueInput!]
+  disconnect: [OrgWhereUniqueInput!]
+  delete: [OrgWhereUniqueInput!]
+  connect: [OrgWhereUniqueInput!]
+  update: [OrgUpdateWithWhereUniqueWithoutParentInput!]
+  updateMany: [OrgUpdateManyWithWhereWithoutParentInput!]
+  deleteMany: [OrgScalarWhereInput!]
+}
+
+input OrgUpsertWithWhereUniqueWithoutParentInput {
+  where: OrgWhereUniqueInput!
+  update: OrgUpdateWithoutParentInput!
+  create: OrgCreateWithoutParentInput!
+}
+
+input OrgUpdateWithoutParentInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  children: OrgUpdateManyWithoutParentInput
+  surveys: SurveyUpdateManyWithoutOrgsInput
+}
+
+input OrgUpdateWithWhereUniqueWithoutParentInput {
+  where: OrgWhereUniqueInput!
+  data: OrgUpdateWithoutParentInput!
+}
+
+input OrgUpdateManyWithWhereWithoutParentInput {
+  where: OrgScalarWhereInput!
+  data: OrgUpdateManyMutationInput!
+}
+
+input OrgScalarWhereInput {
+  AND: [OrgScalarWhereInput!]
+  OR: [OrgScalarWhereInput!]
+  NOT: [OrgScalarWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  orgTier: EnumOrgTierFilter
+  parentId: StringNullableFilter
+}
+
+input OrgUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+}
+
+input OrgUpdateWithWhereUniqueWithoutUsersInput {
+  where: OrgWhereUniqueInput!
+  data: OrgUpdateWithoutUsersInput!
+}
+
+input OrgUpdateManyWithWhereWithoutUsersInput {
+  where: OrgScalarWhereInput!
+  data: OrgUpdateManyMutationInput!
+}
+
+input CommentUpdateWithWhereUniqueWithoutSurveyResponseInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutSurveyResponseInput!
+}
+
+input CommentUpdateManyWithWhereWithoutSurveyResponseInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyMutationInput!
+}
+
+input CommentScalarWhereInput {
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  date: DateTimeFilter
+  authorId: StringFilter
+  surveyResponseId: StringFilter
+}
+
+input CommentUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+}
+
+input AnswerUpdateWithWhereUniqueWithoutQuestionInput {
+  where: AnswerWhereUniqueInput!
+  data: AnswerUpdateWithoutQuestionInput!
+}
+
+input AnswerUpdateManyWithWhereWithoutQuestionInput {
+  where: AnswerScalarWhereInput!
+  data: AnswerUpdateManyMutationInput!
+}
+
+input QuestionUpdateWithWhereUniqueWithoutSurveysInput {
+  where: QuestionWhereUniqueInput!
+  data: QuestionUpdateWithoutSurveysInput!
+}
+
+input QuestionUpdateManyWithWhereWithoutSurveysInput {
+  where: QuestionScalarWhereInput!
+  data: QuestionUpdateManyMutationInput!
+}
+
+input QuestionScalarWhereInput {
+  AND: [QuestionScalarWhereInput!]
+  OR: [QuestionScalarWhereInput!]
+  NOT: [QuestionScalarWhereInput!]
+  id: StringFilter
+  prompt: StringFilter
+}
+
+input QuestionUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  prompt: StringFieldUpdateOperationsInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutAuthorInput!
+}
+
+input CommentUpdateManyWithWhereWithoutAuthorInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyMutationInput!
+}
+
+input UserUpdateWithWhereUniqueWithoutOrgsInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutOrgsInput!
+}
+
+input UserUpdateManyWithWhereWithoutOrgsInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateManyMutationInput!
+}
+
+input UserScalarWhereInput {
+  AND: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput!]
+  id: StringFilter
+  email: StringFilter
+  password: StringFilter
+  enabled: BoolFilter
+  grade: StringNullableFilter
+  firstName: StringFilter
+  lastName: StringFilter
+  role: EnumRoleFilter
+}
+
+input UserUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  enabled: BoolFieldUpdateOperationsInput
+  grade: NullableStringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
+}
+
+input OrgUpdateWithWhereUniqueWithoutSurveysInput {
+  where: OrgWhereUniqueInput!
+  data: OrgUpdateWithoutSurveysInput!
+}
+
+input OrgUpdateManyWithWhereWithoutSurveysInput {
+  where: OrgScalarWhereInput!
+  data: OrgUpdateManyMutationInput!
+}
+
+input SurveyResponseCreateInput {
+  id: String
+  survey: SurveyCreateNestedOneWithoutSurveyResponsesInput!
+  openedDate: DateTime
+  closedDate: DateTime
+  answers: AnswerCreateNestedManyWithoutSurveyResponseInput
+  routeOutside: Boolean
+  tags: TagCreateNestedManyWithoutSurveyResponsesInput
+  comments: CommentCreateNestedManyWithoutSurveyResponseInput
+  resolved: Boolean
+}
+
+input SurveyResponseUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  survey: SurveyUpdateOneRequiredWithoutSurveyResponsesInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  answers: AnswerUpdateManyWithoutSurveyResponseInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  tags: TagUpdateManyWithoutSurveyResponsesInput
+  comments: CommentUpdateManyWithoutSurveyResponseInput
+  resolved: BoolFieldUpdateOperationsInput
 }
 
 input AnswerCreateInput {
+  id: String
+  value: String!
   question: QuestionCreateNestedOneWithoutAnswersInput!
   surveyResponse: SurveyResponseCreateNestedOneWithoutAnswersInput!
-  value: String!
-}
-
-input SurveyResponseCreateNestedOneWithoutAnswersInput {
-  connect: SurveyResponseWhereUniqueInput
 }
 
 input OrgCreateInput {
+  id: String
+  name: String!
   orgTier: OrgTier!
   users: UserCreateNestedManyWithoutOrgsInput
   parent: OrgCreateNestedOneWithoutChildrenInput
   children: OrgCreateNestedManyWithoutParentInput
-  name: String!
   surveys: SurveyCreateNestedManyWithoutOrgsInput
-}
-
-input UserCreateNestedManyWithoutOrgsInput {
-  connect: OrgWhereUniqueInput
-}
-
-input OrgCreateNestedOneWithoutChildrenInput {
-  connect: OrgWhereUniqueInput
-}
-
-input OrgCreateNestedManyWithoutParentInput {
-  connect: OrgWhereUniqueInput
-}
-
-input SurveyCreateNestedManyWithoutOrgsInput {
-  connect: SurveyWhereUniqueInput
 }
 
 input OrgUpdateInput {
-  orgTier: OrgTier
-  users: UserCreateNestedManyWithoutOrgsInput
-  parent: OrgCreateNestedOneWithoutChildrenInput
-  children: OrgCreateNestedManyWithoutParentInput
-  name: String
-  surveys: SurveyCreateNestedManyWithoutOrgsInput
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  children: OrgUpdateManyWithoutParentInput
+  surveys: SurveyUpdateManyWithoutOrgsInput
 }
 
 input QuestionCreateInput {
-  surveys: SurveyCreateNestedManyWithoutQuestionsInput
+  id: String
   prompt: String!
-}
-
-input SurveyCreateNestedManyWithoutQuestionsInput {
-  connect: SurveyWhereUniqueInput
+  surveys: SurveyCreateNestedManyWithoutQuestionsInput
+  answers: AnswerCreateNestedManyWithoutQuestionInput
 }
 
 input QuestionUpdateInput {
-  surveys: SurveyCreateNestedManyWithoutQuestionsInput
-  prompt: String
+  id: StringFieldUpdateOperationsInput
+  prompt: StringFieldUpdateOperationsInput
+  surveys: SurveyUpdateManyWithoutQuestionsInput
+  answers: AnswerUpdateManyWithoutQuestionInput
+}
+
+input UserCreateInput {
+  id: String
+  email: String!
+  password: String!
+  enabled: Boolean
+  grade: String
+  firstName: String!
+  lastName: String!
+  role: Role!
+  refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
+  orgs: OrgCreateNestedManyWithoutUsersInput
+  comments: CommentCreateNestedManyWithoutAuthorInput
+}
+
+input CommentCreateInput {
+  id: String
+  value: String!
+  date: DateTime
+  author: UserCreateNestedOneWithoutCommentsInput!
+  SurveyResponse: SurveyResponseCreateNestedOneWithoutCommentsInput
 }
 
 input LoginUserInput {

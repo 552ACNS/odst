@@ -12,16 +12,20 @@ mutation createSurveyResponse(
   }
 }
 
-mutation createSurveyWithQuestions($questionPrompts: [String!]!) {
-  createSurveyWithQuestions(questionPrompts: $questionPrompts) {
+mutation CreateSurveyWithQuestions(
+  $questionPrompts: [String!]!
+  $orgWhereUniqueInput: OrgWhereUniqueInput!
+) {
+  createSurveyWithQuestions(
+    questionPrompts: $questionPrompts
+    orgWhereUniqueInput: $orgWhereUniqueInput
+  ) {
     id
   }
 }
 
-query findManyOrgs {
-  findManyOrgs {
-    name
-  }
+query GetOrgLineage {
+  getOrgLineage
 }
 
 query findQuestionsBySurvey($surveyWhereUniqueInput: SurveyWhereUniqueInput!) {

@@ -1,32 +1,81 @@
-query getSurveyResponseData(
+query findUniqueSurveyResponse(
   $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
 ) {
-  getSurveyResponseData(
+  findUniqueSurveyResponse(
     surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
   ) {
     openedDate
-    resolution
     answers {
       value
       question {
         prompt
       }
     }
+    resolved
+    tags {
+      value
+    }
+    comments {
+      value
+      date
+      author {
+        id
+        firstName
+        lastName
+        grade
+        role
+        orgs {
+          name
+        }
+      }
+    }
   }
 }
 
-query getIssuesByStatus($resolved: Boolean!) {
+query getIssuesByStatus($resolved: String!) {
   getIssuesByStatus(resolved: $resolved)
 }
 
-mutation updateSurveyResponse(
-  $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
-  $surveyResponseUpdateInput: SurveyResponseUpdateInput!
+mutation AddComment(
+  $data: SurveyResponseUpdateInput!
+  $where: SurveyResponseWhereUniqueInput!
 ) {
-  updateSurveyResponse(
-    SurveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
-    SurveyResponseUpdateInput: $surveyResponseUpdateInput
-  ) {
-    resolution
+  updateSurveyResponse(data: $data, where: $where) {
+    id
+    comments {
+      value
+      date
+      author {
+        id
+        firstName
+        lastName
+        grade
+        role
+        orgs {
+          name
+        }
+      }
+    }
+  }
+}
+
+mutation UpdateResolved(
+  $data: SurveyResponseUpdateInput!
+  $where: SurveyResponseWhereUniqueInput!
+) {
+  updateSurveyResponse(data: $data, where: $where) {
+    resolved
+    id
+  }
+}
+
+mutation modifyTag(
+  $data: SurveyResponseUpdateInput!
+  $where: SurveyResponseWhereUniqueInput!
+) {
+  updateSurveyResponse(data: $data, where: $where) {
+    tags {
+      value
+    }
   }
 }

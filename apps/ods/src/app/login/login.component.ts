@@ -12,12 +12,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   hide = true;
   loginForm = this.fb.group({
-    userUsername: ['', [Validators.required, Validators.email]],
+    userEmail: ['', [Validators.required, Validators.email]],
     userPassword: ['', Validators.required],
     rememberMe: ['', Validators.nullValidator],
   });
 
   returnUrl: string;
+
+  passwordError = false;
 
   constructor(
     private fb: FormBuilder,
@@ -35,13 +37,16 @@ export class LoginComponent implements OnInit {
   submitLoginClick() {
     this.loginService
       .submitLogin(
-        this.loginForm.value['userUsername'],
+        this.loginForm.value['userEmail'],
         this.loginForm.value['userPassword']
       )
-      .subscribe(({ data, errors }) => {
-        if (errors) {
-          alert('Username or Password was incorrect');
-        }
+      .subscribe(({ data, errors, loading }) => {
+        // check if the page is loading
+        this.passwordError = !loading;
+
+        // check if page has errors
+        this.passwordError = !!errors;
+
         if (data) {
           setAccessToken(data.login.accessToken);
           // if (this.loginForm.value['rememberMe']) {
@@ -50,10 +55,20 @@ export class LoginComponent implements OnInit {
           // if it's true, it should get a refreshToken with a high time to live
           // }
 
-          this.router.navigate(['dashboard']);
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+
+          this.router.onSameUrlNavigation = 'reload';
+
+          this.router.navigate(['dashboard']).then(() => {
+            window.location.reload();
+          });
         }
-        //TODO Need to consider redirect attacks
-        this.router.navigateByUrl(this.returnUrl);
+        //added allow list with defined acceptable results
+        const allowList = ['/dashboard', '/login'];
+        if (allowList.includes(this.returnUrl)) {
+          this.router.navigateByUrl(this.returnUrl);
+        }
+        // TODO: add an else condition to redirect to error page when implemented.
       });
   }
 }

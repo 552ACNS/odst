@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { Role } from '../../types.graphql';
 import { SurveyQuestionsService } from './survey-questions.service';
 
 @Component({
@@ -70,7 +69,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   });
 
   async ngOnInit() {
-    this.orgs = await this.surveyService.getManyOrgs();
+    this.orgs = await this.surveyService.getOrgLineage();
     this.CCs = await this.surveyService.getCommanders();
   }
   //TODO find out a way to fix without this
@@ -89,7 +88,9 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
     // TODO: Nested behaviors like this are hard to test.
     this.surveyService
-      .submitWithQuestions(this.questions)
+      .submitWithQuestions(this.questions, {
+        name: '552 ACNS',
+      })
       .subscribe(({ data }) => {
         this.surveyID = data?.createSurveyWithQuestions.id;
         this.surveyService
@@ -103,8 +104,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
                 this.questionIDs,
                 this.surveyID
               )
-              .subscribe(({ errors }) => {
-                this.submitSuccess = !errors;
+              .subscribe(({ errors, data }) => {
+                this.submitSuccess = !errors && !!data;
               });
           });
       });

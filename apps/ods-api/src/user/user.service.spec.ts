@@ -6,6 +6,7 @@ import { MockUsers } from './user.repo';
 const db = {
   user: {
     findMany: jest.fn().mockReturnValue(MockUsers),
+    update: jest.fn().mockReturnValue(MockUsers[1]),
   },
 };
 
@@ -36,6 +37,12 @@ describe('UserService', () => {
     it('should return an array of users', async () => {
       const users = await service.findMany({});
       expect(users).toEqual(MockUsers);
+    });
+  });
+  describe('enableAccount', () => {
+    it('should enable an account', async () => {
+      const result = await service.enableAccount({ email: 'email2' });
+      expect(result).toEqual(MockUsers[1]);
     });
   });
 });

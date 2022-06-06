@@ -7,7 +7,7 @@ import {
   Org,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { getArrayHash } from '@odst/helpers';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class SurveyService {
@@ -38,7 +38,10 @@ export class SurveyService {
     });
   }
 
-  async createWithQuestions(questionPrompts: string[]): Promise<Survey> {
+  async createWithQuestions(
+    questionPrompts: string[],
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<Survey> {
     if (questionPrompts.length <= 0) {
       throw new BadRequestException('No question prompts provided');
     }
@@ -65,8 +68,11 @@ export class SurveyService {
       create: {
         questionsHash,
         questions: { connect: questionIds.map((id) => ({ id })) },
+        orgs: { connect: [orgWhereUniqueInput] },
       },
-      update: {},
+      update: {
+        orgs: { connect: [orgWhereUniqueInput] },
+      },
     });
   }
 
@@ -81,16 +87,15 @@ export class SurveyService {
   }
 
   async update(
-    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput,
-    surveyUpdateInput: Prisma.SurveyUpdateInput
+    data: Prisma.SurveyUpdateInput,
+    where: Prisma.SurveyWhereUniqueInput
   ): Promise<Survey> {
-    const survey = await this.prisma.survey.update({
-      where: surveyWhereUniqueInput,
-      data: surveyUpdateInput,
-    });
+    const survey = await this.prisma.survey.update({ data, where });
 
-    await this.updateQuestionsHash(surveyWhereUniqueInput);
-
+    if (survey.id) {
+      await this.updateQuestionsHash({ id: survey.id });
+    }
+    // TODO: What if the survey is not found? What does it do?
     return survey;
   }
 
@@ -149,6 +154,13 @@ export class SurveyService {
       .findUnique({ where: surveyWhereUniqueInput })
       .surveyResponses();
   }
-
   //TODO tests for new methods
+}
+function getArrayHash(stringArray: string[]): string {
+  return stringArray.length > 0
+    ? crypto
+        .createHash('sha256')
+        .update(stringArray.sort().join())
+        .digest('hex')
+    : '';
 }

@@ -1,11 +1,11 @@
 <div class="parent-div space-y-3">
-  <mat-card class="shadow-md font-medium">
+  <mat-card class="font-medium">
     <mat-card-title>
-      Observations of Discrimination in Squadron
+      Observations of Discrimination in the Squadron
     </mat-card-title>
   </mat-card>
   <form [formGroup]="form">
-    <mat-card class="shadow-md flex flex-col flex-wrap">
+    <mat-card class="flex flex-col flex-wrap">
       <label class="mb-1">
         {{ questions[0] }}
       </label>
@@ -143,7 +143,8 @@
       </section>
       <mat-card-actions class="flex justify-center">
         <button
-          class="m-2 border-1 shadow-md rounded-full w-full"
+          class="m-2 border-1 rounded-full w-full"
+          type="button"
           mat-stroked-button
           [routerLink]="['/disclaimer']"
         >
@@ -152,6 +153,7 @@
         <button
           id="btnSubmit"
           class="m-2 rounded-full w-full"
+          type="submit"
           mat-raised-button
           color="primary"
           (click)="submit()"

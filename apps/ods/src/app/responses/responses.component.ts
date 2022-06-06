@@ -1,9 +1,16 @@
-import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import {
+  AddCommentMutationVariables,
+  FindUniqueSurveyResponseQuery,
+  UpdateResolvedMutationVariables,
+} from './responses.generated';
+import { getRefreshToken, getUserId } from '@odst/helpers';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'odst-responses',
@@ -12,8 +19,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ResponsesComponent implements OnInit {
   resolutionForm = this.fb.group({
-    resolution: ['', [Validators.required]],
+    comment: [''],
   });
+
+  tagCtrl = new FormControl();
+
+  possibleTags: string[] = [];
+
+  selectedTags: string[] | undefined = [];
+
+  allTags: string[] = [];
+
   constructor(
     private fb: FormBuilder,
     private responsesService: ResponsesService,
@@ -21,10 +37,23 @@ export class ResponsesComponent implements OnInit {
   ) {}
 
   questionsAnswers: [string, string][] = [];
+  // comments: [string, string, string, any?][] = [];
+  comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'] =
+    [];
 
-  resolved: boolean;
+  AddCommentMutationVariables: AddCommentMutationVariables;
 
-  openedDate: string;
+  newComment = '';
+  // TODO: Change resolved status back to bool
+  resolved: string;
+
+  // This is for the toggle button
+  actualResolution: boolean;
+
+  openedDate: Date;
+
+  userId: string;
+
   numberOfResponses: number;
   displayedIndex: number;
 
@@ -32,10 +61,17 @@ export class ResponsesComponent implements OnInit {
 
   pageEvent: PageEvent;
 
+  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+
   async ngOnInit() {
+    this.userId = getUserId(getRefreshToken() ?? '');
+
+    this.allTags = this.responsesService.getTags();
+    this.generatePossibleTags();
+
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
-      this.resolved = params['resolved'] === 'true';
+      this.resolved = params['resolved'];
     });
 
     (
@@ -44,64 +80,130 @@ export class ResponsesComponent implements OnInit {
       this.responseIDs = data;
       this.numberOfResponses = data.length;
 
-      this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+      if (this.numberOfResponses !== 0) {
+        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
 
-      // navigate to that issue
-      this.displayIssue(this.pageEvent);
+        // navigate to that issue
+        this.displayIssue(this.pageEvent);
+      }
     });
   }
 
-  submitResolutionClick() {
-    // if the resolution field is not empty after a trim
-    if (this.resolutionForm.value.resolution.trim() !== '') {
-      this.responsesService.updateResolution(
-        this.responseIDs[this.displayedIndex],
-        this.resolutionForm.value['resolution']
-      );
+  /**
+   * Creates a list of tags that can be added by filtering out those already in use
+   */
+  generatePossibleTags() {
+    this.possibleTags = this.allTags.filter(
+      (tag) => !this.selectedTags?.includes(tag)
+    );
 
-      //refresh the page
-      window.location.reload();
+    const input = this.tagInput?.nativeElement.value.trim().toLowerCase();
+
+    if (input) {
+      this.possibleTags = this.possibleTags.filter((tag) =>
+        tag.toLowerCase().includes(input)
+      );
     }
+  }
+
+  submitComment() {
+    // if the resolution field is not empty after a trim
+    if (this.resolutionForm.value.comment.trim() !== '') {
+      this.AddCommentMutationVariables = {
+        where: {
+          id: this.responseIDs[this.displayedIndex],
+        },
+        data: {
+          comments: {
+            create: [
+              {
+                value: this.resolutionForm.value.comment.trim(),
+                author: {
+                  connect: {
+                    id: this.userId,
+                  },
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      this.responsesService
+        .addComment(this.AddCommentMutationVariables)
+        .subscribe(({ data, errors }) => {
+          if (!errors && data) {
+            // Refresh comments afterwards
+            this.comments = data.updateSurveyResponse['comments'];
+            this.actualResolution = data.updateSurveyResponse['resolved'];
+            this.resolutionForm.reset();
+          }
+        });
+    }
+  }
+
+  updateResolved() {
+    const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
+      where: {
+        id: this.responseIDs[this.displayedIndex],
+      },
+      data: {
+        resolved: {
+          set: !this.actualResolution,
+        },
+      },
+    };
+
+    this.responsesService
+      .updateResolved(updateResolvedMutationVariables)
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.actualResolution = data.updateSurveyResponse['resolved'];
+        }
+      });
   }
 
   async getResponseData(responseID: string) {
     (await this.responsesService.getResponseData(responseID)).subscribe(
-      (data) => {
-        this.openedDate = formatDate(
-          data.openedDate,
-          'MMM d yy, h:mm a',
-          'en-US'
-        );
-
-        if (this.resolved) {
-          this.resolutionForm.setValue({
-            resolution: data.resolution,
-          });
+      ({ data, errors }) => {
+        //one reason to not use pluck/map/whatever is it drops the errors and
+        //they're never seen/handled. Not that we're doing much of that right now
+        if (errors) {
+          alert(errors);
         }
+        if (data) {
+          this.openedDate = data.findUniqueSurveyResponse.openedDate;
 
-        // Clear contents of QA array
-        this.questionsAnswers = [];
-
-        // Handle the Questions & Answers
-        data.answers?.forEach((answer) => {
           // Clear contents of QA array
-          // Create the Question/Answer Array
-          this.questionsAnswers.push([
-            String(answer?.question?.prompt),
-            answer.value,
-          ]);
-        });
+          this.questionsAnswers = [];
+          this.comments = [];
+
+          // Handle the Questions & Answers
+          data.findUniqueSurveyResponse.answers?.forEach((answer) => {
+            // Clear contents of QA array
+            // Create the Question/Answer Array
+            this.questionsAnswers.push([
+              String(answer?.question?.prompt),
+              answer.value,
+            ]);
+          });
+
+          this.comments = data.findUniqueSurveyResponse.comments;
+
+          this.actualResolution = data.findUniqueSurveyResponse['resolved'];
+
+          this.selectedTags = data.findUniqueSurveyResponse['tags']?.map(
+            (x) => x.value
+          );
+          this.generatePossibleTags();
+        }
       }
     );
   }
 
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
-      // Set the resolution
-      this.resolutionForm.setValue({
-        resolution: '',
-      });
-
+      //TODO rewrite with proper pagination
       this.displayedIndex = pageEvent.pageIndex;
 
       this.getResponseData(this.responseIDs[this.displayedIndex]);
@@ -109,7 +211,91 @@ export class ResponsesComponent implements OnInit {
     return pageEvent;
   }
 
-  //TODO [ODST-133] IMPORTANT: set to first page on load
-}
+  /**
+   * Removes tag deselected by the user and adds it back to the list of tags not in use
+   * @param tagToRemove tag that's been deselected by the user
+   */
 
-// Suppose our profile query took an avatar size
+  // there's some duplication in this code
+  remove(tagToRemove: string): void {
+    this.responsesService
+      .modifyTag({
+        where: { id: this.responseIDs[this.displayedIndex] },
+        data: { tags: { disconnect: [{ value: tagToRemove }] } },
+      })
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.selectedTags = this.selectedTags?.filter(
+            (selectedtag) => selectedtag !== tagToRemove
+          );
+        }
+      });
+
+    this.generatePossibleTags();
+  }
+
+  /**
+   * User selects tag or tags and pushes to the database, reset the controller and generate list of unused tags
+   * @param event user added a tag
+   */
+
+  // there's some duplication in this code
+  add(event: MatChipInputEvent): void {
+    // Trim the input so that empty values aren't there
+    let value = (event.value || '').trim().toLowerCase();
+
+    // Convert to title case
+    value = value[0].toUpperCase() + value.slice(1);
+
+    // If the hand typed value is one of the legal tags
+    if (this.allTags.includes(value) && !this.selectedTags?.includes(value)) {
+      this.responsesService
+        .modifyTag({
+          where: { id: this.responseIDs[this.displayedIndex] },
+          data: { tags: { connect: [{ value: value }] } },
+        })
+        .subscribe(({ data, errors }) => {
+          if (!errors && data) {
+            // Add our tag
+            this.selectedTags?.push(value);
+
+            // Clear the input values
+            if (event.chipInput) {
+              event.chipInput.clear();
+            }
+          }
+        });
+    }
+
+    this.tagCtrl.setValue(null);
+    this.generatePossibleTags();
+  }
+
+  /**
+   * User selects a tag from the list of unused and the list of unused tags is updated
+   * @param event
+   * @returns list of tags to push to server
+   */
+
+  // There's some duplciation in this code
+  selected(event: MatAutocompleteSelectedEvent): void {
+    // If the user already has the tag, don't add it again
+    if (this.selectedTags?.includes(event.option.value)) return;
+
+    this.responsesService
+      .modifyTag({
+        where: { id: this.responseIDs[this.displayedIndex] },
+        data: { tags: { connect: [{ value: event.option.viewValue }] } },
+      })
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.selectedTags?.push(event.option.viewValue);
+
+          this.tagInput.nativeElement.value = '';
+          this.tagCtrl.setValue(null);
+        }
+      });
+
+    this.generatePossibleTags();
+  }
+}

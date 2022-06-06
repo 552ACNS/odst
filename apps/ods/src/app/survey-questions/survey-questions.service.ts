@@ -5,9 +5,6 @@ import {
   CreateSurveyWithQuestionsDocument,
   CreateSurveyWithQuestionsMutation,
   CreateSurveyWithQuestionsMutationVariables,
-  FindManyOrgsDocument,
-  FindManyOrgsQuery,
-  FindManyOrgsQueryVariables,
   CreateSurveyResponseMutation,
   CreateSurveyResponseMutationVariables,
   CreateSurveyResponseDocument,
@@ -17,8 +14,12 @@ import {
   GetCommandersQuery,
   GetCommandersQueryVariables,
   GetCommandersDocument,
+  GetOrgLineageQueryVariables,
+  GetOrgLineageQuery,
+  GetOrgLineageDocument,
 } from './survey-questions.generated';
 import { jsonTypeConverter } from '@odst/helpers';
+import { OrgWhereUniqueInput } from '../../types.graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -27,14 +28,12 @@ export class SurveyQuestionsService {
   constructor(private apollo: Apollo) {}
 
   //a query to find all of the orgs available for the selector
-  async getManyOrgs() {
+  async getOrgLineage() {
     return this.apollo
-      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
-        query: FindManyOrgsDocument,
+      .watchQuery<GetOrgLineageQuery, GetOrgLineageQueryVariables>({
+        query: GetOrgLineageDocument,
       })
-      .valueChanges.pipe(
-        map((result) => result.data.findManyOrgs.map((x) => x.name))
-      );
+      .valueChanges.pipe(map((result) => result.data.getOrgLineage));
   }
 
   async getCommanders() {
@@ -52,7 +51,10 @@ export class SurveyQuestionsService {
   }
   //Takes questions that are in an array and connectsOrCreates to a survey ID based on question set and returns the survey ID
   //that was found or created
-  submitWithQuestions(questions: string[]) {
+  submitWithQuestions(
+    questions: string[],
+    orgWhereUniqueInput: OrgWhereUniqueInput
+  ) {
     return this.apollo.mutate<
       CreateSurveyWithQuestionsMutation,
       CreateSurveyWithQuestionsMutationVariables
@@ -60,6 +62,8 @@ export class SurveyQuestionsService {
       mutation: CreateSurveyWithQuestionsDocument,
       variables: {
         questionPrompts: questions,
+        //TODO don't hardcode org
+        orgWhereUniqueInput,
       },
     });
   }
@@ -112,6 +116,5 @@ export class SurveyQuestionsService {
       },
     });
   }
-
   // TODO: Do testing on this function
 }
