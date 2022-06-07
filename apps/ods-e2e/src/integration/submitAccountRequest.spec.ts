@@ -7,6 +7,7 @@ describe('ods', () => {
   it('will sign someone in', function () {
     cy.request({
       method: 'POST',
+      //TODO Don't hardcode this
       url: 'http://localhost:3343/graphql', // baseUrl is prepend to URL
       form: true, // indicates the body should be form urlencoded and sets Content-Type: application/x-www-form-urlencoded headers
       body: {
@@ -37,6 +38,7 @@ describe('ods', () => {
     const authorization = `bearer ${accessToken}`;
     cy.request({
       method: 'POST',
+      //TODO Don't hardcode this
       url: 'http://localhost:3343/graphql',
       form: true,
       headers: {

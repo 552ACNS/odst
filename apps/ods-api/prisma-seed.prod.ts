@@ -1,14 +1,15 @@
 /* eslint-disable complexity */
 import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
-import { hash } from 'bcryptjs';
+
+// import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 const orgSeed: Prisma.OrgCreateInput[] = [
   // ADMIN
   {
-    name: 'Scorpion Developers',
+    name: 'Scorpion Developers2',
     orgTier: 'OTHER',
   },
   // Wings
@@ -159,7 +160,7 @@ async function main() {
     process.env.NODE_ENV !== 'PRODUCTION' &&
     process.env.NX_DEV_ACCOUNT_PASSWORD
   ) {
-    const pw = await hash(process.env.NX_DEV_ACCOUNT_PASSWORD, 10);
+    const pw = 'admin'; //await hash(process.env.NX_DEV_ACCOUNT_PASSWORD, 10);
 
     await prisma.user.upsert({
       where: {
@@ -281,6 +282,8 @@ async function main() {
       throw e;
     }
   }
+
+  console.log(await prisma.user.findMany());
 }
 
 main()

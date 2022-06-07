@@ -10,7 +10,7 @@ import {
   RefreshLoginInput,
 } from '@odst/types/waypoint';
 import { isJwtChainExpired } from '@odst/helpers';
-import { compare, hash } from 'bcrypt';
+import { compare, hash } from 'bcryptjs';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 import { JwtPayloadInit, JwtPayloadRefresh } from '@odst/shared/nest';
 import { User } from '.prisma/waypoint/client';

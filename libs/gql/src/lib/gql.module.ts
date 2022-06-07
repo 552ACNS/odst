@@ -39,6 +39,7 @@ let environment: { NX_GQL_ENDPOINT: string };
 export class GQLModule {
   constructor(@Inject('environment') incomingEnv: { NX_GQL_ENDPOINT: string }) {
     environment = incomingEnv;
+    console.log(environment.NX_GQL_ENDPOINT);
   }
 }
 

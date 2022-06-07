@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { isLoggedIn } from '@odst/helpers';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'odst-root',
@@ -8,6 +9,7 @@ import { isLoggedIn } from '@odst/helpers';
 })
 export class AppComponent {
   title = 'ods';
+  environment = environment;
 
   isLoggedIn(): boolean {
     return isLoggedIn();
