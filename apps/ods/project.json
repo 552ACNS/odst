@@ -57,7 +57,7 @@
       "executor": "@nx-tools/nx-docker:build",
       "options": {
         "push": true,
-        "tags": ["ghcr.io/ericcater/ods:latest", "ghcr.io/ericcater/ods:v1"]
+        "tags": ["ghcr.io/552ACNS/ods:latest", "ghcr.io/552ACNS/ods:v1"]
       }
     },
     "lint": {
