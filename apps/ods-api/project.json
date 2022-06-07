@@ -32,7 +32,7 @@
       "executor": "@nx-tools/nx-docker:build",
       "options": {
         "push": true,
-        "tags": ["ghcr.io/552ACNS/ods-api:latest", "ghcr.io/552ACNS/ods-api:v1"]
+        "tags": ["ghcr.io/552acns/ods-api:latest", "ghcr.io/552acns/ods-api:v1"]
       }
     },
     "lint": {
