@@ -3,41 +3,41 @@ import { QuestionCreateInput, Question } from '@odst/types/ods';
 export const MockQuestions: Question[] = [
   {
     id: 'question id 1',
-    prompt: 'prompty prompt',
+    value: 'valuey value',
   },
   {
     id: 'question id 2',
-    prompt: 'tpmorp',
+    value: 'tpmorp',
   },
 ];
 
 export const MockQuestionCreateInput: QuestionCreateInput[] = [
   {
-    prompt: 'Question 1',
-    surveys: {
+    value: 'Question 1',
+    feedbacks: {
       connect: [
         {
-          id: 'survey1',
+          id: 'feedback1',
         },
       ],
     },
   },
   {
-    prompt: 'Question 2',
-    surveys: {
+    value: 'Question 2',
+    feedbacks: {
       connect: [
         {
-          id: 'survey1',
+          id: 'feedback1',
         },
       ],
     },
   },
   {
-    prompt: 'Question 3',
-    surveys: {
+    value: 'Question 3',
+    feedbacks: {
       connect: [
         {
-          id: 'survey2',
+          id: 'feedback2',
         },
       ],
     },
