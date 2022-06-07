@@ -6,6 +6,7 @@ import {
   Answer,
   Role,
   User,
+  Tag,
   Comment,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -272,6 +273,13 @@ export class SurveyResponseService {
       .answers();
   }
 
+  async tags(
+    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+  ): Promise<Tag[]> {
+    return this.prisma.surveyResponse
+      .findUnique({ where: surveyResponseWhereUniqueInput })
+      .tags();
+  }
   async comments(
     surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
   ): Promise<Comment[]> {

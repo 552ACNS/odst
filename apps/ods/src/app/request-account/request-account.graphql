@@ -1,7 +1,5 @@
-query findManyOrgs {
-  findManyOrgs {
-    name
-  }
+query getOrgNames {
+  getOrgNames
 }
 mutation CreateUser($userCreateInput: UserCreateInput!) {
   createUser(userCreateInput: $userCreateInput) {

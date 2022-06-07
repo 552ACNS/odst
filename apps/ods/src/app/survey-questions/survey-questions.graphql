@@ -24,10 +24,8 @@ mutation CreateSurveyWithQuestions(
   }
 }
 
-query findManyOrgs {
-  findManyOrgs {
-    name
-  }
+query GetOrgLineage {
+  getOrgLineage
 }
 
 query findQuestionsBySurvey($surveyWhereUniqueInput: SurveyWhereUniqueInput!) {

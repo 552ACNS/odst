@@ -1,0 +1,102 @@
+{
+  "sourceRoot": "apps/ods-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/ods-api",
+        "main": "apps/ods-api/src/main.ts",
+        "tsConfig": "apps/ods-api/tsconfig.app.json",
+        "tsPlugins": ["@nestjs/graphql/plugin"],
+        "assets": ["apps/ods-api/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/ods-api/src/environments/environment.ts",
+              "with": "apps/ods-api/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "development": {}
+      },
+      "defaultConfiguration": "production"
+    },
+    "docker": {
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "push": true,
+        "tags": [
+          "ghcr.io/ericcater/ods-api:latest",
+          "ghcr.io/ericcater/ods-api:v1"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/ods-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/ods-api"],
+      "options": {
+        "jestConfig": "apps/ods-api/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "ods-api:build"
+      }
+    },
+    "prisma-generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npx prisma generate --schema=apps/ods-api/schema.prisma"
+      }
+    },
+    "prisma-migrate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss --force-reset",
+          "env-cmd -f apps/ods-api/.env.local yarn ts-node ./apps/ods-api/prisma-seed.ts"
+        ],
+        "schema": "apps/ods-api/schema.prisma",
+        "parallel": false
+      },
+      "configurations": {
+        "test": {
+          "command": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
+        },
+        "production": {
+          "commands": [
+            "env-cmd -f apps/ods-api/.env.prod prisma migrate deploy",
+            "yarn ts-node ./apps/ods-api/prisma-seed.ts"
+          ]
+        },
+        "migrate": {
+          "command": "env-cmd -f apps/ods-api/.env.local prisma migrate dev"
+        }
+      }
+    },
+    "prisma-studio": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "env-cmd -f apps/ods-api/.env.local npx prisma studio",
+        "schema": "apps/ods-api/schema.prisma"
+      }
+    }
+  },
+  "tags": []
+}

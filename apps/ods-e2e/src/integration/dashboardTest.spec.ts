@@ -36,15 +36,15 @@ describe('ods', () => {
     cy.get('mat-card').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
     cy.get('h1').contains('Unresolved Responses');
-    cy.get('textarea').type('This is a resolution');
     cy.get('button').contains('Submit').click();
-
+    cy.get('mat-slide-toggle').click();
+    cy.reload();
     cy.get('button').contains('Back').click().wait('@graphql');
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Resolved').click();
     cy.location('pathname').should('include', '/responses');
-    cy.get('h1').contains('Resolved Responses');
 
+    cy.get('h1').contains('Resolved Responses');
     cy.get('button').contains('Back').click();
     cy.location('pathname').should('include', '/dashboard');
   });

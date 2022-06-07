@@ -5,9 +5,9 @@ import {
   CreateUserDocument,
   CreateUserMutation,
   CreateUserMutationVariables,
-  FindManyOrgsDocument,
-  FindManyOrgsQuery,
-  FindManyOrgsQueryVariables,
+  GetOrgNamesDocument,
+  GetOrgNamesQuery,
+  GetOrgNamesQueryVariables,
   UsernameOrEmailExistsDocument,
   UsernameOrEmailExistsQuery,
   UsernameOrEmailExistsQueryVariables,
@@ -20,14 +20,12 @@ export class RequestAccountService {
   constructor(private apollo: Apollo) {}
 
   //a query to find all of the orgs available for the selector
-  async getManyOrgs(): Promise<Observable<string[]>> {
+  async getOrgNames(): Promise<Observable<string[]>> {
     return this.apollo
-      .watchQuery<FindManyOrgsQuery, FindManyOrgsQueryVariables>({
-        query: FindManyOrgsDocument,
+      .watchQuery<GetOrgNamesQuery, GetOrgNamesQueryVariables>({
+        query: GetOrgNamesDocument,
       })
-      .valueChanges.pipe(
-        map((result) => result.data.findManyOrgs.map((x) => x.name))
-      );
+      .valueChanges.pipe(map((result) => result.data.getOrgNames));
   }
 
   async emailExists(email: string): Promise<Observable<boolean>> {
