@@ -120,11 +120,13 @@ add `-d` to start them in the background; add `{app}` to the end to start only a
 # datbase
 docker-compose up -d postgres
 # create migration
+#once we have migrations commited (and they're up to date), this step won't be required
 nx run {app}:prisma-migrate:migrate
 # deploy migration
 docker-compose -f ./docker-compose.yml -f ./docker-compose.migrate.yml up prisma-migrate
 # start services
 docker-compose up -d
+
 
 ```
 

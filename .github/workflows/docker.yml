@@ -5,6 +5,7 @@ on:
     branches:
       - 'master'
       # - 'dev'
+      - ODST-215-dockerfiles-for-angular-be
 
 env:
   REGISTRY: ghcr.io
