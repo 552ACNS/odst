@@ -3,16 +3,16 @@ import {
   ApolloTestingController,
   ApolloTestingModule,
 } from 'apollo-angular/testing';
-import { SurveyQuestionsService } from './survey-questions.service';
+import { FeedbackQuestionsService } from './feedback-questions.service';
 
-describe('SurveyQuestionsService', () => {
+describe('FeedbackQuestionsService', () => {
   let controller: ApolloTestingController;
-  let service: SurveyQuestionsService;
+  let service: FeedbackQuestionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ApolloTestingModule],
-      providers: [SurveyQuestionsService],
+      providers: [FeedbackQuestionsService],
     });
 
     controller = TestBed.inject(ApolloTestingController);

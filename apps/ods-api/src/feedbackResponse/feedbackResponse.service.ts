@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
-  SurveyResponse,
+  FeedbackResponse,
   Prisma,
-  Survey,
+  Feedback,
   Answer,
   Role,
   User,
@@ -16,47 +16,47 @@ import { merge } from 'lodash';
 import { ResponseCount } from '../__types__';
 
 @Injectable()
-export class SurveyResponseService {
+export class FeedbackResponseService {
   constructor(private prisma: PrismaService) {}
 
   /**
-   * Returns Survey Responses based on criteria specified by API
+   * Returns Feedback Responses based on criteria specified by API
    * @param user Current user, obtained from resolver
-   * @param surveyResponseFindManyArgs Arguments for the findMany query, obtained from resolver
-   * @returns A list of survey responses based on where clause
+   * @param feedbackResponseFindManyArgs Arguments for the findMany query, obtained from resolver
+   * @returns A list of feedback responses based on where clause
    */
   async findMany(
     user: User,
-    surveyResponseFindManyArgs: Prisma.SurveyResponseFindManyArgs
-  ): Promise<SurveyResponse[]> {
-    return this.prisma.surveyResponse.findMany(
+    feedbackResponseFindManyArgs: Prisma.FeedbackResponseFindManyArgs
+  ): Promise<FeedbackResponse[]> {
+    return this.prisma.feedbackResponse.findMany(
       this.restrictor(
         user,
-        surveyResponseFindManyArgs
-      ) as Prisma.SurveyResponseFindManyArgs
+        feedbackResponseFindManyArgs
+      ) as Prisma.FeedbackResponseFindManyArgs
     );
   }
 
   /**
    * Returns a number of responses for a based on criteria specified by API
    * @param user Current user, obtained from resolver
-   * @param surveyResponseCountArgs Arguments for the count query, also obtained from resolver
-   * @returns A count of survey responses based on the user's orgs
+   * @param feedbackResponseCountArgs Arguments for the count query, also obtained from resolver
+   * @returns A count of feedback responses based on the user's orgs
    */
   async count(
     user: User,
-    surveyResponseCountArgs: Prisma.SurveyResponseCountArgs
+    feedbackResponseCountArgs: Prisma.FeedbackResponseCountArgs
   ): Promise<number> {
     // Please Fix
-    // this.prisma.surveyResponse.count
+    // this.prisma.feedbackResponse.count
 
-    // modify the survey response count args to include the user's orgs
+    // modify the feedback response count args to include the user's orgs
 
-    return this.prisma.surveyResponse.count(
+    return this.prisma.feedbackResponse.count(
       this.restrictor(
         user,
-        surveyResponseCountArgs
-      ) as Prisma.SurveyResponseCountArgs
+        feedbackResponseCountArgs
+      ) as Prisma.FeedbackResponseCountArgs
     );
   }
 
@@ -67,21 +67,21 @@ export class SurveyResponseService {
    * @returns A new query/mutation with the user's orgs added to the where clause
    */
   private async restrictor<
-    T extends { where?: Prisma.SurveyResponseWhereInput }
+    T extends { where?: Prisma.FeedbackResponseWhereInput }
   >(user: User, args: T): Promise<T> {
-    const restrictor: Prisma.SurveyResponseWhereInput = {
+    const restrictor: Prisma.FeedbackResponseWhereInput = {
       // whatever the previous where clause was, add the user's orgs to it
       AND: {
-        // Get the original where surveyresponse count args
-        // Find me the surveys where the
+        // Get the original where feedbackresponse count args
+        // Find me the feedbacks where the
         answers: {
           // answers have some
           some: {
             AND: {
               // question
               question: {
-                // where the prompt is
-                prompt: {
+                // where the value is
+                value: {
                   equals: 'What squadron did the event occur in?',
                 },
               },
@@ -109,34 +109,34 @@ export class SurveyResponseService {
   }
 
   async findUnique(
-    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
-  ): Promise<SurveyResponse | null> {
-    return this.prisma.surveyResponse.findUnique({
-      where: surveyResponseWhereUniqueInput,
+    feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
+  ): Promise<FeedbackResponse | null> {
+    return this.prisma.feedbackResponse.findUnique({
+      where: feedbackResponseWhereUniqueInput,
     });
   }
 
   async create(
-    data: Prisma.SurveyResponseCreateInput
-  ): Promise<SurveyResponse> {
-    return this.prisma.surveyResponse.create({
+    data: Prisma.FeedbackResponseCreateInput
+  ): Promise<FeedbackResponse> {
+    return this.prisma.feedbackResponse.create({
       data,
     });
   }
 
   async update(
-    data: Prisma.SurveyResponseUpdateInput,
-    where: Prisma.SurveyResponseWhereUniqueInput
-  ): Promise<SurveyResponse> {
-    return this.prisma.surveyResponse.update({ data, where });
+    data: Prisma.FeedbackResponseUpdateInput,
+    where: Prisma.FeedbackResponseWhereUniqueInput
+  ): Promise<FeedbackResponse> {
+    return this.prisma.feedbackResponse.update({ data, where });
   }
 
   async delete(
-    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+    feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
   ): Promise<{ deleted: boolean; message?: string }> {
     try {
-      await this.prisma.surveyResponse.delete({
-        where: surveyResponseWhereUniqueInput,
+      await this.prisma.feedbackResponse.delete({
+        where: feedbackResponseWhereUniqueInput,
       });
       return { deleted: true };
     } catch (err) {
@@ -145,32 +145,32 @@ export class SurveyResponseService {
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
-    name: 'Delete surveyResponses older than a year',
+    name: 'Delete feedbackResponses older than a year',
   })
-  private async deleteSurveyResponsesOlderThanAYear(): Promise<void> {
+  private async deleteFeedbackResponsesOlderThanAYear(): Promise<void> {
     Logger.log(
-      'Deleting survey responses older than a year',
-      'SurveyResponseService'
+      'Deleting feedback responses older than a year',
+      'FeedbackResponseService'
     );
     // TODO: Redo with try catch
     //Will silently fail if delete isn't cascaded properly
-    const [deleteAnswers, deleteSurveyResponses] =
+    const [deleteAnswers, deleteFeedbackResponses] =
       await this.prisma.$transaction([
         this.prisma.answer.deleteMany({
           where: {
-            surveyResponse: {
+            feedbackResponse: {
               closedDate: { lt: new Date(Date.now() - 31536000000) },
             },
           },
         }),
-        this.prisma.surveyResponse.deleteMany({
+        this.prisma.feedbackResponse.deleteMany({
           where: { closedDate: { lt: new Date(Date.now() - 31536000000) } },
         }),
       ]);
-    if (deleteSurveyResponses.count > 0) {
+    if (deleteFeedbackResponses.count > 0) {
       Logger.log(
-        `Deleted ${deleteSurveyResponses.count} survey responses`,
-        'SurveyResponseService'
+        `Deleted ${deleteFeedbackResponses.count} feedback responses`,
+        'FeedbackResponseService'
       );
     }
   }
@@ -182,14 +182,14 @@ export class SurveyResponseService {
     // TODO: Optimize at a later date, so we don't go back and forth to the server
 
     const [unresolved, overdue, resolved] = await this.prisma.$transaction([
-      this.prisma.surveyResponse.count({
+      this.prisma.feedbackResponse.count({
         where: {
           resolved: false,
           ...whereBasedOnUserOrgs,
         },
       }),
 
-      this.prisma.surveyResponse.count({
+      this.prisma.feedbackResponse.count({
         where: {
           openedDate: {
             lt: new Date(Date.now() - 2592000000),
@@ -199,7 +199,7 @@ export class SurveyResponseService {
         },
       }),
 
-      this.prisma.surveyResponse.count({
+      this.prisma.feedbackResponse.count({
         where: {
           resolved: true,
           ...whereBasedOnUserOrgs,
@@ -210,8 +210,8 @@ export class SurveyResponseService {
     return { unresolved, overdue, resolved };
   }
 
-  determineStatus(resolved: string): Prisma.SurveyResponseWhereInput {
-    let whereIssues: Prisma.SurveyResponseWhereInput = {};
+  determineStatus(resolved: string): Prisma.FeedbackResponseWhereInput {
+    let whereIssues: Prisma.FeedbackResponseWhereInput = {};
     switch (resolved) {
       case 'overdue':
         whereIssues = {
@@ -236,7 +236,7 @@ export class SurveyResponseService {
   }
 
   async getIssuesByStatus(resolved: string, user: User): Promise<string[]> {
-    return this.prisma.surveyResponse
+    return this.prisma.feedbackResponse
       .findMany({
         where: {
           ...this.determineStatus(resolved),
@@ -254,34 +254,34 @@ export class SurveyResponseService {
     //Using the findMany above so as to not repeat stuff in the servicer
   }
 
-  async survey(
+  async feedback(
     AnswerWhereUniqueInput: Prisma.AnswerWhereUniqueInput
-  ): Promise<Survey | null> {
-    return this.prisma.surveyResponse
+  ): Promise<Feedback | null> {
+    return this.prisma.feedbackResponse
       .findUnique({ where: AnswerWhereUniqueInput })
-      .survey();
+      .feedback();
   }
 
   async answers(
-    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+    feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
   ): Promise<Answer[]> {
-    return this.prisma.surveyResponse
-      .findUnique({ where: surveyResponseWhereUniqueInput })
+    return this.prisma.feedbackResponse
+      .findUnique({ where: feedbackResponseWhereUniqueInput })
       .answers();
   }
 
   async tags(
-    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+    feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
   ): Promise<Tag[]> {
-    return this.prisma.surveyResponse
-      .findUnique({ where: surveyResponseWhereUniqueInput })
+    return this.prisma.feedbackResponse
+      .findUnique({ where: feedbackResponseWhereUniqueInput })
       .tags();
   }
   async comments(
-    surveyResponseWhereUniqueInput: Prisma.SurveyResponseWhereUniqueInput
+    feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
   ): Promise<Comment[]> {
-    return this.prisma.surveyResponse
-      .findUnique({ where: surveyResponseWhereUniqueInput })
+    return this.prisma.feedbackResponse
+      .findUnique({ where: feedbackResponseWhereUniqueInput })
       .comments({
         orderBy: {
           date: 'asc',
@@ -362,16 +362,18 @@ export class SurveyResponseService {
   //TODO refactor for complexity
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   // eslint-disable-next-line complexity
-  private async getWhere(user: User): Promise<Prisma.SurveyResponseWhereInput> {
+  private async getWhere(
+    user: User
+  ): Promise<Prisma.FeedbackResponseWhereInput> {
     // Get the user's Orgs
     const orgs = await this.getUsersOrgs(user);
 
-    // Only look at the surveyResponses where a specific answer contains one of the user's orgs
+    // Only look at the feedbackResponses where a specific answer contains one of the user's orgs
     const whereAnswer = {
       answers: {
         some: {
           question: {
-            prompt: {
+            value: {
               //TODO hardcoded value
               equals: 'What squadron did the event occur in?',
             },
@@ -391,11 +393,11 @@ export class SurveyResponseService {
       case Role.CC:
         return {
           AND: {
-            //no surveyResponses that are routed outside
+            //no feedbackResponses that are routed outside
             routeOutside: false,
             OR: {
               ...whereAnswer,
-              survey: {
+              feedback: {
                 orgs: {
                   some: { name: { in: orgs } },
                 },

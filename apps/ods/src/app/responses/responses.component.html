@@ -57,6 +57,7 @@
                 [matAutocomplete]="auto"
                 [matChipInputFor]="chipList"
                 (matChipInputTokenEnd)="add($event)"
+                (input)="generatePossibleTags()"
               />
             </mat-chip-list>
             <mat-autocomplete
