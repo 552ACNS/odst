@@ -5,7 +5,7 @@ ARG APP="ods-api"
 
 WORKDIR /usr/src/app
 
-RUN npm install -g nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
+RUN npm install -g nx@14.1.9 --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
 COPY package.json ./
 
