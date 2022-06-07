@@ -15,12 +15,14 @@
 
 Please describe the tests that you created to tests your changes
 
-- [ ] Test A
-- [ ] Test B
+- Test A
+- Test B
+- Test C
 
 ## Checklist:
 
 - [ ] I have performed a self-review of my code
+- [ ] I have ran E2E tests against the new code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
 - [ ] My changes generate no new warnings
