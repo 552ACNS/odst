@@ -19,7 +19,7 @@ services:
     container_name: ods-api
     image: ghcr.io/552acns/ods-api:latest
     ports:
-      - '${PORT:-3343}:${PORT:-3343}'
+      - '3343:3343'
     env_file:
       - apps/ods-api/.env.prod
     depends_on:
