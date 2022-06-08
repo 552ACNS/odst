@@ -9,7 +9,7 @@ COPY package.json yarn.lock ./
 
 # TODO remove legeacy-peer-deps
 # TODO add --omit=dev, but ngcc doesn't get installed then
-RUN SKIP_POSTINSTALL=1 yarn --progress=false --audit=false --loglevel=error
+RUN SKIP_POSTINSTALL=1 yarn --no-progress --frozen-lockfile --loglevel=error
 
 COPY . .
 

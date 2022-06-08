@@ -9,7 +9,7 @@ RUN yarn global add nx --progress=false --audit=false --loglevel=error
 
 COPY package.json yarn.lock ./
 
-RUN SKIP_POSTINSTALL=1 yarn --progress=false --audit=false --loglevel=error
+RUN SKIP_POSTINSTALL=1 yarn --no-progress --frozen-lockfile --loglevel=error
 
 COPY . .
 
@@ -32,7 +32,7 @@ COPY --from=build /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
 COPY package.json yarn.lock ./
 
-RUN SKIP_POSTINSTALL=1 yarn --prod --progress=false --audit=false --loglevel=error
+RUN SKIP_POSTINSTALL=1 yarn --prod --no-progress --frozen-lockfile --loglevel=error
 
 COPY --from=build /usr/src/app/dist/apps/${APP} ./
 
