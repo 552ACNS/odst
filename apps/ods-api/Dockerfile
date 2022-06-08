@@ -17,7 +17,7 @@ COPY . .
 #RUn npx nx prisma-generate ${APP}
 RUN npx nx run-many --target=prisma-generate --all --parallel=false
 
-RUN npx nx build ods-api
+RUN nx build ods-api
 
 
 # Second Stage
