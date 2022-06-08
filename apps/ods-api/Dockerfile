@@ -5,11 +5,12 @@ ARG APP="ods-api"
 
 WORKDIR /usr/src/app
 
-RUN yarn global add nx --progress=false --audit=false --loglevel=error
+RUN yarn global add nx
+#--progress=false --audit=false --loglevel=error
 
-COPY package.json yarn.lock skip-postinstall.js ./
+COPY package.json yarn.lock ./
 
-RUN SKIP_POSTINSTALL=1 yarn --no-progress --frozen-lockfile --loglevel=error
+RUN yarn install --ignore-scripts --no-progress --frozen-lockfile --loglevel=error
 
 COPY . .
 
@@ -32,7 +33,7 @@ COPY --from=build /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
 COPY package.json yarn.lock ./
 
-RUN SKIP_POSTINSTALL=1 yarn --prod --no-progress --frozen-lockfile --loglevel=error
+RUN yarn install --ignore-scripts --prod --no-progress --frozen-lockfile --loglevel=error
 
 COPY --from=build /usr/src/app/dist/apps/${APP} ./
 
