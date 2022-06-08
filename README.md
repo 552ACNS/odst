@@ -104,31 +104,31 @@ Careful with this, due to that it pushes it up with the `:latest` tag. Add `--ou
 
 ### Migrate database via docker
 
-`docker-compose -f ./docker-compose.yml -f ./docker-compose.migrate.yml up prisma-migrate`
-
-But first you need a migration to apply - run `nx run ods-api:prisma-migrate:migrate`
+`docker-compose up ods-migrate`
 
 ### start all services listed in docker-compose
 
-`docker-compose up`
+`docker-compose up ods`
 
-add `-d` to start them in the background; add `{app}` to the end to start only a specific app.
+add `-d` to start them in the background; can change `ods` to another service if you'd like.
+`ods` is dependent on `ods-api`, which is in turn dependent on `postgres`, so just specifying `ods` will start entire stack.
+If you only say `docker-compose up`, all services will be started, including `ods-migrate`.
 
 ### Start to finish full docker stack
 
 ```bash
-# datbase
-docker-compose up -d postgres
-# create migration
-#once we have migrations commited (and they're up to date), this step won't be required
-nx run {app}:prisma-migrate:migrate
-# deploy migration
-docker-compose -f ./docker-compose.yml -f ./docker-compose.migrate.yml up prisma-migrate
-# start services
-docker-compose up -d
+#migration
+docker compose up ods-migrate
 
-
+#ods stack
+docker-compose up ods -d
 ```
+
+## Docker images/tags
+
+ods: `ods:latest`, `ods:v0`
+ods-api: `ods-api:latest`, `ods-api:v0`
+ods-migrate: `ods-api:migrate`, `ods-api:v0-migrate`
 
 ## Common Troubleshooting steps
 

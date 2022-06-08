@@ -42,8 +42,8 @@
         "context": "./apps/ods-api",
         "push": true,
         "tags": [
-          "ghcr.io/552acns/ods-api:prisma",
-          "ghcr.io/552acns/ods-api:v0-prisma"
+          "ghcr.io/552acns/ods-api:migrate",
+          "ghcr.io/552acns/ods-api:v0-migrate"
         ]
       }
     },

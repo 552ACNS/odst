@@ -1,6 +1,8 @@
 # Downgraded to 3.7 to ensure it works with non-docker desktop
 version: '3.7'
 
+#TODO reuse environment variables (i.e. so database password isn't hardcoded in three different spots)
+
 services:
   postgres:
     container_name: postgres
@@ -36,6 +38,12 @@ services:
       - ods-api
     networks:
       - odst-network
+
+  ods-migrate:
+    container_name: prisma-migrate
+    image: ghcr.io/552acns/ods-api:prisma
+    environment:
+      - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
 
 networks:
   odst-network:
