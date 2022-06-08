@@ -35,6 +35,18 @@
         "tags": ["ghcr.io/552acns/ods-api:latest", "ghcr.io/552acns/ods-api:v1"]
       }
     },
+    "docker-migrate": {
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "file": "Dockerfile.migrate",
+        "context": "./apps/ods-api",
+        "push": true,
+        "tags": [
+          "ghcr.io/552acns/ods-api-prisma:latest",
+          "ghcr.io/552acns/ods-api-prisma:v1"
+        ]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

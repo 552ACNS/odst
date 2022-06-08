@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 const orgSeed: Prisma.OrgCreateInput[] = [
   // ADMIN
   {
-    name: 'Scorpion Developers2',
+    name: 'Scorpion Developers',
     orgTier: 'OTHER',
   },
   // Wings
@@ -79,6 +79,7 @@ const orgSeed: Prisma.OrgCreateInput[] = [
 ];
 
 async function main() {
+  console.log(`Start seeding ...`);
   // Upsert Orgs
   for (const org of orgSeed) {
     try {
@@ -260,14 +261,14 @@ async function main() {
   }
   //#endregion user admin
 
-  //#region survey
-  //delete existing test surveys
+  //#region feedback
+  //delete existing test feedbacks
   const orgNames = orgSeed.map((o) => {
     return { name: o.name };
   });
 
   try {
-    await prisma.survey.deleteMany({
+    await prisma.feedback.deleteMany({
       where: {
         orgs: {
           some: {
@@ -283,7 +284,7 @@ async function main() {
     }
   }
 
-  console.log(await prisma.user.findMany());
+  console.log(`Seeding finished.`);
 }
 
 main()

@@ -33,5 +33,8 @@ jobs:
       - name: 'Install Dependencies'
         run: npm i nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
-      - name: 'nx build'
+      - name: 'nx docker'
         run: npx nx affected --target=docker
+
+      - name: 'nx docker-migrate'
+        run: npx nx affected --target=docker-migrate

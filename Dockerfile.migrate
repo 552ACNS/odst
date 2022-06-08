@@ -2,34 +2,38 @@ FROM node:lts-alpine
 
 WORKDIR /usr/src/app
 
-ARG APP
+RUN yarn add typescript prisma bcryptjs prisma-nestjs-graphql env-cmd ts-node @types/node --ignore-scripts --progress=false --audit=false --loglevel=error
 
-ENV ENV_APP=${APP}
+#this is so that prisma generate can place folders two folders up
+WORKDIR /usr/src/app/apps/app
 
-COPY package.json ./
+COPY .env.prod schema.prisma prisma-seed.prod.ts ./
 
-RUN npm install --ignore-scripts --omit=optional --legacy-peer-deps --progress=false --audit=false --loglevel=error
+COPY migrations ./migrations
 
-# ADD angular.json nx.json ./
-
-# #TODO should also be copying migration folder, etc
-# ADD apps/${APP}/schema.prisma apps/${APP}/prisma-seed.prod.ts ./apps/${APP}/
-
-# Add wait-for tool -------------------
+# Add wait-for tool
 ENV WAIT_VERSION v2.2.3
 ADD https://github.com/eficode/wait-for/releases/download/${WAIT_VERSION}/wait-for ./wait
 RUN chmod +x ./wait
 
-COPY . .
+#migrate deploy, generate, seed
+RUN echo "npx env-cmd -f .env.prod prisma migrate deploy && npx prisma generate && npx env-cmd -f .env.prod ts-node prisma-seed.prod.ts" > prisma.sh
 
-RUN npx nx prisma-generate ${ENV_APP}
+RUN chmod +x prisma.sh
 
-# CMD npx nx run ods-api:prisma-migrate:production
-
-# RUN echo "nx run ods-api:prisma-migrate:production" > prisma.sh
-
-# RUN chmod +x prisma.sh
-
-CMD ./wait postgres:5432 -- npx nx run ${ENV_APP}:prisma-migrate:production
+CMD ./wait postgres:5432 -- ./prisma.sh
 
 
+
+#Alternative:
+
+#replace yarn global add with installing everything from package.json
+#recreate apps/${APP} folder structure and then replace last three lines with
+
+# COPY . .
+# RUN npx nx prisma-generate ${ENV_APP}
+# CMD ./wait postgres:5432 -- npx nx run ${ENV_APP}:prisma-migrate:production
+
+#Downside of this is it's far more bloated than the current.
+#Upside and Downside of current is it's built from the ground up.
+#Slimmer but if underlying process changes, this has to change too.
