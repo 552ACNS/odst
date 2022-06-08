@@ -31,7 +31,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Install Dependencies'
-        run: SKIP_POSTINSTALL=1 yarn add nx --progress=false --audit=false --loglevel=error
+        run: SKIP_POSTINSTALL=1 yarn global add nx --progress=false --audit=false --loglevel=error
 
       - name: 'nx build'
         run: npx nx affected --target=docker
