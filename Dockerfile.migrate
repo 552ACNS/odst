@@ -2,7 +2,7 @@ FROM node:lts-alpine
 
 WORKDIR /usr/src/app
 
-RUN yarn add typescript prisma bcryptjs prisma-nestjs-graphql env-cmd ts-node @types/node --ignore-scripts --progress=false --audit=false --loglevel=error
+RUN yarn add typescript prisma bcryptjs @types/bcryptjs @prisma/client prisma-nestjs-graphql env-cmd ts-node @types/node --ignore-scripts --progress=false --audit=false --loglevel=error
 
 #this is so that prisma generate can place folders two folders up
 WORKDIR /usr/src/app/apps/app
@@ -17,7 +17,7 @@ ADD https://github.com/eficode/wait-for/releases/download/${WAIT_VERSION}/wait-f
 RUN chmod +x ./wait
 
 #migrate deploy, generate (because seed requires it), seed
-RUN echo "npx prisma migrate deploy && npx prisma generate && ts-node prisma-seed.prod.ts" > prisma.sh
+RUN echo "npx prisma migrate deploy && npx prisma generate && npx ts-node prisma-seed.prod.ts" > prisma.sh
 
 RUN chmod +x prisma.sh
 

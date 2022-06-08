@@ -25,8 +25,13 @@ services:
     image: ghcr.io/552acns/ods-api:latest
     ports:
       - '3343:3343'
-    env_file:
-      - apps/ods-api/.env.prod
+    #escape $ with another $
+    environment:
+      - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
+      - NX_CHECKPOINT_DISABLE=1
+      - NX_JWT_SECRET=dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$$%
+      - NX_JWT_REFRESH_SECRET=Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF
+      - NX_DEV_ACCOUNT_PASSWORD=admin
     depends_on:
       - postgres
     networks:
@@ -43,10 +48,15 @@ services:
       - odst-network
 
   ods-migrate:
-    container_name: prisma-migrate
+    container_name: ods-migrate
     image: ghcr.io/552acns/ods-api:prisma
     environment:
       - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
+    depends_on:
+      - postgres
+    # restart: on-failure
+    networks:
+      - odst-network
 
 networks:
   odst-network:
