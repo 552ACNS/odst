@@ -130,10 +130,6 @@ docker-compose up -d
 
 ```
 
-### Why is `npm` being used in Dockerfiles instead of `yarn`?
-
-`npm` allows skipping post install script, whichs increases likelihood of caching, along with not running pointless commands (i.e. ngcc while building backend).
-
 ## Common Troubleshooting steps
 
 ### - `yarn` throws graphql error

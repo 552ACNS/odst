@@ -5,9 +5,6 @@ ARG APP="ods-api"
 
 WORKDIR /usr/src/app
 
-RUN yarn global add nx
-#--progress=false --audit=false --loglevel=error
-
 COPY package.json yarn.lock ./
 
 RUN yarn install --ignore-scripts --no-progress --frozen-lockfile --loglevel=error
@@ -15,11 +12,10 @@ RUN yarn install --ignore-scripts --no-progress --frozen-lockfile --loglevel=err
 COPY . .
 
 #tree shaking is requring waypoint to be run still
+#RUn npx nx prisma-generate ${APP}
 RUN npx nx run-many --target=prisma-generate --all --parallel=false
 
-#this fails (with no debug logs) when run via `npm run build`
-#Could be related to the --omit or the --legacy-peer-deps.
-RUN nx build ods-api
+RUN npx nx build ods-api
 
 
 # Second Stage
@@ -33,7 +29,7 @@ COPY --from=build /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
 COPY package.json yarn.lock ./
 
-RUN yarn install --ignore-scripts --prod --no-progress --frozen-lockfile --loglevel=error
+RUN yarn install --prod --ignore-scripts --no-progress --frozen-lockfile --loglevel=error
 
 COPY --from=build /usr/src/app/dist/apps/${APP} ./
 

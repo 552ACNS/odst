@@ -7,8 +7,6 @@ WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
 
-# TODO remove legeacy-peer-deps
-# TODO add --omit=dev, but ngcc doesn't get installed then
 RUN yarn install --ignore-scripts --no-progress --frozen-lockfile --loglevel=error
 
 COPY . .
