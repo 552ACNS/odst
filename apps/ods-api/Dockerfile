@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 RUN yarn global add nx --progress=false --audit=false --loglevel=error
 
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock skip-postinstall.js ./
 
 RUN SKIP_POSTINSTALL=1 yarn --no-progress --frozen-lockfile --loglevel=error
 

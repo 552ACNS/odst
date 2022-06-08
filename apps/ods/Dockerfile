@@ -5,7 +5,7 @@ ARG APP="ods"
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock skip-postinstall.js ./
 
 # TODO remove legeacy-peer-deps
 # TODO add --omit=dev, but ngcc doesn't get installed then
