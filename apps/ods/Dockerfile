@@ -5,11 +5,11 @@ ARG APP="ods"
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
+COPY package.json yarn.lock ./
 
 # TODO remove legeacy-peer-deps
 # TODO add --omit=dev, but ngcc doesn't get installed then
-RUN npm install --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
+RUN SKIP_POSTINSTALL=1 yarn --progress=false --audit=false --loglevel=error
 
 COPY . .
 

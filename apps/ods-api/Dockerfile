@@ -5,11 +5,11 @@ ARG APP="ods-api"
 
 WORKDIR /usr/src/app
 
-RUN npm install -g nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
+RUN yarn global add nx --progress=false --audit=false --loglevel=error
 
-COPY package.json ./
+COPY package.json yarn.lock ./
 
-RUN npm install --ignore-scripts --omit=optional --legacy-peer-deps --progress=false --audit=false --loglevel=error
+RUN SKIP_POSTINSTALL=1 yarn --progress=false --audit=false --loglevel=error
 
 COPY . .
 
@@ -30,9 +30,9 @@ WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
-COPY package.json ./
+COPY package.json yarn.lock ./
 
-RUN npm install --ignore-scripts --omit=dev --legacy-peer-deps --progress=false --audit=false --loglevel=error
+RUN SKIP_POSTINSTALL=1 yarn --prod --progress=false --audit=false --loglevel=error
 
 COPY --from=build /usr/src/app/dist/apps/${APP} ./
 
