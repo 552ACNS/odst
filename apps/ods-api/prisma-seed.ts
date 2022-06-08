@@ -3,6 +3,8 @@ import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
 import { hash } from 'bcryptjs';
 
+//TODO refactor to not repeat code so much(DRY) - like the org/tag are done
+
 const prisma = new PrismaClient();
 
 const orgSeed: Prisma.OrgCreateInput[] = [

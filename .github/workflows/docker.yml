@@ -33,6 +33,7 @@ jobs:
       - name: 'Install Dependencies'
         run: npm i nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
+      #TODO set image tags automatically based on project version
       - name: 'nx docker'
         run: npx nx affected --target=docker
 

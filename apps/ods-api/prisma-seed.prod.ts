@@ -2,7 +2,10 @@
 import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
 
-// import { hash } from 'bcryptjs';
+import { hash } from 'bcryptjs';
+
+//TODO refactor to not repeat code so much(DRY) - like the org/tag are done
+//TODO copied this from dev, update with production values
 
 const prisma = new PrismaClient();
 
@@ -161,7 +164,7 @@ async function main() {
     process.env.NODE_ENV !== 'PRODUCTION' &&
     process.env.NX_DEV_ACCOUNT_PASSWORD
   ) {
-    const pw = 'admin'; //await hash(process.env.NX_DEV_ACCOUNT_PASSWORD, 10);
+    const pw = await hash(process.env.NX_DEV_ACCOUNT_PASSWORD, 10);
 
     await prisma.user.upsert({
       where: {

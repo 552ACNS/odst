@@ -32,7 +32,7 @@
       "executor": "@nx-tools/nx-docker:build",
       "options": {
         "push": true,
-        "tags": ["ghcr.io/552acns/ods-api:latest", "ghcr.io/552acns/ods-api:v1"]
+        "tags": ["ghcr.io/552acns/ods-api:latest", "ghcr.io/552acns/ods-api:v0"]
       }
     },
     "docker-migrate": {
@@ -42,8 +42,8 @@
         "context": "./apps/ods-api",
         "push": true,
         "tags": [
-          "ghcr.io/552acns/ods-api-prisma:latest",
-          "ghcr.io/552acns/ods-api-prisma:v1"
+          "ghcr.io/552acns/ods-api:prisma",
+          "ghcr.io/552acns/ods-api:v0-prisma"
         ]
       }
     },
