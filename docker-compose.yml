@@ -2,12 +2,15 @@
 version: '3.7'
 
 #TODO reuse environment variables (i.e. so database password isn't hardcoded in three different spots)
+#TODO figure out how platform team wants to handle environetment variables (like .env.prod)
+#TODO add more stuff to be dynamically set - db info, ports, etc
 
 services:
   postgres:
     container_name: postgres
     image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
     restart: unless-stopped
+    #TODO need to map volume for data to stay through container recreation but couldn't get permissions to be happy
     # volumes:
     # - ~/docker/postgres:/var/lib/postgresql
     ports:
