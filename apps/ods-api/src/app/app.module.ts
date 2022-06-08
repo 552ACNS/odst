@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SurveyModule } from '../survey/survey.module';
+import { FeedbackModule } from '../feedback/feedback.module';
 import { OrgModule } from '../org/org.module';
 import {
   ApolloServerPluginLandingPageLocalDefault,
@@ -8,7 +8,7 @@ import {
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { SurveyResponseModule } from '../surveyResponse/surveyResponse.module';
+import { FeedbackResponseModule } from '../feedbackResponse/feedbackResponse.module';
 import { AnswerModule } from '../answer/answer.module';
 import { QuestionModule } from '../question/question.module';
 import { AuthModule } from '@odst/auth';
@@ -37,8 +37,8 @@ import { TagModule } from '../tag/tag.module';
       ],
     }),
     TagModule,
-    SurveyModule,
-    SurveyResponseModule,
+    FeedbackModule,
+    FeedbackResponseModule,
     AnswerModule,
     OrgModule,
     QuestionModule,

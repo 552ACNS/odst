@@ -1,46 +1,46 @@
-import { SurveyResponseCreateInput } from '@odst/types/ods';
-import { SurveyResponse } from '.prisma/ods/client';
+import { FeedbackResponseCreateInput } from '@odst/types/ods';
+import { FeedbackResponse } from '.prisma/ods/client';
 import { User } from '.prisma/ods/client';
-export const MockSurveyResponses: SurveyResponse[] = [
+export const MockFeedbackResponses: FeedbackResponse[] = [
   {
-    id: 'SurveyResponse id 1',
+    id: 'FeedbackResponse id 1',
     openedDate: new Date(),
     closedDate: new Date(),
-    surveyId: 'surveyId',
+    feedbackId: 'feedbackId',
     routeOutside: false,
     resolved: true,
   },
   {
-    id: 'SurveyResponse id 2',
+    id: 'FeedbackResponse id 2',
     openedDate: new Date(),
     closedDate: new Date(),
-    surveyId: 'surveyId',
+    feedbackId: 'feedbackId',
     routeOutside: false,
     resolved: true,
   },
   //add condition for unresolved
   {
-    id: 'SurveyResponse id 3',
+    id: 'FeedbackResponse id 3',
     openedDate: new Date(),
     closedDate: null,
-    surveyId: 'surveyId',
+    feedbackId: 'feedbackId',
     routeOutside: false,
     resolved: false,
   },
   //add condition for overdue
   {
-    id: 'SurveyResponse id 4',
+    id: 'FeedbackResponse id 4',
     openedDate: new Date(Date.now() - 2678400000),
     closedDate: null,
-    surveyId: 'surveyId',
+    feedbackId: 'feedbackId',
     routeOutside: false,
     resolved: false,
   },
 ];
 
-export const MockSurveyResponseCreateInput: SurveyResponseCreateInput[] = [
+export const MockFeedbackResponseCreateInput: FeedbackResponseCreateInput[] = [
   {
-    survey: { connect: { id: 'survey id' } },
+    feedback: { connect: { id: 'feedback id' } },
   },
 ];
 

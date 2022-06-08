@@ -11,9 +11,9 @@ import {
   Question,
   QuestionCreateInput,
   QuestionWhereUniqueInput,
-  SurveyWhereUniqueInput,
+  FeedbackWhereUniqueInput,
   Answer,
-  Survey,
+  Feedback,
   UpdateOneQuestionArgs,
 } from '@odst/types/ods';
 import { Prisma } from '.prisma/ods/client';
@@ -34,10 +34,12 @@ export class QuestionResolver {
 
   //TODO redo with findMany
   async getSubQuestions(
-    @Args('surveyWhereUniqueInput')
-    surveyWhereUniqueInput: SurveyWhereUniqueInput
+    @Args('feedbackWhereUniqueInput')
+    feedbackWhereUniqueInput: FeedbackWhereUniqueInput
   ): Promise<Question[]> {
-    return this.questionService.findQuestionsInSurvey(surveyWhereUniqueInput);
+    return this.questionService.findQuestionsInFeedback(
+      feedbackWhereUniqueInput
+    );
   }
 
   @Query(() => Question, { name: 'findUniqueQuestion' })
@@ -70,8 +72,8 @@ export class QuestionResolver {
     return this.questionService.answers({ id: question.id });
   }
 
-  @ResolveField(() => [Survey])
-  async surveys(@Parent() question: Question): Promise<Survey[]> {
-    return this.questionService.surveys({ id: question.id });
+  @ResolveField(() => [Feedback])
+  async feedbacks(@Parent() question: Question): Promise<Feedback[]> {
+    return this.questionService.feedbacks({ id: question.id });
   }
 }

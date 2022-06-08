@@ -7,7 +7,7 @@ describe('ods', () => {
     cy.visit('/disclaimer');
     cy.location('pathname').should('include', '/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
-    cy.location('pathname').should('include', '/survey');
+    cy.location('pathname').should('include', '/feedback');
     cy.contains('span', 'Organization')
       .click()
       .wait('@graphql')

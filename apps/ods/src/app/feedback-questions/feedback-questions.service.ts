@@ -2,29 +2,29 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs';
 import {
-  CreateSurveyWithQuestionsDocument,
-  CreateSurveyWithQuestionsMutation,
-  CreateSurveyWithQuestionsMutationVariables,
-  CreateSurveyResponseMutation,
-  CreateSurveyResponseMutationVariables,
-  CreateSurveyResponseDocument,
-  FindQuestionsBySurveyQuery,
-  FindQuestionsBySurveyQueryVariables,
-  FindQuestionsBySurveyDocument,
+  CreateFeedbackWithQuestionsDocument,
+  CreateFeedbackWithQuestionsMutation,
+  CreateFeedbackWithQuestionsMutationVariables,
+  CreateFeedbackResponseMutation,
+  CreateFeedbackResponseMutationVariables,
+  CreateFeedbackResponseDocument,
+  FindQuestionsByFeedbackQuery,
+  FindQuestionsByFeedbackQueryVariables,
+  FindQuestionsByFeedbackDocument,
   GetCommandersQuery,
   GetCommandersQueryVariables,
   GetCommandersDocument,
   GetOrgLineageQueryVariables,
   GetOrgLineageQuery,
   GetOrgLineageDocument,
-} from './survey-questions.generated';
+} from './feedback-questions.generated';
 import { jsonTypeConverter } from '@odst/helpers';
 import { OrgWhereUniqueInput } from '../../types.graphql';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SurveyQuestionsService {
+export class FeedbackQuestionsService {
   constructor(private apollo: Apollo) {}
 
   //a query to find all of the orgs available for the selector
@@ -49,36 +49,36 @@ export class SurveyQuestionsService {
         )
       );
   }
-  //Takes questions that are in an array and connectsOrCreates to a survey ID based on question set and returns the survey ID
+  //Takes questions that are in an array and connectsOrCreates to a feedback ID based on question set and returns the feedback ID
   //that was found or created
   submitWithQuestions(
     questions: string[],
     orgWhereUniqueInput: OrgWhereUniqueInput
   ) {
     return this.apollo.mutate<
-      CreateSurveyWithQuestionsMutation,
-      CreateSurveyWithQuestionsMutationVariables
+      CreateFeedbackWithQuestionsMutation,
+      CreateFeedbackWithQuestionsMutationVariables
     >({
-      mutation: CreateSurveyWithQuestionsDocument,
+      mutation: CreateFeedbackWithQuestionsDocument,
       variables: {
-        questionPrompts: questions,
+        questionValues: questions,
         //TODO don't hardcode org
         orgWhereUniqueInput,
       },
     });
   }
-  //Using the survey ID created or connected to, we find the question ID's that are associated with that survey ID.
+  //Using the feedback ID created or connected to, we find the question ID's that are associated with that feedback ID.
   //It then allows us to populate an array with the question ID's
-  getQuestionsFromSurvey(surveyID: string) {
+  getQuestionsFromFeedback(feedbackID: string) {
     return this.apollo
       .watchQuery<
-        FindQuestionsBySurveyQuery,
-        FindQuestionsBySurveyQueryVariables
+        FindQuestionsByFeedbackQuery,
+        FindQuestionsByFeedbackQueryVariables
       >({
-        query: FindQuestionsBySurveyDocument,
+        query: FindQuestionsByFeedbackDocument,
         variables: {
-          surveyWhereUniqueInput: {
-            id: surveyID,
+          feedbackWhereUniqueInput: {
+            id: feedbackID,
           },
         },
       })
@@ -86,30 +86,30 @@ export class SurveyQuestionsService {
         map((result) => result.data.getSubQuestions.map((x) => x.id))
       );
   }
-  //Connects to a survey ID and submits answer values and connects those values to question ID's that are connected to the
-  //survey ID. It also determines if the survey is to be routed outside the squadron.
-  submitSurveyReponse(
+  //Connects to a feedback ID and submits answer values and connects those values to question ID's that are connected to the
+  //feedback ID. It also determines if the feedback is to be routed outside the squadron.
+  submitFeedbackReponse(
     outsideRouting: boolean,
     valueArray: string[],
     questionIDArray: string[],
-    surveyID: string | undefined
+    feedbackID: string | undefined
   ) {
     return this.apollo.mutate<
-      CreateSurveyResponseMutation,
-      CreateSurveyResponseMutationVariables
+      CreateFeedbackResponseMutation,
+      CreateFeedbackResponseMutationVariables
     >({
-      mutation: CreateSurveyResponseDocument,
+      mutation: CreateFeedbackResponseDocument,
       variables: {
-        surveyResponseCreateInput: {
+        feedbackResponseCreateInput: {
           routeOutside: outsideRouting,
           answers: {
             createMany: {
               data: jsonTypeConverter(valueArray, questionIDArray),
             },
           },
-          survey: {
+          feedback: {
             connect: {
-              id: surveyID,
+              id: feedbackID,
             },
           },
         },
