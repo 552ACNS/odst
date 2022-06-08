@@ -5,7 +5,8 @@ ARG APP="ods-api"
 
 WORKDIR /usr/src/app
 
-# RUN yarn global add nx --no-progress --loglevel=error
+#nx must be installed globally and `nx build` w/o npx
+RUN yarn global add nx --no-progress --loglevel=error
 
 COPY package.json yarn.lock ./
 
