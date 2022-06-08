@@ -49,7 +49,7 @@ services:
 
   ods-migrate:
     container_name: ods-migrate
-    image: ghcr.io/552acns/ods-api:prisma
+    image: ghcr.io/552acns/ods-api:migrate
     environment:
       - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
     depends_on:
