@@ -5,7 +5,7 @@ ARG APP="ods-api"
 
 WORKDIR /usr/src/app
 
-RUN yarn global add nx --no-progress --loglevel=error
+# RUN yarn global add nx --no-progress --loglevel=error
 
 COPY package.json yarn.lock ./
 
