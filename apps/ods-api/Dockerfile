@@ -5,6 +5,8 @@ ARG APP="ods-api"
 
 WORKDIR /usr/src/app
 
+RUN yarn global add nx --no-progress --frozen-lockfile --loglevel=error
+
 COPY package.json yarn.lock ./
 
 RUN yarn install --ignore-scripts --no-progress --frozen-lockfile --loglevel=error
