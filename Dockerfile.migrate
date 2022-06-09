@@ -24,7 +24,6 @@ RUN chmod +x prisma.sh
 CMD ./wait postgres:5432 -- ./prisma.sh
 
 
-
 #Alternative:
 
 #replace yarn global add with installing everything from package.json
