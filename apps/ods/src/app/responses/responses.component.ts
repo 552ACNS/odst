@@ -1,17 +1,16 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AddCommentMutationVariables,
-  FindUniqueSurveyResponseQuery,
+  FindUniqueFeedbackResponseQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
 import { getRefreshToken, getUserId } from '@odst/helpers';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { map, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'odst-responses',
@@ -37,19 +36,9 @@ export class ResponsesComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  // randomMethod() {
-  //   const blah = map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allTags.slice())),
-  // }
-
-  // private _filter(value: string): string[] {
-  //   const filterValue = value.toLowerCase();
-
-  //   return this.allTags.filter(fruit => fruit.toLowerCase().includes(filterValue));
-  // }
-
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
-  comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'] =
+  comments: FindUniqueFeedbackResponseQuery['findUniqueFeedbackResponse']['comments'] =
     [];
 
   AddCommentMutationVariables: AddCommentMutationVariables;
@@ -99,10 +88,22 @@ export class ResponsesComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Creates a list of tags that can be added by filtering out those already in use
+   */
   generatePossibleTags() {
     this.possibleTags = this.allTags.filter(
       (tag) => !this.selectedTags?.includes(tag)
     );
+
+    const input = this.tagInput?.nativeElement.value.trim().toLowerCase();
+
+    if (input) {
+      this.possibleTags = this.possibleTags.filter((tag) =>
+        tag.toLowerCase().includes(input)
+      );
+    }
   }
 
   submitComment() {
@@ -133,8 +134,8 @@ export class ResponsesComponent implements OnInit {
         .subscribe(({ data, errors }) => {
           if (!errors && data) {
             // Refresh comments afterwards
-            this.comments = data.updateSurveyResponse['comments'];
-            this.actualResolution = data.updateSurveyResponse['resolved'];
+            this.comments = data.updateFeedbackResponse['comments'];
+            this.actualResolution = data.updateFeedbackResponse['resolved'];
             this.resolutionForm.reset();
           }
         });
@@ -157,7 +158,7 @@ export class ResponsesComponent implements OnInit {
       .updateResolved(updateResolvedMutationVariables)
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.actualResolution = data.updateSurveyResponse['resolved'];
+          this.actualResolution = data.updateFeedbackResponse['resolved'];
         }
       });
   }
@@ -171,27 +172,27 @@ export class ResponsesComponent implements OnInit {
           alert(errors);
         }
         if (data) {
-          this.openedDate = data.findUniqueSurveyResponse.openedDate;
+          this.openedDate = data.findUniqueFeedbackResponse.openedDate;
 
           // Clear contents of QA array
           this.questionsAnswers = [];
           this.comments = [];
 
           // Handle the Questions & Answers
-          data.findUniqueSurveyResponse.answers?.forEach((answer) => {
+          data.findUniqueFeedbackResponse.answers?.forEach((answer) => {
             // Clear contents of QA array
             // Create the Question/Answer Array
             this.questionsAnswers.push([
-              String(answer?.question?.prompt),
+              String(answer?.question?.value),
               answer.value,
             ]);
           });
 
-          this.comments = data.findUniqueSurveyResponse.comments;
+          this.comments = data.findUniqueFeedbackResponse.comments;
 
-          this.actualResolution = data.findUniqueSurveyResponse['resolved'];
+          this.actualResolution = data.findUniqueFeedbackResponse['resolved'];
 
-          this.selectedTags = data.findUniqueSurveyResponse['tags']?.map(
+          this.selectedTags = data.findUniqueFeedbackResponse['tags']?.map(
             (x) => x.value
           );
           this.generatePossibleTags();
@@ -210,6 +211,11 @@ export class ResponsesComponent implements OnInit {
     return pageEvent;
   }
 
+  /**
+   * Removes tag deselected by the user and adds it back to the list of tags not in use
+   * @param tagToRemove tag that's been deselected by the user
+   */
+
   // there's some duplication in this code
   remove(tagToRemove: string): void {
     this.responsesService
@@ -227,6 +233,11 @@ export class ResponsesComponent implements OnInit {
 
     this.generatePossibleTags();
   }
+
+  /**
+   * User selects tag or tags and pushes to the database, reset the controller and generate list of unused tags
+   * @param event user added a tag
+   */
 
   // there's some duplication in this code
   add(event: MatChipInputEvent): void {
@@ -259,6 +270,12 @@ export class ResponsesComponent implements OnInit {
     this.tagCtrl.setValue(null);
     this.generatePossibleTags();
   }
+
+  /**
+   * User selects a tag from the list of unused and the list of unused tags is updated
+   * @param event
+   * @returns list of tags to push to server
+   */
 
   // There's some duplciation in this code
   selected(event: MatAutocompleteSelectedEvent): void {

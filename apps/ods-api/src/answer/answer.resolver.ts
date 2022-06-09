@@ -12,7 +12,7 @@ import {
   AnswerCreateInput,
   AnswerWhereUniqueInput,
   Question,
-  SurveyResponse,
+  FeedbackResponse,
 } from '@odst/types/ods';
 
 @Resolver(() => Answer)
@@ -44,10 +44,10 @@ export class AnswerResolver {
     return this.answerService.question({ id: answer.id });
   }
 
-  @ResolveField(() => SurveyResponse)
-  async surveyResponse(
+  @ResolveField(() => FeedbackResponse)
+  async feedbackResponse(
     @Parent() answer: Answer
-  ): Promise<SurveyResponse | null> {
-    return this.answerService.surveyResponse({ id: answer.id });
+  ): Promise<FeedbackResponse | null> {
+    return this.answerService.feedbackResponse({ id: answer.id });
   }
 }

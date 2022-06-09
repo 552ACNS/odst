@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { SurveyQuestionsService } from './survey-questions.service';
+import { FeedbackQuestionsService } from './feedback-questions.service';
 
 @Component({
-  selector: 'odst-survey-questions',
-  templateUrl: './survey-questions.component.html',
-  styleUrls: ['./survey-questions.component.scss'],
+  selector: 'odst-feedback-questions',
+  templateUrl: './feedback-questions.component.html',
+  styleUrls: ['./feedback-questions.component.scss'],
 })
-export class SurveyQuestionsComponent implements OnInit, OnDestroy {
+export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
   questions = [
     'What squadron did the event occur in?',
     'Please describe the event of a microaggression or discrimination that took place in your squadron. Please refrain from using names or identifying information.',
@@ -19,7 +19,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   ];
 
   questionIDs: string[];
-  surveyID?: string;
+  feedbackID?: string;
 
   outsideRouting = false;
   answers: string[];
@@ -34,7 +34,7 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private surveyService: SurveyQuestionsService
+    private feedbackService: FeedbackQuestionsService
   ) {}
 
   private violatorSpecification(): string {
@@ -69,8 +69,8 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
   });
 
   async ngOnInit() {
-    this.orgs = await this.surveyService.getOrgLineage();
-    this.CCs = await this.surveyService.getCommanders();
+    this.orgs = await this.feedbackService.getOrgLineage();
+    this.CCs = await this.feedbackService.getCommanders();
   }
   //TODO find out a way to fix without this
   outsideRoutingWorking(): boolean {
@@ -87,25 +87,25 @@ export class SurveyQuestionsComponent implements OnInit, OnDestroy {
     ];
 
     // TODO: Nested behaviors like this are hard to test.
-    this.surveyService
+    this.feedbackService
       .submitWithQuestions(this.questions, {
         name: '552 ACNS',
       })
       .subscribe(({ data }) => {
-        this.surveyID = data?.createSurveyWithQuestions.id;
-        this.surveyService
-          .getQuestionsFromSurvey(<string>this.surveyID)
+        this.feedbackID = data?.createFeedbackWithQuestions.id;
+        this.feedbackService
+          .getQuestionsFromFeedback(<string>this.feedbackID)
           .subscribe((data) => {
             this.questionIDs = data;
-            this.surveyService
-              .submitSurveyReponse(
+            this.feedbackService
+              .submitFeedbackReponse(
                 this.outsideRoutingWorking(),
                 this.answers,
                 this.questionIDs,
-                this.surveyID
+                this.feedbackID
               )
-              .subscribe(({ errors }) => {
-                this.submitSuccess = !errors;
+              .subscribe(({ errors, data }) => {
+                this.submitSuccess = !errors && !!data;
               });
           });
       });

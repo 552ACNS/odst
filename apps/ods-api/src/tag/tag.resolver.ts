@@ -4,7 +4,7 @@ import {
   Tag,
   // TagCreateInput,
   // TagWhereUniqueInput,
-  //SurveyResponse,
+  //FeedbackResponse,
 } from '@odst/types/ods';
 
 @Resolver(() => Tag)

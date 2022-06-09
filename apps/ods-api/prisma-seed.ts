@@ -305,14 +305,14 @@ async function main() {
   }
   //#endregion user admin
 
-  //#region survey
-  //delete existing test surveys
+  //#region feedback
+  //delete existing test feedbacks
   const orgNames = orgSeed.map((o) => {
     return { name: o.name };
   });
 
   try {
-    await prisma.survey.deleteMany({
+    await prisma.feedback.deleteMany({
       where: {
         orgs: {
           some: {

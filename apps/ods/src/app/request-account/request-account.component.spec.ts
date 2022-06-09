@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('SurveyQuestionsComponent', () => {
+describe('FeedbackQuestionsComponent', () => {
   let component: RequestAccountComponent;
   let fixture: ComponentFixture<RequestAccountComponent>;
 
@@ -35,7 +35,7 @@ describe('SurveyQuestionsComponent', () => {
   });
 
   // beforeEach(() => {
-  //   fixture = TestBed.createComponent(SurveyQuestionsComponent);
+  //   fixture = TestBed.createComponent(FeedbackQuestionsComponent);
   //   component = fixture.componentInstance;
   //   fixture.detectChanges();
   // });

@@ -15,12 +15,12 @@ const routes: Routes = [
       import('./responses/responses.module').then((m) => m.ResponsesModule),
     canActivate: [AuthGuard],
   },
-  //TODO: Change survey to report eventually
+  //TODO: Change feedback to report eventually
   {
-    path: 'survey',
+    path: 'feedback',
     loadChildren: () =>
-      import('./survey-questions/survey-questions.module').then(
-        (m) => m.SurveyQuestionsModule
+      import('./feedback-questions/feedback-questions.module').then(
+        (m) => m.FeedbackQuestionsModule
       ),
   },
   {

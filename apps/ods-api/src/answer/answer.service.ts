@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Answer, Prisma, Question, SurveyResponse } from '.prisma/ods/client';
+import { Answer, Prisma, Question, FeedbackResponse } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -68,11 +68,11 @@ export class AnswerService {
       .question();
   }
 
-  async surveyResponse(
+  async feedbackResponse(
     answerWhereUniqueInput: Prisma.AnswerWhereUniqueInput
-  ): Promise<SurveyResponse | null> {
+  ): Promise<FeedbackResponse | null> {
     return this.prisma.answer
       .findUnique({ where: answerWhereUniqueInput })
-      .surveyResponse();
+      .feedbackResponse();
   }
 }
