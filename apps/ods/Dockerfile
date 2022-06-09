@@ -15,9 +15,9 @@ RUN node ./decorate-angular-cli.js
 
 RUN yarn ngcc --properties es2015 browser module main
 
-RUN npx graphql-codegen --config graphql.codegen.yml
+RUN yarn graphql-codegen --config graphql.codegen.yml
 
-RUN npx nx build ${APP}
+RUN yarn nx build ${APP}
 
 
 # Second Stage

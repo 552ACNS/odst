@@ -17,7 +17,7 @@ ADD https://github.com/eficode/wait-for/releases/download/${WAIT_VERSION}/wait-f
 RUN chmod +x ./wait
 
 #migrate deploy, generate (because seed requires it), seed
-RUN echo "npx prisma migrate deploy && npx prisma generate && npx ts-node prisma-seed.prod.ts" > prisma.sh
+RUN echo "yarn prisma migrate deploy && yarn prisma generate && yarn ts-node prisma-seed.prod.ts" > prisma.sh
 
 RUN chmod +x prisma.sh
 
