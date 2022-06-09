@@ -61,6 +61,7 @@ describe('ods', () => {
     //window.localStorage.removeItem('refreshToken');
     cy.visit('/request-account');
     cy.location('pathname').should('include', '/request-account');
+    //creating person with the name 'e2e test'
     cy.get('[formcontrolname="firstName"]').type('e2e');
     cy.get('[formcontrolname="lastName"]').type('test');
     cy.get('[formcontrolname="email"]').type('e2etest@gmail.com');
@@ -88,7 +89,6 @@ describe('ods', () => {
   });
 
   it('should accept a new account', () => {
-    // We don't use this login method anymore, refer to cy.login
     cy.login('admin@admin.com', 'admin');
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-icon').contains('menu').click();
@@ -96,11 +96,13 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/requested-accounts');
     cy.reload(true);
 
-    // THis is not descriptive, nor clear what it's doing,
+    // Selects the account created above by finding the name and clicking on it
     cy.contains('td', 'e2e').click().wait('@graphql');
     cy.contains('div', 'e2e').wait('@graphql');
+    // Accepts the account
     cy.contains('button', 'Accept').click();
     cy.contains('td', 'e2e').should('not.exist');
+    // checks for confirmation of account acceptance
     cy.contains('simple-snack-bar', 'Account successfully approved').wait(
       '@graphql'
     );
