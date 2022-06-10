@@ -68,8 +68,12 @@ jobs:
       - run: yarn nx affected --target=lint --parallel
       # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
       - run: yarn nx affected --target=test --parallel
-      - name: Connect to postgres
+      - name: Migrate postgres database
         run: yarn nx run ods-api:prisma-migrate --configuration=test
+      - name: Run ODS backend
+        run: yarn nx serve ods-api
+      - name: Run E2E tests
+        run: ng e2e ods-e2e
       # - run: dotnet tool update -g dotnet-reportgenerator-globaltool
       #   continue-on-error: true
       # - name: Merge Test Coverage Results
