@@ -69,7 +69,7 @@ jobs:
       # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
       - run: yarn nx affected --target=test --parallel
       - name: Migrate postgres database
-        run: yarn nx run ods-api:prisma-migrate --configuration=test
+        run: yarn nx run ods-api:prisma-migrate
       - name: Run ODS backend
         run: yarn nx serve ods-api
       - name: Run E2E tests
