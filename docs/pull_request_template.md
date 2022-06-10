@@ -1,7 +1,6 @@
 ## Checklist:
 
 - [ ] I have performed a self-review of my code to ensure that unintended code is not introduced.
-- [ ] I have ran E2E tests to ensure existing e2e tests are passing.
 - [ ] I have commented my code, particularly in hard-to-understand areas to ensure that the next group of developers can understand my code.
 - [ ] I have made corresponding changes to the documentation if needed.
 - [ ] I have added tests that prove my fix/feature functions so that future modifications to the code do not break my additions.

@@ -1,4 +1,4 @@
-describe('ods', () => {
+describe('the dashboard', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
@@ -8,13 +8,18 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
     cy.location('pathname').should('include', '/feedback');
+
     cy.contains('span', 'Organization')
       .click()
       .wait('@graphql')
       .focused()
       .click({ force: true })
       .type('{enter}');
+
+    cy.get('body').click('topLeft');
+
     cy.get('[formcontrolname="event"]').type('Needs a test in resolved');
+
     cy.get('#mat-radio-5').click();
     cy.get('[formcontrolname="CC')
       .click()
