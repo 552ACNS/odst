@@ -19,6 +19,8 @@ describe('ods', () => {
       .click({ force: true })
       .type('{enter}');
 
+    // Cypress sometimes doesn't close the overlay for the selector,
+    // so you need to click outside the body
     cy.get('body').click('topLeft');
 
     cy.get('[formcontrolname="event"]').type('e2e Test');

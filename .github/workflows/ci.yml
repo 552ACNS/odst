@@ -84,6 +84,7 @@ jobs:
       #   continue-on-error: true
       - name: Upload artifacts
         uses: actions/upload-artifact@v2.2.3
+        # Always run this, even if something fails
         if: always()
         with:
           name: cypress e2e
