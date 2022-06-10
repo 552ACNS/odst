@@ -27,21 +27,37 @@ jobs:
       - run: yarn audit
   pr:
     runs-on: ubuntu-latest
+
     if: ${{ github.event_name == 'pull_request' }}
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: ods_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: H@CK3YITPL3ASE
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          cache: 'yarn'
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v2
         with:
           main-branch-name: master
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
       - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
       # - name: Setup .NET 6.x
@@ -63,25 +79,3 @@ jobs:
       #   uses: actions/upload-artifact@v2.2.3
       #   with:
       #     path: ./coverage/merged # Directory containing files to upload
-    container:
-      image: postgres:latest
-      credentials:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      ports:
-        - 8000:8000
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: H@CK3YITPL3ASE
-          POSTGRES_DB: ods_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
