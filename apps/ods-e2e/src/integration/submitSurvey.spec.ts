@@ -9,12 +9,14 @@ describe('ods', () => {
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
     cy.location('pathname').should('include', '/feedback');
 
-    cy.contains('span', 'Organization')
+    cy.get('[formcontrolname="eventOrg')
       .click()
       .wait('@graphql')
       .focused()
       .click({ force: true })
       .type('{enter}');
+
+    cy.get('body').click('left');
 
     // Cypress sometimes doesn't close the overlay for the selector,
     // so you need to click outside the body
