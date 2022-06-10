@@ -14,7 +14,9 @@ describe('ods', () => {
       .focused()
       .click({ force: true })
       .type('{enter}');
-    cy.get('[formcontrolname="event"]').type('Needs a test in resolved');
+    cy.get('[formcontrolname="event"]').type('Needs a test in resolved', {
+      force: true,
+    });
     cy.get('#mat-radio-5').click();
     cy.get('[formcontrolname="CC')
       .click()
