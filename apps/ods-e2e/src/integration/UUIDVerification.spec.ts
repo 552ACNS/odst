@@ -12,16 +12,15 @@ describe('ods', () => {
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
     cy.location('pathname').should('include', '/feedback');
 
-    cy.get('mat-form-field').contains('Organization').click().click();
+    cy.contains('span', 'Organization')
+      .click()
+      .wait('@graphql')
+      .focused()
+      .click({ force: true })
+      .type('{enter}');
 
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.get('body').click('topLeft');
 
-    cy.contains('span', '552 ACW').click();
-
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
-    cy.get('#cdk-overlay-0').should('not.be.visible', { timeout: 5000 });
     cy.get('[formcontrolname="event"]').type('e2e Test');
     cy.get('#mat-radio-5').click();
     cy.get('[formcontrolname="CC')

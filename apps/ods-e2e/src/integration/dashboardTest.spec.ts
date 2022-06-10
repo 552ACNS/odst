@@ -9,8 +9,14 @@ describe('ods', () => {
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
     cy.location('pathname').should('include', '/feedback');
 
-    cy.get('mat-form-field').contains('Organization').click().click();
-    cy.contains('span', '552 ACW').click();
+    cy.contains('span', 'Organization')
+      .click()
+      .wait('@graphql')
+      .focused()
+      .click({ force: true })
+      .type('{enter}');
+
+    cy.get('body').click('topLeft');
 
     cy.get('[formcontrolname="event"]').type('Needs a test in resolved');
 
