@@ -29,4 +29,6 @@ WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/dist/apps/${APP} /usr/share/nginx/html
 
+RUN sed -i '/location \/ {/a \\ttry_files $uri $uri\/ \/index.html;' /etc/nginx/conf.d/default.conf
+
 CMD ["nginx", "-g", "daemon off;"]
