@@ -68,6 +68,8 @@ jobs:
       - run: yarn nx affected --target=lint --parallel
       # # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
       - run: yarn nx affected --target=test --parallel
+
+      # TODO: Only e2e test affected modules
       - name: Migrate postgres database
         run: yarn nx run ods-api:prisma-migrate --skip-generate
       - name: start the backend
@@ -80,7 +82,7 @@ jobs:
       # - name: Merge Test Coverage Results
       #   run: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:TextSummary;"
       #   continue-on-error: true
-      - name: Upload coverage report artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v2.2.3
         if: always()
         with:
