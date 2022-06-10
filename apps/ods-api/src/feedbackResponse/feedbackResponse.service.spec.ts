@@ -1,21 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
-import { SurveyResponseService } from './surveyResponse.service';
+import { FeedbackResponseService } from './feedbackResponse.service';
 import {
-  MockSurveyResponseCreateInput,
-  MockSurveyResponses,
+  MockFeedbackResponseCreateInput,
+  MockFeedbackResponses,
   MockUsers,
-} from './surveyResponse.repo';
+} from './feedbackResponse.repo';
 import { User } from '@odst/types/ods';
 import { MockOrgs } from '../org/org.repo';
 
 const db = {
-  surveyResponse: {
-    findMany: jest.fn().mockResolvedValue(MockSurveyResponses),
-    findUnique: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
-    create: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
-    update: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
-    delete: jest.fn().mockResolvedValue(MockSurveyResponses[0]),
+  feedbackResponse: {
+    findMany: jest.fn().mockResolvedValue(MockFeedbackResponses),
+    findUnique: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
+    create: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
+    update: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
+    delete: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
   },
   // Org is used to find the orgs that the user can see
   org: {
@@ -23,14 +23,14 @@ const db = {
   },
 };
 
-describe('SurveyResponseService', () => {
-  let service: SurveyResponseService;
+describe('FeedbackResponseService', () => {
+  let service: FeedbackResponseService;
   let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        SurveyResponseService,
+        FeedbackResponseService,
         {
           provide: PrismaService,
           useValue: db,
@@ -38,7 +38,7 @@ describe('SurveyResponseService', () => {
       ],
     }).compile();
 
-    service = module.get<SurveyResponseService>(SurveyResponseService);
+    service = module.get<FeedbackResponseService>(FeedbackResponseService);
     prisma = module.get<PrismaService>(PrismaService);
   });
 
@@ -48,8 +48,10 @@ describe('SurveyResponseService', () => {
 
   describe('findMany', () => {
     it('should return a list of responses', async () => {
-      const surveyResponses = await service.findMany(new User(), { where: {} });
-      expect(surveyResponses).toEqual(MockSurveyResponses);
+      const feedbackResponses = await service.findMany(new User(), {
+        where: {},
+      });
+      expect(feedbackResponses).toEqual(MockFeedbackResponses);
     });
 
     it('should call the restrictor', async () => {
@@ -62,29 +64,29 @@ describe('SurveyResponseService', () => {
   });
 
   describe('findUnique', () => {
-    it('should get a single surveyResponse', async () => {
+    it('should get a single feedbackResponse', async () => {
       expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
-        MockSurveyResponses[0]
+        MockFeedbackResponses[0]
       );
     });
   });
 
   describe('create', () => {
     it('should call the create method', async () => {
-      const surveyResponse = await service.create(
-        MockSurveyResponseCreateInput[0]
+      const feedbackResponse = await service.create(
+        MockFeedbackResponseCreateInput[0]
       );
-      expect(surveyResponse).toEqual(MockSurveyResponses[0]);
+      expect(feedbackResponse).toEqual(MockFeedbackResponses[0]);
     });
   });
 
   describe('update', () => {
     it('should call the update method', async () => {
-      const surveyResponse = await service.update(
+      const feedbackResponse = await service.update(
         { id: 'a uuid' },
-        MockSurveyResponseCreateInput[0]
+        MockFeedbackResponseCreateInput[0]
       );
-      expect(surveyResponse).toEqual(MockSurveyResponses[0]);
+      expect(feedbackResponse).toEqual(MockFeedbackResponses[0]);
     });
   });
 
@@ -97,7 +99,7 @@ describe('SurveyResponseService', () => {
 
     it('should return {deleted: false, message: err.message}', async () => {
       jest
-        .spyOn(prisma.surveyResponse, 'delete')
+        .spyOn(prisma.feedbackResponse, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
 
       await expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
@@ -109,18 +111,18 @@ describe('SurveyResponseService', () => {
 
   describe('determine status', () => {
     it('should return an overdue status condition check', async () => {
-      const surveyResponse = service.determineStatus('overdue');
-      expect(surveyResponse.resolved).toEqual(false);
-      expect(surveyResponse.openedDate).toBeDefined();
+      const feedbackResponse = service.determineStatus('overdue');
+      expect(feedbackResponse.resolved).toEqual(false);
+      expect(feedbackResponse.openedDate).toBeDefined();
     });
     it('should return an unresolved status condition check', async () => {
-      const surveyResponse = service.determineStatus('unresolved');
-      expect(surveyResponse.resolved).toEqual(false);
-      expect(surveyResponse.openedDate).toBeUndefined();
+      const feedbackResponse = service.determineStatus('unresolved');
+      expect(feedbackResponse.resolved).toEqual(false);
+      expect(feedbackResponse.openedDate).toBeUndefined();
     });
     it('should return a resolved status condition check', async () => {
-      const surveyResponse = service.determineStatus('resolved');
-      expect(surveyResponse.resolved).toEqual(true);
+      const feedbackResponse = service.determineStatus('resolved');
+      expect(feedbackResponse.resolved).toEqual(true);
     });
   });
 
@@ -128,55 +130,55 @@ describe('SurveyResponseService', () => {
     it('should return reports that are resolved', async () => {
       // return a json body of string IDs
       jest
-        .spyOn(prisma.surveyResponse, 'findMany')
-        .mockResolvedValue(MockSurveyResponses.filter((x) => !!x.resolved));
+        .spyOn(prisma.feedbackResponse, 'findMany')
+        .mockResolvedValue(MockFeedbackResponses.filter((x) => !!x.resolved));
 
-      const surveyResponse = await service.getIssuesByStatus(
+      const feedbackResponse = await service.getIssuesByStatus(
         'resolved',
         MockUsers[0]
       );
 
-      expect(surveyResponse).toHaveLength(2);
-      expect(surveyResponse[0]).toBe('SurveyResponse id 1');
-      expect(surveyResponse[1]).toBe('SurveyResponse id 2');
+      expect(feedbackResponse).toHaveLength(2);
+      expect(feedbackResponse[0]).toBe('FeedbackResponse id 1');
+      expect(feedbackResponse[1]).toBe('FeedbackResponse id 2');
     });
 
     it('should return reports that are unresolved', async () => {
       // return a json body of string IDs
       jest
-        .spyOn(prisma.surveyResponse, 'findMany')
-        .mockResolvedValue(MockSurveyResponses.filter((x) => !x.resolved));
+        .spyOn(prisma.feedbackResponse, 'findMany')
+        .mockResolvedValue(MockFeedbackResponses.filter((x) => !x.resolved));
 
-      const surveyResponse = await service.getIssuesByStatus(
+      const feedbackResponse = await service.getIssuesByStatus(
         'unresolved',
         MockUsers[0]
       );
 
-      expect(surveyResponse).toHaveLength(2);
-      expect(surveyResponse[0]).toBe('SurveyResponse id 3');
-      expect(surveyResponse[1]).toBe('SurveyResponse id 4');
+      expect(feedbackResponse).toHaveLength(2);
+      expect(feedbackResponse[0]).toBe('FeedbackResponse id 3');
+      expect(feedbackResponse[1]).toBe('FeedbackResponse id 4');
     });
 
     it('should return reports that are overdue', async () => {
       const compareDate = new Date(Date.now() - 2592000000);
       // return a json body of string IDs
       jest
-        .spyOn(prisma.surveyResponse, 'findMany')
+        .spyOn(prisma.feedbackResponse, 'findMany')
         .mockResolvedValue(
-          MockSurveyResponses.filter((x) => x.openedDate < compareDate)
+          MockFeedbackResponses.filter((x) => x.openedDate < compareDate)
         );
 
-      const surveyResponse = await service.getIssuesByStatus(
+      const feedbackResponse = await service.getIssuesByStatus(
         'overdue',
         MockUsers[0]
       );
 
-      expect(surveyResponse).toHaveLength(1);
-      expect(surveyResponse[0]).toBe('SurveyResponse id 4');
+      expect(feedbackResponse).toHaveLength(1);
+      expect(feedbackResponse[0]).toBe('FeedbackResponse id 4');
     });
 
     it('should return reports using unresolved status', async () => {
-      const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+      const spy = jest.spyOn(prisma.feedbackResponse, 'findMany');
 
       await service.getIssuesByStatus('unresolved', MockUsers[0]);
 
@@ -194,7 +196,7 @@ describe('SurveyResponseService', () => {
     });
 
     it('should return reports using resolved status', async () => {
-      const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+      const spy = jest.spyOn(prisma.feedbackResponse, 'findMany');
 
       await service.getIssuesByStatus('resolved', MockUsers[0]);
 
@@ -213,7 +215,7 @@ describe('SurveyResponseService', () => {
 
     // this is a bad test, date now is changing
     // it('should return reports using overdue status', async () => {
-    //   const spy = jest.spyOn(prisma.surveyResponse, 'findMany');
+    //   const spy = jest.spyOn(prisma.feedbackResponse, 'findMany');
 
     //   await service.getIssuesByStatus('overdue', MockUsers[0]);
 

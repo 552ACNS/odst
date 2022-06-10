@@ -63,7 +63,7 @@ describe('QuestionService', () => {
       const question = await service.update(
         { id: 'a uuid' },
         {
-          surveys: { connect: { id: 'survey id' } },
+          feedbacks: { connect: { id: 'feedback id' } },
         }
       );
       expect(question).toEqual(MockQuestions[0]);
@@ -89,7 +89,7 @@ describe('QuestionService', () => {
   });
 });
 
-//   it('should find all questions from a specific survey', async () => {
-//     const result = service.findQuestionsInSurvey('survey1');
+//   it('should find all questions from a specific feedback', async () => {
+//     const result = service.findQuestionsInFeedback('feedback1');
 //   });
 // });
