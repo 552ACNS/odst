@@ -1,4 +1,4 @@
-describe('ods', () => {
+describe('the dashboard', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
