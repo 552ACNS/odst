@@ -13,6 +13,10 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/feedback');
 
     cy.get('mat-form-field').contains('Organization').click().click();
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+
     cy.contains('span', '552 ACW').click();
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
