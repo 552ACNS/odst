@@ -5,7 +5,6 @@ import { MockQuestionCreateInput, MockQuestions } from './question.repo';
 
 describe('Question Resolver', () => {
   let resolver: QuestionResolver;
-  let service: QuestionService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,7 +31,6 @@ describe('Question Resolver', () => {
     }).compile();
 
     resolver = module.get<QuestionResolver>(QuestionResolver);
-    service = module.get<QuestionService>(QuestionService);
   });
 
   it('should be defined', () => {

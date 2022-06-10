@@ -157,6 +157,7 @@ export class FeedbackResponseService {
     );
     // TODO: Redo with try catch
     //Will silently fail if delete isn't cascaded properly
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [deleteAnswers, deleteFeedbackResponses] =
       await this.prisma.$transaction([
         this.prisma.answer.deleteMany({
