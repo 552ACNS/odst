@@ -1,14 +1,13 @@
-## Checklist:
-
-- [ ] I have performed a self-review of my code to ensure that unintended code is not introduced.
-- [ ] I have commented my code, particularly in hard-to-understand areas to ensure that the next group of developers can understand my code.
-- [ ] I have made corresponding changes to the documentation if needed.
-- [ ] I have added tests that prove my fix/feature functions so that future modifications to the code do not break my additions.
-
 ## Description
 
 - Please include a summary of the changes and the related issue.
 - List any NEW dependencies that are required for this change.
+
+## Checklist:
+
+- [ ] I have performed a self-review of my code to ensure that unintended code is not introduced.
+- [ ] I have commented my code, particularly in hard-to-understand areas to ensure that the next group of developers can understand my code.
+- [ ] I have added tests that prove my fix/feature functions so that future modifications to the code do not break my additions.
 
 ## Type of change
 
@@ -19,7 +18,7 @@
 
 ## How Has This Been Tested?
 
-Describe the tests that you created to tests your changes
+Describe the tests that you created to tests your changes. Use N/A if no tests were created.
 
 - Test A
 - Test B
