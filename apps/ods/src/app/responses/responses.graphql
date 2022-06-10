@@ -79,3 +79,10 @@ mutation modifyTag(
     }
   }
 }
+
+query GetAllTags {
+  getTags {
+    value
+    type
+  }
+}

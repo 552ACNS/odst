@@ -78,24 +78,33 @@ const orgSeed: Prisma.OrgCreateInput[] = [
 ];
 
 const tagSeed: Prisma.TagCreateInput[] = [
-  { value: 'Gender' },
-  { value: 'Sexism' },
-  { value: 'Race' },
-  { value: 'Racism' },
-  { value: 'Sexuality' },
-  { value: 'Gender Identity' },
-  { value: 'Religion' },
-  { value: 'Mental Health' },
-  { value: 'Minority' },
-  { value: 'Marginalized' },
-  { value: 'Mental Illness' },
-  { value: 'Rank' },
-  { value: 'Observed' },
-  { value: 'Experienced' },
-  { value: 'Other' },
-  { value: 'Harassment' },
-  { value: 'Assault' },
-  { value: 'Discrimination' },
+  // Data tracking tags
+  { value: 'Gender', type: 'DataTracking' },
+  { value: 'Sexism', type: 'DataTracking' },
+  { value: 'Race', type: 'DataTracking' },
+  { value: 'Racism', type: 'DataTracking' },
+  { value: 'Sexuality', type: 'DataTracking' },
+  { value: 'Gender Identity', type: 'DataTracking' },
+  { value: 'Religion', type: 'DataTracking' },
+  { value: 'Mental Health', type: 'DataTracking' },
+  { value: 'Minority', type: 'DataTracking' },
+  { value: 'Marginalized', type: 'DataTracking' },
+  { value: 'Mental Illness', type: 'DataTracking' },
+  { value: 'Rank', type: 'DataTracking' },
+  { value: 'Observed', type: 'DataTracking' },
+  { value: 'Experienced', type: 'DataTracking' },
+  { value: 'Other', type: 'DataTracking' },
+  { value: 'Harassment', type: 'DataTracking' },
+  { value: 'Assault', type: 'DataTracking' },
+  { value: 'Discrimination', type: 'DataTracking' },
+
+  // Action tags
+  { value: 'Addressed in organizational all-call', type: 'Action' },
+  { value: 'Spoke with organizational leadership', type: 'Action' },
+  { value: 'Brought in external agency to educate', type: 'Action' },
+  { value: 'Offered educational workshops', type: 'Action' },
+  { value: 'Distributed educational material', type: 'Action' },
+  { value: 'Routed up the chain of command', type: 'Action' },
 ];
 
 async function main() {
@@ -135,6 +144,7 @@ async function main() {
         },
         create: {
           value: tag.value,
+          type: tag.type,
         },
       });
     } catch (e) {

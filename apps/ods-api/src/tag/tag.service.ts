@@ -1,18 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Tag, Prisma, FeedbackResponse } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { Tag } from '.prisma/ods/client';
 
 @Injectable()
 export class TagService {
   constructor(private prisma: PrismaService) {}
 
-  async getTags(): Promise<string[]> {
-    const tags = await this.prisma.tag.findMany({
-      select: {
-        value: true,
-      },
-    });
-
-    return tags.map((tag) => tag.value);
+  async getTags(): Promise<Tag[]> {
+    return this.prisma.tag.findMany();
   }
 }

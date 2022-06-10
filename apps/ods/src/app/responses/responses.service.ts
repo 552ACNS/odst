@@ -18,6 +18,9 @@ import {
   ModifyTagMutationVariables,
   ModifyTagMutation,
   ModifyTagDocument,
+  GetAllTagsQueryVariables,
+  GetAllTagsQuery,
+  GetAllTagsDocument,
 } from './responses.generated';
 
 @Injectable({
@@ -41,26 +44,9 @@ export class ResponsesService {
   }
 
   getTags() {
-    return [
-      'Gender',
-      'Sexism',
-      'Race',
-      'Racism',
-      'Sexuality',
-      'Gender Identity',
-      'Religion',
-      'Mental Health',
-      'Minority',
-      'Marginalized',
-      'Mental Illness',
-      'Rank',
-      'Observed',
-      'Experienced',
-      'Other',
-      'Harassment',
-      'Assault',
-      'Discrimination',
-    ];
+    return this.apollo.watchQuery<GetAllTagsQuery, GetAllTagsQueryVariables>({
+      query: GetAllTagsDocument,
+    }).valueChanges;
   }
 
   addComment(addCommentMutationVariables: AddCommentMutationVariables) {

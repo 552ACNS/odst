@@ -28,7 +28,7 @@ export class ResponsesComponent implements OnInit {
 
   selectedTags: string[] | undefined = [];
 
-  allTags: string[] = [];
+  allTags;
 
   constructor(
     private fb: FormBuilder,
@@ -66,7 +66,10 @@ export class ResponsesComponent implements OnInit {
   async ngOnInit() {
     this.userId = getUserId(getRefreshToken() ?? '');
 
-    this.allTags = this.responsesService.getTags();
+    this.allTags = this.responsesService.getTags().subscribe(({ data }) => {
+      this.allTags = data.getTags;
+    });
+
     this.generatePossibleTags();
 
     // Get resolved value form route params
@@ -93,9 +96,9 @@ export class ResponsesComponent implements OnInit {
    * Creates a list of tags that can be added by filtering out those already in use
    */
   generatePossibleTags() {
-    this.possibleTags = this.allTags.filter(
-      (tag) => !this.selectedTags?.includes(tag)
-    );
+    // this.possibleTags = this.allTags.filter(
+    //   (tag) => !this.selectedTags?.includes(tag)
+    // );
 
     const input = this.tagInput?.nativeElement.value.trim().toLowerCase();
 
@@ -200,7 +203,9 @@ export class ResponsesComponent implements OnInit {
       }
     );
   }
-
+  Test() {
+    console.log(this.allTags);
+  }
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
       //TODO rewrite with proper pagination
