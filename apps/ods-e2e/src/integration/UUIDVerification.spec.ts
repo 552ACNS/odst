@@ -12,7 +12,7 @@ describe('ods', () => {
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
     cy.location('pathname').should('include', '/feedback');
 
-    cy.contains('span', 'Organization')
+    cy.get('[formcontrolname="eventOrg"')
       .click()
       .wait('@graphql')
       .focused()
