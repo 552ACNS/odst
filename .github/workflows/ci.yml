@@ -58,25 +58,32 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile --prefer-offline
-      - run: yarn audit
-      # - name: Setup .NET 6.x
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #     # Semantic version range syntax or exact version of a dotnet version
-      #     dotnet-version: '6.x'
-      - run: yarn nx affected --target=lint --parallel
-      # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
-      - run: yarn nx affected --target=test --parallel
+      # - run: yarn install
+      # - run: yarn audit
+      # # - name: Setup .NET 6.x
+      # #   uses: actions/setup-dotnet@v1
+      # #   with:
+      # #     # Semantic version range syntax or exact version of a dotnet version
+      # #     dotnet-version: '6.x'
+      # - run: yarn nx affected --target=lint --parallel
+      # # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
+      # - run: yarn nx affected --target=test --parallel
       - name: Migrate postgres database
         run: yarn nx run ods-api:prisma-migrate --skip-generate
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
-        with:
-          project: './apps/ods-e2e'
-          start: yarn nx serve ods-api
-          build: yarn nx build ods
-          wait-on: 'http://localhost:3343/graphql'
+
+      # - name: Cypress run
+      #   uses: cypress-io/github-action@v4
+      #   with:
+      #     project: './apps/ods-e2e'
+      #     start: yarn nx serve ods-api
+      #     build: yarn nx build ods
+      #     wait-on: 'http://localhost:3343/graphql'
+
+      - name: start backend
+        run: yarn nx serve ods-api &
+      - name: run cypress
+        run: yarn nx e2e ods-e2e
+
       # - name: Run ODS backend
       #   run: yarn nx serve ods-api
       # - name: Run E2E tests
