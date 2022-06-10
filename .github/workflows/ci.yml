@@ -58,7 +58,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
-      - run: yarn install
+      - run: yarn install --frozen-lockfile --prefer-offline
       # - run: yarn audit
       # # - name: Setup .NET 6.x
       # #   uses: actions/setup-dotnet@v1
@@ -93,7 +93,10 @@ jobs:
       # - name: Merge Test Coverage Results
       #   run: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:TextSummary;"
       #   continue-on-error: true
-      # - name: Upload coverage report artifact
-      #   uses: actions/upload-artifact@v2.2.3
-      #   with:
-      #     path: ./coverage/merged # Directory containing files to upload
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v2.2.3
+        if: always()
+        with:
+          name: cypress e2e
+          path: ./dist/cypress/apps
+          # path: ./coverage/merged # Directory containing files to upload
