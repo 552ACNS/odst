@@ -11,12 +11,10 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
     cy.location('pathname').should('include', '/feedback');
-    cy.contains('span', 'Organization')
-      .click()
-      .wait('@graphql')
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
+
+    cy.get('mat-form-field').contains('Organization').click().click();
+    cy.contains('span', '552 ACW').click();
+
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     cy.get('#cdk-overlay-0').should('not.be.visible', { timeout: 5000 });

@@ -8,15 +8,12 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
     cy.location('pathname').should('include', '/feedback');
-    cy.contains('span', 'Organization')
-      .click()
-      .wait('@graphql')
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
-    cy.get('[formcontrolname="event"]').type('Needs a test in resolved', {
-      force: true,
-    });
+
+    cy.get('mat-form-field').contains('Organization').click().click();
+    cy.contains('span', '552 ACW').click();
+
+    cy.get('[formcontrolname="event"]').type('Needs a test in resolved');
+
     cy.get('#mat-radio-5').click();
     cy.get('[formcontrolname="CC')
       .click()
