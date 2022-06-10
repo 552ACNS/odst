@@ -11,17 +11,26 @@ generator client {
   output   = "../../node_modules/.prisma/ods/client"
 }
 
+generator nestgraphql {
+  provider    = "prisma-nestjs-graphql"
+  output      = "../../libs/types/ods/src"
+  purgeOutput = true
+  reExport    = All
+}
+
 model User {
   id           String        @id @default(uuid())
   email        String        @unique
+  /// @HideField()
   password     String
-  enabled      Boolean       @default(true)
-  grade         String?
+  enabled      Boolean       @default(false)
+  grade        String?
   firstName    String
   lastName     String
   role         Role
   refreshToken RefreshToken?
   orgs         Org[]
+  comments     Comment[]
 }
 
 model RefreshToken {
@@ -35,55 +44,72 @@ model RefreshToken {
 }
 
 model Org {
-  id       String   @id @default(uuid())
-  name     String   @unique // Example "552 ACNS"
-  orgTier  OrgTier
-  users    User[]
-  parentId String? // a parent org can have many child orgs
-  parent   Org?     @relation(name: "ParentChild", fields: [parentId], references: [id])
-  children Org[]    @relation(name: "ParentChild") // This is a self relation
-  surveys  Survey[]
+  id        String     @id @default(uuid())
+  name      String     @unique // Example "552 ACNS"
+  orgTier   OrgTier
+  users     User[]
+  parentId  String? // a parent org can have many child orgs
+  parent    Org?       @relation(name: "ParentChild", fields: [parentId], references: [id])
+  children  Org[]      @relation(name: "ParentChild") // This is a self relation
+  feedbacks Feedback[]
 }
 
-model SurveyResponse {
+model FeedbackResponse {
   id           String    @id @default(uuid())
-  survey       Survey    @relation(fields: [surveyId], references: [id])
-  surveyId     String
+  feedback     Feedback  @relation(fields: [feedbackId], references: [id])
+  feedbackId   String
   openedDate   DateTime  @default(now())
   closedDate   DateTime?
   answers      Answer[]
   routeOutside Boolean   @default(false)
-  resolution   String?
+  tags         Tag[]
+  comments     Comment[]
+  resolved     Boolean   @default(false)
+}
+
+model Comment {
+  id                 String            @id @default(uuid())
+  value              String
+  date               DateTime          @default(now())
+  author             User              @relation(fields: [authorId], references: [id])
+  authorId           String
+  FeedbackResponse   FeedbackResponse? @relation(fields: [feedbackResponseId], references: [id])
+  feedbackResponseId String
 }
 
 model Answer {
-  id               String         @id @default(uuid())
-  value            String
-  question         Question       @relation(fields: [questionId], references: [id])
-  questionId       String
-  surveyResponse   SurveyResponse @relation(fields: [surveyResponseId], references: [id])
-  surveyResponseId String
+  id                 String           @id @default(uuid())
+  value              String
+  question           Question         @relation(fields: [questionId], references: [id])
+  questionId         String
+  feedbackResponse   FeedbackResponse @relation(fields: [feedbackResponseId], references: [id])
+  feedbackResponseId String
 }
 
-model Survey {
-  id              String           @id @default(uuid())
-  orgs            Org[]
-  questions       Question[]
-  questionsHash   String?          @unique
-  surveyResponses SurveyResponse[]
+model Feedback {
+  id                String             @id @default(uuid())
+  orgs              Org[]
+  questions         Question[]
+  questionsHash     String?            @unique
+  feedbackResponses FeedbackResponse[]
 }
 
 model Question {
-  id      String   @id @default(uuid())
-  prompt  String   @unique
-  surveys Survey[]
-  answers Answer[]
+  id        String     @id @default(uuid())
+  value    String     @unique
+  feedbacks Feedback[]
+  answers   Answer[]
+}
+
+model Tag {
+  id                String             @id @default(uuid())
+  value             String             @unique
+  feedbackResponses FeedbackResponse[]
 }
 
 enum Role {
   ADMIN
   DEI // Diversity, Equity, Inclusion
-  EO // Equal Opportunity
   CC // Commander
 }
 

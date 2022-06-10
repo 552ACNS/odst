@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Question, Prisma, Survey, Answer } from '.prisma/ods/client';
+import { Question, Prisma, Feedback, Answer } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -23,14 +23,14 @@ export class QuestionService {
     });
   }
 
-  //Find all the questions that are in a survey
-  async findQuestionsInSurvey(
-    surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput
+  //Find all the questions that are in a feedback
+  async findQuestionsInFeedback(
+    feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
   ): Promise<Question[]> {
     return this.prisma.question.findMany({
       where: {
-        surveys: {
-          every: surveyWhereUniqueInput,
+        feedbacks: {
+          every: feedbackWhereUniqueInput,
         },
       },
     });
@@ -81,11 +81,11 @@ export class QuestionService {
       .answers();
   }
 
-  async surveys(
+  async feedbacks(
     questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput
-  ): Promise<Survey[]> {
+  ): Promise<Feedback[]> {
     return this.prisma.question
       .findUnique({ where: questionWhereUniqueInput })
-      .surveys();
+      .feedbacks();
   }
 }

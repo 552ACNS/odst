@@ -5,12 +5,13 @@ import { MockOrgCreateInput, MockOrgs } from './org.repo';
 
 const db = {
   org: {
-    findMany: jest.fn().mockReturnValue(MockOrgs),
+    getOrgNames: jest.fn().mockReturnValue(MockOrgs.map((orgs) => orgs.name)),
     getSubOrgs: jest.fn().mockReturnValue(MockOrgs),
     findUnique: jest.fn().mockResolvedValue(MockOrgs[0]),
     create: jest.fn().mockResolvedValue(MockOrgs[0]),
     update: jest.fn().mockResolvedValue(MockOrgs[0]),
     delete: jest.fn().mockResolvedValue(MockOrgs[0]),
+    findMany: jest.fn().mockResolvedValue(MockOrgs),
   },
 };
 
@@ -37,16 +38,16 @@ describe('OrgService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('findMany', () => {
+  describe('getOrgNames', () => {
     it('should return an array of orgs', async () => {
-      const orgs = await service.findMany({});
-      expect(orgs).toEqual(MockOrgs);
+      const orgs = await service.getOrgNames();
+      expect(orgs).toEqual(MockOrgs.map((orgs) => orgs.name));
     });
   });
 
   describe('getSubOrgs', () => {
     it('should call the getSubOrgs method', async () => {
-      const org = await service.getSubOrgs({ id: 'a uuid' });
+      const org = await service.getAllChildren({ id: 'a uuid' });
       expect(org).toEqual(MockOrgs);
     });
   });
@@ -69,9 +70,9 @@ describe('OrgService', () => {
   describe('update', () => {
     it('should call the update method', async () => {
       const org = await service.update(
-        { id: 'a uuid' },
+        { orgTier: 'WING' },
         {
-          orgTier: 'WING',
+          name: 'a new name',
         }
       );
       expect(org).toEqual(MockOrgs[0]);

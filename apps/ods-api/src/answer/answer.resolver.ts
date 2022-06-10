@@ -8,46 +8,46 @@ import {
 } from '@nestjs/graphql';
 import { AnswerService } from './answer.service';
 import {
-  AnswerGQL,
+  Answer,
   AnswerCreateInput,
   AnswerWhereUniqueInput,
-  QuestionGQL,
-  SurveyResponseGQL,
+  Question,
+  FeedbackResponse,
 } from '@odst/types/ods';
 
-@Resolver(() => AnswerGQL)
+@Resolver(() => Answer)
 export class AnswerResolver {
   constructor(private readonly answerService: AnswerService) {}
 
-  @Query(() => [AnswerGQL], { name: 'findManyAnswers' })
-  async findMany(): Promise<AnswerGQL[]> {
+  @Query(() => [Answer], { name: 'findManyAnswers' })
+  async findMany(): Promise<Answer[]> {
     return this.answerService.findMany({});
   }
 
-  @Query(() => AnswerGQL, { name: 'findUniqueAnswer' })
+  @Query(() => Answer, { name: 'findUniqueAnswer' })
   async findUnique(
     @Args('answerWhereUniqueInput')
     answerWhereUniqueInput: AnswerWhereUniqueInput
-  ): Promise<AnswerGQL | null> {
+  ): Promise<Answer | null> {
     return this.answerService.findUnique(answerWhereUniqueInput);
   }
 
-  @Mutation(() => AnswerGQL, { name: 'createAnswer' })
+  @Mutation(() => Answer, { name: 'createAnswer' })
   create(
     @Args('answerCreateInput') answerCreateInput: AnswerCreateInput
-  ): Promise<AnswerGQL> {
+  ): Promise<Answer> {
     return this.answerService.create(answerCreateInput);
   }
 
-  @ResolveField(() => QuestionGQL)
-  async question(@Parent() answer: AnswerGQL): Promise<QuestionGQL | null> {
+  @ResolveField(() => Question)
+  async question(@Parent() answer: Answer): Promise<Question | null> {
     return this.answerService.question({ id: answer.id });
   }
 
-  @ResolveField(() => SurveyResponseGQL)
-  async surveyResponse(
-    @Parent() answer: AnswerGQL
-  ): Promise<SurveyResponseGQL | null> {
-    return this.answerService.surveyResponse({ id: answer.id });
+  @ResolveField(() => FeedbackResponse)
+  async feedbackResponse(
+    @Parent() answer: Answer
+  ): Promise<FeedbackResponse | null> {
+    return this.answerService.feedbackResponse({ id: answer.id });
   }
 }

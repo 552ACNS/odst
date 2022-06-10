@@ -41,12 +41,12 @@ export class LoginComponent implements OnInit {
         this.loginForm.value['userPassword']
       )
       .subscribe(({ data, errors, loading }) => {
-        if (loading) {
-          this.passwordError = false;
-        }
-        if (errors) {
-          this.passwordError = true;
-        }
+        // check if the page is loading
+        this.passwordError = !loading;
+
+        // check if page has errors
+        this.passwordError = !!errors;
+
         if (data) {
           setAccessToken(data.login.accessToken);
           // if (this.loginForm.value['rememberMe']) {
@@ -55,10 +55,20 @@ export class LoginComponent implements OnInit {
           // if it's true, it should get a refreshToken with a high time to live
           // }
 
-          this.router.navigate(['dashboard']);
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+
+          this.router.onSameUrlNavigation = 'reload';
+
+          this.router.navigate(['dashboard']).then(() => {
+            window.location.reload();
+          });
         }
-        //TODO Need to consider redirect attacks
-        this.router.navigateByUrl(this.returnUrl);
+        //added allow list with defined acceptable results
+        const allowList = ['/dashboard', '/login'];
+        if (allowList.includes(this.returnUrl)) {
+          this.router.navigateByUrl(this.returnUrl);
+        }
+        // TODO: add an else condition to redirect to error page when implemented.
       });
   }
 }

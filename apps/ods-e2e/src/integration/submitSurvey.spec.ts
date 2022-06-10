@@ -2,19 +2,12 @@ describe('ods', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
-  before(() => {
-    //TODO: Implement when login is a thing.
-    //   cy.visit('/login');
-    //   cy.get('[formcontrolname="userUsername"]').type('admin');
-    //   cy.get('[formcontrolname="userPassword"]').type('admin');
-    //   cy.get('odst-login').find('button').contains('Sign In').click();
-    //   cy.location('pathname').should('include', '/home');
-  });
+
   it('should submit a new report', () => {
     cy.visit('/disclaimer');
     cy.location('pathname').should('include', '/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
-    cy.location('pathname').should('include', '/survey');
+    cy.location('pathname').should('include', '/feedback');
     cy.contains('span', 'Organization')
       .click()
       .wait('@graphql')
@@ -23,7 +16,7 @@ describe('ods', () => {
       .type('{enter}');
     cy.get('[formcontrolname="event"]').type('e2e Test');
     cy.get('#mat-radio-3').click();
-    cy.get('[formcontrolname="CC')
+    cy.get('[formcontrolname="CC"]')
       .click()
       .wait('@graphql')
       .focused()

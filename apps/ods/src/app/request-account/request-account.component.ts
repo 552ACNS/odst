@@ -72,7 +72,7 @@ export class RequestAccountComponent implements OnInit {
     private requestService: RequestAccountService
   ) {}
   async ngOnInit(): Promise<void> {
-    this.orgs = await this.requestService.getManyOrgs();
+    this.orgs = await this.requestService.getOrgNames();
   }
 
   async uniqueEmail() {
@@ -115,9 +115,11 @@ export class RequestAccountComponent implements OnInit {
         grade: this.grade,
         role: this.determineRole(this.form.get(['permissions'])?.value),
         orgs: {
-          connect: {
-            name: this.form.get(['org'])?.value,
-          },
+          connect: [
+            {
+              name: this.form.get(['org'])?.value,
+            },
+          ],
         },
         password: this.form.value['confirmPassword'].trim(),
       })

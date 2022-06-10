@@ -8,64 +8,69 @@ import {
 } from '@nestjs/graphql';
 import { OrgService } from './org.service';
 import {
-  OrgGQL,
+  Org,
   OrgCreateInput,
-  OrgUpdateInput,
   OrgWhereUniqueInput,
-  UserGQL,
-  SurveyGQL,
+  User,
+  Feedback,
+  UpdateOneOrgArgs,
+  FindManyOrgArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
+import { Prisma } from '.prisma/ods/client';
+import { publicDecrypt } from 'crypto';
 
-@Resolver(() => OrgGQL)
+@Resolver(() => Org)
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
 
   @Public()
-  @Query(() => [OrgGQL], { name: 'findManyOrgs' })
-  async findMany(): Promise<OrgGQL[]> {
-    return this.orgService.findMany({
-      orderBy: {
-        name: 'asc',
-      },
-    });
+  @Query(() => [String], { name: 'getOrgLineage' })
+  async getOrgLineage(): Promise<string[]> {
+    return this.orgService.getLineage();
+  }
+  @Public()
+  @Query(() => [String], { name: 'getOrgNames' })
+  async getOrgNames(): Promise<string[]> {
+    return this.orgService.getOrgNames();
   }
 
-  @Query(() => [OrgGQL], { name: 'getSubOrgs' })
+  @Query(() => [Org], { name: 'getSubOrgs' })
   //TODO redo with findMany
-  async getSubOrgs(
+  async getAllChildren(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<OrgGQL[]> {
-    return this.orgService.getSubOrgs(orgWhereUniqueInput);
+  ): Promise<Org[]> {
+    return this.orgService.getAllChildren(orgWhereUniqueInput);
   }
 
-  @Query(() => OrgGQL, { name: 'findUniqueOrg' })
+  @Query(() => Org, { name: 'findUniqueOrg' })
   async findUnique(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<OrgGQL | null> {
+  ): Promise<Org | null> {
     return this.orgService.findUnique(orgWhereUniqueInput);
   }
 
-  @Mutation(() => OrgGQL, { name: 'createOrg' })
-  create(
-    @Args('orgCreateInput') orgCreateInput: OrgCreateInput
-  ): Promise<OrgGQL> {
+  @Mutation(() => Org, { name: 'createOrg' })
+  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput): Promise<Org> {
     return this.orgService.create(orgCreateInput);
   }
 
-  @Mutation(() => OrgGQL, { name: 'updateOrg' })
+  @Mutation(() => Org, { name: 'updateOrg' })
   async update(
-    @Args('OrgWhereUniqueInput')
-    orgWhereUniqueInput: OrgWhereUniqueInput,
-    @Args('OrgUpdateInput')
-    orgUpdateInput: OrgUpdateInput
-  ): Promise<OrgGQL> {
-    return this.orgService.update(orgWhereUniqueInput, orgUpdateInput);
+    @Args()
+    updateArgs: UpdateOneOrgArgs
+  ): Promise<Org> {
+    const { data, where } = updateArgs;
+
+    return this.orgService.update(
+      data as Prisma.OrgUpdateInput,
+      where as Prisma.OrgWhereUniqueInput
+    );
   }
 
-  @Mutation(() => OrgGQL, { name: 'deleteOrg' })
+  @Mutation(() => Org, { name: 'deleteOrg' })
   async delete(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput
@@ -73,23 +78,23 @@ export class OrgResolver {
     return this.orgService.delete(orgWhereUniqueInput);
   }
 
-  @ResolveField(() => [UserGQL])
-  async users(@Parent() org: OrgGQL): Promise<UserGQL[]> {
+  @ResolveField(() => [User])
+  async users(@Parent() org: Org): Promise<User[]> {
     return this.orgService.users({ id: org.id });
   }
 
-  @ResolveField(() => [OrgGQL])
-  async children(@Parent() org: OrgGQL): Promise<OrgGQL[]> {
+  @ResolveField(() => [Org])
+  async children(@Parent() org: Org): Promise<Org[]> {
     return this.orgService.children({ id: org.id });
   }
 
-  @ResolveField(() => OrgGQL)
-  async parent(@Parent() org: OrgGQL): Promise<OrgGQL | null> {
+  @ResolveField(() => Org)
+  async parent(@Parent() org: Org): Promise<Org | null> {
     return this.orgService.parent({ id: org.id });
   }
 
-  @ResolveField(() => [SurveyGQL])
-  async surveys(@Parent() org: OrgGQL): Promise<SurveyGQL[]> {
-    return this.orgService.surveys({ id: org.id });
+  @ResolveField(() => [Feedback])
+  async feedbacks(@Parent() org: Org): Promise<Feedback[]> {
+    return this.orgService.feedbacks({ id: org.id });
   }
 }

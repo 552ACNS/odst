@@ -15,12 +15,12 @@ const routes: Routes = [
       import('./responses/responses.module').then((m) => m.ResponsesModule),
     canActivate: [AuthGuard],
   },
-  //TODO: Change survey to report eventually
+  //TODO: Change feedback to report eventually
   {
-    path: 'survey',
+    path: 'feedback',
     loadChildren: () =>
-      import('./survey-questions/survey-questions.module').then(
-        (m) => m.SurveyQuestionsModule
+      import('./feedback-questions/feedback-questions.module').then(
+        (m) => m.FeedbackQuestionsModule
       ),
   },
   {
@@ -34,6 +34,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./request-account/request-account.module').then(
         (m) => m.RequestAccountModule
+      ),
+  },
+  {
+    path: 'requested-accounts',
+    loadChildren: () =>
+      import('./requested-accounts/requested-accounts.module').then(
+        (m) => m.RequestedAccountsModule
       ),
   },
   //TODO: add functionality to auto redirect to login if refresh token not found

@@ -2,21 +2,125 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AnswerGQL {
-  id: String!
-  value: String!
-  question: QuestionGQL!
-  surveyResponse: SurveyResponseGQL!
+type AnswerCountAggregate {
+  id: Int!
+  value: Int!
+  questionId: Int!
+  feedbackResponseId: Int!
+  _all: Int!
 }
 
-type OrgGQL {
-  orgTier: OrgTier!
-  id: String!
+type AnswerMinAggregate {
+  id: String
+  value: String
+  questionId: String
+  feedbackResponseId: String
+}
+
+type AnswerMaxAggregate {
+  id: String
+  value: String
+  questionId: String
+  feedbackResponseId: String
+}
+
+type RefreshToken {
+  id: ID!
+  user: User!
+  userId: String!
+  isRevoked: Boolean!
+  issuedDate: DateTime!
+  expiredDate: DateTime!
+  hash: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type TagCount {
+  feedbackResponses: Int!
+}
+
+type Tag {
+  id: ID!
+  value: String!
+  feedbackResponses: [FeedbackResponse!]
+  _count: TagCount!
+}
+
+type FeedbackResponseCount {
+  answers: Int!
+  tags: Int!
+  comments: Int!
+}
+
+type FeedbackResponse {
+  id: ID!
+  feedback: Feedback!
+  feedbackId: String!
+  openedDate: DateTime!
+  closedDate: DateTime
+  answers: [Answer!]
+  routeOutside: Boolean!
+  tags: [Tag!]
+  comments: [Comment!]
+  resolved: Boolean!
+  _count: FeedbackResponseCount!
+}
+
+type Comment {
+  id: ID!
+  value: String!
+  date: DateTime!
+  author: User!
+  authorId: String!
+  FeedbackResponse: FeedbackResponse
+  feedbackResponseId: String!
+}
+
+type UserCount {
+  orgs: Int!
+  comments: Int!
+}
+
+type User {
+  id: ID!
+  email: String!
+  enabled: Boolean!
+  grade: String
+  firstName: String!
+  lastName: String!
+  role: Role!
+  refreshToken: RefreshToken
+  orgs: [Org!]
+  comments: [Comment!]
+  _count: UserCount!
+}
+
+enum Role {
+  ADMIN
+  DEI
+  CC
+}
+
+type OrgCount {
+  users: Int!
+  children: Int!
+  feedbacks: Int!
+}
+
+type Org {
+  id: ID!
   name: String!
-  users: [UserGQL!]!
-  children: [OrgGQL!]!
-  parent: OrgGQL!
-  surveys: [SurveyGQL!]!
+  orgTier: OrgTier!
+  users: [User!]
+  parentId: String
+  parent: Org
+  children: [Org!]
+  feedbacks: [Feedback!]
+  _count: OrgCount!
 }
 
 enum OrgTier {
@@ -26,58 +130,223 @@ enum OrgTier {
   OTHER
 }
 
-type QuestionGQL {
-  id: String!
-  prompt: String!
-  answers: [AnswerGQL!]!
-  surveys: [SurveyGQL!]!
+type FeedbackCount {
+  orgs: Int!
+  questions: Int!
+  feedbackResponses: Int!
 }
 
-type SurveyGQL {
-  id: String!
+type Feedback {
+  id: ID!
+  orgs: [Org!]
+  questions: [Question!]
   questionsHash: String
-  orgs: [OrgGQL!]!
-  questions: [QuestionGQL!]!
-  surveyResponses: [SurveyResponseGQL!]!
+  feedbackResponses: [FeedbackResponse!]
+  _count: FeedbackCount!
 }
 
-type SurveyResponseGQL {
-  id: String!
-  openedDate: DateTime!
+type QuestionCount {
+  feedbacks: Int!
+  answers: Int!
+}
+
+type Question {
+  id: ID!
+  value: String!
+  feedbacks: [Feedback!]
+  answers: [Answer!]
+  _count: QuestionCount!
+}
+
+type Answer {
+  id: ID!
+  value: String!
+  question: Question!
+  questionId: String!
+  feedbackResponse: FeedbackResponse!
+  feedbackResponseId: String!
+}
+
+type CommentCountAggregate {
+  id: Int!
+  value: Int!
+  date: Int!
+  authorId: Int!
+  feedbackResponseId: Int!
+  _all: Int!
+}
+
+type CommentMinAggregate {
+  id: String
+  value: String
+  date: DateTime
+  authorId: String
+  feedbackResponseId: String
+}
+
+type CommentMaxAggregate {
+  id: String
+  value: String
+  date: DateTime
+  authorId: String
+  feedbackResponseId: String
+}
+
+type FeedbackCountAggregate {
+  id: Int!
+  questionsHash: Int!
+  _all: Int!
+}
+
+type FeedbackMinAggregate {
+  id: String
+  questionsHash: String
+}
+
+type FeedbackMaxAggregate {
+  id: String
+  questionsHash: String
+}
+
+type FeedbackResponseCountAggregate {
+  id: Int!
+  feedbackId: Int!
+  openedDate: Int!
+  closedDate: Int!
+  routeOutside: Int!
+  resolved: Int!
+  _all: Int!
+}
+
+type FeedbackResponseMinAggregate {
+  id: String
+  feedbackId: String
+  openedDate: DateTime
   closedDate: DateTime
-  routeOutside: Boolean!
-  resolution: String
-  answers: [AnswerGQL!]!
-  survey: SurveyGQL!
+  routeOutside: Boolean
+  resolved: Boolean
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type ResponseCount {
-  unresolved: Float!
-  overdue: Float!
-  resolved: Float!
+type FeedbackResponseMaxAggregate {
+  id: String
+  feedbackId: String
+  openedDate: DateTime
+  closedDate: DateTime
+  routeOutside: Boolean
+  resolved: Boolean
 }
 
-type UserGQL {
-  role: Role!
-  id: String!
-  email: String!
+type OrgCountAggregate {
+  id: Int!
+  name: Int!
+  orgTier: Int!
+  parentId: Int!
+  _all: Int!
+}
+
+type OrgMinAggregate {
+  id: String
+  name: String
+  orgTier: OrgTier
+  parentId: String
+}
+
+type OrgMaxAggregate {
+  id: String
+  name: String
+  orgTier: OrgTier
+  parentId: String
+}
+
+type QuestionCountAggregate {
+  id: Int!
+  value: Int!
+  _all: Int!
+}
+
+type QuestionMinAggregate {
+  id: String
+  value: String
+}
+
+type QuestionMaxAggregate {
+  id: String
+  value: String
+}
+
+type RefreshTokenCountAggregate {
+  id: Int!
+  userId: Int!
+  isRevoked: Int!
+  issuedDate: Int!
+  expiredDate: Int!
+  hash: Int!
+  _all: Int!
+}
+
+type RefreshTokenMinAggregate {
+  id: String
+  userId: String
+  isRevoked: Boolean
+  issuedDate: DateTime
+  expiredDate: DateTime
+  hash: String
+}
+
+type RefreshTokenMaxAggregate {
+  id: String
+  userId: String
+  isRevoked: Boolean
+  issuedDate: DateTime
+  expiredDate: DateTime
+  hash: String
+}
+
+type TagCountAggregate {
+  id: Int!
+  value: Int!
+  _all: Int!
+}
+
+type TagMinAggregate {
+  id: String
+  value: String
+}
+
+type TagMaxAggregate {
+  id: String
+  value: String
+}
+
+type UserCountAggregate {
+  id: Int!
+  email: Int!
+  enabled: Int!
+  grade: Int!
+  firstName: Int!
+  lastName: Int!
+  role: Int!
+  _all: Int!
+}
+
+type UserMinAggregate {
+  id: String
+  email: String
+  enabled: Boolean
   grade: String
-  firstName: String!
-  lastName: String!
-  enabled: Boolean!
-  orgs: [OrgGQL!]!
+  firstName: String
+  lastName: String
+  role: Role
 }
 
-enum Role {
-  ADMIN
-  DEI
-  EO
-  CC
+type UserMaxAggregate {
+  id: String
+  email: String
+  enabled: Boolean
+  grade: String
+  firstName: String
+  lastName: String
+  role: Role
 }
 
 type Tokens {
@@ -85,35 +354,470 @@ type Tokens {
   refreshToken: String!
 }
 
+type ResponseCount {
+  unresolved: Float!
+  overdue: Float!
+  resolved: Float!
+}
+
 type Query {
-  findManySurveys: [SurveyGQL!]!
-  findUniqueSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
-  findManySurveyResponses: [SurveyResponseGQL!]!
-  findUniqueSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
+  getTags: [String!]!
+  findManyFeedbacks: [Feedback!]!
+  findUniqueFeedback(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): Feedback!
+  findManyFeedbackResponses(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, distinct: [FeedbackResponseScalarFieldEnum!]): [FeedbackResponse!]!
+  findUniqueFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
+  getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
   ResponseCount: ResponseCount!
   getIssuesByStatus(resolved: String!): [String!]!
-  findManyAnswers: [AnswerGQL!]!
-  findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): AnswerGQL!
-  findManyOrgs: [OrgGQL!]!
-  getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [OrgGQL!]!
-  findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  findManyQuestions: [QuestionGQL!]!
-  getSubQuestions(surveyWhereUniqueInput: SurveyWhereUniqueInput!): [QuestionGQL!]!
-  findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): QuestionGQL!
-  findUsersWithRole(role: String!): [UserGQL!]!
-  getCommanders: [UserGQL!]!
-  findUniqueUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL!
-  me: UserGQL!
+  findManyAnswers: [Answer!]!
+  findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): Answer!
+  getOrgLineage: [String!]!
+  getOrgNames: [String!]!
+  getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [Org!]!
+  findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
+  findManyQuestions: [Question!]!
+  getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [Question!]!
+  findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): Question!
+  findUsersWithRole(role: String!): [User!]!
+  findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
+  getCommanders: [User!]!
+  me: User!
+  findManyAccountRequests: [User!]!
   usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
-input SurveyWhereUniqueInput {
+input FeedbackWhereUniqueInput {
   id: String
   questionsHash: String
 }
 
-input SurveyResponseWhereUniqueInput {
+input FeedbackResponseWhereInput {
+  AND: [FeedbackResponseWhereInput!]
+  OR: [FeedbackResponseWhereInput!]
+  NOT: [FeedbackResponseWhereInput!]
+  id: StringFilter
+  feedback: FeedbackRelationFilter
+  feedbackId: StringFilter
+  openedDate: DateTimeFilter
+  closedDate: DateTimeNullableFilter
+  answers: AnswerListRelationFilter
+  routeOutside: BoolFilter
+  tags: TagListRelationFilter
+  comments: CommentListRelationFilter
+  resolved: BoolFilter
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
+}
+
+input FeedbackRelationFilter {
+  is: FeedbackWhereInput
+  isNot: FeedbackWhereInput
+}
+
+input FeedbackWhereInput {
+  AND: [FeedbackWhereInput!]
+  OR: [FeedbackWhereInput!]
+  NOT: [FeedbackWhereInput!]
+  id: StringFilter
+  orgs: OrgListRelationFilter
+  questions: QuestionListRelationFilter
+  questionsHash: StringNullableFilter
+  feedbackResponses: FeedbackResponseListRelationFilter
+}
+
+input OrgListRelationFilter {
+  every: OrgWhereInput
+  some: OrgWhereInput
+  none: OrgWhereInput
+}
+
+input OrgWhereInput {
+  AND: [OrgWhereInput!]
+  OR: [OrgWhereInput!]
+  NOT: [OrgWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  orgTier: EnumOrgTierFilter
+  users: UserListRelationFilter
+  parentId: StringNullableFilter
+  parent: OrgRelationFilter
+  children: OrgListRelationFilter
+  feedbacks: FeedbackListRelationFilter
+}
+
+input EnumOrgTierFilter {
+  equals: OrgTier
+  in: [OrgTier!]
+  notIn: [OrgTier!]
+  not: NestedEnumOrgTierFilter
+}
+
+input NestedEnumOrgTierFilter {
+  equals: OrgTier
+  in: [OrgTier!]
+  notIn: [OrgTier!]
+  not: NestedEnumOrgTierFilter
+}
+
+input UserListRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  id: StringFilter
+  email: StringFilter
+  password: StringFilter
+  enabled: BoolFilter
+  grade: StringNullableFilter
+  firstName: StringFilter
+  lastName: StringFilter
+  role: EnumRoleFilter
+  refreshToken: RefreshTokenRelationFilter
+  orgs: OrgListRelationFilter
+  comments: CommentListRelationFilter
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
+input EnumRoleFilter {
+  equals: Role
+  in: [Role!]
+  notIn: [Role!]
+  not: NestedEnumRoleFilter
+}
+
+input NestedEnumRoleFilter {
+  equals: Role
+  in: [Role!]
+  notIn: [Role!]
+  not: NestedEnumRoleFilter
+}
+
+input RefreshTokenRelationFilter {
+  is: RefreshTokenWhereInput
+  isNot: RefreshTokenWhereInput
+}
+
+input RefreshTokenWhereInput {
+  AND: [RefreshTokenWhereInput!]
+  OR: [RefreshTokenWhereInput!]
+  NOT: [RefreshTokenWhereInput!]
+  id: StringFilter
+  user: UserRelationFilter
+  userId: StringFilter
+  isRevoked: BoolFilter
+  issuedDate: DateTimeFilter
+  expiredDate: DateTimeFilter
+  hash: StringFilter
+}
+
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input CommentListRelationFilter {
+  every: CommentWhereInput
+  some: CommentWhereInput
+  none: CommentWhereInput
+}
+
+input CommentWhereInput {
+  AND: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
+  NOT: [CommentWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  date: DateTimeFilter
+  author: UserRelationFilter
+  authorId: StringFilter
+  FeedbackResponse: FeedbackResponseRelationFilter
+  feedbackResponseId: StringFilter
+}
+
+input FeedbackResponseRelationFilter {
+  is: FeedbackResponseWhereInput
+  isNot: FeedbackResponseWhereInput
+}
+
+input OrgRelationFilter {
+  is: OrgWhereInput
+  isNot: OrgWhereInput
+}
+
+input FeedbackListRelationFilter {
+  every: FeedbackWhereInput
+  some: FeedbackWhereInput
+  none: FeedbackWhereInput
+}
+
+input QuestionListRelationFilter {
+  every: QuestionWhereInput
+  some: QuestionWhereInput
+  none: QuestionWhereInput
+}
+
+input QuestionWhereInput {
+  AND: [QuestionWhereInput!]
+  OR: [QuestionWhereInput!]
+  NOT: [QuestionWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  feedbacks: FeedbackListRelationFilter
+  answers: AnswerListRelationFilter
+}
+
+input AnswerListRelationFilter {
+  every: AnswerWhereInput
+  some: AnswerWhereInput
+  none: AnswerWhereInput
+}
+
+input AnswerWhereInput {
+  AND: [AnswerWhereInput!]
+  OR: [AnswerWhereInput!]
+  NOT: [AnswerWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  question: QuestionRelationFilter
+  questionId: StringFilter
+  feedbackResponse: FeedbackResponseRelationFilter
+  feedbackResponseId: StringFilter
+}
+
+input QuestionRelationFilter {
+  is: QuestionWhereInput
+  isNot: QuestionWhereInput
+}
+
+input FeedbackResponseListRelationFilter {
+  every: FeedbackResponseWhereInput
+  some: FeedbackResponseWhereInput
+  none: FeedbackResponseWhereInput
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableFilter
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableFilter
+}
+
+input TagListRelationFilter {
+  every: TagWhereInput
+  some: TagWhereInput
+  none: TagWhereInput
+}
+
+input TagWhereInput {
+  AND: [TagWhereInput!]
+  OR: [TagWhereInput!]
+  NOT: [TagWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  feedbackResponses: FeedbackResponseListRelationFilter
+}
+
+input FeedbackResponseOrderByWithRelationInput {
+  id: SortOrder
+  feedback: FeedbackOrderByWithRelationInput
+  feedbackId: SortOrder
+  openedDate: SortOrder
+  closedDate: SortOrder
+  answers: AnswerOrderByRelationAggregateInput
+  routeOutside: SortOrder
+  tags: TagOrderByRelationAggregateInput
+  comments: CommentOrderByRelationAggregateInput
+  resolved: SortOrder
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input FeedbackOrderByWithRelationInput {
+  id: SortOrder
+  orgs: OrgOrderByRelationAggregateInput
+  questions: QuestionOrderByRelationAggregateInput
+  questionsHash: SortOrder
+  feedbackResponses: FeedbackResponseOrderByRelationAggregateInput
+}
+
+input OrgOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input QuestionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input FeedbackResponseOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input AnswerOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TagOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input CommentOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input FeedbackResponseWhereUniqueInput {
   id: String
+}
+
+enum FeedbackResponseScalarFieldEnum {
+  id
+  feedbackId
+  openedDate
+  closedDate
+  routeOutside
+  resolved
+}
+
+input FeedbackResponseCountAggregateInput {
+  id: Boolean
+  feedbackId: Boolean
+  openedDate: Boolean
+  closedDate: Boolean
+  routeOutside: Boolean
+  resolved: Boolean
+  _all: Boolean
+}
+
+input FeedbackResponseMinAggregateInput {
+  id: Boolean
+  feedbackId: Boolean
+  openedDate: Boolean
+  closedDate: Boolean
+  routeOutside: Boolean
+  resolved: Boolean
+}
+
+input FeedbackResponseMaxAggregateInput {
+  id: Boolean
+  feedbackId: Boolean
+  openedDate: Boolean
+  closedDate: Boolean
+  routeOutside: Boolean
+  resolved: Boolean
 }
 
 input AnswerWhereUniqueInput {
@@ -127,7 +831,31 @@ input OrgWhereUniqueInput {
 
 input QuestionWhereUniqueInput {
   id: String
-  prompt: String
+  value: String
+}
+
+input UserOrderByWithRelationInput {
+  id: SortOrder
+  email: SortOrder
+  password: SortOrder
+  enabled: SortOrder
+  grade: SortOrder
+  firstName: SortOrder
+  lastName: SortOrder
+  role: SortOrder
+  refreshToken: RefreshTokenOrderByWithRelationInput
+  orgs: OrgOrderByRelationAggregateInput
+  comments: CommentOrderByRelationAggregateInput
+}
+
+input RefreshTokenOrderByWithRelationInput {
+  id: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+  isRevoked: SortOrder
+  issuedDate: SortOrder
+  expiredDate: SortOrder
+  hash: SortOrder
 }
 
 input UserWhereUniqueInput {
@@ -135,193 +863,1424 @@ input UserWhereUniqueInput {
   email: String
 }
 
+enum UserScalarFieldEnum {
+  id
+  email
+  password
+  enabled
+  grade
+  firstName
+  lastName
+  role
+}
+
 type Mutation {
-  createSurveyWithQuestions(questionPrompts: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): SurveyGQL!
-  createSurvey(surveyCreateInput: SurveyCreateInput!): SurveyGQL!
-  updateSurvey(SurveyWhereUniqueInput: SurveyWhereUniqueInput!, SurveyUpdateInput: SurveyUpdateInput!): SurveyGQL!
-  deleteSurvey(surveyWhereUniqueInput: SurveyWhereUniqueInput!): SurveyGQL!
-  createSurveyResponse(surveyResponseCreateInput: SurveyResponseCreateInput!): SurveyResponseGQL!
-  updateSurveyResponse(SurveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!, SurveyResponseUpdateInput: SurveyResponseUpdateInput!): SurveyResponseGQL!
-  deleteSurveyResponse(surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!): SurveyResponseGQL!
-  createAnswer(answerCreateInput: AnswerCreateInput!): AnswerGQL!
-  createOrg(orgCreateInput: OrgCreateInput!): OrgGQL!
-  updateOrg(OrgWhereUniqueInput: OrgWhereUniqueInput!, OrgUpdateInput: OrgUpdateInput!): OrgGQL!
-  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): OrgGQL!
-  createQuestion(questionCreateInput: QuestionCreateInput!): QuestionGQL!
-  updateQuestion(QuestionWhereUniqueInput: QuestionWhereUniqueInput!, QuestionUpdateInput: QuestionUpdateInput!): QuestionGQL!
-  createUser(userCreateInput: UserCreateInput!): UserGQL!
-  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): UserGQL
+  createFeedbackWithQuestions(questionValues: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): Feedback!
+  createFeedback(feedbackCreateInput: FeedbackCreateInput!): Feedback!
+  updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
+  deleteFeedback(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): Feedback!
+  createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): FeedbackResponse!
+  updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
+  deleteFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
+  createAnswer(answerCreateInput: AnswerCreateInput!): Answer!
+  createOrg(orgCreateInput: OrgCreateInput!): Org!
+  updateOrg(data: OrgUpdateInput!, where: OrgWhereUniqueInput!): Org!
+  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
+  createQuestion(questionCreateInput: QuestionCreateInput!): Question!
+  updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question!
+  createUser(userCreateInput: UserCreateInput!): User!
+  enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
+  createComment(commentCreateInput: CommentCreateInput!): Comment!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
 
-input SurveyCreateInput {
-  orgs: OrgCreateNestedManyWithoutSurveysInput
-  questions: QuestionCreateNestedManyWithoutSurveysInput
-  surveyResponses: SurveyResponseCreateNestedManyWithoutSurveyInput
+input FeedbackCreateInput {
+  id: String
+  orgs: OrgCreateNestedManyWithoutFeedbacksInput
+  questions: QuestionCreateNestedManyWithoutFeedbacksInput
   questionsHash: String
+  feedbackResponses: FeedbackResponseCreateNestedManyWithoutFeedbackInput
 }
 
-input OrgCreateNestedManyWithoutSurveysInput {
-  connect: OrgWhereUniqueInput
+input OrgCreateNestedManyWithoutFeedbacksInput {
+  create: [OrgCreateWithoutFeedbacksInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutFeedbacksInput!]
+  connect: [OrgWhereUniqueInput!]
 }
 
-input QuestionCreateNestedManyWithoutSurveysInput {
-  connect: [QuestionWhereUniqueInput!]
-}
-
-input SurveyResponseCreateNestedManyWithoutSurveyInput {
-  connect: SurveyResponseWhereUniqueInput
-}
-
-input SurveyUpdateInput {
-  questions: QuestionUpdateManyWithoutSurveysInput
-  surveyResponses: SurveyResponseUpdateManyWithoutSurveyInput
-}
-
-input QuestionUpdateManyWithoutSurveysInput {
-  connect: [QuestionWhereUniqueInput!]
-  connectOrCreate: [QuestionCreateOrConnectWithoutSurveysInput!]
-}
-
-input QuestionCreateOrConnectWithoutSurveysInput {
-  where: QuestionWhereUniqueInput!
-  create: QuestionCreateWithoutSurveysInput!
-}
-
-input QuestionCreateWithoutSurveysInput {
-  answers: AnswerCreateNestedManyWithoutQuestionInput
-  prompt: String!
-}
-
-input AnswerCreateNestedManyWithoutQuestionInput {
-  connect: [AnswerWhereUniqueInput!]
-}
-
-input SurveyResponseUpdateManyWithoutSurveyInput {
-  createMany: SurveyResponseCreateManySurveyInputEnvelope
-}
-
-input SurveyResponseCreateManySurveyInputEnvelope {
-  data: [SurveyResponseCreateInput!]!
-  skipDuplicates: Boolean
-}
-
-input SurveyResponseCreateInput {
-  survey: SurveyCreateNestedOneWithoutSurveyResponsesInput!
-  answers: AnswerCreateNestedManyWithoutSurveyResponseInput
-  openedDate: DateTime
-  closedDate: DateTime
-  routeOutside: Boolean
-  resolution: String
-}
-
-input SurveyCreateNestedOneWithoutSurveyResponsesInput {
-  connect: SurveyWhereUniqueInput
-}
-
-input AnswerCreateNestedManyWithoutSurveyResponseInput {
-  connect: AnswerWhereUniqueInput
-  create: AnswerCreateWithoutSurveyResponseInput
-  createMany: AnswerCreateManySurveyResponseInputEnvelope
-}
-
-input AnswerCreateWithoutSurveyResponseInput {
-  question: QuestionCreateNestedOneWithoutAnswersInput!
-  value: String!
-}
-
-input QuestionCreateNestedOneWithoutAnswersInput {
-  connect: QuestionWhereUniqueInput
-}
-
-input AnswerCreateManySurveyResponseInputEnvelope {
-  data: [AnswerCreateManySurveyResponseInput!]!
-  skipDuplicates: Boolean
-}
-
-input AnswerCreateManySurveyResponseInput {
-  value: String!
-  questionId: String!
-}
-
-input SurveyResponseUpdateInput {
-  closedDate: DateTime
-  routeOutside: Boolean
-  resolution: String
-}
-
-input AnswerCreateInput {
-  question: QuestionCreateNestedOneWithoutAnswersInput!
-  surveyResponse: SurveyResponseCreateNestedOneWithoutAnswersInput!
-  value: String!
-}
-
-input SurveyResponseCreateNestedOneWithoutAnswersInput {
-  connect: SurveyResponseWhereUniqueInput
-}
-
-input OrgCreateInput {
+input OrgCreateWithoutFeedbacksInput {
+  id: String
+  name: String!
   orgTier: OrgTier!
   users: UserCreateNestedManyWithoutOrgsInput
   parent: OrgCreateNestedOneWithoutChildrenInput
   children: OrgCreateNestedManyWithoutParentInput
-  name: String!
-  surveys: SurveyCreateNestedManyWithoutOrgsInput
 }
 
 input UserCreateNestedManyWithoutOrgsInput {
-  connect: OrgWhereUniqueInput
+  create: [UserCreateWithoutOrgsInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutOrgsInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
-input OrgCreateNestedOneWithoutChildrenInput {
-  connect: OrgWhereUniqueInput
-}
-
-input OrgCreateNestedManyWithoutParentInput {
-  connect: OrgWhereUniqueInput
-}
-
-input SurveyCreateNestedManyWithoutOrgsInput {
-  connect: SurveyWhereUniqueInput
-}
-
-input OrgUpdateInput {
-  orgTier: OrgTier
-  users: UserCreateNestedManyWithoutOrgsInput
-  parent: OrgCreateNestedOneWithoutChildrenInput
-  children: OrgCreateNestedManyWithoutParentInput
-  name: String
-  surveys: SurveyCreateNestedManyWithoutOrgsInput
-}
-
-input QuestionCreateInput {
-  surveys: SurveyCreateNestedManyWithoutQuestionsInput
-  prompt: String!
-}
-
-input SurveyCreateNestedManyWithoutQuestionsInput {
-  connect: SurveyWhereUniqueInput
-}
-
-input QuestionUpdateInput {
-  surveys: SurveyCreateNestedManyWithoutQuestionsInput
-  prompt: String
-}
-
-input UserCreateInput {
-  role: Role!
-  orgs: OrgCreateNestedManyWithoutUsersInput!
+input UserCreateWithoutOrgsInput {
+  id: String
   email: String!
   password: String!
+  enabled: Boolean
   grade: String
   firstName: String!
   lastName: String!
+  role: Role!
+  refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
+  comments: CommentCreateNestedManyWithoutAuthorInput
+}
+
+input RefreshTokenCreateNestedOneWithoutUserInput {
+  create: RefreshTokenCreateWithoutUserInput
+  connectOrCreate: RefreshTokenCreateOrConnectWithoutUserInput
+  connect: RefreshTokenWhereUniqueInput
+}
+
+input RefreshTokenCreateWithoutUserInput {
+  id: String
+  isRevoked: Boolean
+  issuedDate: DateTime
+  expiredDate: DateTime!
+  hash: String!
+}
+
+input RefreshTokenCreateOrConnectWithoutUserInput {
+  where: RefreshTokenWhereUniqueInput!
+  create: RefreshTokenCreateWithoutUserInput!
+}
+
+input RefreshTokenWhereUniqueInput {
+  id: String
+  userId: String
+}
+
+input CommentCreateNestedManyWithoutAuthorInput {
+  create: [CommentCreateWithoutAuthorInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutAuthorInput!]
+  createMany: CommentCreateManyAuthorInputEnvelope
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutAuthorInput {
+  id: String
+  value: String!
+  date: DateTime
+  FeedbackResponse: FeedbackResponseCreateNestedOneWithoutCommentsInput
+}
+
+input FeedbackResponseCreateNestedOneWithoutCommentsInput {
+  create: FeedbackResponseCreateWithoutCommentsInput
+  connectOrCreate: FeedbackResponseCreateOrConnectWithoutCommentsInput
+  connect: FeedbackResponseWhereUniqueInput
+}
+
+input FeedbackResponseCreateWithoutCommentsInput {
+  id: String
+  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
+  openedDate: DateTime
+  closedDate: DateTime
+  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
+  routeOutside: Boolean
+  tags: TagCreateNestedManyWithoutFeedbackResponsesInput
+  resolved: Boolean
+}
+
+input FeedbackCreateNestedOneWithoutFeedbackResponsesInput {
+  create: FeedbackCreateWithoutFeedbackResponsesInput
+  connectOrCreate: FeedbackCreateOrConnectWithoutFeedbackResponsesInput
+  connect: FeedbackWhereUniqueInput
+}
+
+input FeedbackCreateWithoutFeedbackResponsesInput {
+  id: String
+  orgs: OrgCreateNestedManyWithoutFeedbacksInput
+  questions: QuestionCreateNestedManyWithoutFeedbacksInput
+  questionsHash: String
+}
+
+input QuestionCreateNestedManyWithoutFeedbacksInput {
+  create: [QuestionCreateWithoutFeedbacksInput!]
+  connectOrCreate: [QuestionCreateOrConnectWithoutFeedbacksInput!]
+  connect: [QuestionWhereUniqueInput!]
+}
+
+input QuestionCreateWithoutFeedbacksInput {
+  id: String
+  value: String!
+  answers: AnswerCreateNestedManyWithoutQuestionInput
+}
+
+input AnswerCreateNestedManyWithoutQuestionInput {
+  create: [AnswerCreateWithoutQuestionInput!]
+  connectOrCreate: [AnswerCreateOrConnectWithoutQuestionInput!]
+  createMany: AnswerCreateManyQuestionInputEnvelope
+  connect: [AnswerWhereUniqueInput!]
+}
+
+input AnswerCreateWithoutQuestionInput {
+  id: String
+  value: String!
+  feedbackResponse: FeedbackResponseCreateNestedOneWithoutAnswersInput!
+}
+
+input FeedbackResponseCreateNestedOneWithoutAnswersInput {
+  create: FeedbackResponseCreateWithoutAnswersInput
+  connectOrCreate: FeedbackResponseCreateOrConnectWithoutAnswersInput
+  connect: FeedbackResponseWhereUniqueInput
+}
+
+input FeedbackResponseCreateWithoutAnswersInput {
+  id: String
+  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
+  openedDate: DateTime
+  closedDate: DateTime
+  routeOutside: Boolean
+  tags: TagCreateNestedManyWithoutFeedbackResponsesInput
+  comments: CommentCreateNestedManyWithoutFeedbackResponseInput
+  resolved: Boolean
+}
+
+input TagCreateNestedManyWithoutFeedbackResponsesInput {
+  create: [TagCreateWithoutFeedbackResponsesInput!]
+  connectOrCreate: [TagCreateOrConnectWithoutFeedbackResponsesInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateWithoutFeedbackResponsesInput {
+  id: String
+  value: String!
+}
+
+input TagCreateOrConnectWithoutFeedbackResponsesInput {
+  where: TagWhereUniqueInput!
+  create: TagCreateWithoutFeedbackResponsesInput!
+}
+
+input TagWhereUniqueInput {
+  id: String
+  value: String
+}
+
+input CommentCreateNestedManyWithoutFeedbackResponseInput {
+  create: [CommentCreateWithoutFeedbackResponseInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutFeedbackResponseInput!]
+  createMany: CommentCreateManyFeedbackResponseInputEnvelope
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutFeedbackResponseInput {
+  id: String
+  value: String!
+  date: DateTime
+  author: UserCreateNestedOneWithoutCommentsInput!
+}
+
+input UserCreateNestedOneWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  connectOrCreate: UserCreateOrConnectWithoutCommentsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutCommentsInput {
+  id: String
+  email: String!
+  password: String!
   enabled: Boolean
+  grade: String
+  firstName: String!
+  lastName: String!
+  role: Role!
+  refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
+  orgs: OrgCreateNestedManyWithoutUsersInput
 }
 
 input OrgCreateNestedManyWithoutUsersInput {
+  create: [OrgCreateWithoutUsersInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutUsersInput!]
+  connect: [OrgWhereUniqueInput!]
+}
+
+input OrgCreateWithoutUsersInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  children: OrgCreateNestedManyWithoutParentInput
+  feedbacks: FeedbackCreateNestedManyWithoutOrgsInput
+}
+
+input OrgCreateNestedOneWithoutChildrenInput {
+  create: OrgCreateWithoutChildrenInput
+  connectOrCreate: OrgCreateOrConnectWithoutChildrenInput
   connect: OrgWhereUniqueInput
+}
+
+input OrgCreateWithoutChildrenInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  users: UserCreateNestedManyWithoutOrgsInput
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  feedbacks: FeedbackCreateNestedManyWithoutOrgsInput
+}
+
+input FeedbackCreateNestedManyWithoutOrgsInput {
+  create: [FeedbackCreateWithoutOrgsInput!]
+  connectOrCreate: [FeedbackCreateOrConnectWithoutOrgsInput!]
+  connect: [FeedbackWhereUniqueInput!]
+}
+
+input FeedbackCreateWithoutOrgsInput {
+  id: String
+  questions: QuestionCreateNestedManyWithoutFeedbacksInput
+  questionsHash: String
+  feedbackResponses: FeedbackResponseCreateNestedManyWithoutFeedbackInput
+}
+
+input FeedbackResponseCreateNestedManyWithoutFeedbackInput {
+  create: [FeedbackResponseCreateWithoutFeedbackInput!]
+  connectOrCreate: [FeedbackResponseCreateOrConnectWithoutFeedbackInput!]
+  createMany: FeedbackResponseCreateManyFeedbackInputEnvelope
+  connect: [FeedbackResponseWhereUniqueInput!]
+}
+
+input FeedbackResponseCreateWithoutFeedbackInput {
+  id: String
+  openedDate: DateTime
+  closedDate: DateTime
+  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
+  routeOutside: Boolean
+  tags: TagCreateNestedManyWithoutFeedbackResponsesInput
+  comments: CommentCreateNestedManyWithoutFeedbackResponseInput
+  resolved: Boolean
+}
+
+input AnswerCreateNestedManyWithoutFeedbackResponseInput {
+  create: [AnswerCreateWithoutFeedbackResponseInput!]
+  connectOrCreate: [AnswerCreateOrConnectWithoutFeedbackResponseInput!]
+  createMany: AnswerCreateManyFeedbackResponseInputEnvelope
+  connect: [AnswerWhereUniqueInput!]
+}
+
+input AnswerCreateWithoutFeedbackResponseInput {
+  id: String
+  value: String!
+  question: QuestionCreateNestedOneWithoutAnswersInput!
+}
+
+input QuestionCreateNestedOneWithoutAnswersInput {
+  create: QuestionCreateWithoutAnswersInput
+  connectOrCreate: QuestionCreateOrConnectWithoutAnswersInput
+  connect: QuestionWhereUniqueInput
+}
+
+input QuestionCreateWithoutAnswersInput {
+  id: String
+  value: String!
+  feedbacks: FeedbackCreateNestedManyWithoutQuestionsInput
+}
+
+input FeedbackCreateNestedManyWithoutQuestionsInput {
+  create: [FeedbackCreateWithoutQuestionsInput!]
+  connectOrCreate: [FeedbackCreateOrConnectWithoutQuestionsInput!]
+  connect: [FeedbackWhereUniqueInput!]
+}
+
+input FeedbackCreateWithoutQuestionsInput {
+  id: String
+  orgs: OrgCreateNestedManyWithoutFeedbacksInput
+  questionsHash: String
+  feedbackResponses: FeedbackResponseCreateNestedManyWithoutFeedbackInput
+}
+
+input FeedbackCreateOrConnectWithoutQuestionsInput {
+  where: FeedbackWhereUniqueInput!
+  create: FeedbackCreateWithoutQuestionsInput!
+}
+
+input QuestionCreateOrConnectWithoutAnswersInput {
+  where: QuestionWhereUniqueInput!
+  create: QuestionCreateWithoutAnswersInput!
+}
+
+input AnswerCreateOrConnectWithoutFeedbackResponseInput {
+  where: AnswerWhereUniqueInput!
+  create: AnswerCreateWithoutFeedbackResponseInput!
+}
+
+input AnswerCreateManyFeedbackResponseInputEnvelope {
+  data: [AnswerCreateManyFeedbackResponseInput!]!
+  skipDuplicates: Boolean
+}
+
+input AnswerCreateManyFeedbackResponseInput {
+  id: String
+  value: String!
+  questionId: String!
+}
+
+input FeedbackResponseCreateOrConnectWithoutFeedbackInput {
+  where: FeedbackResponseWhereUniqueInput!
+  create: FeedbackResponseCreateWithoutFeedbackInput!
+}
+
+input FeedbackResponseCreateManyFeedbackInputEnvelope {
+  data: [FeedbackResponseCreateManyFeedbackInput!]!
+  skipDuplicates: Boolean
+}
+
+input FeedbackResponseCreateManyFeedbackInput {
+  id: String
+  openedDate: DateTime
+  closedDate: DateTime
+  routeOutside: Boolean
+  resolved: Boolean
+}
+
+input FeedbackCreateOrConnectWithoutOrgsInput {
+  where: FeedbackWhereUniqueInput!
+  create: FeedbackCreateWithoutOrgsInput!
+}
+
+input OrgCreateOrConnectWithoutChildrenInput {
+  where: OrgWhereUniqueInput!
+  create: OrgCreateWithoutChildrenInput!
+}
+
+input OrgCreateNestedManyWithoutParentInput {
+  create: [OrgCreateWithoutParentInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutParentInput!]
+  createMany: OrgCreateManyParentInputEnvelope
+  connect: [OrgWhereUniqueInput!]
+}
+
+input OrgCreateWithoutParentInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  users: UserCreateNestedManyWithoutOrgsInput
+  children: OrgCreateNestedManyWithoutParentInput
+  feedbacks: FeedbackCreateNestedManyWithoutOrgsInput
+}
+
+input OrgCreateOrConnectWithoutParentInput {
+  where: OrgWhereUniqueInput!
+  create: OrgCreateWithoutParentInput!
+}
+
+input OrgCreateManyParentInputEnvelope {
+  data: [OrgCreateManyParentInput!]!
+  skipDuplicates: Boolean
+}
+
+input OrgCreateManyParentInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+}
+
+input OrgCreateOrConnectWithoutUsersInput {
+  where: OrgWhereUniqueInput!
+  create: OrgCreateWithoutUsersInput!
+}
+
+input UserCreateOrConnectWithoutCommentsInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutCommentsInput!
+}
+
+input CommentCreateOrConnectWithoutFeedbackResponseInput {
+  where: CommentWhereUniqueInput!
+  create: CommentCreateWithoutFeedbackResponseInput!
+}
+
+input CommentWhereUniqueInput {
+  id: String
+}
+
+input CommentCreateManyFeedbackResponseInputEnvelope {
+  data: [CommentCreateManyFeedbackResponseInput!]!
+  skipDuplicates: Boolean
+}
+
+input CommentCreateManyFeedbackResponseInput {
+  id: String
+  value: String!
+  date: DateTime
+  authorId: String!
+}
+
+input FeedbackResponseCreateOrConnectWithoutAnswersInput {
+  where: FeedbackResponseWhereUniqueInput!
+  create: FeedbackResponseCreateWithoutAnswersInput!
+}
+
+input AnswerCreateOrConnectWithoutQuestionInput {
+  where: AnswerWhereUniqueInput!
+  create: AnswerCreateWithoutQuestionInput!
+}
+
+input AnswerCreateManyQuestionInputEnvelope {
+  data: [AnswerCreateManyQuestionInput!]!
+  skipDuplicates: Boolean
+}
+
+input AnswerCreateManyQuestionInput {
+  id: String
+  value: String!
+  feedbackResponseId: String!
+}
+
+input QuestionCreateOrConnectWithoutFeedbacksInput {
+  where: QuestionWhereUniqueInput!
+  create: QuestionCreateWithoutFeedbacksInput!
+}
+
+input FeedbackCreateOrConnectWithoutFeedbackResponsesInput {
+  where: FeedbackWhereUniqueInput!
+  create: FeedbackCreateWithoutFeedbackResponsesInput!
+}
+
+input FeedbackResponseCreateOrConnectWithoutCommentsInput {
+  where: FeedbackResponseWhereUniqueInput!
+  create: FeedbackResponseCreateWithoutCommentsInput!
+}
+
+input CommentCreateOrConnectWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  create: CommentCreateWithoutAuthorInput!
+}
+
+input CommentCreateManyAuthorInputEnvelope {
+  data: [CommentCreateManyAuthorInput!]!
+  skipDuplicates: Boolean
+}
+
+input CommentCreateManyAuthorInput {
+  id: String
+  value: String!
+  date: DateTime
+  feedbackResponseId: String!
+}
+
+input UserCreateOrConnectWithoutOrgsInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutOrgsInput!
+}
+
+input OrgCreateOrConnectWithoutFeedbacksInput {
+  where: OrgWhereUniqueInput!
+  create: OrgCreateWithoutFeedbacksInput!
+}
+
+input FeedbackUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  orgs: OrgUpdateManyWithoutFeedbacksInput
+  questions: QuestionUpdateManyWithoutFeedbacksInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackInput
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
+input OrgUpdateManyWithoutFeedbacksInput {
+  create: [OrgCreateWithoutFeedbacksInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutFeedbacksInput!]
+  upsert: [OrgUpsertWithWhereUniqueWithoutFeedbacksInput!]
+  set: [OrgWhereUniqueInput!]
+  disconnect: [OrgWhereUniqueInput!]
+  delete: [OrgWhereUniqueInput!]
+  connect: [OrgWhereUniqueInput!]
+  update: [OrgUpdateWithWhereUniqueWithoutFeedbacksInput!]
+  updateMany: [OrgUpdateManyWithWhereWithoutFeedbacksInput!]
+  deleteMany: [OrgScalarWhereInput!]
+}
+
+input OrgUpsertWithWhereUniqueWithoutFeedbacksInput {
+  where: OrgWhereUniqueInput!
+  update: OrgUpdateWithoutFeedbacksInput!
+  create: OrgCreateWithoutFeedbacksInput!
+}
+
+input OrgUpdateWithoutFeedbacksInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  children: OrgUpdateManyWithoutParentInput
+}
+
+input EnumOrgTierFieldUpdateOperationsInput {
+  set: OrgTier
+}
+
+input UserUpdateManyWithoutOrgsInput {
+  create: [UserCreateWithoutOrgsInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutOrgsInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutOrgsInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutOrgsInput!]
+  updateMany: [UserUpdateManyWithWhereWithoutOrgsInput!]
+  deleteMany: [UserScalarWhereInput!]
+}
+
+input UserUpsertWithWhereUniqueWithoutOrgsInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutOrgsInput!
+  create: UserCreateWithoutOrgsInput!
+}
+
+input UserUpdateWithoutOrgsInput {
+  id: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  enabled: BoolFieldUpdateOperationsInput
+  grade: NullableStringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
+  refreshToken: RefreshTokenUpdateOneWithoutUserInput
+  comments: CommentUpdateManyWithoutAuthorInput
+}
+
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
+input NullableStringFieldUpdateOperationsInput {
+  set: String
+}
+
+input EnumRoleFieldUpdateOperationsInput {
+  set: Role
+}
+
+input RefreshTokenUpdateOneWithoutUserInput {
+  create: RefreshTokenCreateWithoutUserInput
+  connectOrCreate: RefreshTokenCreateOrConnectWithoutUserInput
+  upsert: RefreshTokenUpsertWithoutUserInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: RefreshTokenWhereUniqueInput
+  update: RefreshTokenUpdateWithoutUserInput
+}
+
+input RefreshTokenUpsertWithoutUserInput {
+  update: RefreshTokenUpdateWithoutUserInput!
+  create: RefreshTokenCreateWithoutUserInput!
+}
+
+input RefreshTokenUpdateWithoutUserInput {
+  id: StringFieldUpdateOperationsInput
+  isRevoked: BoolFieldUpdateOperationsInput
+  issuedDate: DateTimeFieldUpdateOperationsInput
+  expiredDate: DateTimeFieldUpdateOperationsInput
+  hash: StringFieldUpdateOperationsInput
+}
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input CommentUpdateManyWithoutAuthorInput {
+  create: [CommentCreateWithoutAuthorInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutAuthorInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutAuthorInput!]
+  createMany: CommentCreateManyAuthorInputEnvelope
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [CommentUpdateManyWithWhereWithoutAuthorInput!]
+  deleteMany: [CommentScalarWhereInput!]
+}
+
+input CommentUpsertWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutAuthorInput!
+  create: CommentCreateWithoutAuthorInput!
+}
+
+input CommentUpdateWithoutAuthorInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+  FeedbackResponse: FeedbackResponseUpdateOneWithoutCommentsInput
+}
+
+input FeedbackResponseUpdateOneWithoutCommentsInput {
+  create: FeedbackResponseCreateWithoutCommentsInput
+  connectOrCreate: FeedbackResponseCreateOrConnectWithoutCommentsInput
+  upsert: FeedbackResponseUpsertWithoutCommentsInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: FeedbackResponseWhereUniqueInput
+  update: FeedbackResponseUpdateWithoutCommentsInput
+}
+
+input FeedbackResponseUpsertWithoutCommentsInput {
+  update: FeedbackResponseUpdateWithoutCommentsInput!
+  create: FeedbackResponseCreateWithoutCommentsInput!
+}
+
+input FeedbackResponseUpdateWithoutCommentsInput {
+  id: StringFieldUpdateOperationsInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  tags: TagUpdateManyWithoutFeedbackResponsesInput
+  resolved: BoolFieldUpdateOperationsInput
+}
+
+input FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput {
+  create: FeedbackCreateWithoutFeedbackResponsesInput
+  connectOrCreate: FeedbackCreateOrConnectWithoutFeedbackResponsesInput
+  upsert: FeedbackUpsertWithoutFeedbackResponsesInput
+  connect: FeedbackWhereUniqueInput
+  update: FeedbackUpdateWithoutFeedbackResponsesInput
+}
+
+input FeedbackUpsertWithoutFeedbackResponsesInput {
+  update: FeedbackUpdateWithoutFeedbackResponsesInput!
+  create: FeedbackCreateWithoutFeedbackResponsesInput!
+}
+
+input FeedbackUpdateWithoutFeedbackResponsesInput {
+  id: StringFieldUpdateOperationsInput
+  orgs: OrgUpdateManyWithoutFeedbacksInput
+  questions: QuestionUpdateManyWithoutFeedbacksInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+}
+
+input QuestionUpdateManyWithoutFeedbacksInput {
+  create: [QuestionCreateWithoutFeedbacksInput!]
+  connectOrCreate: [QuestionCreateOrConnectWithoutFeedbacksInput!]
+  upsert: [QuestionUpsertWithWhereUniqueWithoutFeedbacksInput!]
+  set: [QuestionWhereUniqueInput!]
+  disconnect: [QuestionWhereUniqueInput!]
+  delete: [QuestionWhereUniqueInput!]
+  connect: [QuestionWhereUniqueInput!]
+  update: [QuestionUpdateWithWhereUniqueWithoutFeedbacksInput!]
+  updateMany: [QuestionUpdateManyWithWhereWithoutFeedbacksInput!]
+  deleteMany: [QuestionScalarWhereInput!]
+}
+
+input QuestionUpsertWithWhereUniqueWithoutFeedbacksInput {
+  where: QuestionWhereUniqueInput!
+  update: QuestionUpdateWithoutFeedbacksInput!
+  create: QuestionCreateWithoutFeedbacksInput!
+}
+
+input QuestionUpdateWithoutFeedbacksInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  answers: AnswerUpdateManyWithoutQuestionInput
+}
+
+input AnswerUpdateManyWithoutQuestionInput {
+  create: [AnswerCreateWithoutQuestionInput!]
+  connectOrCreate: [AnswerCreateOrConnectWithoutQuestionInput!]
+  upsert: [AnswerUpsertWithWhereUniqueWithoutQuestionInput!]
+  createMany: AnswerCreateManyQuestionInputEnvelope
+  set: [AnswerWhereUniqueInput!]
+  disconnect: [AnswerWhereUniqueInput!]
+  delete: [AnswerWhereUniqueInput!]
+  connect: [AnswerWhereUniqueInput!]
+  update: [AnswerUpdateWithWhereUniqueWithoutQuestionInput!]
+  updateMany: [AnswerUpdateManyWithWhereWithoutQuestionInput!]
+  deleteMany: [AnswerScalarWhereInput!]
+}
+
+input AnswerUpsertWithWhereUniqueWithoutQuestionInput {
+  where: AnswerWhereUniqueInput!
+  update: AnswerUpdateWithoutQuestionInput!
+  create: AnswerCreateWithoutQuestionInput!
+}
+
+input AnswerUpdateWithoutQuestionInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  feedbackResponse: FeedbackResponseUpdateOneRequiredWithoutAnswersInput
+}
+
+input FeedbackResponseUpdateOneRequiredWithoutAnswersInput {
+  create: FeedbackResponseCreateWithoutAnswersInput
+  connectOrCreate: FeedbackResponseCreateOrConnectWithoutAnswersInput
+  upsert: FeedbackResponseUpsertWithoutAnswersInput
+  connect: FeedbackResponseWhereUniqueInput
+  update: FeedbackResponseUpdateWithoutAnswersInput
+}
+
+input FeedbackResponseUpsertWithoutAnswersInput {
+  update: FeedbackResponseUpdateWithoutAnswersInput!
+  create: FeedbackResponseCreateWithoutAnswersInput!
+}
+
+input FeedbackResponseUpdateWithoutAnswersInput {
+  id: StringFieldUpdateOperationsInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  tags: TagUpdateManyWithoutFeedbackResponsesInput
+  comments: CommentUpdateManyWithoutFeedbackResponseInput
+  resolved: BoolFieldUpdateOperationsInput
+}
+
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input TagUpdateManyWithoutFeedbackResponsesInput {
+  create: [TagCreateWithoutFeedbackResponsesInput!]
+  connectOrCreate: [TagCreateOrConnectWithoutFeedbackResponsesInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutFeedbackResponsesInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  connect: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutFeedbackResponsesInput!]
+  updateMany: [TagUpdateManyWithWhereWithoutFeedbackResponsesInput!]
+  deleteMany: [TagScalarWhereInput!]
+}
+
+input TagUpsertWithWhereUniqueWithoutFeedbackResponsesInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutFeedbackResponsesInput!
+  create: TagCreateWithoutFeedbackResponsesInput!
+}
+
+input TagUpdateWithoutFeedbackResponsesInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+}
+
+input TagUpdateWithWhereUniqueWithoutFeedbackResponsesInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutFeedbackResponsesInput!
+}
+
+input TagUpdateManyWithWhereWithoutFeedbackResponsesInput {
+  where: TagScalarWhereInput!
+  data: TagUpdateManyMutationInput!
+}
+
+input TagScalarWhereInput {
+  AND: [TagScalarWhereInput!]
+  OR: [TagScalarWhereInput!]
+  NOT: [TagScalarWhereInput!]
+  id: StringFilter
+  value: StringFilter
+}
+
+input TagUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+}
+
+input CommentUpdateManyWithoutFeedbackResponseInput {
+  create: [CommentCreateWithoutFeedbackResponseInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutFeedbackResponseInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutFeedbackResponseInput!]
+  createMany: CommentCreateManyFeedbackResponseInputEnvelope
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutFeedbackResponseInput!]
+  updateMany: [CommentUpdateManyWithWhereWithoutFeedbackResponseInput!]
+  deleteMany: [CommentScalarWhereInput!]
+}
+
+input CommentUpsertWithWhereUniqueWithoutFeedbackResponseInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutFeedbackResponseInput!
+  create: CommentCreateWithoutFeedbackResponseInput!
+}
+
+input CommentUpdateWithoutFeedbackResponseInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+  author: UserUpdateOneRequiredWithoutCommentsInput
+}
+
+input UserUpdateOneRequiredWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  connectOrCreate: UserCreateOrConnectWithoutCommentsInput
+  upsert: UserUpsertWithoutCommentsInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutCommentsInput
+}
+
+input UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsInput!
+  create: UserCreateWithoutCommentsInput!
+}
+
+input UserUpdateWithoutCommentsInput {
+  id: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  enabled: BoolFieldUpdateOperationsInput
+  grade: NullableStringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
+  refreshToken: RefreshTokenUpdateOneWithoutUserInput
+  orgs: OrgUpdateManyWithoutUsersInput
+}
+
+input OrgUpdateManyWithoutUsersInput {
+  create: [OrgCreateWithoutUsersInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutUsersInput!]
+  upsert: [OrgUpsertWithWhereUniqueWithoutUsersInput!]
+  set: [OrgWhereUniqueInput!]
+  disconnect: [OrgWhereUniqueInput!]
+  delete: [OrgWhereUniqueInput!]
+  connect: [OrgWhereUniqueInput!]
+  update: [OrgUpdateWithWhereUniqueWithoutUsersInput!]
+  updateMany: [OrgUpdateManyWithWhereWithoutUsersInput!]
+  deleteMany: [OrgScalarWhereInput!]
+}
+
+input OrgUpsertWithWhereUniqueWithoutUsersInput {
+  where: OrgWhereUniqueInput!
+  update: OrgUpdateWithoutUsersInput!
+  create: OrgCreateWithoutUsersInput!
+}
+
+input OrgUpdateWithoutUsersInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  children: OrgUpdateManyWithoutParentInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsInput
+}
+
+input OrgUpdateOneWithoutChildrenInput {
+  create: OrgCreateWithoutChildrenInput
+  connectOrCreate: OrgCreateOrConnectWithoutChildrenInput
+  upsert: OrgUpsertWithoutChildrenInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: OrgWhereUniqueInput
+  update: OrgUpdateWithoutChildrenInput
+}
+
+input OrgUpsertWithoutChildrenInput {
+  update: OrgUpdateWithoutChildrenInput!
+  create: OrgCreateWithoutChildrenInput!
+}
+
+input OrgUpdateWithoutChildrenInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsInput
+}
+
+input FeedbackUpdateManyWithoutOrgsInput {
+  create: [FeedbackCreateWithoutOrgsInput!]
+  connectOrCreate: [FeedbackCreateOrConnectWithoutOrgsInput!]
+  upsert: [FeedbackUpsertWithWhereUniqueWithoutOrgsInput!]
+  set: [FeedbackWhereUniqueInput!]
+  disconnect: [FeedbackWhereUniqueInput!]
+  delete: [FeedbackWhereUniqueInput!]
+  connect: [FeedbackWhereUniqueInput!]
+  update: [FeedbackUpdateWithWhereUniqueWithoutOrgsInput!]
+  updateMany: [FeedbackUpdateManyWithWhereWithoutOrgsInput!]
+  deleteMany: [FeedbackScalarWhereInput!]
+}
+
+input FeedbackUpsertWithWhereUniqueWithoutOrgsInput {
+  where: FeedbackWhereUniqueInput!
+  update: FeedbackUpdateWithoutOrgsInput!
+  create: FeedbackCreateWithoutOrgsInput!
+}
+
+input FeedbackUpdateWithoutOrgsInput {
+  id: StringFieldUpdateOperationsInput
+  questions: QuestionUpdateManyWithoutFeedbacksInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackInput
+}
+
+input FeedbackResponseUpdateManyWithoutFeedbackInput {
+  create: [FeedbackResponseCreateWithoutFeedbackInput!]
+  connectOrCreate: [FeedbackResponseCreateOrConnectWithoutFeedbackInput!]
+  upsert: [FeedbackResponseUpsertWithWhereUniqueWithoutFeedbackInput!]
+  createMany: FeedbackResponseCreateManyFeedbackInputEnvelope
+  set: [FeedbackResponseWhereUniqueInput!]
+  disconnect: [FeedbackResponseWhereUniqueInput!]
+  delete: [FeedbackResponseWhereUniqueInput!]
+  connect: [FeedbackResponseWhereUniqueInput!]
+  update: [FeedbackResponseUpdateWithWhereUniqueWithoutFeedbackInput!]
+  updateMany: [FeedbackResponseUpdateManyWithWhereWithoutFeedbackInput!]
+  deleteMany: [FeedbackResponseScalarWhereInput!]
+}
+
+input FeedbackResponseUpsertWithWhereUniqueWithoutFeedbackInput {
+  where: FeedbackResponseWhereUniqueInput!
+  update: FeedbackResponseUpdateWithoutFeedbackInput!
+  create: FeedbackResponseCreateWithoutFeedbackInput!
+}
+
+input FeedbackResponseUpdateWithoutFeedbackInput {
+  id: StringFieldUpdateOperationsInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  tags: TagUpdateManyWithoutFeedbackResponsesInput
+  comments: CommentUpdateManyWithoutFeedbackResponseInput
+  resolved: BoolFieldUpdateOperationsInput
+}
+
+input AnswerUpdateManyWithoutFeedbackResponseInput {
+  create: [AnswerCreateWithoutFeedbackResponseInput!]
+  connectOrCreate: [AnswerCreateOrConnectWithoutFeedbackResponseInput!]
+  upsert: [AnswerUpsertWithWhereUniqueWithoutFeedbackResponseInput!]
+  createMany: AnswerCreateManyFeedbackResponseInputEnvelope
+  set: [AnswerWhereUniqueInput!]
+  disconnect: [AnswerWhereUniqueInput!]
+  delete: [AnswerWhereUniqueInput!]
+  connect: [AnswerWhereUniqueInput!]
+  update: [AnswerUpdateWithWhereUniqueWithoutFeedbackResponseInput!]
+  updateMany: [AnswerUpdateManyWithWhereWithoutFeedbackResponseInput!]
+  deleteMany: [AnswerScalarWhereInput!]
+}
+
+input AnswerUpsertWithWhereUniqueWithoutFeedbackResponseInput {
+  where: AnswerWhereUniqueInput!
+  update: AnswerUpdateWithoutFeedbackResponseInput!
+  create: AnswerCreateWithoutFeedbackResponseInput!
+}
+
+input AnswerUpdateWithoutFeedbackResponseInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  question: QuestionUpdateOneRequiredWithoutAnswersInput
+}
+
+input QuestionUpdateOneRequiredWithoutAnswersInput {
+  create: QuestionCreateWithoutAnswersInput
+  connectOrCreate: QuestionCreateOrConnectWithoutAnswersInput
+  upsert: QuestionUpsertWithoutAnswersInput
+  connect: QuestionWhereUniqueInput
+  update: QuestionUpdateWithoutAnswersInput
+}
+
+input QuestionUpsertWithoutAnswersInput {
+  update: QuestionUpdateWithoutAnswersInput!
+  create: QuestionCreateWithoutAnswersInput!
+}
+
+input QuestionUpdateWithoutAnswersInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  feedbacks: FeedbackUpdateManyWithoutQuestionsInput
+}
+
+input FeedbackUpdateManyWithoutQuestionsInput {
+  create: [FeedbackCreateWithoutQuestionsInput!]
+  connectOrCreate: [FeedbackCreateOrConnectWithoutQuestionsInput!]
+  upsert: [FeedbackUpsertWithWhereUniqueWithoutQuestionsInput!]
+  set: [FeedbackWhereUniqueInput!]
+  disconnect: [FeedbackWhereUniqueInput!]
+  delete: [FeedbackWhereUniqueInput!]
+  connect: [FeedbackWhereUniqueInput!]
+  update: [FeedbackUpdateWithWhereUniqueWithoutQuestionsInput!]
+  updateMany: [FeedbackUpdateManyWithWhereWithoutQuestionsInput!]
+  deleteMany: [FeedbackScalarWhereInput!]
+}
+
+input FeedbackUpsertWithWhereUniqueWithoutQuestionsInput {
+  where: FeedbackWhereUniqueInput!
+  update: FeedbackUpdateWithoutQuestionsInput!
+  create: FeedbackCreateWithoutQuestionsInput!
+}
+
+input FeedbackUpdateWithoutQuestionsInput {
+  id: StringFieldUpdateOperationsInput
+  orgs: OrgUpdateManyWithoutFeedbacksInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackInput
+}
+
+input FeedbackUpdateWithWhereUniqueWithoutQuestionsInput {
+  where: FeedbackWhereUniqueInput!
+  data: FeedbackUpdateWithoutQuestionsInput!
+}
+
+input FeedbackUpdateManyWithWhereWithoutQuestionsInput {
+  where: FeedbackScalarWhereInput!
+  data: FeedbackUpdateManyMutationInput!
+}
+
+input FeedbackScalarWhereInput {
+  AND: [FeedbackScalarWhereInput!]
+  OR: [FeedbackScalarWhereInput!]
+  NOT: [FeedbackScalarWhereInput!]
+  id: StringFilter
+  questionsHash: StringNullableFilter
+}
+
+input FeedbackUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+}
+
+input AnswerUpdateWithWhereUniqueWithoutFeedbackResponseInput {
+  where: AnswerWhereUniqueInput!
+  data: AnswerUpdateWithoutFeedbackResponseInput!
+}
+
+input AnswerUpdateManyWithWhereWithoutFeedbackResponseInput {
+  where: AnswerScalarWhereInput!
+  data: AnswerUpdateManyMutationInput!
+}
+
+input AnswerScalarWhereInput {
+  AND: [AnswerScalarWhereInput!]
+  OR: [AnswerScalarWhereInput!]
+  NOT: [AnswerScalarWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  questionId: StringFilter
+  feedbackResponseId: StringFilter
+}
+
+input AnswerUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+}
+
+input FeedbackResponseUpdateWithWhereUniqueWithoutFeedbackInput {
+  where: FeedbackResponseWhereUniqueInput!
+  data: FeedbackResponseUpdateWithoutFeedbackInput!
+}
+
+input FeedbackResponseUpdateManyWithWhereWithoutFeedbackInput {
+  where: FeedbackResponseScalarWhereInput!
+  data: FeedbackResponseUpdateManyMutationInput!
+}
+
+input FeedbackResponseScalarWhereInput {
+  AND: [FeedbackResponseScalarWhereInput!]
+  OR: [FeedbackResponseScalarWhereInput!]
+  NOT: [FeedbackResponseScalarWhereInput!]
+  id: StringFilter
+  feedbackId: StringFilter
+  openedDate: DateTimeFilter
+  closedDate: DateTimeNullableFilter
+  routeOutside: BoolFilter
+  resolved: BoolFilter
+}
+
+input FeedbackResponseUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  resolved: BoolFieldUpdateOperationsInput
+}
+
+input FeedbackUpdateWithWhereUniqueWithoutOrgsInput {
+  where: FeedbackWhereUniqueInput!
+  data: FeedbackUpdateWithoutOrgsInput!
+}
+
+input FeedbackUpdateManyWithWhereWithoutOrgsInput {
+  where: FeedbackScalarWhereInput!
+  data: FeedbackUpdateManyMutationInput!
+}
+
+input OrgUpdateManyWithoutParentInput {
+  create: [OrgCreateWithoutParentInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutParentInput!]
+  upsert: [OrgUpsertWithWhereUniqueWithoutParentInput!]
+  createMany: OrgCreateManyParentInputEnvelope
+  set: [OrgWhereUniqueInput!]
+  disconnect: [OrgWhereUniqueInput!]
+  delete: [OrgWhereUniqueInput!]
+  connect: [OrgWhereUniqueInput!]
+  update: [OrgUpdateWithWhereUniqueWithoutParentInput!]
+  updateMany: [OrgUpdateManyWithWhereWithoutParentInput!]
+  deleteMany: [OrgScalarWhereInput!]
+}
+
+input OrgUpsertWithWhereUniqueWithoutParentInput {
+  where: OrgWhereUniqueInput!
+  update: OrgUpdateWithoutParentInput!
+  create: OrgCreateWithoutParentInput!
+}
+
+input OrgUpdateWithoutParentInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  children: OrgUpdateManyWithoutParentInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsInput
+}
+
+input OrgUpdateWithWhereUniqueWithoutParentInput {
+  where: OrgWhereUniqueInput!
+  data: OrgUpdateWithoutParentInput!
+}
+
+input OrgUpdateManyWithWhereWithoutParentInput {
+  where: OrgScalarWhereInput!
+  data: OrgUpdateManyMutationInput!
+}
+
+input OrgScalarWhereInput {
+  AND: [OrgScalarWhereInput!]
+  OR: [OrgScalarWhereInput!]
+  NOT: [OrgScalarWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  orgTier: EnumOrgTierFilter
+  parentId: StringNullableFilter
+}
+
+input OrgUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+}
+
+input OrgUpdateWithWhereUniqueWithoutUsersInput {
+  where: OrgWhereUniqueInput!
+  data: OrgUpdateWithoutUsersInput!
+}
+
+input OrgUpdateManyWithWhereWithoutUsersInput {
+  where: OrgScalarWhereInput!
+  data: OrgUpdateManyMutationInput!
+}
+
+input CommentUpdateWithWhereUniqueWithoutFeedbackResponseInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutFeedbackResponseInput!
+}
+
+input CommentUpdateManyWithWhereWithoutFeedbackResponseInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyMutationInput!
+}
+
+input CommentScalarWhereInput {
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  date: DateTimeFilter
+  authorId: StringFilter
+  feedbackResponseId: StringFilter
+}
+
+input CommentUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+}
+
+input AnswerUpdateWithWhereUniqueWithoutQuestionInput {
+  where: AnswerWhereUniqueInput!
+  data: AnswerUpdateWithoutQuestionInput!
+}
+
+input AnswerUpdateManyWithWhereWithoutQuestionInput {
+  where: AnswerScalarWhereInput!
+  data: AnswerUpdateManyMutationInput!
+}
+
+input QuestionUpdateWithWhereUniqueWithoutFeedbacksInput {
+  where: QuestionWhereUniqueInput!
+  data: QuestionUpdateWithoutFeedbacksInput!
+}
+
+input QuestionUpdateManyWithWhereWithoutFeedbacksInput {
+  where: QuestionScalarWhereInput!
+  data: QuestionUpdateManyMutationInput!
+}
+
+input QuestionScalarWhereInput {
+  AND: [QuestionScalarWhereInput!]
+  OR: [QuestionScalarWhereInput!]
+  NOT: [QuestionScalarWhereInput!]
+  id: StringFilter
+  value: StringFilter
+}
+
+input QuestionUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutAuthorInput!
+}
+
+input CommentUpdateManyWithWhereWithoutAuthorInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyMutationInput!
+}
+
+input UserUpdateWithWhereUniqueWithoutOrgsInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutOrgsInput!
+}
+
+input UserUpdateManyWithWhereWithoutOrgsInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateManyMutationInput!
+}
+
+input UserScalarWhereInput {
+  AND: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput!]
+  id: StringFilter
+  email: StringFilter
+  password: StringFilter
+  enabled: BoolFilter
+  grade: StringNullableFilter
+  firstName: StringFilter
+  lastName: StringFilter
+  role: EnumRoleFilter
+}
+
+input UserUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  enabled: BoolFieldUpdateOperationsInput
+  grade: NullableStringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
+}
+
+input OrgUpdateWithWhereUniqueWithoutFeedbacksInput {
+  where: OrgWhereUniqueInput!
+  data: OrgUpdateWithoutFeedbacksInput!
+}
+
+input OrgUpdateManyWithWhereWithoutFeedbacksInput {
+  where: OrgScalarWhereInput!
+  data: OrgUpdateManyMutationInput!
+}
+
+input FeedbackResponseCreateInput {
+  id: String
+  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
+  openedDate: DateTime
+  closedDate: DateTime
+  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
+  routeOutside: Boolean
+  tags: TagCreateNestedManyWithoutFeedbackResponsesInput
+  comments: CommentCreateNestedManyWithoutFeedbackResponseInput
+  resolved: Boolean
+}
+
+input FeedbackResponseUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput
+  openedDate: DateTimeFieldUpdateOperationsInput
+  closedDate: NullableDateTimeFieldUpdateOperationsInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseInput
+  routeOutside: BoolFieldUpdateOperationsInput
+  tags: TagUpdateManyWithoutFeedbackResponsesInput
+  comments: CommentUpdateManyWithoutFeedbackResponseInput
+  resolved: BoolFieldUpdateOperationsInput
+}
+
+input AnswerCreateInput {
+  id: String
+  value: String!
+  question: QuestionCreateNestedOneWithoutAnswersInput!
+  feedbackResponse: FeedbackResponseCreateNestedOneWithoutAnswersInput!
+}
+
+input OrgCreateInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  users: UserCreateNestedManyWithoutOrgsInput
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  children: OrgCreateNestedManyWithoutParentInput
+  feedbacks: FeedbackCreateNestedManyWithoutOrgsInput
+}
+
+input OrgUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  children: OrgUpdateManyWithoutParentInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsInput
+}
+
+input QuestionCreateInput {
+  id: String
+  value: String!
+  feedbacks: FeedbackCreateNestedManyWithoutQuestionsInput
+  answers: AnswerCreateNestedManyWithoutQuestionInput
+}
+
+input QuestionUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  feedbacks: FeedbackUpdateManyWithoutQuestionsInput
+  answers: AnswerUpdateManyWithoutQuestionInput
+}
+
+input UserCreateInput {
+  id: String
+  email: String!
+  password: String!
+  enabled: Boolean
+  grade: String
+  firstName: String!
+  lastName: String!
+  role: Role!
+  refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
+  orgs: OrgCreateNestedManyWithoutUsersInput
+  comments: CommentCreateNestedManyWithoutAuthorInput
+}
+
+input CommentCreateInput {
+  id: String
+  value: String!
+  date: DateTime
+  author: UserCreateNestedOneWithoutCommentsInput!
+  FeedbackResponse: FeedbackResponseCreateNestedOneWithoutCommentsInput
 }
 
 input LoginUserInput {

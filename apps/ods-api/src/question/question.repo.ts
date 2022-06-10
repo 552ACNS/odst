@@ -1,40 +1,45 @@
-import { QuestionCreateInput } from '@odst/types/ods';
-import { Question } from '.prisma/ods/client';
+import { QuestionCreateInput, Question } from '@odst/types/ods';
 
 export const MockQuestions: Question[] = [
   {
     id: 'question id 1',
-    prompt: 'prompty prompt',
+    value: 'valuey value',
   },
   {
     id: 'question id 2',
-    prompt: 'tpmorp',
+    value: 'tpmorp',
   },
 ];
 
 export const MockQuestionCreateInput: QuestionCreateInput[] = [
   {
-    prompt: 'Question 1',
-    surveys: {
-      connect: {
-        id: 'survey1',
-      },
+    value: 'Question 1',
+    feedbacks: {
+      connect: [
+        {
+          id: 'feedback1',
+        },
+      ],
     },
   },
   {
-    prompt: 'Question 2',
-    surveys: {
-      connect: {
-        id: 'survey1',
-      },
+    value: 'Question 2',
+    feedbacks: {
+      connect: [
+        {
+          id: 'feedback1',
+        },
+      ],
     },
   },
   {
-    prompt: 'Question 3',
-    surveys: {
-      connect: {
-        id: 'survey2',
-      },
+    value: 'Question 3',
+    feedbacks: {
+      connect: [
+        {
+          id: 'feedback2',
+        },
+      ],
     },
   },
 ];
