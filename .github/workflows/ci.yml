@@ -75,7 +75,8 @@ jobs:
         with:
           project: './apps/ods-e2e'
           start: yarn nx serve ods-api
-          wait-on: 'http://localhost:3343'
+          build: ng build ods
+          wait-on: 'http://localhost:3343/graphql'
       # - name: Run ODS backend
       #   run: yarn nx serve ods-api
       # - name: Run E2E tests

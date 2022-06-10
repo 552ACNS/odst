@@ -65,7 +65,7 @@
       },
       "configurations": {
         "test": {
-          "commands": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
+          "command": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
         },
         "production": {
           "command": "env-cmd -f apps/ods-api/.env.prod prisma migrate dev"
