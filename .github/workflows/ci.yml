@@ -69,13 +69,13 @@ jobs:
       # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
       - run: yarn nx affected --target=test --parallel
       - name: Migrate postgres database
-        run: yarn nx run ods-api:prisma-migrate
+        run: yarn nx run ods-api:prisma-migrate --skip-generate
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
           project: './apps/ods-e2e'
           start: yarn nx serve ods-api
-          build: ng build ods
+          build: yarn nx build ods
           wait-on: 'http://localhost:3343/graphql'
       # - name: Run ODS backend
       #   run: yarn nx serve ods-api
