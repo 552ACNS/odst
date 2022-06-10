@@ -4,7 +4,7 @@
 - [ ] I have ran E2E tests to ensure existing e2e tests are passing.
 - [ ] I have commented my code, particularly in hard-to-understand areas to ensure that the next group of developers can understand my code.
 - [ ] I have made corresponding changes to the documentation if needed.
-- [ ] I have added tests that prove my fix is effective or that my feature works so that future modifications to the code do not break my features.
+- [ ] I have added tests that prove my fix/feature functions so that future modifications to the code do not break my additions.
 
 ## Description
 
