@@ -18,7 +18,6 @@ import {
   UpdateOneFeedbackArgs,
 } from '@odst/types/ods';
 import { Prisma } from '.prisma/ods/client';
-
 import { Public } from '@odst/auth';
 
 @Resolver(() => Feedback)
