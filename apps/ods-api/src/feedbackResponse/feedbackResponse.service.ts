@@ -20,24 +20,6 @@ export class FeedbackResponseService {
   constructor(private prisma: PrismaService) {}
 
   /**
-   * Returns Feedback Responses based on criteria specified by API
-   * @param user Current user, obtained from resolver
-   * @param feedbackResponseFindManyArgs Arguments for the findMany query, obtained from resolver
-   * @returns A list of feedback responses based on where clause
-   */
-  async findMany(
-    user: User,
-    feedbackResponseFindManyArgs: Prisma.FeedbackResponseFindManyArgs
-  ): Promise<FeedbackResponse[]> {
-    return this.prisma.feedbackResponse.findMany(
-      this.restrictor(
-        user,
-        feedbackResponseFindManyArgs
-      ) as Prisma.FeedbackResponseFindManyArgs
-    );
-  }
-
-  /**
    * Returns a number of responses for a based on criteria specified by API
    * @param user Current user, obtained from resolver
    * @param feedbackResponseCountArgs Arguments for the count query, also obtained from resolver
@@ -132,19 +114,6 @@ export class FeedbackResponseService {
     where: Prisma.FeedbackResponseWhereUniqueInput
   ): Promise<FeedbackResponse> {
     return this.prisma.feedbackResponse.update({ data, where });
-  }
-
-  async delete(
-    feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    try {
-      await this.prisma.feedbackResponse.delete({
-        where: feedbackResponseWhereUniqueInput,
-      });
-      return { deleted: true };
-    } catch (err) {
-      return { deleted: false, message: err.message };
-    }
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {

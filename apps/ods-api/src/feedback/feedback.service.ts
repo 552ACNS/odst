@@ -13,23 +13,6 @@ import * as crypto from 'crypto';
 export class FeedbackService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.FeedbackWhereUniqueInput;
-    where?: Prisma.FeedbackWhereInput;
-    orderBy?: Prisma.FeedbackOrderByWithRelationInput;
-  }): Promise<Feedback[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.feedback.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
-  }
-
   async findUnique(
     feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
   ): Promise<Feedback | null> {
@@ -76,16 +59,6 @@ export class FeedbackService {
     });
   }
 
-  async create(data: Prisma.FeedbackCreateInput): Promise<Feedback> {
-    const feedback = await this.prisma.feedback.create({
-      data,
-    });
-
-    await this.updateQuestionsHash({ id: feedback.id });
-
-    return feedback;
-  }
-
   async update(
     data: Prisma.FeedbackUpdateInput,
     where: Prisma.FeedbackWhereUniqueInput
@@ -97,19 +70,6 @@ export class FeedbackService {
     }
     // TODO: What if the feedback is not found? What does it do?
     return feedback;
-  }
-
-  async delete(
-    orgWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    try {
-      await this.prisma.feedback.delete({
-        where: orgWhereUniqueInput,
-      });
-      return { deleted: true };
-    } catch (err) {
-      return { deleted: false, message: err.message };
-    }
   }
 
   //TODO optimize database calls. each feedback create/update requires 3 database calls.
@@ -156,6 +116,7 @@ export class FeedbackService {
   }
   //TODO tests for new methods
 }
+
 function getArrayHash(stringArray: string[]): string {
   return stringArray.length > 0
     ? crypto

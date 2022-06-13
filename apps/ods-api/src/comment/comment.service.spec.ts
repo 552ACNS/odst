@@ -18,7 +18,6 @@ describe('CommentService', () => {
     }).compile();
 
     service = module.get<CommentService>(CommentService);
-    prisma = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {

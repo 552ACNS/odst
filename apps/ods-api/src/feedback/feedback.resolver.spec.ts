@@ -38,12 +38,6 @@ describe('Feedback Resolver', () => {
     expect(resolver).toBeDefined();
   });
 
-  describe('findMany', () => {
-    it('should get an array of feedbacks', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(MockFeedbacks);
-    });
-  });
-
   describe('findUnqiue', () => {
     it('should get a single feedback', async () => {
       await expect(
@@ -55,38 +49,11 @@ describe('Feedback Resolver', () => {
     });
   });
 
-  describe('create', () => {
-    it('should create a create feedback', async () => {
-      await expect(
-        resolver.create(MockFeedbackCreateInput[0])
-      ).resolves.toEqual(MockFeedbacks[0]);
-    });
-  });
-
   describe('update', () => {
     it('should update a feedback', async () => {
       await expect(
         resolver.update({ where: { id: 'a strange id' }, data: {} })
       ).resolves.toEqual(MockFeedbacks[0]);
-    });
-  });
-
-  describe('delete', () => {
-    it('should return that it deleted a feedback', async () => {
-      await expect(
-        resolver.delete({ id: 'a uuid that exists' })
-      ).resolves.toEqual({
-        deleted: true,
-      });
-    });
-    it('should return that it did not delete a feedback', async () => {
-      const deleteSpy = jest
-        .spyOn(service, 'delete')
-        .mockResolvedValueOnce({ deleted: false });
-      await expect(
-        resolver.delete({ id: 'a uuid that does not exist' })
-      ).resolves.toEqual({ deleted: false });
-      expect(deleteSpy).toBeCalled();
     });
   });
 });

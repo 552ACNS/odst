@@ -9,8 +9,6 @@ import {
 import { QuestionService } from './question.service';
 import {
   Question,
-  QuestionCreateInput,
-  QuestionWhereUniqueInput,
   FeedbackWhereUniqueInput,
   Answer,
   Feedback,
@@ -24,11 +22,6 @@ import { Public } from '@odst/auth';
 export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Query(() => [Question], { name: 'findManyQuestions' })
-  async findMany(): Promise<Question[]> {
-    return this.questionService.findMany({});
-  }
-
   @Query(() => [Question], { name: 'getSubQuestions' })
   @Public()
 
@@ -40,21 +33,6 @@ export class QuestionResolver {
     return this.questionService.findQuestionsInFeedback(
       feedbackWhereUniqueInput
     );
-  }
-
-  @Query(() => Question, { name: 'findUniqueQuestion' })
-  async findUnique(
-    @Args('questionWhereUniqueInput')
-    questionWhereUniqueInput: QuestionWhereUniqueInput
-  ): Promise<Question | null> {
-    return this.questionService.findUnique(questionWhereUniqueInput);
-  }
-
-  @Mutation(() => Question, { name: 'createQuestion' })
-  create(
-    @Args('questionCreateInput') questionCreateInput: QuestionCreateInput
-  ): Promise<Question> {
-    return this.questionService.create(questionCreateInput);
   }
 
   @Mutation(() => Question, { name: 'updateQuestion' })

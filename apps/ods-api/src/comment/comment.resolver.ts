@@ -12,13 +12,6 @@ import { Comment, User, CommentCreateInput } from '@odst/types/ods';
 export class CommentResolver {
   constructor(private readonly commentService: CommentService) {}
 
-  @Mutation(() => Comment, { name: 'createComment' })
-  create(
-    @Args('commentCreateInput') commentCreateInput: CommentCreateInput
-  ): Promise<Comment> {
-    return this.commentService.create(commentCreateInput);
-  }
-
   @ResolveField(() => User)
   async author(@Parent() comment: Comment): Promise<User | null> {
     return this.commentService.author({ id: comment.id });

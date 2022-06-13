@@ -1,24 +1,7 @@
-import {
-  Resolver,
-  Mutation,
-  Args,
-  Query,
-  ResolveField,
-  Parent,
-} from '@nestjs/graphql';
+import { Resolver, Query, ResolveField, Parent } from '@nestjs/graphql';
 import { OrgService } from './org.service';
-import {
-  Org,
-  OrgCreateInput,
-  OrgWhereUniqueInput,
-  User,
-  Feedback,
-  UpdateOneOrgArgs,
-  FindManyOrgArgs,
-} from '@odst/types/ods';
+import { Org, User, Feedback } from '@odst/types/ods';
 import { Public } from '@odst/auth';
-import { Prisma } from '.prisma/ods/client';
-import { publicDecrypt } from 'crypto';
 
 @Resolver(() => Org)
 export class OrgResolver {
@@ -29,53 +12,11 @@ export class OrgResolver {
   async getOrgLineage(): Promise<string[]> {
     return this.orgService.getLineage();
   }
+
   @Public()
   @Query(() => [String], { name: 'getOrgNames' })
   async getOrgNames(): Promise<string[]> {
     return this.orgService.getOrgNames();
-  }
-
-  @Query(() => [Org], { name: 'getSubOrgs' })
-  //TODO redo with findMany
-  async getAllChildren(
-    @Args('orgWhereUniqueInput')
-    orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<Org[]> {
-    return this.orgService.getAllChildren(orgWhereUniqueInput);
-  }
-
-  @Query(() => Org, { name: 'findUniqueOrg' })
-  async findUnique(
-    @Args('orgWhereUniqueInput')
-    orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<Org | null> {
-    return this.orgService.findUnique(orgWhereUniqueInput);
-  }
-
-  @Mutation(() => Org, { name: 'createOrg' })
-  create(@Args('orgCreateInput') orgCreateInput: OrgCreateInput): Promise<Org> {
-    return this.orgService.create(orgCreateInput);
-  }
-
-  @Mutation(() => Org, { name: 'updateOrg' })
-  async update(
-    @Args()
-    updateArgs: UpdateOneOrgArgs
-  ): Promise<Org> {
-    const { data, where } = updateArgs;
-
-    return this.orgService.update(
-      data as Prisma.OrgUpdateInput,
-      where as Prisma.OrgWhereUniqueInput
-    );
-  }
-
-  @Mutation(() => Org, { name: 'deleteOrg' })
-  async delete(
-    @Args('orgWhereUniqueInput')
-    orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<{ deleted: boolean }> {
-    return this.orgService.delete(orgWhereUniqueInput);
   }
 
   @ResolveField(() => [User])

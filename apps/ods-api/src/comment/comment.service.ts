@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Prisma, Comment } from '.prisma/ods/client';
+import { User, Prisma } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -12,9 +12,5 @@ export class CommentService {
     return this.prisma.comment
       .findUnique({ where: commentWhereUniqueInput })
       .author();
-  }
-
-  async create(data: Prisma.CommentCreateInput): Promise<Comment> {
-    return this.prisma.comment.create({ data });
   }
 }

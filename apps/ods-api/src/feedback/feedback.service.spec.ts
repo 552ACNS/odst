@@ -40,13 +40,6 @@ describe('FeedbackService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('findMany', () => {
-    it('should return an array of feedbacks', async () => {
-      const feedbacks = await service.findMany({});
-      expect(feedbacks).toEqual(MockFeedbacks);
-    });
-  });
-
   describe('findUnique', () => {
     it('should get a single feedback', () => {
       expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
@@ -55,35 +48,10 @@ describe('FeedbackService', () => {
     });
   });
 
-  describe('create', () => {
-    it('should call the create method', async () => {
-      const feedback = await service.create(MockFeedbackCreateInput[0]);
-      expect(feedback).toEqual(MockFeedbacks[0]);
-    });
-  });
-
   describe('update', () => {
     it('should call the update method', async () => {
       const feedback = await service.update({ id: 'a uuid' }, {});
       expect(feedback).toEqual(MockFeedbacks[0]);
-    });
-  });
-
-  describe('delete', () => {
-    it('should return {deleted: true}', () => {
-      expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
-        deleted: true,
-      });
-    });
-
-    it('should return {deleted: false, message: err.message}', () => {
-      jest
-        .spyOn(prisma.feedback, 'delete')
-        .mockRejectedValueOnce(new Error('Bad Delete Method.'));
-      expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
-        deleted: false,
-        message: 'Bad Delete Method.',
-      });
     });
   });
 });

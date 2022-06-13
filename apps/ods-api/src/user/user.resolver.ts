@@ -22,16 +22,6 @@ import { GetCurrentUser } from '@odst/shared/nest';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  // TODO: Is this used anywhere? -Sim
-  @Query(() => [User])
-  async findUsersWithRole(@Args('role') role: Role): Promise<User[]> {
-    return this.userService.findMany({
-      where: {
-        role: role,
-      },
-    });
-  }
-
   // Add interceptors/manual restrictor
   @Query(() => [User], { name: 'findManyUsers' })
   async findMany(@Args() findManyUserArgs: FindManyUserArgs): Promise<User[]> {
@@ -49,6 +39,7 @@ export class UserResolver {
     });
   }
 
+  //TODO make sure anon users can't create enabled user
   @Public()
   @Mutation(() => User, { name: 'createUser' })
   create(
@@ -63,14 +54,6 @@ export class UserResolver {
     userWhereUniqueInput: UserWhereUniqueInput
   ): Promise<User> {
     return this.userService.enableAccount(userWhereUniqueInput);
-  }
-
-  @Mutation(() => User, { name: 'deleteUser', nullable: true })
-  async delete(
-    @Args('userWhereUniqueInput')
-    userWhereUniqueInput: UserWhereUniqueInput
-  ): Promise<User | null> {
-    return this.userService.delete(userWhereUniqueInput);
   }
 
   @ResolveField(() => [Org])
