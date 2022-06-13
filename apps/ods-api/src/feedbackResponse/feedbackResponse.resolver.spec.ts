@@ -38,7 +38,6 @@ describe('FeedbackResponse Resolver', () => {
     }).compile();
 
     resolver = module.get<FeedbackResponseResolver>(FeedbackResponseResolver);
-    service = module.get<FeedbackResponseService>(FeedbackResponseService);
   });
 
   it('should be defined', () => {

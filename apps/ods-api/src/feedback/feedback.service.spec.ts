@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { FeedbackService } from './feedback.service';
-import { MockFeedbackCreateInput, MockFeedbacks } from './feedback.repo';
+import { MockFeedbacks } from './feedback.repo';
 import { MockQuestions } from '../question/question.repo';
 
 const db = {

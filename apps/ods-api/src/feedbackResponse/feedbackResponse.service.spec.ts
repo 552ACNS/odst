@@ -6,11 +6,11 @@ import {
   MockFeedbackResponses,
   MockUsers,
 } from './feedbackResponse.repo';
-import { User } from '@odst/types/ods';
 import { MockOrgs } from '../org/org.repo';
 
 const db = {
   feedbackResponse: {
+    findMany: jest.fn().mockResolvedValue(MockFeedbackResponses),
     findUnique: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
     create: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
     update: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
