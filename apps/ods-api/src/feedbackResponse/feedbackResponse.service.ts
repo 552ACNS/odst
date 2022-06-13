@@ -242,23 +242,23 @@ export class FeedbackResponseService {
     resolved: string,
     user: User,
     skip: number
-  ): Promise<string[]> {
-    return this.prisma.surveyResponse
-      .findMany({
-        skip: skip,
-        take: 1,
-        where: {
-          ...this.determineStatus(resolved),
-          ...(await this.getWhere(user)),
-        },
-        select: {
-          id: true,
-        },
-        orderBy: {
-          openedDate: 'desc',
-        },
-      })
-      .then((responses) => responses.map((response) => response.id));
+  ): Promise<FeedbackResponse[]> {
+    return this.prisma.feedbackResponse.findMany({
+      skip: skip,
+      take: 1,
+      where: {
+        ...this.determineStatus(resolved),
+        ...(await this.getWhere(user)),
+      },
+      // select: {
+      //   id: true,
+      //   _count: true
+      // },
+      orderBy: {
+        openedDate: 'desc',
+      },
+    });
+    // .then((responses) => responses.map((response) => response.id));
     //TODO Not ideal. frontend is doing some wonky delayed loading. Should just return all issues, or paginate them.
     //Using the findMany above so as to not repeat stuff in the servicer
   }

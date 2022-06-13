@@ -3,9 +3,6 @@ import { Apollo } from 'apollo-angular';
 import { map, take } from 'rxjs';
 
 import {
-  GetIssuesByStatusDocument,
-  GetIssuesByStatusQuery,
-  GetIssuesByStatusQueryVariables,
   FindUniqueFeedbackResponseDocument,
   FindUniqueFeedbackResponseQuery,
   FindUniqueFeedbackResponseQueryVariables,
@@ -18,6 +15,9 @@ import {
   ModifyTagMutationVariables,
   ModifyTagMutation,
   ModifyTagDocument,
+  GetReportByStatusQuery,
+  GetReportByStatusDocument,
+  GetReportByStatusQueryVariables,
 } from './responses.generated';
 
 @Injectable({
@@ -25,10 +25,10 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getResponseIDsByStatus(resolved: string, skip: number) {
+  async getReportByStatus(resolved: string, skip: number) {
     return this.apollo
-      .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
-        query: GetIssuesByStatusDocument,
+      .watchQuery<GetReportByStatusQuery, GetReportByStatusQueryVariables>({
+        query: GetReportByStatusDocument,
         variables: {
           resolved,
           skip,
@@ -80,19 +80,19 @@ export class ResponsesService {
     });
   }
 
-  async getResponseData(responseID: string) {
-    return this.apollo.watchQuery<
-      FindUniqueFeedbackResponseQuery,
-      FindUniqueFeedbackResponseQueryVariables
-    >({
-      query: FindUniqueFeedbackResponseDocument,
-      variables: {
-        feedbackResponseWhereUniqueInput: {
-          id: responseID,
-        },
-      },
-    }).valueChanges;
-  }
+  // async getResponseData(responseID: string) {
+  //   return this.apollo.watchQuery<
+  //     FindUniqueFeedbackResponseQuery,
+  //     FindUniqueFeedbackResponseQueryVariables
+  //   >({
+  //     query: FindUniqueFeedbackResponseDocument,
+  //     variables: {
+  //       feedbackResponseWhereUniqueInput: {
+  //         id: responseID,
+  //       },
+  //     },
+  //   }).valueChanges;
+  // }
 
   modifyTag(modifyTagMutationVariables: ModifyTagMutationVariables) {
     return this.apollo.mutate<ModifyTagMutation, ModifyTagMutationVariables>({

@@ -75,7 +75,7 @@ export class ResponsesComponent implements OnInit {
     });
 
     (
-      await this.responsesService.getResponseIDsByStatus(
+      await this.responsesService.getReportByStatus(
         this.resolved,
         this.pageEvent.pageIndex
       )
@@ -166,43 +166,43 @@ export class ResponsesComponent implements OnInit {
       });
   }
 
-  async getResponseData(responseID: string) {
-    (await this.responsesService.getResponseData(responseID)).subscribe(
-      ({ data, errors }) => {
-        //one reason to not use pluck/map/whatever is it drops the errors and
-        //they're never seen/handled. Not that we're doing much of that right now
-        if (errors) {
-          alert(errors);
-        }
-        if (data) {
-          this.openedDate = data.findUniqueFeedbackResponse.openedDate;
+  // async getResponseData(responseID: string) {
+  //   (await this.responsesService.getResponseData(responseID)).subscribe(
+  //     ({ data, errors }) => {
+  //       //one reason to not use pluck/map/whatever is it drops the errors and
+  //       //they're never seen/handled. Not that we're doing much of that right now
+  //       if (errors) {
+  //         alert(errors);
+  //       }
+  //       if (data) {
+  //         this.openedDate = data.findUniqueFeedbackResponse.openedDate;
 
-          // Clear contents of QA array
-          this.questionsAnswers = [];
-          this.comments = [];
+  //         // Clear contents of QA array
+  //         this.questionsAnswers = [];
+  //         this.comments = [];
 
-          // Handle the Questions & Answers
-          data.findUniqueFeedbackResponse.answers?.forEach((answer) => {
-            // Clear contents of QA array
-            // Create the Question/Answer Array
-            this.questionsAnswers.push([
-              String(answer?.question?.value),
-              answer.value,
-            ]);
-          });
+  //         // Handle the Questions & Answers
+  //         data.findUniqueFeedbackResponse.answers?.forEach((answer) => {
+  //           // Clear contents of QA array
+  //           // Create the Question/Answer Array
+  //           this.questionsAnswers.push([
+  //             String(answer?.question?.value),
+  //             answer.value,
+  //           ]);
+  //         });
 
-          this.comments = data.findUniqueFeedbackResponse.comments;
+  //         this.comments = data.findUniqueFeedbackResponse.comments;
 
-          this.actualResolution = data.findUniqueFeedbackResponse['resolved'];
+  //         this.actualResolution = data.findUniqueFeedbackResponse['resolved'];
 
-          this.selectedTags = data.findUniqueFeedbackResponse['tags']?.map(
-            (x) => x.value
-          );
-          this.generatePossibleTags();
-        }
-      }
-    );
-  }
+  //         this.selectedTags = data.findUniqueFeedbackResponse['tags']?.map(
+  //           (x) => x.value
+  //         );
+  //         this.generatePossibleTags();
+  //       }
+  //     }
+  //   );
+  // }
 
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {

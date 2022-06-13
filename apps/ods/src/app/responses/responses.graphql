@@ -32,7 +32,7 @@ query findUniqueFeedbackResponse(
   }
 }
 
-query getIssuesByStatus($resolved: String!, $skip: Number!) {
+query GetReportByStatus($resolved: String!, $skip: Float!) {
   getIssuesByStatus(resolved: $resolved, skip: $skip)
 }
 
