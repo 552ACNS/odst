@@ -11,15 +11,18 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
     cy.location('pathname').should('include', '/feedback');
+
     cy.contains('span', 'Organization')
       .click()
       .wait('@graphql')
       .focused()
       .click({ force: true })
       .type('{enter}');
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
-    cy.get('#cdk-overlay-0').should('not.be.visible', { timeout: 5000 });
+
+    // Cypress sometimes doesn't close the overlay for the selector,
+    // so you need to click outside the body
+    cy.get('body').click('topLeft');
+
     cy.get('[formcontrolname="event"]').type('e2e Test');
     cy.get('#mat-radio-5').click();
     cy.get('[formcontrolname="CC')

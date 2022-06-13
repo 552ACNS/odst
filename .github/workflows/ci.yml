@@ -27,7 +27,24 @@ jobs:
       - run: yarn audit
   pr:
     runs-on: ubuntu-latest
+
     if: ${{ github.event_name == 'pull_request' }}
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: ods_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: H@CK3YITPL3ASE
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -43,20 +60,33 @@ jobs:
           cache: 'yarn'
       - run: yarn install --frozen-lockfile --prefer-offline
       - run: yarn audit
-      # - name: Setup .NET 6.x
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #     # Semantic version range syntax or exact version of a dotnet version
-      #     dotnet-version: '6.x'
+      # # - name: Setup .NET 6.x
+      # #   uses: actions/setup-dotnet@v1
+      # #   with:
+      # #     # Semantic version range syntax or exact version of a dotnet version
+      # #     dotnet-version: '6.x'
       - run: yarn nx affected --target=lint --parallel
-      # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
+      # # - run: yarn nx affected --target=test  --codeCoverage=true --coverageReporters=cobertura --parallel
       - run: yarn nx affected --target=test --parallel
+
+      # TODO: Only e2e test affected modules
+      - name: Migrate postgres database
+        run: yarn nx run ods-api:prisma-migrate --skip-generate
+      - name: start the backend
+        run: yarn nx serve ods-api &
+      - name: run cypress
+        run: yarn nx e2e ods-e2e
+
       # - run: dotnet tool update -g dotnet-reportgenerator-globaltool
       #   continue-on-error: true
       # - name: Merge Test Coverage Results
       #   run: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:TextSummary;"
       #   continue-on-error: true
-      # - name: Upload coverage report artifact
-      #   uses: actions/upload-artifact@v2.2.3
-      #   with:
-      #     path: ./coverage/merged # Directory containing files to upload
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2.2.3
+        # Always run this, even if something fails
+        if: always()
+        with:
+          name: cypress e2e
+          path: ./dist/cypress/apps
+          # path: ./coverage/merged # Directory containing files to upload
