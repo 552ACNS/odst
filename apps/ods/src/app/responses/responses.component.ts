@@ -75,7 +75,10 @@ export class ResponsesComponent implements OnInit {
     });
 
     (
-      await this.responsesService.getResponseIDsByStatus(this.resolved)
+      await this.responsesService.getResponseIDsByStatus(
+        this.resolved,
+        this.pageEvent.pageIndex
+      )
     ).subscribe((data) => {
       this.responseIDs = data;
       this.numberOfResponses = data.length;

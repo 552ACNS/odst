@@ -25,18 +25,16 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getResponseIDsByStatus(resolved: string) {
+  async getResponseIDsByStatus(resolved: string, skip: number) {
     return this.apollo
       .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
         query: GetIssuesByStatusDocument,
         variables: {
-          resolved: resolved,
+          resolved,
+          skip,
         },
       })
-      .valueChanges.pipe(
-        map((result) => result.data.getIssuesByStatus),
-        take(1)
-      );
+      .valueChanges.pipe(map((result) => result.data.getIssuesByStatus));
     // pluck lets me retrieve nested data.
   }
 

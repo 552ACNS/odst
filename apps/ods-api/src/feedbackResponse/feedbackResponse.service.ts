@@ -238,9 +238,15 @@ export class FeedbackResponseService {
     return whereIssues;
   }
 
-  async getIssuesByStatus(resolved: string, user: User): Promise<string[]> {
-    return this.prisma.feedbackResponse
+  async getIssuesByStatus(
+    resolved: string,
+    user: User,
+    skip: number
+  ): Promise<string[]> {
+    return this.prisma.surveyResponse
       .findMany({
+        skip: skip,
+        take: 1,
         where: {
           ...this.determineStatus(resolved),
           ...(await this.getWhere(user)),

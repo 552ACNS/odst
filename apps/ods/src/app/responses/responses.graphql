@@ -32,8 +32,8 @@ query findUniqueFeedbackResponse(
   }
 }
 
-query getIssuesByStatus($resolved: String!) {
-  getIssuesByStatus(resolved: $resolved)
+query getIssuesByStatus($resolved: String!, $skip: Number!) {
+  getIssuesByStatus(resolved: $resolved, skip: $skip)
 }
 
 mutation AddComment(
