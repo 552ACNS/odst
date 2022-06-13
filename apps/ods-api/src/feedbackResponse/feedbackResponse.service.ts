@@ -10,7 +10,6 @@ import {
   Comment,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-// eslint-disable-next-line no-restricted-imports
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
 import { ResponseCount } from '../__types__';
@@ -19,6 +18,7 @@ import { ResponseCount } from '../__types__';
 export class FeedbackResponseService {
   constructor(private prisma: PrismaService) {}
 
+  //TODO write tests for this
   /**
    * Returns a number of responses for a based on criteria specified by API
    * @param user Current user, obtained from resolver

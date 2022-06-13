@@ -6,6 +6,7 @@ import { Tag } from '@odst/types/ods';
 export class TagResolver {
   constructor(private readonly tagService: TagService) {}
 
+  //TODO write tests for this
   @Query(() => [String], { name: 'getTags' })
   async getTags(): Promise<string[]> {
     return this.tagService.getTags();

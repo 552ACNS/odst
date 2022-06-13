@@ -22,12 +22,14 @@ import { GetCurrentUser } from '@odst/shared/nest';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
+  //TODO write tests for this
   // Add interceptors/manual restrictor
   @Query(() => [User], { name: 'findManyUsers' })
   async findMany(@Args() findManyUserArgs: FindManyUserArgs): Promise<User[]> {
     return this.userService.findMany(findManyUserArgs);
   }
 
+  //TODO write tests for this
   //TODO write custom pipe to not need separate route for this
   @Public()
   @Query(() => [User])
@@ -39,6 +41,7 @@ export class UserResolver {
     });
   }
 
+  //TODO write tests for this
   //TODO make sure anon users can't create enabled user
   @Public()
   @Mutation(() => User, { name: 'createUser' })
@@ -48,6 +51,7 @@ export class UserResolver {
     return this.userService.create(userCreateInput);
   }
 
+  //TODO write tests for this
   @Mutation(() => User, { name: 'enableAccount' })
   async enableAccount(
     @Args('userWhereUniqueInput')
@@ -66,6 +70,7 @@ export class UserResolver {
     return user;
   }
 
+  //TODO write tests for this
   @Query(() => [User], { name: 'findManyAccountRequests' })
   async findManyAccountRequests(@GetCurrentUser() user: User) {
     return this.userService.findManyRequestedAccounts(user);

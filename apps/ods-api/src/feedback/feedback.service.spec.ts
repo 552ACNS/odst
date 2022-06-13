@@ -19,7 +19,6 @@ const db = {
 
 describe('FeedbackService', () => {
   let service: FeedbackService;
-  let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -33,7 +32,6 @@ describe('FeedbackService', () => {
     }).compile();
 
     service = module.get<FeedbackService>(FeedbackService);
-    prisma = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {

@@ -8,7 +8,6 @@ import {
 
 describe('FeedbackResponse Resolver', () => {
   let resolver: FeedbackResponseResolver;
-  let service: FeedbackResponseService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FeedbackResolver } from './feedback.resolver';
 import { FeedbackService } from './feedback.service';
-import { MockFeedbackCreateInput, MockFeedbacks } from './feedback.repo';
+import { MockFeedbacks } from './feedback.repo';
 
 describe('Feedback Resolver', () => {
   let resolver: FeedbackResolver;
-  let service: FeedbackService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

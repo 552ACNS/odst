@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class TagService {
   constructor(private prisma: PrismaService) {}
 
+  //TODO write tests for this
   async getTags(): Promise<string[]> {
     const tags = await this.prisma.tag.findMany({
       select: {

@@ -22,6 +22,7 @@ import { Public } from '@odst/auth';
 export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
+  //TODO write tests for this
   @Query(() => [Question], { name: 'getSubQuestions' })
   @Public()
 

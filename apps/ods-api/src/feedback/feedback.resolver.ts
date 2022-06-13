@@ -10,7 +10,6 @@ import {
 import { FeedbackService } from './feedback.service';
 import {
   Feedback,
-  FeedbackCreateInput,
   FeedbackWhereUniqueInput,
   Org,
   Question,
@@ -34,6 +33,7 @@ export class FeedbackResolver {
     return this.feedbackService.findUnique(feedbackWhereUniqueInput);
   }
 
+  //TODO write tests for this
   @Public()
   @Mutation(() => Feedback, { name: 'createFeedbackWithQuestions' })
   async createWithQuestions(

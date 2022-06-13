@@ -42,6 +42,7 @@ export class FeedbackResponseResolver {
     );
   }
 
+  //TODO write tests for this
   @Query(() => Int, { name: 'getResponseCount' })
   async count(
     @GetCurrentUser() user: User,
@@ -79,11 +80,13 @@ export class FeedbackResponseResolver {
   }
 
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
+  // TODO write tests for this
   @Query(() => ResponseCount, { name: 'ResponseCount' })
   async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
     return this.feedbackResponseService.countResponses(user);
   }
 
+  // TODO write tests for this
   @Query(() => [String], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
     @Args('resolved') resolved: string,

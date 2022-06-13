@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Org, Prisma, User, Feedback } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -15,6 +15,8 @@ export class OrgService {
       })
       .then((responses) => responses.map((response) => response.name));
   }
+
+  //TODO write tests for this
   /**
    *
    * @returns a list of Org Names that are descendents from a given org.
@@ -43,6 +45,7 @@ export class OrgService {
     return this.getFamily(orgs);
   }
 
+  //TODO write tests for this
   getFamily<T extends { name: string; children: any[] }>(orgs: T[]): string[] {
     const orgNames: string[] = [];
 
