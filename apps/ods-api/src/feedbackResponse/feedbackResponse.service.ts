@@ -237,7 +237,7 @@ export class FeedbackResponseService {
     }
     return whereIssues;
   }
-
+  //gets the feedback response based on issue and index it is queired on and returns a feedback response object
   async getIssuesByStatus(
     status: string,
     user: User,
@@ -251,10 +251,6 @@ export class FeedbackResponseService {
         ...this.determineStatus(status),
         ...(await this.getWhere(user)),
       },
-      // select: {
-      //   id: true,
-      //   _count: true
-      // },
       orderBy: {
         openedDate: 'desc',
       },

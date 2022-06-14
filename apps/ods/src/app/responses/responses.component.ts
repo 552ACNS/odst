@@ -67,7 +67,7 @@ export class ResponsesComponent implements OnInit {
   async ngOnInit() {
     this.getFeedback(0);
   }
-
+  //uses this method in lieu of displaydata method(which was deleted)
   handlePageEvent(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
       this.displayedIndex = pageEvent.pageIndex;
@@ -88,6 +88,7 @@ export class ResponsesComponent implements OnInit {
     this.route.queryParams.subscribe(async (params) => {
       this.status = params['resolved'];
     });
+    //method takes the status of the response, the index its querying for, and the number of responses to take
     (
       await this.responsesService.getReportByStatus(
         this.status,
@@ -97,9 +98,11 @@ export class ResponsesComponent implements OnInit {
     )
       // eslint-disable-next-line complexity
       .subscribe(({ data }) => {
+        //it then uses the data to determin the current status and gets and displays the other appropriate data
         if (this.numberOfResponses !== 0) {
           this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
         }
+        //took the get data method and put it in our new method, this one
         switch (this.status) {
           case 'unresolved':
             this.numberOfResponses = data.ResponseCount.unresolved;
