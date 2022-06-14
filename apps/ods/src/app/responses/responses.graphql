@@ -1,10 +1,10 @@
-query GetReportByStatus($resolved: String!, $skip: Float!, $take: Float!) {
+query GetReportByStatus($status: String!, $skip: Float!, $take: Float!) {
   ResponseCount {
     unresolved
     overdue
     resolved
   }
-  getIssuesByStatus(resolved: $resolved, skip: $skip, take: $take) {
+  getIssuesByStatus(status: $status, skip: $skip, take: $take) {
     id
     openedDate
     closedDate

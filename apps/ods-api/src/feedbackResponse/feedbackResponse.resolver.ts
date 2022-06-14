@@ -116,13 +116,13 @@ export class FeedbackResponseResolver {
 
   @Query(() => [FeedbackResponse], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
-    @Args('resolved') resolved: string,
+    @Args('status') status: string,
     @GetCurrentUser() user: User,
     @Args('skip') skip: number,
     @Args('take') take: number
   ): Promise<FeedbackResponse[]> {
     return this.feedbackResponseService.getIssuesByStatus(
-      resolved,
+      status,
       user,
       skip,
       take

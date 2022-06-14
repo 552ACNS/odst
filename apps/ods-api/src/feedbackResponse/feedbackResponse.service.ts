@@ -239,7 +239,7 @@ export class FeedbackResponseService {
   }
 
   async getIssuesByStatus(
-    resolved: string,
+    status: string,
     user: User,
     skip: number,
     take: number
@@ -248,7 +248,7 @@ export class FeedbackResponseService {
       skip: skip,
       take: take,
       where: {
-        ...this.determineStatus(resolved),
+        ...this.determineStatus(status),
         ...(await this.getWhere(user)),
       },
       // select: {

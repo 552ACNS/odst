@@ -44,7 +44,7 @@ export class ResponsesComponent implements OnInit {
 
   newComment = '';
   // TODO: Change resolved status back to bool
-  resolved: string;
+  status: string;
 
   // This is for the toggle button
   actualResolution: boolean;
@@ -86,11 +86,11 @@ export class ResponsesComponent implements OnInit {
 
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
-      this.resolved = params['resolved'];
+      this.status = params['resolved'];
     });
     (
       await this.responsesService.getReportByStatus(
-        this.resolved,
+        this.status,
         index,
         this.take
       )
@@ -100,7 +100,7 @@ export class ResponsesComponent implements OnInit {
         if (this.numberOfResponses !== 0) {
           this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
         }
-        switch (this.resolved) {
+        switch (this.status) {
           case 'unresolved':
             this.numberOfResponses = data.ResponseCount.unresolved;
             this.pageEvent.length = data.ResponseCount.unresolved;
@@ -114,8 +114,6 @@ export class ResponsesComponent implements OnInit {
             this.pageEvent.length = data.ResponseCount.overdue;
             break;
         }
-
-        console.log(this.pageEvent);
 
         this.response = data.getIssuesByStatus[0];
 

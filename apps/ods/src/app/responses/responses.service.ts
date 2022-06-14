@@ -22,14 +22,14 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getReportByStatus(resolved: string, skip: number, take: number) {
+  async getReportByStatus(status: string, skip: number, take: number) {
     return this.apollo.watchQuery<
       GetReportByStatusQuery,
       GetReportByStatusQueryVariables
     >({
       query: GetReportByStatusDocument,
       variables: {
-        resolved,
+        status,
         skip,
         take,
       },
