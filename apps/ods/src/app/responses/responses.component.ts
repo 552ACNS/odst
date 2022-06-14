@@ -5,7 +5,7 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AddCommentMutationVariables,
-  FindUniqueFeedbackResponseQuery,
+  GetReportByStatusQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
 import { getRefreshToken, getUserId } from '@odst/helpers';
@@ -38,8 +38,7 @@ export class ResponsesComponent implements OnInit {
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
-  comments: FindUniqueFeedbackResponseQuery['findUniqueFeedbackResponse']['comments'] =
-    [];
+  comments: GetReportByStatusQuery['getIssuesByStatus'][0]['comments'] = [];
 
   AddCommentMutationVariables: AddCommentMutationVariables;
 
@@ -55,15 +54,31 @@ export class ResponsesComponent implements OnInit {
   userId: string;
 
   numberOfResponses: number;
+
   displayedIndex: number;
 
-  responseIDs: string[] = [];
-
   pageEvent: PageEvent;
+
+  take = 1;
+  response: GetReportByStatusQuery['getIssuesByStatus'][0];
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
   async ngOnInit() {
+    this.getFeedback(0);
+  }
+
+  handlePageEvent(pageEvent: PageEvent): PageEvent {
+    if (pageEvent) {
+      this.displayedIndex = pageEvent.pageIndex;
+
+      this.getFeedback(this.displayedIndex);
+    }
+    return pageEvent;
+  }
+
+  async getFeedback(index: number) {
+    //TODO pull this from id token once implemented in ODST-33
     this.userId = getUserId(getRefreshToken() ?? '');
 
     this.allTags = this.responsesService.getTags();
@@ -73,23 +88,60 @@ export class ResponsesComponent implements OnInit {
     this.route.queryParams.subscribe(async (params) => {
       this.resolved = params['resolved'];
     });
-
     (
       await this.responsesService.getReportByStatus(
         this.resolved,
-        this.pageEvent.pageIndex
+        index,
+        this.take
       )
-    ).subscribe((data) => {
-      this.responseIDs = data;
-      this.numberOfResponses = data.length;
+    )
+      // eslint-disable-next-line complexity
+      .subscribe(({ data }) => {
+        if (this.numberOfResponses !== 0) {
+          this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+        }
+        switch (this.resolved) {
+          case 'unresolved':
+            this.numberOfResponses = data.ResponseCount.unresolved;
+            this.pageEvent.length = data.ResponseCount.unresolved;
+            break;
+          case 'resolved':
+            this.numberOfResponses = data.ResponseCount.resolved;
+            this.pageEvent.length = data.ResponseCount.resolved;
+            break;
+          case 'overdue':
+            this.numberOfResponses = data.ResponseCount.overdue;
+            this.pageEvent.length = data.ResponseCount.overdue;
+            break;
+        }
 
-      if (this.numberOfResponses !== 0) {
-        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+        console.log(this.pageEvent);
 
-        // navigate to that issue
-        this.displayIssue(this.pageEvent);
-      }
-    });
+        this.response = data.getIssuesByStatus[0];
+
+        this.openedDate = this.response.openedDate;
+
+        // Clear contents of QA array
+        this.questionsAnswers = [];
+        this.comments = [];
+
+        // Handle the Questions & Answers
+        this.response.answers?.forEach((answer) => {
+          // Clear contents of QA array
+          // Create the Question/Answer Array
+          this.questionsAnswers.push([
+            String(answer?.question?.value),
+            answer.value,
+          ]);
+        });
+
+        this.comments = this.response.comments;
+
+        this.actualResolution = this.response['resolved'];
+
+        this.selectedTags = this.response['tags']?.map((x) => x.value);
+        this.generatePossibleTags();
+      });
   }
 
   /**
@@ -114,7 +166,7 @@ export class ResponsesComponent implements OnInit {
     if (this.resolutionForm.value.comment.trim() !== '') {
       this.AddCommentMutationVariables = {
         where: {
-          id: this.responseIDs[this.displayedIndex],
+          id: this.response.id,
         },
         data: {
           comments: {
@@ -148,7 +200,7 @@ export class ResponsesComponent implements OnInit {
   updateResolved() {
     const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
       where: {
-        id: this.responseIDs[this.displayedIndex],
+        id: this.response.id,
       },
       data: {
         resolved: {
@@ -166,54 +218,6 @@ export class ResponsesComponent implements OnInit {
       });
   }
 
-  // async getResponseData(responseID: string) {
-  //   (await this.responsesService.getResponseData(responseID)).subscribe(
-  //     ({ data, errors }) => {
-  //       //one reason to not use pluck/map/whatever is it drops the errors and
-  //       //they're never seen/handled. Not that we're doing much of that right now
-  //       if (errors) {
-  //         alert(errors);
-  //       }
-  //       if (data) {
-  //         this.openedDate = data.findUniqueFeedbackResponse.openedDate;
-
-  //         // Clear contents of QA array
-  //         this.questionsAnswers = [];
-  //         this.comments = [];
-
-  //         // Handle the Questions & Answers
-  //         data.findUniqueFeedbackResponse.answers?.forEach((answer) => {
-  //           // Clear contents of QA array
-  //           // Create the Question/Answer Array
-  //           this.questionsAnswers.push([
-  //             String(answer?.question?.value),
-  //             answer.value,
-  //           ]);
-  //         });
-
-  //         this.comments = data.findUniqueFeedbackResponse.comments;
-
-  //         this.actualResolution = data.findUniqueFeedbackResponse['resolved'];
-
-  //         this.selectedTags = data.findUniqueFeedbackResponse['tags']?.map(
-  //           (x) => x.value
-  //         );
-  //         this.generatePossibleTags();
-  //       }
-  //     }
-  //   );
-  // }
-
-  displayIssue(pageEvent: PageEvent): PageEvent {
-    if (pageEvent) {
-      //TODO rewrite with proper pagination
-      this.displayedIndex = pageEvent.pageIndex;
-
-      this.getResponseData(this.responseIDs[this.displayedIndex]);
-    }
-    return pageEvent;
-  }
-
   /**
    * Removes tag deselected by the user and adds it back to the list of tags not in use
    * @param tagToRemove tag that's been deselected by the user
@@ -223,7 +227,7 @@ export class ResponsesComponent implements OnInit {
   remove(tagToRemove: string): void {
     this.responsesService
       .modifyTag({
-        where: { id: this.responseIDs[this.displayedIndex] },
+        where: { id: this.response.id },
         data: { tags: { disconnect: [{ value: tagToRemove }] } },
       })
       .subscribe(({ data, errors }) => {
@@ -254,7 +258,7 @@ export class ResponsesComponent implements OnInit {
     if (this.allTags.includes(value) && !this.selectedTags?.includes(value)) {
       this.responsesService
         .modifyTag({
-          where: { id: this.responseIDs[this.displayedIndex] },
+          where: { id: this.response.id },
           data: { tags: { connect: [{ value: value }] } },
         })
         .subscribe(({ data, errors }) => {
@@ -287,7 +291,7 @@ export class ResponsesComponent implements OnInit {
 
     this.responsesService
       .modifyTag({
-        where: { id: this.responseIDs[this.displayedIndex] },
+        where: { id: this.response.id },
         data: { tags: { connect: [{ value: event.option.viewValue }] } },
       })
       .subscribe(({ data, errors }) => {

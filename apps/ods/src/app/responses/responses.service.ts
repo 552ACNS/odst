@@ -3,9 +3,6 @@ import { Apollo } from 'apollo-angular';
 import { map, take } from 'rxjs';
 
 import {
-  FindUniqueFeedbackResponseDocument,
-  FindUniqueFeedbackResponseQuery,
-  FindUniqueFeedbackResponseQueryVariables,
   AddCommentMutationVariables,
   AddCommentMutation,
   AddCommentDocument,
@@ -25,17 +22,18 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getReportByStatus(resolved: string, skip: number) {
-    return this.apollo
-      .watchQuery<GetReportByStatusQuery, GetReportByStatusQueryVariables>({
-        query: GetReportByStatusDocument,
-        variables: {
-          resolved,
-          skip,
-        },
-      })
-      .valueChanges.pipe(map((result) => result.data.getIssuesByStatus));
-    // pluck lets me retrieve nested data.
+  async getReportByStatus(resolved: string, skip: number, take: number) {
+    return this.apollo.watchQuery<
+      GetReportByStatusQuery,
+      GetReportByStatusQueryVariables
+    >({
+      query: GetReportByStatusDocument,
+      variables: {
+        resolved,
+        skip,
+        take,
+      },
+    }).valueChanges;
   }
 
   getTags() {
@@ -79,20 +77,6 @@ export class ResponsesService {
       variables: updateResolvedMutationVariables,
     });
   }
-
-  // async getResponseData(responseID: string) {
-  //   return this.apollo.watchQuery<
-  //     FindUniqueFeedbackResponseQuery,
-  //     FindUniqueFeedbackResponseQueryVariables
-  //   >({
-  //     query: FindUniqueFeedbackResponseDocument,
-  //     variables: {
-  //       feedbackResponseWhereUniqueInput: {
-  //         id: responseID,
-  //       },
-  //     },
-  //   }).valueChanges;
-  // }
 
   modifyTag(modifyTagMutationVariables: ModifyTagMutationVariables) {
     return this.apollo.mutate<ModifyTagMutation, ModifyTagMutationVariables>({

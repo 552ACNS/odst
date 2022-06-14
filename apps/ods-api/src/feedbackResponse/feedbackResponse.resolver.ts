@@ -118,9 +118,15 @@ export class FeedbackResponseResolver {
   async getIssuesByStatus(
     @Args('resolved') resolved: string,
     @GetCurrentUser() user: User,
-    @Args('skip') skip: number
+    @Args('skip') skip: number,
+    @Args('take') take: number
   ): Promise<FeedbackResponse[]> {
-    return this.feedbackResponseService.getIssuesByStatus(resolved, user, skip);
+    return this.feedbackResponseService.getIssuesByStatus(
+      resolved,
+      user,
+      skip,
+      take
+    );
   }
 
   @ResolveField(() => [Answer])

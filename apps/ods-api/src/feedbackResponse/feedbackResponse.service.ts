@@ -241,11 +241,12 @@ export class FeedbackResponseService {
   async getIssuesByStatus(
     resolved: string,
     user: User,
-    skip: number
+    skip: number,
+    take: number
   ): Promise<FeedbackResponse[]> {
     return this.prisma.feedbackResponse.findMany({
       skip: skip,
-      take: 1,
+      take: take,
       where: {
         ...this.determineStatus(resolved),
         ...(await this.getWhere(user)),

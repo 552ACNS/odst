@@ -1,9 +1,15 @@
-query findUniqueFeedbackResponse(
-  $feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!
-) {
-  findUniqueFeedbackResponse(
-    feedbackResponseWhereUniqueInput: $feedbackResponseWhereUniqueInput
-  ) {
+query GetReportByStatus($resolved: String!, $skip: Float!, $take: Float!) {
+  ResponseCount {
+    unresolved
+    overdue
+    resolved
+  }
+  getIssuesByStatus(resolved: $resolved, skip: $skip, take: $take) {
+    id
+    openedDate
+    closedDate
+    routeOutside
+    resolved
     openedDate
     answers {
       value
@@ -30,10 +36,6 @@ query findUniqueFeedbackResponse(
       }
     }
   }
-}
-
-query GetReportByStatus($resolved: String!, $skip: Float!) {
-  getIssuesByStatus(resolved: $resolved, skip: $skip)
 }
 
 mutation AddComment(
