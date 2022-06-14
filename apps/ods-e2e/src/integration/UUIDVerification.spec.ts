@@ -8,31 +8,39 @@ describe('ods', () => {
   });
   it('submit a feedback with a unique uuid', () => {
     cy.visit('/disclaimer');
-    cy.location('pathname').should('include', '/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
+
+    // Make sure you are on the feedback page
     cy.location('pathname').should('include', '/feedback');
 
-    cy.get('[formcontrolname="eventOrg"')
-      .click()
-      .wait('@graphql')
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
+    // Must wait here for all GQL queries to finish to preload everything
+    cy.wait('@graphql');
 
-    // Cypress sometimes doesn't close the overlay for the selector,
-    // so you need to click outside the body
-    cy.get('body').click('topLeft');
+    // Selects the mat selector that's call
+    cy.get('[formcontrolname="eventOrg"]').click();
 
-    cy.get('[formcontrolname="event"]').type('e2e Test');
-    cy.get('#mat-radio-5').click();
-    cy.get('[formcontrolname="CC')
-      .click()
-      .wait('@graphql')
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
-    cy.get('#mat-radio-8').click();
+    // // Wait for the queries to load
+    // cy.wait('@graphql');
+
+    // Select ACW
+    cy.get('.mat-option-text').contains('552 ACW').click();
+
+    cy.get('[formcontrolname="event"]').type('This is a UUID test');
+
+    // Gets the spec of the instigator as AD
+    cy.get('[ng-reflect-name="violator_spec"]>[value="AD"]').click();
+
+    // Gets the dropdown for the commander
+    cy.get('[formcontrolname="CC"]').click();
+
+    // Selects Col Coyle as the commander (this is a response for the wing)
+    cy.get('.mat-option-text').contains('Coyle').click();
+
+    // My Spec is Active Duty
+    cy.get('[ng-reflect-name="person_spec"]>[value="AD"]').click();
+
     cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID);
+
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
