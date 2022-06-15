@@ -9,7 +9,6 @@ import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { FeedbackResponseModule } from '../feedbackResponse/feedbackResponse.module';
-import { AnswerModule } from '../answer/answer.module';
 import { QuestionModule } from '../question/question.module';
 import { AuthModule } from '@odst/auth';
 import { UserModule } from '../user/user.module';
@@ -39,7 +38,6 @@ import { TagModule } from '../tag/tag.module';
     TagModule,
     FeedbackModule,
     FeedbackResponseModule,
-    AnswerModule,
     OrgModule,
     QuestionModule,
     UserModule,
