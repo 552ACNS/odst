@@ -66,25 +66,28 @@ describe('ods', () => {
     cy.get('[formcontrolname="firstName"]').type('e2e');
     cy.get('[formcontrolname="lastName"]').type('test');
     cy.get('[formcontrolname="email"]').type('e2etest@gmail.com');
-    cy.contains('span', 'Select Grade')
-      .click()
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
-    cy.get('[formcontrolname="permissions"]')
-      .click()
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
-    cy.contains('span', 'Unit')
-      .click()
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
+
+    cy.get('[formcontrolname="grade"]').click();
+
+    cy.wait('@graphql');
+
+    cy.get('.mat-option-text').contains('O-1').click();
+
+    cy.get('[formcontrolname="permissions"]').click();
+
+    cy.wait('@graphql');
+
+    cy.get('.mat-option-text').contains('Commander').click();
+
+    cy.get('[formcontrolname="org"]').click();
+
+    cy.get('.mat-option-text').contains('552 ACW').click();
+
     cy.get('[formcontrolname="password"]').type('thisISaREALLYgreatPA$$word!3');
-    cy.get('[formcontrolname="confirmPassword"]')
-      .type('thisISaREALLYgreatPA$$word!3')
-      .wait('@graphql');
+    cy.get('[formcontrolname="confirmPassword"]').type(
+      'thisISaREALLYgreatPA$$word!3'
+    );
+
     cy.get('button').contains('Submit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
