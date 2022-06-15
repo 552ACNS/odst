@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FeedbackQuestionsComponent } from './feedback-questions.component';
 import { ApolloTestingModule } from 'apollo-angular/testing';
@@ -15,9 +15,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('FeedbackQuestionsComponent', () => {
-  let component: FeedbackQuestionsComponent;
-  let fixture: ComponentFixture<FeedbackQuestionsComponent>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FeedbackQuestionsComponent],
