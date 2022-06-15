@@ -1,4 +1,4 @@
-## Completed by the Pull Requester
+## To be Completed by the Pull Requester
 
 ## Checklist:
 
@@ -13,21 +13,13 @@
 
 ## Type of change (Pick Any Number)
 
-1. Bug fix
+1. Bug fix. Non-breaking change which fixes an issue, example: swapping the order of numbers on a UI.
 
-- Non-breaking change which fixes an issue, example: swapping the order of numbers on a UI
+2. New feature. Non-breaking change which adds functionality, example: new page on the frontend.
 
-2. New feature
+3. Breaking change. Fix or feature that would cause existing functionality to not work as expected, example: API change that requires dependent projects to be updated.
 
-- Non-breaking change which adds functionality, example: new page on the frontend
-
-3. Breaking change
-
-- Fix or feature that would cause existing functionality to not work as expected, example: API change that requires dependent projects to be updated
-
-4. Documentation update
-
-- Example: new setup instructions for a new feature
+4. Documentation update. Example: new setup instructions for a new feature.
 
 ## How Has This Been Tested?
 
@@ -35,15 +27,13 @@ Describe the tests that you created to tests your changes. Use N/A if no tests w
 
 ---
 
-## Completed By Reviewer #1
+## To be Completed By Reviewer #1
 
 - [ ] I have performed a review of the code and checked for possible unintentional edits.
 - [ ] I concur with the amount of comments made.
 - [ ] I concur with the amount of tests made.
 
----
-
-## Completed By Reviewer #2
+## To be Completed By Reviewer #2
 
 - [ ] I have performed a review of the code and checked for possible unintentional edits.
 - [ ] I concur with the amount of comments made.
