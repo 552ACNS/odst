@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { MockTokens, MockUser } from './auth.repo';
+import { MockTokens } from './auth.repo';
 
 describe('Auth Resolver', () => {
   let resolver: AuthResolver;
-  let service: AuthService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,7 +22,6 @@ describe('Auth Resolver', () => {
     }).compile();
 
     resolver = module.get<AuthResolver>(AuthResolver);
-    service = module.get<AuthService>(AuthService);
   });
 
   it('should be defined', () => {
