@@ -849,7 +849,6 @@ type Mutation {
   createUser(userCreateInput: UserCreateInput!): User!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
-  createComment(commentCreateInput: CommentCreateInput!): Comment!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -2196,14 +2195,6 @@ input UserCreateInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
   comments: CommentCreateNestedManyWithoutAuthorInput
-}
-
-input CommentCreateInput {
-  id: String
-  value: String!
-  date: DateTime
-  author: UserCreateNestedOneWithoutCommentsInput!
-  FeedbackResponse: FeedbackResponseCreateNestedOneWithoutCommentsInput
 }
 
 input LoginUserInput {
