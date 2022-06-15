@@ -361,7 +361,6 @@ type ResponseCount {
 }
 
 type Query {
-  getTags: [String!]!
   findUniqueFeedback(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): Feedback!
   findUniqueFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
@@ -847,10 +846,10 @@ type Mutation {
   updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
   createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): FeedbackResponse!
   updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
-  updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question!
   createUser(userCreateInput: UserCreateInput!): User!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
+  createComment(commentCreateInput: CommentCreateInput!): Comment!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -2185,13 +2184,6 @@ input FeedbackResponseUpdateInput {
   resolved: BoolFieldUpdateOperationsInput
 }
 
-input QuestionUpdateInput {
-  id: StringFieldUpdateOperationsInput
-  value: StringFieldUpdateOperationsInput
-  feedbacks: FeedbackUpdateManyWithoutQuestionsInput
-  answers: AnswerUpdateManyWithoutQuestionInput
-}
-
 input UserCreateInput {
   id: String
   email: String!
@@ -2204,6 +2196,14 @@ input UserCreateInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
   comments: CommentCreateNestedManyWithoutAuthorInput
+}
+
+input CommentCreateInput {
+  id: String
+  value: String!
+  date: DateTime
+  author: UserCreateNestedOneWithoutCommentsInput!
+  FeedbackResponse: FeedbackResponseCreateNestedOneWithoutCommentsInput
 }
 
 input LoginUserInput {

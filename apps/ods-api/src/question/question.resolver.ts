@@ -1,21 +1,11 @@
-import {
-  Resolver,
-  Mutation,
-  Args,
-  Query,
-  Parent,
-  ResolveField,
-} from '@nestjs/graphql';
+import { Resolver, Args, Query, Parent, ResolveField } from '@nestjs/graphql';
 import { QuestionService } from './question.service';
 import {
   Question,
   FeedbackWhereUniqueInput,
   Answer,
   Feedback,
-  UpdateOneQuestionArgs,
 } from '@odst/types/ods';
-import { Prisma } from '.prisma/ods/client';
-
 import { Public } from '@odst/auth';
 
 @Resolver(() => Question)
