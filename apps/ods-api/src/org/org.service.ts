@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Org, Prisma, User, Survey } from '.prisma/ods/client';
+import { Org, Prisma, User, Feedback } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -144,9 +144,11 @@ export class OrgService {
     return this.prisma.org.findUnique({ where: orgWhereUniqueInput }).parent();
   }
 
-  async surveys(
+  async feedbacks(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Survey[]> {
-    return this.prisma.org.findUnique({ where: orgWhereUniqueInput }).surveys();
+  ): Promise<Feedback[]> {
+    return this.prisma.org
+      .findUnique({ where: orgWhereUniqueInput })
+      .feedbacks();
   }
 }

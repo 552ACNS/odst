@@ -1,14 +1,14 @@
-query findUniqueSurveyResponse(
-  $surveyResponseWhereUniqueInput: SurveyResponseWhereUniqueInput!
+query findUniqueFeedbackResponse(
+  $feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!
 ) {
-  findUniqueSurveyResponse(
-    surveyResponseWhereUniqueInput: $surveyResponseWhereUniqueInput
+  findUniqueFeedbackResponse(
+    feedbackResponseWhereUniqueInput: $feedbackResponseWhereUniqueInput
   ) {
     openedDate
     answers {
       value
       question {
-        prompt
+        value
       }
     }
     resolved
@@ -37,10 +37,10 @@ query getIssuesByStatus($resolved: String!) {
 }
 
 mutation AddComment(
-  $data: SurveyResponseUpdateInput!
-  $where: SurveyResponseWhereUniqueInput!
+  $data: FeedbackResponseUpdateInput!
+  $where: FeedbackResponseWhereUniqueInput!
 ) {
-  updateSurveyResponse(data: $data, where: $where) {
+  updateFeedbackResponse(data: $data, where: $where) {
     id
     comments {
       value
@@ -60,20 +60,20 @@ mutation AddComment(
 }
 
 mutation UpdateResolved(
-  $data: SurveyResponseUpdateInput!
-  $where: SurveyResponseWhereUniqueInput!
+  $data: FeedbackResponseUpdateInput!
+  $where: FeedbackResponseWhereUniqueInput!
 ) {
-  updateSurveyResponse(data: $data, where: $where) {
+  updateFeedbackResponse(data: $data, where: $where) {
     resolved
     id
   }
 }
 
 mutation modifyTag(
-  $data: SurveyResponseUpdateInput!
-  $where: SurveyResponseWhereUniqueInput!
+  $data: FeedbackResponseUpdateInput!
+  $where: FeedbackResponseWhereUniqueInput!
 ) {
-  updateSurveyResponse(data: $data, where: $where) {
+  updateFeedbackResponse(data: $data, where: $where) {
     tags {
       value
     }

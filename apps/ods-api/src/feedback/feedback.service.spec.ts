@@ -1,30 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
-import { SurveyService } from './survey.service';
-import { MockSurveyCreateInput, MockSurveys } from './survey.repo';
+import { FeedbackService } from './feedback.service';
+import { MockFeedbackCreateInput, MockFeedbacks } from './feedback.repo';
 import { MockQuestions } from '../question/question.repo';
 
 const db = {
-  survey: {
-    findMany: jest.fn().mockReturnValue(MockSurveys),
-    findUnique: jest.fn().mockResolvedValue(MockSurveys[0]),
-    create: jest.fn().mockResolvedValue(MockSurveys[0]),
-    update: jest.fn().mockResolvedValue(MockSurveys[0]),
-    delete: jest.fn().mockResolvedValue(MockSurveys[0]),
+  feedback: {
+    findMany: jest.fn().mockReturnValue(MockFeedbacks),
+    findUnique: jest.fn().mockResolvedValue(MockFeedbacks[0]),
+    create: jest.fn().mockResolvedValue(MockFeedbacks[0]),
+    update: jest.fn().mockResolvedValue(MockFeedbacks[0]),
+    delete: jest.fn().mockResolvedValue(MockFeedbacks[0]),
   },
   question: {
     findMany: jest.fn().mockReturnValue(MockQuestions),
   },
 };
 
-describe('SurveyService', () => {
-  let service: SurveyService;
+describe('FeedbackService', () => {
+  let service: FeedbackService;
   let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        SurveyService,
+        FeedbackService,
         {
           provide: PrismaService,
           useValue: db,
@@ -32,7 +32,7 @@ describe('SurveyService', () => {
       ],
     }).compile();
 
-    service = module.get<SurveyService>(SurveyService);
+    service = module.get<FeedbackService>(FeedbackService);
     prisma = module.get<PrismaService>(PrismaService);
   });
 
@@ -41,31 +41,31 @@ describe('SurveyService', () => {
   });
 
   describe('findMany', () => {
-    it('should return an array of surveys', async () => {
-      const surveys = await service.findMany({});
-      expect(surveys).toEqual(MockSurveys);
+    it('should return an array of feedbacks', async () => {
+      const feedbacks = await service.findMany({});
+      expect(feedbacks).toEqual(MockFeedbacks);
     });
   });
 
   describe('findUnique', () => {
-    it('should get a single survey', () => {
+    it('should get a single feedback', () => {
       expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
-        MockSurveys[0]
+        MockFeedbacks[0]
       );
     });
   });
 
   describe('create', () => {
     it('should call the create method', async () => {
-      const survey = await service.create(MockSurveyCreateInput[0]);
-      expect(survey).toEqual(MockSurveys[0]);
+      const feedback = await service.create(MockFeedbackCreateInput[0]);
+      expect(feedback).toEqual(MockFeedbacks[0]);
     });
   });
 
   describe('update', () => {
     it('should call the update method', async () => {
-      const survey = await service.update({ id: 'a uuid' }, {});
-      expect(survey).toEqual(MockSurveys[0]);
+      const feedback = await service.update({ id: 'a uuid' }, {});
+      expect(feedback).toEqual(MockFeedbacks[0]);
     });
   });
 
@@ -78,7 +78,7 @@ describe('SurveyService', () => {
 
     it('should return {deleted: false, message: err.message}', () => {
       jest
-        .spyOn(prisma.survey, 'delete')
+        .spyOn(prisma.feedback, 'delete')
         .mockRejectedValueOnce(new Error('Bad Delete Method.'));
       expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
         deleted: false,

@@ -5,7 +5,7 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AddCommentMutationVariables,
-  FindUniqueSurveyResponseQuery,
+  FindUniqueFeedbackResponseQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
 import { getRefreshToken, getUserId } from '@odst/helpers';
@@ -38,7 +38,7 @@ export class ResponsesComponent implements OnInit {
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
-  comments: FindUniqueSurveyResponseQuery['findUniqueSurveyResponse']['comments'] =
+  comments: FindUniqueFeedbackResponseQuery['findUniqueFeedbackResponse']['comments'] =
     [];
 
   AddCommentMutationVariables: AddCommentMutationVariables;
@@ -96,9 +96,12 @@ export class ResponsesComponent implements OnInit {
     this.possibleTags = this.allTags.filter(
       (tag) => !this.selectedTags?.includes(tag)
     );
-    if (this.tagInput?.nativeElement.value.trim()) {
+
+    const input = this.tagInput?.nativeElement.value.trim().toLowerCase();
+
+    if (input) {
       this.possibleTags = this.possibleTags.filter((tag) =>
-        tag.includes(this.tagInput?.nativeElement.value.trim())
+        tag.toLowerCase().includes(input)
       );
     }
   }
@@ -131,8 +134,8 @@ export class ResponsesComponent implements OnInit {
         .subscribe(({ data, errors }) => {
           if (!errors && data) {
             // Refresh comments afterwards
-            this.comments = data.updateSurveyResponse['comments'];
-            this.actualResolution = data.updateSurveyResponse['resolved'];
+            this.comments = data.updateFeedbackResponse['comments'];
+            this.actualResolution = data.updateFeedbackResponse['resolved'];
             this.resolutionForm.reset();
           }
         });
@@ -155,7 +158,7 @@ export class ResponsesComponent implements OnInit {
       .updateResolved(updateResolvedMutationVariables)
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.actualResolution = data.updateSurveyResponse['resolved'];
+          this.actualResolution = data.updateFeedbackResponse['resolved'];
         }
       });
   }
@@ -169,27 +172,27 @@ export class ResponsesComponent implements OnInit {
           alert(errors);
         }
         if (data) {
-          this.openedDate = data.findUniqueSurveyResponse.openedDate;
+          this.openedDate = data.findUniqueFeedbackResponse.openedDate;
 
           // Clear contents of QA array
           this.questionsAnswers = [];
           this.comments = [];
 
           // Handle the Questions & Answers
-          data.findUniqueSurveyResponse.answers?.forEach((answer) => {
+          data.findUniqueFeedbackResponse.answers?.forEach((answer) => {
             // Clear contents of QA array
             // Create the Question/Answer Array
             this.questionsAnswers.push([
-              String(answer?.question?.prompt),
+              String(answer?.question?.value),
               answer.value,
             ]);
           });
 
-          this.comments = data.findUniqueSurveyResponse.comments;
+          this.comments = data.findUniqueFeedbackResponse.comments;
 
-          this.actualResolution = data.findUniqueSurveyResponse['resolved'];
+          this.actualResolution = data.findUniqueFeedbackResponse['resolved'];
 
-          this.selectedTags = data.findUniqueSurveyResponse['tags']?.map(
+          this.selectedTags = data.findUniqueFeedbackResponse['tags']?.map(
             (x) => x.value
           );
           this.generatePossibleTags();

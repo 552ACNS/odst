@@ -12,7 +12,7 @@ import {
   OrgCreateInput,
   OrgWhereUniqueInput,
   User,
-  Survey,
+  Feedback,
   UpdateOneOrgArgs,
   FindManyOrgArgs,
 } from '@odst/types/ods';
@@ -93,8 +93,8 @@ export class OrgResolver {
     return this.orgService.parent({ id: org.id });
   }
 
-  @ResolveField(() => [Survey])
-  async surveys(@Parent() org: Org): Promise<Survey[]> {
-    return this.orgService.surveys({ id: org.id });
+  @ResolveField(() => [Feedback])
+  async feedbacks(@Parent() org: Org): Promise<Feedback[]> {
+    return this.orgService.feedbacks({ id: org.id });
   }
 }
