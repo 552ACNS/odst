@@ -27,12 +27,4 @@ describe('Question Resolver', () => {
   it('should be defined', () => {
     expect(resolver).toBeDefined();
   });
-
-  describe('update', () => {
-    it('should update a question', async () => {
-      await expect(
-        resolver.update({ where: { id: 'a strange id' }, data: {} })
-      ).resolves.toEqual(MockQuestions[0]);
-    });
-  });
 });

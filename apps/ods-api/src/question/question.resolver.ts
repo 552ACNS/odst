@@ -23,26 +23,15 @@ export class QuestionResolver {
   constructor(private readonly questionService: QuestionService) {}
 
   //TODO write tests for this
+  //TODO redo with findMany
   @Query(() => [Question], { name: 'getSubQuestions' })
   @Public()
-
-  //TODO redo with findMany
   async getSubQuestions(
     @Args('feedbackWhereUniqueInput')
     feedbackWhereUniqueInput: FeedbackWhereUniqueInput
   ): Promise<Question[]> {
     return this.questionService.findQuestionsInFeedback(
       feedbackWhereUniqueInput
-    );
-  }
-
-  @Mutation(() => Question, { name: 'updateQuestion' })
-  async update(@Args() updateArgs: UpdateOneQuestionArgs): Promise<Question> {
-    const { where, data } = updateArgs;
-
-    return this.questionService.update(
-      where as Prisma.QuestionWhereUniqueInput,
-      data as Prisma.QuestionUpdateInput
     );
   }
 

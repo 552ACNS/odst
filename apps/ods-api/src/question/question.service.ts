@@ -20,16 +20,6 @@ export class QuestionService {
     });
   }
 
-  async update(
-    questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput,
-    questionUpdateInput: Prisma.QuestionUpdateInput
-  ): Promise<Question> {
-    return this.prisma.question.update({
-      where: questionWhereUniqueInput,
-      data: questionUpdateInput,
-    });
-  }
-
   async answers(
     questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput
   ): Promise<Answer[]> {

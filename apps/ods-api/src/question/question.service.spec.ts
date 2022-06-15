@@ -29,16 +29,4 @@ describe('QuestionService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-
-  describe('update', () => {
-    it('should call the update method', async () => {
-      const question = await service.update(
-        { id: 'a uuid' },
-        {
-          feedbacks: { connect: { id: 'feedback id' } },
-        }
-      );
-      expect(question).toEqual(MockQuestions[0]);
-    });
-  });
 });
