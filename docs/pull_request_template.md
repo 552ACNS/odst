@@ -11,7 +11,7 @@
 - Please include a summary of the changes and the related issue.
 - List any NEW dependencies that are required for this change.
 
-## Type of change (Pick Any Number)
+## Type of change (Pick Any)
 
 1. Bug fix. Non-breaking change which fixes an issue, example: swapping the order of numbers on a UI.
 
@@ -27,13 +27,13 @@ Describe the tests that you created to tests your changes. Use N/A if no tests w
 
 ---
 
-## To be Completed By Reviewer #1
+## To be Completed By Reviewer # 01
 
 - [ ] I have performed a review of the code and checked for possible unintentional edits.
 - [ ] I concur with the amount of comments made.
 - [ ] I concur with the amount of tests made.
 
-## To be Completed By Reviewer #2
+## To be Completed By Reviewer # 02
 
 - [ ] I have performed a review of the code and checked for possible unintentional edits.
 - [ ] I concur with the amount of comments made.
