@@ -20,7 +20,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="eventOrg"]').click();
 
     // // Wait for the queries to load
-    // cy.wait('@graphql');
+    cy.wait('@graphql');
 
     // Select ACW
     cy.get('.mat-option-text').contains('552 ACW').click();
