@@ -13,14 +13,21 @@
 
 ## Type of change (Pick Any Number)
 
-- Bug fix
-  - Non-breaking change which fixes an issue, example: swapping the order of numbers on a UI
-- New feature
-  - Non-breaking change which adds functionality, example: new page on the frontend
-- Breaking change
-  - Fix or feature that would cause existing functionality to not work as expected, example: API change that requires dependent projects to be updated
-- Documentation update
-  - Example: new setup instructions for a new feature
+1. Bug fix
+
+- Non-breaking change which fixes an issue, example: swapping the order of numbers on a UI
+
+2. New feature
+
+- Non-breaking change which adds functionality, example: new page on the frontend
+
+3. Breaking change
+
+- Fix or feature that would cause existing functionality to not work as expected, example: API change that requires dependent projects to be updated
+
+4. Documentation update
+
+- Example: new setup instructions for a new feature
 
 ## How Has This Been Tested?
 
