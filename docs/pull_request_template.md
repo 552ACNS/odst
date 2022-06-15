@@ -1,3 +1,5 @@
+## Completed by the Pull Requester
+
 ## Checklist:
 
 - [ ] I have performed a self-review of my code to ensure that unintended code is not introduced.
@@ -24,8 +26,18 @@
 
 Describe the tests that you created to tests your changes. Use N/A if no tests were created.
 
-| Reviewer #1                                                                               | Reviewer #2                                                                               |
-| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| - [ ] I have performed a review of the code and checked for possible unintentional edits. | - [ ] I have performed a review of the code and checked for possible unintentional edits. |
-| - [ ] I concur with the amount of comments made.                                          | - [ ] I concur with the amount of comments made.                                          |
-| - [ ] I concur with the amount of tests made.                                             | - [ ] I concur with the amount of tests made.                                             |
+---
+
+## Completed By Reviewer #1
+
+- [ ] I have performed a review of the code and checked for possible unintentional edits.
+- [ ] I concur with the amount of comments made.
+- [ ] I concur with the amount of tests made.
+
+---
+
+## Completed By Reviewer #2
+
+- [ ] I have performed a review of the code and checked for possible unintentional edits.
+- [ ] I concur with the amount of comments made.
+- [ ] I concur with the amount of tests made.
