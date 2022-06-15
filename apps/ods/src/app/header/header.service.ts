@@ -4,6 +4,9 @@ import {
   CurrentUserDocument,
   CurrentUserQuery,
   CurrentUserQueryVariables,
+  AccountCountDocument,
+  AccountCountQuery,
+  AccountCountQueryVariables,
 } from './header.generated';
 import { map, Observable, Subscription } from 'rxjs';
 
@@ -20,5 +23,14 @@ export class HeaderService {
         query: CurrentUserDocument,
       })
       .valueChanges.pipe(map(({ data }) => data));
+  }
+
+  GetAccountCount() {
+    return this.apollo.watchQuery<
+      AccountCountQuery,
+      AccountCountQueryVariables
+    >({
+      query: AccountCountDocument,
+    }).valueChanges;
   }
 }

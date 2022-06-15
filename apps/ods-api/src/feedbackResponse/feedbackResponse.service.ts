@@ -13,7 +13,9 @@ import { PrismaService } from '../prisma/prisma.service';
 // eslint-disable-next-line no-restricted-imports
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
-import { ResponseCount } from '../__types__';
+import { AccountCount, ResponseCount } from '../__types__';
+import { GetCurrentUser } from '@odst/shared/nest';
+//import { User } from '@odst/types/ods';
 
 @Injectable()
 export class FeedbackResponseService {
@@ -176,6 +178,20 @@ export class FeedbackResponseService {
         'FeedbackResponseService'
       );
     }
+  }
+
+  async countAccountRequests(
+    @GetCurrentUser() user: User
+  ): Promise<AccountCount> {
+    const whereBasedOnUserOrgs = await this.getWhere(user);
+    const [total] = await this.prisma.$transaction([
+      this.prisma.feedbackResponse.count({
+        where: {
+          ...whereBasedOnUserOrgs,
+        },
+      }),
+    ]);
+    return { total };
   }
 
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED

@@ -24,7 +24,7 @@ import {
 import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
-import { ResponseCount } from '../__types__';
+import { AccountCount, ResponseCount } from '../__types__';
 
 @Resolver(() => FeedbackResponse)
 export class FeedbackResponseResolver {
@@ -58,6 +58,18 @@ export class FeedbackResponseResolver {
   ): Promise<FeedbackResponse | null> {
     return this.feedbackResponseService.findUnique(
       feedbackResponseWhereUniqueInput
+    );
+  }
+
+  @Query(() => Int, { name: 'getAccountCount' })
+  async countAccount(
+    @GetCurrentUser() user: User,
+    @Args()
+    feedbackResponseAggregateArgs: FeedbackResponseAggregateArgs
+  ): Promise<number> {
+    return this.feedbackResponseService.count(
+      user,
+      feedbackResponseAggregateArgs
     );
   }
 
@@ -105,6 +117,11 @@ export class FeedbackResponseResolver {
     return this.feedbackResponseService.delete(
       feedbackResponseWhereUniqueInput
     );
+  }
+
+  @Query(() => AccountCount, { name: 'AccountCount' })
+  async AccountCount(@GetCurrentUser() user: User): Promise<AccountCount> {
+    return this.feedbackResponseService.countAccountRequests(user);
   }
 
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED

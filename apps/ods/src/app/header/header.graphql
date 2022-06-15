@@ -10,3 +10,9 @@ query CurrentUser {
     }
   }
 }
+
+query AccountCount {
+  AccountCount {
+    total
+  }
+}
