@@ -17,7 +17,6 @@ import {
   FeedbackResponse,
   OrgWhereUniqueInput,
   UpdateOneFeedbackArgs,
-  FeedbackUpdateInput,
 } from '@odst/types/ods';
 import { Prisma } from '.prisma/ods/client';
 

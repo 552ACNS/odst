@@ -5,7 +5,6 @@ import { MockUsers } from './user.repo';
 
 describe('User Resolver', () => {
   let resolver: UserResolver;
-  let service: UserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,7 +20,6 @@ describe('User Resolver', () => {
     }).compile();
 
     resolver = module.get<UserResolver>(UserResolver);
-    service = module.get<UserService>(UserService);
   });
 
   it('should be defined', () => {
