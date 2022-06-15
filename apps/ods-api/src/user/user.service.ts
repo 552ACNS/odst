@@ -68,6 +68,24 @@ export class UserService {
     });
   }
 
+  //TODO write tests for this
+  async delete(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<User | null> {
+    let deletedUser: User | null = null;
+
+    try {
+      deletedUser = await this.prisma.user.delete({
+        where: userWhereUniqueInput,
+      });
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        console.log(err?.meta?.cause);
+      }
+    }
+    return deletedUser;
+  }
+
   async orgs(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<Org[]> {

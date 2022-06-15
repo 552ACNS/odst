@@ -850,6 +850,7 @@ type Mutation {
   updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question!
   createUser(userCreateInput: UserCreateInput!): User!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
+  deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }

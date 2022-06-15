@@ -60,6 +60,15 @@ export class UserResolver {
     return this.userService.enableAccount(userWhereUniqueInput);
   }
 
+  //TODO write tests for this
+  @Mutation(() => User, { name: 'deleteUser', nullable: true })
+  async delete(
+    @Args('userWhereUniqueInput')
+    userWhereUniqueInput: UserWhereUniqueInput
+  ): Promise<User | null> {
+    return this.userService.delete(userWhereUniqueInput);
+  }
+
   @ResolveField(() => [Org])
   async orgs(@Parent() user: User): Promise<Org[]> {
     return this.userService.orgs({ id: user.id });
