@@ -22,19 +22,22 @@ export class ResponsesComponent implements OnInit {
     comment: [''],
   });
 
+  //#region Variables
   tagCtrl = new FormControl();
 
-  possibleTags: string[] = [];
+  possibleTags: string[];
 
   selectedTags: string[] | undefined = [];
 
-  allTags;
+  actionTags: string[];
 
-  constructor(
-    private fb: FormBuilder,
-    private responsesService: ResponsesService,
-    private route: ActivatedRoute
-  ) {}
+  possibleActionTags: string[];
+
+  trackingTags: string[];
+
+  possibleTrackingTags: string[];
+
+  allTags: string[];
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
@@ -61,16 +64,30 @@ export class ResponsesComponent implements OnInit {
 
   pageEvent: PageEvent;
 
+  //#endregion
+
+  constructor(
+    private fb: FormBuilder,
+    private responsesService: ResponsesService,
+    private route: ActivatedRoute
+  ) {}
+
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
+  //region Main functions
   async ngOnInit() {
     this.userId = getUserId(getRefreshToken() ?? '');
 
-    this.allTags = this.responsesService.getTags().subscribe(({ data }) => {
-      this.allTags = data.getTags;
+    this.responsesService.getTags().subscribe(({ data }) => {
+      this.actionTags = data.getTags
+        .filter((tag) => tag.type == 'Action')
+        .map((tag) => tag.value);
+      this.trackingTags = data.getTags
+        .filter((tag) => tag.type == 'DataTracking')
+        .map((tag) => tag.value);
+      this.allTags = data.getTags.map((tag) => tag.value);
+      this.generatePossibleTags();
     });
-
-    this.generatePossibleTags();
 
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
@@ -85,7 +102,6 @@ export class ResponsesComponent implements OnInit {
 
       if (this.numberOfResponses !== 0) {
         this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
-
         // navigate to that issue
         this.displayIssue(this.pageEvent);
       }
@@ -95,19 +111,6 @@ export class ResponsesComponent implements OnInit {
   /**
    * Creates a list of tags that can be added by filtering out those already in use
    */
-  generatePossibleTags() {
-    // this.possibleTags = this.allTags.filter(
-    //   (tag) => !this.selectedTags?.includes(tag)
-    // );
-
-    const input = this.tagInput?.nativeElement.value.trim().toLowerCase();
-
-    if (input) {
-      this.possibleTags = this.possibleTags.filter((tag) =>
-        tag.toLowerCase().includes(input)
-      );
-    }
-  }
 
   submitComment() {
     // if the resolution field is not empty after a trim
@@ -203,49 +206,28 @@ export class ResponsesComponent implements OnInit {
       }
     );
   }
-  Test() {
-    console.log(this.allTags);
-  }
+
   displayIssue(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
       //TODO rewrite with proper pagination
       this.displayedIndex = pageEvent.pageIndex;
-
       this.getResponseData(this.responseIDs[this.displayedIndex]);
     }
     return pageEvent;
   }
+  //#endregion
+
+  //#region Tag functions
 
   /**
-   * Removes tag deselected by the user and adds it back to the list of tags not in use
-   * @param tagToRemove tag that's been deselected by the user
+   * User selects a tag from the list of unused and the list of unused tags is updated
+   * @param event
+   * @returns list of tags to push to server
    */
 
-  // there's some duplication in this code
-  remove(tagToRemove: string): void {
-    this.responsesService
-      .modifyTag({
-        where: { id: this.responseIDs[this.displayedIndex] },
-        data: { tags: { disconnect: [{ value: tagToRemove }] } },
-      })
-      .subscribe(({ data, errors }) => {
-        if (!errors && data) {
-          this.selectedTags = this.selectedTags?.filter(
-            (selectedtag) => selectedtag !== tagToRemove
-          );
-        }
-      });
-
-    this.generatePossibleTags();
-  }
-
-  /**
-   * User selects tag or tags and pushes to the database, reset the controller and generate list of unused tags
-   * @param event user added a tag
-   */
-
-  // there's some duplication in this code
+  // There's some duplciation in this code
   add(event: MatChipInputEvent): void {
+    console.log(event);
     // Trim the input so that empty values aren't there
     let value = (event.value || '').trim().toLowerCase();
 
@@ -276,13 +258,22 @@ export class ResponsesComponent implements OnInit {
     this.generatePossibleTags();
   }
 
-  /**
-   * User selects a tag from the list of unused and the list of unused tags is updated
-   * @param event
-   * @returns list of tags to push to server
-   */
+  remove(tagToRemove: string): void {
+    this.responsesService
+      .modifyTag({
+        where: { id: this.responseIDs[this.displayedIndex] },
+        data: { tags: { disconnect: [{ value: tagToRemove }] } },
+      })
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.selectedTags = this.selectedTags?.filter(
+            (selectedtag) => selectedtag !== tagToRemove
+          );
+          this.generatePossibleTags();
+        }
+      });
+  }
 
-  // There's some duplciation in this code
   selected(event: MatAutocompleteSelectedEvent): void {
     // If the user already has the tag, don't add it again
     if (this.selectedTags?.includes(event.option.value)) return;
@@ -295,12 +286,23 @@ export class ResponsesComponent implements OnInit {
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
           this.selectedTags?.push(event.option.viewValue);
-
-          this.tagInput.nativeElement.value = '';
           this.tagCtrl.setValue(null);
+          this.generatePossibleTags();
         }
       });
-
-    this.generatePossibleTags();
   }
+
+  /**
+   * Creates a list of tags that can be added by filtering out those already in use
+   */
+  generatePossibleTags() {
+    this.possibleActionTags = this.actionTags.filter(
+      (tag) => !this.selectedTags?.includes(tag)
+    );
+    this.possibleTrackingTags = this.trackingTags.filter(
+      (tag) => !this.selectedTags?.includes(tag)
+    );
+  }
+
+  //#endregion
 }
