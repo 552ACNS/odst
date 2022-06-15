@@ -84,7 +84,9 @@ export class UserResolver {
   }
 
   @Query(() => [User], { name: 'findManyAccountRequests' })
-  async findManyAccountRequests(@GetCurrentUser() user: User) {
+  async findManyAccountRequests(
+    @GetCurrentUser() user: User
+  ): Promise<Partial<User>[]> {
     return this.userService.findManyRequestedAccounts(user);
   }
 }

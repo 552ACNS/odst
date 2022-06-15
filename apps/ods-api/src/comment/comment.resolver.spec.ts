@@ -4,7 +4,6 @@ import { CommentService } from './comment.service';
 
 describe('Comment Resolver', () => {
   let resolver: CommentResolver;
-  let service: CommentService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,7 +17,6 @@ describe('Comment Resolver', () => {
     }).compile();
 
     resolver = module.get<CommentResolver>(CommentResolver);
-    service = module.get<CommentService>(CommentService);
   });
 
   it('should be defined', () => {
