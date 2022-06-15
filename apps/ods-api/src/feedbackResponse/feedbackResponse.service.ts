@@ -10,7 +10,6 @@ import {
   Comment,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-// eslint-disable-next-line no-restricted-imports
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
 import { ResponseCount } from '../__types__';
