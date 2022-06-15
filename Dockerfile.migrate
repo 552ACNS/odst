@@ -7,7 +7,7 @@ RUN yarn add typescript prisma bcryptjs @types/bcryptjs @prisma/client prisma-ne
 #this is so that prisma generate can place folders two folders up
 WORKDIR /usr/src/app/apps/app
 
-COPY .env.prod schema.prisma prisma-seed.prod.ts ./
+COPY schema.prisma prisma-seed.prod.ts ./
 
 COPY migrations ./migrations
 
@@ -17,9 +17,9 @@ ADD https://github.com/eficode/wait-for/releases/download/${WAIT_VERSION}/wait-f
 RUN chmod +x ./wait
 
 #migrate deploy, generate (because seed requires it), seed
-RUN echo "yarn env-cmd -f apps/app/.env.prod prisma migrate deploy --schema apps/app/schema.prisma && \
- yarn env-cmd -f apps/app/.env.prod yarn prisma generate --schema apps/app/schema.prisma && \
- yarn env-cmd -f apps/app/.env.prod yarn ts-node apps/app/prisma-seed.prod.ts" > prisma.sh
+RUN echo "yarn prisma migrate deploy --schema apps/app/schema.prisma && \
+  yarn prisma generate --schema apps/app/schema.prisma && \
+  yarn ts-node apps/app/prisma-seed.prod.ts" > prisma.sh
 
 RUN chmod +x prisma.sh
 
