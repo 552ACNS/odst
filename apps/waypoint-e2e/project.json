@@ -1,4 +1,5 @@
 {
+  "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "apps/waypoint-e2e/src",
   "projectType": "application",
   "targets": {
@@ -12,6 +13,11 @@
         "production": {
           "devServerTarget": "waypoint:serve:production"
         }
+      }
+    },
+    "build": {
+      "options": {
+        "tsConfig": "apps/waypoint-e2e/tsconfig.json"
       }
     },
     "lint": {

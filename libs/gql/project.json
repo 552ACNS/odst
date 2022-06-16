@@ -1,4 +1,5 @@
 {
+  "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/gql/src",
   "prefix": "odst",
@@ -7,6 +8,11 @@
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/gql/src/**/*.ts", "libs/gql/src/**/*.html"]
+      }
+    },
+    "build": {
+      "options": {
+        "tsConfig": "libs/gql/tsconfig.lib.json"
       }
     },
     "test": {

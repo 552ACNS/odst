@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Role } from '../../types.graphql';
 import { RequestAccountService } from './request-account.service';
@@ -68,7 +68,7 @@ export class RequestAccountComponent implements OnInit {
   grade?: string;
   submitSuccess = false;
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private requestService: RequestAccountService
   ) {}
   async ngOnInit(): Promise<void> {

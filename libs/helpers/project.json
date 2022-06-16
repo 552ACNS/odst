@@ -1,4 +1,5 @@
 {
+  "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "libs/helpers/src",
   "projectType": "library",
   "targets": {
@@ -7,6 +8,11 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/helpers/**/*.ts"]
+      }
+    },
+    "build": {
+      "options": {
+        "tsConfig": "libs/helpers/tsconfig.lib.json"
       }
     },
     "test": {
