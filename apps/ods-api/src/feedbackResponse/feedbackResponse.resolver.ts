@@ -114,12 +114,19 @@ export class FeedbackResponseResolver {
     return this.feedbackResponseService.countResponses(user);
   }
 
-  @Query(() => [String], { name: 'getIssuesByStatus' })
+  @Query(() => [FeedbackResponse], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
-    @Args('resolved') resolved: string,
-    @GetCurrentUser() user: User
-  ): Promise<string[]> {
-    return this.feedbackResponseService.getIssuesByStatus(resolved, user);
+    @Args('status') status: string,
+    @GetCurrentUser() user: User,
+    @Args('skip') skip: number,
+    @Args('take') take: number
+  ): Promise<FeedbackResponse[]> {
+    return this.feedbackResponseService.getIssuesByStatus(
+      status,
+      user,
+      skip,
+      take
+    );
   }
 
   @ResolveField(() => [Answer])
