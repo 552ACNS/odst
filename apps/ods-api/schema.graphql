@@ -368,7 +368,7 @@ type Query {
   findUniqueFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
   ResponseCount: ResponseCount!
-  getIssuesByStatus(status: String!, skip: Float!, take: Float!): [FeedbackResponse!]!
+  getIssuesByStatus(resolved: String!): [String!]!
   findManyAnswers: [Answer!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): Answer!
   getOrgLineage: [String!]!

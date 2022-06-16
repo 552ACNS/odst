@@ -135,14 +135,12 @@ describe('FeedbackResponseService', () => {
 
       const feedbackResponse = await service.getIssuesByStatus(
         'resolved',
-        MockUsers[0],
-        0,
-        2
+        MockUsers[0]
       );
 
       expect(feedbackResponse).toHaveLength(2);
-      expect(feedbackResponse[0]).toBe(MockFeedbackResponses[0]);
-      expect(feedbackResponse[1]).toBe(MockFeedbackResponses[1]);
+      expect(feedbackResponse[0]).toBe('FeedbackResponse id 1');
+      expect(feedbackResponse[1]).toBe('FeedbackResponse id 2');
     });
 
     it('should return reports that are unresolved', async () => {
@@ -153,13 +151,12 @@ describe('FeedbackResponseService', () => {
 
       const feedbackResponse = await service.getIssuesByStatus(
         'unresolved',
-        MockUsers[0],
-        0,
-        1
+        MockUsers[0]
       );
 
       expect(feedbackResponse).toHaveLength(2);
-      expect(feedbackResponse[0]).toBe(MockFeedbackResponses[2]);
+      expect(feedbackResponse[0]).toBe('FeedbackResponse id 3');
+      expect(feedbackResponse[1]).toBe('FeedbackResponse id 4');
     });
 
     it('should return reports that are overdue', async () => {
@@ -173,26 +170,25 @@ describe('FeedbackResponseService', () => {
 
       const feedbackResponse = await service.getIssuesByStatus(
         'overdue',
-        MockUsers[0],
-        0,
-        1
+        MockUsers[0]
       );
 
       expect(feedbackResponse).toHaveLength(1);
-      expect(feedbackResponse[0]).toBe(MockFeedbackResponses[3]);
+      expect(feedbackResponse[0]).toBe('FeedbackResponse id 4');
     });
 
     it('should return reports using unresolved status', async () => {
       const spy = jest.spyOn(prisma.feedbackResponse, 'findMany');
 
-      await service.getIssuesByStatus('unresolved', MockUsers[0], 0, 1);
+      await service.getIssuesByStatus('unresolved', MockUsers[0]);
 
       expect(spy).toHaveBeenCalledWith({
         where: {
           resolved: false,
         },
-        skip: 0,
-        take: 1,
+        select: {
+          id: true,
+        },
         orderBy: {
           openedDate: 'desc',
         },
@@ -202,18 +198,41 @@ describe('FeedbackResponseService', () => {
     it('should return reports using resolved status', async () => {
       const spy = jest.spyOn(prisma.feedbackResponse, 'findMany');
 
-      await service.getIssuesByStatus('resolved', MockUsers[0], 0, 1);
+      await service.getIssuesByStatus('resolved', MockUsers[0]);
 
       expect(spy).toHaveBeenCalledWith({
         where: {
           resolved: true,
         },
-        skip: 0,
-        take: 1,
+        select: {
+          id: true,
+        },
         orderBy: {
           openedDate: 'desc',
         },
       });
     });
+
+    // this is a bad test, date now is changing
+    // it('should return reports using overdue status', async () => {
+    //   const spy = jest.spyOn(prisma.feedbackResponse, 'findMany');
+
+    //   await service.getIssuesByStatus('overdue', MockUsers[0]);
+
+    //   expect(spy).toHaveBeenCalledWith({
+    //     where: {
+    //       openedDate: {
+    //         lt: new Date(Date.now() - 2592000000),
+    //       },
+    //       resolution: null,
+    //     },
+    //     select: {
+    //       id: true,
+    //     },
+    //     orderBy: {
+    //       openedDate: 'asc',
+    //     },
+    //   });
+    // });
   });
 });

@@ -3,7 +3,7 @@ import { FeedbackResponse } from '.prisma/ods/client';
 import { User } from '.prisma/ods/client';
 export const MockFeedbackResponses: FeedbackResponse[] = [
   {
-    id: 'resolved response 1',
+    id: 'FeedbackResponse id 1',
     openedDate: new Date(),
     closedDate: new Date(),
     feedbackId: 'feedbackId',
@@ -11,7 +11,7 @@ export const MockFeedbackResponses: FeedbackResponse[] = [
     resolved: true,
   },
   {
-    id: 'resolved response 2',
+    id: 'FeedbackResponse id 2',
     openedDate: new Date(),
     closedDate: new Date(),
     feedbackId: 'feedbackId',
@@ -20,7 +20,7 @@ export const MockFeedbackResponses: FeedbackResponse[] = [
   },
   //add condition for unresolved
   {
-    id: 'unresolved response',
+    id: 'FeedbackResponse id 3',
     openedDate: new Date(),
     closedDate: null,
     feedbackId: 'feedbackId',
@@ -29,7 +29,7 @@ export const MockFeedbackResponses: FeedbackResponse[] = [
   },
   //add condition for overdue
   {
-    id: 'overdue response',
+    id: 'FeedbackResponse id 4',
     openedDate: new Date(Date.now() - 2678400000),
     closedDate: null,
     feedbackId: 'feedbackId',

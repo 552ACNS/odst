@@ -1,15 +1,9 @@
-query GetReportByStatus($status: String!, $skip: Float!, $take: Float!) {
-  ResponseCount {
-    unresolved
-    overdue
-    resolved
-  }
-  getIssuesByStatus(status: $status, skip: $skip, take: $take) {
-    id
-    openedDate
-    closedDate
-    routeOutside
-    resolved
+query findUniqueFeedbackResponse(
+  $feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!
+) {
+  findUniqueFeedbackResponse(
+    feedbackResponseWhereUniqueInput: $feedbackResponseWhereUniqueInput
+  ) {
     openedDate
     answers {
       value
@@ -36,6 +30,10 @@ query GetReportByStatus($status: String!, $skip: Float!, $take: Float!) {
       }
     }
   }
+}
+
+query getIssuesByStatus($resolved: String!) {
+  getIssuesByStatus(resolved: $resolved)
 }
 
 mutation AddComment(

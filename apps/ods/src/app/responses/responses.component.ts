@@ -5,7 +5,7 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AddCommentMutationVariables,
-  GetReportByStatusQuery,
+  FindUniqueFeedbackResponseQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
 import { getRefreshToken, getUserId } from '@odst/helpers';
@@ -38,13 +38,14 @@ export class ResponsesComponent implements OnInit {
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
-  comments: GetReportByStatusQuery['getIssuesByStatus'][0]['comments'] = [];
+  comments: FindUniqueFeedbackResponseQuery['findUniqueFeedbackResponse']['comments'] =
+    [];
 
   AddCommentMutationVariables: AddCommentMutationVariables;
 
   newComment = '';
   // TODO: Change resolved status back to bool
-  status: string;
+  resolved: string;
 
   // This is for the toggle button
   actualResolution: boolean;
@@ -54,31 +55,15 @@ export class ResponsesComponent implements OnInit {
   userId: string;
 
   numberOfResponses: number;
-
   displayedIndex: number;
 
-  pageEvent: PageEvent;
+  responseIDs: string[] = [];
 
-  take = 1;
-  response: GetReportByStatusQuery['getIssuesByStatus'][0];
+  pageEvent: PageEvent;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
   async ngOnInit() {
-    this.getFeedback(0);
-  }
-  //uses this method in lieu of displaydata method(which was deleted)
-  handlePageEvent(pageEvent: PageEvent): PageEvent {
-    if (pageEvent) {
-      this.displayedIndex = pageEvent.pageIndex;
-
-      this.getFeedback(this.displayedIndex);
-    }
-    return pageEvent;
-  }
-
-  async getFeedback(index: number) {
-    //TODO pull this from id token once implemented in ODST-33
     this.userId = getUserId(getRefreshToken() ?? '');
 
     this.allTags = this.responsesService.getTags();
@@ -86,63 +71,22 @@ export class ResponsesComponent implements OnInit {
 
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
-      this.status = params['resolved'];
+      this.resolved = params['resolved'];
     });
-    //method takes the status of the response, the index its querying for, and the number of responses to take
+
     (
-      await this.responsesService.getReportByStatus(
-        this.status,
-        index,
-        this.take
-      )
-    )
-      // eslint-disable-next-line complexity
-      .subscribe(({ data }) => {
-        //it then uses the data to determin the current status and gets and displays the other appropriate data
-        if (this.numberOfResponses !== 0) {
-          this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
-        }
-        //took the get data method and put it in our new method, this one
-        switch (this.status) {
-          case 'unresolved':
-            this.numberOfResponses = data.ResponseCount.unresolved;
-            this.pageEvent.length = data.ResponseCount.unresolved;
-            break;
-          case 'resolved':
-            this.numberOfResponses = data.ResponseCount.resolved;
-            this.pageEvent.length = data.ResponseCount.resolved;
-            break;
-          case 'overdue':
-            this.numberOfResponses = data.ResponseCount.overdue;
-            this.pageEvent.length = data.ResponseCount.overdue;
-            break;
-        }
+      await this.responsesService.getResponseIDsByStatus(this.resolved)
+    ).subscribe((data) => {
+      this.responseIDs = data;
+      this.numberOfResponses = data.length;
 
-        this.response = data.getIssuesByStatus[0];
+      if (this.numberOfResponses !== 0) {
+        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
 
-        this.openedDate = this.response.openedDate;
-
-        // Clear contents of QA array
-        this.questionsAnswers = [];
-        this.comments = [];
-
-        // Handle the Questions & Answers
-        this.response.answers?.forEach((answer) => {
-          // Clear contents of QA array
-          // Create the Question/Answer Array
-          this.questionsAnswers.push([
-            String(answer?.question?.value),
-            answer.value,
-          ]);
-        });
-
-        this.comments = this.response.comments;
-
-        this.actualResolution = this.response['resolved'];
-
-        this.selectedTags = this.response['tags']?.map((x) => x.value);
-        this.generatePossibleTags();
-      });
+        // navigate to that issue
+        this.displayIssue(this.pageEvent);
+      }
+    });
   }
 
   /**
@@ -167,7 +111,7 @@ export class ResponsesComponent implements OnInit {
     if (this.resolutionForm.value.comment.trim() !== '') {
       this.AddCommentMutationVariables = {
         where: {
-          id: this.response.id,
+          id: this.responseIDs[this.displayedIndex],
         },
         data: {
           comments: {
@@ -201,7 +145,7 @@ export class ResponsesComponent implements OnInit {
   updateResolved() {
     const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
       where: {
-        id: this.response.id,
+        id: this.responseIDs[this.displayedIndex],
       },
       data: {
         resolved: {
@@ -219,6 +163,54 @@ export class ResponsesComponent implements OnInit {
       });
   }
 
+  async getResponseData(responseID: string) {
+    (await this.responsesService.getResponseData(responseID)).subscribe(
+      ({ data, errors }) => {
+        //one reason to not use pluck/map/whatever is it drops the errors and
+        //they're never seen/handled. Not that we're doing much of that right now
+        if (errors) {
+          alert(errors);
+        }
+        if (data) {
+          this.openedDate = data.findUniqueFeedbackResponse.openedDate;
+
+          // Clear contents of QA array
+          this.questionsAnswers = [];
+          this.comments = [];
+
+          // Handle the Questions & Answers
+          data.findUniqueFeedbackResponse.answers?.forEach((answer) => {
+            // Clear contents of QA array
+            // Create the Question/Answer Array
+            this.questionsAnswers.push([
+              String(answer?.question?.value),
+              answer.value,
+            ]);
+          });
+
+          this.comments = data.findUniqueFeedbackResponse.comments;
+
+          this.actualResolution = data.findUniqueFeedbackResponse['resolved'];
+
+          this.selectedTags = data.findUniqueFeedbackResponse['tags']?.map(
+            (x) => x.value
+          );
+          this.generatePossibleTags();
+        }
+      }
+    );
+  }
+
+  displayIssue(pageEvent: PageEvent): PageEvent {
+    if (pageEvent) {
+      //TODO rewrite with proper pagination
+      this.displayedIndex = pageEvent.pageIndex;
+
+      this.getResponseData(this.responseIDs[this.displayedIndex]);
+    }
+    return pageEvent;
+  }
+
   /**
    * Removes tag deselected by the user and adds it back to the list of tags not in use
    * @param tagToRemove tag that's been deselected by the user
@@ -228,7 +220,7 @@ export class ResponsesComponent implements OnInit {
   remove(tagToRemove: string): void {
     this.responsesService
       .modifyTag({
-        where: { id: this.response.id },
+        where: { id: this.responseIDs[this.displayedIndex] },
         data: { tags: { disconnect: [{ value: tagToRemove }] } },
       })
       .subscribe(({ data, errors }) => {
@@ -259,7 +251,7 @@ export class ResponsesComponent implements OnInit {
     if (this.allTags.includes(value) && !this.selectedTags?.includes(value)) {
       this.responsesService
         .modifyTag({
-          where: { id: this.response.id },
+          where: { id: this.responseIDs[this.displayedIndex] },
           data: { tags: { connect: [{ value: value }] } },
         })
         .subscribe(({ data, errors }) => {
@@ -292,7 +284,7 @@ export class ResponsesComponent implements OnInit {
 
     this.responsesService
       .modifyTag({
-        where: { id: this.response.id },
+        where: { id: this.responseIDs[this.displayedIndex] },
         data: { tags: { connect: [{ value: event.option.viewValue }] } },
       })
       .subscribe(({ data, errors }) => {
