@@ -2,7 +2,7 @@ FROM node:lts-alpine
 
 WORKDIR /usr/src/app
 
-RUN yarn add typescript prisma bcryptjs @types/bcryptjs @prisma/client prisma-nestjs-graphql env-cmd ts-node @types/node --ignore-scripts --progress=false --audit=false --loglevel=error
+RUN yarn add typescript prisma bcryptjs @types/bcryptjs @prisma/client prisma-nestjs-graphql ts-node @types/node --ignore-scripts --progress=false --audit=false --loglevel=error
 
 #this is so that prisma generate can place folders two folders up
 WORKDIR /usr/src/app/apps/app
