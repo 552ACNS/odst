@@ -38,3 +38,7 @@ CMD ./wait postgres:5432 -- ./prisma.sh
 #Downside of this is it's far more bloated than the current.
 #Upside and Downside of current is it's built from the ground up.
 #Slimmer but if underlying process changes, this has to change too.
+
+
+
+#Instead of doing this via a whole docker image, could look into doing it via a command executed in the backend container.

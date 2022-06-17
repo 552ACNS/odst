@@ -27,6 +27,7 @@ services:
       - NX_CHECKPOINT_DISABLE=${BACKEND_CHECKPOINT_DISABLE}
       - NX_JWT_SECRET=${BACKEND_JWT_SECRET}
       - NX_JWT_REFRESH_SECRET=${BACKEND_JWT_REFRESH_SECRET}
+      #TODO if this isn't set, don't create admin account. Or require it, so it can never be unset.
       - NX_DEV_ACCOUNT_PASSWORD=${BACKEND_ACCOUNT_PASSWORD}
     depends_on:
       - postgres
