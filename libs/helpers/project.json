@@ -10,11 +10,6 @@
         "lintFilePatterns": ["libs/helpers/**/*.ts"]
       }
     },
-    "build": {
-      "options": {
-        "tsConfig": "libs/helpers/tsconfig.lib.json"
-      }
-    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/helpers"],

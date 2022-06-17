@@ -12,11 +12,6 @@
           "libs/shared/angular/src/**/*.html"
         ]
       }
-    },
-    "build": {
-      "options": {
-        "tsConfig": "libs/shared/angular/tsconfig.lib.json"
-      }
     }
   },
   "tags": []

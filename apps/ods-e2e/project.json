@@ -15,11 +15,6 @@
         }
       }
     },
-    "build": {
-      "options": {
-        "tsConfig": "apps/ods-e2e/tsconfig.json"
-      }
-    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
