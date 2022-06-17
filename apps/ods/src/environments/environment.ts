@@ -3,9 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: window['env']['production'] || false,
-  NX_GQL_ENDPOINT:
-    window['env']['NX_GQL_ENDPOINT'] || 'http://localhost:3343/graphql',
+  production: false,
+  NX_GQL_ENDPOINT: 'http://localhost:3343/graphql',
 };
 
 /*

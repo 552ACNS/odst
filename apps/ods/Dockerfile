@@ -31,4 +31,4 @@ COPY --from=build /usr/src/app/dist/apps/${APP} /usr/share/nginx/html
 
 RUN sed -i '/location \/ {/a \\ttry_files $uri $uri\/ \/index.html;' /etc/nginx/conf.d/default.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]

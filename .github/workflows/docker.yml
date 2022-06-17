@@ -7,6 +7,15 @@ on:
       # - 'dev'
       - docker-recreate-images
 
+#TODO set up tags properly (which are currently specified in the nx docker command)
+#so that all branches aren't being built to the same tags. I often put other branches as triggers up above,
+#since it makes it easy to debug/deploy test images. Which is (currently) bad, since those test images are tagged as production.
+#Setting tag bases on current branch would also be a safety net,
+#since currently if anyone runs "nx docker" on any branch, it pushes to the tags meant for our real production images
+
+#TODO is there a way to test if image can be built based on PR code? without doing the whole pipeline.
+#Could just build images and not push to registry. Or push under a tag based on branch (same as the above TODO)
+
 env:
   REGISTRY: ghcr.io
 jobs:

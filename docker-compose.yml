@@ -10,13 +10,10 @@ services:
     container_name: postgres
     image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
     restart: unless-stopped
-    #TODO need to map volume for data to stay through container recreation but couldn't get permissions to be happy
-    # volumes:
-    # - ~/docker/postgres:/var/lib/postgresql
-    ports:
-      - '5432:5432/tcp'
+    volumes:
+      - postgres-vol:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=H@CK3YITPL3ASE
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     networks:
       - odst-network
 
@@ -24,14 +21,13 @@ services:
     container_name: ods-api
     image: ghcr.io/552acns/ods-api:latest
     ports:
-      - '3343:3343'
-    #escape $ with another $
+      - '${BACKEND_PORT}:3343'
     environment:
-      - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
-      - NX_CHECKPOINT_DISABLE=1
-      - NX_JWT_SECRET=dM?|Y[N7WXx<P;-zSFjh)[^m|^0mpJz:qWVGpyfZ9seu-m{`-dlR|ZpP62^t(v$$%
-      - NX_JWT_REFRESH_SECRET=Wk)6P&Mmb@{55VmbIt4Sj<g(M7^j(9z+/a=4Y-]r501ru_uAz:4Lpx4V:<)`FYmF
-      - NX_DEV_ACCOUNT_PASSWORD=admin
+      - NX_DATABASE_URL=${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABSE_PORT}/${DATABASE_NAME}
+      - NX_CHECKPOINT_DISABLE=${BACKEND_CHECKPOINT_DISABLE}
+      - NX_JWT_SECRET=${BACKEND_JWT_SECRET}
+      - NX_JWT_REFRESH_SECRET=${BACKEND_JWT_REFRESH_SECRET}
+      - NX_DEV_ACCOUNT_PASSWORD=${BACKEND_ACCOUNT_PASSWORD}
     depends_on:
       - postgres
     networks:
@@ -40,8 +36,10 @@ services:
   ods:
     container_name: ods
     image: ghcr.io/552acns/ods:latest
+    environment:
+      - NX_GQL_ENDPOINT=http://${BACKEND_HOST}:${BACKEND_PORT}/graphql
     ports:
-      - '8080:80'
+      - '${FRONTEND_PORT}:80'
     depends_on:
       - ods-api
     networks:
@@ -50,13 +48,17 @@ services:
   ods-migrate:
     container_name: ods-migrate
     image: ghcr.io/552acns/ods-api:migrate
+    #env vars need to be specified in assets/env.template.js
     environment:
-      - NX_DATABASE_URL=postgresql://postgres:H@CK3YITPL3ASE@postgres:5432/ods_prod
+      - NX_DATABASE_URL=${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABSE_PORT}/${DATABASE_NAME}
+      - production=true
     depends_on:
       - postgres
-    # restart: on-failure
     networks:
       - odst-network
 
 networks:
   odst-network:
+
+volumes:
+  postgres-vol:
