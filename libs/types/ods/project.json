@@ -12,11 +12,6 @@
           "libs/types/ods/src/**/*.html"
         ]
       }
-    },
-    "build": {
-      "options": {
-        "tsConfig": "libs/types/ods/tsconfig.lib.json"
-      }
     }
   },
   "tags": []
