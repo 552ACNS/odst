@@ -12,11 +12,6 @@
           "libs/types/waypoint/src/**/*.html"
         ]
       }
-    },
-    "build": {
-      "options": {
-        "tsConfig": "libs/types/waypoint/tsconfig.lib.json"
-      }
     }
   },
   "tags": []
