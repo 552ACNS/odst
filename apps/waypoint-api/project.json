@@ -58,10 +58,9 @@
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [
-          "env-cmd -f apps/waypoint-api/.env.local npx prisma db push --accept-data-loss",
-          "env-cmd -f apps/waypoint-api/.env.local yarn ts-node ./apps/waypoint-api/prisma-seed.ts"
+          "env-cmd -f apps/waypoint-api/.env.local npx prisma db push --accept-data-loss --schema=apps/waypoint-api/schema.prisma",
+          "env-cmd -f apps/waypoint-api/.env.local yarn ts-node ./apps/waypoint-api/prisma-seed.ts --schema=apps/waypoint-api/schema.prisma"
         ],
-        "schema": "apps/waypoint-api/schema.prisma",
         "parallel": false
       },
       "configurations": {
@@ -76,8 +75,7 @@
     "prisma-studio": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "env-cmd -f apps/waypoint-api/.env.local npx prisma studio",
-        "schema": "apps/waypoint-api/schema.prisma"
+        "command": "env-cmd -f apps/waypoint-api/.env.local npx prisma studio --schema=apps/waypoint-api/schema.prisma"
       }
     }
   },
