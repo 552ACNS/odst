@@ -19,7 +19,7 @@ services:
 
   ods-api:
     container_name: ods-api
-    image: ghcr.io/552acns/odst/ods-api:latest
+    image: ghcr.io/552acns/ods-api:latest
     ports:
       - '${BACKEND_PORT}:3343'
     environment:
@@ -36,7 +36,7 @@ services:
 
   ods:
     container_name: ods
-    image: ghcr.io/552acns/odst/ods:latest
+    image: ghcr.io/552acns/ods:latest
     environment:
       - NX_GQL_ENDPOINT=http://${BACKEND_HOST}:${BACKEND_PORT}/graphql
     ports:
@@ -48,7 +48,7 @@ services:
 
   ods-migrate:
     container_name: ods-migrate
-    image: ghcr.io/552acns/odst/ods-migrate:latest
+    image: ghcr.io/552acns/ods-migrate:latest
     #env vars need to be specified in assets/env.template.js
     environment:
       - NX_DATABASE_URL=${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABSE_PORT}/${DATABASE_NAME}

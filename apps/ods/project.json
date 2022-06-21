@@ -58,7 +58,7 @@
       "options": {
         "metadata": {
           "load": true,
-          "images": ["ghcr.io/552acns/odst/ods"],
+          "images": ["ghcr.io/552acns/ods"],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",

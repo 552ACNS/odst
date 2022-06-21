@@ -33,7 +33,7 @@
       "options": {
         "metadata": {
           "load": true,
-          "images": ["ghcr.io/552acns/odst/ods-api"],
+          "images": ["ghcr.io/552acns/ods-api"],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",
@@ -55,7 +55,7 @@
         "context": "./apps/ods-api",
         "metadata": {
           "load": true,
-          "images": ["ghcr.io/552acns/odst/ods-migrate"],
+          "images": ["ghcr.io/552acns/ods-migrate"],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",
