@@ -51,6 +51,7 @@
       "executor": "@nx-tools/nx-docker:build",
       "options": {
         "file": "Dockerfile.migrate",
+        "context": "./apps/ods-api",
         "metadata": {
           "load": true,
           "images": ["ghcr.io/552acns/odst/ods-migrate"],

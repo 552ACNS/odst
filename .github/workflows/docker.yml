@@ -30,6 +30,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      #unsure if these next two steps are needed, but they won't hurt
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Log in to the Container registry
         uses: docker/login-action@v2
         with:
