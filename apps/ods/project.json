@@ -58,12 +58,16 @@
       "options": {
         "meta": {
           "enabled": true,
-          "images": ["ghcr.io/552acns/ods"],
+          "load": true,
+          "images": ["ghcr.io/552acns/odst/ods"],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",
             "type=ref,event=tag",
             "type=ref,event=pr",
+            "type=semver,pattern={{version}}",
+            "type=semver,pattern={{major}}.{{minor}}",
+            "type=semver,pattern={{major}}",
             "type=sha,prefix="
           ]
         }
