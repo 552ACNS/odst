@@ -8,7 +8,7 @@ import {
   FindUniqueFeedbackResponseQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
-import { getRefreshToken, getUserId } from '@odst/helpers';
+import { getRefreshToken, getUserId, reloadPage } from '@odst/helpers';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
@@ -140,6 +140,8 @@ export class ResponsesComponent implements OnInit {
           }
         });
     }
+    //reload the page after submitComment finishes
+    reloadPage();
   }
 
   updateResolved() {
