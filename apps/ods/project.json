@@ -56,8 +56,7 @@
     "docker": {
       "executor": "@nx-tools/nx-docker:build",
       "options": {
-        "meta": {
-          "enabled": true,
+        "metadata": {
           "load": true,
           "images": ["ghcr.io/552acns/odst/ods"],
           "tags": [
