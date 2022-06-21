@@ -300,8 +300,4 @@ export class ResponsesComponent implements OnInit {
 
     this.generatePossibleTags();
   }
-
-  reloadCurrentPage() {
-    window.location.reload();
-  }
 }
