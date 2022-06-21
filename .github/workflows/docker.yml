@@ -37,11 +37,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+
       - name: 'Install Dependencies'
         run: npm i nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
       - name: 'nx docker'
         run: npx nx affected --target=docker --push=true
+        env:
+          INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'nx docker-migrate'
         run: npx nx affected --target=docker-migrate --push=true
+        env:
+          INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
