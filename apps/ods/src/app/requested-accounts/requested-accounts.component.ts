@@ -64,7 +64,7 @@ export class RequestedAccountsComponent implements OnInit {
     this.displayedAccountRequest = {};
     this.displayedRequestData = {};
     this.hasNoData = this.dataSource.length === 0;
-    //TODO: cached issue affecting rows being removed on UI when they are updated in database. Remove this quick fix when issues is solved
+    //TODO [ODST-288]: cached issue affecting rows being removed on UI when they are updated in database. Remove this quick fix when issues is solved
     window.location.reload();
   }
 

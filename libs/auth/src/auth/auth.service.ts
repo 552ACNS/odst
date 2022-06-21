@@ -116,7 +116,7 @@ export class AuthService {
       {
         expiresIn: process.env['NODE_ENV'] === 'production' ? '15m' : '5d',
         secret: this.secret,
-        //TODO sign refreshTokens with different secret
+        //TODO [ODST-309] sign refreshTokens with different secret
       }
     );
 
@@ -155,7 +155,7 @@ export class AuthService {
     //example: someone uses Lt Col Matos's email as their username and then Lt Col Matos comes in and he can't make an account with that email
     //preventing '@' in username and requiring it in email should be fine
 
-    //TODO could optmize to not make two db calls
+    //TODO [ODST-308] could optmize to not make two db calls
     //or maybe not since we don't inject prisma
 
     return (

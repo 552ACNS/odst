@@ -34,7 +34,7 @@ export class OrgResolver {
   }
 
   @Query(() => [Org], { name: 'getSubOrgs' })
-  //TODO redo with findMany
+  //TODO [ODST-299] redo getAllChildren with findMany
   async getAllChildren(
     @Args('orgWhereUniqueInput')
     orgWhereUniqueInput: OrgWhereUniqueInput

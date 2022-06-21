@@ -95,7 +95,7 @@ export class FeedbackService {
     if (feedback.id) {
       await this.updateQuestionsHash({ id: feedback.id });
     }
-    // TODO: What if the feedback is not found? What does it do?
+    // TODO [ODST-294]: What if the feedback is not found? What does it do?
     return feedback;
   }
 
@@ -112,9 +112,9 @@ export class FeedbackService {
     }
   }
 
-  //TODO optimize database calls. each feedback create/update requires 3 database calls.
-  //TODO only call if questions is being updated
-  //TODO move this to prisma hook
+  //TODO [ODST-295] optimize database calls. each feedback create/update requires 3 database calls.
+  //TODO [ODST-296] only call if questions is being updated
+  //TODO [ODST-297] move this to prisma hook
   private async updateQuestionsHash(
     feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
   ): Promise<void> {
@@ -154,8 +154,9 @@ export class FeedbackService {
       .findUnique({ where: feedbackWhereUniqueInput })
       .feedbackResponses();
   }
-  //TODO tests for new methods
+  //TODO [ODST-298] write tests for getArrayHash
 }
+
 function getArrayHash(stringArray: string[]): string {
   return stringArray.length > 0
     ? crypto

@@ -15,7 +15,7 @@ const routes: Routes = [
       import('./responses/responses.module').then((m) => m.ResponsesModule),
     canActivate: [AuthGuard],
   },
-  //TODO: Change feedback to report eventually
+  //TODO [ODST-292]: Change feedback to report eventually
   {
     path: 'feedback',
     loadChildren: () =>
@@ -43,7 +43,8 @@ const routes: Routes = [
         (m) => m.RequestedAccountsModule
       ),
   },
-  //TODO: add functionality to auto redirect to login if refresh token not found
+  //TODO [ODST-293]: add functionality to auto redirect to login if refresh token not found
+  //Should be done, just check that it functions properly every where
   {
     path: 'login',
     loadChildren: () =>

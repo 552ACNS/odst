@@ -22,7 +22,7 @@ import { GetCurrentUser } from '@odst/shared/nest';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  // TODO: Is this used anywhere? -Sim
+  // TODO [ODST-301]: Is this used anywhere? -Sim
   @Query(() => [User])
   async findUsersWithRole(@Args('role') role: Role): Promise<User[]> {
     return this.userService.findMany({
@@ -38,7 +38,7 @@ export class UserResolver {
     return this.userService.findMany(findManyUserArgs);
   }
 
-  //TODO write custom pipe to not need separate route for this
+  //TODO [ODST-302] write custom pipe to not need separate route for this
   @Public()
   @Query(() => [User])
   async getCommanders(): Promise<User[]> {
