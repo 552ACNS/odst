@@ -54,7 +54,20 @@
       "defaultConfiguration": "production"
     },
     "docker": {
-      "executor": "@nx-tools/nx-docker:build"
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "meta": {
+          "enabled": true,
+          "images": ["gperdomor/api"],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix="
+          ]
+        }
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
