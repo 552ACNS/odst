@@ -34,7 +34,7 @@ jobs:
 
       #TODO set image tags automatically based on project version
       - name: 'nx docker'
-        run: npx nx affected --target=docker
+        run: npx nx affected --target=docker --push=true
 
       - name: 'nx docker-migrate'
-        run: npx nx affected --target=docker-migrate
+        run: npx nx affected --target=docker-migrate --push=true

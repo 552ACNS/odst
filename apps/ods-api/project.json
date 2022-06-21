@@ -31,7 +31,6 @@
     "docker": {
       "executor": "@nx-tools/nx-docker:build",
       "options": {
-        "push": true,
         "tags": ["ghcr.io/552acns/ods-api:latest", "ghcr.io/552acns/ods-api:v0"]
       }
     },
@@ -40,7 +39,6 @@
       "options": {
         "file": "Dockerfile.migrate",
         "context": "./apps/ods-api",
-        "push": true,
         "tags": [
           "ghcr.io/552acns/ods-api:migrate",
           "ghcr.io/552acns/ods-api:v0-migrate"
