@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { removeTokens } from '@odst/helpers';
 import { HeaderService } from './header.service';
 import { Role } from '../../types.graphql';
-import { CurrentUserQuery, AccountCountQuery } from './header.generated';
+import { CurrentUserQuery } from './header.generated';
 
 @Component({
   selector: 'odst-header',
@@ -12,7 +12,10 @@ import { CurrentUserQuery, AccountCountQuery } from './header.generated';
 export class HeaderComponent implements OnInit {
   user: CurrentUserQuery['me'];
   userTitle: string;
-  total: number;
+  totalCount: number;
+  dataSource;
+  data: any;
+
   constructor(private headerService: HeaderService) {}
 
   async ngOnInit(): Promise<void> {
@@ -20,9 +23,10 @@ export class HeaderComponent implements OnInit {
       this.user = me;
       this.userTitle = this.setUserTitle(this.user.role);
     });
-    (await this.headerService.GetAccountCount()).subscribe(({ data }) => {
-      this.total = data.AccountCount.total;
-      console.log(this.total);
+    this.headerService.getRequestedAccounts().subscribe(({ data }) => {
+      this.dataSource = this.data.findManyAccountRequests;
+      console.log(this.dataSource.length);
+      this.totalCount = this.dataSource.length;
     });
   }
 
