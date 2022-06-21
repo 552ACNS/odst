@@ -69,7 +69,7 @@
             "type=semver,pattern={{major}}",
             "type=sha,prefix="
           ],
-          "flavor": ["latest=true"]
+          "flavor": ["latest=auto"]
         }
       }
     },
