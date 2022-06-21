@@ -100,7 +100,7 @@ username: `admin`
 
 `nx docker {app}`
 
-Careful with this, due to that it pushes it up with the `:latest` tag. Add `--outputs=type=local` to not push built images up to registry.
+Careful with this, due to that it pushes it up with the `:latest` tag. Add `--push=false` to not push built images up to registry.
 
 ### Migrate database via docker
 
