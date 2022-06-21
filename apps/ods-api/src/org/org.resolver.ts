@@ -14,11 +14,9 @@ import {
   User,
   Feedback,
   UpdateOneOrgArgs,
-  FindManyOrgArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { Prisma } from '.prisma/ods/client';
-import { publicDecrypt } from 'crypto';
 
 @Resolver(() => Org)
 export class OrgResolver {
