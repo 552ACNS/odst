@@ -68,7 +68,8 @@
             "type=semver,pattern={{major}}.{{minor}}",
             "type=semver,pattern={{major}}",
             "type=sha,prefix="
-          ]
+          ],
+          "flavor": ["latest"]
         }
       }
     },
