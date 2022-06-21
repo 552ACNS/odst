@@ -32,6 +32,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+          flavor: |
+            latest=true
+
       - name: Log in to the Container registry
         uses: docker/login-action@v2
         with:
@@ -44,7 +57,7 @@ jobs:
 
       #TODO set image tags automatically based on project version
       - name: 'nx docker'
-        run: npx nx affected --target=docker
+        run: npx nx affected --target=docker --push=true --tags=${{ steps.meta.outputs.tags }} --labels=${{ steps.meta.outputs.labels }}
 
       - name: 'nx docker-migrate'
-        run: npx nx affected --target=docker-migrate
+        run: npx nx affected --target=docker-migrate --push=true --tags=${{ steps.meta.outputs.tags }} --labels=${{ steps.meta.outputs.labels }}
