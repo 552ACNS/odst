@@ -43,7 +43,8 @@
             "type=semver,pattern={{major}}.{{minor}}",
             "type=semver,pattern={{major}}",
             "type=sha,prefix="
-          ]
+          ],
+          "flavor": ["latest=true"]
         }
       }
     },
@@ -65,7 +66,7 @@
             "type=semver,pattern={{major}}",
             "type=sha,prefix="
           ],
-          "flavor": ["latest"]
+          "flavor": ["latest=auto"]
         }
       }
     },
