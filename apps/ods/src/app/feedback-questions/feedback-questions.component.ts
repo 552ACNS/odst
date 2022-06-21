@@ -87,6 +87,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
     ];
 
     // TODO: Nested behaviors like this are hard to test.
+    // TODO creating the survey should be done via prisma seed or via user input
     this.feedbackService
       .submitWithQuestions(this.questions, {
         name: '552 ACNS',

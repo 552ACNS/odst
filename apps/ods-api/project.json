@@ -23,7 +23,18 @@
               "with": "apps/ods-api/src/environments/environment.prod.ts"
             }
           ]
-        }
+        },
+        "development": {}
+      },
+      "defaultConfiguration": "production"
+    },
+    "docker": {
+      "executor": "@nx-tools/nx-docker:build"
+    },
+    "docker-migrate": {
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "file": "Dockerfile.migrate"
       }
     },
     "lint": {
@@ -68,7 +79,13 @@
           "command": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
         },
         "production": {
-          "command": "env-cmd -f apps/ods-api/.env.prod prisma migrate dev"
+          "commands": [
+            "env-cmd -f apps/ods-api/.env.prod prisma migrate deploy",
+            "yarn ts-node ./apps/ods-api/prisma-seed.ts"
+          ]
+        },
+        "migrate": {
+          "command": "env-cmd -f apps/ods-api/.env.local prisma migrate dev"
         }
       }
     },
