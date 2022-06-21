@@ -58,7 +58,7 @@
       "options": {
         "meta": {
           "enabled": true,
-          "images": ["gperdomor/api"],
+          "images": ["ghcr.io/552acns/ods"],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",
