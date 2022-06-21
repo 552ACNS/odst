@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   ViewChild,
   ElementRef,
@@ -17,9 +16,7 @@ import { FormControl } from '@angular/forms';
   templateUrl: './select-tags.component.html',
   styleUrls: ['./select-tags.component.scss'],
 })
-export class SelectTagsComponent implements OnInit {
-  constructor() {}
-
+export class SelectTagsComponent {
   @Input() tags: string[];
 
   @Input() possibleTags: string[];
@@ -27,6 +24,8 @@ export class SelectTagsComponent implements OnInit {
   @Input() selectedTags: string[] | undefined;
 
   @Input() tagCtrl: FormControl;
+
+  @Input() tagType: string;
 
   @Output() add = new EventEmitter<MatChipInputEvent>();
 
@@ -36,8 +35,6 @@ export class SelectTagsComponent implements OnInit {
 
   @ViewChild('tagInput', { static: true })
   tagInput: ElementRef<HTMLInputElement>;
-
-  ngOnInit(): void {}
 
   addTag(event: MatChipInputEvent) {
     if (this.possibleTags.includes(event.value)) {

@@ -27,15 +27,17 @@ export class ResponsesComponent implements OnInit {
 
   possibleTags: string[];
 
-  selectedTags: string[] | undefined = [];
-
   actionTags: string[];
 
-  possibleActionTags: string[];
+  possibleActionTags: string[] = [];
+
+  selectedActionTags: string[] | undefined = [];
 
   trackingTags: string[];
 
-  possibleTrackingTags: string[];
+  possibleTrackingTags: string[] = [];
+
+  selectedTrackingTags: string[] | undefined = [];
 
   allTags: string[];
 
@@ -198,9 +200,14 @@ export class ResponsesComponent implements OnInit {
 
           this.actualResolution = data.findUniqueFeedbackResponse['resolved'];
 
-          this.selectedTags = data.findUniqueFeedbackResponse['tags']?.map(
-            (x) => x.value
-          );
+          this.selectedActionTags = data.findUniqueFeedbackResponse['tags']
+            ?.filter((tag) => tag.type == 'Action')
+            .map((tag) => tag.value);
+
+          this.selectedTrackingTags = data.findUniqueFeedbackResponse['tags']
+            ?.filter((tag) => tag.type == 'DataTracking')
+            .map((tag) => tag.value);
+
           this.generatePossibleTags();
         }
       }
@@ -225,9 +232,9 @@ export class ResponsesComponent implements OnInit {
    * @returns list of tags to push to server
    */
 
-  // There's some duplciation in this code
+  // TODO fix complexity of this function
+  // There is a bug where if the user types and then deletes their input, the possible tags will not repopulate
   add(event: MatChipInputEvent): void {
-    console.log(event);
     // Trim the input so that empty values aren't there
     let value = (event.value || '').trim().toLowerCase();
 
@@ -235,21 +242,22 @@ export class ResponsesComponent implements OnInit {
     value = value[0].toUpperCase() + value.slice(1);
 
     // If the hand typed value is one of the legal tags
-    if (this.allTags.includes(value) && !this.selectedTags?.includes(value)) {
+    if (
+      this.allTags.includes(value) &&
+      !this.selectedActionTags?.concat(this.selectedTrackingTags ?? [])
+    ) {
+      const tagType = this.determineTagType(value);
       this.responsesService
         .modifyTag({
           where: { id: this.responseIDs[this.displayedIndex] },
           data: { tags: { connect: [{ value: value }] } },
         })
         .subscribe(({ data, errors }) => {
-          if (!errors && data) {
+          if (!errors && data?.updateFeedbackResponse['tags']) {
             // Add our tag
-            this.selectedTags?.push(value);
-
+            this.addSelectedTags(tagType, value);
             // Clear the input values
-            if (event.chipInput) {
-              event.chipInput.clear();
-            }
+            event.chipInput?.clear();
           }
         });
     }
@@ -259,6 +267,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   remove(tagToRemove: string): void {
+    const tagType = this.determineTagType(tagToRemove);
     this.responsesService
       .modifyTag({
         where: { id: this.responseIDs[this.displayedIndex] },
@@ -266,9 +275,7 @@ export class ResponsesComponent implements OnInit {
       })
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.selectedTags = this.selectedTags?.filter(
-            (selectedtag) => selectedtag !== tagToRemove
-          );
+          this.removeSelectedTags(tagType, tagToRemove);
           this.generatePossibleTags();
         }
       });
@@ -276,8 +283,12 @@ export class ResponsesComponent implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     // If the user already has the tag, don't add it again
-    if (this.selectedTags?.includes(event.option.value)) return;
-
+    if (
+      this.selectedActionTags?.includes(event.option.value) ||
+      this.selectedTrackingTags?.includes(event.option.value)
+    )
+      return;
+    const type = this.determineTagType(event.option.value);
     this.responsesService
       .modifyTag({
         where: { id: this.responseIDs[this.displayedIndex] },
@@ -285,11 +296,39 @@ export class ResponsesComponent implements OnInit {
       })
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.selectedTags?.push(event.option.viewValue);
+          this.addSelectedTags(type, event.option.value);
           this.tagCtrl.setValue(null);
           this.generatePossibleTags();
         }
       });
+  }
+
+  determineTagType(tag: string): string {
+    if (this.actionTags?.includes(tag)) return 'Action';
+    if (this.trackingTags?.includes(tag)) return 'DataTracking';
+    return 'Not a tag';
+  }
+
+  addSelectedTags(tagType: string, tagToAdd: string) {
+    if (tagType == 'Action') {
+      this.selectedActionTags?.push(tagToAdd);
+    } else if (tagType == 'DataTracking') {
+      this.selectedTrackingTags?.push(tagToAdd);
+    } else {
+      console.error('Tag type not recognized');
+    }
+  }
+
+  removeSelectedTags(tagType: string, tagToRemove: string) {
+    if (tagType == 'Action') {
+      this.selectedActionTags = this.selectedActionTags?.filter(
+        (selectedtag) => selectedtag !== tagToRemove
+      );
+    } else if (tagType == 'DataTracking') {
+      this.selectedTrackingTags = this.selectedTrackingTags?.filter(
+        (selectedtag) => selectedtag !== tagToRemove
+      );
+    }
   }
 
   /**
@@ -297,10 +336,10 @@ export class ResponsesComponent implements OnInit {
    */
   generatePossibleTags() {
     this.possibleActionTags = this.actionTags.filter(
-      (tag) => !this.selectedTags?.includes(tag)
+      (tag) => !this.selectedActionTags?.includes(tag)
     );
     this.possibleTrackingTags = this.trackingTags.filter(
-      (tag) => !this.selectedTags?.includes(tag)
+      (tag) => !this.selectedTrackingTags?.includes(tag)
     );
   }
 

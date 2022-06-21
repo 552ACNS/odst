@@ -1,35 +1,30 @@
-<ng-container>
-  <h2 class="text-center">Tags</h2>
-  <mat-card class="pb-0">
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Tags for Response</mat-label>
-      <!-- Represents all the chips that are selected -->
-      <mat-chip-list #chipList>
-        <mat-chip *ngFor="let tag of selectedTags" (removed)="removeTag(tag)">
-          {{ tag }}
-          <button matChipRemove>
-            <!-- When a tag is removed, call the remove function for that tag -->
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-chip>
-        <input
-          placeholder="Add Another Tag..."
-          #tagInput
-          [formControl]="tagCtrl"
-          [matAutocomplete]="auto"
-          [matChipInputFor]="chipList"
-          (matChipInputTokenEnd)="addTag($event)"
-          (input)="autoComplete()"
-        />
-      </mat-chip-list>
-      <mat-autocomplete
-        #auto="matAutocomplete"
-        (optionSelected)="selectTag($event)"
-      >
-        <mat-option *ngFor="let tag of possibleTags" [value]="tag">
-          {{ tag }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-  </mat-card>
-</ng-container>
+<mat-form-field appearance="outline" class="w-full">
+  <mat-label>Tags for {{ tagType }}</mat-label>
+  <!-- Represents all the chips that are selected -->
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let tag of selectedTags" (removed)="removeTag(tag)">
+      {{ tag }}
+      <button matChipRemove>
+        <!-- When a tag is removed, call the remove function for that tag -->
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+    <input
+      placeholder="Add Another Tag..."
+      #tagInput
+      [formControl]="tagCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      (matChipInputTokenEnd)="addTag($event)"
+      (input)="autoComplete()"
+    />
+  </mat-chip-list>
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="selectTag($event)"
+  >
+    <mat-option *ngFor="let tag of possibleTags" [value]="tag">
+      {{ tag }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
