@@ -67,16 +67,13 @@ describe('ods', () => {
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    cy.scrollTo('bottom');
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID
     );
-    cy.scrollTo('top');
     cy.get('textarea').type(commentUUID);
     cy.get('button').contains('Submit').click();
     cy.get('mat-slide-toggle').click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.wait('@graphql');
     cy.get('button').contains('Back').click();
   });
 
@@ -89,11 +86,9 @@ describe('ods', () => {
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    cy.scrollTo('bottom');
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID
     );
-    cy.scrollTo('top');
     cy.get('mat-card-content').contains(commentUUID);
   });
 

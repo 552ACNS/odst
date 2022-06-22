@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AnswerResolver } from './answer.resolver';
 import { AnswerService } from './answer.service';
-import { MockAnswerCreateInput, MockAnswers } from './answer.repo';
 
 describe('Answer Resolver', () => {
   let resolver: AnswerResolver;
@@ -12,20 +11,7 @@ describe('Answer Resolver', () => {
       providers: [
         {
           provide: AnswerService,
-          useValue: {
-            findMany: jest.fn().mockResolvedValue(MockAnswers),
-            getSubAnswers: jest.fn().mockResolvedValue(MockAnswers),
-            findUnique: jest
-              .fn()
-              .mockImplementation(() => Promise.resolve(MockAnswers[0])),
-            create: jest
-              .fn()
-              .mockImplementation(() => Promise.resolve(MockAnswers[0])),
-            update: jest
-              .fn()
-              .mockImplementation(() => Promise.resolve(MockAnswers[0])),
-            delete: jest.fn().mockResolvedValue({ deleted: true }),
-          },
+          useValue: {},
         },
       ],
     }).compile();
@@ -35,30 +21,5 @@ describe('Answer Resolver', () => {
 
   it('should be defined', () => {
     expect(resolver).toBeDefined();
-  });
-
-  describe('findMany', () => {
-    it('should get an array of answers', async () => {
-      await expect(resolver.findMany()).resolves.toEqual(MockAnswers);
-    });
-  });
-
-  describe('findUnique', () => {
-    it('should get a single answer', async () => {
-      await expect(
-        resolver.findUnique({ id: 'a strange id' })
-      ).resolves.toEqual(MockAnswers[0]);
-      await expect(
-        resolver.findUnique({ id: 'a different id' })
-      ).resolves.toEqual(MockAnswers[0]);
-    });
-  });
-
-  describe('create', () => {
-    it('should create a create answer', async () => {
-      await expect(resolver.create(MockAnswerCreateInput[0])).resolves.toEqual(
-        MockAnswers[0]
-      );
-    });
   });
 });
