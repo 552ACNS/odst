@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { ResponseCountQuery } from './dashboard.generated';
 import { reloadPage } from '@odst/helpers';
+
 @Component({
   selector: 'odst-dashboard',
   templateUrl: './dashboard.component.html',
@@ -9,6 +10,7 @@ import { reloadPage } from '@odst/helpers';
 })
 export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
+
   responses: ResponseCountQuery['ResponseCount'];
   cardSpecs: {
     title: string;
@@ -20,6 +22,7 @@ export class DashboardComponent implements OnInit {
   }[];
 
   ngOnInit() {
+    //TODO: unable to get dashboard to refresh using other methods.  Need to redo this on another sprint.
     //reloads current page so it wont show previous cached values
     reloadPage();
 
