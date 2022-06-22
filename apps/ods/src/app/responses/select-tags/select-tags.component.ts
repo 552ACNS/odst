@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -24,7 +24,7 @@ export class SelectTagsComponent {
 
   @Input() selectedTags: string[] | undefined;
 
-  @Input() tagCtrl: FormControl;
+  @Input() tagCtrl: UntypedFormControl;
 
   @Input() tagType: string;
 
