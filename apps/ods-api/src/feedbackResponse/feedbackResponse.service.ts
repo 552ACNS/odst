@@ -67,7 +67,7 @@ export class FeedbackResponseService {
               question: {
                 // where the value is
                 value: {
-                  equals: 'What squadron did the event occur in?',
+                  equals: 'What organization did the event occur in?',
                 },
               },
               // and that value
@@ -348,7 +348,7 @@ export class FeedbackResponseService {
           question: {
             value: {
               //TODO hardcoded value
-              equals: 'What squadron did the event occur in?',
+              equals: 'What organization did the event occur in?',
             },
           },
           value: {

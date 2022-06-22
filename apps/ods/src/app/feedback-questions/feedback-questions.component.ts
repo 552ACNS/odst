@@ -89,7 +89,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
     // TODO: Nested behaviors like this are hard to test.
     this.feedbackService
       .submitWithQuestions(this.questions, {
-        name: '552 ACNS',
+        name: '552 ACW',
       })
       .subscribe(({ data }) => {
         this.feedbackID = data?.createFeedbackWithQuestions.id;
