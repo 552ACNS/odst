@@ -7,7 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { AUTH_SECRET, USER_SERVICE } from './auth.constants';
 import { UserService, User } from './interfaces/user-service.interface';
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 import { Tokens } from './dtos/tokens.entity';
 import { LoginUserInput, RefreshLoginInput } from './dtos/login.input';
 import { JwtPayloadRefresh } from './types/JwtPayload.types';

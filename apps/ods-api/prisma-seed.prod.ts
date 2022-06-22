@@ -1,9 +1,11 @@
 /* eslint-disable complexity */
 import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
+
 import { hash } from 'bcryptjs';
 
 //TODO refactor to not repeat code so much(DRY) - like the org/tag are done
+//TODO copied this from dev, update with production values
 
 const prisma = new PrismaClient();
 
@@ -79,28 +81,8 @@ const orgSeed: Prisma.OrgCreateInput[] = [
   },
 ];
 
-const tagSeed: Prisma.TagCreateInput[] = [
-  { value: 'Gender' },
-  { value: 'Sexism' },
-  { value: 'Race' },
-  { value: 'Racism' },
-  { value: 'Sexuality' },
-  { value: 'Gender Identity' },
-  { value: 'Religion' },
-  { value: 'Mental Health' },
-  { value: 'Minority' },
-  { value: 'Marginalized' },
-  { value: 'Mental Illness' },
-  { value: 'Rank' },
-  { value: 'Observed' },
-  { value: 'Experienced' },
-  { value: 'Other' },
-  { value: 'Harassment' },
-  { value: 'Assault' },
-  { value: 'Discrimination' },
-];
-
 async function main() {
+  console.log(`Start seeding ...`);
   // Upsert Orgs
   for (const org of orgSeed) {
     try {
@@ -117,26 +99,6 @@ async function main() {
           name: org.name,
           orgTier: org.orgTier,
           parent: org.parent,
-        },
-      });
-    } catch (e) {
-      if (!(e instanceof PrismaClientKnownRequestError)) {
-        throw e;
-      }
-    }
-  }
-  // Upsert Tags
-  for (const tag of tagSeed) {
-    try {
-      await prisma.tag.upsert({
-        where: {
-          value: tag.value,
-        },
-        update: {
-          value: tag.value,
-        },
-        create: {
-          value: tag.value,
         },
       });
     } catch (e) {
@@ -234,7 +196,6 @@ async function main() {
         firstName: 'Kenneth',
         lastName: 'Voigt',
         grade: 'O-6',
-        enabled: true,
       },
     });
 
@@ -251,7 +212,6 @@ async function main() {
         firstName: 'Keven',
         lastName: 'Coyle',
         grade: 'O-6',
-        enabled: true,
       },
     });
 
@@ -268,7 +228,6 @@ async function main() {
         firstName: 'Emmanuel',
         lastName: 'Matos',
         grade: 'O-5',
-        enabled: true,
       },
     });
 
@@ -301,7 +260,6 @@ async function main() {
         firstName: 'Henry',
         lastName: 'Henderson',
         grade: 'O-5',
-        enabled: true,
       },
     });
   }
@@ -329,6 +287,8 @@ async function main() {
       throw e;
     }
   }
+
+  console.log(`Seeding finished.`);
 }
 
 main()
