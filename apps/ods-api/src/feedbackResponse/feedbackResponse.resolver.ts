@@ -88,6 +88,7 @@ export class FeedbackResponseResolver {
   }
 
   // TODO: Use the FindManyFeedbackResponse to use where instead of string status.
+  //TODO: pass whole object of FindManyFeedbackResponseArgs instead of deconstructing object
   @Query(() => [FeedbackResponse], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
     @Args('status') status: string,
