@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { FeedbackQuestionsService } from './feedback-questions.service';
 
@@ -33,7 +33,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
   personSpec = '';
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private feedbackService: FeedbackQuestionsService
   ) {}
 

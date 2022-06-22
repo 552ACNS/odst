@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import { setAccessToken, setRefreshToken } from '@odst/helpers';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   passwordError = false;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private loginService: LoginService,
     private router: Router,
     private route: ActivatedRoute
