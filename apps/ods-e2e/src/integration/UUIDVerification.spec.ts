@@ -16,6 +16,12 @@ describe('ods', () => {
     // Must wait here for all GQL queries to finish to preload everything
     cy.wait('@graphql');
 
+    // Switching order of input to help ensure that all data is loaded before trying to access drop down
+    cy.get('[formcontrolname="event"]').type('This is a UUID test');
+
+    // My Spec is Active Duty
+    cy.get('[ng-reflect-name="person_spec"]>[value="AD"]').click();
+
     // Selects the mat selector that's call
     cy.get('[formcontrolname="eventOrg"]').click();
 
@@ -25,8 +31,6 @@ describe('ods', () => {
     // Select ACW
     cy.get('.mat-option-text').contains('552 ACW').click();
 
-    cy.get('[formcontrolname="event"]').type('This is a UUID test');
-
     // Gets the spec of the instigator as AD
     cy.get('[ng-reflect-name="violator_spec"]>[value="AD"]').click();
 
@@ -35,9 +39,6 @@ describe('ods', () => {
 
     // Selects Col Coyle as the commander (this is a response for the wing)
     cy.get('.mat-option-text').contains('Coyle').click();
-
-    // My Spec is Active Duty
-    cy.get('[ng-reflect-name="person_spec"]>[value="AD"]').click();
 
     cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID);
 
