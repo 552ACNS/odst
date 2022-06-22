@@ -18,6 +18,7 @@ export class UserService {
     return this.prisma.user.findMany(findManyUserArgs);
   }
 
+  //TODO write tests for this
   async findUnique(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
@@ -26,6 +27,7 @@ export class UserService {
     });
   }
 
+  //TODO write tests for this
   async update(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
     userUpdateInput: Prisma.UserUpdateInput
@@ -66,6 +68,7 @@ export class UserService {
     });
   }
 
+  //TODO write tests for this
   async delete(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
