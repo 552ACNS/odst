@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
       case Role.Admin:
         return 'Administrator';
       case Role.Cc:
-        //TODO add logic for orgTier, i.e. Squadron Commander?
+        //TODO [ODST-279] add logic for orgTier, i.e. Squadron Commander?
         return 'Commander';
       case Role.Dei:
         return 'Diversity, Equity and Inclusion';

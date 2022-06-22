@@ -31,7 +31,7 @@ export class FeedbackResponseResolver {
     private readonly feedbackResponseService: FeedbackResponseService
   ) {}
 
-  //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
+  //TODO [ODST-270] findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses  //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
   @Query(() => FeedbackResponse, { name: 'findUniqueFeedbackResponse' })
   async findUnique(
     @Args('feedbackResponseWhereUniqueInput')
@@ -79,7 +79,7 @@ export class FeedbackResponseResolver {
     );
   }
 
-  // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
+  // TODO [ODST-271]: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   // TODO write tests for this
   @Query(() => ResponseCount, { name: 'ResponseCount' })
   async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {

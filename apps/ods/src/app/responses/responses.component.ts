@@ -44,7 +44,7 @@ export class ResponsesComponent implements OnInit {
   AddCommentMutationVariables: AddCommentMutationVariables;
 
   newComment = '';
-  // TODO: Change resolved status back to bool
+  // TODO [ODST-291]: Change resolved status back to bool
   resolved: string;
 
   // This is for the toggle button
