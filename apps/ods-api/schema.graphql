@@ -360,16 +360,10 @@ type ResponseCount {
   resolved: Float!
 }
 
-type AccountCount {
-  total: Float!
-}
-
 type Query {
   findUniqueFeedback(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): Feedback!
   findUniqueFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
-  getAccountCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
-  AccountCount: AccountCount!
   ResponseCount: ResponseCount!
   getIssuesByStatus(resolved: String!): [String!]!
   getOrgLineage: [String!]!

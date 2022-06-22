@@ -12,7 +12,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
-import { AccountCount, ResponseCount } from '../__types__';
+import { ResponseCount } from '../__types__';
 import { GetCurrentUser } from '@odst/shared/nest';
 //import { User } from '@odst/types/ods';
 
@@ -148,20 +148,6 @@ export class FeedbackResponseService {
         'FeedbackResponseService'
       );
     }
-  }
-
-  async countAccountRequests(
-    @GetCurrentUser() user: User
-  ): Promise<AccountCount> {
-    const whereBasedOnUserOrgs = await this.getWhere(user);
-    const [total] = await this.prisma.$transaction([
-      this.prisma.feedbackResponse.count({
-        where: {
-          ...whereBasedOnUserOrgs,
-        },
-      }),
-    ]);
-    return { total };
   }
 
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED

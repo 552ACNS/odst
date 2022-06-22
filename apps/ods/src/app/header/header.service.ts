@@ -4,9 +4,6 @@ import {
   CurrentUserDocument,
   CurrentUserQuery,
   CurrentUserQueryVariables,
-  AccountCountDocument,
-  AccountCountQuery,
-  AccountCountQueryVariables,
 } from './header.generated';
 import {
   FindManyAccountRequestsDocument,
@@ -36,15 +33,6 @@ export class HeaderService {
       FindManyAccountRequestsQueryVariables
     >({
       query: FindManyAccountRequestsDocument,
-    }).valueChanges;
-  }
-
-  GetAccountCount() {
-    return this.apollo.watchQuery<
-      AccountCountQuery,
-      AccountCountQueryVariables
-    >({
-      query: AccountCountDocument,
     }).valueChanges;
   }
 }

@@ -23,7 +23,7 @@ import {
 import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
-import { AccountCount, ResponseCount } from '../__types__';
+import { ResponseCount } from '../__types__';
 
 @Resolver(() => FeedbackResponse)
 export class FeedbackResponseResolver {

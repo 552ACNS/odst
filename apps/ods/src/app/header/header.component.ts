@@ -3,6 +3,7 @@ import { removeTokens } from '@odst/helpers';
 import { HeaderService } from './header.service';
 import { Role } from '../../types.graphql';
 import { CurrentUserQuery } from './header.generated';
+import { FindManyAccountRequestsQuery } from '../requested-accounts/requested-accounts.generated';
 
 @Component({
   selector: 'odst-header',
@@ -11,10 +12,11 @@ import { CurrentUserQuery } from './header.generated';
 })
 export class HeaderComponent implements OnInit {
   user: CurrentUserQuery['me'];
+  data: FindManyAccountRequestsQuery;
   userTitle: string;
   totalCount: number;
   dataSource;
-  data: any;
+  //data: any;
 
   constructor(private headerService: HeaderService) {}
 
@@ -23,9 +25,8 @@ export class HeaderComponent implements OnInit {
       this.user = me;
       this.userTitle = this.setUserTitle(this.user.role);
     });
-    this.headerService.getRequestedAccounts().subscribe(({ data }) => {
-      this.dataSource = this.data.findManyAccountRequests;
-      console.log(this.dataSource.length);
+    this.headerService.getRequestedAccounts().subscribe((data) => {
+      this.dataSource = data.data.findManyAccountRequests;
       this.totalCount = this.dataSource.length;
     });
   }
