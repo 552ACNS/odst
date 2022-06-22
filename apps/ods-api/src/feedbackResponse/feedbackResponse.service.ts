@@ -124,7 +124,7 @@ export class FeedbackResponseService {
       'Deleting feedback responses older than a year',
       'FeedbackResponseService'
     );
-    // TODO: Redo with try catch
+    // TODO [ODST-272]: Redo with try catch
     //Will silently fail if delete isn't cascaded properly
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [deleteAnswers, deleteFeedbackResponses] =
@@ -335,7 +335,7 @@ export class FeedbackResponseService {
     }
   }
 
-  //TODO refactor for complexity
+  //TODO [ODST-273] refactor for complexity
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   // eslint-disable-next-line complexity
   private async getWhere(

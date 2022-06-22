@@ -51,7 +51,7 @@ export function createApollo() {
     pendingRequests = [];
   };
 
-  //TODO refactor for complexity
+  //TODO [ODST-310] refactor for complexity
   const errorLink = onError(
     ({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors) {
