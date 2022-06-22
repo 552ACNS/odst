@@ -38,8 +38,6 @@ describe('SelectTagsComponent', () => {
       .map((Tag) =>
         Tag.nativeElement.textContent.replace(' cancel', '').trim()
       );
-    // const test = displayedTags[0].nativeElement.textContent;
-    // expect(displayedTags.length()).toEqual(3);
     expect(displayedTags.length).toEqual(component.selectedTags?.length);
     expect(displayedTags).toEqual(component.selectedTags);
   });

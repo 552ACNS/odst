@@ -234,7 +234,6 @@ export class ResponsesComponent implements OnInit {
    * @returns list of tags to push to server
    */
 
-  // TODO fix complexity of this function
   // There is a bug where if the user types and then deletes their input, the possible tags will not repopulate
   add(event: MatChipInputEvent): void {
     // Trim the input so that empty values aren't there

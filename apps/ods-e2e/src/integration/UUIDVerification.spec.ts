@@ -10,7 +10,7 @@ describe('ods', () => {
     cy.visit('/disclaimer');
     cy.location('pathname').should('include', '/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
-    cy.location('pathname').should('include', '/feedback');
+    cy.location('pathname').should('include', '/feedback').wait('@graphql');
     cy.contains('span', 'Organization')
       .click()
       .wait('@graphql')
@@ -24,7 +24,6 @@ describe('ods', () => {
     cy.get('#mat-radio-5').click();
     cy.get('[formcontrolname="CC')
       .click()
-      .wait('@graphql')
       .focused()
       .click({ force: true })
       .type('{enter}');
@@ -46,7 +45,7 @@ describe('ods', () => {
       });
   });
 
-  it('Verify that only people with correct permission can view a specific feedback', () => {
+  it('Verify that only people with correct permission can view and resolve a specific feedback', () => {
     cy.login('keven.coyle@us.af.mil', 'admin');
 
     cy.location('pathname').should('include', '/dashboard');
@@ -61,7 +60,12 @@ describe('ods', () => {
     );
     cy.scrollTo('top');
     cy.get('textarea').type(commentUUID);
+    //selects the action tag selector
+    cy.get('#mat-chip-list-input-1').type('Add');
+    cy.get('span').contains('Addressed in organizational all-call').click();
+    cy.get('mat-chip').contains('Addressed in organizational all-call');
     cy.get('button').contains('Submit').click();
+    //Marks the issue as resolved
     cy.get('mat-slide-toggle').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
@@ -81,6 +85,7 @@ describe('ods', () => {
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID
     );
+    cy.get('mat-chip').contains('Addressed in organizational all-call');
     cy.scrollTo('top');
     cy.get('mat-card-content').contains(commentUUID);
   });
@@ -95,5 +100,17 @@ describe('ods', () => {
           cy.get('mat-card-content').should('not.' + feedbackResponseUUID);
         }
       });
+  });
+
+  it('should test for tag functionality', () => {
+    cy.login('keven.coyle@us.af.mil', 'admin');
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Unresolved').click();
+    cy.location('pathname').should('include', '/responses');
+    cy.get('#mat-chip-list-input-1').type('Rout');
+    cy.get('span').contains('Routed up the chain of command').click();
+    cy.get('mat-chip').contains('Routed up the chain of command');
+    cy.get('mat-icon').contains('cancel').click();
+    cy.get('mat-chip').should('not.exist');
   });
 });

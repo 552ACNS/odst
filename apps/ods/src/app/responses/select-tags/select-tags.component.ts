@@ -52,7 +52,9 @@ export class SelectTagsComponent {
   }
 
   selectTag(event: MatAutocompleteSelectedEvent) {
+    console.log(event);
     this.selected.emit(event);
+    this.tagInput.nativeElement.value = '';
   }
 
   autoComplete(input: string) {
