@@ -1,4 +1,4 @@
-query GetReportByStatus($status: String!, $skip: Float!, $take: Float!) {
+query GetReportByStatus($status: String!, $skip: Int!, $take: Int!) {
   ResponseCount {
     unresolved
     overdue

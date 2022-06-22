@@ -19,6 +19,7 @@ import {
   Comment,
   FeedbackResponseAggregateArgs,
   UpdateOneFeedbackResponseArgs,
+  FindManyFeedbackResponseArgs,
 } from '@odst/types/ods';
 import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
@@ -91,14 +92,14 @@ export class FeedbackResponseResolver {
   async getIssuesByStatus(
     @Args('status') status: string,
     @GetCurrentUser() user: User,
-    @Args('skip') skip: number,
-    @Args('take') take: number
+    @Args() findManyFeedbackResponseArgs: FindManyFeedbackResponseArgs
   ): Promise<FeedbackResponse[]> {
+    const { skip, take } = findManyFeedbackResponseArgs;
     return this.feedbackResponseService.getIssuesByStatus(
       status,
       user,
-      skip,
-      take
+      Number(skip),
+      Number(take)
     );
   }
 
