@@ -1,4 +1,5 @@
 {
+  "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "apps/ods-api/src",
   "projectType": "application",
   "targets": {
@@ -76,10 +77,9 @@
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [
-          "env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss --force-reset",
-          "env-cmd -f apps/ods-api/.env.local yarn ts-node ./apps/ods-api/prisma-seed.ts"
+          "env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss --force-reset --schema=apps/ods-api/schema.prisma",
+          "env-cmd -f apps/ods-api/.env.local yarn ts-node ./apps/ods-api/prisma-seed.ts --schema=apps/ods-api/schema.prisma"
         ],
-        "schema": "apps/ods-api/schema.prisma",
         "parallel": false
       },
       "configurations": {
@@ -100,8 +100,7 @@
     "prisma-studio": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "env-cmd -f apps/ods-api/.env.local npx prisma studio",
-        "schema": "apps/ods-api/schema.prisma"
+        "command": "env-cmd -f apps/ods-api/.env.local npx prisma studio --schema=apps/ods-api/schema.prisma"
       }
     }
   },

@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AddCommentMutationVariables,
@@ -22,7 +22,7 @@ export class ResponsesComponent implements OnInit {
     comment: [''],
   });
 
-  tagCtrl = new FormControl();
+  tagCtrl = new UntypedFormControl();
 
   possibleTags: string[] = [];
 
@@ -31,7 +31,7 @@ export class ResponsesComponent implements OnInit {
   allTags: string[] = [];
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private responsesService: ResponsesService,
     private route: ActivatedRoute
   ) {}
