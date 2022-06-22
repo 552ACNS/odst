@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { PrismaClient } from '.prisma/waypoint/client';
 import { PrismaClientKnownRequestError } from '.prisma/waypoint/client/runtime';
 import { hash } from 'bcrypt';

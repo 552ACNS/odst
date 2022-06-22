@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Org, Prisma, User, Feedback } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -15,6 +15,8 @@ export class OrgService {
       })
       .then((responses) => responses.map((response) => response.name));
   }
+
+  //TODO write tests for this
   /**
    *
    * @returns a list of Org Names that are descendents from a given org.
@@ -43,6 +45,7 @@ export class OrgService {
     return this.getFamily(orgs);
   }
 
+  //TODO write tests for this
   getFamily<T extends { name: string; children: any[] }>(orgs: T[]): string[] {
     const orgNames: string[] = [];
 
@@ -62,66 +65,6 @@ export class OrgService {
     });
 
     return orgNames;
-  }
-  async getAllChildren(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Org[]> {
-    const parentOrg = await this.prisma.org.findUnique({
-      where: orgWhereUniqueInput,
-    });
-
-    // Escape the method if the parentOrg is not found
-    if (!parentOrg) {
-      return [];
-    }
-
-    const orgs = await this.prisma.org.findMany({
-      where: {
-        parent: {
-          id: parentOrg.id,
-        },
-      },
-    });
-
-    if (orgs != null) {
-      orgs.push(parentOrg);
-    }
-
-    return orgs as Org[];
-  }
-
-  async findUnique(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Org | null> {
-    return this.prisma.org.findUnique({
-      where: orgWhereUniqueInput,
-    });
-  }
-
-  async create(data: Prisma.OrgCreateInput): Promise<Org> {
-    return this.prisma.org.create({
-      data,
-    });
-  }
-
-  async update(
-    data: Prisma.OrgUpdateInput,
-    where: Prisma.OrgWhereUniqueInput
-  ): Promise<Org> {
-    return this.prisma.org.update({ data, where });
-  }
-
-  async delete(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    try {
-      await this.prisma.org.delete({
-        where: orgWhereUniqueInput,
-      });
-      return { deleted: true };
-    } catch (err) {
-      return { deleted: false, message: err.message };
-    }
   }
 
   async users(

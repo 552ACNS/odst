@@ -34,7 +34,7 @@
             (keyup)="uniqueEmail()"
             required
           />
-          <!-- TODO: once custom validators no longer deprecated, make tooltip an valdiation error -->
+          <!-- TODO [ODST-282]: once custom validators no longer deprecated, make tooltip an valdiation error -->
           <button matSuffix disabled="true">
             <mat-icon
               *ngIf="emailNotUnique"
@@ -83,7 +83,7 @@
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Password</mat-label>
-          <!-- TODO: either fix formatting or fix using password strength library -->
+          <!-- TODO [ODST-283]: either fix formatting or fix using password strength library -->
           <input
             matInput
             matTooltip="The password must have the following:

@@ -7,7 +7,6 @@ import { RequestAccountService } from './request-account.service';
 
 describe('RequestAccountService', () => {
   let controller: ApolloTestingController;
-  let service: RequestAccountService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

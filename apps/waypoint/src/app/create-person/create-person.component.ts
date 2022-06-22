@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, UntypedFormBuilder } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import { CreatePersonService } from './create-person.service';
@@ -93,7 +93,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private apollo: Apollo,
     private personService: CreatePersonService
   ) {}
@@ -192,7 +192,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         //TODO deprecated
-        ({ data }) => {
+        () => {
           this.submitSuccess = true;
         },
         (error) => {

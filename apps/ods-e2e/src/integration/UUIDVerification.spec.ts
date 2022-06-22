@@ -8,27 +8,40 @@ describe('ods', () => {
   });
   it('submit a feedback with a unique uuid', () => {
     cy.visit('/disclaimer');
-    cy.location('pathname').should('include', '/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
-    cy.location('pathname').should('include', '/feedback').wait('@graphql');
-    cy.contains('span', 'Organization')
-      .click()
-      .wait('@graphql')
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
-    cy.get('#cdk-overlay-0').should('not.be.visible', { timeout: 5000 });
-    cy.get('[formcontrolname="event"]').type('e2e Test');
-    cy.get('#mat-radio-5').click();
-    cy.get('[formcontrolname="CC')
-      .click()
-      .focused()
-      .click({ force: true })
-      .type('{enter}');
-    cy.get('#mat-radio-8').click();
+
+    // Make sure you are on the feedback page
+    cy.location('pathname').should('include', '/feedback');
+
+    // Must wait here for all GQL queries to finish to preload everything
+    cy.wait('@graphql');
+
+    // Switching order of input to help ensure that all data is loaded before trying to access drop down
+    cy.get('[formcontrolname="event"]').type('This is a UUID test');
+
+    // My Spec is Active Duty
+    cy.get('[ng-reflect-name="person_spec"]>[value="AD"]').click();
+
+    // Selects the mat selector that's call
+    cy.get('[formcontrolname="eventOrg"]').click();
+
+    // // Wait for the queries to load
+    cy.wait('@graphql');
+
+    // Select ACW
+    cy.get('.mat-option-text').contains('552 ACW').click();
+
+    // Gets the spec of the instigator as AD
+    cy.get('[ng-reflect-name="violator_spec"]>[value="AD"]').click();
+
+    // Gets the dropdown for the commander
+    cy.get('[formcontrolname="CC"]').click();
+
+    // Selects Col Coyle as the commander (this is a response for the wing)
+    cy.get('.mat-option-text').contains('Coyle').click();
+
     cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID);
+
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
@@ -45,7 +58,7 @@ describe('ods', () => {
       });
   });
 
-  it('Verify that only people with correct permission can view and resolve a specific feedback', () => {
+  it('Verify that only people with correct permission can view a specific feedback', () => {
     cy.login('keven.coyle@us.af.mil', 'admin');
 
     cy.location('pathname').should('include', '/dashboard');
@@ -54,11 +67,9 @@ describe('ods', () => {
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    cy.scrollTo('bottom');
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID
     );
-    cy.scrollTo('top');
     cy.get('textarea').type(commentUUID);
     //selects the action tag selector
     cy.get('#mat-chip-list-input-1').type('Add');
@@ -67,8 +78,7 @@ describe('ods', () => {
     cy.get('button').contains('Submit').click();
     //Marks the issue as resolved
     cy.get('mat-slide-toggle').click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.wait('@graphql');
     cy.get('button').contains('Back').click();
   });
 
@@ -81,7 +91,6 @@ describe('ods', () => {
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    cy.scrollTo('bottom');
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID
     );

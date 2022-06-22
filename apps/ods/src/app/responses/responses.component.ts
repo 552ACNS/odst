@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AddCommentMutationVariables,
@@ -22,8 +22,7 @@ export class ResponsesComponent implements OnInit {
     comment: [''],
   });
 
-  //#region Variables
-  tagCtrl = new FormControl();
+  tagCtrl = new UntypedFormControl();
 
   possibleTags: string[];
 
@@ -37,6 +36,11 @@ export class ResponsesComponent implements OnInit {
 
   possibleTrackingTags: string[] = [];
 
+  constructor(
+    private fb: UntypedFormBuilder,
+    private responsesService: ResponsesService,
+    private route: ActivatedRoute
+  ) {}
   selectedTrackingTags: string[] | undefined = [];
 
   allTags: string[];
@@ -49,7 +53,7 @@ export class ResponsesComponent implements OnInit {
   AddCommentMutationVariables: AddCommentMutationVariables;
 
   newComment = '';
-  // TODO: Change resolved status back to bool
+  // TODO [ODST-291]: Change resolved status back to bool
   resolved: string;
 
   // This is for the toggle button
@@ -67,12 +71,6 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   //#endregion
-
-  constructor(
-    private fb: FormBuilder,
-    private responsesService: ResponsesService,
-    private route: ActivatedRoute
-  ) {}
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 

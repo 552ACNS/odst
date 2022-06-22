@@ -11,6 +11,7 @@ import { isLoggedIn } from '@odst/helpers';
 export class LoggedInGuard implements CanActivate {
   constructor(private router: Router) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!isLoggedIn()) {
       return true;
