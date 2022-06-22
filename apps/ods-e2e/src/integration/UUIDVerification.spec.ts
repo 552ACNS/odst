@@ -114,12 +114,14 @@ describe('ods', () => {
   it('should test for tag functionality', () => {
     cy.login('keven.coyle@us.af.mil', 'admin');
     cy.location('pathname').should('include', '/dashboard');
-    cy.get('mat-card').contains('Unresolved').click();
+    cy.get('mat-card').contains('Resolved').click();
     cy.location('pathname').should('include', '/responses');
     cy.get('#mat-chip-list-input-1').type('Rout');
     cy.get('span').contains('Routed up the chain of command').click();
     cy.get('mat-chip').contains('Routed up the chain of command');
     cy.get('mat-icon').contains('cancel').click();
-    cy.get('mat-chip').should('not.exist');
+    cy.get('mat-chip')
+      .contains('Addressed in organizational all-call')
+      .should('not.exist');
   });
 });
