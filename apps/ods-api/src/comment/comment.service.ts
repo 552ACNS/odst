@@ -13,8 +13,4 @@ export class CommentService {
       .findUnique({ where: commentWhereUniqueInput })
       .author();
   }
-
-  async create(data: Prisma.CommentCreateInput): Promise<Comment> {
-    return this.prisma.comment.create({ data });
-  }
 }

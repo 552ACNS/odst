@@ -5,11 +5,9 @@ import {
   MockFeedbackResponses,
   MockFeedbackResponseCreateInput,
 } from './feedbackResponse.repo';
-import { User } from '@odst/types/ods';
 
 describe('FeedbackResponse Resolver', () => {
   let resolver: FeedbackResponseResolver;
-  let service: FeedbackResponseService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,7 +16,6 @@ describe('FeedbackResponse Resolver', () => {
         {
           provide: FeedbackResponseService,
           useValue: {
-            findMany: jest.fn().mockResolvedValue(MockFeedbackResponses),
             findUnique: jest
               .fn()
               .mockImplementation(() =>
@@ -34,26 +31,16 @@ describe('FeedbackResponse Resolver', () => {
               .mockImplementation(() =>
                 Promise.resolve(MockFeedbackResponses[0])
               ),
-            delete: jest.fn().mockResolvedValue({ deleted: true }),
           },
         },
       ],
     }).compile();
 
     resolver = module.get<FeedbackResponseResolver>(FeedbackResponseResolver);
-    service = module.get<FeedbackResponseService>(FeedbackResponseService);
   });
 
   it('should be defined', () => {
     expect(resolver).toBeDefined();
-  });
-
-  describe('findMany', () => {
-    it('should get an array of feedbackResponses', async () => {
-      await expect(
-        resolver.findMany(new User(), { where: {} })
-      ).resolves.toEqual(MockFeedbackResponses);
-    });
   });
 
   describe('findUnique', () => {
@@ -80,25 +67,6 @@ describe('FeedbackResponse Resolver', () => {
       await expect(
         resolver.update({ where: { id: 'a strange id' }, data: {} })
       ).resolves.toEqual(MockFeedbackResponses[0]);
-    });
-  });
-
-  describe('delete', () => {
-    it('should return that it deleted a feedbackResponse', async () => {
-      await expect(
-        resolver.delete({ id: 'a uuid that exists' })
-      ).resolves.toEqual({
-        deleted: true,
-      });
-    });
-    it('should return that it did not delete a feedbackResponse', async () => {
-      const deleteSpy = jest
-        .spyOn(service, 'delete')
-        .mockResolvedValueOnce({ deleted: false });
-      await expect(
-        resolver.delete({ id: 'a uuid that does not exist' })
-      ).resolves.toEqual({ deleted: false });
-      expect(deleteSpy).toBeCalled();
     });
   });
 });
