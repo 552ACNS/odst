@@ -1,90 +1,70 @@
 import { Injectable } from '@nestjs/common';
-import { Org, Prisma, User, Survey } from '.prisma/ods/client';
+import { Org, Prisma, User, Feedback } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class OrgService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.OrgWhereUniqueInput;
-    where?: Prisma.OrgWhereInput;
-    orderBy?: Prisma.OrgOrderByWithRelationInput;
-  }): Promise<Org[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.org.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+  async getOrgNames(): Promise<string[]> {
+    return this.prisma.org
+      .findMany({
+        select: {
+          name: true,
+        },
+      })
+      .then((responses) => responses.map((response) => response.name));
   }
 
-  async getSubOrgs(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Org[]> {
-    const parentOrg = await this.prisma.org.findUnique({
-      where: orgWhereUniqueInput,
-    });
-
-    // Escape the method if the parentOrg is not found
-    if (!parentOrg) {
-      return [];
-    }
-
+  //TODO write tests for this
+  /**
+   *
+   * @returns a list of Org Names that are descendents from a given org.
+   * TODO: accept method parameter for organization name. Right now is hardcoded to '552 ACW'
+   */
+  async getLineage(): Promise<string[]> {
     const orgs = await this.prisma.org.findMany({
       where: {
-        parent: {
-          id: parentOrg.id,
+        name: {
+          in: ['552 ACW'],
+        },
+      },
+      include: {
+        children: {
+          select: {
+            name: true,
+            children: {
+              select: {
+                name: true,
+              },
+            },
+          },
         },
       },
     });
-
-    if (orgs != null) {
-      orgs.push(parentOrg);
-    }
-
-    return orgs as Org[];
+    return this.getFamily(orgs);
   }
 
-  async findUnique(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Org | null> {
-    return this.prisma.org.findUnique({
-      where: orgWhereUniqueInput,
+  //TODO write tests for this
+  getFamily<T extends { name: string; children: any[] }>(orgs: T[]): string[] {
+    const orgNames: string[] = [];
+
+    // for each org in the list
+    orgs.forEach((org) => {
+      // add the org name to the list of orgnames
+      orgNames.push(org.name);
+
+      // if the org has children
+      if (org.children) {
+        // get the family of the children
+        this.getFamily(org.children).forEach((child) => {
+          // then for each child of the children, add the name to the return list
+          orgNames.push(child);
+        });
+      }
     });
-  }
 
-  async create(data: Prisma.OrgCreateInput): Promise<Org> {
-    return this.prisma.org.create({
-      data,
-    });
-  }
-
-  async update(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput,
-    orgUpdateInput: Prisma.OrgUpdateInput
-  ): Promise<Org> {
-    return this.prisma.org.update({
-      where: orgWhereUniqueInput,
-      data: orgUpdateInput,
-    });
-  }
-
-  async delete(
-    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    try {
-      await this.prisma.org.delete({
-        where: orgWhereUniqueInput,
-      });
-      return { deleted: true };
-    } catch (err) {
-      return { deleted: false, message: err.message };
-    }
+    return orgNames;
   }
 
   async users(
@@ -107,9 +87,11 @@ export class OrgService {
     return this.prisma.org.findUnique({ where: orgWhereUniqueInput }).parent();
   }
 
-  async surveys(
+  async feedbacks(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Survey[]> {
-    return this.prisma.org.findUnique({ where: orgWhereUniqueInput }).surveys();
+  ): Promise<Feedback[]> {
+    return this.prisma.org
+      .findUnique({ where: orgWhereUniqueInput })
+      .feedbacks();
   }
 }

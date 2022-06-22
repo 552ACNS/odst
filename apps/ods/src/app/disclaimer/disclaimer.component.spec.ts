@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DisclaimerComponent } from './disclaimer.component';
 
 describe('DisclaimerComponent', () => {
@@ -9,6 +11,7 @@ describe('DisclaimerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DisclaimerComponent],
+      imports: [MatCardModule, RouterModule, RouterTestingModule],
     }).compileComponents();
   });
 

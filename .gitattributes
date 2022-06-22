@@ -1,5 +1,9 @@
-# Define binary file attributes.
-# - Do not treat them as text.
-# - Include binary diff in patches instead of "binary files differ."
-
-apps/**/schema.graphql binary
+#Files files that git should handle line endings for
+*.txt text
+*.html text
+*.scss text
+*.ts text
+*.js text
+*.json text
+# May cause bizarre problem with merge conflicts on the .graphql files, delete this line if line endings are still problematic
+# *.graphql text

@@ -31,7 +31,7 @@ export class JWTAuthGuard extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  override handleRequest(error: any, user: any, info: Error) {
+  override handleRequest(error: never, user: never, info: Error) {
     if (error || info || !user) {
       throw info?.name === 'TokenExpiredError'
         ? new UnauthorizedException('The session has expired. Please relogin')

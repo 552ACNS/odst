@@ -3,6 +3,8 @@ import {
   RefreshTokenUpdateOneWithoutUserInput,
 } from './refreshToken.interface';
 
+// TODO: May need to refactor once we get generator going
+
 export interface User {
   id: string;
   username?: string;
@@ -17,14 +19,37 @@ export interface UserWhereUniqueInput {
   email?: string;
 }
 
+export interface UserWhereInput {
+  username?: StringFilter | string;
+  email?: StringFilter | string;
+}
+
+export type StringFilter = {
+  equals?: string;
+  mode?: QueryMode;
+};
+
+export type QueryMode = typeof QueryMode[keyof typeof QueryMode];
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive',
+};
+
 export interface UserUpdateInput {
   refreshToken?: RefreshTokenUpdateOneWithoutUserInput;
+}
+
+export interface UserFindManyArgs {
+  where?: UserWhereInput;
 }
 
 export interface UserService {
   findUnique: (
     userWhereUniqueInput: UserWhereUniqueInput
   ) => Promise<User | null>;
+
+  findMany: (userFindManyArgs: UserFindManyArgs) => Promise<User[]>;
 
   update: (
     userWhereUniqueInput: UserWhereUniqueInput,

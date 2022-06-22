@@ -1,0 +1,47 @@
+query findUniqueFeedback($feedbackWhereUniqueInput: FeedbackWhereUniqueInput!) {
+  findUniqueFeedback(feedbackWhereUniqueInput: $feedbackWhereUniqueInput) {
+    id
+  }
+}
+
+mutation createFeedbackResponse(
+  $feedbackResponseCreateInput: FeedbackResponseCreateInput!
+) {
+  createFeedbackResponse(
+    feedbackResponseCreateInput: $feedbackResponseCreateInput
+  ) {
+    id
+  }
+}
+
+mutation CreateFeedbackWithQuestions(
+  $questionValues: [String!]!
+  $orgWhereUniqueInput: OrgWhereUniqueInput!
+) {
+  createFeedbackWithQuestions(
+    questionValues: $questionValues
+    orgWhereUniqueInput: $orgWhereUniqueInput
+  ) {
+    id
+  }
+}
+
+query GetOrgLineage {
+  getOrgLineage
+}
+
+query findQuestionsByFeedback(
+  $feedbackWhereUniqueInput: FeedbackWhereUniqueInput!
+) {
+  getSubQuestions(feedbackWhereUniqueInput: $feedbackWhereUniqueInput) {
+    id
+  }
+}
+
+query getCommanders {
+  getCommanders {
+    grade
+    firstName
+    lastName
+  }
+}

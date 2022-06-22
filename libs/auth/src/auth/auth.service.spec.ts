@@ -33,6 +33,7 @@ describe('AuthService', () => {
         {
           provide: USER_SERVICE,
           useValue: {
+            findMany: jest.fn().mockResolvedValue([MockUser]),
             findUnique: jest.fn().mockResolvedValue(MockUser),
             create: jest.fn().mockResolvedValue(MockUser),
             update: jest.fn().mockResolvedValue(MockUser),
@@ -60,7 +61,7 @@ describe('AuthService', () => {
   describe('refreshTokens', () => {
     it('should return a set of tokens', async () => {
       await expect(
-        service.refreshTokens({ refreshToken: MockToken }, MockUser)
+        service.refreshTokens({ refreshToken: MockToken })
       ).resolves.toEqual(MockTokens);
     });
   });

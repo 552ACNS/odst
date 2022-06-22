@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, UntypedFormBuilder } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import { CreateOrgService } from './create-org.service';
@@ -36,7 +36,7 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private apollo: Apollo,
     private orgService: CreateOrgService
   ) {}
@@ -91,7 +91,7 @@ export class CreateOrgComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         //TODO deprecated
-        ({ data }) => {
+        () => {
           this.submitSuccess = true;
         },
         (error) => {

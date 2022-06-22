@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { isLoggedIn } from '@odst/helpers';
 
 @Component({
   selector: 'odst-root',
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ods';
+
+  isLoggedIn(): boolean {
+    return isLoggedIn();
+  }
 }

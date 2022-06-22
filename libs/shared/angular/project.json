@@ -1,6 +1,6 @@
 {
+  "$schema": "..\\..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "projectType": "library",
-  "root": "libs/shared/angular",
   "sourceRoot": "libs/shared/angular/src",
   "prefix": "odst",
   "targets": {
@@ -8,8 +8,8 @@
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "libs/shared/angular/**/*.ts",
-          "libs/shared/angular/**/*.html"
+          "libs/shared/angular/src/**/*.ts",
+          "libs/shared/angular/src/**/*.html"
         ]
       }
     }

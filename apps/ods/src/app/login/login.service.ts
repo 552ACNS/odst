@@ -21,6 +21,7 @@ export class LoginService extends LoginServiceInterface {
     //       //TODO rememberMe: rememberMe,
     //     },
     //   },
+    // errorPolicy: 'all',
     // });
   }
 

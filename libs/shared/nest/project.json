@@ -1,5 +1,5 @@
 {
-  "root": "libs/shared/nest",
+  "$schema": "..\\..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "libs/shared/nest/src",
   "targets": {
     "lint": {

@@ -6,12 +6,12 @@ import { MockUsers } from './user.repo';
 const db = {
   user: {
     findMany: jest.fn().mockReturnValue(MockUsers),
+    update: jest.fn().mockReturnValue(MockUsers[1]),
   },
 };
 
 describe('UserService', () => {
   let service: UserService;
-  let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,7 +25,6 @@ describe('UserService', () => {
     }).compile();
 
     service = module.get<UserService>(UserService);
-    prisma = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
@@ -36,6 +35,13 @@ describe('UserService', () => {
     it('should return an array of users', async () => {
       const users = await service.findMany({});
       expect(users).toEqual(MockUsers);
+    });
+  });
+
+  describe('enableAccount', () => {
+    it('should enable an account', async () => {
+      const result = await service.enableAccount({ email: 'email2' });
+      expect(result).toEqual(MockUsers[1]);
     });
   });
 });

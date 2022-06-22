@@ -20,10 +20,10 @@ export class JWTStrategy extends PassportStrategy(Strategy, 'jwt') {
   async validate(payload: JwtPayloadAccess) {
     //this centralizes auth flow
 
-    //TODO sign tokens with user's password hash, to invalidate all tokens on password change
+    //TODO [ODST-304] sign tokens with user's password hash, to invalidate all tokens on password change
     // but again, this centralizes it
 
-    //TODO client fingerprint?
+    //TODO [ODST-305] client fingerprint?
     const user = await this.userService.findUnique({ id: payload.sub });
     if (user && user.enabled) {
       return user;

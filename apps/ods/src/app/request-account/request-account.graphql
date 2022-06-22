@@ -1,0 +1,14 @@
+query getOrgNames {
+  getOrgNames
+}
+mutation CreateUser($userCreateInput: UserCreateInput!) {
+  createUser(userCreateInput: $userCreateInput) {
+    grade
+    lastName
+    firstName
+  }
+}
+
+query UsernameOrEmailExists($usernameOrEmail: String!) {
+  usernameOrEmailExists(usernameOrEmail: $usernameOrEmail)
+}
