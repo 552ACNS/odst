@@ -5,6 +5,7 @@ import {
   ElementRef,
   Output,
   EventEmitter,
+  OnInit,
 } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -33,9 +34,13 @@ export class SelectTagsComponent {
 
   @Output() selected = new EventEmitter<MatAutocompleteSelectedEvent>();
 
+  filteredTags;
+
   @ViewChild('tagInput', { static: true })
   tagInput: ElementRef<HTMLInputElement>;
 
+  //TODO Clear search text after tag added (mainly is problem when you click on result)
+  //TODO Make it so pressing enter selects the first option available if there are any
   addTag(event: MatChipInputEvent) {
     if (this.possibleTags.includes(event.value)) {
       this.add.emit(event);
@@ -50,13 +55,15 @@ export class SelectTagsComponent {
     this.selected.emit(event);
   }
 
-  autoComplete() {
-    const input = this.tagInput?.nativeElement.value.trim().toLowerCase();
+  autoComplete(input: string) {
+    input = input?.trim().toLowerCase();
 
     if (input) {
-      this.possibleTags = this.possibleTags.filter((tag) =>
+      this.filteredTags = this.possibleTags.filter((tag) =>
         tag.toLowerCase().includes(input)
       );
+    } else {
+      this.filteredTags = this.possibleTags;
     }
   }
 }

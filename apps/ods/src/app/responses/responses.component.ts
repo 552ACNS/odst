@@ -83,11 +83,13 @@ export class ResponsesComponent implements OnInit {
     this.responsesService.getTags().subscribe(({ data }) => {
       this.actionTags = data.getTags
         .filter((tag) => tag.type == 'Action')
-        .map((tag) => tag.value);
+        .map((tag) => tag.value)
+        .sort();
       this.trackingTags = data.getTags
         .filter((tag) => tag.type == 'DataTracking')
-        .map((tag) => tag.value);
-      this.allTags = data.getTags.map((tag) => tag.value);
+        .map((tag) => tag.value)
+        .sort();
+      this.allTags = data.getTags.map((tag) => tag.value).sort();
       this.generatePossibleTags();
     });
 
@@ -242,10 +244,7 @@ export class ResponsesComponent implements OnInit {
     value = value[0].toUpperCase() + value.slice(1);
 
     // If the hand typed value is one of the legal tags
-    if (
-      this.allTags.includes(value) &&
-      !this.selectedActionTags?.concat(this.selectedTrackingTags ?? [])
-    ) {
+    if (this.allTags.includes(value)) {
       const tagType = this.determineTagType(value);
       this.responsesService
         .modifyTag({
@@ -258,12 +257,12 @@ export class ResponsesComponent implements OnInit {
             this.addSelectedTags(tagType, value);
             // Clear the input values
             event.chipInput?.clear();
+            this.generatePossibleTags();
           }
         });
     }
 
     this.tagCtrl.setValue(null);
-    this.generatePossibleTags();
   }
 
   remove(tagToRemove: string): void {

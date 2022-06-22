@@ -16,14 +16,15 @@
       [matAutocomplete]="auto"
       [matChipInputFor]="chipList"
       (matChipInputTokenEnd)="addTag($event)"
-      (input)="autoComplete()"
+      (input)="autoComplete(tagCtrl.value)"
+      (focus)="autoComplete(tagCtrl.value)"
     />
   </mat-chip-list>
   <mat-autocomplete
     #auto="matAutocomplete"
     (optionSelected)="selectTag($event)"
   >
-    <mat-option *ngFor="let tag of possibleTags" [value]="tag">
+    <mat-option *ngFor="let tag of filteredTags" [value]="tag">
       {{ tag }}
     </mat-option>
   </mat-autocomplete>
