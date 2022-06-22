@@ -87,7 +87,7 @@ export class FeedbackResponseResolver {
     return this.feedbackResponseService.countResponses(user);
   }
 
-  // TODO: Use the FindManyFeedbackResponse Arg from generator instead of this.
+  // TODO: Use the FindManyFeedbackResponse to use where instead of string status.
   @Query(() => [FeedbackResponse], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
     @Args('status') status: string,
