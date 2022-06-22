@@ -44,7 +44,7 @@ export class ResponsesComponent implements OnInit {
 
   newComment = '';
   // TODO [ODST-291]: Change resolved status back to bool
-  resolved: string;
+  status: string;
 
   // This is for the toggle button
   actualResolution: boolean;
