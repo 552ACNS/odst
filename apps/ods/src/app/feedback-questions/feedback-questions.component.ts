@@ -92,7 +92,8 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
         name: '552 ACW',
       })
       .subscribe(({ data }) => {
-        this.feedbackID = data?.createFeedbackWithQuestions.id;
+        this.feedbackID = data?.createFeedbackWithQuestions;
+
         this.feedbackService
           .getQuestionsFromFeedback(<string>this.feedbackID)
           .subscribe((data) => {

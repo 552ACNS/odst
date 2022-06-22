@@ -25,7 +25,7 @@ export class FeedbackService {
   async createWithQuestions(
     questionValues: string[],
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Feedback> {
+  ): Promise<{ id: string }> {
     if (questionValues.length <= 0) {
       throw new BadRequestException('No question values provided');
     }
@@ -57,6 +57,7 @@ export class FeedbackService {
       update: {
         orgs: { connect: [orgWhereUniqueInput] },
       },
+      select: { id: true },
     });
   }
 

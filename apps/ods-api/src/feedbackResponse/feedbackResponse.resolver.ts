@@ -55,13 +55,15 @@ export class FeedbackResponseResolver {
     );
   }
 
-  @Mutation(() => FeedbackResponse, { name: 'createFeedbackResponse' })
+  @Mutation(() => String, { name: 'createFeedbackResponse' })
   @Public()
   async create(
     @Args('feedbackResponseCreateInput')
     feedbackResponseCreateInput: FeedbackResponseCreateInput
-  ): Promise<FeedbackResponse> {
-    return this.feedbackResponseService.create(feedbackResponseCreateInput);
+  ): Promise<string> {
+    return (
+      await this.feedbackResponseService.create(feedbackResponseCreateInput)
+    ).id;
   }
 
   @Mutation(() => FeedbackResponse, { name: 'updateFeedbackResponse' })

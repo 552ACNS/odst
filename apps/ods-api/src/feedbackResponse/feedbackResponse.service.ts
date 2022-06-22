@@ -101,11 +101,14 @@ export class FeedbackResponseService {
     });
   }
 
-  async create(
-    data: Prisma.FeedbackResponseCreateInput
-  ): Promise<FeedbackResponse> {
+  async create(data: Prisma.FeedbackResponseCreateInput): Promise<{
+    id: string;
+  }> {
     return this.prisma.feedbackResponse.create({
       data,
+      select: {
+        id: true,
+      },
     });
   }
 

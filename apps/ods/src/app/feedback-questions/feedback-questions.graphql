@@ -9,9 +9,7 @@ mutation createFeedbackResponse(
 ) {
   createFeedbackResponse(
     feedbackResponseCreateInput: $feedbackResponseCreateInput
-  ) {
-    id
-  }
+  )
 }
 
 mutation CreateFeedbackWithQuestions(
@@ -21,9 +19,7 @@ mutation CreateFeedbackWithQuestions(
   createFeedbackWithQuestions(
     questionValues: $questionValues
     orgWhereUniqueInput: $orgWhereUniqueInput
-  ) {
-    id
-  }
+  )
 }
 
 query GetOrgLineage {
@@ -33,15 +29,9 @@ query GetOrgLineage {
 query findQuestionsByFeedback(
   $feedbackWhereUniqueInput: FeedbackWhereUniqueInput!
 ) {
-  getSubQuestions(feedbackWhereUniqueInput: $feedbackWhereUniqueInput) {
-    id
-  }
+  getSubQuestions(feedbackWhereUniqueInput: $feedbackWhereUniqueInput)
 }
 
 query getCommanders {
-  getCommanders {
-    grade
-    firstName
-    lastName
-  }
+  getCommanders
 }

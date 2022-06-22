@@ -41,13 +41,7 @@ export class FeedbackQuestionsService {
       .watchQuery<GetCommandersQuery, GetCommandersQueryVariables>({
         query: GetCommandersDocument,
       })
-      .valueChanges.pipe(
-        map((result) =>
-          result.data.getCommanders
-            .map((x) => `${x.grade} ${x.lastName}, ${x.firstName}`)
-            .sort()
-        )
-      );
+      .valueChanges.pipe(map((result) => result.data.getCommanders));
   }
   //Takes questions that are in an array and connectsOrCreates to a feedback ID based on question set and returns the feedback ID
   //that was found or created
@@ -82,9 +76,7 @@ export class FeedbackQuestionsService {
           },
         },
       })
-      .valueChanges.pipe(
-        map((result) => result.data.getSubQuestions.map((x) => x.id))
-      );
+      .valueChanges.pipe(map((result) => result.data.getSubQuestions));
   }
   //Connects to a feedback ID and submits answer values and connects those values to question ID's that are connected to the
   //feedback ID. It also determines if the feedback is to be routed outside the squadron.

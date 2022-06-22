@@ -1,5 +1,6 @@
 import {
   Args,
+  GraphQLDefinitionsFactory,
   Mutation,
   Parent,
   Query,
@@ -32,23 +33,35 @@ export class UserResolver {
   //TODO write tests for this
   //TODO write custom pipe to not need separate route for this
   @Public()
-  @Query(() => [User])
-  async getCommanders(): Promise<User[]> {
-    return this.userService.findMany({
-      where: {
-        role: Role.CC,
-      },
-    });
+  @Query(() => [String])
+  async getCommanders(): Promise<string[]> {
+    return (
+      await this.userService.findMany({
+        where: {
+          role: Role.CC,
+        },
+        select: {
+          grade: true,
+          firstName: true,
+          lastName: true,
+        },
+        orderBy: {
+          grade: 'desc',
+        },
+      })
+    ).map(
+      ({ grade, firstName, lastName }) => `${grade} ${lastName}, ${firstName}`
+    );
   }
 
   //TODO write tests for this
   //TODO make sure anon users can't create enabled user
   @Public()
-  @Mutation(() => User, { name: 'createUser' })
-  create(
+  @Mutation(() => String, { name: 'createUser' })
+  async create(
     @Args('userCreateInput') userCreateInput: UserCreateInput
-  ): Promise<User> {
-    return this.userService.create(userCreateInput);
+  ): Promise<string> {
+    return (await this.userService.create(userCreateInput)).id;
   }
 
   //TODO write tests for this
