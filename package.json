@@ -112,6 +112,7 @@
     "typescript": "^4.6.4"
   },
   "resolutions": {
-    "@nestjs/platform-express/multer/busboy": "^1.6"
+    "@nestjs/platform-express/multer/busboy": "^1.6",
+    "@graphql-codegen/cli/**/got": "^11.8"
   }
 }
