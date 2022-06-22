@@ -7,7 +7,6 @@ import { FeedbackQuestionsService } from './feedback-questions.service';
 
 describe('FeedbackQuestionsService', () => {
   let controller: ApolloTestingController;
-  let service: FeedbackQuestionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

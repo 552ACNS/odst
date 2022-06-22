@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import { setAccessToken, setRefreshToken } from '@odst/helpers';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   passwordError = false;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private loginService: LoginService,
     private router: Router,
     private route: ActivatedRoute
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
           setAccessToken(data.login.accessToken);
           // if (this.loginForm.value['rememberMe']) {
           setRefreshToken(data.login.refreshToken);
-          // TODO: if remember me is false, it should get a refreshToken with a low time to live
+          // TODO [ODST-280]: if remember me is false, it should get a refreshToken with a low time to live
           // if it's true, it should get a refreshToken with a high time to live
           // }
 
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
         if (allowList.includes(this.returnUrl)) {
           this.router.navigateByUrl(this.returnUrl);
         }
-        // TODO: add an else condition to redirect to error page when implemented.
+        // TODO [ODST-281]: add an else condition to redirect to error page when implemented.
       });
   }
 }

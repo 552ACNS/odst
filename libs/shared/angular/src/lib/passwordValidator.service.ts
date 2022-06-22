@@ -1,20 +1,14 @@
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 //This is the tells the ghtml when to trigger an error state
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null): boolean {
+  isErrorState(control: UntypedFormControl | null): boolean {
     return control?.parent?.errors && control.parent.errors['notSame'];
   }
 }
 export class CustomValidators {
-  static checkPasswords(group: FormGroup) {
+  static checkPasswords(group: UntypedFormGroup) {
     // here we have the 'passwords' group
     const pass = group.controls['password'].value;
     const confirmPass = group.controls['confirmPassword'].value;
