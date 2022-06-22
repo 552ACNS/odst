@@ -10,7 +10,6 @@ import {
 import { FeedbackService } from './feedback.service';
 import {
   Feedback,
-  FeedbackCreateInput,
   FeedbackWhereUniqueInput,
   Org,
   Question,
@@ -19,17 +18,11 @@ import {
   UpdateOneFeedbackArgs,
 } from '@odst/types/ods';
 import { Prisma } from '.prisma/ods/client';
-
 import { Public } from '@odst/auth';
 
 @Resolver(() => Feedback)
 export class FeedbackResolver {
   constructor(private readonly feedbackService: FeedbackService) {}
-
-  @Query(() => [Feedback], { name: 'findManyFeedbacks' })
-  async findMany(): Promise<Feedback[]> {
-    return this.feedbackService.findMany({});
-  }
 
   @Query(() => Feedback, { name: 'findUniqueFeedback' })
   async findUnique(
@@ -39,6 +32,7 @@ export class FeedbackResolver {
     return this.feedbackService.findUnique(feedbackWhereUniqueInput);
   }
 
+  //TODO write tests for this
   @Public()
   @Mutation(() => Feedback, { name: 'createFeedbackWithQuestions' })
   async createWithQuestions(
@@ -52,13 +46,6 @@ export class FeedbackResolver {
     );
   }
 
-  @Mutation(() => Feedback, { name: 'createFeedback' })
-  create(
-    @Args('feedbackCreateInput') feedbackCreateInput: FeedbackCreateInput
-  ): Promise<Feedback> {
-    return this.feedbackService.create(feedbackCreateInput);
-  }
-
   @Mutation(() => Feedback, { name: 'updateFeedback' })
   async update(@Args() updateArgs: UpdateOneFeedbackArgs): Promise<Feedback> {
     //Type coercion is required here because there is a bug in typescript
@@ -70,14 +57,6 @@ export class FeedbackResolver {
       data as Prisma.FeedbackUpdateInput,
       where as Prisma.FeedbackWhereUniqueInput
     );
-  }
-
-  @Mutation(() => Feedback, { name: 'deleteFeedback' })
-  async delete(
-    @Args('feedbackWhereUniqueInput')
-    feedbackWhereUniqueInput: FeedbackWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    return this.feedbackService.delete(feedbackWhereUniqueInput);
   }
 
   @ResolveField(() => [Org])

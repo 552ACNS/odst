@@ -6,7 +6,6 @@ import {
   MockFeedbackResponses,
   MockUsers,
 } from './feedbackResponse.repo';
-import { User } from '@odst/types/ods';
 import { MockOrgs } from '../org/org.repo';
 
 const db = {
@@ -15,7 +14,6 @@ const db = {
     findUnique: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
     create: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
     update: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
-    delete: jest.fn().mockResolvedValue(MockFeedbackResponses[0]),
   },
   // Org is used to find the orgs that the user can see
   org: {
@@ -46,23 +44,6 @@ describe('FeedbackResponseService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('findMany', () => {
-    it('should return a list of responses', async () => {
-      const feedbackResponses = await service.findMany(new User(), {
-        where: {},
-      });
-      expect(feedbackResponses).toEqual(MockFeedbackResponses);
-    });
-
-    it('should call the restrictor', async () => {
-      const spy = jest.spyOn(service, 'restrictor');
-
-      await service.findMany(new User(), { where: {} });
-
-      expect(spy).toBeCalled();
-    });
-  });
-
   describe('findUnique', () => {
     it('should get a single feedbackResponse', async () => {
       expect(service.findUnique({ id: 'a uuid' })).resolves.toEqual(
@@ -87,25 +68,6 @@ describe('FeedbackResponseService', () => {
         MockFeedbackResponseCreateInput[0]
       );
       expect(feedbackResponse).toEqual(MockFeedbackResponses[0]);
-    });
-  });
-
-  describe('delete', () => {
-    it('should return {deleted: true}', async () => {
-      await expect(service.delete({ id: 'a uuid' })).resolves.toEqual({
-        deleted: true,
-      });
-    });
-
-    it('should return {deleted: false, message: err.message}', async () => {
-      jest
-        .spyOn(prisma.feedbackResponse, 'delete')
-        .mockRejectedValueOnce(new Error('Bad Delete Method.'));
-
-      await expect(service.delete({ id: 'a bad uuid' })).resolves.toEqual({
-        deleted: false,
-        message: 'Bad Delete Method.',
-      });
     });
   });
 

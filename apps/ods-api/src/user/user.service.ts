@@ -18,6 +18,7 @@ export class UserService {
     return this.prisma.user.findMany(findManyUserArgs);
   }
 
+  //TODO write tests for this
   async findUnique(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
@@ -26,6 +27,7 @@ export class UserService {
     });
   }
 
+  //TODO write tests for this
   async update(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
     userUpdateInput: Prisma.UserUpdateInput
@@ -66,6 +68,7 @@ export class UserService {
     });
   }
 
+  //TODO write tests for this
   async delete(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User | null> {
@@ -99,6 +102,7 @@ export class UserService {
       .refreshToken();
   }
 
+  //TODO write tests for this
   //TODO: Reuse the org functions in the feedback response module to filter down
   // instead of duplicating code in account request
   async findManyRequestedAccounts(user: User): Promise<Partial<User>[]> {

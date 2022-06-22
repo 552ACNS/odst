@@ -361,24 +361,20 @@ type ResponseCount {
 }
 
 type Query {
-  getTags: [String!]!
-  findManyFeedbacks: [Feedback!]!
   findUniqueFeedback(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): Feedback!
-  findManyFeedbackResponses(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, distinct: [FeedbackResponseScalarFieldEnum!]): [FeedbackResponse!]!
   findUniqueFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
   ResponseCount: ResponseCount!
+<<<<<<< HEAD
   getIssuesByStatus(status: String!, skip: Float!, take: Float!): [FeedbackResponse!]!
   findManyAnswers: [Answer!]!
   findUniqueAnswer(answerWhereUniqueInput: AnswerWhereUniqueInput!): Answer!
+=======
+  getIssuesByStatus(resolved: String!): [String!]!
+>>>>>>> origin/dev
   getOrgLineage: [String!]!
   getOrgNames: [String!]!
-  getSubOrgs(orgWhereUniqueInput: OrgWhereUniqueInput!): [Org!]!
-  findUniqueOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
-  findManyQuestions: [Question!]!
   getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [Question!]!
-  findUniqueQuestion(questionWhereUniqueInput: QuestionWhereUniqueInput!): Question!
-  findUsersWithRole(role: String!): [User!]!
   findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   getCommanders: [User!]!
   me: User!
@@ -389,6 +385,10 @@ type Query {
 input FeedbackWhereUniqueInput {
   id: String
   questionsHash: String
+}
+
+input FeedbackResponseWhereUniqueInput {
+  id: String
 }
 
 input FeedbackResponseWhereInput {
@@ -779,19 +779,6 @@ input CommentOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-input FeedbackResponseWhereUniqueInput {
-  id: String
-}
-
-enum FeedbackResponseScalarFieldEnum {
-  id
-  feedbackId
-  openedDate
-  closedDate
-  routeOutside
-  resolved
-}
-
 input FeedbackResponseCountAggregateInput {
   id: Boolean
   feedbackId: Boolean
@@ -818,20 +805,6 @@ input FeedbackResponseMaxAggregateInput {
   closedDate: Boolean
   routeOutside: Boolean
   resolved: Boolean
-}
-
-input AnswerWhereUniqueInput {
-  id: String
-}
-
-input OrgWhereUniqueInput {
-  id: String
-  name: String
-}
-
-input QuestionWhereUniqueInput {
-  id: String
-  value: String
 }
 
 input UserOrderByWithRelationInput {
@@ -876,38 +849,44 @@ enum UserScalarFieldEnum {
 
 type Mutation {
   createFeedbackWithQuestions(questionValues: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): Feedback!
-  createFeedback(feedbackCreateInput: FeedbackCreateInput!): Feedback!
   updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
-  deleteFeedback(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): Feedback!
   createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): FeedbackResponse!
   updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
-  deleteFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
-  createAnswer(answerCreateInput: AnswerCreateInput!): Answer!
-  createOrg(orgCreateInput: OrgCreateInput!): Org!
-  updateOrg(data: OrgUpdateInput!, where: OrgWhereUniqueInput!): Org!
-  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org!
-  createQuestion(questionCreateInput: QuestionCreateInput!): Question!
-  updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question!
   createUser(userCreateInput: UserCreateInput!): User!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
-  createComment(commentCreateInput: CommentCreateInput!): Comment!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
 
-input FeedbackCreateInput {
+input OrgWhereUniqueInput {
   id: String
-  orgs: OrgCreateNestedManyWithoutFeedbacksInput
-  questions: QuestionCreateNestedManyWithoutFeedbacksInput
-  questionsHash: String
-  feedbackResponses: FeedbackResponseCreateNestedManyWithoutFeedbackInput
+  name: String
 }
 
-input OrgCreateNestedManyWithoutFeedbacksInput {
+input FeedbackUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  orgs: OrgUpdateManyWithoutFeedbacksInput
+  questions: QuestionUpdateManyWithoutFeedbacksInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
+  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackInput
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
+input OrgUpdateManyWithoutFeedbacksInput {
   create: [OrgCreateWithoutFeedbacksInput!]
   connectOrCreate: [OrgCreateOrConnectWithoutFeedbacksInput!]
+  upsert: [OrgUpsertWithWhereUniqueWithoutFeedbacksInput!]
+  set: [OrgWhereUniqueInput!]
+  disconnect: [OrgWhereUniqueInput!]
+  delete: [OrgWhereUniqueInput!]
   connect: [OrgWhereUniqueInput!]
+  update: [OrgUpdateWithWhereUniqueWithoutFeedbacksInput!]
+  updateMany: [OrgUpdateManyWithWhereWithoutFeedbacksInput!]
+  deleteMany: [OrgScalarWhereInput!]
 }
 
 input OrgCreateWithoutFeedbacksInput {
@@ -1004,6 +983,17 @@ input FeedbackCreateWithoutFeedbackResponsesInput {
   orgs: OrgCreateNestedManyWithoutFeedbacksInput
   questions: QuestionCreateNestedManyWithoutFeedbacksInput
   questionsHash: String
+}
+
+input OrgCreateNestedManyWithoutFeedbacksInput {
+  create: [OrgCreateWithoutFeedbacksInput!]
+  connectOrCreate: [OrgCreateOrConnectWithoutFeedbacksInput!]
+  connect: [OrgWhereUniqueInput!]
+}
+
+input OrgCreateOrConnectWithoutFeedbacksInput {
+  where: OrgWhereUniqueInput!
+  create: OrgCreateWithoutFeedbacksInput!
 }
 
 input QuestionCreateNestedManyWithoutFeedbacksInput {
@@ -1211,9 +1201,18 @@ input QuestionCreateOrConnectWithoutAnswersInput {
   create: QuestionCreateWithoutAnswersInput!
 }
 
+input QuestionWhereUniqueInput {
+  id: String
+  value: String
+}
+
 input AnswerCreateOrConnectWithoutFeedbackResponseInput {
   where: AnswerWhereUniqueInput!
   create: AnswerCreateWithoutFeedbackResponseInput!
+}
+
+input AnswerWhereUniqueInput {
+  id: String
 }
 
 input AnswerCreateManyFeedbackResponseInputEnvelope {
@@ -1374,36 +1373,6 @@ input CommentCreateManyAuthorInput {
 input UserCreateOrConnectWithoutOrgsInput {
   where: UserWhereUniqueInput!
   create: UserCreateWithoutOrgsInput!
-}
-
-input OrgCreateOrConnectWithoutFeedbacksInput {
-  where: OrgWhereUniqueInput!
-  create: OrgCreateWithoutFeedbacksInput!
-}
-
-input FeedbackUpdateInput {
-  id: StringFieldUpdateOperationsInput
-  orgs: OrgUpdateManyWithoutFeedbacksInput
-  questions: QuestionUpdateManyWithoutFeedbacksInput
-  questionsHash: NullableStringFieldUpdateOperationsInput
-  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackInput
-}
-
-input StringFieldUpdateOperationsInput {
-  set: String
-}
-
-input OrgUpdateManyWithoutFeedbacksInput {
-  create: [OrgCreateWithoutFeedbacksInput!]
-  connectOrCreate: [OrgCreateOrConnectWithoutFeedbacksInput!]
-  upsert: [OrgUpsertWithWhereUniqueWithoutFeedbacksInput!]
-  set: [OrgWhereUniqueInput!]
-  disconnect: [OrgWhereUniqueInput!]
-  delete: [OrgWhereUniqueInput!]
-  connect: [OrgWhereUniqueInput!]
-  update: [OrgUpdateWithWhereUniqueWithoutFeedbacksInput!]
-  updateMany: [OrgUpdateManyWithWhereWithoutFeedbacksInput!]
-  deleteMany: [OrgScalarWhereInput!]
 }
 
 input OrgUpsertWithWhereUniqueWithoutFeedbacksInput {
@@ -2220,47 +2189,6 @@ input FeedbackResponseUpdateInput {
   resolved: BoolFieldUpdateOperationsInput
 }
 
-input AnswerCreateInput {
-  id: String
-  value: String!
-  question: QuestionCreateNestedOneWithoutAnswersInput!
-  feedbackResponse: FeedbackResponseCreateNestedOneWithoutAnswersInput!
-}
-
-input OrgCreateInput {
-  id: String
-  name: String!
-  orgTier: OrgTier!
-  users: UserCreateNestedManyWithoutOrgsInput
-  parent: OrgCreateNestedOneWithoutChildrenInput
-  children: OrgCreateNestedManyWithoutParentInput
-  feedbacks: FeedbackCreateNestedManyWithoutOrgsInput
-}
-
-input OrgUpdateInput {
-  id: StringFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  orgTier: EnumOrgTierFieldUpdateOperationsInput
-  users: UserUpdateManyWithoutOrgsInput
-  parent: OrgUpdateOneWithoutChildrenInput
-  children: OrgUpdateManyWithoutParentInput
-  feedbacks: FeedbackUpdateManyWithoutOrgsInput
-}
-
-input QuestionCreateInput {
-  id: String
-  value: String!
-  feedbacks: FeedbackCreateNestedManyWithoutQuestionsInput
-  answers: AnswerCreateNestedManyWithoutQuestionInput
-}
-
-input QuestionUpdateInput {
-  id: StringFieldUpdateOperationsInput
-  value: StringFieldUpdateOperationsInput
-  feedbacks: FeedbackUpdateManyWithoutQuestionsInput
-  answers: AnswerUpdateManyWithoutQuestionInput
-}
-
 input UserCreateInput {
   id: String
   email: String!
@@ -2273,14 +2201,6 @@ input UserCreateInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
   comments: CommentCreateNestedManyWithoutAuthorInput
-}
-
-input CommentCreateInput {
-  id: String
-  value: String!
-  date: DateTime
-  author: UserCreateNestedOneWithoutCommentsInput!
-  FeedbackResponse: FeedbackResponseCreateNestedOneWithoutCommentsInput
 }
 
 input LoginUserInput {
