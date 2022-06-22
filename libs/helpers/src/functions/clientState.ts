@@ -27,7 +27,7 @@ export function removeTokens(): void {
   removeRefreshToken();
 }
 
-//TODO: reconsider this when we figure out pushing user login
+//TODO [ODST-311]: reconsider this when we figure out pushing user login
 export function isLoggedIn(): boolean {
   return !!getRefreshToken();
 }

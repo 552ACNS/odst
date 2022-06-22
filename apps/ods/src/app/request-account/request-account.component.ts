@@ -16,9 +16,9 @@ import {
   styleUrls: ['./request-account.component.scss'],
 })
 export class RequestAccountComponent implements OnInit {
-  // TODO: create custom error for non unique email upon submission.
-  // TODO: edit regex so that spaces are not allowed (this may be covered in password-strength library, do not know yet)
-  // TODO: fix antiquated group command that is causeing eslint error.
+  // TODO [ODST-284]: create custom error for non unique email upon submission.
+  // TODO [ODST-285]: edit regex so that spaces are not allowed (this may be covered in password-strength library, do not know yet)
+  // TODO [ODST-286]: fix antiquated group command that is causeing eslint error.
   form = this.fb.group(
     {
       firstName: ['', [Validators.required]],
@@ -76,7 +76,7 @@ export class RequestAccountComponent implements OnInit {
   }
 
   async uniqueEmail() {
-    //TODO: optimize the way it determines the amount of queries to send to the backend
+    //TODO [ODST-287]: optimize the way it determines the amount of queries to send to the backend
     if (this.form.value['email'].trim().includes('@') == true) {
       (
         await this.requestService.emailExists(this.form.value['email'].trim())
