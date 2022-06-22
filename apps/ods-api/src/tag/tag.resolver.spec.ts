@@ -1,26 +1,36 @@
-// import { TestBed } from '@angular/core/testing';
+import { Test, TestingModule } from '@nestjs/testing';
+import { TagResolver } from './Tag.resolver';
+import { TagService } from './Tag.service';
+import { MockTags } from './Tag.repo';
 
-// import { TagResolver } from './tag.resolver';
+describe('Tag Resolver', () => {
+  let resolver: TagResolver;
 
-// describe('TagResolver', () => {
-//   let resolver: TagResolver;
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [TagResolver],
+      providers: [
+        {
+          provide: TagService,
+          useValue: {
+            getTags: jest
+              .fn()
+              .mockImplementation(() => Promise.resolve(MockTags)),
+          },
+        },
+      ],
+    }).compile();
 
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       providers: [TagResolver],
-//     });
-//     resolver = TestBed.inject(TagResolver);
-//   });
+    resolver = module.get<TagResolver>(TagResolver);
+  });
 
-//   it('should be created', () => {
-//     expect(resolver).toBeTruthy();
-//   });
-// });
-
-describe('TagResolver', () => {
   it('should be defined', () => {
-    expect(true).toBe(true);
+    expect(resolver).toBeDefined();
+  });
+
+  describe('getTags', () => {
+    it('should get all tags', async () => {
+      await expect(resolver.getTags()).resolves.toEqual(MockTags);
+    });
   });
 });
-
-// Preston this is not how you make spec files for Nest
