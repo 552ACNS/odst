@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
-import { TagService } from './Tag.service';
-import { MockTags } from './Tag.repo';
+import { TagService } from './tag.service';
+import { MockTags } from './tag.repo';
 
 describe('TagService', () => {
   let service: TagService;

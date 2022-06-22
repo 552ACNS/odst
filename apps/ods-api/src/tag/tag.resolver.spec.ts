@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TagResolver } from './Tag.resolver';
-import { TagService } from './Tag.service';
-import { MockTags } from './Tag.repo';
+import { TagResolver } from './tag.resolver';
+import { TagService } from './tag.service';
+import { MockTags } from './tag.repo';
 
 describe('Tag Resolver', () => {
   let resolver: TagResolver;
