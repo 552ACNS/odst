@@ -1,10 +1,6 @@
 # Downgraded to 3.7 to ensure it works with non-docker desktop
 version: '3.7'
 
-#TODO reuse environment variables (i.e. so database password isn't hardcoded in three different spots)
-#TODO figure out how platform team wants to handle environetment variables (like .env.prod)
-#TODO add more stuff to be dynamically set - db info, ports, etc
-
 services:
   postgres:
     container_name: postgres
