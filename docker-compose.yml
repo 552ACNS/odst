@@ -10,6 +10,9 @@ services:
     restart: unless-stopped
     volumes:
       - postgres-vol:/var/lib/postgresql/data
+    #exposing port is not required for production if all containers are on same machine
+    ports:
+      - '${DATABASE_PORT}:5432'
     environment:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     networks:
@@ -21,7 +24,7 @@ services:
     ports:
       - '${BACKEND_PORT}:3343'
     environment:
-      - NX_DATABASE_URL=${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABSE_PORT}/${DATABASE_NAME}
+      - NX_DATABASE_URL=${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
       - NX_CHECKPOINT_DISABLE=${BACKEND_CHECKPOINT_DISABLE}
       - NX_JWT_SECRET=${BACKEND_JWT_SECRET}
       - NX_JWT_REFRESH_SECRET=${BACKEND_JWT_REFRESH_SECRET}
