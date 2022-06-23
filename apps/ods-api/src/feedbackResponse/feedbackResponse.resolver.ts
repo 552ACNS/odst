@@ -19,6 +19,7 @@ import {
   Comment,
   FeedbackResponseAggregateArgs,
   UpdateOneFeedbackResponseArgs,
+  FindManyFeedbackResponseArgs,
 } from '@odst/types/ods';
 import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
@@ -31,7 +32,7 @@ export class FeedbackResponseResolver {
     private readonly feedbackResponseService: FeedbackResponseService
   ) {}
 
-  //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
+  //TODO [ODST-270] findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses  //TODO findUnqiue is called from frontend, not sure how to prevent commanders from looking at other orgs' responses
   @Query(() => FeedbackResponse, { name: 'findUniqueFeedbackResponse' })
   async findUnique(
     @Args('feedbackResponseWhereUniqueInput')
@@ -81,20 +82,28 @@ export class FeedbackResponseResolver {
     );
   }
 
-  // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
+  // TODO [ODST-271]: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   // TODO write tests for this
   @Query(() => ResponseCount, { name: 'ResponseCount' })
   async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
     return this.feedbackResponseService.countResponses(user);
   }
 
-  // TODO write tests for this
-  @Query(() => [String], { name: 'getIssuesByStatus' })
+  // TODO: Use the FindManyFeedbackResponse to use where instead of string status.
+  //TODO: pass whole object of FindManyFeedbackResponseArgs instead of deconstructing object
+  @Query(() => [FeedbackResponse], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
-    @Args('resolved') resolved: string,
-    @GetCurrentUser() user: User
-  ): Promise<string[]> {
-    return this.feedbackResponseService.getIssuesByStatus(resolved, user);
+    @Args('status') status: string,
+    @GetCurrentUser() user: User,
+    @Args() findManyFeedbackResponseArgs: FindManyFeedbackResponseArgs
+  ): Promise<FeedbackResponse[]> {
+    const { skip, take } = findManyFeedbackResponseArgs;
+    return this.feedbackResponseService.getIssuesByStatus(
+      status,
+      user,
+      Number(skip),
+      Number(take)
+    );
   }
 
   @ResolveField(() => [Answer])

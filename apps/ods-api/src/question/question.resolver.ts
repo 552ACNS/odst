@@ -16,6 +16,7 @@ export class QuestionResolver {
   //TODO redo with findMany
   @Query(() => [String], { name: 'getSubQuestions' })
   @Public()
+  //TODO [ODST-300] redo getSubQuestions with findMany
   async getSubQuestions(
     @Args('feedbackWhereUniqueInput')
     feedbackWhereUniqueInput: FeedbackWhereUniqueInput

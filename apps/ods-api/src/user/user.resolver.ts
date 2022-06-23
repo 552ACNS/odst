@@ -30,8 +30,7 @@ export class UserResolver {
     return this.userService.findMany(findManyUserArgs);
   }
 
-  //TODO write tests for this
-  //TODO write custom pipe to not need separate route for this
+  //TODO [ODST-302] write custom pipe to not need separate route for this
   @Public()
   @Query(() => [String])
   async getCommanders(): Promise<string[]> {

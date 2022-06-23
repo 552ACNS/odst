@@ -72,7 +72,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
     this.orgs = await this.feedbackService.getOrgLineage();
     this.CCs = await this.feedbackService.getCommanders();
   }
-  //TODO find out a way to fix without this
+  //TODO [ODST-278] find out a way to fix without this
   outsideRoutingWorking(): boolean {
     return this.form.get(['outsideRouting'])?.value == true;
   }
