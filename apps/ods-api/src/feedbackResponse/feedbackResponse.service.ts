@@ -124,7 +124,7 @@ export class FeedbackResponseService {
       'Deleting feedback responses older than a year',
       'FeedbackResponseService'
     );
-    // TODO: Redo with try catch
+    // TODO [ODST-272]: Redo with try catch
     //Will silently fail if delete isn't cascaded properly
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [deleteAnswers, deleteFeedbackResponses] =
@@ -207,23 +207,25 @@ export class FeedbackResponseService {
     }
     return whereIssues;
   }
-
-  async getIssuesByStatus(resolved: string, user: User): Promise<string[]> {
-    return this.prisma.feedbackResponse
-      .findMany({
-        where: {
-          ...this.determineStatus(resolved),
-          ...(await this.getWhere(user)),
-        },
-        select: {
-          id: true,
-        },
-        orderBy: {
-          openedDate: 'desc',
-        },
-      })
-      .then((responses) => responses.map((response) => response.id));
-    //TODO Not ideal. frontend is doing some wonky delayed loading. Should just return all issues, or paginate them.
+  //gets the feedback response based on issue and index it is queired on and returns a feedback response object
+  async getIssuesByStatus(
+    status: string,
+    user: User,
+    skip: number,
+    take: number
+  ): Promise<FeedbackResponse[]> {
+    return this.prisma.feedbackResponse.findMany({
+      skip: skip,
+      take: take,
+      where: {
+        ...this.determineStatus(status),
+        ...(await this.getWhere(user)),
+      },
+      orderBy: {
+        openedDate: 'desc',
+      },
+    });
+    // .then((responses) => responses.map((response) => response.id));
     //Using the findMany above so as to not repeat stuff in the servicer
   }
 
@@ -332,7 +334,7 @@ export class FeedbackResponseService {
     }
   }
 
-  //TODO refactor for complexity
+  //TODO [ODST-273] refactor for complexity
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   // eslint-disable-next-line complexity
   private async getWhere(

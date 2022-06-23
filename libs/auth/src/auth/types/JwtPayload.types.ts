@@ -8,8 +8,8 @@ export interface JwtPayload extends JwtPayloadInit {
 
   //expiration
   exp: number;
-  //TODO implement aud (short fo' audience) which is client id
-  //TODO implement keyid
+  //TODO [ODST-306] implement aud (short fo' audience) which is client id
+  //TODO [ODST-307] implement keyid
 }
 
 //export interface JwtPayloadAccess extends JwtPayload {};
