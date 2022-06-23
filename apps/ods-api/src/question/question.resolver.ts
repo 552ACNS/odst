@@ -14,16 +14,18 @@ export class QuestionResolver {
 
   //TODO write tests for this
   //TODO redo with findMany
-  @Query(() => [Question], { name: 'getSubQuestions' })
+  @Query(() => [String], { name: 'getSubQuestions' })
   @Public()
   //TODO [ODST-300] redo getSubQuestions with findMany
   async getSubQuestions(
     @Args('feedbackWhereUniqueInput')
     feedbackWhereUniqueInput: FeedbackWhereUniqueInput
-  ): Promise<Question[]> {
-    return this.questionService.findQuestionsInFeedback(
-      feedbackWhereUniqueInput
-    );
+  ): Promise<string[]> {
+    return (
+      await this.questionService.findQuestionsInFeedback(
+        feedbackWhereUniqueInput
+      )
+    ).map(({ id }) => id);
   }
 
   @ResolveField(() => [Answer])

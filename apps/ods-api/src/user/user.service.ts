@@ -60,11 +60,12 @@ export class UserService {
       .comments();
   }
 
-  async create(data: Prisma.UserCreateInput): Promise<User> {
+  async create(data: Prisma.UserCreateInput): Promise<{ id: string }> {
     data.password = await hash(data.password, 10);
 
     return this.prisma.user.create({
       data,
+      select: { id: true },
     });
   }
 

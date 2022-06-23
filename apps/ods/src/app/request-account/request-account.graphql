@@ -2,11 +2,7 @@ query getOrgNames {
   getOrgNames
 }
 mutation CreateUser($userCreateInput: UserCreateInput!) {
-  createUser(userCreateInput: $userCreateInput) {
-    grade
-    lastName
-    firstName
-  }
+  createUser(userCreateInput: $userCreateInput)
 }
 
 query UsernameOrEmailExists($usernameOrEmail: String!) {
