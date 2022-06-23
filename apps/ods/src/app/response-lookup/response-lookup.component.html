@@ -1,0 +1,53 @@
+<div class="parent-div">
+  <mat-card>
+    <mat-card-title class="flex justify-center font-medium mb-5">
+      Feedback Response Lookup
+    </mat-card-title>
+    <mat-card-content class="text-sm space-y-3 text-justify">
+      <p>
+        Submit the id given with your feedback report, and track the progress of
+        the resolution.
+      </p>
+    </mat-card-content>
+
+    <form [formGroup]="form">
+      <!-- User Name field -->
+      <mat-form-field class="mx-0 w-full" appearance="outline">
+        <mat-label>Feedback Report ID</mat-label>
+        <input
+          id="reportID"
+          formcontrolname="reportID"
+          type="text"
+          matInput
+          required="true"
+          placeholder="Feedback Report ID"
+          [formControlName]="'reportID'"
+        />
+        <mat-error> Please provide a valid ID </mat-error>
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      </mat-form-field>
+      <br />
+      <!-- Buttons -->
+      <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
+        <button
+          type="reset"
+          mat-stroked-button
+          class="w-full shadow-md rounded-full"
+          [routerLink]="['/disclaimer']"
+        >
+          Back
+        </button>
+
+        <button
+          mat-raised-button
+          type="submit"
+          color="primary"
+          class="w-full text-white shadow-md rounded-full"
+          (click)="submitLoginClick()"
+        >
+          Lookup ID
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>
