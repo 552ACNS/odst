@@ -28,19 +28,16 @@ export class ResponsesComponent implements OnInit {
 
   actionTags: string[];
 
-  possibleActionTags: string[] = [];
-
   selectedActionTags: string[] | undefined = [];
 
   trackingTags: string[];
-
-  possibleTrackingTags: string[] = [];
 
   constructor(
     private fb: UntypedFormBuilder,
     private responsesService: ResponsesService,
     private route: ActivatedRoute
   ) {}
+
   selectedTrackingTags: string[] | undefined = [];
 
   allTags: string[];
@@ -88,7 +85,6 @@ export class ResponsesComponent implements OnInit {
         .map((tag) => tag.value)
         .sort();
       this.allTags = data.getTags.map((tag) => tag.value).sort();
-      this.generatePossibleTags();
     });
 
     // Get resolved value form route params
@@ -207,8 +203,6 @@ export class ResponsesComponent implements OnInit {
           this.selectedTrackingTags = data.findUniqueFeedbackResponse['tags']
             ?.filter((tag) => tag.type == 'DataTracking')
             .map((tag) => tag.value);
-
-          this.generatePossibleTags();
         }
       }
     );
@@ -222,6 +216,7 @@ export class ResponsesComponent implements OnInit {
     }
     return pageEvent;
   }
+
   //#endregion
 
   //#region Tag functions
@@ -242,7 +237,6 @@ export class ResponsesComponent implements OnInit {
 
     // If the hand typed value is one of the legal tags
     if (this.allTags.includes(value)) {
-      const tagType = this.determineTagType(value);
       this.responsesService
         .modifyTag({
           where: { id: this.responseIDs[this.displayedIndex] },
@@ -250,11 +244,8 @@ export class ResponsesComponent implements OnInit {
         })
         .subscribe(({ data, errors }) => {
           if (!errors && data?.updateFeedbackResponse['tags']) {
-            // Add our tag
-            this.addSelectedTags(tagType, value);
             // Clear the input values
             event.chipInput?.clear();
-            this.generatePossibleTags();
           }
         });
     }
@@ -263,7 +254,6 @@ export class ResponsesComponent implements OnInit {
   }
 
   remove(tagToRemove: string): void {
-    const tagType = this.determineTagType(tagToRemove);
     this.responsesService
       .modifyTag({
         where: { id: this.responseIDs[this.displayedIndex] },
@@ -271,20 +261,12 @@ export class ResponsesComponent implements OnInit {
       })
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.removeSelectedTags(tagType, tagToRemove);
-          this.generatePossibleTags();
         }
       });
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     // If the user already has the tag, don't add it again
-    if (
-      this.selectedActionTags?.includes(event.option.value) ||
-      this.selectedTrackingTags?.includes(event.option.value)
-    )
-      return;
-    const type = this.determineTagType(event.option.value);
     this.responsesService
       .modifyTag({
         where: { id: this.responseIDs[this.displayedIndex] },
@@ -292,51 +274,9 @@ export class ResponsesComponent implements OnInit {
       })
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.addSelectedTags(type, event.option.value);
           this.tagCtrl.setValue(null);
-          this.generatePossibleTags();
         }
       });
-  }
-
-  determineTagType(tag: string): string {
-    if (this.actionTags?.includes(tag)) return 'Action';
-    if (this.trackingTags?.includes(tag)) return 'DataTracking';
-    return 'Not a tag';
-  }
-
-  addSelectedTags(tagType: string, tagToAdd: string) {
-    if (tagType == 'Action') {
-      this.selectedActionTags?.push(tagToAdd);
-    } else if (tagType == 'DataTracking') {
-      this.selectedTrackingTags?.push(tagToAdd);
-    } else {
-      console.error('Tag type not recognized');
-    }
-  }
-
-  removeSelectedTags(tagType: string, tagToRemove: string) {
-    if (tagType == 'Action') {
-      this.selectedActionTags = this.selectedActionTags?.filter(
-        (selectedtag) => selectedtag !== tagToRemove
-      );
-    } else if (tagType == 'DataTracking') {
-      this.selectedTrackingTags = this.selectedTrackingTags?.filter(
-        (selectedtag) => selectedtag !== tagToRemove
-      );
-    }
-  }
-
-  /**
-   * Creates a list of tags that can be added by filtering out those already in use
-   */
-  generatePossibleTags() {
-    this.possibleActionTags = this.actionTags.filter(
-      (tag) => !this.selectedActionTags?.includes(tag)
-    );
-    this.possibleTrackingTags = this.trackingTags.filter(
-      (tag) => !this.selectedTrackingTags?.includes(tag)
-    );
   }
 
   //#endregion

@@ -1,4 +1,4 @@
-<mat-form-field appearance="outline" class="w-full">
+<mat-form-field appearance="outline" class="w-full" *ngIf="tags">
   <mat-label>Tags for {{ tagType }}</mat-label>
   <!-- Represents all the chips that are selected -->
   <mat-chip-list #chipList>

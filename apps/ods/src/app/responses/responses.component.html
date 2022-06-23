@@ -38,7 +38,6 @@
           <select-tags
             [tags]="trackingTags"
             [selectedTags]="selectedTrackingTags"
-            [possibleTags]="possibleTrackingTags"
             [tagType]="'Tracking'"
             [tagCtrl]="tagCtrl"
             (add)="add($event)"
@@ -195,7 +194,6 @@
             <select-tags
               [tags]="actionTags"
               [selectedTags]="selectedActionTags"
-              [possibleTags]="possibleActionTags"
               [tagType]="'Action'"
               [tagCtrl]="tagCtrl"
               (add)="add($event)"

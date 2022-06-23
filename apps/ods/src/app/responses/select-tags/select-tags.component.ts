@@ -20,8 +20,6 @@ import { UntypedFormControl } from '@angular/forms';
 export class SelectTagsComponent {
   @Input() tags: string[];
 
-  @Input() possibleTags: string[];
-
   @Input() selectedTags: string[] | undefined;
 
   @Input() tagCtrl: UntypedFormControl;
@@ -42,30 +40,42 @@ export class SelectTagsComponent {
   //TODO Clear search text after tag added (mainly is problem when you click on result)
   //TODO Make it so pressing enter selects the first option available if there are any
   addTag(event: MatChipInputEvent) {
-    if (this.possibleTags.includes(event.value)) {
+    if (
+      this.tags.includes(event.value) &&
+      !this.selectedTags?.includes(event.value)
+    ) {
       this.add.emit(event);
+      this.selectedTags?.push(event.value);
     }
   }
 
-  removeTag(tag: string) {
-    this.remove.emit(tag);
+  removeTag(tagToRemove: string) {
+    this.remove.emit(tagToRemove);
+    this.selectedTags = this.selectedTags?.filter((tag) => tag !== tagToRemove);
+    this.filteredTags = this.tags.filter(
+      (tag) => !this.selectedTags?.includes(tag)
+    );
   }
 
   selectTag(event: MatAutocompleteSelectedEvent) {
-    console.log(event);
     this.selected.emit(event);
-    this.tagInput.nativeElement.value = '';
+    this.selectedTags?.push(event.option.value);
+    this.filteredTags = this.tags.filter(
+      (tag) => !this.selectedTags?.includes(tag)
+    );
   }
 
   autoComplete(input: string) {
     input = input?.trim().toLowerCase();
 
     if (input) {
-      this.filteredTags = this.possibleTags.filter((tag) =>
-        tag.toLowerCase().includes(input)
+      this.filteredTags = this.tags.filter(
+        (tag) => !this.selectedTags?.includes(tag) && tag.includes(input)
       );
     } else {
-      this.filteredTags = this.possibleTags;
+      this.filteredTags = this.tags.filter(
+        (tag) => !this.selectedTags?.includes(tag)
+      );
     }
   }
 }
