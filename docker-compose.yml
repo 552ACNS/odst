@@ -50,7 +50,6 @@ services:
     #env vars need to be specified in assets/env.template.js
     environment:
       - NX_DATABASE_URL=${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABSE_PORT}/${DATABASE_NAME}
-      - production=true
     depends_on:
       - postgres
     networks:
