@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { ResponseCountQuery } from './dashboard.generated';
-import { reloadPage } from '@odst/helpers';
 @Component({
   selector: 'odst-dashboard',
   templateUrl: './dashboard.component.html',
@@ -20,9 +19,6 @@ export class DashboardComponent implements OnInit {
   }[];
 
   ngOnInit() {
-    //reloads current page so it wont show previous cached values
-    reloadPage();
-
     this.dashboardService.GetResponseCount().subscribe(({ data }) => {
       this.responses = data.ResponseCount;
 
