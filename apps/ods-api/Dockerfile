@@ -11,9 +11,9 @@ RUN yarn install --ignore-scripts --no-progress --frozen-lockfile --loglevel=err
 
 COPY . .
 
-RUN npx nx prisma-generate ${APP}
+RUN yarn nx prisma-generate ${APP}
 
-RUN npx nx build ods-api
+RUN yarn nx build ods-api
 
 
 # Second Stage

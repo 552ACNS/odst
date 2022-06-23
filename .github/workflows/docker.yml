@@ -32,7 +32,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      #unsure if these next two steps are needed, but they won't hurt
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -49,7 +48,7 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v2
 
-      - name: 'Install Dependencies'
+      - name: 'Install nx'
         run: npm i nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
       - name: 'nx docker'
