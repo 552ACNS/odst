@@ -24,8 +24,7 @@
               "with": "apps/ods-api/src/environments/environment.prod.ts"
             }
           ]
-        },
-        "development": {}
+        }
       },
       "defaultConfiguration": "production"
     },
@@ -71,23 +70,6 @@
         }
       },
       "defaultConfiguration": "production"
-    },
-    "docker": {
-      "executor": "@nx-tools/nx-docker:build",
-      "options": {
-        "tags": ["ghcr.io/552acns/ods-api:latest", "ghcr.io/552acns/ods-api:v0"]
-      }
-    },
-    "docker-migrate": {
-      "executor": "@nx-tools/nx-docker:build",
-      "options": {
-        "file": "Dockerfile.migrate",
-        "context": "./apps/ods-api",
-        "tags": [
-          "ghcr.io/552acns/ods-api:migrate",
-          "ghcr.io/552acns/ods-api:v0-migrate"
-        ]
-      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

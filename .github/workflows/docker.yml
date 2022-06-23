@@ -14,6 +14,8 @@ on:
 #TODO is there a way to test if image can be built based on PR code? without doing the whole pipeline.
 #Could just build images and not push to registry. Or push under a tag based on branch (same as the above TODO)
 
+#TODO build docker images to build stage on PR to master as a test?
+
 env:
   REGISTRY: ghcr.io
 jobs:
