@@ -8,7 +8,7 @@ import {
   User,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 
 @Injectable()
 export class UserService {

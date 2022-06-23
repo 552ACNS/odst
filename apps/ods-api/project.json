@@ -25,6 +25,24 @@
             }
           ]
         }
+      },
+      "defaultConfiguration": "production"
+    },
+    "docker": {
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "tags": ["ghcr.io/552acns/ods-api:latest", "ghcr.io/552acns/ods-api:v0"]
+      }
+    },
+    "docker-migrate": {
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "file": "Dockerfile.migrate",
+        "context": "./apps/ods-api",
+        "tags": [
+          "ghcr.io/552acns/ods-api:migrate",
+          "ghcr.io/552acns/ods-api:v0-migrate"
+        ]
       }
     },
     "lint": {
@@ -67,8 +85,8 @@
         "test": {
           "command": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
         },
-        "production": {
-          "command": "env-cmd -f apps/ods-api/.env.prod prisma migrate dev"
+        "migrate": {
+          "command": "env-cmd -f apps/ods-api/.env.local prisma migrate dev"
         }
       }
     },
