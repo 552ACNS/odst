@@ -12,7 +12,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
-import { ResponseCount } from '../__types__';
+import { ResponseCount, TrackedFeedback } from '../__types__';
 
 @Injectable()
 export class FeedbackResponseService {
@@ -99,6 +99,20 @@ export class FeedbackResponseService {
     return this.prisma.feedbackResponse.findUnique({
       where: feedbackResponseWhereUniqueInput,
     });
+  }
+
+  async feedbackResponseByID(
+    feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
+  ): Promise<TrackedFeedback | null> {
+    // const result = this.prisma.feedbackResponse.findUnique({
+    //   where: feedbackResponseWhereUniqueInput,
+    //   select: {
+    //     openedDate: true,
+    //     closedDate: true,
+    //     resolved: true,
+    //   },
+    // });
+    // return result;
   }
 
   async create(
