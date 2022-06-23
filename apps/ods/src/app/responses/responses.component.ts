@@ -1,7 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { FormBuilder, FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  UntypedFormBuilder,
+  UntypedFormControl,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AddCommentMutationVariables,
@@ -22,7 +27,7 @@ export class ResponsesComponent implements OnInit {
     comment: [''],
   });
 
-  tagCtrl = new FormControl();
+  tagCtrl = new UntypedFormControl();
 
   possibleTags: string[] = [];
 
@@ -31,7 +36,7 @@ export class ResponsesComponent implements OnInit {
   allTags: string[] = [];
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private responsesService: ResponsesService,
     private route: ActivatedRoute,
     private router: Router
@@ -45,7 +50,7 @@ export class ResponsesComponent implements OnInit {
   AddCommentMutationVariables: AddCommentMutationVariables;
 
   newComment = '';
-  // TODO: Change resolved status back to bool
+  // TODO [ODST-291]: Change resolved status back to bool
   resolved: string;
 
   // This is for the toggle button

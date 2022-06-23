@@ -13,23 +13,6 @@ import * as crypto from 'crypto';
 export class FeedbackService {
   constructor(private prisma: PrismaService) {}
 
-  async findMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.FeedbackWhereUniqueInput;
-    where?: Prisma.FeedbackWhereInput;
-    orderBy?: Prisma.FeedbackOrderByWithRelationInput;
-  }): Promise<Feedback[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.feedback.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
-  }
-
   async findUnique(
     feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
   ): Promise<Feedback | null> {
@@ -38,6 +21,7 @@ export class FeedbackService {
     });
   }
 
+  //TODO write tests for this
   async createWithQuestions(
     questionValues: string[],
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
@@ -76,16 +60,6 @@ export class FeedbackService {
     });
   }
 
-  async create(data: Prisma.FeedbackCreateInput): Promise<Feedback> {
-    const feedback = await this.prisma.feedback.create({
-      data,
-    });
-
-    await this.updateQuestionsHash({ id: feedback.id });
-
-    return feedback;
-  }
-
   async update(
     data: Prisma.FeedbackUpdateInput,
     where: Prisma.FeedbackWhereUniqueInput
@@ -95,26 +69,13 @@ export class FeedbackService {
     if (feedback.id) {
       await this.updateQuestionsHash({ id: feedback.id });
     }
-    // TODO: What if the feedback is not found? What does it do?
+    // TODO [ODST-294]: What if the feedback is not found? What does it do?
     return feedback;
   }
 
-  async delete(
-    orgWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    try {
-      await this.prisma.feedback.delete({
-        where: orgWhereUniqueInput,
-      });
-      return { deleted: true };
-    } catch (err) {
-      return { deleted: false, message: err.message };
-    }
-  }
-
-  //TODO optimize database calls. each feedback create/update requires 3 database calls.
-  //TODO only call if questions is being updated
-  //TODO move this to prisma hook
+  //TODO [ODST-295] optimize database calls. each feedback create/update requires 3 database calls.
+  //TODO [ODST-296] only call if questions is being updated
+  //TODO [ODST-297] move this to prisma hook
   private async updateQuestionsHash(
     feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
   ): Promise<void> {
@@ -154,8 +115,9 @@ export class FeedbackService {
       .findUnique({ where: feedbackWhereUniqueInput })
       .feedbackResponses();
   }
-  //TODO tests for new methods
+  //TODO [ODST-298] write tests for getArrayHash
 }
+
 function getArrayHash(stringArray: string[]): string {
   return stringArray.length > 0
     ? crypto

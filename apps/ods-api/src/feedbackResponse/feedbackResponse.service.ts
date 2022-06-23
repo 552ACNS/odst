@@ -18,24 +18,7 @@ import { ResponseCount } from '../__types__';
 export class FeedbackResponseService {
   constructor(private prisma: PrismaService) {}
 
-  /**
-   * Returns Feedback Responses based on criteria specified by API
-   * @param user Current user, obtained from resolver
-   * @param feedbackResponseFindManyArgs Arguments for the findMany query, obtained from resolver
-   * @returns A list of feedback responses based on where clause
-   */
-  async findMany(
-    user: User,
-    feedbackResponseFindManyArgs: Prisma.FeedbackResponseFindManyArgs
-  ): Promise<FeedbackResponse[]> {
-    return this.prisma.feedbackResponse.findMany(
-      this.restrictor(
-        user,
-        feedbackResponseFindManyArgs
-      ) as Prisma.FeedbackResponseFindManyArgs
-    );
-  }
-
+  //TODO write tests for this
   /**
    * Returns a number of responses for a based on criteria specified by API
    * @param user Current user, obtained from resolver
@@ -84,7 +67,7 @@ export class FeedbackResponseService {
               question: {
                 // where the value is
                 value: {
-                  equals: 'What squadron did the event occur in?',
+                  equals: 'What organization did the event occur in?',
                 },
               },
               // and that value
@@ -133,19 +116,6 @@ export class FeedbackResponseService {
     return this.prisma.feedbackResponse.update({ data, where });
   }
 
-  async delete(
-    feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
-  ): Promise<{ deleted: boolean; message?: string }> {
-    try {
-      await this.prisma.feedbackResponse.delete({
-        where: feedbackResponseWhereUniqueInput,
-      });
-      return { deleted: true };
-    } catch (err) {
-      return { deleted: false, message: err.message };
-    }
-  }
-
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
     name: 'Delete feedbackResponses older than a year',
   })
@@ -154,7 +124,7 @@ export class FeedbackResponseService {
       'Deleting feedback responses older than a year',
       'FeedbackResponseService'
     );
-    // TODO: Redo with try catch
+    // TODO [ODST-272]: Redo with try catch
     //Will silently fail if delete isn't cascaded properly
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [deleteAnswers, deleteFeedbackResponses] =
@@ -362,7 +332,7 @@ export class FeedbackResponseService {
     }
   }
 
-  //TODO refactor for complexity
+  //TODO [ODST-273] refactor for complexity
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   // eslint-disable-next-line complexity
   private async getWhere(
@@ -378,7 +348,7 @@ export class FeedbackResponseService {
           question: {
             value: {
               //TODO hardcoded value
-              equals: 'What squadron did the event occur in?',
+              equals: 'What organization did the event occur in?',
             },
           },
           value: {
