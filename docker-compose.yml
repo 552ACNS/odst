@@ -9,7 +9,6 @@ services:
   postgres:
     container_name: postgres
     image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
-    # image: postgres
     restart: unless-stopped
     #TODO need to map volume for data to stay through container recreation but couldn't get permissions to be happy
     # volumes:
