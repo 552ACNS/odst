@@ -6,6 +6,10 @@ on:
       - 'master'
       # - 'dev'
       - docker-recreate-images
+  pull_request:
+    branches:
+      - 'master'
+      # - 'dev'
 
 #TODO is there a way to test if image can be built based on PR code? without doing the whole pipeline. build to first stage w/o pushing?
 
@@ -20,47 +24,48 @@ jobs:
       packages: write
 
     steps:
-      # - name: Checkout repository
-      #   uses: actions/checkout@v3
-      #   with:
-      #     fetch-depth: 0
+      # - name: Set env DOCKER_BUILD_TARGET
+      #   run: |
+      #     if [[ $GITHUB_EVENT_NAME == 'push' ]]; then
+      #         echo "NEED=true" >> "$GITHUB_ENV"
+      #     else
+      #         echo "NEED=false" >> "$GITHUB_ENV"
+      #     fi
 
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v1
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v1
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
 
-      # - name: Log in to the Container registry
-      #   uses: docker/login-action@v2
-      #   with:
-      #     registry: ${{ env.REGISTRY }}
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-      # - name: Derive appropriate SHAs for base and head for `nx affected` commands
-      #   uses: nrwl/nx-set-shas@v2
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - run: |
-      #     echo "BASE: ${{ env.NX_BASE }}"
-      #     echo "HEAD: ${{ env.NX_HEAD }}"
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
 
-      # - name: 'Install nx'
-      #   run: npm i nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
 
-      # - name: 'nx docker'
-      #   run: npx nx affected --target=docker --push=true
-      #   env:
-      #     INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Install nx'
+        run: npm i nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
-      # - name: 'nx docker-migrate'
-      #   run: npx nx affected --target=docker-migrate --push=true
-      #   env:
-      #     INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: 'true'
-        if: ${{ 'true' == 'true' }}
-        run: echo "true"
+      - name: 'nx docker'
+        run: npx nx affected --target=docker --push=true
+        env:
+          INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'false'
-        if: ${{ 'true' == 'false' }}
-        run: echo "false"
+      - name: 'nx docker-migrate'
+        run: npx nx affected --target=docker-migrate --push=true
+        env:
+          INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
