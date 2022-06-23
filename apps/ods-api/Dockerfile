@@ -15,10 +15,13 @@ RUN yarn install --ignore-scripts --no-progress --frozen-lockfile --loglevel=err
 COPY . .
 
 #tree shaking is requring waypoint to be run still
-#RUn npx nx prisma-generate ${APP}
+#RUN npx nx prisma-generate ${APP}
+#TODO ensure ods and waypoint are separated
+#TODO check if all is still required
 RUN npx nx run-many --target=prisma-generate --all --parallel=false
 
-RUN nx build ods-api
+#TODO just changed this to npx, check that this doesn't fail
+RUN npx nx build ods-api
 
 
 # Second Stage
