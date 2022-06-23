@@ -70,7 +70,9 @@
             "type=semver,pattern={{major}}",
             "type=sha,prefix="
           ],
-          "flavor": ["latest=auto"]
+          "flavor": ["latest=auto"],
+          "cache-from": ["type=gha"],
+          "cache-to": ["type=gha,mode=max"]
         }
       }
     },
