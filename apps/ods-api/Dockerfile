@@ -5,7 +5,7 @@ ARG APP="ods-api"
 
 WORKDIR /usr/src/app
 
-# RUN yarn global add nx --no-progress --loglevel=error
+RUN yarn global add nx --no-progress --loglevel=error
 
 COPY package.json yarn.lock ./
 
@@ -15,8 +15,8 @@ COPY . .
 
 RUN yarn nx prisma-generate ${APP}
 
-#if this is run via yarn, it fails intermittently without any logs on why
-RUN yarn nx build ods-api --verbose
+#if this is run via yarn/npx, it fails intermittently without any logs on why
+RUN nx build ods-api
 
 
 # Second Stage
