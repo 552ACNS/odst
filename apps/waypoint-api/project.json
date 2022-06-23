@@ -66,9 +66,6 @@
       "configurations": {
         "test": {
           "command": "env-cmd -f apps/waypoint-api/.env.test npx prisma db push --accept-data-loss"
-        },
-        "production": {
-          "command": "env-cmd -f apps/waypoint-api/.env.prod prisma migrate dev"
         }
       }
     },
