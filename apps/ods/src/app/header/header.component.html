@@ -21,9 +21,13 @@
   </div>
 
   <div>
-    <button mat-button>
-      <mat-icon>person_add</mat-icon>
-      <sup class="border-solid bg-black rounded-2xl">{{ totalCount }}</sup>
+    <button mat-button [routerLink]="['/requested-accounts']">
+      <mat-icon
+        matBadge="{{ totalCount }}"
+        matBadgeColor="warn"
+        matBadgeSize="small"
+        >person_add</mat-icon
+      >
     </button>
   </div>
 

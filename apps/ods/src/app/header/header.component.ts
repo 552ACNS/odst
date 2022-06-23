@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   totalCount: number;
   dataSource;
   //data: any;
-
+  hidden = false;
   constructor(private headerService: HeaderService) {}
 
   async ngOnInit(): Promise<void> {
@@ -45,5 +45,9 @@ export class HeaderComponent implements OnInit {
       case Role.Dei:
         return 'Diversity, Equity and Inclusion';
     }
+  }
+
+  toggleBadgeVisibility() {
+    this.hidden = !this.hidden;
   }
 }
