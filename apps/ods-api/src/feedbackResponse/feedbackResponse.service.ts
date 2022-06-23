@@ -13,8 +13,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
 import { ResponseCount } from '../__types__';
-import { GetCurrentUser } from '@odst/shared/nest';
-//import { User } from '@odst/types/ods';
 
 @Injectable()
 export class FeedbackResponseService {

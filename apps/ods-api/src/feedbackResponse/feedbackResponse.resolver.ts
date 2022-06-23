@@ -42,6 +42,7 @@ export class FeedbackResponseResolver {
     );
   }
 
+  //TODO write tests for this
   @Query(() => Int, { name: 'getResponseCount' })
   async count(
     @GetCurrentUser() user: User,
