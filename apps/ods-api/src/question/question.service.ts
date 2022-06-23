@@ -10,13 +10,14 @@ export class QuestionService {
   //Find all the questions that are in a feedback
   async findQuestionsInFeedback(
     feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
-  ): Promise<Question[]> {
+  ): Promise<{ id: string }[]> {
     return this.prisma.question.findMany({
       where: {
         feedbacks: {
           every: feedbackWhereUniqueInput,
         },
       },
+      select: { id: true },
     });
   }
 
