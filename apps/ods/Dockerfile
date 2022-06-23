@@ -13,7 +13,7 @@ COPY . .
 
 RUN node ./decorate-angular-cli.js
 
-RUN yarn ngcc --properties es2015 browser module main
+RUN yarn ngcc --properties es2020 browser module main
 
 RUN yarn graphql-codegen --config graphql.codegen.yml
 

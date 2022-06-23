@@ -62,7 +62,6 @@ export class FeedbackQuestionsService {
       mutation: CreateFeedbackWithQuestionsDocument,
       variables: {
         questionValues: questions,
-        //TODO don't hardcode org
         orgWhereUniqueInput,
       },
     });
@@ -116,5 +115,4 @@ export class FeedbackQuestionsService {
       },
     });
   }
-  // TODO: Do testing on this function
 }

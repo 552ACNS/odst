@@ -5,20 +5,15 @@ ARG APP="ods-api"
 
 WORKDIR /usr/src/app
 
-#nx must be installed globally and `nx build` w/o npx
-RUN yarn global add nx --no-progress --loglevel=error
-
 COPY package.json yarn.lock ./
 
 RUN yarn install --ignore-scripts --no-progress --frozen-lockfile --loglevel=error
 
 COPY . .
 
-#tree shaking is requring waypoint to be run still
-#RUn npx nx prisma-generate ${APP}
-RUN npx nx run-many --target=prisma-generate --all --parallel=false
+RUN npx nx prisma-generate ${APP}
 
-RUN nx build ods-api
+RUN npx nx build ods-api
 
 
 # Second Stage
