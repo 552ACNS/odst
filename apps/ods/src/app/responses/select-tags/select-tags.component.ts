@@ -23,6 +23,7 @@ export class SelectTagsComponent {
 
   @Input() tagType: string;
 
+  //TODO: add error handling for the event that the emitted functions fail.
   @Output() add = new EventEmitter<
     MatChipInputEvent | MatAutocompleteSelectedEvent
   >();
@@ -35,8 +36,11 @@ export class SelectTagsComponent {
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
-  //TODO Clear search text after tag added (mainly is problem when you click on result)
-  //TODO Make it so pressing enter selects the first option available if there are any
+  /**
+   * User selects a tag to be added, which must be a part of the possible tags and not the selected tags
+   * The input box will be cleared after the event has been passed back to the parent component
+   * @param event
+   */
   addTag(event: MatChipInputEvent) {
     if (
       this.tags.includes(event.value) &&
@@ -51,13 +55,23 @@ export class SelectTagsComponent {
     }
   }
 
+  /**
+   * removes a chosen tag from the selectedTags array and passes that tag to the parent component
+   * @param tagToRemove
+   */
   removeTag(tagToRemove: string) {
     this.remove.emit(tagToRemove);
     this.selectedTags = this.selectedTags?.filter((tag) => tag !== tagToRemove);
     this.generateFilteredTags();
   }
 
+  /**
+   * Adds a tag from a populated list of tags to the selected tags
+   * Passes the event to the parent component
+   * @param event
+   */
   selectTag(event: MatAutocompleteSelectedEvent) {
+    if (this.selectedTags?.includes(event.option.value)) return;
     this.add.emit(event);
     this.selectedTags?.push(event.option.value);
     this.tagInput.nativeElement.value = '';
