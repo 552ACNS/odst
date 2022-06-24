@@ -5,7 +5,7 @@ on:
     branches:
       - 'master'
       # - 'dev'
-      # - docker-recreate-images
+      - docker-recreate-images
   pull_request:
     branches:
       - 'master'
