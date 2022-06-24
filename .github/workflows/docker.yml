@@ -5,7 +5,7 @@ on:
     branches:
       - 'master'
       # - 'dev'
-      - docker-recreate-images
+      # - docker-recreate-images
   pull_request:
     branches:
       - 'master'
@@ -62,28 +62,32 @@ jobs:
 
       #region on push: build and push images to registry
       - name: 'nx docker'
-        run: npx nx affected --target=docker --push=true --target=deploy
+        run: npx nx affected --target=docker --push=true
         if: ${{ github.event_name != 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TARGET: deploy
 
       - name: 'nx docker-migrate'
-        run: npx nx affected --target=docker-migrate --push=true --target=deploy
+        run: npx nx affected --target=docker-migrate --push=true
         if: ${{ github.event_name != 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TARGET: deploy
       #endregion
 
       #region on PR: only build to first stage
       - name: 'nx docker'
-        run: npx nx affected --target=docker --target=build
+        run: npx nx affected --target=docker
         if: ${{ github.event_name == 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TARGET: build
 
       - name: 'nx docker-migrate'
-        run: npx nx affected --target=docker-migrate --target=build
+        run: npx nx affected --target=docker-migrate
         if: ${{ github.event_name == 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TARGET: build
       #endregion
