@@ -5,26 +5,19 @@ import {
   ApolloTestingController,
   ApolloTestingModule,
 } from 'apollo-angular/testing';
+
 import { ResponsesComponent } from './responses.component';
 import { ResponsesModule } from './responses.module';
 import { ResponsesService } from './responses.service';
-import { SelectTagsComponent } from './select-tags/select-tags.component';
 
 describe('ResponsesComponent', () => {
+  // let fixture: ComponentFixture<ResponsesComponent>;
   let controller: ApolloTestingController;
 
-  //Do not delete, will be finished in a future story
-  const ResponsesServiceStub = {};
-
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [ResponsesComponent, SelectTagsComponent],
-      providers: [
-        {
-          provide: ResponsesService,
-          useValue: ResponsesServiceStub,
-        },
-      ],
+      declarations: [ResponsesComponent],
+      providers: [ResponsesService],
       imports: [
         ResponsesModule,
         ApolloTestingModule,
@@ -38,22 +31,12 @@ describe('ResponsesComponent', () => {
   });
 
   it('should create', () => {
-    // const fixture = TestBed.createComponent(ResponsesComponent);
-    // const component = fixture.componentInstance;
+    expect(true).toBeTruthy();
     // expect(component).toBeTruthy();
-    expect(true).toBe(true);
   });
 
   afterEach(() => {
     controller.verify();
-  });
-
-  describe('Response population', () => {
-    // const fixture = TestBed.createComponent(ResponsesComponent);
-    // const component = fixture.componentInstance;
-    // it('should populate the response form', () => {
-    //
-    // });
   });
 
   // describe('load response ids', () => {

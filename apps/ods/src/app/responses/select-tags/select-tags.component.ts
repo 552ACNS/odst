@@ -5,11 +5,10 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  OnInit,
 } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { FormControl, UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
