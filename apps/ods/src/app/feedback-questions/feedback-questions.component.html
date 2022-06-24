@@ -162,5 +162,14 @@
         </button>
       </mat-card-actions>
     </mat-card>
+    <mat-card *ngIf="submitSuccess" class="mt-3">
+      <mat-card-content class="text-sm space-y-3 text-justify">
+        <p>
+          Here is an ID associated with your feedback report, Input this ID into
+          our feedback finder to get updates on actions on your report:
+          {{ feedbackResponseID }}
+        </p>
+      </mat-card-content>
+    </mat-card>
   </form>
 </div>

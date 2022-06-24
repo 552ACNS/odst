@@ -143,16 +143,37 @@ export class ResponsesComponent implements OnInit {
   }
 
   updateResolved() {
-    const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
-      where: {
-        id: this.responseIDs[this.displayedIndex],
-      },
-      data: {
-        resolved: {
-          set: !this.actualResolution,
+    let updateResolvedMutationVariables: UpdateResolvedMutationVariables;
+    //When false, the actual resolution is set to resolved.
+    if (this.actualResolution == false) {
+      updateResolvedMutationVariables = {
+        where: {
+          id: this.responseIDs[this.displayedIndex],
         },
-      },
-    };
+        data: {
+          resolved: {
+            set: !this.actualResolution,
+          },
+          closedDate: {
+            set: Date.now(),
+          },
+        },
+      };
+    } else {
+      updateResolvedMutationVariables = {
+        where: {
+          id: this.responseIDs[this.displayedIndex],
+        },
+        data: {
+          resolved: {
+            set: !this.actualResolution,
+          },
+          closedDate: {
+            set: null,
+          },
+        },
+      };
+    }
 
     this.responsesService
       .updateResolved(updateResolvedMutationVariables)
