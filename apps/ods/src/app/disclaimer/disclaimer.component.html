@@ -41,19 +41,13 @@
   </mat-card>
 
   <!-- this lies outside the box -->
-  <button
-    mat-button
-    class="flex underline ml-auto mt-2 rounded-2xl dark:text-white"
-    [routerLink]="['/response-lookup']"
-  >
-    Feedback Response Lookup
-  </button>
+  <div class="flex-auto underline ml-auto mt-2 rounded-2xl dark:text-white">
+    <button mat-button class="float-left" [routerLink]="['/response-lookup']">
+      Feedback Response Lookup
+    </button>
 
-  <button
-    mat-button
-    class="flex underline ml-auto justify-end mt-2 rounded-2xl dark:text-white"
-    [routerLink]="['/login']"
-  >
-    I want to login
-  </button>
+    <button mat-button class="float-right" [routerLink]="['/login']">
+      I want to login
+    </button>
+  </div>
 </div>

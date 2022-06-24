@@ -1,12 +1,11 @@
 <div class="parent-div">
   <mat-card>
     <mat-card-title class="flex justify-center font-medium mb-5">
-      Feedback Response Lookup
+      Check Report Status
     </mat-card-title>
     <mat-card-content class="text-sm space-y-3 text-justify">
-      <p>
-        Submit the id given with your feedback report, and track the progress of
-        the resolution.
+      <p class="flex justify-center">
+        Check the status of an active report by entering your tracking ID below:
       </p>
     </mat-card-content>
 
@@ -24,18 +23,17 @@
           [formControlName]="'reportID'"
         />
         <mat-error> Please provide a valid ID </mat-error>
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
       <br />
-      <mat-card-content class="text-sm space-y-3 text-justify">
-        <p>
-          {{ openedDate | date: 'd MMM yy' }}
-        </p>
-        <p>
-          {{ status }}
-        </p>
-        <p>
+      <mat-card-content *ngIf="success" class="text-sm space-y-3 text-justify">
+        <p *ngIf="status">
+          This feedback report was submitted on
+          {{ openedDate | date: 'd MMM yy' }} and was resolved on
           {{ closedDate | date: 'd MMM yy' }}
+        </p>
+        <p *ngIf="!status">
+          This feedback report was submitted on
+          {{ openedDate | date: 'd MMM yy' }}, and is awaiting resolution.
         </p>
       </mat-card-content>
       <!-- Buttons -->

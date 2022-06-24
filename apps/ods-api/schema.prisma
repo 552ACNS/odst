@@ -65,6 +65,8 @@ model FeedbackResponse {
   tags         Tag[]
   comments     Comment[]
   resolved     Boolean   @default(false)
+  // reviewer     User     @relation(fields: [reviewerId], references: [id])
+  // reviewerId   String
 }
 
 model Comment {

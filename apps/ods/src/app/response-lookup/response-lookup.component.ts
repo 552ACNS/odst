@@ -10,9 +10,8 @@ import { ResponseLookupService } from './response-lookup.service';
 export class ResponseLookupComponent {
   openedDate: Date;
   closedDate: Date | null;
-
   status: boolean;
-
+  success = false;
   constructor(
     private fb: UntypedFormBuilder,
     private lookupService: ResponseLookupService
@@ -24,13 +23,14 @@ export class ResponseLookupComponent {
   async submit() {
     (
       await this.lookupService.getFeedbackReponseById(
-        this.form.value['reportID']
+        this.form.value['reportID'].trim()
       )
     ).subscribe(({ data, errors }) => {
       if (!errors && data) {
         this.openedDate = data.feedbackResponseByID.openedDate;
         this.closedDate = data.feedbackResponseByID.closedDate;
         this.status = data.feedbackResponseByID.resolved;
+        this.success = true;
       }
     });
   }
