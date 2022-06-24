@@ -109,7 +109,7 @@ model Tag {
 }
 
 enum TagType {
-  DataTracking
+  Resolution
   Action
 }
 

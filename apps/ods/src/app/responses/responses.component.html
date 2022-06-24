@@ -39,10 +39,8 @@
             [tags]="trackingTags"
             [selectedTags]="selectedTrackingTags"
             [tagType]="'Tracking'"
-            [tagCtrl]="tagCtrl"
             (add)="add($event)"
             (remove)="remove($event)"
-            (selected)="selected($event)"
           ></select-tags>
         </mat-card>
       </ng-container>
@@ -195,10 +193,8 @@
               [tags]="actionTags"
               [selectedTags]="selectedActionTags"
               [tagType]="'Action'"
-              [tagCtrl]="tagCtrl"
               (add)="add($event)"
               (remove)="remove($event)"
-              (selected)="selected($event)"
             ></select-tags>
             <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
               <button

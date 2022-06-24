@@ -23,7 +23,6 @@ describe('SelectTagsComponent', () => {
     fixture = TestBed.createComponent(SelectTagsComponent);
     component = fixture.componentInstance;
     component.selectedTags = ['Tag 1', 'Tag 2', 'Tag 3'];
-    component.possibleTags = ['Teg', 'Beg', 'Reg'];
     component.tagCtrl = tagCtrl;
     fixture.detectChanges();
   });

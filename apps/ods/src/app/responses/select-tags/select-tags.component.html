@@ -16,8 +16,8 @@
       [matAutocomplete]="auto"
       [matChipInputFor]="chipList"
       (matChipInputTokenEnd)="addTag($event)"
-      (input)="autoComplete(tagCtrl.value)"
-      (focus)="autoComplete(tagCtrl.value)"
+      (input)="generateFilteredTags()"
+      (focus)="generateFilteredTags()"
     />
   </mat-chip-list>
   <mat-autocomplete

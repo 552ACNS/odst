@@ -22,8 +22,6 @@ export class ResponsesComponent implements OnInit {
     comment: [''],
   });
 
-  tagCtrl = new UntypedFormControl();
-
   possibleTags: string[];
 
   actionTags: string[];
@@ -40,7 +38,7 @@ export class ResponsesComponent implements OnInit {
 
   selectedTrackingTags: string[] | undefined = [];
 
-  allTags: string[];
+  allTags: string[] = [];
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
@@ -81,7 +79,7 @@ export class ResponsesComponent implements OnInit {
         .map((tag) => tag.value)
         .sort();
       this.trackingTags = data.getTags
-        .filter((tag) => tag.type == 'DataTracking')
+        .filter((tag) => tag.type == 'Resolution')
         .map((tag) => tag.value)
         .sort();
       this.allTags = data.getTags.map((tag) => tag.value).sort();
@@ -201,7 +199,7 @@ export class ResponsesComponent implements OnInit {
             .map((tag) => tag.value);
 
           this.selectedTrackingTags = data.findUniqueFeedbackResponse['tags']
-            ?.filter((tag) => tag.type == 'DataTracking')
+            ?.filter((tag) => tag.type == 'Resolution')
             .map((tag) => tag.value);
         }
       }
@@ -228,29 +226,29 @@ export class ResponsesComponent implements OnInit {
    */
 
   // There is a bug where if the user types and then deletes their input, the possible tags will not repopulate
-  add(event: MatChipInputEvent): void {
+  add(event: MatChipInputEvent | MatAutocompleteSelectedEvent): void {
+    let input =
+      (event as MatChipInputEvent).value ??
+      (event as MatAutocompleteSelectedEvent).option.value;
+
+    input = input.trim().toLowerCase();
+
     // Trim the input so that empty values aren't there
-    let value = (event.value || '').trim().toLowerCase();
+    //let value = (event.value || '').trim().toLowerCase();
 
     // Convert to title case
-    value = value[0].toUpperCase() + value.slice(1);
-
+    input = input[0].toUpperCase() + input.slice(1);
     // If the hand typed value is one of the legal tags
-    if (this.allTags.includes(value)) {
+    if (this.allTags.includes(input)) {
       this.responsesService
         .modifyTag({
           where: { id: this.responseIDs[this.displayedIndex] },
-          data: { tags: { connect: [{ value: value }] } },
+          data: { tags: { connect: [{ value: input }] } },
         })
         .subscribe(({ data, errors }) => {
-          if (!errors && data?.updateFeedbackResponse['tags']) {
-            // Clear the input values
-            event.chipInput?.clear();
-          }
+          //Placeholder
         });
     }
-
-    this.tagCtrl.setValue(null);
   }
 
   remove(tagToRemove: string): void {
@@ -261,6 +259,7 @@ export class ResponsesComponent implements OnInit {
       })
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
+          //Placeholder
         }
       });
   }
@@ -274,7 +273,7 @@ export class ResponsesComponent implements OnInit {
       })
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.tagCtrl.setValue(null);
+          //Placeholder
         }
       });
   }
