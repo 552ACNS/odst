@@ -30,11 +30,13 @@ Describe the tests that you created if applicable. Use N/A if no tests were crea
 # To be Completed By Reviewers
 
 Reviewer # 01
+
 - [ ] I have performed a review of the code and checked for possible unintentional edits.
 - [ ] I concur with the amount of comments made.
 - [ ] I concur with the amount of tests made.
 
 Reviewer # 02
+
 - [ ] I have performed a review of the code and checked for possible unintentional edits.
 - [ ] I concur with the amount of comments made.
 - [ ] I concur with the amount of tests made.

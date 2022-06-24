@@ -58,7 +58,7 @@ describe('FeedbackResponse Resolver', () => {
     it('should create a create feedbackResponse', async () => {
       await expect(
         resolver.create(MockFeedbackResponseCreateInput[0])
-      ).resolves.toEqual(MockFeedbackResponses[0]);
+      ).resolves.toEqual(MockFeedbackResponses[0].id);
     });
   });
 

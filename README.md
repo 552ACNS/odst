@@ -90,6 +90,46 @@ Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
 password: `admin`<br/>
 username: `admin`
 
+## Docker
+
+### Build image locally
+
+`docker build . --file ./apps/{app}/Dockerfile`
+
+### Build & push via nx
+
+`nx docker {app}`
+
+Careful with this, due to that it pushes it up with the `:latest` tag. Add `--push=false` to not push built images up to registry.
+
+### Migrate database via docker
+
+`docker-compose up ods-migrate`
+
+### start all services listed in docker-compose
+
+`docker-compose up ods`
+
+add `-d` to start them in the background; can change `ods` to another service if you'd like.
+`ods` is dependent on `ods-api`, which is in turn dependent on `postgres`, so just specifying `ods` will start entire stack.
+If you only say `docker-compose up`, all services will be started, including `ods-migrate`.
+
+### Start to finish full docker stack
+
+```bash
+#migration
+docker compose up ods-migrate
+
+#ods stack
+docker-compose up ods -d
+```
+
+## Docker images/tags
+
+ods: `ods:latest`, `ods:v0`
+ods-api: `ods-api:latest`, `ods-api:v0`
+ods-migrate: `ods-api:migrate`, `ods-api:v0-migrate`
+
 ## Common Troubleshooting steps
 
 ### - `yarn` throws graphql error
