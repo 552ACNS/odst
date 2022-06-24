@@ -9,7 +9,7 @@ on:
   pull_request:
     branches:
       - 'master'
-      # - 'dev'
+      - 'dev'
 
 #TODO is there a way to test if image can be built based on PR code? without doing the whole pipeline. build to first stage w/o pushing?
 
@@ -60,12 +60,30 @@ jobs:
       - name: 'Install nx'
         run: npm i nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
+      #region on push: build and push images to registry
       - name: 'nx docker'
-        run: npx nx affected --target=docker --push=true
+        run: npx nx affected --target=docker --push=true --target=deploy
+        if: ${{ github.event_name != 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'nx docker-migrate'
-        run: npx nx affected --target=docker-migrate --push=true
+        run: npx nx affected --target=docker-migrate --push=true --target=deploy
+        if: ${{ github.event_name != 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #endregion
+
+      #region on PR: only build to first stage
+      - name: 'nx docker'
+        run: npx nx affected --target=docker --target=build
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'nx docker-migrate'
+        run: npx nx affected --target=docker-migrate --target=build
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #endregion
