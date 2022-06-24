@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { ResponseLookupService } from './response-lookup.service';
 
 @Component({
   selector: 'odst-response-lookup',
@@ -7,10 +8,30 @@ import { UntypedFormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./response-lookup.component.scss'],
 })
 export class ResponseLookupComponent {
-  constructor(private fb: UntypedFormBuilder) {}
+  openedDate: Date;
+  closedDate: Date | null;
+
+  status: boolean;
+
+  constructor(
+    private fb: UntypedFormBuilder,
+    private lookupService: ResponseLookupService
+  ) {}
   form = this.fb.group({
     reportID: ['', [Validators.required]],
   });
 
-  submitLoginClick() {}
+  async submit() {
+    (
+      await this.lookupService.getFeedbackReponseById(
+        this.form.value['reportID']
+      )
+    ).subscribe(({ data, errors }) => {
+      if (!errors && data) {
+        this.openedDate = data.feedbackResponseByID.openedDate;
+        this.closedDate = data.feedbackResponseByID.closedDate;
+        this.status = data.feedbackResponseByID.resolved;
+      }
+    });
+  }
 }

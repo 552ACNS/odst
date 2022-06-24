@@ -1,0 +1,11 @@
+query FeedbackResponseByID(
+  $feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!
+) {
+  feedbackResponseByID(
+    feedbackResponseWhereUniqueInput: $feedbackResponseWhereUniqueInput
+  ) {
+    openedDate
+    closedDate
+    resolved
+  }
+}

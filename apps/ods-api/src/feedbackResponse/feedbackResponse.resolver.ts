@@ -23,7 +23,7 @@ import {
 import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
-import { ResponseCount } from '../__types__';
+import { ResponseCount, TrackedFeedback } from '../__types__';
 
 @Resolver(() => FeedbackResponse)
 export class FeedbackResponseResolver {
@@ -37,6 +37,17 @@ export class FeedbackResponseResolver {
     @Args('feedbackResponseWhereUniqueInput')
     feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput
   ): Promise<FeedbackResponse | null> {
+    return this.feedbackResponseService.findUnique(
+      feedbackResponseWhereUniqueInput
+    );
+  }
+
+  @Public()
+  @Query(() => TrackedFeedback, { name: 'feedbackResponseByID' })
+  async feedbackResponseByID(
+    @Args('feedbackResponseWhereUniqueInput')
+    feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput
+  ): Promise<TrackedFeedback | null> {
     return this.feedbackResponseService.findUnique(
       feedbackResponseWhereUniqueInput
     );

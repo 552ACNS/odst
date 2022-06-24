@@ -104,15 +104,14 @@ export class FeedbackResponseService {
   async feedbackResponseByID(
     feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
   ): Promise<TrackedFeedback | null> {
-    // const result = this.prisma.feedbackResponse.findUnique({
-    //   where: feedbackResponseWhereUniqueInput,
-    //   select: {
-    //     openedDate: true,
-    //     closedDate: true,
-    //     resolved: true,
-    //   },
-    // });
-    // return result;
+    return this.prisma.feedbackResponse.findUnique({
+      where: feedbackResponseWhereUniqueInput,
+      select: {
+        openedDate: true,
+        closedDate: true,
+        resolved: true,
+      },
+    });
   }
 
   async create(

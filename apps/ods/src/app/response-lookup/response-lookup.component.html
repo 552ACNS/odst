@@ -27,6 +27,17 @@
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
       <br />
+      <mat-card-content class="text-sm space-y-3 text-justify">
+        <p>
+          {{ openedDate | date: 'd MMM yy' }}
+        </p>
+        <p>
+          {{ status }}
+        </p>
+        <p>
+          {{ closedDate | date: 'd MMM yy' }}
+        </p>
+      </mat-card-content>
       <!-- Buttons -->
       <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
         <button
@@ -43,7 +54,8 @@
           type="submit"
           color="primary"
           class="w-full text-white shadow-md rounded-full"
-          (click)="submitLoginClick()"
+          (click)="submit()"
+          [disabled]="!form.valid"
         >
           Lookup ID
         </button>

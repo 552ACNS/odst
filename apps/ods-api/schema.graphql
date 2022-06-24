@@ -360,9 +360,16 @@ type ResponseCount {
   resolved: Float!
 }
 
+type TrackedFeedback {
+  openedDate: DateTime!
+  closedDate: DateTime
+  resolved: Boolean!
+}
+
 type Query {
   findUniqueFeedback(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): Feedback!
   findUniqueFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
+  feedbackResponseByID(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): TrackedFeedback!
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
   ResponseCount: ResponseCount!
   getIssuesByStatus(resolved: String!): [String!]!
