@@ -24,14 +24,6 @@ jobs:
       packages: write
 
     steps:
-      # - name: Set env DOCKER_BUILD_TARGET
-      #   run: |
-      #     if [[ $GITHUB_EVENT_NAME == 'push' ]]; then
-      #         echo "NEED=true" >> "$GITHUB_ENV"
-      #     else
-      #         echo "NEED=false" >> "$GITHUB_ENV"
-      #     fi
-
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
