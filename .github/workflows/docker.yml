@@ -73,7 +73,6 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          INPUT_TARGET: deploy
       #endregion
 
       #region on PR: only build to first stage
@@ -89,5 +88,4 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          INPUT_TARGET: build
       #endregion
