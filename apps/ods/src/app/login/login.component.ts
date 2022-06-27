@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
           this.router.onSameUrlNavigation = 'reload';
 
           this.router.navigate(['dashboard']).then(() => {
-            window.location.reload();
+            //window.location.reload();
           });
         }
         //added allow list with defined acceptable results

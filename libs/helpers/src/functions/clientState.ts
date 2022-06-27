@@ -33,10 +33,10 @@ export function isLoggedIn(): boolean {
 }
 
 export function reloadPage(): void {
-  if (!localStorage.getItem('true')) {
-    localStorage.setItem('true', 'no reload');
-    location.reload();
+  if (!localStorage.getItem('fresh page')) {
+    localStorage.setItem('fresh page', 'no reload');
   } else {
-    localStorage.removeItem('true');
+    localStorage.removeItem('fresh page');
+    location.reload();
   }
 }
