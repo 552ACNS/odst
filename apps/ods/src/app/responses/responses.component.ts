@@ -254,8 +254,6 @@ export class ResponsesComponent implements OnInit {
    * @param event
    * @returns list of tags to push to server
    */
-
-  // There is a bug where if the user types and then deletes their input, the possible tags will not repopulate
   async add(
     event: MatChipInputEvent | MatAutocompleteSelectedEvent
   ): Promise<void> {
@@ -263,13 +261,10 @@ export class ResponsesComponent implements OnInit {
       (event as MatChipInputEvent).value ??
       (event as MatAutocompleteSelectedEvent).option.value;
 
-    input = input.trim().toLowerCase();
-
-    // Trim the input so that empty values aren't there
-    //let value = (event.value || '').trim().toLowerCase();
+    input = input.trim();
 
     // Convert to title case
-    input = input[0].toUpperCase() + input.slice(1);
+    input = input[0].toUpperCase() + input.slice(1).toLowerCase();
     // If the hand typed value is one of the legal tags
     if (this.allTags.includes(input)) {
       this.responsesService
