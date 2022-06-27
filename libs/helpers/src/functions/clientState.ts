@@ -31,3 +31,12 @@ export function removeTokens(): void {
 export function isLoggedIn(): boolean {
   return !!getRefreshToken();
 }
+
+export function reloadPage(): void {
+  if (!localStorage.getItem('fresh page')) {
+    localStorage.setItem('fresh page', 'no reload');
+  } else {
+    localStorage.removeItem('fresh page');
+    location.reload();
+  }
+}

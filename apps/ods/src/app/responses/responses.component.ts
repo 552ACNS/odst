@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AddCommentMutationVariables,
   GetReportByStatusQuery,
@@ -33,7 +33,8 @@ export class ResponsesComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private responsesService: ResponsesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   questionsAnswers: [string, string][] = [];
@@ -215,6 +216,7 @@ export class ResponsesComponent implements OnInit {
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
           this.actualResolution = data.updateFeedbackResponse['resolved'];
+          this.reload();
         }
       });
   }
@@ -305,5 +307,12 @@ export class ResponsesComponent implements OnInit {
       });
 
     this.generatePossibleTags();
+  }
+
+  //TODO: This will need to be made into a function at the application level.
+  reload() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['./'], { relativeTo: this.route });
   }
 }
