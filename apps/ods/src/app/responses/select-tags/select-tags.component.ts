@@ -41,7 +41,7 @@ export class SelectTagsComponent {
   /**
    * User selects a tag to be added, which must be a part of the possible tags and not the selected tags
    * The input box will be cleared after the event has been passed back to the parent component
-   * @param event
+   * @param event Emmitted from an input box for material chips on input
    */
   addTag(event: MatChipInputEvent) {
     if (
@@ -70,7 +70,7 @@ export class SelectTagsComponent {
   /**
    * Adds a tag from a populated list of tags to the selected tags
    * Passes the event to the parent component
-   * @param event
+   * @param event Emmited from a material option dropdown to select a specific string
    */
   selectTag(event: MatAutocompleteSelectedEvent) {
     if (this.selectedTags?.includes(event.option.value)) return;
