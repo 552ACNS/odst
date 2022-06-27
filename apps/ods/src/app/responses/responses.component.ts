@@ -18,6 +18,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   styleUrls: ['./responses.component.scss'],
 })
 export class ResponsesComponent implements OnInit {
+  //#region Variables
   resolutionForm = this.fb.group({
     comment: [''],
   });
@@ -57,6 +58,7 @@ export class ResponsesComponent implements OnInit {
   take = 1;
 
   response: GetReportByStatusQuery['getIssuesByStatus'][0];
+  //#endregion
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -65,7 +67,7 @@ export class ResponsesComponent implements OnInit {
     private router: Router
   ) {}
 
-  //region Main functions
+  //#region Main functions
   async ngOnInit(): Promise<void> {
     this.getFeedback(0);
   }
@@ -214,7 +216,9 @@ export class ResponsesComponent implements OnInit {
         }
       });
   }
+  //#endregion
 
+  //#region Tags
   /**
    * Removes tag deselected by the user and adds it back to the list of tags not in use
    * @param tagToRemove tag that's been deselected by the user
@@ -236,7 +240,8 @@ export class ResponsesComponent implements OnInit {
 
   /**
    * User selects a tag from the list of unused and the list of unused tags is updated
-   * @param event
+   * @param event: MatChipInputEvent is the output of a material chip input box
+   * @param event: MatAutocompleteSelectedEvent is the output of a material autocomplete selection
    * @returns list of tags to push to server
    */
   async add(
@@ -262,6 +267,7 @@ export class ResponsesComponent implements OnInit {
         });
     }
   }
+  //#endregion
 
   //TODO: This will need to be made into a function at the application level.
   async reload(): Promise<void> {

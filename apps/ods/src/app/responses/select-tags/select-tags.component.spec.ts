@@ -62,9 +62,6 @@ describe('SelectTagsComponent', () => {
     const actual: string[] = component.filteredTags;
     const expected: string[] = ['Tag 5'];
 
-    console.log(actual.length);
-    console.log(expected.length);
-
     expect(actual).toEqual(expected);
   });
 

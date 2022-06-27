@@ -17,6 +17,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./select-tags.component.scss'],
 })
 export class SelectTagsComponent {
+  //#region Variables
   @Input() tags: string[];
 
   @Input() selectedTags: string[] | undefined;
@@ -35,6 +36,7 @@ export class SelectTagsComponent {
   filteredTags;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+  //#endregion
 
   /**
    * User selects a tag to be added, which must be a part of the possible tags and not the selected tags
