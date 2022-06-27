@@ -1,6 +1,6 @@
 <div class="mx-auto min-w-[340px] w-[95%] max-w-[500px] sm:max-w-[1000px] mt-2">
   <div class="flex justify-center flex-col items-center">
-    <h1 class="text-center">{{ resolved | titlecase }} Responses</h1>
+    <h1 class="text-center">{{ status | titlecase }} Responses</h1>
     <mat-paginator
       class="border-1 border-solid rounded-2xl shadow-md mb-3 w-fit"
       [length]="numberOfResponses"
@@ -8,7 +8,7 @@
       [pageSize]="1"
       [hidePageSize]="true"
       [showFirstLastButtons]="true"
-      (page)="pageEvent = displayIssue($event)"
+      (page)="pageEvent = handlePageEvent($event)"
     >
     </mat-paginator>
     <p class="text-center">

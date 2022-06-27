@@ -8,7 +8,7 @@ import {
   User,
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -60,11 +60,12 @@ export class UserService {
       .comments();
   }
 
-  async create(data: Prisma.UserCreateInput): Promise<User> {
+  async create(data: Prisma.UserCreateInput): Promise<{ id: string }> {
     data.password = await hash(data.password, 10);
 
     return this.prisma.user.create({
       data,
+      select: { id: true },
     });
   }
 

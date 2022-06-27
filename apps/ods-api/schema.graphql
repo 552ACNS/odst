@@ -374,12 +374,12 @@ type Query {
   findUniqueFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
   ResponseCount: ResponseCount!
-  getIssuesByStatus(resolved: String!): [String!]!
+  getIssuesByStatus(status: String!, where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, distinct: [FeedbackResponseScalarFieldEnum!]): [FeedbackResponse!]!
   getOrgLineage: [String!]!
   getOrgNames: [String!]!
-  getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [Question!]!
+  getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [String!]!
   findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
-  getCommanders: [User!]!
+  getCommanders: [String!]!
   me: User!
   findManyAccountRequests: [User!]!
   getTags: [Tag!]!
@@ -826,6 +826,15 @@ input FeedbackResponseMaxAggregateInput {
   resolved: Boolean
 }
 
+enum FeedbackResponseScalarFieldEnum {
+  id
+  feedbackId
+  openedDate
+  closedDate
+  routeOutside
+  resolved
+}
+
 input UserOrderByWithRelationInput {
   id: SortOrder
   email: SortOrder
@@ -867,11 +876,11 @@ enum UserScalarFieldEnum {
 }
 
 type Mutation {
-  createFeedbackWithQuestions(questionValues: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): Feedback!
+  createFeedbackWithQuestions(questionValues: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): String!
   updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
-  createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): FeedbackResponse!
+  createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): String!
   updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
-  createUser(userCreateInput: UserCreateInput!): User!
+  createUser(userCreateInput: UserCreateInput!): String!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
   login(loginUserInput: LoginUserInput!): Tokens!

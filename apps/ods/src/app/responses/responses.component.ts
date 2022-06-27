@@ -1,14 +1,14 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { UntypedFormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AddCommentMutationVariables,
-  FindUniqueFeedbackResponseQuery,
+  GetReportByStatusQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
-import { getRefreshToken, getUserId } from '@odst/helpers';
+import { getUserId } from '@odst/helpers';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
@@ -33,7 +33,8 @@ export class ResponsesComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private responsesService: ResponsesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   selectedTrackingTags: string[] | undefined = [];
@@ -42,14 +43,13 @@ export class ResponsesComponent implements OnInit {
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
-  comments: FindUniqueFeedbackResponseQuery['findUniqueFeedbackResponse']['comments'] =
-    [];
+  comments: GetReportByStatusQuery['getIssuesByStatus'][0]['comments'] = [];
 
   AddCommentMutationVariables: AddCommentMutationVariables;
 
   newComment = '';
   // TODO [ODST-291]: Change resolved status back to bool
-  resolved: string;
+  status: string;
 
   // This is for the toggle button
   actualResolution: boolean;
@@ -59,20 +59,32 @@ export class ResponsesComponent implements OnInit {
   userId: string;
 
   numberOfResponses: number;
-  displayedIndex: number;
 
-  responseIDs: string[] = [];
+  displayedIndex: number;
 
   pageEvent: PageEvent;
 
-  //#endregion
+  take = 1;
+  response: GetReportByStatusQuery['getIssuesByStatus'][0];
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
   //region Main functions
-  async ngOnInit() {
-    this.userId = getUserId(getRefreshToken() ?? '');
+  async ngOnInit(): Promise<void> {
+    this.getFeedback(0);
+  }
 
+  //uses this method in lieu of displaydata method(which was deleted)
+  handlePageEvent(pageEvent: PageEvent): PageEvent {
+    if (pageEvent) {
+      this.displayedIndex = pageEvent.pageIndex;
+
+      this.getFeedback(this.displayedIndex);
+    }
+    return pageEvent;
+  }
+
+  async getFeedback(index: number): Promise<void> {
     this.responsesService.getTags().subscribe(({ data }) => {
       this.actionTags = data.getTags
         .filter((tag) => tag.type == 'Action')
@@ -87,33 +99,85 @@ export class ResponsesComponent implements OnInit {
 
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
-      this.resolved = params['resolved'];
+      this.status = params['resolved'];
     });
-
+    //method takes the status of the response, the index its querying for, and the number of responses to take
     (
-      await this.responsesService.getResponseIDsByStatus(this.resolved)
-    ).subscribe((data) => {
-      this.responseIDs = data;
-      this.numberOfResponses = data.length;
+      await this.responsesService.getReportByStatus(
+        this.status,
+        index,
+        this.take
+      )
+    )
+      // eslint-disable-next-line complexity
+      .subscribe(({ data }) => {
+        //it then uses the data to determin the current status and gets and displays the other appropriate data
+        if (this.numberOfResponses !== 0) {
+          this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+        }
+        //took the get data method and put it in our new method, this one
+        switch (this.status) {
+          case 'unresolved':
+            this.numberOfResponses = data.ResponseCount.unresolved;
+            this.pageEvent.length = data.ResponseCount.unresolved;
+            break;
+          case 'resolved':
+            this.numberOfResponses = data.ResponseCount.resolved;
+            this.pageEvent.length = data.ResponseCount.resolved;
+            break;
+          case 'overdue':
+            this.numberOfResponses = data.ResponseCount.overdue;
+            this.pageEvent.length = data.ResponseCount.overdue;
+            break;
+        }
 
-      if (this.numberOfResponses !== 0) {
-        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
-        // navigate to that issue
-        this.displayIssue(this.pageEvent);
-      }
-    });
+        //getIssuesByStatus invokes findMany, which returns an array.
+        //This turns single element array into just the datatype.
+        //Use this instead of data.getIssuesByStatus
+        this.response = data.getIssuesByStatus[0];
+
+        this.openedDate = this.response.openedDate;
+
+        // Clear contents of QA array
+        this.questionsAnswers = [];
+        this.comments = [];
+
+        // Handle the Questions & Answers
+        this.response.answers?.forEach((answer) => {
+          // Clear contents of QA array
+          // Create the Question/Answer Array
+          this.questionsAnswers.push([
+            String(answer?.question?.value),
+            answer.value,
+          ]);
+        });
+
+        this.comments = this.response.comments;
+
+        this.actualResolution = this.response['resolved'];
+
+        //TODO don't hardcode tag types
+        this.selectedActionTags = this.response['tags']
+          ?.filter((tag) => tag.type == 'Action')
+          .map((tag) => tag.value);
+
+        this.selectedTrackingTags = this.response['tags']
+          ?.filter((tag) => tag.type == 'Resolution')
+          .map((tag) => tag.value);
+      });
   }
 
   /**
    * Creates a list of tags that can be added by filtering out those already in use
    */
+  async submitComment(): Promise<void> {
+    this.userId = getUserId();
 
-  submitComment() {
     // if the resolution field is not empty after a trim
     if (this.resolutionForm.value.comment.trim() !== '') {
       this.AddCommentMutationVariables = {
         where: {
-          id: this.responseIDs[this.displayedIndex],
+          id: this.response.id,
         },
         data: {
           comments: {
@@ -144,10 +208,10 @@ export class ResponsesComponent implements OnInit {
     }
   }
 
-  updateResolved() {
+  async updateResolved(): Promise<void> {
     const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
       where: {
-        id: this.responseIDs[this.displayedIndex],
+        id: this.response.id,
       },
       data: {
         resolved: {
@@ -161,63 +225,29 @@ export class ResponsesComponent implements OnInit {
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
           this.actualResolution = data.updateFeedbackResponse['resolved'];
+          this.reload();
         }
       });
   }
 
-  async getResponseData(responseID: string) {
-    (await this.responsesService.getResponseData(responseID)).subscribe(
-      ({ data, errors }) => {
-        //one reason to not use pluck/map/whatever is it drops the errors and
-        //they're never seen/handled. Not that we're doing much of that right now
-        if (errors) {
-          alert(errors);
+  /**
+   * Removes tag deselected by the user and adds it back to the list of tags not in use
+   * @param tagToRemove tag that's been deselected by the user
+   */
+
+  // there's some duplication in this code
+  async remove(tagToRemove: string): Promise<void> {
+    this.responsesService
+      .modifyTag({
+        where: { id: this.response.id },
+        data: { tags: { disconnect: [{ value: tagToRemove }] } },
+      })
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          //Placeholder
         }
-        if (data) {
-          this.openedDate = data.findUniqueFeedbackResponse.openedDate;
-
-          // Clear contents of QA array
-          this.questionsAnswers = [];
-          this.comments = [];
-
-          // Handle the Questions & Answers
-          data.findUniqueFeedbackResponse.answers?.forEach((answer) => {
-            // Clear contents of QA array
-            // Create the Question/Answer Array
-            this.questionsAnswers.push([
-              String(answer?.question?.value),
-              answer.value,
-            ]);
-          });
-
-          this.comments = data.findUniqueFeedbackResponse.comments;
-
-          this.actualResolution = data.findUniqueFeedbackResponse['resolved'];
-
-          this.selectedActionTags = data.findUniqueFeedbackResponse['tags']
-            ?.filter((tag) => tag.type == 'Action')
-            .map((tag) => tag.value);
-
-          this.selectedTrackingTags = data.findUniqueFeedbackResponse['tags']
-            ?.filter((tag) => tag.type == 'Resolution')
-            .map((tag) => tag.value);
-        }
-      }
-    );
+      });
   }
-
-  displayIssue(pageEvent: PageEvent): PageEvent {
-    if (pageEvent) {
-      //TODO rewrite with proper pagination
-      this.displayedIndex = pageEvent.pageIndex;
-      this.getResponseData(this.responseIDs[this.displayedIndex]);
-    }
-    return pageEvent;
-  }
-
-  //#endregion
-
-  //#region Tag functions
 
   /**
    * User selects a tag from the list of unused and the list of unused tags is updated
@@ -226,7 +256,9 @@ export class ResponsesComponent implements OnInit {
    */
 
   // There is a bug where if the user types and then deletes their input, the possible tags will not repopulate
-  add(event: MatChipInputEvent | MatAutocompleteSelectedEvent): void {
+  async add(
+    event: MatChipInputEvent | MatAutocompleteSelectedEvent
+  ): Promise<void> {
     let input =
       (event as MatChipInputEvent).value ??
       (event as MatAutocompleteSelectedEvent).option.value;
@@ -242,41 +274,19 @@ export class ResponsesComponent implements OnInit {
     if (this.allTags.includes(input)) {
       this.responsesService
         .modifyTag({
-          where: { id: this.responseIDs[this.displayedIndex] },
+          where: { id: this.response.id },
           data: { tags: { connect: [{ value: input }] } },
         })
-        .subscribe(({ data, errors }) => {
+        .subscribe(() => {
           //Placeholder
         });
     }
   }
 
-  remove(tagToRemove: string): void {
-    this.responsesService
-      .modifyTag({
-        where: { id: this.responseIDs[this.displayedIndex] },
-        data: { tags: { disconnect: [{ value: tagToRemove }] } },
-      })
-      .subscribe(({ data, errors }) => {
-        if (!errors && data) {
-          //Placeholder
-        }
-      });
+  //TODO: This will need to be made into a function at the application level.
+  async reload(): Promise<void> {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['./'], { relativeTo: this.route });
   }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    // If the user already has the tag, don't add it again
-    this.responsesService
-      .modifyTag({
-        where: { id: this.responseIDs[this.displayedIndex] },
-        data: { tags: { connect: [{ value: event.option.viewValue }] } },
-      })
-      .subscribe(({ data, errors }) => {
-        if (!errors && data) {
-          //Placeholder
-        }
-      });
-  }
-
-  //#endregion
 }

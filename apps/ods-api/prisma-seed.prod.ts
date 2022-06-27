@@ -1,9 +1,11 @@
 /* eslint-disable complexity */
 import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
+
 import { hash } from 'bcryptjs';
 
 //TODO refactor to not repeat code so much(DRY) - like the org/tag are done
+//TODO copied this from dev, update with production values
 
 const prisma = new PrismaClient();
 
@@ -79,37 +81,8 @@ const orgSeed: Prisma.OrgCreateInput[] = [
   },
 ];
 
-const tagSeed: Prisma.TagCreateInput[] = [
-  // Data tracking tags
-  { value: 'Gender', type: 'Resolution' },
-  { value: 'Sexism', type: 'Resolution' },
-  { value: 'Race', type: 'Resolution' },
-  { value: 'Racism', type: 'Resolution' },
-  { value: 'Sexuality', type: 'Resolution' },
-  { value: 'Gender Identity', type: 'Resolution' },
-  { value: 'Religion', type: 'Resolution' },
-  { value: 'Mental Health', type: 'Resolution' },
-  { value: 'Minority', type: 'Resolution' },
-  { value: 'Marginalized', type: 'Resolution' },
-  { value: 'Mental Illness', type: 'Resolution' },
-  { value: 'Rank', type: 'Resolution' },
-  { value: 'Observed', type: 'Resolution' },
-  { value: 'Experienced', type: 'Resolution' },
-  { value: 'Other', type: 'Resolution' },
-  { value: 'Harassment', type: 'Resolution' },
-  { value: 'Assault', type: 'Resolution' },
-  { value: 'Discrimination', type: 'Resolution' },
-
-  // Action tags
-  { value: 'Addressed in organizational all-call', type: 'Action' },
-  { value: 'Spoke with organizational leadership', type: 'Action' },
-  { value: 'Brought in external agency to educate', type: 'Action' },
-  { value: 'Offered educational workshops', type: 'Action' },
-  { value: 'Distributed educational material', type: 'Action' },
-  { value: 'Routed up the chain of command', type: 'Action' },
-];
-
 async function main() {
+  console.log(`Start seeding ...`);
   // Upsert Orgs
   for (const org of orgSeed) {
     try {
@@ -126,27 +99,6 @@ async function main() {
           name: org.name,
           orgTier: org.orgTier,
           parent: org.parent,
-        },
-      });
-    } catch (e) {
-      if (!(e instanceof PrismaClientKnownRequestError)) {
-        throw e;
-      }
-    }
-  }
-  // Upsert Tags
-  for (const tag of tagSeed) {
-    try {
-      await prisma.tag.upsert({
-        where: {
-          value: tag.value,
-        },
-        update: {
-          value: tag.value,
-        },
-        create: {
-          value: tag.value,
-          type: tag.type,
         },
       });
     } catch (e) {
@@ -244,7 +196,6 @@ async function main() {
         firstName: 'Kenneth',
         lastName: 'Voigt',
         grade: 'O-6',
-        enabled: true,
       },
     });
 
@@ -261,7 +212,6 @@ async function main() {
         firstName: 'Keven',
         lastName: 'Coyle',
         grade: 'O-6',
-        enabled: true,
       },
     });
 
@@ -278,7 +228,6 @@ async function main() {
         firstName: 'Emmanuel',
         lastName: 'Matos',
         grade: 'O-5',
-        enabled: true,
       },
     });
 
@@ -311,7 +260,6 @@ async function main() {
         firstName: 'Henry',
         lastName: 'Henderson',
         grade: 'O-5',
-        enabled: true,
       },
     });
   }
@@ -339,6 +287,8 @@ async function main() {
       throw e;
     }
   }
+
+  console.log(`Seeding finished.`);
 }
 
 main()

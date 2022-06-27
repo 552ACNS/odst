@@ -1,0 +1,40 @@
+name: docker
+
+on:
+  push:
+    branches:
+      - 'master'
+      # - 'dev'
+
+env:
+  REGISTRY: ghcr.io
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Install Dependencies'
+        run: npm i nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
+
+      #TODO set image tags automatically based on project version
+      - name: 'nx docker'
+        run: npx nx affected --target=docker --push=true
+
+      - name: 'nx docker-migrate'
+        run: npx nx affected --target=docker-migrate --push=true

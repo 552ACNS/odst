@@ -34,16 +34,18 @@ export class FeedbackResolver {
 
   //TODO write tests for this
   @Public()
-  @Mutation(() => Feedback, { name: 'createFeedbackWithQuestions' })
+  @Mutation(() => String, { name: 'createFeedbackWithQuestions' })
   async createWithQuestions(
     @Args({ name: 'questionValues', type: () => [String] })
     questionValues: string[],
     @Args('orgWhereUniqueInput') orgWhereUniqueInput: OrgWhereUniqueInput
-  ): Promise<Feedback | null> {
-    return this.feedbackService.createWithQuestions(
-      questionValues,
-      orgWhereUniqueInput
-    );
+  ): Promise<string | null> {
+    return (
+      await this.feedbackService.createWithQuestions(
+        questionValues,
+        orgWhereUniqueInput
+      )
+    ).id;
   }
 
   @Mutation(() => Feedback, { name: 'updateFeedback' })
