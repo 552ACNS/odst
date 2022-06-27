@@ -7,5 +7,6 @@ query FeedbackResponseByID(
     openedDate
     closedDate
     resolved
+    id
   }
 }

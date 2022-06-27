@@ -371,6 +371,7 @@ type TrackedFeedback {
   openedDate: DateTime!
   closedDate: DateTime
   resolved: Boolean!
+  reviewerId: String
 }
 
 type Query {

@@ -103,15 +103,44 @@ export class FeedbackResponseService {
 
   async feedbackResponseByID(
     feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
-  ): Promise<TrackedFeedback | null> {
-    return this.prisma.feedbackResponse.findUnique({
+  ): Promise<string> {
+    const result = await this.prisma.feedbackResponse.findUnique({
       where: feedbackResponseWhereUniqueInput,
       select: {
         openedDate: true,
         closedDate: true,
         resolved: true,
+        tags: {
+          where: {
+            types: {
+              equals: 'resolution',
+            },
+          },
+        },
+        reviewedBy: {
+          select: {
+            grade: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
       },
     });
+
+    return JSON.stringify(result);
+
+    // let fuck = await this.prisma.feedbackResponse.findUnique({
+    //   where: feedbackResponseWhereUniqueInput,
+    //   include:{
+    //     reviewedBy:{
+    //       select:{
+    //         grade: true,
+    //         firstName: true,
+    //         lastName: true,
+    //       }
+    //     }
+    //   }
+    // });
   }
 
   async create(
