@@ -4,7 +4,6 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AnswerService {
-  F;
   constructor(private prisma: PrismaService) {}
 
   async question(
