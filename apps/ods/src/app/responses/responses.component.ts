@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
 import { UntypedFormBuilder } from '@angular/forms';
@@ -22,20 +22,11 @@ export class ResponsesComponent implements OnInit {
     comment: [''],
   });
 
-  possibleTags: string[];
-
   actionTags: string[];
 
   selectedActionTags: string[] | undefined = [];
 
   trackingTags: string[];
-
-  constructor(
-    private fb: UntypedFormBuilder,
-    private responsesService: ResponsesService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
 
   selectedTrackingTags: string[] | undefined = [];
 
@@ -47,7 +38,6 @@ export class ResponsesComponent implements OnInit {
 
   AddCommentMutationVariables: AddCommentMutationVariables;
 
-  newComment = '';
   // TODO [ODST-291]: Change resolved status back to bool
   status: string;
 
@@ -65,9 +55,15 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   take = 1;
+
   response: GetReportByStatusQuery['getIssuesByStatus'][0];
 
-  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+  constructor(
+    private fb: UntypedFormBuilder,
+    private responsesService: ResponsesService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   //region Main functions
   async ngOnInit(): Promise<void> {
@@ -115,21 +111,10 @@ export class ResponsesComponent implements OnInit {
         if (this.numberOfResponses !== 0) {
           this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
         }
+
         //took the get data method and put it in our new method, this one
-        switch (this.status) {
-          case 'unresolved':
-            this.numberOfResponses = data.ResponseCount.unresolved;
-            this.pageEvent.length = data.ResponseCount.unresolved;
-            break;
-          case 'resolved':
-            this.numberOfResponses = data.ResponseCount.resolved;
-            this.pageEvent.length = data.ResponseCount.resolved;
-            break;
-          case 'overdue':
-            this.numberOfResponses = data.ResponseCount.overdue;
-            this.pageEvent.length = data.ResponseCount.overdue;
-            break;
-        }
+        this.numberOfResponses = data.ResponseCount[this.status];
+        this.pageEvent.length = data.ResponseCount[this.status];
 
         //getIssuesByStatus invokes findMany, which returns an array.
         //This turns single element array into just the datatype.
