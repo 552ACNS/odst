@@ -6,10 +6,10 @@ on:
       - 'master'
       # - 'dev'
       - docker-recreate-images
-  pull_request:
-    branches:
-      - 'master'
-      - 'dev'
+  # pull_request:
+  #   branches:
+  #     - 'master'
+  #     - 'dev'
 
 #TODO is there a way to test if image can be built based on PR code? without doing the whole pipeline. build to first stage w/o pushing?
 
@@ -42,42 +42,52 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Derive appropriate SHAs for base and head for `nx affected` commands
-      #   uses: nrwl/nx-set-shas@v2
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
 
-      # - run: |
-      #     echo "BASE: ${{ env.NX_BASE }}"
-      #     echo "HEAD: ${{ env.NX_HEAD }}"
-
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
       - name: 'Install nx'
         run: npm i nx --ignore-scripts --legacy-peer-deps --progress=false --audit=false --loglevel=error
 
-      #region on push: build and push images to registry
       - name: 'nx docker'
         run: npx nx affected --target=docker --push=true
-        if: ${{ github.event_name != 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          INPUT_TARGET: deploy
 
       - name: 'nx docker-migrate'
         run: npx nx affected --target=docker-migrate --push=true
-        if: ${{ github.event_name != 'pull_request' }}
         env:
           INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #endregion
 
-      #region on PR: only build to first stage
-      - name: 'nx docker'
-        run: npx nx affected --target=docker
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          INPUT_TARGET: build
+    #Ifs to save
+    # #region on push: build and push images to registry
+    # - name: 'nx docker'
+    #   run: npx nx affected --target=docker --push=true
+    #   if: ${{ github.event_name != 'pull_request' }}
+    #   env:
+    #     INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     INPUT_TARGET: deploy
 
-      - name: 'nx docker-migrate'
-        run: npx nx affected --target=docker-migrate
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #endregion
+    # - name: 'nx docker-migrate'
+    #   run: npx nx affected --target=docker-migrate --push=true
+    #   if: ${{ github.event_name != 'pull_request' }}
+    #   env:
+    #     INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # #endregion
+
+    # #region on PR: only build to first stage
+    # - name: 'nx docker'
+    #   run: npx nx affected --target=docker
+    #   if: ${{ github.event_name == 'pull_request' }}
+    #   env:
+    #     INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     INPUT_TARGET: build
+
+    # - name: 'nx docker-migrate'
+    #   run: npx nx affected --target=docker-migrate
+    #   if: ${{ github.event_name == 'pull_request' }}
+    #   env:
+    #     INPUT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # #endregion
