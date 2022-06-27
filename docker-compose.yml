@@ -1,8 +1,6 @@
 # Downgraded to 3.7 to ensure it works with non-docker desktop
 version: '3.7'
 
-#TODO change tag to latest, once stuff is created off of master
-
 services:
   postgres:
     container_name: postgres
@@ -10,56 +8,10 @@ services:
     restart: unless-stopped
     volumes:
       - postgres-vol:/var/lib/postgresql/data
-    #exposing port is not required for production if all containers are on same machine
     ports:
-      - '${DATABASE_PORT}:5432'
+      - '5432:5432'
     environment:
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-    networks:
-      - odst-network
-
-  ods-api:
-    container_name: ods-api
-    image: ghcr.io/552acns/ods-api:docker-recreate-images
-    ports:
-      - '${BACKEND_PORT}:3343'
-    environment:
-      - NX_DATABASE_URL=${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
-      - NX_CHECKPOINT_DISABLE=${BACKEND_CHECKPOINT_DISABLE}
-      - NX_JWT_SECRET=${BACKEND_JWT_SECRET}
-      - NX_JWT_REFRESH_SECRET=${BACKEND_JWT_REFRESH_SECRET}
-      #TODO if this isn't set, don't create admin account. Or require it, so it can never be unset.
-      - NX_DEV_ACCOUNT_PASSWORD=${BACKEND_ACCOUNT_PASSWORD}
-    depends_on:
-      - postgres
-    networks:
-      - odst-network
-
-  ods:
-    container_name: ods
-    image: ghcr.io/552acns/ods:docker-recreate-images
-    environment:
-      - NX_GQL_ENDPOINT=http://${BACKEND_HOST}:${BACKEND_PORT}/graphql
-    ports:
-      - '${FRONTEND_PORT}:80'
-    depends_on:
-      - ods-api
-    networks:
-      - odst-network
-
-  ods-migrate:
-    container_name: ods-migrate
-    image: ghcr.io/552acns/ods-migrate:docker-recreate-images
-    #env vars need to be specified in assets/env.template.js
-    environment:
-      - NX_DATABASE_URL=${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABSE_PORT}/${DATABASE_NAME}
-    depends_on:
-      - postgres
-    networks:
-      - odst-network
-
-networks:
-  odst-network:
+      - POSTGRES_PASSWORD=H@CK3YITPL3ASE
 
 volumes:
   postgres-vol:
