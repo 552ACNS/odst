@@ -33,7 +33,7 @@ export class SelectTagsComponent {
 
   tagCtrl = new FormControl();
 
-  filteredTags;
+  filteredTags: string[] = [];
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
   //#endregion
