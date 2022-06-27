@@ -137,7 +137,11 @@
           My Commander was involved.</mat-checkbox
         >
       </section>
-      <mat-card *ngIf="submitSuccess" class="mt-3">
+      <!-- TODO: get color better -->
+      <mat-card
+        *ngIf="submitSuccess"
+        class="mt-3 bg-green-500 bg-opacity-50 border-2 border-green-400"
+      >
         <mat-card-content class="text-sm space-y-3 text-justify">
           <p>
             Your report has been successfully submitted! Please use the

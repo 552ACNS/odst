@@ -157,6 +157,11 @@ export class ResponsesComponent implements OnInit {
           closedDate: {
             set: Date.now(),
           },
+          reviewedBy: {
+            connect: {
+              id: this.userId,
+            },
+          },
         },
       };
     } else {
@@ -171,10 +176,12 @@ export class ResponsesComponent implements OnInit {
           closedDate: {
             set: null,
           },
+          reviewedBy: {
+            disconnect: true,
+          },
         },
       };
     }
-
     this.responsesService
       .updateResolved(updateResolvedMutationVariables)
       .subscribe(({ data, errors }) => {

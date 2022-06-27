@@ -31,6 +31,7 @@ model User {
   refreshToken RefreshToken?
   orgs         Org[]
   comments     Comment[]
+  reviewedResponses FeedbackResponse[]
 }
 
 model RefreshToken {
@@ -65,8 +66,8 @@ model FeedbackResponse {
   tags         Tag[]
   comments     Comment[]
   resolved     Boolean   @default(false)
-  // reviewer     User     @relation(fields: [reviewerId], references: [id])
-  // reviewerId   String
+  reviewedBy   User?     @relation(fields: [reviewerId], references: [id])
+  reviewerId   String?
 }
 
 model Comment {
