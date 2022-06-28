@@ -1,5 +1,6 @@
 import { JwtPayload, JwtPayloadRefresh } from '@odst/shared/nest';
 import jwt_decode from 'jwt-decode';
+import { getRefreshToken } from './clientState';
 //TODO [ODST-312] move to auth lib?
 //These are used in gql.module, which is not async, so made these not async
 
@@ -30,7 +31,8 @@ export function jsonTypeConverter(
   return result;
 }
 
-export function getUserId(token: string): string {
-  const jwt = jwt_decode(token) as JwtPayload;
+//TODO redo with id token instead - [ODST-289]
+export function getUserId(): string {
+  const jwt = jwt_decode(getRefreshToken() ?? '') as JwtPayload;
   return jwt.sub;
 }

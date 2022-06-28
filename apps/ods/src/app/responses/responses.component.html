@@ -31,43 +31,17 @@
       </mat-card>
     </section>
     <div class="space-y-3">
-      <!-- TAGS -->
+      <!-- TRACKING TAGS -->
       <ng-container>
         <h2 class="text-center">Tags</h2>
         <mat-card class="pb-0">
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Tags for Response</mat-label>
-            <!-- Represents all the chips that are selected -->
-            <mat-chip-list #chipList>
-              <mat-chip
-                *ngFor="let tags of selectedTags"
-                (removed)="remove(tags)"
-              >
-                {{ tags }}
-                <button matChipRemove>
-                  <!-- When a tag is removed, call the remove function for that tag -->
-                  <mat-icon>cancel</mat-icon>
-                </button>
-              </mat-chip>
-              <input
-                placeholder="Add Another Tag..."
-                #tagInput
-                [formControl]="tagCtrl"
-                [matAutocomplete]="auto"
-                [matChipInputFor]="chipList"
-                (matChipInputTokenEnd)="add($event)"
-                (input)="generatePossibleTags()"
-              />
-            </mat-chip-list>
-            <mat-autocomplete
-              #auto="matAutocomplete"
-              (optionSelected)="selected($event)"
-            >
-              <mat-option *ngFor="let tag of possibleTags" [value]="tag">
-                {{ tag }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
+          <select-tags
+            [tags]="trackingTags"
+            [selectedTags]="selectedTrackingTags"
+            [tagType]="'Tracking'"
+            (add)="add($event)"
+            (remove)="remove($event)"
+          ></select-tags>
         </mat-card>
       </ng-container>
 
@@ -214,6 +188,14 @@
               <textarea matInput [formControlName]="'comment'" rows="3">
               </textarea>
             </mat-form-field>
+            <!-- ACTION TAGS -->
+            <select-tags
+              [tags]="actionTags"
+              [selectedTags]="selectedActionTags"
+              [tagType]="'Action'"
+              (add)="add($event)"
+              (remove)="remove($event)"
+            ></select-tags>
             <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
               <button
                 mat-stroked-button

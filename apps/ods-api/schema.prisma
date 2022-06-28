@@ -104,7 +104,13 @@ model Question {
 model Tag {
   id                String             @id @default(uuid())
   value             String             @unique
+  type              TagType
   feedbackResponses FeedbackResponse[]
+}
+
+enum TagType {
+  Resolution
+  Action
 }
 
 enum Role {
