@@ -12,7 +12,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
-import { ResponseCount, TrackedFeedback } from '../__types__';
+import { ResponseCount } from '../__types__';
 
 @Injectable()
 export class FeedbackResponseService {
@@ -110,20 +110,20 @@ export class FeedbackResponseService {
         openedDate: true,
         closedDate: true,
         resolved: true,
-        tags: {
-          where: {
-            types: {
-              equals: 'resolution',
-            },
-          },
-        },
-        reviewedBy: {
-          select: {
-            grade: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
+        // tags: {
+        //   where: {
+        //     types: {
+        //       equals: 'resolution',
+        //     },
+        //   },
+        // },
+        // reviewedBy: {
+        //   select: {
+        //     grade: true,
+        //     firstName: true,
+        //     lastName: true,
+        //   },
+        // },
       },
     });
 
@@ -143,11 +143,14 @@ export class FeedbackResponseService {
     // });
   }
 
-  async create(
-    data: Prisma.FeedbackResponseCreateInput
-  ): Promise<FeedbackResponse> {
+  async create(data: Prisma.FeedbackResponseCreateInput): Promise<{
+    id: string;
+  }> {
     return this.prisma.feedbackResponse.create({
       data,
+      select: {
+        id: true,
+      },
     });
   }
 
@@ -249,23 +252,25 @@ export class FeedbackResponseService {
     }
     return whereIssues;
   }
-
-  async getIssuesByStatus(resolved: string, user: User): Promise<string[]> {
-    return this.prisma.feedbackResponse
-      .findMany({
-        where: {
-          ...this.determineStatus(resolved),
-          ...(await this.getWhere(user)),
-        },
-        select: {
-          id: true,
-        },
-        orderBy: {
-          openedDate: 'desc',
-        },
-      })
-      .then((responses) => responses.map((response) => response.id));
-    //TODO Not ideal. frontend is doing some wonky delayed loading. Should just return all issues, or paginate them.
+  //gets the feedback response based on issue and index it is queired on and returns a feedback response object
+  async getIssuesByStatus(
+    status: string,
+    user: User,
+    skip: number,
+    take: number
+  ): Promise<FeedbackResponse[]> {
+    return this.prisma.feedbackResponse.findMany({
+      skip: skip,
+      take: take,
+      where: {
+        ...this.determineStatus(status),
+        ...(await this.getWhere(user)),
+      },
+      orderBy: {
+        openedDate: 'desc',
+      },
+    });
+    // .then((responses) => responses.map((response) => response.id));
     //Using the findMany above so as to not repeat stuff in the servicer
   }
 

@@ -19,6 +19,7 @@ import {
   Comment,
   FeedbackResponseAggregateArgs,
   UpdateOneFeedbackResponseArgs,
+  FindManyFeedbackResponseArgs,
 } from '@odst/types/ods';
 import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
@@ -66,13 +67,15 @@ export class FeedbackResponseResolver {
     );
   }
 
-  @Mutation(() => FeedbackResponse, { name: 'createFeedbackResponse' })
+  @Mutation(() => String, { name: 'createFeedbackResponse' })
   @Public()
   async create(
     @Args('feedbackResponseCreateInput')
     feedbackResponseCreateInput: FeedbackResponseCreateInput
-  ): Promise<FeedbackResponse> {
-    return this.feedbackResponseService.create(feedbackResponseCreateInput);
+  ): Promise<string> {
+    return (
+      await this.feedbackResponseService.create(feedbackResponseCreateInput)
+    ).id;
   }
 
   @Mutation(() => FeedbackResponse, { name: 'updateFeedbackResponse' })
@@ -97,13 +100,21 @@ export class FeedbackResponseResolver {
     return this.feedbackResponseService.countResponses(user);
   }
 
-  // TODO write tests for this
-  @Query(() => [String], { name: 'getIssuesByStatus' })
+  // TODO: Use the FindManyFeedbackResponse to use where instead of string status.
+  //TODO: pass whole object of FindManyFeedbackResponseArgs instead of deconstructing object
+  @Query(() => [FeedbackResponse], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
-    @Args('resolved') resolved: string,
-    @GetCurrentUser() user: User
-  ): Promise<string[]> {
-    return this.feedbackResponseService.getIssuesByStatus(resolved, user);
+    @Args('status') status: string,
+    @GetCurrentUser() user: User,
+    @Args() findManyFeedbackResponseArgs: FindManyFeedbackResponseArgs
+  ): Promise<FeedbackResponse[]> {
+    const { skip, take } = findManyFeedbackResponseArgs;
+    return this.feedbackResponseService.getIssuesByStatus(
+      status,
+      user,
+      Number(skip),
+      Number(take)
+    );
   }
 
   @ResolveField(() => [Answer])

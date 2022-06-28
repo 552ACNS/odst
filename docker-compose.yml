@@ -5,12 +5,13 @@ services:
   postgres:
     container_name: postgres
     image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
+    restart: unless-stopped
+    volumes:
+      - postgres-vol:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
     environment:
       - POSTGRES_PASSWORD=H@CK3YITPL3ASE
-    ports:
-      - '5432:5432/tcp'
-    networks:
-      - waypoint-network
 
-networks:
-  waypoint-network:
+volumes:
+  postgres-vol:

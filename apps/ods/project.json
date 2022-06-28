@@ -54,6 +54,28 @@
       },
       "defaultConfiguration": "production"
     },
+    "docker": {
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "metadata": {
+          "load": true,
+          "images": ["ghcr.io/552acns/ods"],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=semver,pattern={{version}}",
+            "type=semver,pattern={{major}}.{{minor}}",
+            "type=semver,pattern={{major}}",
+            "type=sha,prefix="
+          ],
+          "flavor": ["latest=auto"]
+        },
+        "cache-from": ["type=gha"],
+        "cache-to": ["type=gha,mode=max"]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {

@@ -25,6 +25,53 @@
             }
           ]
         }
+      },
+      "defaultConfiguration": "production"
+    },
+    "docker": {
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "metadata": {
+          "load": true,
+          "images": ["ghcr.io/552acns/ods-api"],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=semver,pattern={{version}}",
+            "type=semver,pattern={{major}}.{{minor}}",
+            "type=semver,pattern={{major}}",
+            "type=sha,prefix="
+          ],
+          "flavor": ["latest=auto"]
+        },
+        "cache-from": ["type=gha"],
+        "cache-to": ["type=gha,mode=max"]
+      }
+    },
+    "docker-migrate": {
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "file": "Dockerfile.migrate",
+        "context": "./apps/ods-api",
+        "metadata": {
+          "load": true,
+          "images": ["ghcr.io/552acns/ods-migrate"],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=semver,pattern={{version}}",
+            "type=semver,pattern={{major}}.{{minor}}",
+            "type=semver,pattern={{major}}",
+            "type=sha,prefix="
+          ],
+          "flavor": ["latest=auto"]
+        },
+        "cache-from": ["type=gha"],
+        "cache-to": ["type=gha,mode=max"]
       }
     },
     "lint": {
@@ -67,8 +114,8 @@
         "test": {
           "command": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
         },
-        "production": {
-          "command": "env-cmd -f apps/ods-api/.env.prod prisma migrate dev"
+        "migrate": {
+          "command": "env-cmd -f apps/ods-api/.env.local prisma migrate dev"
         }
       }
     },

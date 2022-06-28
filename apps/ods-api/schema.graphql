@@ -46,8 +46,14 @@ type TagCount {
 type Tag {
   id: ID!
   value: String!
+  type: TagType!
   feedbackResponses: [FeedbackResponse!]
   _count: TagCount!
+}
+
+enum TagType {
+  Resolution
+  Action
 }
 
 type FeedbackResponseCount {
@@ -312,17 +318,20 @@ type RefreshTokenMaxAggregate {
 type TagCountAggregate {
   id: Int!
   value: Int!
+  type: Int!
   _all: Int!
 }
 
 type TagMinAggregate {
   id: String
   value: String
+  type: TagType
 }
 
 type TagMaxAggregate {
   id: String
   value: String
+  type: TagType
 }
 
 type UserCountAggregate {
@@ -380,14 +389,15 @@ type Query {
   feedbackResponseByID(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): TrackedFeedback!
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
   ResponseCount: ResponseCount!
-  getIssuesByStatus(resolved: String!): [String!]!
+  getIssuesByStatus(status: String!, where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, distinct: [FeedbackResponseScalarFieldEnum!]): [FeedbackResponse!]!
   getOrgLineage: [String!]!
   getOrgNames: [String!]!
-  getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [Question!]!
+  getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [String!]!
   findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
-  getCommanders: [User!]!
+  getCommanders: [String!]!
   me: User!
   findManyAccountRequests: [User!]!
+  getTags: [Tag!]!
   usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
@@ -738,7 +748,22 @@ input TagWhereInput {
   NOT: [TagWhereInput!]
   id: StringFilter
   value: StringFilter
+  type: EnumTagTypeFilter
   feedbackResponses: FeedbackResponseListRelationFilter
+}
+
+input EnumTagTypeFilter {
+  equals: TagType
+  in: [TagType!]
+  notIn: [TagType!]
+  not: NestedEnumTagTypeFilter
+}
+
+input NestedEnumTagTypeFilter {
+  equals: TagType
+  in: [TagType!]
+  notIn: [TagType!]
+  not: NestedEnumTagTypeFilter
 }
 
 input FeedbackResponseOrderByWithRelationInput {
@@ -791,6 +816,43 @@ input TagOrderByRelationAggregateInput {
 
 input CommentOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input FeedbackResponseCountAggregateInput {
+  id: Boolean
+  feedbackId: Boolean
+  openedDate: Boolean
+  closedDate: Boolean
+  routeOutside: Boolean
+  resolved: Boolean
+  _all: Boolean
+}
+
+input FeedbackResponseMinAggregateInput {
+  id: Boolean
+  feedbackId: Boolean
+  openedDate: Boolean
+  closedDate: Boolean
+  routeOutside: Boolean
+  resolved: Boolean
+}
+
+input FeedbackResponseMaxAggregateInput {
+  id: Boolean
+  feedbackId: Boolean
+  openedDate: Boolean
+  closedDate: Boolean
+  routeOutside: Boolean
+  resolved: Boolean
+}
+
+enum FeedbackResponseScalarFieldEnum {
+  id
+  feedbackId
+  openedDate
+  closedDate
+  routeOutside
+  resolved
 }
 
 input UserOrderByWithRelationInput {
@@ -866,11 +928,11 @@ enum UserScalarFieldEnum {
 }
 
 type Mutation {
-  createFeedbackWithQuestions(questionValues: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): Feedback!
+  createFeedbackWithQuestions(questionValues: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): String!
   updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
-  createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): FeedbackResponse!
+  createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): String!
   updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
-  createUser(userCreateInput: UserCreateInput!): User!
+  createUser(userCreateInput: UserCreateInput!): String!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
   login(loginUserInput: LoginUserInput!): Tokens!
@@ -1068,6 +1130,7 @@ input TagCreateNestedManyWithoutFeedbackResponsesInput {
 input TagCreateWithoutFeedbackResponsesInput {
   id: String
   value: String!
+  type: TagType!
 }
 
 input TagCreateOrConnectWithoutFeedbackResponsesInput {
@@ -1729,6 +1792,11 @@ input TagUpsertWithWhereUniqueWithoutFeedbackResponsesInput {
 input TagUpdateWithoutFeedbackResponsesInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
+  type: EnumTagTypeFieldUpdateOperationsInput
+}
+
+input EnumTagTypeFieldUpdateOperationsInput {
+  set: TagType
 }
 
 input TagUpdateWithWhereUniqueWithoutFeedbackResponsesInput {
@@ -1747,11 +1815,13 @@ input TagScalarWhereInput {
   NOT: [TagScalarWhereInput!]
   id: StringFilter
   value: StringFilter
+  type: EnumTagTypeFilter
 }
 
 input TagUpdateManyMutationInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
+  type: EnumTagTypeFieldUpdateOperationsInput
 }
 
 input CommentUpdateManyWithoutFeedbackResponseInput {

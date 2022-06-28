@@ -1,51 +1,46 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { UntypedFormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   AddCommentMutationVariables,
-  FindUniqueFeedbackResponseQuery,
+  GetReportByStatusQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
-import { getRefreshToken, getUserId } from '@odst/helpers';
+import { getUserId } from '@odst/helpers';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-
+import { reloadPage } from '@odst/helpers';
 @Component({
   selector: 'odst-responses',
   templateUrl: './responses.component.html',
   styleUrls: ['./responses.component.scss'],
 })
 export class ResponsesComponent implements OnInit {
+  //#region Variables
   resolutionForm = this.fb.group({
     comment: [''],
   });
 
-  tagCtrl = new UntypedFormControl();
+  actionTags: string[];
 
-  possibleTags: string[] = [];
+  selectedActionTags: string[] | undefined = [];
 
-  selectedTags: string[] | undefined = [];
+  trackingTags: string[];
+
+  selectedTrackingTags: string[] | undefined = [];
 
   allTags: string[] = [];
 
-  constructor(
-    private fb: UntypedFormBuilder,
-    private responsesService: ResponsesService,
-    private route: ActivatedRoute
-  ) {}
-
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
-  comments: FindUniqueFeedbackResponseQuery['findUniqueFeedbackResponse']['comments'] =
-    [];
+  comments: GetReportByStatusQuery['getIssuesByStatus'][0]['comments'] = [];
 
   AddCommentMutationVariables: AddCommentMutationVariables;
 
-  newComment = '';
   // TODO [ODST-291]: Change resolved status back to bool
-  resolved: string;
+  status: string;
 
   // This is for the toggle button
   actualResolution: boolean;
@@ -55,63 +50,121 @@ export class ResponsesComponent implements OnInit {
   userId: string;
 
   numberOfResponses: number;
-  displayedIndex: number;
 
-  responseIDs: string[] = [];
+  displayedIndex: number;
 
   pageEvent: PageEvent;
 
-  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+  take = 1;
 
-  async ngOnInit() {
-    this.userId = getUserId(getRefreshToken() ?? '');
+  response: GetReportByStatusQuery['getIssuesByStatus'][0];
+  //#endregion
 
-    this.allTags = this.responsesService.getTags();
-    this.generatePossibleTags();
+  constructor(
+    private fb: UntypedFormBuilder,
+    private responsesService: ResponsesService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  //#region Main functions
+  async ngOnInit(): Promise<void> {
+    this.getFeedback(0);
+  }
+
+  //uses this method in lieu of displaydata method(which was deleted)
+  handlePageEvent(pageEvent: PageEvent): PageEvent {
+    if (pageEvent) {
+      this.displayedIndex = pageEvent.pageIndex;
+
+      this.getFeedback(this.displayedIndex);
+    }
+    return pageEvent;
+  }
+
+  async getFeedback(index: number): Promise<void> {
+    this.responsesService.getTags().subscribe(({ data }) => {
+      this.actionTags = data.getTags
+        .filter((tag) => tag.type == 'Action')
+        .map((tag) => tag.value)
+        .sort();
+      this.trackingTags = data.getTags
+        .filter((tag) => tag.type == 'Resolution')
+        .map((tag) => tag.value)
+        .sort();
+      this.allTags = data.getTags.map((tag) => tag.value).sort();
+    });
 
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
-      this.resolved = params['resolved'];
+      this.status = params['resolved'];
     });
-
+    //method takes the status of the response, the index its querying for, and the number of responses to take
     (
-      await this.responsesService.getResponseIDsByStatus(this.resolved)
-    ).subscribe((data) => {
-      this.responseIDs = data;
-      this.numberOfResponses = data.length;
+      await this.responsesService.getReportByStatus(
+        this.status,
+        index,
+        this.take
+      )
+    )
+      // eslint-disable-next-line complexity
+      .subscribe(({ data }) => {
+        //it then uses the data to determin the current status and gets and displays the other appropriate data
+        if (this.numberOfResponses !== 0) {
+          this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+        }
 
-      if (this.numberOfResponses !== 0) {
-        this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+        //took the get data method and put it in our new method, this one
+        this.numberOfResponses = data.ResponseCount[this.status];
+        this.pageEvent.length = data.ResponseCount[this.status];
 
-        // navigate to that issue
-        this.displayIssue(this.pageEvent);
-      }
-    });
+        //getIssuesByStatus invokes findMany, which returns an array.
+        //This turns single element array into just the datatype.
+        //Use this instead of data.getIssuesByStatus
+        this.response = data.getIssuesByStatus[0];
+
+        this.openedDate = this.response.openedDate;
+
+        // Clear contents of QA array
+        this.questionsAnswers = [];
+        this.comments = [];
+
+        // Handle the Questions & Answers
+        this.response.answers?.forEach((answer) => {
+          // Clear contents of QA array
+          // Create the Question/Answer Array
+          this.questionsAnswers.push([
+            String(answer?.question?.value),
+            answer.value,
+          ]);
+        });
+
+        this.comments = this.response.comments;
+
+        this.actualResolution = this.response['resolved'];
+
+        //TODO don't hardcode tag types
+        this.selectedActionTags = this.response['tags']
+          ?.filter((tag) => tag.type == 'Action')
+          .map((tag) => tag.value);
+
+        this.selectedTrackingTags = this.response['tags']
+          ?.filter((tag) => tag.type == 'Resolution')
+          .map((tag) => tag.value);
+      });
   }
 
   /**
    * Creates a list of tags that can be added by filtering out those already in use
    */
-  generatePossibleTags() {
-    this.possibleTags = this.allTags.filter(
-      (tag) => !this.selectedTags?.includes(tag)
-    );
+  async submitComment(): Promise<void> {
+    this.userId = getUserId();
 
-    const input = this.tagInput?.nativeElement.value.trim().toLowerCase();
-
-    if (input) {
-      this.possibleTags = this.possibleTags.filter((tag) =>
-        tag.toLowerCase().includes(input)
-      );
-    }
-  }
-
-  submitComment() {
     // if the resolution field is not empty after a trim
     if (this.resolutionForm.value.comment.trim() !== '') {
       this.AddCommentMutationVariables = {
         where: {
-          id: this.responseIDs[this.displayedIndex],
+          id: this.response.id,
         },
         data: {
           comments: {
@@ -137,6 +190,8 @@ export class ResponsesComponent implements OnInit {
             this.comments = data.updateFeedbackResponse['comments'];
             this.actualResolution = data.updateFeedbackResponse['resolved'];
             this.resolutionForm.reset();
+            //TODO: unable to get page to refresh using other methods.  Need to redo this on another sprint.
+            reloadPage();
           }
         });
     }
@@ -148,7 +203,7 @@ export class ResponsesComponent implements OnInit {
     if (this.actualResolution == false) {
       updateResolvedMutationVariables = {
         where: {
-          id: this.responseIDs[this.displayedIndex],
+          id: this.response.id,
         },
         data: {
           resolved: {
@@ -167,7 +222,7 @@ export class ResponsesComponent implements OnInit {
     } else {
       updateResolvedMutationVariables = {
         where: {
-          id: this.responseIDs[this.displayedIndex],
+          id: this.response.id,
         },
         data: {
           resolved: {
@@ -187,143 +242,67 @@ export class ResponsesComponent implements OnInit {
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
           this.actualResolution = data.updateFeedbackResponse['resolved'];
+          this.reload();
         }
       });
   }
+  //#endregion
 
-  async getResponseData(responseID: string) {
-    (await this.responsesService.getResponseData(responseID)).subscribe(
-      ({ data, errors }) => {
-        //one reason to not use pluck/map/whatever is it drops the errors and
-        //they're never seen/handled. Not that we're doing much of that right now
-        if (errors) {
-          alert(errors);
-        }
-        if (data) {
-          this.openedDate = data.findUniqueFeedbackResponse.openedDate;
-
-          // Clear contents of QA array
-          this.questionsAnswers = [];
-          this.comments = [];
-
-          // Handle the Questions & Answers
-          data.findUniqueFeedbackResponse.answers?.forEach((answer) => {
-            // Clear contents of QA array
-            // Create the Question/Answer Array
-            this.questionsAnswers.push([
-              String(answer?.question?.value),
-              answer.value,
-            ]);
-          });
-
-          this.comments = data.findUniqueFeedbackResponse.comments;
-
-          this.actualResolution = data.findUniqueFeedbackResponse['resolved'];
-
-          this.selectedTags = data.findUniqueFeedbackResponse['tags']?.map(
-            (x) => x.value
-          );
-          this.generatePossibleTags();
-        }
-      }
-    );
-  }
-
-  displayIssue(pageEvent: PageEvent): PageEvent {
-    if (pageEvent) {
-      //TODO rewrite with proper pagination
-      this.displayedIndex = pageEvent.pageIndex;
-
-      this.getResponseData(this.responseIDs[this.displayedIndex]);
-    }
-    return pageEvent;
-  }
-
+  //#region Tags
   /**
    * Removes tag deselected by the user and adds it back to the list of tags not in use
    * @param tagToRemove tag that's been deselected by the user
    */
 
   // there's some duplication in this code
-  remove(tagToRemove: string): void {
+  async remove(tagToRemove: string): Promise<void> {
     this.responsesService
       .modifyTag({
-        where: { id: this.responseIDs[this.displayedIndex] },
+        where: { id: this.response.id },
         data: { tags: { disconnect: [{ value: tagToRemove }] } },
       })
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.selectedTags = this.selectedTags?.filter(
-            (selectedtag) => selectedtag !== tagToRemove
-          );
+          //Placeholder
         }
       });
-
-    this.generatePossibleTags();
-  }
-
-  /**
-   * User selects tag or tags and pushes to the database, reset the controller and generate list of unused tags
-   * @param event user added a tag
-   */
-
-  // there's some duplication in this code
-  add(event: MatChipInputEvent): void {
-    // Trim the input so that empty values aren't there
-    let value = (event.value || '').trim().toLowerCase();
-
-    // Convert to title case
-    value = value[0].toUpperCase() + value.slice(1);
-
-    // If the hand typed value is one of the legal tags
-    if (this.allTags.includes(value) && !this.selectedTags?.includes(value)) {
-      this.responsesService
-        .modifyTag({
-          where: { id: this.responseIDs[this.displayedIndex] },
-          data: { tags: { connect: [{ value: value }] } },
-        })
-        .subscribe(({ data, errors }) => {
-          if (!errors && data) {
-            // Add our tag
-            this.selectedTags?.push(value);
-
-            // Clear the input values
-            if (event.chipInput) {
-              event.chipInput.clear();
-            }
-          }
-        });
-    }
-
-    this.tagCtrl.setValue(null);
-    this.generatePossibleTags();
   }
 
   /**
    * User selects a tag from the list of unused and the list of unused tags is updated
-   * @param event
+   * @param event: MatChipInputEvent is the output of a material chip input box
+   * @param event: MatAutocompleteSelectedEvent is the output of a material autocomplete selection
    * @returns list of tags to push to server
    */
+  async add(
+    event: MatChipInputEvent | MatAutocompleteSelectedEvent
+  ): Promise<void> {
+    let input =
+      (event as MatChipInputEvent).value ??
+      (event as MatAutocompleteSelectedEvent).option.value;
 
-  // There's some duplciation in this code
-  selected(event: MatAutocompleteSelectedEvent): void {
-    // If the user already has the tag, don't add it again
-    if (this.selectedTags?.includes(event.option.value)) return;
+    input = input.trim();
 
-    this.responsesService
-      .modifyTag({
-        where: { id: this.responseIDs[this.displayedIndex] },
-        data: { tags: { connect: [{ value: event.option.viewValue }] } },
-      })
-      .subscribe(({ data, errors }) => {
-        if (!errors && data) {
-          this.selectedTags?.push(event.option.viewValue);
+    // Convert to title case
+    input = input[0].toUpperCase() + input.slice(1).toLowerCase();
+    // If the hand typed value is one of the legal tags
+    if (this.allTags.includes(input)) {
+      this.responsesService
+        .modifyTag({
+          where: { id: this.response.id },
+          data: { tags: { connect: [{ value: input }] } },
+        })
+        .subscribe(() => {
+          //Placeholder
+        });
+    }
+  }
+  //#endregion
 
-          this.tagInput.nativeElement.value = '';
-          this.tagCtrl.setValue(null);
-        }
-      });
-
-    this.generatePossibleTags();
+  //TODO: This will need to be made into a function at the application level.
+  async reload(): Promise<void> {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['./'], { relativeTo: this.route });
   }
 }

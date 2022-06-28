@@ -1,14 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { map, take } from 'rxjs';
-
 import {
-  GetIssuesByStatusDocument,
-  GetIssuesByStatusQuery,
-  GetIssuesByStatusQueryVariables,
-  FindUniqueFeedbackResponseDocument,
-  FindUniqueFeedbackResponseQuery,
-  FindUniqueFeedbackResponseQueryVariables,
   AddCommentMutationVariables,
   AddCommentMutation,
   AddCommentDocument,
@@ -18,6 +10,12 @@ import {
   ModifyTagMutationVariables,
   ModifyTagMutation,
   ModifyTagDocument,
+  GetReportByStatusQuery,
+  GetReportByStatusDocument,
+  GetReportByStatusQueryVariables,
+  GetAllTagsQueryVariables,
+  GetAllTagsQuery,
+  GetAllTagsDocument,
 } from './responses.generated';
 
 @Injectable({
@@ -25,42 +23,24 @@ import {
 })
 export class ResponsesService {
   constructor(private apollo: Apollo) {}
-  async getResponseIDsByStatus(resolved: string) {
-    return this.apollo
-      .watchQuery<GetIssuesByStatusQuery, GetIssuesByStatusQueryVariables>({
-        query: GetIssuesByStatusDocument,
-        variables: {
-          resolved: resolved,
-        },
-      })
-      .valueChanges.pipe(
-        map((result) => result.data.getIssuesByStatus),
-        take(1)
-      );
-    // pluck lets me retrieve nested data.
+  async getReportByStatus(status: string, skip: number, take: number) {
+    return this.apollo.watchQuery<
+      GetReportByStatusQuery,
+      GetReportByStatusQueryVariables
+    >({
+      query: GetReportByStatusDocument,
+      variables: {
+        status,
+        skip,
+        take,
+      },
+    }).valueChanges;
   }
 
   getTags() {
-    return [
-      'Gender',
-      'Sexism',
-      'Race',
-      'Racism',
-      'Sexuality',
-      'Gender Identity',
-      'Religion',
-      'Mental Health',
-      'Minority',
-      'Marginalized',
-      'Mental Illness',
-      'Rank',
-      'Observed',
-      'Experienced',
-      'Other',
-      'Harassment',
-      'Assault',
-      'Discrimination',
-    ];
+    return this.apollo.watchQuery<GetAllTagsQuery, GetAllTagsQueryVariables>({
+      query: GetAllTagsDocument,
+    }).valueChanges;
   }
 
   addComment(addCommentMutationVariables: AddCommentMutationVariables) {
@@ -80,20 +60,6 @@ export class ResponsesService {
       mutation: UpdateResolvedDocument,
       variables: updateResolvedMutationVariables,
     });
-  }
-
-  async getResponseData(responseID: string) {
-    return this.apollo.watchQuery<
-      FindUniqueFeedbackResponseQuery,
-      FindUniqueFeedbackResponseQueryVariables
-    >({
-      query: FindUniqueFeedbackResponseDocument,
-      variables: {
-        feedbackResponseWhereUniqueInput: {
-          id: responseID,
-        },
-      },
-    }).valueChanges;
   }
 
   modifyTag(modifyTagMutationVariables: ModifyTagMutationVariables) {

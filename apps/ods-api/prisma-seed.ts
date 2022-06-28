@@ -1,7 +1,9 @@
 /* eslint-disable complexity */
 import { PrismaClient, Prisma } from '.prisma/ods/client';
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
+
+//TODO refactor to not repeat code so much(DRY) - like the org/tag are done
 
 const prisma = new PrismaClient();
 
@@ -78,24 +80,33 @@ const orgSeed: Prisma.OrgCreateInput[] = [
 ];
 
 const tagSeed: Prisma.TagCreateInput[] = [
-  { value: 'Gender' },
-  { value: 'Sexism' },
-  { value: 'Race' },
-  { value: 'Racism' },
-  { value: 'Sexuality' },
-  { value: 'Gender Identity' },
-  { value: 'Religion' },
-  { value: 'Mental Health' },
-  { value: 'Minority' },
-  { value: 'Marginalized' },
-  { value: 'Mental Illness' },
-  { value: 'Rank' },
-  { value: 'Observed' },
-  { value: 'Experienced' },
-  { value: 'Other' },
-  { value: 'Harassment' },
-  { value: 'Assault' },
-  { value: 'Discrimination' },
+  // Data tracking tags
+  { value: 'Gender', type: 'Resolution' },
+  { value: 'Sexism', type: 'Resolution' },
+  { value: 'Race', type: 'Resolution' },
+  { value: 'Racism', type: 'Resolution' },
+  { value: 'Sexuality', type: 'Resolution' },
+  { value: 'Gender Identity', type: 'Resolution' },
+  { value: 'Religion', type: 'Resolution' },
+  { value: 'Mental Health', type: 'Resolution' },
+  { value: 'Minority', type: 'Resolution' },
+  { value: 'Marginalized', type: 'Resolution' },
+  { value: 'Mental Illness', type: 'Resolution' },
+  { value: 'Rank', type: 'Resolution' },
+  { value: 'Observed', type: 'Resolution' },
+  { value: 'Experienced', type: 'Resolution' },
+  { value: 'Other', type: 'Resolution' },
+  { value: 'Harassment', type: 'Resolution' },
+  { value: 'Assault', type: 'Resolution' },
+  { value: 'Discrimination', type: 'Resolution' },
+
+  // Action tags
+  { value: 'Addressed in organizational all-call', type: 'Action' },
+  { value: 'Spoke with organizational leadership', type: 'Action' },
+  { value: 'Brought in external agency to educate', type: 'Action' },
+  { value: 'Offered educational workshops', type: 'Action' },
+  { value: 'Distributed educational material', type: 'Action' },
+  { value: 'Routed up the chain of command', type: 'Action' },
 ];
 
 async function main() {
@@ -135,6 +146,7 @@ async function main() {
         },
         create: {
           value: tag.value,
+          type: tag.type,
         },
       });
     } catch (e) {
