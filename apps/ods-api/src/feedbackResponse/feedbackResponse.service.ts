@@ -373,14 +373,25 @@ export class FeedbackResponseService {
           AND: {
             //no feedbackResponses that are routed outside
             routeOutside: false,
-            OR: {
-              ...whereAnswer,
-              feedback: {
-                orgs: {
-                  some: { name: { in: orgs } },
+            OR: [
+              // where the answer to the question "what organization did the event occur in" contains one of the user's orgs + children
+              { ...whereAnswer },
+              // where the user is
+              {
+                feedback: {
+                  orgs: {
+                    some: {
+                      OR: [
+                        //a member of an org that is a child of a feedback's orgs
+                        { name: { in: orgs } },
+                        // a member of an org that is a parent of a feedback's orgs
+                        // { parent: { name: { in: orgs } } },
+                      ],
+                    },
+                  },
                 },
               },
-            },
+            ],
           },
         };
     }

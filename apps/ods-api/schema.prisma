@@ -96,7 +96,7 @@ model Feedback {
 
 model Question {
   id        String     @id @default(uuid())
-  value    String     @unique
+  value     String     @unique
   feedbacks Feedback[]
   answers   Answer[]
 }
