@@ -11,7 +11,7 @@ import {
 import { getUserId } from '@odst/helpers';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-
+import { reloadPage } from '@odst/helpers';
 @Component({
   selector: 'odst-responses',
   templateUrl: './responses.component.html',
@@ -190,6 +190,8 @@ export class ResponsesComponent implements OnInit {
             this.comments = data.updateFeedbackResponse['comments'];
             this.actualResolution = data.updateFeedbackResponse['resolved'];
             this.resolutionForm.reset();
+            //TODO: unable to get page to refresh using other methods.  Need to redo this on another sprint.
+            reloadPage();
           }
         });
     }
