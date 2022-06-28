@@ -20,6 +20,7 @@ query GetReportByStatus($status: String!, $skip: Int!, $take: Int!) {
     resolved
     tags {
       value
+      type
     }
     comments {
       value
@@ -78,6 +79,14 @@ mutation modifyTag(
   updateFeedbackResponse(data: $data, where: $where) {
     tags {
       value
+      type
     }
+  }
+}
+
+query GetAllTags {
+  getTags {
+    value
+    type
   }
 }

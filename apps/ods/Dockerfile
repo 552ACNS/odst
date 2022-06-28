@@ -29,6 +29,8 @@ WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/dist/apps/${APP} /usr/share/nginx/html
 
+#tell nginx that there is only one html file
 RUN sed -i '/location \/ {/a \\ttry_files $uri $uri\/ \/index.html;' /etc/nginx/conf.d/default.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+#use docker-compose env vars in env.js and start nginx
+CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]

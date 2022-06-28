@@ -1,41 +1,37 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ResponsesService } from './responses.service';
-import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AddCommentMutationVariables,
   GetReportByStatusQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
-import { getRefreshToken, getUserId } from '@odst/helpers';
+import { getUserId } from '@odst/helpers';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-
+import { reloadPage } from '@odst/helpers';
 @Component({
   selector: 'odst-responses',
   templateUrl: './responses.component.html',
   styleUrls: ['./responses.component.scss'],
 })
 export class ResponsesComponent implements OnInit {
+  //#region Variables
   resolutionForm = this.fb.group({
     comment: [''],
   });
 
-  tagCtrl = new UntypedFormControl();
+  actionTags: string[];
 
-  possibleTags: string[] = [];
+  selectedActionTags: string[] | undefined = [];
 
-  selectedTags: string[] | undefined = [];
+  trackingTags: string[];
+
+  selectedTrackingTags: string[] | undefined = [];
 
   allTags: string[] = [];
-
-  constructor(
-    private fb: UntypedFormBuilder,
-    private responsesService: ResponsesService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
 
   questionsAnswers: [string, string][] = [];
   // comments: [string, string, string, any?][] = [];
@@ -43,7 +39,6 @@ export class ResponsesComponent implements OnInit {
 
   AddCommentMutationVariables: AddCommentMutationVariables;
 
-  newComment = '';
   // TODO [ODST-291]: Change resolved status back to bool
   status: string;
 
@@ -61,13 +56,22 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   take = 1;
+
   response: GetReportByStatusQuery['getIssuesByStatus'][0];
+  //#endregion
 
-  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+  constructor(
+    private fb: UntypedFormBuilder,
+    private responsesService: ResponsesService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
-  async ngOnInit() {
+  //#region Main functions
+  async ngOnInit(): Promise<void> {
     this.getFeedback(0);
   }
+
   //uses this method in lieu of displaydata method(which was deleted)
   handlePageEvent(pageEvent: PageEvent): PageEvent {
     if (pageEvent) {
@@ -78,12 +82,18 @@ export class ResponsesComponent implements OnInit {
     return pageEvent;
   }
 
-  async getFeedback(index: number) {
-    //TODO pull this from id token once implemented in ODST-33
-    this.userId = getUserId(getRefreshToken() ?? '');
-
-    this.allTags = this.responsesService.getTags();
-    this.generatePossibleTags();
+  async getFeedback(index: number): Promise<void> {
+    this.responsesService.getTags().subscribe(({ data }) => {
+      this.actionTags = data.getTags
+        .filter((tag) => tag.type == 'Action')
+        .map((tag) => tag.value)
+        .sort();
+      this.trackingTags = data.getTags
+        .filter((tag) => tag.type == 'Resolution')
+        .map((tag) => tag.value)
+        .sort();
+      this.allTags = data.getTags.map((tag) => tag.value).sort();
+    });
 
     // Get resolved value form route params
     this.route.queryParams.subscribe(async (params) => {
@@ -103,22 +113,14 @@ export class ResponsesComponent implements OnInit {
         if (this.numberOfResponses !== 0) {
           this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
         }
-        //took the get data method and put it in our new method, this one
-        switch (this.status) {
-          case 'unresolved':
-            this.numberOfResponses = data.ResponseCount.unresolved;
-            this.pageEvent.length = data.ResponseCount.unresolved;
-            break;
-          case 'resolved':
-            this.numberOfResponses = data.ResponseCount.resolved;
-            this.pageEvent.length = data.ResponseCount.resolved;
-            break;
-          case 'overdue':
-            this.numberOfResponses = data.ResponseCount.overdue;
-            this.pageEvent.length = data.ResponseCount.overdue;
-            break;
-        }
 
+        //took the get data method and put it in our new method, this one
+        this.numberOfResponses = data.ResponseCount[this.status];
+        this.pageEvent.length = data.ResponseCount[this.status];
+
+        //getIssuesByStatus invokes findMany, which returns an array.
+        //This turns single element array into just the datatype.
+        //Use this instead of data.getIssuesByStatus
         this.response = data.getIssuesByStatus[0];
 
         this.openedDate = this.response.openedDate;
@@ -141,29 +143,23 @@ export class ResponsesComponent implements OnInit {
 
         this.actualResolution = this.response['resolved'];
 
-        this.selectedTags = this.response['tags']?.map((x) => x.value);
-        this.generatePossibleTags();
+        //TODO don't hardcode tag types
+        this.selectedActionTags = this.response['tags']
+          ?.filter((tag) => tag.type == 'Action')
+          .map((tag) => tag.value);
+
+        this.selectedTrackingTags = this.response['tags']
+          ?.filter((tag) => tag.type == 'Resolution')
+          .map((tag) => tag.value);
       });
   }
 
   /**
    * Creates a list of tags that can be added by filtering out those already in use
    */
-  generatePossibleTags() {
-    this.possibleTags = this.allTags.filter(
-      (tag) => !this.selectedTags?.includes(tag)
-    );
+  async submitComment(): Promise<void> {
+    this.userId = getUserId();
 
-    const input = this.tagInput?.nativeElement.value.trim().toLowerCase();
-
-    if (input) {
-      this.possibleTags = this.possibleTags.filter((tag) =>
-        tag.toLowerCase().includes(input)
-      );
-    }
-  }
-
-  submitComment() {
     // if the resolution field is not empty after a trim
     if (this.resolutionForm.value.comment.trim() !== '') {
       this.AddCommentMutationVariables = {
@@ -194,12 +190,14 @@ export class ResponsesComponent implements OnInit {
             this.comments = data.updateFeedbackResponse['comments'];
             this.actualResolution = data.updateFeedbackResponse['resolved'];
             this.resolutionForm.reset();
+            //TODO: unable to get page to refresh using other methods.  Need to redo this on another sprint.
+            reloadPage();
           }
         });
     }
   }
 
-  updateResolved() {
+  async updateResolved(): Promise<void> {
     const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
       where: {
         id: this.response.id,
@@ -220,14 +218,16 @@ export class ResponsesComponent implements OnInit {
         }
       });
   }
+  //#endregion
 
+  //#region Tags
   /**
    * Removes tag deselected by the user and adds it back to the list of tags not in use
    * @param tagToRemove tag that's been deselected by the user
    */
 
   // there's some duplication in this code
-  remove(tagToRemove: string): void {
+  async remove(tagToRemove: string): Promise<void> {
     this.responsesService
       .modifyTag({
         where: { id: this.response.id },
@@ -235,82 +235,44 @@ export class ResponsesComponent implements OnInit {
       })
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.selectedTags = this.selectedTags?.filter(
-            (selectedtag) => selectedtag !== tagToRemove
-          );
+          //Placeholder
         }
       });
-
-    this.generatePossibleTags();
-  }
-
-  /**
-   * User selects tag or tags and pushes to the database, reset the controller and generate list of unused tags
-   * @param event user added a tag
-   */
-
-  // there's some duplication in this code
-  add(event: MatChipInputEvent): void {
-    // Trim the input so that empty values aren't there
-    let value = (event.value || '').trim().toLowerCase();
-
-    // Convert to title case
-    value = value[0].toUpperCase() + value.slice(1);
-
-    // If the hand typed value is one of the legal tags
-    if (this.allTags.includes(value) && !this.selectedTags?.includes(value)) {
-      this.responsesService
-        .modifyTag({
-          where: { id: this.response.id },
-          data: { tags: { connect: [{ value: value }] } },
-        })
-        .subscribe(({ data, errors }) => {
-          if (!errors && data) {
-            // Add our tag
-            this.selectedTags?.push(value);
-
-            // Clear the input values
-            if (event.chipInput) {
-              event.chipInput.clear();
-            }
-          }
-        });
-    }
-
-    this.tagCtrl.setValue(null);
-    this.generatePossibleTags();
   }
 
   /**
    * User selects a tag from the list of unused and the list of unused tags is updated
-   * @param event
+   * @param event: MatChipInputEvent is the output of a material chip input box
+   * @param event: MatAutocompleteSelectedEvent is the output of a material autocomplete selection
    * @returns list of tags to push to server
    */
+  async add(
+    event: MatChipInputEvent | MatAutocompleteSelectedEvent
+  ): Promise<void> {
+    let input =
+      (event as MatChipInputEvent).value ??
+      (event as MatAutocompleteSelectedEvent).option.value;
 
-  // There's some duplciation in this code
-  selected(event: MatAutocompleteSelectedEvent): void {
-    // If the user already has the tag, don't add it again
-    if (this.selectedTags?.includes(event.option.value)) return;
+    input = input.trim();
 
-    this.responsesService
-      .modifyTag({
-        where: { id: this.response.id },
-        data: { tags: { connect: [{ value: event.option.viewValue }] } },
-      })
-      .subscribe(({ data, errors }) => {
-        if (!errors && data) {
-          this.selectedTags?.push(event.option.viewValue);
-
-          this.tagInput.nativeElement.value = '';
-          this.tagCtrl.setValue(null);
-        }
-      });
-
-    this.generatePossibleTags();
+    // Convert to title case
+    input = input[0].toUpperCase() + input.slice(1).toLowerCase();
+    // If the hand typed value is one of the legal tags
+    if (this.allTags.includes(input)) {
+      this.responsesService
+        .modifyTag({
+          where: { id: this.response.id },
+          data: { tags: { connect: [{ value: input }] } },
+        })
+        .subscribe(() => {
+          //Placeholder
+        });
+    }
   }
+  //#endregion
 
   //TODO: This will need to be made into a function at the application level.
-  reload() {
+  async reload(): Promise<void> {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['./'], { relativeTo: this.route });

@@ -46,8 +46,14 @@ type TagCount {
 type Tag {
   id: ID!
   value: String!
+  type: TagType!
   feedbackResponses: [FeedbackResponse!]
   _count: TagCount!
+}
+
+enum TagType {
+  Resolution
+  Action
 }
 
 type FeedbackResponseCount {
@@ -305,17 +311,20 @@ type RefreshTokenMaxAggregate {
 type TagCountAggregate {
   id: Int!
   value: Int!
+  type: Int!
   _all: Int!
 }
 
 type TagMinAggregate {
   id: String
   value: String
+  type: TagType
 }
 
 type TagMaxAggregate {
   id: String
   value: String
+  type: TagType
 }
 
 type UserCountAggregate {
@@ -373,6 +382,7 @@ type Query {
   getCommanders: [String!]!
   me: User!
   findManyAccountRequests: [User!]!
+  getTags: [Tag!]!
   usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
@@ -720,7 +730,22 @@ input TagWhereInput {
   NOT: [TagWhereInput!]
   id: StringFilter
   value: StringFilter
+  type: EnumTagTypeFilter
   feedbackResponses: FeedbackResponseListRelationFilter
+}
+
+input EnumTagTypeFilter {
+  equals: TagType
+  in: [TagType!]
+  notIn: [TagType!]
+  not: NestedEnumTagTypeFilter
+}
+
+input NestedEnumTagTypeFilter {
+  equals: TagType
+  in: [TagType!]
+  notIn: [TagType!]
+  not: NestedEnumTagTypeFilter
 }
 
 input FeedbackResponseOrderByWithRelationInput {
@@ -1050,6 +1075,7 @@ input TagCreateNestedManyWithoutFeedbackResponsesInput {
 input TagCreateWithoutFeedbackResponsesInput {
   id: String
   value: String!
+  type: TagType!
 }
 
 input TagCreateOrConnectWithoutFeedbackResponsesInput {
@@ -1642,6 +1668,11 @@ input TagUpsertWithWhereUniqueWithoutFeedbackResponsesInput {
 input TagUpdateWithoutFeedbackResponsesInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
+  type: EnumTagTypeFieldUpdateOperationsInput
+}
+
+input EnumTagTypeFieldUpdateOperationsInput {
+  set: TagType
 }
 
 input TagUpdateWithWhereUniqueWithoutFeedbackResponsesInput {
@@ -1660,11 +1691,13 @@ input TagScalarWhereInput {
   NOT: [TagScalarWhereInput!]
   id: StringFilter
   value: StringFilter
+  type: EnumTagTypeFilter
 }
 
 input TagUpdateManyMutationInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
+  type: EnumTagTypeFieldUpdateOperationsInput
 }
 
 input CommentUpdateManyWithoutFeedbackResponseInput {
