@@ -49,7 +49,7 @@ export class FeedbackResponseResolver {
     @Args('feedbackResponseWhereUniqueInput')
     feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput
   ): Promise<TrackedFeedback | null> {
-    return this.feedbackResponseService.findUnique(
+    return this.feedbackResponseService.feedbackResponseByID(
       feedbackResponseWhereUniqueInput
     );
   }

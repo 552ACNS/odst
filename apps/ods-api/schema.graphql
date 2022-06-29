@@ -380,7 +380,7 @@ type TrackedFeedback {
   openedDate: DateTime!
   closedDate: DateTime
   resolved: Boolean!
-  reviewerId: String
+  tags: Tag!
 }
 
 type Query {
@@ -818,43 +818,6 @@ input CommentOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-input FeedbackResponseCountAggregateInput {
-  id: Boolean
-  feedbackId: Boolean
-  openedDate: Boolean
-  closedDate: Boolean
-  routeOutside: Boolean
-  resolved: Boolean
-  _all: Boolean
-}
-
-input FeedbackResponseMinAggregateInput {
-  id: Boolean
-  feedbackId: Boolean
-  openedDate: Boolean
-  closedDate: Boolean
-  routeOutside: Boolean
-  resolved: Boolean
-}
-
-input FeedbackResponseMaxAggregateInput {
-  id: Boolean
-  feedbackId: Boolean
-  openedDate: Boolean
-  closedDate: Boolean
-  routeOutside: Boolean
-  resolved: Boolean
-}
-
-enum FeedbackResponseScalarFieldEnum {
-  id
-  feedbackId
-  openedDate
-  closedDate
-  routeOutside
-  resolved
-}
-
 input UserOrderByWithRelationInput {
   id: SortOrder
   email: SortOrder
@@ -909,6 +872,16 @@ input FeedbackResponseMaxAggregateInput {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: Boolean
+}
+
+enum FeedbackResponseScalarFieldEnum {
+  id
+  feedbackId
+  openedDate
+  closedDate
+  routeOutside
+  resolved
+  reviewerId
 }
 
 input UserWhereUniqueInput {

@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Tag } from '@odst/types/ods';
 
 @ObjectType()
 export class TrackedFeedback {
@@ -11,12 +12,18 @@ export class TrackedFeedback {
   @Field(() => Boolean)
   resolved: boolean;
 
-  @Field(() => String)
-  grade: string | null;
-
-  @Field(() => String)
-  firstName: string | null;
-
-  @Field(() => String)
-  lastName: string | null;
+  @Field(() => Tag)
+  tags: Tag[];
 }
+
+// @ObjectType()
+// class ReviewedBy {
+//   @Field(() => String)
+//   grade: string | null;
+
+//   @Field(() => String)
+//   firstName: string | null;
+
+//   @Field(() => String)
+//   lastName: string | null;
+// }

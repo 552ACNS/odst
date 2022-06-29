@@ -27,10 +27,6 @@ export class UserService {
     });
   }
 
-  async findUserFromID(
-    userWhereUniqueInputInput: Prisma.UserWhereUniqueInput
-  ): Promise<> {}
-
   //TODO write tests for this
   async update(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
