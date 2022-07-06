@@ -3,7 +3,6 @@ import { removeTokens } from '@odst/helpers';
 import { HeaderService } from './header.service';
 import { Role } from '../../types.graphql';
 import { CurrentUserQuery } from './header.generated';
-import { FindManyAccountRequestsQuery } from '../requested-accounts/requested-accounts.generated';
 
 @Component({
   selector: 'odst-header',
@@ -12,7 +11,6 @@ import { FindManyAccountRequestsQuery } from '../requested-accounts/requested-ac
 })
 export class HeaderComponent implements OnInit {
   user: CurrentUserQuery['me'];
-  data: FindManyAccountRequestsQuery;
   userTitle: string;
   totalCount: number;
 
