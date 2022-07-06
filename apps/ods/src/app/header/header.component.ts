@@ -15,7 +15,6 @@ export class HeaderComponent implements OnInit {
   data: FindManyAccountRequestsQuery;
   userTitle: string;
   totalCount: number;
-  dataSource;
 
   constructor(private headerService: HeaderService) {}
 
@@ -24,9 +23,8 @@ export class HeaderComponent implements OnInit {
       this.user = me;
       this.userTitle = this.setUserTitle(this.user.role);
     });
-    this.headerService.getRequestedAccounts().subscribe((data) => {
-      this.dataSource = data.data.findManyAccountRequests;
-      this.totalCount = this.dataSource.length;
+    this.headerService.getRequestedAccounts().subscribe(({ data }) => {
+      this.totalCount = data.findManyAccountRequests.length;
     });
   }
 
