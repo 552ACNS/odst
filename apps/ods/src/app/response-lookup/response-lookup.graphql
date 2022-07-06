@@ -7,5 +7,9 @@ query FeedbackResponseByID(
     openedDate
     closedDate
     resolved
+    tags
+    firstName
+    lastName
+    grade
   }
 }

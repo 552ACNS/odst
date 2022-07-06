@@ -12,8 +12,17 @@ export class TrackedFeedback {
   @Field(() => Boolean)
   resolved: boolean;
 
-  @Field(() => Tag)
-  tags: Tag[];
+  @Field(() => [String])
+  tags: string[];
+
+  @Field(() => String)
+  grade: string | null;
+
+  @Field(() => String)
+  firstName: string | null;
+
+  @Field(() => String)
+  lastName: string | null;
 }
 
 // @ObjectType()

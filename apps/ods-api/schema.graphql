@@ -380,7 +380,10 @@ type TrackedFeedback {
   openedDate: DateTime!
   closedDate: DateTime
   resolved: Boolean!
-  tags: Tag!
+  tags: [String!]!
+  grade: String
+  firstName: String
+  lastName: String
 }
 
 type Query {

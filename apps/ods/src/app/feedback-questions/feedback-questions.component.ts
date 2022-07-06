@@ -109,7 +109,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
               )
               .subscribe(({ errors, data }) => {
                 this.submitSuccess = !errors && !!data;
-                this.feedbackResponseID = data?.createFeedbackResponse.id;
+                this.feedbackResponseID = data?.createFeedbackResponse;
               });
           });
       });

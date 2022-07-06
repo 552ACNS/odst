@@ -11,6 +11,7 @@ export class ResponseLookupComponent {
   openedDate: Date;
   closedDate: Date | null;
   status: boolean;
+  tags: string[];
   success = false;
   constructor(
     private fb: UntypedFormBuilder,
@@ -30,6 +31,7 @@ export class ResponseLookupComponent {
         this.openedDate = data.feedbackResponseByID.openedDate;
         this.closedDate = data.feedbackResponseByID.closedDate;
         this.status = data.feedbackResponseByID.resolved;
+        // this.tags = data.feedbackResponseByID.tags.value;
         this.success = true;
       }
     });

@@ -13,6 +13,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
 import { ResponseCount, TrackedFeedback } from '../__types__';
+import { flatten } from 'flat';
 
 @Injectable()
 export class FeedbackResponseService {
@@ -104,45 +105,58 @@ export class FeedbackResponseService {
   async feedbackResponseByID(
     feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
   ): Promise<TrackedFeedback | null> {
-    return this.prisma.feedbackResponse.findUnique({
+    const result = await this.prisma.feedbackResponse.findUnique({
       where: feedbackResponseWhereUniqueInput,
       select: {
         openedDate: true,
         closedDate: true,
         resolved: true,
         tags: {
+          select: {
+            value: true,
+          },
           where: {
             type: {
-              equals: 'Resolution',
+              equals: 'Action',
             },
           },
         },
-        // reviewedBy: {
-        //   select: {
-        //     grade: true,
-        //     firstName: true,
-        //     lastName: true,
-        //   },
-        // },
+        reviewedBy: {
+          select: {
+            grade: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
       },
     });
+    if (result && result.reviewedBy) {
+      const object: TrackedFeedback = {
+        openedDate: result.openedDate,
+        closedDate: result.closedDate,
+        resolved: result.resolved,
+        tags: result.tags.map((tag) => tag.value),
+        grade: result.reviewedBy?.grade,
+        firstName: result.reviewedBy?.firstName,
+        lastName: result.reviewedBy?.lastName,
+      };
+      console.log(object);
+      return object;
+    } else if (result) {
+      const object: TrackedFeedback = {
+        openedDate: result.openedDate,
+        closedDate: result.closedDate,
+        resolved: result.resolved,
+        tags: result.tags.map((tag) => tag.value),
+        grade: null,
+        firstName: null,
+        lastName: null,
+      };
+      return object;
+    }
 
-    // return JSON.stringify(result);
-
-    // let fuck = await this.prisma.feedbackResponse.findUnique({
-    //   where: feedbackResponseWhereUniqueInput,
-    //   include:{
-    //     reviewedBy:{
-    //       select:{
-    //         grade: true,
-    //         firstName: true,
-    //         lastName: true,
-    //       }
-    //     }
-    //   }
-    // });
+    return null;
   }
-
   async create(data: Prisma.FeedbackResponseCreateInput): Promise<{
     id: string;
   }> {
