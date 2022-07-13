@@ -5,6 +5,11 @@ import {
   CurrentUserQuery,
   CurrentUserQueryVariables,
 } from './header.generated';
+import {
+  FindManyAccountRequestsDocument,
+  FindManyAccountRequestsQuery,
+  FindManyAccountRequestsQueryVariables,
+} from '../requested-accounts/requested-accounts.generated';
 import { map, Observable, Subscription } from 'rxjs';
 
 @Injectable({
@@ -20,5 +25,14 @@ export class HeaderService {
         query: CurrentUserDocument,
       })
       .valueChanges.pipe(map(({ data }) => data));
+  }
+
+  getRequestedAccounts() {
+    return this.apollo.watchQuery<
+      FindManyAccountRequestsQuery,
+      FindManyAccountRequestsQueryVariables
+    >({
+      query: FindManyAccountRequestsDocument,
+    }).valueChanges;
   }
 }

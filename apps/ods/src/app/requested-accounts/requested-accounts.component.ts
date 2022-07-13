@@ -23,10 +23,13 @@ export class RequestedAccountsComponent implements OnInit {
   displayedAccountRequest;
   displayedRequestData;
 
+  totalCount: number;
+
   ngOnInit(): void {
     this.requestedAccountsService.getRequestedAccounts().subscribe((data) => {
       this.dataSource = data.data.findManyAccountRequests;
       this.hasNoData = this.dataSource.length === 0;
+      this.totalCount = this.dataSource.length;
     });
   }
 
