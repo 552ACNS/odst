@@ -28,6 +28,7 @@ model User {
   firstName    String
   lastName     String
   role         Role
+  status       Status
   refreshToken RefreshToken?
   orgs         Org[]
   comments     Comment[]
@@ -135,3 +136,11 @@ enum OrgTier {
   SQUADRON
   OTHER
 }
+
+enum Status {
+  DISABLED
+  ENABLED
+  REQUESTED
+  DENIED
+}
+

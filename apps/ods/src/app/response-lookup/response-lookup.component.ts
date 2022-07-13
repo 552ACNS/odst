@@ -12,6 +12,9 @@ export class ResponseLookupComponent {
   closedDate: Date | null;
   status: boolean;
   tags: string[];
+  firstName?: string | null;
+  lastName?: string | null;
+  grade?: string | null;
   success = false;
   constructor(
     private fb: UntypedFormBuilder,
@@ -31,8 +34,13 @@ export class ResponseLookupComponent {
         this.openedDate = data.feedbackResponseByID.openedDate;
         this.closedDate = data.feedbackResponseByID.closedDate;
         this.status = data.feedbackResponseByID.resolved;
-        // this.tags = data.feedbackResponseByID.tags.value;
+        this.tags = data.feedbackResponseByID.tags;
+        this.firstName = data.feedbackResponseByID.firstName;
+        this.lastName = data.feedbackResponseByID.lastName;
+        this.grade = data.feedbackResponseByID.grade;
         this.success = true;
+
+        console.log(this.tags);
       }
     });
   }

@@ -26,15 +26,19 @@
       </mat-form-field>
       <br />
       <mat-card-content *ngIf="success" class="text-sm space-y-3 text-justify">
-        <p *ngIf="status">
+        <div *ngIf="status">
           This feedback report was submitted on
-          {{ openedDate | date: 'd MMM yy' }} and was resolved on
+          {{ openedDate | date: 'd MMM yy' }} and was resolved by {{ grade }}
+          {{ firstName }} {{ lastName }} on
           {{ closedDate | date: 'd MMM yy' }}
-        </p>
-        <p *ngIf="!status">
+          <select-tags *ngIf="tags.length > 0">
+            [tags]="tags", [selectedTags]="tags", [tagType]="'Test'"
+          </select-tags>
+        </div>
+        <div *ngIf="!status">
           This feedback report was submitted on
           {{ openedDate | date: 'd MMM yy' }}, and is awaiting resolution.
-        </p>
+        </div>
       </mat-card-content>
       <!-- Buttons -->
       <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">

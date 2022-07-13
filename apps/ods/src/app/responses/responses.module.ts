@@ -16,7 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SelectTagsComponent } from './select-tags/select-tags.component';
 @NgModule({
-  declarations: [ResponsesComponent, SelectTagsComponent],
+  declarations: [ResponsesComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(ResponsesRoutes),
@@ -32,6 +32,7 @@ import { SelectTagsComponent } from './select-tags/select-tags.component';
     MatChipsModule,
     MatAutocompleteModule,
     MatIconModule,
+    SelectTagsComponent,
   ],
 })
 export class ResponsesModule {}

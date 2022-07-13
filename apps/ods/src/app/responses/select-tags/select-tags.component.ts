@@ -5,24 +5,41 @@ import {
   ElementRef,
   Output,
   EventEmitter,
+  AfterViewInit,
+  OnInit,
 } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { FormControl } from '@angular/forms';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'select-tags',
+  imports: [
+    MatChipsModule,
+    CommonModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatIconModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './select-tags.component.html',
   styleUrls: ['./select-tags.component.scss'],
 })
 export class SelectTagsComponent {
   //#region Variables
-  @Input() tags: string[];
+  @Input() tags: string[] = [];
 
   @Input() selectedTags: string[] | undefined;
 
-  @Input() tagType: string;
+  @Input() tagType: string | undefined = '';
 
   //TODO: add error handling for the event that the emitted functions fail.
   @Output() add = new EventEmitter<

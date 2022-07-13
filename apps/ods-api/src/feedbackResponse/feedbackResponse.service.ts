@@ -140,7 +140,6 @@ export class FeedbackResponseService {
         firstName: result.reviewedBy?.firstName,
         lastName: result.reviewedBy?.lastName,
       };
-      console.log(object);
       return object;
     } else if (result) {
       const object: TrackedFeedback = {
