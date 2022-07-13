@@ -114,6 +114,8 @@
   },
   "resolutions": {
     "@nestjs/platform-express/multer/busboy": "^1.6",
-    "@graphql-codegen/cli/**/got": "^11.8"
+    "@graphql-codegen/cli/**/got": "^11.8",
+    "@nx-tools/nx-docker/@nx-tools/docker-metadata/moment": "^2.29",
+    "@nestjs/schedule/cron/moment-timezone/moment": "^2.29"
   }
 }
