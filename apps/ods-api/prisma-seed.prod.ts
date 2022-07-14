@@ -179,6 +179,7 @@ async function main() {
         firstName: 'Admin',
         lastName: 'Admin',
         grade: 'E-∞',
+        enabled: true,
         status: 'ENABLED',
       },
     });

@@ -227,6 +227,7 @@ async function main() {
         firstName: 'Admin',
         lastName: 'Admin',
         grade: 'E-∞',
+        enabled: true,
         status: 'ENABLED',
       },
     });
@@ -244,6 +245,7 @@ async function main() {
         firstName: 'Kenneth',
         lastName: 'Voigt',
         grade: 'O-6',
+        enabled: true,
         status: 'ENABLED',
       },
     });
@@ -261,6 +263,7 @@ async function main() {
         firstName: 'Keven',
         lastName: 'Coyle',
         grade: 'O-6',
+        enabled: true,
         status: 'ENABLED',
       },
     });
@@ -278,6 +281,7 @@ async function main() {
         firstName: 'Emmanuel',
         lastName: 'Matos',
         grade: 'O-5',
+        enabled: true,
         status: 'ENABLED',
       },
     });
@@ -295,7 +299,7 @@ async function main() {
         firstName: 'Michael',
         lastName: 'Henry',
         grade: 'O-5',
-        status: 'ENABLED',
+        status: 'REQUESTED',
       },
     });
 
@@ -312,7 +316,8 @@ async function main() {
         firstName: 'Henry',
         lastName: 'Henderson',
         grade: 'O-5',
-        status: 'REQUESTED',
+        enabled: true,
+        status: 'ENABLED',
       },
     });
   }

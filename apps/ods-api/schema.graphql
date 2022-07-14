@@ -98,11 +98,19 @@ type User {
   grade: String
   firstName: String!
   lastName: String!
+  status: Status!
   role: Role!
   refreshToken: RefreshToken
   orgs: [Org!]
   comments: [Comment!]
   _count: UserCount!
+}
+
+enum Status {
+  DISABLED
+  ENABLED
+  REQUESTED
+  DENIED
 }
 
 enum Role {
@@ -334,6 +342,7 @@ type UserCountAggregate {
   grade: Int!
   firstName: Int!
   lastName: Int!
+  status: Int!
   role: Int!
   _all: Int!
 }
@@ -345,6 +354,7 @@ type UserMinAggregate {
   grade: String
   firstName: String
   lastName: String
+  status: Status
   role: Role
 }
 
@@ -355,6 +365,7 @@ type UserMaxAggregate {
   grade: String
   firstName: String
   lastName: String
+  status: Status
   role: Role
 }
 
@@ -512,6 +523,7 @@ input UserWhereInput {
   grade: StringNullableFilter
   firstName: StringFilter
   lastName: StringFilter
+  status: EnumStatusFilter
   role: EnumRoleFilter
   refreshToken: RefreshTokenRelationFilter
   orgs: OrgListRelationFilter
@@ -555,6 +567,20 @@ input NestedStringNullableFilter {
   startsWith: String
   endsWith: String
   not: NestedStringNullableFilter
+}
+
+input EnumStatusFilter {
+  equals: Status
+  in: [Status!]
+  notIn: [Status!]
+  not: NestedEnumStatusFilter
+}
+
+input NestedEnumStatusFilter {
+  equals: Status
+  in: [Status!]
+  notIn: [Status!]
+  not: NestedEnumStatusFilter
 }
 
 input EnumRoleFilter {
@@ -843,6 +869,7 @@ input UserOrderByWithRelationInput {
   grade: SortOrder
   firstName: SortOrder
   lastName: SortOrder
+  status: SortOrder
   role: SortOrder
   refreshToken: RefreshTokenOrderByWithRelationInput
   orgs: OrgOrderByRelationAggregateInput
@@ -872,6 +899,7 @@ enum UserScalarFieldEnum {
   grade
   firstName
   lastName
+  status
   role
 }
 
@@ -940,6 +968,7 @@ input UserCreateWithoutOrgsInput {
   grade: String
   firstName: String!
   lastName: String!
+  status: Status!
   role: Role!
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   comments: CommentCreateNestedManyWithoutAuthorInput
@@ -1116,6 +1145,7 @@ input UserCreateWithoutCommentsInput {
   grade: String
   firstName: String!
   lastName: String!
+  status: Status!
   role: Role!
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
@@ -1450,6 +1480,7 @@ input UserUpdateWithoutOrgsInput {
   grade: NullableStringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
   lastName: StringFieldUpdateOperationsInput
+  status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   comments: CommentUpdateManyWithoutAuthorInput
@@ -1461,6 +1492,10 @@ input BoolFieldUpdateOperationsInput {
 
 input NullableStringFieldUpdateOperationsInput {
   set: String
+}
+
+input EnumStatusFieldUpdateOperationsInput {
+  set: Status
 }
 
 input EnumRoleFieldUpdateOperationsInput {
@@ -1748,6 +1783,7 @@ input UserUpdateWithoutCommentsInput {
   grade: NullableStringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
   lastName: StringFieldUpdateOperationsInput
+  status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   orgs: OrgUpdateManyWithoutUsersInput
@@ -2177,6 +2213,7 @@ input UserScalarWhereInput {
   grade: StringNullableFilter
   firstName: StringFilter
   lastName: StringFilter
+  status: EnumStatusFilter
   role: EnumRoleFilter
 }
 
@@ -2188,6 +2225,7 @@ input UserUpdateManyMutationInput {
   grade: NullableStringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
   lastName: StringFieldUpdateOperationsInput
+  status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
 }
 
@@ -2233,6 +2271,7 @@ input UserCreateInput {
   grade: String
   firstName: String!
   lastName: String!
+  status: Status!
   role: Role!
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput

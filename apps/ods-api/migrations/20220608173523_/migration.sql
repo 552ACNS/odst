@@ -14,6 +14,7 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "enabled" BOOLEAN NOT NULL DEFAULT false,
     "status" "Status" NOT NULL,
     "grade" TEXT,
     "firstName" TEXT NOT NULL,
