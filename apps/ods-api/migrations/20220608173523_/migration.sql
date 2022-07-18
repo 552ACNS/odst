@@ -1,6 +1,7 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'DEI', 'CC');
 
+-- CreateEnum
 CREATE TYPE "Status" AS ENUM ('DISABLED', 'ENABLED', 'REQUESTED', 'DENIED');
 
 -- CreateEnum
@@ -20,6 +21,7 @@ CREATE TABLE "User" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "role" "Role" NOT NULL,
+    "status" "Status" NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
