@@ -45,9 +45,9 @@ export class UserService {
     return this.prisma.user.update({
       where: userWhereUniqueInput,
       data: {
-        enabled: {
-          set: true,
-        },
+        // enabled: {
+        //   set: true,
+        // },
         status: {
           set: 'ENABLED',
         },
@@ -121,7 +121,7 @@ export class UserService {
       case Role.ADMIN: {
         return this.prisma.user.findMany({
           where: {
-            enabled: false,
+            // enabled: false,
           },
           select: {
             id: true,
@@ -131,7 +131,7 @@ export class UserService {
             role: true,
             email: true,
             orgs: true,
-            enabled: true,
+            // enabled: true,
             status: true,
           },
         });
@@ -147,11 +147,11 @@ export class UserService {
             role: true,
             email: true,
             orgs: true,
-            enabled: true,
+            // enabled: true,
             status: true,
           },
           where: {
-            enabled: false,
+            // enabled: false,
             AND: {
               orgs: {
                 some: {

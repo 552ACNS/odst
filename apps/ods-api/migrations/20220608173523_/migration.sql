@@ -2,9 +2,6 @@
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'DEI', 'CC');
 
 -- CreateEnum
-CREATE TYPE "Status" AS ENUM ('DISABLED', 'ENABLED', 'REQUESTED', 'DENIED');
-
--- CreateEnum
 CREATE TYPE "Spec" AS ENUM ('AD', 'CIVILIAN', 'CONTRACTOR', 'RESERVE_GUARD');
 
 -- CreateEnum
@@ -16,7 +13,6 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "enabled" BOOLEAN NOT NULL DEFAULT false,
-    "status" "Status" NOT NULL,
     "grade" TEXT,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,

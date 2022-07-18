@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Role } from '../../types.graphql';
+import { Status } from '../../types.graphql';
 import { RequestAccountService } from './request-account.service';
 import {
   CustomValidators,
@@ -65,6 +66,7 @@ export class RequestAccountComponent implements OnInit {
   ];
   orgs: Observable<string[]>;
   roles = ['Commander', 'DEI', 'Admin'];
+  status = Status.Requested; //initial status when an account is requested
   grade?: string;
   submitSuccess = false;
   constructor(
@@ -114,6 +116,7 @@ export class RequestAccountComponent implements OnInit {
         email: this.form.value['email'].trim(),
         grade: this.grade,
         role: this.determineRole(this.form.get(['permissions'])?.value),
+        status: this.status,
         orgs: {
           connect: [
             {
