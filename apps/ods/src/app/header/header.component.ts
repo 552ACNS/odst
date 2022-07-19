@@ -21,8 +21,10 @@ export class HeaderComponent implements OnInit {
       this.user = me;
       this.userTitle = this.setUserTitle(this.user.role);
     });
-    this.headerService.getRequestedAccounts().subscribe(({ data }) => {
-      this.totalCount = data.findManyAccountRequests.length;
+    this.headerService.getRequestedAccounts().subscribe(({ data, errors }) => {
+      if (!errors && data) {
+        this.totalCount = data.findManyAccountRequests.length;
+      }
     });
   }
 
