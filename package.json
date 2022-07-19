@@ -26,7 +26,7 @@
     "@angular/platform-browser-dynamic": "14.0.2",
     "@angular/router": "14.0.2",
     "@apollo/client": "^3.6.6",
-    "@babel/core": "^7.18.0",
+    "@babel/core": "^7.18.6",
     "@golevelup/nestjs-modules": "^0.5.0",
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/near-operation-file-preset": "^2.2.12",
