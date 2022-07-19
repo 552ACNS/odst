@@ -78,7 +78,7 @@ describe('ods', () => {
     cy.get('button').contains('Submit').click();
     cy.getCookie('refreshToken');
     //Marks the issue as resolved
-    cy.get('mat-slide-toggle').click();
+    cy.get('mat-slide-toggle', { timeout: 5000 }).click();
     // cy.wait('@graphql');
     cy.get('button').contains('Back').click();
   });
