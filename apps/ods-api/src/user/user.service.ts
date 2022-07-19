@@ -117,6 +117,9 @@ export class UserService {
     switch (user.role) {
       case Role.ADMIN: {
         return this.prisma.user.findMany({
+          where: {
+            status: 'REQUESTED',
+          },
           select: {
             id: true,
             firstName: true,

@@ -66,7 +66,7 @@ export class RequestAccountComponent implements OnInit {
   ];
   orgs: Observable<string[]>;
   roles = ['Commander', 'DEI', 'Admin'];
-  status = Status.Requested; //initial status when an account is requested
+  status = Status; //initial status when an account is requested
   grade?: string;
   submitSuccess = false;
   constructor(
@@ -116,7 +116,7 @@ export class RequestAccountComponent implements OnInit {
         email: this.form.value['email'].trim(),
         grade: this.grade,
         role: this.determineRole(this.form.get(['permissions'])?.value),
-        status: this.status,
+        status: this.status.Requested,
         orgs: {
           connect: [
             {
