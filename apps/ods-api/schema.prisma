@@ -23,7 +23,6 @@ model User {
   email        String        @unique
   /// @HideField()
   password     String
-  // enabled Boolean @default(false)
   grade        String?
   firstName    String
   lastName     String
