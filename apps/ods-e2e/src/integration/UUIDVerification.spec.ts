@@ -77,9 +77,9 @@ describe('ods', () => {
     cy.get('mat-chip').contains('Addressed in organizational all-call');
     cy.get('button').contains('Submit').click();
     //Marks the issue as resolved
-    cy.get('mat-slide-toggle', { timeout: 5000 }).click();
+    cy.get('mat-slide-toggle').click();
     // cy.wait('@graphql');
-    cy.get('button').contains('Back').click();
+    cy.get('button').contains('Back', { timeout: 5000 }).click();
   });
 
   it('Verify that a comment was made and that the feedback was catagorized as resolved', () => {
