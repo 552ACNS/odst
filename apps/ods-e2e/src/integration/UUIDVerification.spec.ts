@@ -70,16 +70,27 @@ describe('ods', () => {
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID
     );
+  });
+
+  it('should submit a comment on a response', () => {
+    cy.login('keven.coyle@us.af.mil', 'admin');
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Unresolved').click();
+    cy.location('pathname').should('include', '/responses');
     cy.get('textarea').type(commentUUID);
+    cy.get('button').contains('Submit').click();
+  });
+
+  it('should mark an issue as resolved', () => {
     //selects the action tag selector
     cy.get('#mat-chip-list-input-1').type('Add');
     cy.get('span').contains('Addressed in organizational all-call').click();
     cy.get('mat-chip').contains('Addressed in organizational all-call');
-    cy.get('button').contains('Submit').click();
+    cy.scrollTo('bottom');
     //Marks the issue as resolved
-    cy.get('mat-slide-toggle', { timeout: 5000 }).click();
+    cy.get('mat-slide-toggle').click();
     // cy.wait('@graphql');
-    cy.get('button').contains('Back', { timeout: 5000 }).click();
+    cy.get('button').contains('Back', { timeout: 6000 }).click();
   });
 
   it('Verify that a comment was made and that the feedback was catagorized as resolved', () => {
