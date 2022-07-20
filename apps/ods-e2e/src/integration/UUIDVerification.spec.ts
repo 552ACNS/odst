@@ -89,8 +89,6 @@ describe('ods', () => {
     cy.scrollTo('bottom');
     //Marks the issue as resolved
     cy.get('mat-slide-toggle').click();
-    // cy.wait('@graphql');
-    cy.get('button').contains('Back', { timeout: 6000 }).click();
   });
 
   it('Verify that a comment was made and that the feedback was catagorized as resolved', () => {
