@@ -60,12 +60,13 @@ export class AuthService {
     };
   }
 
+  //Added user.status to accomodate inclusion of field in ODS as the least intrusive way
   async validateUser(
     emailOrUsername: string,
     passwordPlaintextInput: string
   ): Promise<unknown> {
     const user = await this.getUserByEmailOrUsername(emailOrUsername);
-    if (user && user.enabled) {
+    if (user && (user.enabled || user.status == 'ENABLED')) {
       //first is plaintext, second is hash to compare it to
       //TODO max password length of 72 bytes.
       //Longer causes bcrypt to have unexpected behavior.

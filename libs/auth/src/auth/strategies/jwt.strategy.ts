@@ -24,8 +24,9 @@ export class JWTStrategy extends PassportStrategy(Strategy, 'jwt') {
     // but again, this centralizes it
 
     //TODO [ODST-305] client fingerprint?
+    //added user.status to accomodate status field in ODS
     const user = await this.userService.findUnique({ id: payload.sub });
-    if (user && user.enabled) {
+    if (user && (user.enabled || user.status == 'ENABLED')) {
       return user;
     } else {
       throw new UnauthorizedException();

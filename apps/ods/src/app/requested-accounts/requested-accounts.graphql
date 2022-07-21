@@ -6,7 +6,7 @@ query FindManyAccountRequests {
     role
     grade
     email
-    enabled
+    status
     orgs {
       name
     }
@@ -16,6 +16,6 @@ query FindManyAccountRequests {
 mutation ApproveAccountRequest($userWhereUniqueInput: UserWhereUniqueInput!) {
   enableAccount(userWhereUniqueInput: $userWhereUniqueInput) {
     id
-    enabled
+    status
   }
 }

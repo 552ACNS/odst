@@ -23,10 +23,10 @@ model User {
   email        String        @unique
   /// @HideField()
   password     String
-  enabled      Boolean       @default(false)
   grade        String?
   firstName    String
   lastName     String
+  status       Status
   role         Role
   refreshToken RefreshToken?
   orgs         Org[]
@@ -117,6 +117,14 @@ enum Role {
   ADMIN
   DEI // Diversity, Equity, Inclusion
   CC // Commander
+}
+
+//applies to user accounts
+enum Status {
+  DISABLED   //account suspended
+  ENABLED   //request approved or account reinstated
+  REQUESTED //initial request
+  DENIED    //request disapproved
 }
 
 enum Spec {
