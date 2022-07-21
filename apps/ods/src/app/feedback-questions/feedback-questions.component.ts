@@ -90,7 +90,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
     // TODO creating the survey should be done via prisma seed or via user input
     this.feedbackService
       .submitWithQuestions(this.questions, {
-        name: this.form.get(['eventOrg'])?.value,
+        name: '552 ACW',
       })
       .subscribe(({ data }) => {
         this.feedbackID = data?.createFeedbackWithQuestions;
