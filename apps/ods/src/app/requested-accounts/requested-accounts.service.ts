@@ -14,7 +14,6 @@ import {
 })
 export class RequestedAccountsService {
   constructor(private apollo: Apollo) {}
-
   getRequestedAccounts() {
     return this.apollo.watchQuery<
       FindManyAccountRequestsQuery,
