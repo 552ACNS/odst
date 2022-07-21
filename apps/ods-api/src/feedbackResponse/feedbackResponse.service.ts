@@ -381,10 +381,7 @@ export class FeedbackResponseService {
                 feedback: {
                   orgs: {
                     some: {
-                      OR: [
-                        { name: { in: usersOrgs } },
-                        { parent: { name: { in: usersOrgs } } },
-                      ],
+                      OR: [{ name: { in: usersOrgs } }],
                     },
                   },
                 },
