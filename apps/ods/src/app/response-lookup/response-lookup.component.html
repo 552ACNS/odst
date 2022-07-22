@@ -30,6 +30,7 @@
           This feedback report was submitted on
           {{ openedDate | date: 'd MMM yy' }} and was resolved on
           {{ closedDate | date: 'd MMM yy' }}
+          {{ tags }}
         </p>
         <p *ngIf="!status">
           This feedback report was submitted on

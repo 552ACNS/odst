@@ -31,7 +31,7 @@ export class ResponseLookupComponent {
         this.openedDate = data.feedbackResponseByID.openedDate;
         this.closedDate = data.feedbackResponseByID.closedDate;
         this.status = data.feedbackResponseByID.resolved;
-        // this.tags = data.feedbackResponseByID.tags.value;
+        this.tags = data.feedbackResponseByID.tags;
         this.success = true;
       }
     });
