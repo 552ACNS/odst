@@ -9,6 +9,8 @@ import { Apollo } from 'apollo-angular';
 import { environment } from '../environments/environment';
 import { AuthGuard, LoggedInGuard } from '@odst/shared/angular';
 import { HeaderModule } from './header/header.module';
+import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @NgModule({
   declarations: [AppComponent],

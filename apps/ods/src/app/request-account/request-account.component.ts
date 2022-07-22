@@ -9,6 +9,8 @@ import {
   regExps,
   errorMessages,
 } from '@odst/shared/angular';
+// eslint-disable-next-line no-restricted-imports
+import { Status } from '@odst/types/ods';
 
 @Component({
   selector: 'odst-request-account',
@@ -113,6 +115,7 @@ export class RequestAccountComponent implements OnInit {
         lastName: this.form.value['lastName'].trim(),
         email: this.form.value['email'].trim(),
         grade: this.grade,
+        status: Status.REQUESTED,
         role: this.determineRole(this.form.get(['permissions'])?.value),
         orgs: {
           connect: [

@@ -108,7 +108,9 @@ export class FeedbackResponseResolver {
     @GetCurrentUser() user: User,
     @Args() findManyFeedbackResponseArgs: FindManyFeedbackResponseArgs
   ): Promise<FeedbackResponse[]> {
-    const { skip, take } = findManyFeedbackResponseArgs;
+    const { skip, take } = findManyFeedback;
+
+    ResponseArgs;
     return this.feedbackResponseService.getIssuesByStatus(
       status,
       user,
