@@ -58,5 +58,6 @@ export const MockUsers: User[] = [
     grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
+    status: 'ENABLED',
   },
 ];

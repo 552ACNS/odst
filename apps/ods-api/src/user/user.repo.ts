@@ -10,6 +10,7 @@ export const MockUsers: User[] = [
     grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
+    status: 'ENABLED',
   },
 
   {
@@ -21,6 +22,7 @@ export const MockUsers: User[] = [
     grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
+    status: 'DISABLED',
   },
 ];
 
@@ -33,5 +35,6 @@ export const MockUserCreateInput: UserCreateInput[] = [
     grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
+    status: 'ENABLED',
   },
 ];

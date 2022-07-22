@@ -25,6 +25,9 @@ import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
 import { ResponseCount, TrackedFeedback } from '../__types__';
+import { UseInterceptors } from '@nestjs/common';
+import { LoggingInterceptor } from '../interceptors/logging.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Resolver(() => FeedbackResponse)
 export class FeedbackResponseResolver {
@@ -79,6 +82,7 @@ export class FeedbackResponseResolver {
   }
 
   @Mutation(() => FeedbackResponse, { name: 'updateFeedbackResponse' })
+  //@UseInterceptors(LoggingInterceptor)
   async update(
     @Args()
     updateArgs: UpdateOneFeedbackResponseArgs
