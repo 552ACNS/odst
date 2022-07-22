@@ -82,7 +82,7 @@ export class FeedbackResponseResolver {
   }
 
   @Mutation(() => FeedbackResponse, { name: 'updateFeedbackResponse' })
-  //@UseInterceptors(LoggingInterceptor)
+  @UseInterceptors(LoggingInterceptor)
   async update(
     @Args()
     updateArgs: UpdateOneFeedbackResponseArgs
