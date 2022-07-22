@@ -12,6 +12,7 @@ import { CurrentUserQuery } from './header.generated';
 export class HeaderComponent implements OnInit {
   user: CurrentUserQuery['me'];
   userTitle: string;
+  totalCount: number;
 
   constructor(private headerService: HeaderService) {}
 
@@ -19,6 +20,11 @@ export class HeaderComponent implements OnInit {
     (await this.headerService.getCurrentUser()).subscribe(({ me }) => {
       this.user = me;
       this.userTitle = this.setUserTitle(this.user.role);
+    });
+    this.headerService.getRequestedAccounts().subscribe(({ data, errors }) => {
+      if (!errors && data) {
+        this.totalCount = data.findManyAccountRequests.length;
+      }
     });
   }
 

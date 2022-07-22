@@ -70,6 +70,8 @@ export class ResponsesComponent implements OnInit {
   //#region Main functions
   async ngOnInit(): Promise<void> {
     this.getFeedback(0);
+
+    this.userId = getUserId();
   }
 
   //uses this method in lieu of displaydata method(which was deleted)
@@ -158,8 +160,6 @@ export class ResponsesComponent implements OnInit {
    * Creates a list of tags that can be added by filtering out those already in use
    */
   async submitComment(): Promise<void> {
-    this.userId = getUserId();
-
     // if the resolution field is not empty after a trim
     if (this.resolutionForm.value.comment.trim() !== '') {
       this.AddCommentMutationVariables = {
