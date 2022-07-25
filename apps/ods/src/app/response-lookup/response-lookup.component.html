@@ -32,9 +32,13 @@
         <p *ngIf="status">
           This feedback report was submitted on
           {{ openedDate | date: 'd MMM yy' }} and was resolved on
-          {{ closedDate | date: 'd MMM yy' }}
+          {{ closedDate | date: 'd MMM yy' }} The following issue was resolved
+          by:
           <mat-list>
-            <mat-list-item *ngFor="let tag of tags">
+            <mat-list-item
+              class="text-base space-y-3 text-justify"
+              *ngFor="let tag of tags"
+            >
               {{ tag }}
             </mat-list-item>
           </mat-list>

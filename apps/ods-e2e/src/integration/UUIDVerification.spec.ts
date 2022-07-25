@@ -1,8 +1,11 @@
+import { text } from 'stream/consumers';
 import { v4 as uuidv4 } from 'uuid';
 
 describe('ods', () => {
   const feedbackResponseUUID = uuidv4();
   const commentUUID = uuidv4();
+  let surveyID = '';
+
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
@@ -44,6 +47,18 @@ describe('ods', () => {
 
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
+
+    cy.get('[class="flex justify-center font-bold"]').then(($txt) => {
+      surveyID = $txt.text();
+    });
+  });
+
+  it('Verify that users can track submitted surveys after a survey is submitted', () => {
+    cy.visit('/response-lookup');
+    cy.get('[formcontrolname="reportID"]').type(surveyID);
+    cy.get('button').contains('Lookup ID').click();
+    cy.wait('@graphql');
+    cy.get('p').contains('This feedback report was submitted on');
   });
 
   it("Verify that only people with wrong permission can't view a specific feedback", () => {
@@ -89,6 +104,15 @@ describe('ods', () => {
     cy.scrollTo('bottom');
     //Marks the issue as resolved
     cy.get('mat-slide-toggle').click();
+  });
+
+  it('should verify a user can track when and how an issue was resolved', () => {
+    cy.visit('/response-lookup');
+    cy.get('[formcontrolname="reportID"]').type(surveyID);
+    cy.get('button').contains('Lookup ID').click();
+    cy.wait('@graphql');
+    cy.get('p').contains('was resolved on');
+    cy.get('mat-list-item').contains('Addressed in organizational all-call');
   });
 
   it('Verify that a comment was made and that the feedback was catagorized as resolved', () => {
