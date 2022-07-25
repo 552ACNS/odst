@@ -7,3 +7,6 @@ export * from './lib/types/jwtPayload.type';
 //#region Decorators
 export * from './lib/decorators/getCurrentUser.decorator';
 //#endregion
+
+//#region Interceptors
+export * from './lib/interceptors/logging.interceptor';

@@ -25,6 +25,8 @@ import { Prisma } from '.prisma/ods/client';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
 import { ResponseCount } from '../__types__';
+import { UseInterceptors } from '@nestjs/common';
+import { LoggingInterceptor } from '@odst/shared/nest';
 
 @Resolver(() => FeedbackResponse)
 export class FeedbackResponseResolver {
@@ -92,6 +94,7 @@ export class FeedbackResponseResolver {
   // TODO: Use the FindManyFeedbackResponse to use where instead of string status.
   //TODO: pass whole object of FindManyFeedbackResponseArgs instead of deconstructing object
   @Query(() => [FeedbackResponse], { name: 'getIssuesByStatus' })
+  @UseInterceptors(new LoggingInterceptor())
   async getIssuesByStatus(
     @Args('status') status: string,
     @GetCurrentUser() user: User,
