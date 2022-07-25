@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ResponseLookupComponent } from './response-lookup.component';
 import { ResponseLookupRoutes } from './response-lookup.routing';
+import { MatListModule } from '@angular/material/list';
 @NgModule({
   declarations: [ResponseLookupComponent],
   imports: [
@@ -31,6 +32,7 @@ import { ResponseLookupRoutes } from './response-lookup.routing';
     MatChipsModule,
     MatAutocompleteModule,
     MatIconModule,
+    MatListModule,
   ],
 })
 export class ResponseLookupModule {}

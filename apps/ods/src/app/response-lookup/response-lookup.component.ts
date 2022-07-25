@@ -12,7 +12,8 @@ export class ResponseLookupComponent {
   closedDate: Date | null;
   status: boolean;
   tags: string[];
-  success = false;
+  success: boolean;
+  submitError: boolean;
   constructor(
     private fb: UntypedFormBuilder,
     private lookupService: ResponseLookupService
@@ -27,12 +28,16 @@ export class ResponseLookupComponent {
         this.form.value['reportID'].trim()
       )
     ).subscribe(({ data, errors }) => {
-      if (!errors && data) {
+      if (!errors && !!data) {
         this.openedDate = data.feedbackResponseByID.openedDate;
         this.closedDate = data.feedbackResponseByID.closedDate;
         this.status = data.feedbackResponseByID.resolved;
         this.tags = data.feedbackResponseByID.tags;
         this.success = true;
+        this.submitError = false;
+      } else {
+        this.success = false;
+        this.submitError = true;
       }
     });
   }

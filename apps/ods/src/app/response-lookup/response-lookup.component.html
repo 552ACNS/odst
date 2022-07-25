@@ -25,12 +25,19 @@
         <mat-error> Please provide a valid ID </mat-error>
       </mat-form-field>
       <br />
+      <p class="mb-4 error-text text-center" *ngIf="submitError">
+        An issue with the entered ID could not be found.
+      </p>
       <mat-card-content *ngIf="success" class="text-sm space-y-3 text-justify">
         <p *ngIf="status">
           This feedback report was submitted on
           {{ openedDate | date: 'd MMM yy' }} and was resolved on
           {{ closedDate | date: 'd MMM yy' }}
-          {{ tags }}
+          <mat-list>
+            <mat-list-item *ngFor="let tag of tags">
+              {{ tag }}
+            </mat-list-item>
+          </mat-list>
         </p>
         <p *ngIf="!status">
           This feedback report was submitted on

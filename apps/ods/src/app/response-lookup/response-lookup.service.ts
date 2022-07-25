@@ -22,6 +22,7 @@ export class ResponseLookupService {
           id: id,
         },
       },
+      errorPolicy: 'all',
     }).valueChanges;
   }
 }
