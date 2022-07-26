@@ -61,6 +61,14 @@ describe('ods', () => {
     cy.get('p').contains('This feedback report was submitted on');
   });
 
+  it('Verify that users will recieve a message when an invalid ID is submitted', () => {
+    cy.visit('/response-lookup');
+    cy.get('[formcontrolname="reportID"]').type('faultyID');
+    cy.get('button').contains('Lookup ID').click();
+    cy.wait('@graphql');
+    cy.get('p').contains('An issue with the entered ID could not be found.');
+  });
+
   it("Verify that only people with wrong permission can't view a specific feedback", () => {
     cy.login('henry.henderson.99@us.af.mil', 'admin');
 
