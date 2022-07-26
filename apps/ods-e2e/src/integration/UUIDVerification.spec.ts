@@ -47,7 +47,7 @@ describe('ods', () => {
 
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
-
+    //Grabs the value of the text from the card and sets it as surveyID
     cy.get('[class="flex justify-center font-bold"]').then(($txt) => {
       surveyID = $txt.text();
     });
@@ -66,7 +66,9 @@ describe('ods', () => {
     cy.get('[formcontrolname="reportID"]').type('faultyID');
     cy.get('button').contains('Lookup ID').click();
     cy.wait('@graphql');
-    cy.get('p').contains('An issue with the entered ID could not be found.');
+    cy.get('[class="mb-4 error-text text-center ng-star-inserted"]').contains(
+      'An issue with the entered ID could not be found.'
+    );
   });
 
   it("Verify that only people with wrong permission can't view a specific feedback", () => {

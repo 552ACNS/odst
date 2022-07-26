@@ -198,45 +198,35 @@ export class ResponsesComponent implements OnInit {
   }
 
   updateResolved() {
-    let updateResolvedMutationVariables: UpdateResolvedMutationVariables;
+    let reviewedBy: UpdateResolvedMutationVariables['data']['reviewedBy'];
     //When false, the actual resolution is set to resolved.
-    if (this.actualResolution == false) {
-      updateResolvedMutationVariables = {
-        where: {
-          id: this.response.id,
-        },
-        data: {
-          resolved: {
-            set: !this.actualResolution,
-          },
-          closedDate: {
-            set: Date.now(),
-          },
-          reviewedBy: {
-            connect: {
-              id: this.userId,
-            },
-          },
+
+    if (!this.actualResolution) {
+      reviewedBy = {
+        connect: {
+          id: this.userId,
         },
       };
     } else {
-      updateResolvedMutationVariables = {
-        where: {
-          id: this.response.id,
-        },
-        data: {
-          resolved: {
-            set: !this.actualResolution,
-          },
-          closedDate: {
-            set: null,
-          },
-          reviewedBy: {
-            disconnect: true,
-          },
-        },
+      reviewedBy = {
+        disconnect: true,
       };
     }
+
+    const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
+      where: {
+        id: this.response.id,
+      },
+      data: {
+        resolved: {
+          set: !this.actualResolution,
+        },
+        closedDate: {
+          set: !this.actualResolution ? Date.now() : null,
+        },
+        reviewedBy: reviewedBy,
+      },
+    };
     this.responsesService
       .updateResolved(updateResolvedMutationVariables)
       .subscribe(({ data, errors }) => {

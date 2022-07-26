@@ -27,7 +27,6 @@ import { MatListModule } from '@angular/material/list';
     MatInputModule,
     MatButtonModule,
     MatTooltipModule,
-    //temporary
     MatFormFieldModule,
     MatChipsModule,
     MatAutocompleteModule,
