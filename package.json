@@ -118,6 +118,7 @@
     "@nestjs/platform-express/multer/busboy": "^1.6",
     "@graphql-codegen/cli/**/got": "^11.8",
     "glob-parent": "^6.0.1",
-    "terser": "^5.14.2"
+    "terser": "^5.14.2",
+    "@graphql-codegen/cli/**/undici": "^5.8.0"
   }
 }
