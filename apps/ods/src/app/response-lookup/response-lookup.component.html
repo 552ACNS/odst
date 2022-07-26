@@ -34,6 +34,7 @@
           {{ openedDate | date: 'd MMM yy' }} and was resolved on
           {{ closedDate | date: 'd MMM yy' }} The following issue was resolved
           by:
+          <!--TODO Replace the mat-list with tag component -->
           <mat-list>
             <mat-list-item *ngFor="let tag of tags">
               {{ tag }}
