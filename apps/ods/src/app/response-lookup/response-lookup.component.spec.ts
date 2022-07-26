@@ -8,7 +8,6 @@ import {
 
 import { ResponseLookupComponent } from './response-lookup.component';
 import { ResponseLookupModule } from './response-lookup.module';
-import { ResponseLookupService } from './response-lookup.service';
 
 describe('ResponsesComponent', () => {
   // let fixture: ComponentFixture<ResponsesComponent>;
@@ -19,7 +18,6 @@ describe('ResponsesComponent', () => {
       declarations: [ResponseLookupComponent],
       providers: [ResponseLookupModule],
       imports: [
-        ResponseLookupService,
         ApolloTestingModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
