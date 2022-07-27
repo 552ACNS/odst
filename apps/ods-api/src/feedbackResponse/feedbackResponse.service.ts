@@ -375,18 +375,7 @@ export class FeedbackResponseService {
           AND: {
             //no feedbackResponses that are routed outside
             routeOutside: false,
-            OR: [
-              { ...whereAnswer },
-              {
-                feedback: {
-                  orgs: {
-                    some: {
-                      OR: [{ name: { in: usersOrgs } }],
-                    },
-                  },
-                },
-              },
-            ],
+            ...whereAnswer,
           },
         };
     }
