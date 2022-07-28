@@ -96,7 +96,6 @@
     "eslint": "8.20.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-cypress": "^2.10.3",
-    "flat": "^5.0.2",
     "husky": "^8.0.1",
     "jest": "^27",
     "jest-mock-extended": "^2.0.7",

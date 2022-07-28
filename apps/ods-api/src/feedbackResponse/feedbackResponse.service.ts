@@ -104,6 +104,7 @@ export class FeedbackResponseService {
   async feedbackResponseByID(
     feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
   ): Promise<TrackedFeedback | null> {
+    let trackedResults: TrackedFeedback | null;
     const result = await this.prisma.feedbackResponse.findUnique({
       where: feedbackResponseWhereUniqueInput,
       select: {
@@ -129,8 +130,9 @@ export class FeedbackResponseService {
         },
       },
     });
+
     if (result && result.reviewedBy) {
-      const object: TrackedFeedback = {
+      trackedResults = {
         openedDate: result.openedDate,
         closedDate: result.closedDate,
         resolved: result.resolved,
@@ -139,10 +141,8 @@ export class FeedbackResponseService {
         firstName: result.reviewedBy?.firstName,
         lastName: result.reviewedBy?.lastName,
       };
-      console.log(object);
-      return object;
     } else if (result) {
-      const object: TrackedFeedback = {
+      trackedResults = {
         openedDate: result.openedDate,
         closedDate: result.closedDate,
         resolved: result.resolved,
@@ -151,10 +151,11 @@ export class FeedbackResponseService {
         firstName: null,
         lastName: null,
       };
-      return object;
+    } else {
+      trackedResults = null;
     }
 
-    return null;
+    return trackedResults;
   }
   async create(data: Prisma.FeedbackResponseCreateInput): Promise<{
     id: string;

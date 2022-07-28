@@ -12,6 +12,9 @@ export class ResponseLookupComponent {
   closedDate: Date | null;
   status: boolean;
   tags: string[];
+  grade?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
   success: boolean;
   submitError: boolean;
   constructor(
@@ -33,6 +36,9 @@ export class ResponseLookupComponent {
         this.closedDate = data.feedbackResponseByID.closedDate;
         this.status = data.feedbackResponseByID.resolved;
         this.tags = data.feedbackResponseByID.tags;
+        this.grade = data.feedbackResponseByID.grade;
+        this.firstName = data.feedbackResponseByID.firstName;
+        this.lastName = data.feedbackResponseByID.lastName;
         this.success = true;
         this.submitError = false;
       } else {

@@ -199,7 +199,6 @@ export class ResponsesComponent implements OnInit {
 
   updateResolved() {
     let reviewedBy: UpdateResolvedMutationVariables['data']['reviewedBy'];
-    //When false, the actual resolution is set to resolved.
 
     if (!this.actualResolution) {
       reviewedBy = {
