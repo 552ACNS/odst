@@ -28,7 +28,7 @@
     "@apollo/client": "^3.6.9",
     "@babel/core": "^7.18.9",
     "@golevelup/nestjs-modules": "^0.5.0",
-    "@graphql-codegen/cli": "^2.8.1",
+    "@graphql-codegen/cli": "^2.10.0",
     "@graphql-codegen/near-operation-file-preset": "^2.3.1",
     "@graphql-codegen/typed-document-node": "^2.3.1",
     "@graphql-codegen/typescript": "^2.7.1",
@@ -85,6 +85,7 @@
     "@nx-tools/nx-docker": "^3.0.1",
     "@types/bcryptjs": "^2.4.2",
     "@types/cron": "^2.0.0",
+    "@types/flat": "^5.0.2",
     "@types/jest": "27.5.1",
     "@types/lodash": "^4.14.182",
     "@types/node": "18.0.6",
@@ -95,6 +96,7 @@
     "eslint": "8.20.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-cypress": "^2.10.3",
+    "flat": "^5.0.2",
     "husky": "^8.0.1",
     "jest": "^27",
     "jest-mock-extended": "^2.0.7",
@@ -116,6 +118,7 @@
     "@nestjs/platform-express/multer/busboy": "^1.6",
     "@graphql-codegen/cli/**/got": "^11.8",
     "glob-parent": "^6.0.1",
-    "terser": "^5.14.2"
+    "terser": "^5.14.2",
+    "@graphql-codegen/cli/**/undici": "^5.8.0"
   }
 }
