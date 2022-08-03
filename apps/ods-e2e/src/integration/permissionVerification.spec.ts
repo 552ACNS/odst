@@ -211,7 +211,7 @@ describe('ods', () => {
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
 
-  it('Verify that ACW CC can view all feedback', () => {
+  it('Verify that ACW CC can view all feedback under his wing', () => {
     cy.login('keven.coyle@us.af.mil', 'admin');
 
     cy.location('pathname').should('include', '/dashboard');
@@ -220,28 +220,31 @@ describe('ods', () => {
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    //check if ACW CC can view the fourth created feedback
+    //check if ACW CC can view the 552 ACG feedback
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID4
     );
-    //move to the third feedback and check
+    //move to the next feedback
     cy.get('.mat-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
+    //check if ACW CC can view the 552 MXS feedback
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID3
     );
-    //move to the second feedback and check
+    //move to the next feedback
     cy.get('.mat-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
+    //check if ACW CC can view the 752 OSS feedback
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID2
     );
-    //move to the first feedback and check
+    //move to the next feedback
     cy.get('.mat-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
+    //check if ACW CC can view the 552 ACNS feedback
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID1
     );
