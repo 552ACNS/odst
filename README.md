@@ -1,14 +1,171 @@
-# Odst
+# ODST (Operational Development Software Team)
 
-[![docker](https://github.com/552ACNS/odst/actions/workflows/docker.yml/badge.svg)](https://github.com/552ACNS/odst/actions/workflows/docker.yml)
+## Table of Contents
 
-This project was generated using [Nx](https://nx.dev).
+- [Group Culture](#group-culture)
+- [Website Registration](#website-registration)
+- [Setting up Development Environment](#setting-up-development-environment)
+  - [Node.JS](#nodejs)
+  - [Nest.JS GLOBAL](#nestjs-global)
+  - [Yarn](#yarn)
+  - [Git](#git)
+  - [Visual Studio Code](#visual-studio-code)
+  - [WSL 2](#wsl-2)
+  - [Docker(Rancher)](#docker-rancher-desktop)
+  - [Insomnia](#insomnia)
+- [References](#references)
+  - [Nx](#nx)
+  - [Adding capabilities to your workspace](#adding-capabilities-to-your-workspace)
+  - [Generate an application](#generate-an-application)
+  - [Generate a library](#generate-a-library)
+  - [Development server](#development-server)
+  - [Code scaffolding](#code-scaffolding)
+  - [Build](#build)
+  - [Running Unit Tests](#running-unit-tests)
+  - [Understanding your workspace](#understand-your-workspace)
+  - [Further help](#further-help)
+  - [Admin user account for graphql API access](#admin-user-account-for-graphql-api-access)
+  - [Docker](#docker)
+  - [Docker images/tags](#docker-imagestags)
+  - [Common Troubleshooting tips](#common-troubleshooting-steps)
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+# Group Culture
 
-🔎 **Smart, Fast and Extensible Build System**
+Every workday there is a **_Daily Scrum_** in the team area (after the flight standup) for the developers. There we discuss roadblocks/what we did the previous work day/plans this current day and so forth.
+Your partner and you are expected to complete the tasks together, if research is needed, you’ll both be expected to conduct it. This ensures knowledge sharing occurs. Cell Phone use in the team area will be kept to a **minimum**. Breaks can be taken outside of the team area where members can use their phones freely.
+Responsibility for how long and frequent breaks occur will be at the discretion of the member until it becomes an issue.
+Members are expected to attend all Scrum Events to include: **_Backlog Grooming_**, **_Sprint Planning_**, **_Daily Stand-ups_**, **_Sprint Reviews_**, and **_Sprint Retrospectives_**.
+Please plan leave, appointments, meetings, and volunteer opportunities **around** these important events.
 
-## Quick Start & Documentation
+We use [Google Calendar](https://calendar.google.com/calendar/u/0?cid=N3IwdHVoZWtqdDRhNGNjNWV2dWE3dGhhZHNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ) for tracking all Scrum Events, Leave, Appointments, Squadron/Flight events, etc.
+
+# Website Registration
+
+You will need to register for accounts through all these sources before setting up your development environment.
+
+### [Jira](https://id.atlassian.com/login?continue=https%3A%2F%2Fstart.atlassian.com%2F&application=start)
+
+### [GitHub](https://github.com/)
+
+### [DigitalU](https://digitalu.af.mil/)
+
+# Setting up Development Environment
+
+### Node.JS
+
+- Node.JS is a JavaScript runtime environment that allows for front-end and back-end work using the JavaScript programming language. It allows us to run JavaScript on a server/desktop as opposed to just in the browser. For Windows/MAC users, download the latest version here, [Download | Node.js (nodejs.org).](https://nodejs.org/en/download/current/) Get the **“LTS”** version (**_IMPORTANT!_**)
+
+### Nest.JS GLOBAL
+
+- You will need to run this **after** installing node. Copy and paste this onto the command prompt. Note that MAC users/Linix machines may not be able to simply copy and paste do to different ASCII characters. Do not forget to add **“sudo”** in front of it for Mac/Linux.
+
+- `npm install –g @nestjs/cli`
+
+### Yarn
+
+- Install YARN, we are using this instead of NPM for our package manager
+
+- `npm install -g yarn`
+
+### Git
+
+- Regardless of what Git system you use (vanilla command line, vanilla git GUI, built into your IDE, a desktop client, etc) you need to download the Git tools. These can be found here, [Git - Downloads](git-scm.com)
+
+- For **MAC** users, install **_Homebrew_** first w/ the instructions here, [The Missing Package Manager for macOS (or Linux) — Homebrew](https://brew.sh/)
+
+- Ensure that you change the **CRLF** settings to: **_Checkout as-is, commit as-is_** (Dont worry about this step if using MAC)
+
+### Visual Studio Code
+
+- VS Code is a text editor, but one that is extensible with diverse types of plugins. With these plugins VS Code turns into a “IDE” that combines version control, Intellisense, Live Share, formatting, and many other QoL features. We need an IDE to edit JavaScript/typescript projects. Download here, [Visual Studio Code - Code Editing. Redefined.](https://code.visualstudio.com/)
+
+- Make sure you click on **_“Open w/ Code”_** functions in the installer
+
+- After installing, make sure to enable execution policies if you are on windows. [about Execution Policies - PowerShell | Microsoft Docs](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.1)
+  - Run on an **Administrator** Powershell: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
+
+### WSL 2
+
+- [Install WSL | Microsoft Docs](https://docs.microsoft.com/en-us/windows/wsl/install)
+
+- Update WSL:
+
+  - `sudo apt update`
+  - `apt list -–upgradable`
+  - `sudo apt upgrade`
+
+- Ensure WSL 2 is Installed:
+  - `wsl –l –v`
+
+### Docker (Rancher Desktop)
+
+[Windows/Linux]
+
+- You will need to install WSL 2 as part of this if you are on windows, refer to the section above. The below instructions are for Windows/Debian (Ubuntu is Debian).
+
+- If you have already installed Docker Desktop on your windows distro, uninstall it. Update the apt-get tool: `sudo apt update`
+
+[Rancher Desktop]
+
+- Install Rancher Desktop, [Installation | Rancher Desktop Docs](https://docs.rancherdesktop.io/getting-started/installation). Launch it and wait for it to finish installing the required packages. Use the **Containderd** runtime if anything asks for it.
+
+- Now, every time you would use a docker command, use `nerdctl`. For example, `docker compose up` is now `nerdctl compose up`. Use the below command to see if it works. In windows, make sure you are in the rancher terminal of wsl.
+
+  - `nerdctl container run hello-world `
+
+- If you are on ODST, navigate to the git repo. You’ll need to login with registry1. In the terminal type:
+  - `nerdctl login registry1.dso.mil -u=Your_Username` (**Replace "Your_Username"**)
+  - Enter your password (should be **CLI Secret**)
+  - Run `nerdctl compose up –d` to start your image:
+- Use **apt-get** to install the appropriate packages to transfer files over http/certificate authorities/ensure curl is installed/install a tool to communicate your linux distro.
+
+  - `sudo apt install apt-transport-https ca-certificates curl gnupg lsb-release`
+
+- Download the GPG key for Docker:
+
+  - `curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg`
+
+- Install the stable version of Docker
+
+- Go to this [Pastebin](https://pastebin.com/9nPeLGcg) and copy and paste the contents into wsl
+
+- Install Docker Utilities:
+
+  - `sudo apt update`
+  - `sudo apt install docker-ce docker-ce-cli containerd.io`
+  - `sudo apt install docker-compose`
+
+- You will need to start Docker in WSL after every restart:
+
+  - `sudo service docker start`
+
+- Test that it is working:
+
+  - `sudo docker run hello-world`
+
+- Navigate to the ODST repo on WSL and run
+  - `sudo docker-compose up postgres -d` (This method will support docker-compose files up to version 3.7)
+
+[Ironbank]
+
+- Create an [Ironbank](https://ironbank.dso.mil/) account
+
+- Log in to [Harbor](https://registry1.dso.mil/harbor)
+
+- Go to **User Profile** and copy **CLI Secret**
+
+- In WSL, run `sudo docker login registry1.dso.mil` (Login with Username and CLI secret)
+
+- Should now be able to execute `sudo docker pull registry1.dso.mil/ <insert stuff here>`
+
+### Insomnia
+
+- Insomnia is the routing client to test our API
+- [Download - Insomnia](https://insomnia.rest/download)
+
+# References
+
+### Nx
 
 [Nx Documentation](https://nx.dev/angular)
 
