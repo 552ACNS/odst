@@ -208,6 +208,21 @@ async function main() {
     }
   }
 
+  //added the following for 72MDG
+  try {
+    await prisma.refreshToken.deleteMany({
+      where: { user: { email: 'jennifer.trinkle@us.af.mil' } },
+    });
+    await prisma.user.delete({
+      where: { email: 'jennifer.trinkle@us.af.mil' },
+    });
+  } catch (e) {
+    //delete can fail if no entities are found. Ignore that
+    if (!(e instanceof PrismaClientKnownRequestError)) {
+      throw e;
+    }
+  }
+
   if (
     process.env.NODE_ENV !== 'PRODUCTION' &&
     process.env.NX_DEV_ACCOUNT_PASSWORD
@@ -243,6 +258,24 @@ async function main() {
         role: 'CC',
         firstName: 'Kenneth',
         lastName: 'Voigt',
+        grade: 'O-6',
+        status: 'ENABLED',
+      },
+    });
+
+    //added following for the 72 MDG
+    await prisma.user.upsert({
+      where: {
+        email: 'jennifer.trinkle@us.af.mil',
+      },
+      update: {},
+      create: {
+        email: 'jennifer.trinkle@us.af.mil',
+        password: pw,
+        orgs: { connect: { name: '72 MDG' } },
+        role: 'CC',
+        firstName: 'Jennifer',
+        lastName: 'Trinkle',
         grade: 'O-6',
         status: 'ENABLED',
       },
