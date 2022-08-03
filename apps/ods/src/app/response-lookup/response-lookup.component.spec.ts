@@ -6,22 +6,13 @@ import {
 } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  ApolloTestingController,
-  ApolloTestingModule,
-} from 'apollo-angular/testing';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 
 import { ResponseLookupComponent } from './response-lookup.component';
 import { ResponseLookupService } from './response-lookup.service';
 import { ResponseLookupModule } from './response-lookup.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
 import { of } from 'rxjs';
 
 describe('ResponsesComponent', () => {
@@ -40,12 +31,6 @@ describe('ResponsesComponent', () => {
         BrowserAnimationsModule,
         ReactiveFormsModule,
         ResponseLookupModule,
-        MatCardModule,
-        MatInputModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatListModule,
       ],
     }).compileComponents();
   });
@@ -56,6 +41,7 @@ describe('ResponsesComponent', () => {
     fixture.detectChanges();
   });
 
+  //Creates an expected servicer response
   const response = {
     data: {
       feedbackResponseByID: {
@@ -80,12 +66,19 @@ describe('ResponsesComponent', () => {
   });
 
   it('should submit a response ID to lookup', fakeAsync(() => {
+    //Mocks the service function and the return value it gives as an observable using of()
     mockResponseLookupService.getFeedbackReponseById = jest
       .fn()
       .mockReturnValue(of(response));
+
+    //Sets the user input through the form handler
     component.form.setValue({ reportID: 'Mock ID' });
+
+    //Fires the submit event and detects the changes to the fixture
     component.submit();
     fixture.detectChanges();
+
+    //Waits for the subscribe to resolve all data (Requires fakeAsync to do so)
     tick();
 
     const expected = response.data.feedbackResponseByID;
