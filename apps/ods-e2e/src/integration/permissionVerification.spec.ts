@@ -177,25 +177,25 @@ describe('ods', () => {
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    //check if this is the last created item
+    //check if ACW CC can view the fourth created feedback
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID4
     );
-    //move to the second item and check
+    //move to the third feedback and check
     cy.get('.mat-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID3
     );
-    //move to the third item and check
+    //move to the second feedback and check
     cy.get('.mat-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID2
     );
-    //move to the fourth item and check
+    //move to the first feedback and check
     cy.get('.mat-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
