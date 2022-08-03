@@ -1,7 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
 describe('ods', () => {
-  const feedbackResponseUUID = uuidv4();
+  const feedbackResponseUUID1 = uuidv4();
+  const feedbackResponseUUID2 = uuidv4();
+  const feedbackResponseUUID3 = uuidv4();
+  const feedbackResponseUUID4 = uuidv4();
   //const commentUUID = uuidv4();
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
@@ -40,7 +43,7 @@ describe('ods', () => {
     // Selects Col Coyle as the commander (this is a response for the wing)
     cy.get('.mat-option-text').contains('Matos').click();
 
-    cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID);
+    cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID1);
 
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
@@ -77,9 +80,9 @@ describe('ods', () => {
     cy.get('[formcontrolname="CC"]').click();
 
     // Selects Col Coyle as the commander (this is a response for the wing)
-    cy.get('.mat-option-text').contains('Henry').click();
+    cy.get('.mat-option-text').contains('Henderson').click();
 
-    cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID);
+    cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID2);
 
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
@@ -117,9 +120,9 @@ describe('ods', () => {
     cy.get('[formcontrolname="CC"]').click();
 
     // Selects Col Coyle as the commander (this is a response for the wing)
-    cy.get('.mat-option-text').contains('Henderson').click();
+    cy.get('.mat-option-text').contains('Henry').click();
 
-    cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID);
+    cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID3);
 
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
@@ -159,9 +162,45 @@ describe('ods', () => {
     // Selects Col Coyle as the commander (this is a response for the wing)
     cy.get('.mat-option-text').contains('Voigt').click();
 
-    cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID);
+    cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID4);
 
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
+  });
+
+  it('Verify that ACW CC can view all feedback', () => {
+    cy.login('keven.coyle@us.af.mil', 'admin');
+
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Unresolved').click();
+    cy.location('pathname').should('include', '/responses');
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    //check if this is the last created item
+    cy.get('mat-card-content', { timeout: 5000 }).contains(
+      feedbackResponseUUID4
+    );
+    //move to the second item and check
+    cy.get('.mat-paginator-navigation-next').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    cy.get('mat-card-content', { timeout: 5000 }).contains(
+      feedbackResponseUUID3
+    );
+    //move to the third item and check
+    cy.get('.mat-paginator-navigation-next').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    cy.get('mat-card-content', { timeout: 5000 }).contains(
+      feedbackResponseUUID2
+    );
+    //move to the fourth item and check
+    cy.get('.mat-paginator-navigation-next').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    cy.get('mat-card-content', { timeout: 5000 }).contains(
+      feedbackResponseUUID1
+    );
   });
 });
