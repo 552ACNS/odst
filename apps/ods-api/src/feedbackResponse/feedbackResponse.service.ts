@@ -210,6 +210,7 @@ export class FeedbackResponseService {
     }
     return whereIssues;
   }
+
   //gets the feedback response based on issue and index it is queired on and returns a feedback response object
   async getIssuesByStatus(
     status: string,
@@ -255,6 +256,7 @@ export class FeedbackResponseService {
       .findUnique({ where: feedbackResponseWhereUniqueInput })
       .tags();
   }
+
   async comments(
     feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
   ): Promise<Comment[]> {
@@ -340,13 +342,13 @@ export class FeedbackResponseService {
   //TODO [ODST-273] refactor for complexity
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   // eslint-disable-next-line complexity
-  private async getWhere(
-    user: User
-  ): Promise<Prisma.FeedbackResponseWhereInput> {
+  async getWhere(user: User): Promise<Prisma.FeedbackResponseWhereInput> {
     // Get the user's Orgs
-    const orgs = await this.getUsersOrgs(user);
+    const usersOrgs = await this.getUsersOrgs(user);
+    //[552 ACG, 552 ACNS, Anything below the ACG]
 
     // Only look at the feedbackResponses where a specific answer contains one of the user's orgs
+    //Checks a specific question asking for the organization the event occured in.
     const whereAnswer = {
       answers: {
         some: {
@@ -357,7 +359,7 @@ export class FeedbackResponseService {
             },
           },
           value: {
-            in: orgs,
+            in: usersOrgs,
           },
         },
       },
@@ -373,14 +375,7 @@ export class FeedbackResponseService {
           AND: {
             //no feedbackResponses that are routed outside
             routeOutside: false,
-            OR: {
-              ...whereAnswer,
-              feedback: {
-                orgs: {
-                  some: { name: { in: orgs } },
-                },
-              },
-            },
+            ...whereAnswer,
           },
         };
     }
