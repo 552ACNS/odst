@@ -12,6 +12,8 @@ describe('ods', () => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
 
+  //Create 5 freedback one linked to the ACG, one to the 72 MDG and three to differing ACW squadrons
+  //to use for further testing.
   it('submit a feedback for ACNS with a unique uuid', () => {
     cy.visit('/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
@@ -211,6 +213,10 @@ describe('ods', () => {
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
 
+  //Following test verifies that ACW CC can see only feedback for units under
+  //the wing.  Since the 72 MDG feedback should be listed first in the queue,
+  //if the queue contains messages 4 to 1, that indicates that the 72 MDG feedback
+  //was not visible.
   it('Verify that ACW CC can view all feedback under his wing', () => {
     cy.login('keven.coyle@us.af.mil', 'admin');
 
@@ -245,6 +251,56 @@ describe('ods', () => {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     //check if ACW CC can view the 552 ACNS feedback
+    cy.get('mat-card-content', { timeout: 5000 }).contains(
+      feedbackResponseUUID1
+    );
+  });
+
+  //Following test verifies that ACG CC can see only feedback for units under the group.
+  //Feedback #4, 2 and 1 fall under the ACG and will be the only feedback visible.
+  it('Verify that ACG CC can view all feedback under the group', () => {
+    cy.login('kenneth.voigt@us.af.mil', 'admin');
+
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Unresolved').click();
+    cy.location('pathname').should('include', '/responses');
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    //check if ACG CC can view the 552 ACG feedback
+    cy.get('mat-card-content', { timeout: 5000 }).contains(
+      feedbackResponseUUID4
+    );
+    //move to the next feedback
+    cy.get('.mat-paginator-navigation-next').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    //check if ACG CC can view the 752 OSS feedback
+    cy.get('mat-card-content', { timeout: 5000 }).contains(
+      feedbackResponseUUID2
+    );
+    //move to the next feedback
+    cy.get('.mat-paginator-navigation-next').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    //check if ACG CC can view the 552 ACNS feedback
+    cy.get('mat-card-content', { timeout: 5000 }).contains(
+      feedbackResponseUUID1
+    );
+  });
+
+  //Following test verifies that ACNS CC can see only feedback from that squadron.
+  //Feedback #1 falls under the ACNS and will be the only feedback visible.
+  it('Verify that ACNS CC can view all feedback under the squadron', () => {
+    cy.login('emmanuel.matos@us.af.mil', 'admin');
+
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Unresolved').click();
+    cy.location('pathname').should('include', '/responses');
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    //check if ACNS CC can view the 552 ACNS feedback
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID1
     );
