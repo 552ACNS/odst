@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { onNewUserLogin } from '../support/Common_functions/newUserLogin';
 
 describe('ods', () => {
   const feedbackResponseUUID1 = uuidv4();
@@ -218,11 +219,7 @@ describe('ods', () => {
   //if the queue contains messages 4 to 1, that indicates that the 72 MDG feedback
   //was not visible.
   it('Verify that ACW CC can view all feedback under his wing', () => {
-    cy.login('keven.coyle@us.af.mil', 'admin');
-
-    cy.location('pathname').should('include', '/dashboard');
-    cy.get('mat-card').contains('Unresolved').click();
-    cy.location('pathname').should('include', '/responses');
+    onNewUserLogin.newUserLogin('keven.coyle@us.af.mil', 'admin');
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
@@ -259,11 +256,7 @@ describe('ods', () => {
   //Following test verifies that ACG CC can see only feedback for units under the group.
   //Feedback #4, 2 and 1 fall under the ACG and will be the only feedback visible.
   it('Verify that ACG CC can view all feedback under the group', () => {
-    cy.login('kenneth.voigt@us.af.mil', 'admin');
-
-    cy.location('pathname').should('include', '/dashboard');
-    cy.get('mat-card').contains('Unresolved').click();
-    cy.location('pathname').should('include', '/responses');
+    onNewUserLogin.newUserLogin('kenneth.voigt@us.af.mil', 'admin');
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
@@ -292,11 +285,7 @@ describe('ods', () => {
   //Following test verifies that ACNS CC can see only feedback from that squadron.
   //Feedback #1 falls under the ACNS and will be the only feedback visible.
   it('Verify that ACNS CC can view all feedback under the squadron', () => {
-    cy.login('emmanuel.matos@us.af.mil', 'admin');
-
-    cy.location('pathname').should('include', '/dashboard');
-    cy.get('mat-card').contains('Unresolved').click();
-    cy.location('pathname').should('include', '/responses');
+    onNewUserLogin.newUserLogin('emmanuel.matos@us.af.mil', 'admin');
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
