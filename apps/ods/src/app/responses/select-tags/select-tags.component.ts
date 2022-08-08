@@ -10,6 +10,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
 
+import * as _ from 'lodash';
+
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'select-tags',
@@ -25,9 +27,7 @@ export class SelectTagsComponent {
   @Input() tagType: string;
 
   //TODO: add error handling for the event that the emitted functions fail.
-  @Output() add = new EventEmitter<
-    MatChipInputEvent | MatAutocompleteSelectedEvent
-  >();
+  @Output() add = new EventEmitter<string>();
 
   @Output() remove = new EventEmitter<string>();
 
@@ -43,13 +43,18 @@ export class SelectTagsComponent {
    * The input box will be cleared after the event has been passed back to the parent component
    * @param event Emmitted from an input box for material chips on input
    */
-  addTag(event: MatChipInputEvent) {
-    if (
-      this.tags.includes(event.value) &&
-      !this.selectedTags?.includes(event.value)
-    ) {
-      this.add.emit(event);
-      this.selectedTags?.push(event.value);
+  async addTag(event: MatChipInputEvent) {
+    const input = event.value;
+
+    //input = input.split(' ').map(_.capitalize).join(' ');
+
+    const isPossibleValue = this.tags.includes(input);
+
+    const isNotSelected = !this.selectedTags?.includes(input);
+
+    if (isPossibleValue && isNotSelected) {
+      this.add.emit(input);
+      this.selectedTags?.push(input);
       // Clear the input values
       if (event.chipInput) {
         event.chipInput.clear();
@@ -74,7 +79,7 @@ export class SelectTagsComponent {
    */
   selectTag(event: MatAutocompleteSelectedEvent) {
     if (this.selectedTags?.includes(event.option.value)) return;
-    this.add.emit(event);
+    this.add.emit(event.option.value);
     this.selectedTags?.push(event.option.value);
     this.tagInput.nativeElement.value = '';
     this.tagCtrl.setValue(null);

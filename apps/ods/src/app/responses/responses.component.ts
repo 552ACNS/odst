@@ -8,9 +8,8 @@ import {
   GetReportByStatusQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { getUserId } from '@odst/helpers';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { reloadPage } from '@odst/helpers';
 @Component({
   selector: 'odst-responses',
@@ -64,7 +63,8 @@ export class ResponsesComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private responsesService: ResponsesService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   //#region Main functions
@@ -242,21 +242,10 @@ export class ResponsesComponent implements OnInit {
 
   /**
    * User selects a tag from the list of unused and the list of unused tags is updated
-   * @param event: MatChipInputEvent is the output of a material chip input box
-   * @param event: MatAutocompleteSelectedEvent is the output of a material autocomplete selection
    * @returns list of tags to push to server
+   * @param input
    */
-  async add(
-    event: MatChipInputEvent | MatAutocompleteSelectedEvent
-  ): Promise<void> {
-    let input =
-      (event as MatChipInputEvent).value ??
-      (event as MatAutocompleteSelectedEvent).option.value;
-
-    input = input.trim();
-
-    // Convert to title case
-    input = input[0].toUpperCase() + input.slice(1).toLowerCase();
+  async add(input: string): Promise<void> {
     // If the hand typed value is one of the legal tags
     if (this.allTags.includes(input)) {
       this.responsesService
@@ -264,8 +253,19 @@ export class ResponsesComponent implements OnInit {
           where: { id: this.response.id },
           data: { tags: { connect: [{ value: input }] } },
         })
-        .subscribe(() => {
-          //Placeholder
+        .subscribe(({ data, errors }) => {
+          if (!errors && !!data) {
+            this.snackBar.open('Tag added', '', {
+              duration: 1500,
+              panelClass: 'primary-text-contrast',
+            });
+          } else {
+            this.snackBar.open(
+              'Oops, something went wrong trying to add your tag',
+              'okay',
+              { duration: 2500 }
+            );
+          }
         });
     }
   }
