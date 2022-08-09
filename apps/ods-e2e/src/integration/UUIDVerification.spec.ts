@@ -84,8 +84,8 @@ describe('ods', () => {
   it('should mark an issue as resolved', () => {
     //selects the action tag selector
     cy.get('#mat-chip-list-input-1').type('Add');
-    cy.get('span').contains('Addressed in organizational all-call').click();
-    cy.get('mat-chip').contains('Addressed in organizational all-call');
+    cy.get('span').contains('Addressed In Organizational All-call').click();
+    cy.get('mat-chip').contains('Addressed In Organizational All-call');
     cy.scrollTo('bottom');
     //Marks the issue as resolved
     cy.get('mat-slide-toggle').click();
@@ -103,7 +103,7 @@ describe('ods', () => {
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID
     );
-    cy.get('mat-chip').contains('Addressed in organizational all-call');
+    cy.get('mat-chip').contains('Addressed In Organizational All-call');
     cy.scrollTo('top');
     cy.get('mat-card-content').contains(commentUUID);
   });
@@ -125,12 +125,14 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Resolved').click();
     cy.location('pathname').should('include', '/responses');
-    cy.get('#mat-chip-list-input-1').type('Rout');
-    cy.get('span').contains('Routed up the chain of command').click();
-    cy.get('mat-chip').contains('Routed up the chain of command');
+    cy.get('#mat-chip-list-input-1')
+      .type('Routed Up The Chain Of Command{enter}')
+      .wait('@graphql');
+    cy.get('.mat-simple-snack-bar-content').contains('Tag added');
+    cy.get('mat-chip').contains('Routed Up The Chain Of Command');
     cy.get('mat-icon').contains('cancel').click();
     cy.get('mat-chip')
-      .contains('Addressed in organizational all-call')
+      .contains('Addressed In Organizational All-call')
       .should('not.exist');
   });
 });
