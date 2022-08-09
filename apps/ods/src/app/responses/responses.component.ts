@@ -11,10 +11,12 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { getUserId } from '@odst/helpers';
 import { reloadPage } from '@odst/helpers';
+import { ResponsesStore } from './responses.store';
 @Component({
   selector: 'odst-responses',
   templateUrl: './responses.component.html',
   styleUrls: ['./responses.component.scss'],
+  providers: [ResponsesStore],
 })
 export class ResponsesComponent implements OnInit {
   //#region Variables
@@ -64,7 +66,8 @@ export class ResponsesComponent implements OnInit {
     private responsesService: ResponsesService,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private readonly responsesStore: ResponsesStore
   ) {}
 
   //#region Main functions
@@ -259,12 +262,14 @@ export class ResponsesComponent implements OnInit {
               duration: 1500,
               panelClass: 'primary-text-contrast',
             });
+            this.responsesStore.updateTagStatus(true);
           } else {
             this.snackBar.open(
               'Oops, something went wrong trying to add your tag',
               'okay',
               { duration: 2500 }
             );
+            this.responsesStore.updateTagStatus(false);
           }
         });
     }

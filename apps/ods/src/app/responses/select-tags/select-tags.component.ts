@@ -9,8 +9,9 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
-
+import { take } from 'rxjs';
 import * as _ from 'lodash';
+import { ResponsesStore } from '../responses.store';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -38,15 +39,17 @@ export class SelectTagsComponent {
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
   //#endregion
 
+  constructor(private readonly responsesStore: ResponsesStore) {}
+
   /**
    * User selects a tag to be added, which must be a part of the possible tags and not the selected tags
    * The input box will be cleared after the event has been passed back to the parent component
    * @param event Emmitted from an input box for material chips on input
    */
   async addTag(event: MatChipInputEvent) {
-    const input = event.value;
+    let input = event.value;
 
-    //input = input.split(' ').map(_.capitalize).join(' ');
+    input = input.split(' ').map(_.capitalize).join(' ');
 
     const isPossibleValue = this.tags.includes(input);
 
@@ -54,11 +57,17 @@ export class SelectTagsComponent {
 
     if (isPossibleValue && isNotSelected) {
       this.add.emit(input);
-      this.selectedTags?.push(input);
-      // Clear the input values
-      if (event.chipInput) {
-        event.chipInput.clear();
-      }
+      this.responsesStore.tagSuccess$.pipe(take(2)).subscribe((data) => {
+        console.log(data);
+        if (data) {
+          this.selectedTags?.push(input);
+          // Clear the input values
+          if (event.chipInput) {
+            event.chipInput.clear();
+          }
+        }
+        this.responsesStore.resetTagStatus();
+      });
     }
   }
 
