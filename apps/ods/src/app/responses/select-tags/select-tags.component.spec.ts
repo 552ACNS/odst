@@ -3,6 +3,7 @@ import { ResponsesModule } from '../responses.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectTagsComponent } from './select-tags.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { ResponsesStore } from '../responses.store';
 import { By } from '@angular/platform-browser';
 
 describe('SelectTagsComponent', () => {
@@ -13,6 +14,7 @@ describe('SelectTagsComponent', () => {
     TestBed.configureTestingModule({
       imports: [ResponsesModule, BrowserAnimationsModule, MatChipsModule],
       declarations: [SelectTagsComponent],
+      providers: [ResponsesStore],
     }).compileComponents();
   });
 
