@@ -48,17 +48,21 @@ export class SelectTagsComponent {
    */
   async addTag(event: MatChipInputEvent) {
     let input = event.value;
-
+    //Capitalizes the first letter in each word
     input = input.split(' ').map(_.capitalize).join(' ');
 
+    //Checks if the value is in the list of usable tags and whether it is already in use
     const isPossibleValue = this.tags.includes(input);
-
     const isNotSelected = !this.selectedTags?.includes(input);
 
     if (isPossibleValue && isNotSelected) {
+      //emits the tag string to the parent component for use
       this.add.emit(input);
+
+      //Takes the first 2 emitted values from the state variable 'tagSuccess$', the first being null by default
+      //The second value will be whether or not the tag was successfully added to the database
       this.responsesStore.tagSuccess$.pipe(take(2)).subscribe((data) => {
-        console.log(data);
+        //Adds the tag to the chip display if it was successfully added to the database
         if (data) {
           this.selectedTags?.push(input);
           // Clear the input values
@@ -66,6 +70,7 @@ export class SelectTagsComponent {
             event.chipInput.clear();
           }
         }
+        //Resets the tag success boolean to null
         this.responsesStore.resetTagStatus();
       });
     }
@@ -89,7 +94,12 @@ export class SelectTagsComponent {
   selectTag(event: MatAutocompleteSelectedEvent) {
     if (this.selectedTags?.includes(event.option.value)) return;
     this.add.emit(event.option.value);
-    this.selectedTags?.push(event.option.value);
+    this.responsesStore.tagSuccess$.pipe(take(2)).subscribe((data) => {
+      if (data) {
+        this.selectedTags?.push(event.option.value);
+      }
+      this.responsesStore.resetTagStatus();
+    });
     this.tagInput.nativeElement.value = '';
     this.tagCtrl.setValue(null);
     this.generateFilteredTags();
