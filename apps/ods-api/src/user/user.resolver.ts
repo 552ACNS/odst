@@ -43,6 +43,7 @@ export class UserResolver {
           grade: true,
           firstName: true,
           lastName: true,
+          status: true,
         },
         orderBy: {
           grade: 'desc',

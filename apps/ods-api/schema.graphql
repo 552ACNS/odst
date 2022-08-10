@@ -94,15 +94,22 @@ type UserCount {
 type User {
   id: ID!
   email: String!
-  enabled: Boolean!
   grade: String
   firstName: String!
   lastName: String!
+  status: Status!
   role: Role!
   refreshToken: RefreshToken
   orgs: [Org!]
   comments: [Comment!]
   _count: UserCount!
+}
+
+enum Status {
+  DISABLED
+  ENABLED
+  REQUESTED
+  DENIED
 }
 
 enum Role {
@@ -330,10 +337,10 @@ type TagMaxAggregate {
 type UserCountAggregate {
   id: Int!
   email: Int!
-  enabled: Int!
   grade: Int!
   firstName: Int!
   lastName: Int!
+  status: Int!
   role: Int!
   _all: Int!
 }
@@ -341,20 +348,20 @@ type UserCountAggregate {
 type UserMinAggregate {
   id: String
   email: String
-  enabled: Boolean
   grade: String
   firstName: String
   lastName: String
+  status: Status
   role: Role
 }
 
 type UserMaxAggregate {
   id: String
   email: String
-  enabled: Boolean
   grade: String
   firstName: String
   lastName: String
+  status: Status
   role: Role
 }
 
@@ -508,24 +515,14 @@ input UserWhereInput {
   id: StringFilter
   email: StringFilter
   password: StringFilter
-  enabled: BoolFilter
   grade: StringNullableFilter
   firstName: StringFilter
   lastName: StringFilter
+  status: EnumStatusFilter
   role: EnumRoleFilter
   refreshToken: RefreshTokenRelationFilter
   orgs: OrgListRelationFilter
   comments: CommentListRelationFilter
-}
-
-input BoolFilter {
-  equals: Boolean
-  not: NestedBoolFilter
-}
-
-input NestedBoolFilter {
-  equals: Boolean
-  not: NestedBoolFilter
 }
 
 input StringNullableFilter {
@@ -555,6 +552,20 @@ input NestedStringNullableFilter {
   startsWith: String
   endsWith: String
   not: NestedStringNullableFilter
+}
+
+input EnumStatusFilter {
+  equals: Status
+  in: [Status!]
+  notIn: [Status!]
+  not: NestedEnumStatusFilter
+}
+
+input NestedEnumStatusFilter {
+  equals: Status
+  in: [Status!]
+  notIn: [Status!]
+  not: NestedEnumStatusFilter
 }
 
 input EnumRoleFilter {
@@ -592,6 +603,16 @@ input RefreshTokenWhereInput {
 input UserRelationFilter {
   is: UserWhereInput
   isNot: UserWhereInput
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
 }
 
 input DateTimeFilter {
@@ -839,10 +860,10 @@ input UserOrderByWithRelationInput {
   id: SortOrder
   email: SortOrder
   password: SortOrder
-  enabled: SortOrder
   grade: SortOrder
   firstName: SortOrder
   lastName: SortOrder
+  status: SortOrder
   role: SortOrder
   refreshToken: RefreshTokenOrderByWithRelationInput
   orgs: OrgOrderByRelationAggregateInput
@@ -868,10 +889,10 @@ enum UserScalarFieldEnum {
   id
   email
   password
-  enabled
   grade
   firstName
   lastName
+  status
   role
 }
 
@@ -936,10 +957,10 @@ input UserCreateWithoutOrgsInput {
   id: String
   email: String!
   password: String!
-  enabled: Boolean
   grade: String
   firstName: String!
   lastName: String!
+  status: Status!
   role: Role!
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   comments: CommentCreateNestedManyWithoutAuthorInput
@@ -1112,10 +1133,10 @@ input UserCreateWithoutCommentsInput {
   id: String
   email: String!
   password: String!
-  enabled: Boolean
   grade: String
   firstName: String!
   lastName: String!
+  status: Status!
   role: Role!
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
@@ -1446,21 +1467,21 @@ input UserUpdateWithoutOrgsInput {
   id: StringFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
-  enabled: BoolFieldUpdateOperationsInput
   grade: NullableStringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
   lastName: StringFieldUpdateOperationsInput
+  status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   comments: CommentUpdateManyWithoutAuthorInput
 }
 
-input BoolFieldUpdateOperationsInput {
-  set: Boolean
-}
-
 input NullableStringFieldUpdateOperationsInput {
   set: String
+}
+
+input EnumStatusFieldUpdateOperationsInput {
+  set: Status
 }
 
 input EnumRoleFieldUpdateOperationsInput {
@@ -1488,6 +1509,10 @@ input RefreshTokenUpdateWithoutUserInput {
   issuedDate: DateTimeFieldUpdateOperationsInput
   expiredDate: DateTimeFieldUpdateOperationsInput
   hash: StringFieldUpdateOperationsInput
+}
+
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
 }
 
 input DateTimeFieldUpdateOperationsInput {
@@ -1744,10 +1769,10 @@ input UserUpdateWithoutCommentsInput {
   id: StringFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
-  enabled: BoolFieldUpdateOperationsInput
   grade: NullableStringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
   lastName: StringFieldUpdateOperationsInput
+  status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   orgs: OrgUpdateManyWithoutUsersInput
@@ -2173,10 +2198,10 @@ input UserScalarWhereInput {
   id: StringFilter
   email: StringFilter
   password: StringFilter
-  enabled: BoolFilter
   grade: StringNullableFilter
   firstName: StringFilter
   lastName: StringFilter
+  status: EnumStatusFilter
   role: EnumRoleFilter
 }
 
@@ -2184,10 +2209,10 @@ input UserUpdateManyMutationInput {
   id: StringFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
-  enabled: BoolFieldUpdateOperationsInput
   grade: NullableStringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
   lastName: StringFieldUpdateOperationsInput
+  status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
 }
 
@@ -2229,10 +2254,10 @@ input UserCreateInput {
   id: String
   email: String!
   password: String!
-  enabled: Boolean
   grade: String
   firstName: String!
   lastName: String!
+  status: Status!
   role: Role!
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
