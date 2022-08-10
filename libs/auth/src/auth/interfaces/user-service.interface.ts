@@ -4,12 +4,14 @@ import {
 } from './refreshToken.interface';
 
 // TODO: May need to refactor once we get generator going
-
+//Added status to accomodate inclusion in ODS and made enabled optional
 export interface User {
   id: string;
   username?: string;
   email: string;
-  enabled: boolean;
+  enabled?: boolean;
+
+  status?: any;
   password: string;
 }
 
