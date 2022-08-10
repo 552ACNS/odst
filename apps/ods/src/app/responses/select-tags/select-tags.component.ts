@@ -10,7 +10,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
 import { take } from 'rxjs';
-import * as _ from 'lodash';
+import { capitalize } from 'lodash';
 import { ResponsesStore } from '../responses.store';
 
 @Component({
@@ -49,7 +49,7 @@ export class SelectTagsComponent {
   async addTag(event: MatChipInputEvent) {
     let input = event.value;
     //Capitalizes the first letter in each word
-    input = input.split(' ').map(_.capitalize).join(' ');
+    input = input.split(' ').map(capitalize).join(' ');
 
     //Checks if the value is in the list of usable tags and whether it is already in use
     const isPossibleValue = this.tags.includes(input);
