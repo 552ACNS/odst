@@ -82,6 +82,10 @@ describe('ods', () => {
   });
 
   it('should mark an issue as resolved', () => {
+    cy.login('keven.coyle@us.af.mil', 'admin');
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Unresolved').click();
+    cy.location('pathname').should('include', '/responses');
     //selects the action tag selector
     cy.get('#mat-chip-list-input-1').type('Add');
     cy.get('span').contains('Addressed In Organizational All-call').click();
