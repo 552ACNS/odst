@@ -101,12 +101,12 @@ const tagSeed: Prisma.TagCreateInput[] = [
   { value: 'Discrimination', type: 'Resolution' },
 
   // Action tags
-  { value: 'Addressed in organizational all-call', type: 'Action' },
-  { value: 'Spoke with organizational leadership', type: 'Action' },
-  { value: 'Brought in external agency to educate', type: 'Action' },
-  { value: 'Offered educational workshops', type: 'Action' },
-  { value: 'Distributed educational material', type: 'Action' },
-  { value: 'Routed up the chain of command', type: 'Action' },
+  { value: 'Addressed In Organizational All-call', type: 'Action' },
+  { value: 'Spoke With Organizational Leadership', type: 'Action' },
+  { value: 'Brought In External Agency To Educate', type: 'Action' },
+  { value: 'Offered Educational Workshops', type: 'Action' },
+  { value: 'Distributed Educational Material', type: 'Action' },
+  { value: 'Routed Up The Chain Of Command', type: 'Action' },
 ];
 
 async function main() {
