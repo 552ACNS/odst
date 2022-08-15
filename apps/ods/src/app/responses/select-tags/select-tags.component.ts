@@ -58,17 +58,22 @@ export class SelectTagsComponent {
     if (isPossibleValue && isNotSelected) {
       //emits the tag string to the parent component for use
       this.add.emit(input);
+      this.selectedTags?.push(input);
 
       //Takes the first 2 emitted values from the state variable 'tagSuccess$', the first being null by default
       //The second value will be whether or not the tag was successfully added to the database
       this.responsesStore.tagSuccess$.pipe(take(2)).subscribe((data) => {
         //Adds the tag to the chip display if it was successfully added to the database
         if (data) {
-          this.selectedTags?.push(input);
           // Clear the input values
           if (event.chipInput) {
             event.chipInput.clear();
           }
+        } else {
+          //Removes the tag if tag success returns false
+          this.selectedTags = this.selectedTags?.filter(
+            (item) => item != input
+          );
         }
         //Resets the tag success boolean to null
         this.responsesStore.resetTagStatus();
