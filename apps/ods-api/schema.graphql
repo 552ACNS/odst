@@ -1319,10 +1319,10 @@ input UserCreateWithoutReviewedResponsesInput {
   id: String
   email: String!
   password: String!
-  enabled: Boolean
   grade: String
   firstName: String!
   lastName: String!
+  status: Status!
   role: Role!
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
@@ -2127,10 +2127,10 @@ input UserUpdateWithoutReviewedResponsesInput {
   id: StringFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   password: StringFieldUpdateOperationsInput
-  enabled: BoolFieldUpdateOperationsInput
   grade: NullableStringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
   lastName: StringFieldUpdateOperationsInput
+  status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   orgs: OrgUpdateManyWithoutUsersInput

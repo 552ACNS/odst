@@ -126,7 +126,7 @@ describe('ods', () => {
     cy.get('button').contains('Lookup ID').click();
     cy.wait('@graphql');
     cy.get('p').contains('was resolved on');
-    cy.get('mat-list-item').contains('Addressed in organizational all-call');
+    cy.get('mat-list-item').contains('Addressed In Organizational All-call');
   });
 
   it('Verify that a comment was made and that the feedback was catagorized as resolved', () => {
