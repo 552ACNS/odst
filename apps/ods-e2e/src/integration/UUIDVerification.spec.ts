@@ -129,10 +129,10 @@ describe('ods', () => {
     cy.login('keven.coyle@us.af.mil', 'admin');
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Resolved').click();
-    cy.location('pathname').should('include', '/responses');
-    cy.get('#mat-chip-list-input-1')
-      .type('Routed Up The Chain Of Command{enter}')
-      .wait('@graphql');
+    cy.location('pathname').should('include', '/responses').wait('@graphql');
+    cy.get('#mat-chip-list-input-1').type(
+      'Routed Up The Chain Of Command{enter}'
+    );
     cy.get('.mat-simple-snack-bar-content').contains('Tag added');
     cy.get('mat-chip').contains('Routed Up The Chain Of Command');
     cy.get('mat-icon').contains('cancel').click();

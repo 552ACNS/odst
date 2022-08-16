@@ -69,7 +69,9 @@ export class SelectTagsComponent {
           if (event.chipInput) {
             event.chipInput.clear();
           }
-        } else {
+        }
+        //Checks that the data is false but not null.
+        else if (data == false) {
           //Removes the tag if tag success returns false
           this.selectedTags = this.selectedTags?.filter(
             (item) => item != input
