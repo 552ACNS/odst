@@ -92,6 +92,21 @@ describe('ods', () => {
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
   });
 
+  it('should not accept login with non-ENABLED account', () => {
+    //will go through login using credentials for requested account created above
+    cy.visit('/login');
+    cy.get('[formcontrolname="userEmail"]').type('e2etest@gmail.com');
+    cy.get('[formcontrolname="userPassword"]').type(
+      'thisISaREALLYgreatPA$$word!3'
+    );
+    cy.get('odst-login').find('button').contains('Sign In').click();
+    //expect to get a wrong email or password notice in repose
+    cy.contains(
+      'p',
+      'Wrong email or password. Try again or click Forgot Password to reset it.'
+    );
+  });
+
   it('should accept a new account', () => {
     // We don't use this login method anymore, refer to cy.login
     cy.visit('/login');

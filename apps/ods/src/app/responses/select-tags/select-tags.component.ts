@@ -9,6 +9,9 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
+import { take } from 'rxjs';
+import { capitalize } from 'lodash';
+import { ResponsesStore } from '../responses.store';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -25,9 +28,7 @@ export class SelectTagsComponent {
   @Input() tagType: string;
 
   //TODO: add error handling for the event that the emitted functions fail.
-  @Output() add = new EventEmitter<
-    MatChipInputEvent | MatAutocompleteSelectedEvent
-  >();
+  @Output() add = new EventEmitter<string>();
 
   @Output() remove = new EventEmitter<string>();
 
@@ -38,22 +39,40 @@ export class SelectTagsComponent {
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
   //#endregion
 
+  constructor(private readonly responsesStore: ResponsesStore) {}
+
   /**
    * User selects a tag to be added, which must be a part of the possible tags and not the selected tags
    * The input box will be cleared after the event has been passed back to the parent component
    * @param event Emmitted from an input box for material chips on input
    */
-  addTag(event: MatChipInputEvent) {
-    if (
-      this.tags.includes(event.value) &&
-      !this.selectedTags?.includes(event.value)
-    ) {
-      this.add.emit(event);
-      this.selectedTags?.push(event.value);
-      // Clear the input values
-      if (event.chipInput) {
-        event.chipInput.clear();
-      }
+  async addTag(event: MatChipInputEvent) {
+    let input = event.value;
+    //Capitalizes the first letter in each word
+    input = input.split(' ').map(capitalize).join(' ');
+
+    //Checks if the value is in the list of usable tags and whether it is already in use
+    const isPossibleValue = this.tags.includes(input);
+    const isNotSelected = !this.selectedTags?.includes(input);
+
+    if (isPossibleValue && isNotSelected) {
+      //emits the tag string to the parent component for use
+      this.add.emit(input);
+
+      //Takes the first 2 emitted values from the state variable 'tagSuccess$', the first being null by default
+      //The second value will be whether or not the tag was successfully added to the database
+      this.responsesStore.tagSuccess$.pipe(take(2)).subscribe((data) => {
+        //Adds the tag to the chip display if it was successfully added to the database
+        if (data) {
+          this.selectedTags?.push(input);
+          // Clear the input values
+          if (event.chipInput) {
+            event.chipInput.clear();
+          }
+        }
+        //Resets the tag success boolean to null
+        this.responsesStore.resetTagStatus();
+      });
     }
   }
 
@@ -74,8 +93,13 @@ export class SelectTagsComponent {
    */
   selectTag(event: MatAutocompleteSelectedEvent) {
     if (this.selectedTags?.includes(event.option.value)) return;
-    this.add.emit(event);
-    this.selectedTags?.push(event.option.value);
+    this.add.emit(event.option.value);
+    this.responsesStore.tagSuccess$.pipe(take(2)).subscribe((data) => {
+      if (data) {
+        this.selectedTags?.push(event.option.value);
+      }
+      this.responsesStore.resetTagStatus();
+    });
     this.tagInput.nativeElement.value = '';
     this.tagCtrl.setValue(null);
     this.generateFilteredTags();

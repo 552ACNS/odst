@@ -54,7 +54,7 @@ export const MockUsers: User[] = [
     email: 'email',
     password: 'password',
     role: 'ADMIN',
-    enabled: true,
+    status: 'ENABLED',
     grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
