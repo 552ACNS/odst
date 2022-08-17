@@ -20,6 +20,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
 
   questionIDs: string[];
   feedbackID?: string;
+  feedbackResponseID?: string;
 
   outsideRouting = false;
   answers: string[];
@@ -108,6 +109,9 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
               )
               .subscribe(({ errors, data }) => {
                 this.submitSuccess = !errors && !!data;
+                if (this.submitSuccess) {
+                  this.feedbackResponseID = data?.createFeedbackResponse;
+                }
               });
           });
       });

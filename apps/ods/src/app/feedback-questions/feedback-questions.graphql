@@ -1,9 +1,3 @@
-query findUniqueFeedback($feedbackWhereUniqueInput: FeedbackWhereUniqueInput!) {
-  findUniqueFeedback(feedbackWhereUniqueInput: $feedbackWhereUniqueInput) {
-    id
-  }
-}
-
 mutation createFeedbackResponse(
   $feedbackResponseCreateInput: FeedbackResponseCreateInput!
 ) {
