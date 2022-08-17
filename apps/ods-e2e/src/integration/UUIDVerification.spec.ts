@@ -57,7 +57,9 @@ describe('ods', () => {
     cy.get('[formcontrolname="reportID"]').type(surveyID);
     cy.get('button').contains('Lookup ID').click();
     cy.wait('@graphql');
-    cy.get('p').contains('This feedback report was submitted on');
+    cy.get('p').contains('This feedback report was submitted on', {
+      timeout: 5000,
+    });
   });
 
   it('Verify that users will recieve a message when an invalid ID is submitted', () => {
@@ -125,7 +127,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="reportID"]').type(surveyID);
     cy.get('button').contains('Lookup ID').click();
     cy.wait('@graphql');
-    cy.get('p').contains('was resolved on');
+    cy.get('p').contains('was resolved on', { timeout: 5000 });
     cy.get('mat-list-item').contains('Addressed In Organizational All-call');
   });
 
