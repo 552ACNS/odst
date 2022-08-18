@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 describe('ods', () => {
   const feedbackResponseUUID = uuidv4();
   const commentUUID = uuidv4();
+  let surveyID = '';
+
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
@@ -44,6 +46,30 @@ describe('ods', () => {
 
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
+    //Grabs the value of the text from the card and sets it as surveyID
+    cy.get('[class="flex justify-center font-bold"]').then(($txt) => {
+      surveyID = $txt.text();
+    });
+  });
+
+  it('Verify that users can track submitted surveys after a survey is submitted', () => {
+    cy.visit('/response-lookup');
+    cy.get('[formcontrolname="reportID"]').type(surveyID);
+    cy.get('button').contains('Lookup ID').click();
+    cy.wait('@graphql');
+    cy.get('p').contains('This feedback report was submitted on', {
+      timeout: 5000,
+    });
+  });
+
+  it('Verify that users will recieve a message when an invalid ID is submitted', () => {
+    cy.visit('/response-lookup');
+    cy.get('[formcontrolname="reportID"]').type('faultyID');
+    cy.get('button').contains('Lookup ID').click();
+    cy.wait('@graphql');
+    cy.get('[class="mb-4 error-text text-center ng-star-inserted"]').contains(
+      'An issue with the entered ID could not be found.'
+    );
   });
 
   it("Verify that only people with wrong permission can't view a specific feedback", () => {
@@ -94,6 +120,15 @@ describe('ods', () => {
     cy.scrollTo('bottom');
     //Marks the issue as resolved
     cy.get('mat-slide-toggle').click();
+  });
+
+  it('should verify a user can track when and how an issue was resolved', () => {
+    cy.visit('/response-lookup');
+    cy.get('[formcontrolname="reportID"]').type(surveyID);
+    cy.get('button').contains('Lookup ID').click();
+    cy.wait('@graphql');
+    cy.get('p').contains('was resolved on', { timeout: 5000 });
+    cy.get('mat-list-item').contains('Addressed In Organizational All-call');
   });
 
   it('Verify that a comment was made and that the feedback was catagorized as resolved', () => {

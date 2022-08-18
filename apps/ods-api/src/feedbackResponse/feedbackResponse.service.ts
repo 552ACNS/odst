@@ -12,7 +12,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
-import { ResponseCount } from '../__types__';
+import { ResponseCount, TrackedFeedback } from '../__types__';
 
 @Injectable()
 export class FeedbackResponseService {
@@ -101,6 +101,62 @@ export class FeedbackResponseService {
     });
   }
 
+  async feedbackResponseByID(
+    feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
+  ): Promise<TrackedFeedback | null> {
+    let trackedResults: TrackedFeedback | null;
+    const result = await this.prisma.feedbackResponse.findUnique({
+      where: feedbackResponseWhereUniqueInput,
+      select: {
+        openedDate: true,
+        closedDate: true,
+        resolved: true,
+        tags: {
+          select: {
+            value: true,
+          },
+          where: {
+            type: {
+              equals: 'Action',
+            },
+          },
+        },
+        reviewedBy: {
+          select: {
+            grade: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    if (result && result.reviewedBy) {
+      trackedResults = {
+        openedDate: result.openedDate,
+        closedDate: result.closedDate,
+        resolved: result.resolved,
+        tags: result.tags.map((tag) => tag.value),
+        grade: result.reviewedBy?.grade,
+        firstName: result.reviewedBy?.firstName,
+        lastName: result.reviewedBy?.lastName,
+      };
+    } else if (result) {
+      trackedResults = {
+        openedDate: result.openedDate,
+        closedDate: result.closedDate,
+        resolved: result.resolved,
+        tags: result.tags.map((tag) => tag.value),
+        grade: null,
+        firstName: null,
+        lastName: null,
+      };
+    } else {
+      trackedResults = null;
+    }
+
+    return trackedResults;
+  }
   async create(data: Prisma.FeedbackResponseCreateInput): Promise<{
     id: string;
   }> {
