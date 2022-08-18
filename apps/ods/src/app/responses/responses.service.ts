@@ -66,6 +66,7 @@ export class ResponsesService {
     return this.apollo.mutate<ModifyTagMutation, ModifyTagMutationVariables>({
       mutation: ModifyTagDocument,
       variables: modifyTagMutationVariables,
+      errorPolicy: 'all',
     });
   }
 }
