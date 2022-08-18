@@ -26,7 +26,7 @@ export class OrgService {
     const orgs = await this.prisma.org.findMany({
       where: {
         name: {
-          in: ['552 ACW'],
+          in: ['72 ABW', '552 ACW'],
         },
       },
       include: {

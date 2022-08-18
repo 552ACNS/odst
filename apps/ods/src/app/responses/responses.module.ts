@@ -14,6 +14,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SelectTagsComponent } from './select-tags/select-tags.component';
 @NgModule({
   declarations: [ResponsesComponent, SelectTagsComponent],
@@ -27,11 +28,11 @@ import { SelectTagsComponent } from './select-tags/select-tags.component';
     MatInputModule,
     MatButtonModule,
     MatTooltipModule,
-    //temporary
     MatFormFieldModule,
     MatChipsModule,
     MatAutocompleteModule,
     MatIconModule,
+    MatSnackBarModule,
   ],
 })
 export class ResponsesModule {}
