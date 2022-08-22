@@ -9,7 +9,7 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
-import { take } from 'rxjs';
+import { take, skip } from 'rxjs';
 import { capitalize } from 'lodash';
 import { ResponsesStore } from '../responses.store';
 
@@ -83,6 +83,13 @@ export class SelectTagsComponent {
   removeTag(tagToRemove: string) {
     this.remove.emit(tagToRemove);
     this.selectedTags = this.selectedTags?.filter((tag) => tag !== tagToRemove);
+    this.responsesStore.tagRemoveSuccess$
+      .pipe(skip(1), take(1))
+      .subscribe((data) => {
+        if (!data) {
+          this.selectedTags?.push(tagToRemove);
+        }
+      });
     this.generateFilteredTags();
   }
 
