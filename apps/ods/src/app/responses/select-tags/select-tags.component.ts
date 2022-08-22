@@ -44,7 +44,7 @@ export class SelectTagsComponent {
   /**
    * User selects a tag to be added, which must be a part of the possible tags and not the selected tags
    * The input box will be cleared after the event has been passed back to the parent component
-   * @param event Emmitted from an input box for material chips on input
+   * @param event Emitted from an input box for material chips on input
    */
   async addTag(event: MatChipInputEvent) {
     let input = event.value;
@@ -60,7 +60,7 @@ export class SelectTagsComponent {
       this.add.emit(input);
 
       //Takes the first 2 emitted values from the state variable 'tagSuccess$', the first being null by default
-      //The second value will be whether or not the tag was successfully added to the database
+      //The second value will be whether the tag was successfully added to the database
       this.responsesStore.tagSuccess$.pipe(take(2)).subscribe((data) => {
         //Adds the tag to the chip display if it was successfully added to the database
         if (data) {
@@ -96,7 +96,7 @@ export class SelectTagsComponent {
   /**
    * Adds a tag from a populated list of tags to the selected tags
    * Passes the event to the parent component
-   * @param event Emmited from a material option dropdown to select a specific string
+   * @param event Emitted from a material option dropdown to select a specific string
    */
   selectTag(event: MatAutocompleteSelectedEvent) {
     if (this.selectedTags?.includes(event.option.value)) return;
