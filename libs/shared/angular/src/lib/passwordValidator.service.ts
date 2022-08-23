@@ -15,6 +15,14 @@ export class CustomValidators {
 
     return pass === confirmPass ? null : { notSame: true };
   }
+
+  static matchingNames(group: UntypedFormGroup) {
+    // here we have the 'passwords' group
+    const name = group.controls['groupName'].value;
+    const confirmName = group.controls['confirmName'].value;
+
+    return name === confirmName ? null : { notSame: true };
+  }
 }
 
 // export function checkPasswords(group: FormGroup): ValidatorFn {

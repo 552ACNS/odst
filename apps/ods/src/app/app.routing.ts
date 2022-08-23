@@ -60,6 +60,12 @@ const routes: Routes = [
         (m) => m.ResponseLookupModule
       ),
   },
+  {
+    path: 'create-organization',
+    loadChildren: () =>
+      import('./create-org/create-org.module').then((m) => m.CreateOrgModule),
+    //canActivate: [AuthGuard],
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

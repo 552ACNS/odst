@@ -1,0 +1,99 @@
+<div class="parent-div space-y-3 flex justify-center">
+  <form [formGroup]="form">
+    <mat-card>
+      <mat-card-title>Create Organization</mat-card-title>
+      <mat-card-content class="mb-0">
+        <label class="mt-6 mb-2">
+          What kind of organization are you creating?
+        </label>
+        <mat-form-field appearance="outline" class="w-full">
+          <!-- Confirm that we want to use second person for this statement, current figma is this. -->
+          <mat-label>Select Organization Type</mat-label>
+          <mat-select formControlName="orgTier" required>
+            <!--TODO: add back async when getting tiers from backend -->
+            <mat-option
+              *ngFor="let groupTier of groupTiers"
+              [value]="groupTier"
+            >
+              {{ groupTier }}
+            </mat-option>
+          </mat-select>
+          <mat-error> Please select an organization. </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Group Name</mat-label>
+          <input
+            matInput
+            placeholder="Enter the name of the group here"
+            formControlName="groupName"
+            required
+          />
+          <mat-error> Please enter the group's name </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Confirm Group Name</mat-label>
+          <input
+            matInput
+            placeholder="Confirm the name of the group"
+            formControlName="confirmName"
+            required
+            [errorStateMatcher]="matcher"
+          />
+          <mat-error *ngIf="form.hasError('notSame')">
+            Please confirm the group's name
+            {{ errors['groupName'] }}
+          </mat-error>
+        </mat-form-field>
+        <!-- TODO: confirm if second person is what we want and if we want to capitalize Unit -->
+        <label class="mt-6 mb-2">
+          Is your Unit under another organization?
+        </label>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Parent Unit</mat-label>
+          <mat-select placeholder="Unit" formControlName="parentOrg" required>
+            <mat-option *ngFor="let org of orgs | async" [value]="org">
+              {{ org }}
+            </mat-option>
+          </mat-select>
+          <mat-error> Please select an organization. </mat-error>
+        </mat-form-field>
+        <label class="mt-6 mb-2">
+          Is your Unit over another organization?
+        </label>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Child Unit</mat-label>
+          <mat-select placeholder="Unit" formControlName="childOrg" required>
+            <mat-option *ngFor="let org of orgs | async" [value]="org">
+              {{ org }}
+            </mat-option>
+          </mat-select>
+          <mat-error> Please select an organization. </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="flex justify-center">
+          <button
+            class="m-2 border-1 shadow-md rounded-full w-full"
+            mat-stroked-button
+            [routerLink]="['/login']"
+          >
+            Back
+          </button>
+          <button
+            id="btnSubmit"
+            class="m-2 rounded-full w-full"
+            mat-raised-button
+            color="primary"
+            (click)="submit()"
+            [disabled]="!form.valid || submitSuccess"
+          >
+            Submit
+            <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess"
+              >check</mat-icon
+            >
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
