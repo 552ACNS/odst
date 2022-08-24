@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { FeedbackQuestionsService } from './feedback-questions.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'odst-feedback-questions',
@@ -35,6 +36,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: UntypedFormBuilder,
+    private snackBar: MatSnackBar,
     private feedbackService: FeedbackQuestionsService
   ) {}
 
@@ -111,6 +113,11 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
                 this.submitSuccess = !errors && !!data;
                 if (this.submitSuccess) {
                   this.feedbackResponseID = data?.createFeedbackResponse;
+                } else {
+                  this.snackBar.open(
+                    'There was an error submitting your issue. Please try again or contact your DEI office.',
+                    'Okay'
+                  );
                 }
               });
           });
