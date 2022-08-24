@@ -118,7 +118,6 @@ describe('ods', () => {
     //selects the action tag selector
     cy.get('#mat-chip-list-input-1').type('Add');
     cy.get('span').contains('Addressed In Organizational All-call').click();
-    cy.get('.mat-simple-snack-bar-content').contains('Tag added');
     cy.get('mat-chip').contains('Addressed In Organizational All-call');
     cy.scrollTo('bottom');
     //Marks the issue as resolved
@@ -173,7 +172,6 @@ describe('ods', () => {
     cy.get('#mat-chip-list-input-1')
       .type('Routed Up The Chain Of Command{enter}')
       .wait('@graphql');
-    cy.get('.mat-simple-snack-bar-content').contains('Tag added');
     cy.get('mat-chip').contains('Routed Up The Chain Of Command');
     cy.get('mat-icon').contains('cancel').click();
     cy.get('mat-chip')
