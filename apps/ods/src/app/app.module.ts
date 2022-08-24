@@ -9,6 +9,7 @@ import { Apollo } from 'apollo-angular';
 import { environment } from '../environments/environment';
 import { AuthGuard, LoggedInGuard } from '@odst/shared/angular';
 import { HeaderModule } from './header/header.module';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,10 @@ import { HeaderModule } from './header/header.module';
     { provide: 'environment', useValue: environment },
     AuthGuard,
     LoggedInGuard,
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: { panelClass: ['mat-primary', 'mat-toolbar'] },
+    },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
