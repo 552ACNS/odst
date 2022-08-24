@@ -31,8 +31,7 @@ export class DashboardComponent implements OnInit {
     reloadPage();
 
     this.dashboardService.GetResponseCount().subscribe(({ data, errors }) => {
-      // const success = !errors && !!data;
-      const success = false;
+      const success = !errors && !!data;
       if (success) {
         this.responses = data.ResponseCount;
       } else {
