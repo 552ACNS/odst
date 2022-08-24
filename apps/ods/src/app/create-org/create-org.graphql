@@ -1,3 +1,11 @@
 query getOrgNames {
   getOrgNames
 }
+
+query getOrgsByTierBelow($orgTier: String!) {
+  getOrgsBelowTier(orgTier: $orgTier)
+}
+
+query getOrgsByTierAbove($orgTier: String!) {
+  getOrgsAboveTier(orgTier: $orgTier)
+}

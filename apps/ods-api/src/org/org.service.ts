@@ -1,10 +1,160 @@
 import { Injectable } from '@nestjs/common';
-import { Org, Prisma, User, Feedback } from '.prisma/ods/client';
+import { Org, Prisma, User, Feedback, OrgTier } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class OrgService {
   constructor(private prisma: PrismaService) {}
+  //TODO: Create separate method to determine if user is authorized to create org
+  //TODO: Talk with sim about connecting orgs to users as well
+  // eslint-disable-next-line complexity
+  async createOrg(
+    user: User,
+    name: string,
+    orgTier: OrgTier,
+    parentId: string | undefined,
+    children: Org[]
+  ): Promise<Org | undefined> {
+    const authorizedToCreateOrg = await this.isAuthorizedToCreateOrg(
+      user,
+      orgTier
+    );
+
+    if (authorizedToCreateOrg) {
+      return this.prisma.org.create({
+        data: {
+          name,
+          orgTier,
+          parent: {
+            connect: {
+              id: parentId,
+            },
+          },
+          children: {
+            connect: children.map((child) => ({ id: child.id })),
+          },
+        },
+      });
+    } else return undefined;
+  }
+
+  // eslint-disable-next-line complexity
+  async isAuthorizedToCreateOrg(
+    user: User,
+    orgTier: OrgTier
+  ): Promise<boolean> {
+    let authorizedToCreateOrg = false;
+
+    const blah = await this.prisma.org
+      .findMany({
+        select: {
+          orgTier: true,
+        },
+        where: {
+          users: {
+            some: {
+              id: user.id,
+            },
+          },
+        },
+      })
+      .then((orgs) => orgs.map((org) => org.orgTier));
+
+    if (user.role == 'CC') {
+      if (
+        (blah.includes(OrgTier.GROUP) && orgTier == OrgTier.SQUADRON) ||
+        (blah.includes(OrgTier.WING) && orgTier == OrgTier.GROUP) ||
+        (blah.includes(OrgTier.WING) && orgTier == OrgTier.SQUADRON)
+      ) {
+        authorizedToCreateOrg = true;
+      } else {
+        authorizedToCreateOrg = true;
+      }
+    }
+
+    return authorizedToCreateOrg;
+  }
+
+  async getOrgsBelowTier(tier: OrgTier): Promise<string[]> {
+    let temp;
+    let result;
+    switch (tier) {
+      case 'GROUP':
+        temp = { equals: 'SQUADRON' };
+        break;
+      case 'WING':
+        temp = { equals: 'GROUP' };
+        break;
+      case 'OTHER':
+        result = this.prisma.org
+          .findMany({
+            select: {
+              name: true,
+            },
+          })
+          .then((responses) => responses.map((response) => response.name));
+        //TODO: fix the push thingy
+        //result.push('N/A');
+        return result;
+      default:
+        return (temp = ['N/A']);
+    }
+    // eslint-disable-next-line prefer-const
+    result = this.prisma.org
+      .findMany({
+        select: {
+          name: true,
+        },
+        where: {
+          orgTier: temp,
+        },
+      })
+      .then((responses) => responses.map((response) => response.name));
+    //result.push('N/A');
+    return result;
+  }
+
+  async getOrgsAboveTier(tier: OrgTier): Promise<string[]> {
+    let temp;
+    let result;
+    switch (tier) {
+      case 'GROUP':
+        temp = { equals: 'WING' };
+        break;
+      case 'SQUADRON':
+        temp = { equals: 'GROUP' };
+        break;
+      case 'OTHER':
+        result = this.prisma.org
+          .findMany({
+            select: {
+              name: true,
+            },
+          })
+          .then((responses) => responses.map((response) => response.name));
+        //result.push('N/A');
+        return result;
+      default:
+        return (temp = ['N/A']);
+    }
+    // eslint-disable-next-line prefer-const
+    result = this.prisma.org
+      .findMany({
+        select: {
+          name: true,
+        },
+        where: {
+          orgTier: temp,
+        },
+      })
+      .then((responses) => responses.map((response) => response.name));
+    //result.push('N/A');
+    return result;
+  }
+
+  // async getOrgTiers(): Promise<string[]> {
+
+  // }
 
   async getOrgNames(): Promise<string[]> {
     return this.prisma.org

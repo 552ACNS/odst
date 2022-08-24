@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { Role } from '../../types.graphql';
+import { OrgTier, Role } from '../../types.graphql';
 import { Status } from '../../types.graphql';
 import { CreateOrgService } from './create-org.service';
 import {
@@ -18,11 +18,16 @@ import {
 })
 export class CreateOrgComponent implements OnInit {
   //TODO: change to pull group tiers from backend
-  groupTiers = ['Wing', 'Group', 'Squadron'];
+  groupTiers = Object.values(OrgTier);
   orgs: Observable<string[]>;
   submitSuccess = false;
   matcher = new MyErrorStateMatcher();
   errors = errorMessages;
+
+  chosenTier: OrgTier;
+
+  orgsBelow: Observable<string[]>;
+  orgsAbove: Observable<string[]>;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -44,6 +49,14 @@ export class CreateOrgComponent implements OnInit {
     },
     { validators: CustomValidators.matchingNames }
   );
+
+  async getOrgTierAbove(tier: OrgTier) {
+    this.orgsAbove = await this.createOrgService.getOrgsByTierAbove(tier);
+  }
+
+  async getOrgTierBelow(tier: OrgTier) {
+    this.orgsBelow = await this.createOrgService.getOrgsByTierBelow(tier);
+  }
 
   submit() {
     this.submitSuccess = true;

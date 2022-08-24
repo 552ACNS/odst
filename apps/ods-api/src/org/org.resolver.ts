@@ -1,7 +1,9 @@
 import { Resolver, Query, ResolveField, Parent } from '@nestjs/graphql';
 import { OrgService } from './org.service';
-import { Org, User, Feedback } from '@odst/types/ods';
+import { Org, User, Feedback, OrgTier } from '@odst/types/ods';
 import { Public } from '@odst/auth';
+import { Args } from '@nestjs/graphql';
+// import { OrgTier as GraphqlOrgTier } from 'libs/gql/src/graphql-generated';
 
 @Resolver(() => Org)
 export class OrgResolver {
@@ -17,6 +19,32 @@ export class OrgResolver {
   @Query(() => [String], { name: 'getOrgNames' })
   async getOrgNames(): Promise<string[]> {
     return this.orgService.getOrgNames();
+  }
+
+  // @Public()
+  // @Query(() => [String])
+  // async getOrgTiers(): Promise<string[]> {
+  //   return this.orgService.getOrgTiers();
+  // }
+
+  //TODO: remove @public eventually
+  //TODO: replace { type: () => String } with { type: () => GraphqlOrgTier } when its fixed
+  @Public()
+  @Query(() => [String])
+  async getOrgsBelowTier(
+    @Args('orgTier', { type: () => OrgTier }) tier: OrgTier
+  ): Promise<string[]> {
+    return this.orgService.getOrgsBelowTier(tier);
+  }
+
+  //TODO: remove @public eventually
+  //TODO: replace { type: () => String } with { type: () => GraphqlOrgTier } when it's fixed
+  @Public()
+  @Query(() => [String])
+  async getOrgsAboveTier(
+    @Args('orgTier', { type: () => OrgTier }) tier: OrgTier
+  ): Promise<string[]> {
+    return this.orgService.getOrgsAboveTier(tier);
   }
 
   @ResolveField(() => [User])

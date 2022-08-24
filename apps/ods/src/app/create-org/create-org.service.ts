@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
+import { OrgTier } from '../../types.graphql';
 import {
   GetOrgNamesDocument,
   GetOrgNamesQuery,
   GetOrgNamesQueryVariables,
+  GetOrgsByTierAboveDocument,
+  GetOrgsByTierAboveQuery,
+  GetOrgsByTierAboveQueryVariables,
+  GetOrgsByTierBelowDocument,
+  GetOrgsByTierBelowQuery,
+  GetOrgsByTierBelowQueryVariables,
 } from './create-org.generated';
 
 @Injectable({
@@ -20,5 +27,27 @@ export class CreateOrgService {
         query: GetOrgNamesDocument,
       })
       .valueChanges.pipe(map((result) => result.data.getOrgNames));
+  }
+
+  async getOrgsByTierBelow(orgTier: OrgTier) {
+    return this.apollo
+      .watchQuery<GetOrgsByTierBelowQuery, GetOrgsByTierBelowQueryVariables>({
+        query: GetOrgsByTierBelowDocument,
+        variables: {
+          orgTier,
+        },
+      })
+      .valueChanges.pipe(map((result) => result.data.getOrgsBelowTier));
+  }
+
+  async getOrgsByTierAbove(orgTier: OrgTier) {
+    return this.apollo
+      .watchQuery<GetOrgsByTierAboveQuery, GetOrgsByTierAboveQueryVariables>({
+        query: GetOrgsByTierAboveDocument,
+        variables: {
+          orgTier,
+        },
+      })
+      .valueChanges.pipe(map((result) => result.data.getOrgsAboveTier));
   }
 }

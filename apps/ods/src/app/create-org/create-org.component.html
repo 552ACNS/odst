@@ -9,7 +9,12 @@
         <mat-form-field appearance="outline" class="w-full">
           <!-- Confirm that we want to use second person for this statement, current figma is this. -->
           <mat-label>Select Organization Type</mat-label>
-          <mat-select formControlName="orgTier" required>
+          <mat-select
+            formControlName="orgTier"
+            (selectionChange)="getOrgTierBelow($event.value)"
+            (selectionChange)="getOrgTierAbove($event.value)"
+            required
+          >
             <!--TODO: add back async when getting tiers from backend -->
             <mat-option
               *ngFor="let groupTier of groupTiers"
@@ -51,8 +56,11 @@
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Parent Unit</mat-label>
           <mat-select placeholder="Unit" formControlName="parentOrg" required>
-            <mat-option *ngFor="let org of orgs | async" [value]="org">
-              {{ org }}
+            <mat-option
+              *ngFor="let orgAbove of orgsAbove | async"
+              [value]="orgAbove"
+            >
+              {{ orgAbove }}
             </mat-option>
           </mat-select>
           <mat-error> Please select an organization. </mat-error>
@@ -63,8 +71,11 @@
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Child Unit</mat-label>
           <mat-select placeholder="Unit" formControlName="childOrg" required>
-            <mat-option *ngFor="let org of orgs | async" [value]="org">
-              {{ org }}
+            <mat-option
+              *ngFor="let orgBelow of orgsBelow | async"
+              [value]="orgBelow"
+            >
+              {{ orgBelow }}
             </mat-option>
           </mat-select>
           <mat-error> Please select an organization. </mat-error>
