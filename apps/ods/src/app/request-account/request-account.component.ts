@@ -60,11 +60,13 @@ export class RequestAccountComponent implements OnInit {
   status = Status; //initial status when an account is requested
   grade?: string;
   submitSuccess = false;
+
   constructor(
     private fb: UntypedFormBuilder,
     private requestService: RequestAccountService,
     private snackBar: MatSnackBar
   ) {}
+
   async ngOnInit(): Promise<void> {
     this.orgs = await this.requestService.getOrgNames();
   }
@@ -81,6 +83,7 @@ export class RequestAccountComponent implements OnInit {
       });
     }
   }
+
   gradeCheck(grade?: string) {
     if (grade == 'N/A') {
       grade = undefined;
