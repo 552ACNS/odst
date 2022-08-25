@@ -53,6 +53,13 @@ const routes: Routes = [
     //Should we refresh any tokens? access/refresh/id?
     canActivate: [LoggedInGuard],
   },
+  {
+    path: 'response-lookup',
+    loadChildren: () =>
+      import('./response-lookup/response-lookup.module').then(
+        (m) => m.ResponseLookupModule
+      ),
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

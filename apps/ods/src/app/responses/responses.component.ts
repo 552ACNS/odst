@@ -200,7 +200,21 @@ export class ResponsesComponent implements OnInit {
     }
   }
 
-  async updateResolved(): Promise<void> {
+  updateResolved() {
+    let reviewedBy: UpdateResolvedMutationVariables['data']['reviewedBy'];
+
+    if (!this.actualResolution) {
+      reviewedBy = {
+        connect: {
+          id: this.userId,
+        },
+      };
+    } else {
+      reviewedBy = {
+        disconnect: true,
+      };
+    }
+
     const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
       where: {
         id: this.response.id,
@@ -209,9 +223,12 @@ export class ResponsesComponent implements OnInit {
         resolved: {
           set: !this.actualResolution,
         },
+        closedDate: {
+          set: !this.actualResolution ? Date.now() : null,
+        },
+        reviewedBy: reviewedBy,
       },
     };
-
     this.responsesService
       .updateResolved(updateResolvedMutationVariables)
       .subscribe(({ data, errors }) => {
