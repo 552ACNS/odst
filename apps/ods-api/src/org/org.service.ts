@@ -1,41 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { Org, Prisma, User, Feedback, OrgTier } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-
 @Injectable()
 export class OrgService {
   constructor(private prisma: PrismaService) {}
-  //TODO: Create separate method to determine if user is authorized to create org
-  //TODO: Talk with sim about connecting orgs to users as well
   // eslint-disable-next-line complexity
   async createOrg(
     user: User,
-    name: string,
-    orgTier: OrgTier,
-    parentId: string | undefined,
-    children: Org[]
-  ): Promise<Org | undefined> {
+    data: Prisma.OrgCreateInput
+  ): Promise<{ id: string }> {
     const authorizedToCreateOrg = await this.isAuthorizedToCreateOrg(
       user,
-      orgTier
+      data.orgTier
     );
 
     if (authorizedToCreateOrg) {
       return this.prisma.org.create({
-        data: {
-          name,
-          orgTier,
-          parent: {
-            connect: {
-              id: parentId,
-            },
-          },
-          children: {
-            connect: children.map((child) => ({ id: child.id })),
-          },
-        },
+        data,
+        select: { id: true },
       });
-    } else return undefined;
+    }
+    throw new Error('User is not authorized to create org');
   }
 
   // eslint-disable-next-line complexity
@@ -59,7 +44,6 @@ export class OrgService {
         },
       })
       .then((orgs) => orgs.map((org) => org.orgTier));
-
     if (user.role == 'CC') {
       if (
         (blah.includes(OrgTier.GROUP) && orgTier == OrgTier.SQUADRON) ||
@@ -67,11 +51,12 @@ export class OrgService {
         (blah.includes(OrgTier.WING) && orgTier == OrgTier.SQUADRON)
       ) {
         authorizedToCreateOrg = true;
-      } else {
+      } else if (orgTier == OrgTier.OTHER) {
         authorizedToCreateOrg = true;
       }
+    } else {
+      authorizedToCreateOrg = true;
     }
-
     return authorizedToCreateOrg;
   }
 

@@ -931,6 +931,7 @@ type Mutation {
   updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
   createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): String!
   updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
+  createOrg(orgCreateInput: OrgCreateInput!): String!
   createUser(userCreateInput: UserCreateInput!): String!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
@@ -2426,6 +2427,16 @@ input FeedbackResponseUpdateInput {
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+}
+
+input OrgCreateInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  users: UserCreateNestedManyWithoutOrgsInput
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  children: OrgCreateNestedManyWithoutParentInput
+  feedbacks: FeedbackCreateNestedManyWithoutOrgsInput
 }
 
 input UserCreateInput {

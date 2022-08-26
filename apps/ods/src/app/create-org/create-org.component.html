@@ -55,7 +55,7 @@
         </label>
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Parent Unit</mat-label>
-          <mat-select placeholder="Unit" formControlName="parentOrg" required>
+          <mat-select placeholder="Unit" formControlName="parentOrg">
             <mat-option
               *ngFor="let orgAbove of orgsAbove | async"
               [value]="orgAbove"
@@ -70,7 +70,7 @@
         </label>
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Child Unit</mat-label>
-          <mat-select placeholder="Unit" formControlName="childOrg" required>
+          <mat-select placeholder="Unit" formControlName="childOrg">
             <mat-option
               *ngFor="let orgBelow of orgsBelow | async"
               [value]="orgBelow"

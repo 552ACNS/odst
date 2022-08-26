@@ -44,8 +44,8 @@ export class CreateOrgComponent implements OnInit {
       orgTier: ['', [Validators.required]],
       groupName: ['', [Validators.required]],
       confirmName: ['', [Validators.required]],
-      parentOrg: ['', [Validators.required]],
-      childOrg: ['', [Validators.required]],
+      parentOrg: [''],
+      childOrg: [''],
     },
     { validators: CustomValidators.matchingNames }
   );
@@ -58,7 +58,20 @@ export class CreateOrgComponent implements OnInit {
     this.orgsBelow = await this.createOrgService.getOrgsByTierBelow(tier);
   }
 
-  submit() {
-    this.submitSuccess = true;
+  async submit() {
+    //TODO: add logic for N/A children and parent
+
+    //TODO: add logic for N/A children and parent
+    (
+      await this.createOrgService.createOrg({
+        name: this.form.value['confirmName'],
+        orgTier: this.form.value['orgTier'],
+        // parent: this.form.value['parentOrg'],
+        // children: this.form.value['childOrg'],
+      })
+    ).subscribe(({ errors }) => {
+      this.submitSuccess = !errors;
+      console.log(this.submitSuccess);
+    });
   }
 }

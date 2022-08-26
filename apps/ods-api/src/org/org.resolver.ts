@@ -1,9 +1,15 @@
-import { Resolver, Query, ResolveField, Parent } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  ResolveField,
+  Parent,
+  Mutation,
+} from '@nestjs/graphql';
 import { OrgService } from './org.service';
-import { Org, User, Feedback, OrgTier } from '@odst/types/ods';
+import { Org, User, Feedback, OrgTier, OrgCreateInput } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { Args } from '@nestjs/graphql';
-// import { OrgTier as GraphqlOrgTier } from 'libs/gql/src/graphql-generated';
+import { GetCurrentUser } from '@odst/shared/nest';
 
 @Resolver(() => Org)
 export class OrgResolver {
@@ -45,6 +51,14 @@ export class OrgResolver {
     @Args('orgTier', { type: () => OrgTier }) tier: OrgTier
   ): Promise<string[]> {
     return this.orgService.getOrgsAboveTier(tier);
+  }
+
+  @Mutation(() => String, { name: 'createOrg' })
+  async createOrg(
+    @GetCurrentUser() user: User,
+    @Args('orgCreateInput') orgCreateInput: OrgCreateInput
+  ): Promise<string> {
+    return (await this.orgService.createOrg(user, orgCreateInput)).id;
   }
 
   @ResolveField(() => [User])

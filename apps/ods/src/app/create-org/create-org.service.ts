@@ -3,6 +3,9 @@ import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import {
+  CreateOrgDocument,
+  CreateOrgMutation,
+  CreateOrgMutationVariables,
   GetOrgNamesDocument,
   GetOrgNamesQuery,
   GetOrgNamesQueryVariables,
@@ -49,5 +52,16 @@ export class CreateOrgService {
         },
       })
       .valueChanges.pipe(map((result) => result.data.getOrgsAboveTier));
+  }
+
+  async createOrg(
+    orgCreateInput: CreateOrgMutationVariables['orgCreateInput']
+  ) {
+    return this.apollo.mutate<CreateOrgMutation, CreateOrgMutationVariables>({
+      mutation: CreateOrgDocument,
+      variables: {
+        orgCreateInput,
+      },
+    });
   }
 }
