@@ -172,7 +172,9 @@ describe('ods', () => {
     cy.get('#mat-chip-list-input-1')
       .type('Routed Up The Chain Of Command{enter}')
       .wait('@graphql');
-    cy.get('mat-chip').contains('Routed Up The Chain Of Command');
+    cy.get('mat-chip')
+      .contains('Routed Up The Chain Of Command')
+      .wait('@graphql');
     cy.get('mat-icon').contains('cancel').click();
     cy.get('mat-chip')
       .contains('Addressed In Organizational All-call')
