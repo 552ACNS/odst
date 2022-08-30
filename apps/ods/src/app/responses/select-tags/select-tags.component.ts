@@ -90,6 +90,13 @@ export class SelectTagsComponent {
   removeTag(tagToRemove: string) {
     this.remove.emit(tagToRemove);
     this.selectedTags = this.selectedTags?.filter((tag) => tag !== tagToRemove);
+    this.responsesStore.tagRemoveSuccess$
+      .pipe(skip(1), first())
+      .subscribe((data) => {
+        if (!data) {
+          this.selectedTags?.push(tagToRemove);
+        }
+      });
     this.generateFilteredTags();
   }
 
