@@ -18,7 +18,7 @@ export class CustomValidators {
 
   static matchingNames(group: UntypedFormGroup) {
     // here we have the 'passwords' group
-    const name = group.controls['groupName'].value;
+    const name = group.controls['orgName'].value;
     const confirmName = group.controls['confirmName'].value;
 
     return name === confirmName ? null : { notSame: true };
@@ -40,5 +40,13 @@ export const regExps: { [key: string]: RegExp } = {
 };
 //these are the custom messages for errors states
 export const errorMessages: { [key: string]: string } = {
+  password: 'Password does not meet requirements and/or does not match.',
+};
+
+export const regExpForOrgNames: { [key: string]: RegExp } = {
+  orgName: /^[0-9]{1,3}[ ][a-zA-Z/0-9]+$/,
+};
+
+export const errorMessagesForOrgNames: { [key: string]: string } = {
   password: 'Password does not meet requirements and/or does not match.',
 };

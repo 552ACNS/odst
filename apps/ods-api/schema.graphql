@@ -404,6 +404,7 @@ type Query {
   getOrgNames: [String!]!
   getOrgsBelowTier(orgTier: OrgTier!): [String!]!
   getOrgsAboveTier(orgTier: OrgTier!): [String!]!
+  getTiersByUser: [String!]!
   getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [String!]!
   findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   getCommanders: [String!]!

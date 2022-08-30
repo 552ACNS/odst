@@ -6,15 +6,15 @@ import {
   CreateOrgDocument,
   CreateOrgMutation,
   CreateOrgMutationVariables,
-  GetOrgNamesDocument,
-  GetOrgNamesQuery,
-  GetOrgNamesQueryVariables,
   GetOrgsByTierAboveDocument,
   GetOrgsByTierAboveQuery,
   GetOrgsByTierAboveQueryVariables,
   GetOrgsByTierBelowDocument,
   GetOrgsByTierBelowQuery,
   GetOrgsByTierBelowQueryVariables,
+  GetTiersByUserDocument,
+  GetTiersByUserQuery,
+  GetTiersByUserQueryVariables,
 } from './create-org.generated';
 
 @Injectable({
@@ -24,12 +24,13 @@ export class CreateOrgService {
   constructor(private apollo: Apollo) {}
 
   //a query to find all of the orgs available for the selector
-  async getOrgNames(): Promise<Observable<string[]>> {
+  async getTierByUser(): Promise<Observable<string[]>> {
     return this.apollo
-      .watchQuery<GetOrgNamesQuery, GetOrgNamesQueryVariables>({
-        query: GetOrgNamesDocument,
+      .watchQuery<GetTiersByUserQuery, GetTiersByUserQueryVariables>({
+        query: GetTiersByUserDocument,
+        errorPolicy: 'all',
       })
-      .valueChanges.pipe(map((result) => result.data.getOrgNames));
+      .valueChanges.pipe(map((result) => result.data.getTiersByUser));
   }
 
   async getOrgsByTierBelow(orgTier: OrgTier) {
@@ -39,6 +40,7 @@ export class CreateOrgService {
         variables: {
           orgTier,
         },
+        errorPolicy: 'all',
       })
       .valueChanges.pipe(map((result) => result.data.getOrgsBelowTier));
   }
@@ -50,6 +52,7 @@ export class CreateOrgService {
         variables: {
           orgTier,
         },
+        errorPolicy: 'all',
       })
       .valueChanges.pipe(map((result) => result.data.getOrgsAboveTier));
   }
@@ -62,6 +65,7 @@ export class CreateOrgService {
       variables: {
         orgCreateInput,
       },
+      errorPolicy: 'all',
     });
   }
 }

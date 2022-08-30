@@ -27,15 +27,6 @@ export class OrgResolver {
     return this.orgService.getOrgNames();
   }
 
-  // @Public()
-  // @Query(() => [String])
-  // async getOrgTiers(): Promise<string[]> {
-  //   return this.orgService.getOrgTiers();
-  // }
-
-  //TODO: remove @public eventually
-  //TODO: replace { type: () => String } with { type: () => GraphqlOrgTier } when its fixed
-  @Public()
   @Query(() => [String])
   async getOrgsBelowTier(
     @Args('orgTier', { type: () => OrgTier }) tier: OrgTier
@@ -43,14 +34,16 @@ export class OrgResolver {
     return this.orgService.getOrgsBelowTier(tier);
   }
 
-  //TODO: remove @public eventually
-  //TODO: replace { type: () => String } with { type: () => GraphqlOrgTier } when it's fixed
-  @Public()
   @Query(() => [String])
   async getOrgsAboveTier(
     @Args('orgTier', { type: () => OrgTier }) tier: OrgTier
   ): Promise<string[]> {
     return this.orgService.getOrgsAboveTier(tier);
+  }
+
+  @Query(() => [String])
+  async getTiersByUser(@GetCurrentUser() user: User): Promise<string[]> {
+    return this.orgService.getTiersByUser(user);
   }
 
   @Mutation(() => String, { name: 'createOrg' })

@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class OrgService {
   constructor(private prisma: PrismaService) {}
+
   // eslint-disable-next-line complexity
   async createOrg(
     user: User,
@@ -23,14 +24,8 @@ export class OrgService {
     throw new Error('User is not authorized to create org');
   }
 
-  // eslint-disable-next-line complexity
-  async isAuthorizedToCreateOrg(
-    user: User,
-    orgTier: OrgTier
-  ): Promise<boolean> {
-    let authorizedToCreateOrg = false;
-
-    const blah = await this.prisma.org
+  async getTiersByUser(user: User): Promise<string[]> {
+    const userOrgTier = await this.prisma.org
       .findMany({
         select: {
           orgTier: true,
@@ -45,10 +40,45 @@ export class OrgService {
       })
       .then((orgs) => orgs.map((org) => org.orgTier));
     if (user.role == 'CC') {
+      if (userOrgTier.includes(OrgTier.WING)) {
+        return ['GROUP', 'SQUADRON', 'OTHER'];
+      } else if (userOrgTier.includes(OrgTier.GROUP)) {
+        return ['SQUADRON', 'OTHER'];
+      } else {
+        return ['OTHER'];
+      }
+    } else {
+      return ['WING', 'GROUP', 'SQUADRON', 'OTHER'];
+    }
+  }
+
+  // eslint-disable-next-line complexity
+  async isAuthorizedToCreateOrg(
+    user: User,
+    orgTier: OrgTier
+  ): Promise<boolean> {
+    let authorizedToCreateOrg = false;
+
+    const userOrgTier = await this.prisma.org
+      .findMany({
+        select: {
+          orgTier: true,
+        },
+        where: {
+          users: {
+            some: {
+              id: user.id,
+            },
+          },
+        },
+      })
+      .then((orgs) => orgs.map((org) => org.orgTier));
+
+    if (user.role == 'CC') {
       if (
-        (blah.includes(OrgTier.GROUP) && orgTier == OrgTier.SQUADRON) ||
-        (blah.includes(OrgTier.WING) && orgTier == OrgTier.GROUP) ||
-        (blah.includes(OrgTier.WING) && orgTier == OrgTier.SQUADRON)
+        (userOrgTier.includes(OrgTier.GROUP) && orgTier == OrgTier.SQUADRON) ||
+        (userOrgTier.includes(OrgTier.WING) && orgTier == OrgTier.GROUP) ||
+        (userOrgTier.includes(OrgTier.WING) && orgTier == OrgTier.SQUADRON)
       ) {
         authorizedToCreateOrg = true;
       } else if (orgTier == OrgTier.OTHER) {
