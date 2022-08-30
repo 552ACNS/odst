@@ -10,6 +10,7 @@ import {
   regExps,
   errorMessages,
 } from '@odst/shared/angular';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'odst-request-account',
@@ -36,16 +37,6 @@ export class RequestAccountComponent implements OnInit {
     },
     { validators: CustomValidators.checkPasswords }
   );
-  // form = new FormGroup({
-  //   firstName: new FormControl('', [Validators.required]),
-  //   lastName: new FormControl('', [Validators.required]),
-  //   email: new FormControl('', [Validators.email]),
-  //   grade: new FormControl(''),
-  //   permissions: new FormControl('', [Validators.required]),
-  //   org: new FormControl('', [Validators.required]),
-  //   password: new FormControl('', [Validators.required, Validators.pattern(regExps['password'])],),
-  //   confirmPassword: new FormControl('', [Validators.required]),
-  // })
 
   hide = true;
   emailNotUnique = false;
@@ -69,10 +60,13 @@ export class RequestAccountComponent implements OnInit {
   status = Status; //initial status when an account is requested
   grade?: string;
   submitSuccess = false;
+
   constructor(
     private fb: UntypedFormBuilder,
-    private requestService: RequestAccountService
+    private requestService: RequestAccountService,
+    private snackBar: MatSnackBar
   ) {}
+
   async ngOnInit(): Promise<void> {
     this.orgs = await this.requestService.getOrgNames();
   }
@@ -89,6 +83,7 @@ export class RequestAccountComponent implements OnInit {
       });
     }
   }
+
   gradeCheck(grade?: string) {
     if (grade == 'N/A') {
       grade = undefined;
@@ -126,8 +121,13 @@ export class RequestAccountComponent implements OnInit {
         },
         password: this.form.value['confirmPassword'].trim(),
       })
-      .subscribe(({ errors }) => {
-        this.submitSuccess = !errors;
+      .subscribe(({ errors, data }) => {
+        this.submitSuccess = !errors && !!data;
+        if (!this.submitSuccess) {
+          this.snackBar.open(
+            'There was an error submitting your account request on our end. Please try again later.'
+          );
+        }
       });
   }
 }

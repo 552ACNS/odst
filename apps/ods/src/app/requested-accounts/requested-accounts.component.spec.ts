@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -27,6 +28,7 @@ describe('RequestedAccountsComponent', () => {
         MatCardModule,
         MatListModule,
         MatButtonModule,
+        MatSnackBarModule,
         RouterModule,
         BrowserModule,
         BrowserAnimationsModule,
