@@ -172,6 +172,7 @@ describe('ods', () => {
     cy.get('#mat-chip-list-input-1')
       .type('Routed Up The Chain Of Command{enter}')
       .wait('@graphql');
+    cy.scrollTo('bottom');
     cy.get('mat-chip')
       .contains('Routed Up The Chain Of Command')
       .wait('@graphql');
