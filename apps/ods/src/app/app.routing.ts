@@ -64,7 +64,13 @@ const routes: Routes = [
     path: 'create-organization',
     loadChildren: () =>
       import('./create-org/create-org.module').then((m) => m.CreateOrgModule),
-    //canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'edit-organization',
+    loadChildren: () =>
+      import('./edit-org/edit-org.module').then((m) => m.EditOrgModule),
+    canActivate: [AuthGuard],
   },
 ];
 @NgModule({
