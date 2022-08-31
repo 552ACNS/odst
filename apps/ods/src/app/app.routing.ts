@@ -60,6 +60,13 @@ const routes: Routes = [
         (m) => m.ResponseLookupModule
       ),
   },
+  {
+    path: 'password-reset',
+    loadChildren: () =>
+      import('./password-reset/password-reset.module').then(
+        (m) => m.FeedbackQuestionsModule
+      ),
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

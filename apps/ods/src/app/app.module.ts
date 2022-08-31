@@ -10,10 +10,9 @@ import { environment } from '../environments/environment';
 import { AuthGuard, LoggedInGuard } from '@odst/shared/angular';
 import { HeaderModule } from './header/header.module';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 @NgModule({
-  declarations: [AppComponent, PasswordResetComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     GQLModule,
