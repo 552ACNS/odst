@@ -7,7 +7,6 @@
           What kind of organization are you creating?
         </label>
         <mat-form-field appearance="outline" class="w-full">
-          <!-- Confirm that we want to use second person for this statement, current figma is this. -->
           <mat-label>Select Organization Type</mat-label>
           <mat-select
             formControlName="orgTier"
@@ -15,7 +14,6 @@
             (selectionChange)="getOrgTierAbove($event.value)"
             required
           >
-            <!--TODO: add back async when getting tiers from backend -->
             <mat-option
               *ngFor="let groupTier of groupTiers"
               [value]="groupTier"
@@ -49,7 +47,6 @@
             {{ errors['orgName'] }}
           </mat-error>
         </mat-form-field>
-        <!-- TODO: confirm if second person is what we want and if we want to capitalize Unit -->
         <label class="mt-6 mb-2">
           Is your Unit under another organization?
         </label>

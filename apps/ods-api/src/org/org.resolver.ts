@@ -6,14 +6,30 @@ import {
   Mutation,
 } from '@nestjs/graphql';
 import { OrgService } from './org.service';
-import { Org, User, Feedback, OrgTier, OrgCreateInput } from '@odst/types/ods';
+import {
+  Org,
+  User,
+  Feedback,
+  OrgTier,
+  OrgCreateInput,
+  OrgUpdateInput,
+  OrgWhereUniqueInput,
+  UpdateOneOrgArgs,
+} from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { Args } from '@nestjs/graphql';
 import { GetCurrentUser } from '@odst/shared/nest';
+import { PrismaModule } from '../prisma/prisma.module';
+import { Prisma } from '.prisma/ods/client';
 
 @Resolver(() => Org)
 export class OrgResolver {
   constructor(private readonly orgService: OrgService) {}
+
+  @Query(() => [String], { name: 'getUserOrgsNames' })
+  async getUserOrgsNames(@GetCurrentUser() user: User): Promise<string[]> {
+    return this.orgService.getUserOrgsNames(user);
+  }
 
   @Public()
   @Query(() => [String], { name: 'getOrgLineage' })
@@ -52,6 +68,19 @@ export class OrgResolver {
     @Args('orgCreateInput') orgCreateInput: OrgCreateInput
   ): Promise<string> {
     return (await this.orgService.createOrg(user, orgCreateInput)).id;
+  }
+
+  @Mutation(() => Org, { name: 'updateOrg' })
+  async updateOrg(@Args() updateArgs: UpdateOneOrgArgs): Promise<Org> {
+    //Type coercion is required here because there is a bug in typescript
+    //where entities with several relations overflow the stack
+
+    const { data, where } = updateArgs;
+
+    return this.orgService.updateOrg(
+      where as Prisma.OrgWhereUniqueInput,
+      data as Prisma.OrgUpdateInput
+    );
   }
 
   @ResolveField(() => [User])

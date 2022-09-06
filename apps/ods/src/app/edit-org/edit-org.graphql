@@ -1,0 +1,9 @@
+query getUserOrgsNames {
+  getUserOrgsNames
+}
+
+mutation updateOrg($data: OrgUpdateInput!, $where: OrgWhereUniqueInput!) {
+  updateOrg(data: $data, where: $where) {
+    name
+  }
+}

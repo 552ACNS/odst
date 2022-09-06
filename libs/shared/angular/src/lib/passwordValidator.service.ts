@@ -48,5 +48,6 @@ export const regExpForOrgNames: { [key: string]: RegExp } = {
 };
 
 export const errorMessagesForOrgNames: { [key: string]: string } = {
-  password: 'Password does not meet requirements and/or does not match.',
+  orgName:
+    'Organization name does not meet requirements and/or does not match.',
 };

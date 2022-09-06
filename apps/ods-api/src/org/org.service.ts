@@ -1,9 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { Org, Prisma, User, Feedback, OrgTier } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
+
 @Injectable()
 export class OrgService {
   constructor(private prisma: PrismaService) {}
+
+  async getUserOrgsNames(user: User): Promise<string[]> {
+    return this.prisma.org
+      .findMany({
+        select: {
+          name: true,
+        },
+        where: {
+          users: {
+            some: {
+              id: user.id,
+            },
+          },
+        },
+      })
+      .then((responses) => responses.map((response) => response.name));
+  }
 
   // eslint-disable-next-line complexity
   async createOrg(
@@ -22,6 +40,16 @@ export class OrgService {
       });
     }
     throw new Error('User is not authorized to create org');
+  }
+
+  async updateOrg(
+    where: Prisma.OrgWhereUniqueInput,
+    data: Prisma.OrgUpdateInput
+  ): Promise<Org> {
+    return this.prisma.org.update({
+      where: where,
+      data: data,
+    });
   }
 
   async getTiersByUser(user: User): Promise<string[]> {

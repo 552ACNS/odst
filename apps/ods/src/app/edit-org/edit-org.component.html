@@ -1,0 +1,92 @@
+<div class="parent-div space-y-3 flex justify-center">
+  <form [formGroup]="form">
+    <mat-card>
+      <mat-card-title>Edit Organization</mat-card-title>
+      <mat-card-content class="mb-0">
+        <label class="mt-6 mb-2">
+          Select one of your organizations to edit.
+        </label>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Select Organization Type</mat-label>
+          <mat-select formControlName="orgToEdit" required>
+            <mat-option *ngFor="let userOrg of userOrgs" [value]="userOrg">
+              {{ userOrg }}
+            </mat-option>
+          </mat-select>
+          <mat-error> Please select an organization to edit. </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>New Organization Name</mat-label>
+          <input
+            matInput
+            placeholder="Enter the name of the organization"
+            formControlName="orgName"
+            required
+          />
+          <mat-error> Please enter the new organization's name </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Confirm New Organization Name</mat-label>
+          <input
+            matInput
+            placeholder="Confirm the name of the organization"
+            formControlName="confirmName"
+            required
+            [errorStateMatcher]="matcher"
+          />
+          <mat-error *ngIf="form.hasError('notSame')">
+            Please confirm the new organization's name.
+            {{ errors['orgName'] }}
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="flex justify-center">
+          <button
+            class="m-2 border-1 shadow-md rounded-full w-full"
+            mat-stroked-button
+            [routerLink]="['/login']"
+          >
+            Back
+          </button>
+          <button
+            id="btnSubmit"
+            class="m-2 rounded-full w-full"
+            mat-raised-button
+            color="primary"
+            (click)="submit()"
+            [disabled]="!form.valid || submitSuccess"
+          >
+            Submit
+            <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess"
+              >check</mat-icon
+            >
+          </button>
+        </div>
+      </mat-card-actions>
+      <mat-card
+        *ngIf="submitSuccess"
+        class="mt-3 bg-green-500 bg-opacity-50 border-2 border-green-400"
+      >
+        <mat-card-content
+          class="flex justify-center text-sm space-y-3 text-justify"
+        >
+          <p>Successfully edited organization!</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card
+        *ngIf="submitError"
+        class="mt-3 bg-red-500 bg-opacity-50 border-2 border-red-400"
+      >
+        <mat-card-content
+          class="flex justify-center text-sm space-y-3 text-justify"
+        >
+          <p>
+            There was a problem editing the organization, please contact your
+            local D&I office
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-card>
+  </form>
+</div>
