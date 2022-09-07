@@ -24,4 +24,4 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [],
 })
-export class FeedbackQuestionsModule {}
+export class PasswordResetModule {}

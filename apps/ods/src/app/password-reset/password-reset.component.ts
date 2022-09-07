@@ -15,7 +15,7 @@ export class PasswordResetComponent {
 
   passwordResetForm = this.fb.group({
     newPassword: ['', Validators.required],
-    userPassword: ['', Validators.required],
+    confirmPassword: ['', Validators.required],
   });
 
   hide = true;

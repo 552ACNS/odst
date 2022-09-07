@@ -64,14 +64,14 @@ const routes: Routes = [
     path: 'password-reset',
     loadChildren: () =>
       import('./password-reset/password-reset.module').then(
-        (m) => m.FeedbackQuestionsModule
+        (m) => m.PasswordResetModule
       ),
   },
   {
     path: 'password-recovery',
     loadChildren: () =>
       import('./password-recovery/password-recovery.module').then(
-        (m) => m.FeedbackQuestionsModule
+        (m) => m.PasswordRecoveryModule
       ),
   },
 ];
