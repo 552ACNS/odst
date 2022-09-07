@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -37,6 +40,7 @@ describe('PasswordRecoveryComponent', () => {
         ApolloTestingModule,
         RouterTestingModule,
         BrowserAnimationsModule,
+        NoopAnimationsModule,
         ReactiveFormsModule,
         PasswordRecoveryModule,
       ],
@@ -56,6 +60,6 @@ describe('PasswordRecoveryComponent', () => {
     component.passwordRecoveryForm.setValue({ email: 'admin@admin.com' });
     component.recoverPassword();
 
-    expect(component.recoveryRequestSubmitted).toBeTruthy();
+    expect(component.recoveryRequestError).toBeFalsy();
   });
 });
