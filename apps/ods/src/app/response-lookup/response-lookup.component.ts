@@ -27,7 +27,7 @@ export class ResponseLookupComponent {
 
   async submit() {
     (
-      await this.lookupService.getFeedbackReponseById(
+      await this.lookupService.getFeedbackResponseById(
         this.form.value['reportID'].trim()
       )
     ).subscribe(({ data, errors }) => {
