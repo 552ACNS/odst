@@ -32,6 +32,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
   querySubscription: Subscription;
   loading = true;
   submitSuccess = false;
+  copySuccess = false;
   violatorSpec = '';
   personSpec = '';
 
@@ -128,6 +129,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
 
   clickedCopyToClipboard() {
     this.clipboard.copy(<string>this.feedbackResponseID);
+    this.copySuccess = true;
   }
 
   ngOnDestroy() {
