@@ -9,7 +9,7 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
-import { take, skip } from 'rxjs';
+import { first, skip } from 'rxjs';
 import { capitalize } from 'lodash';
 import { ResponsesStore } from '../responses.store';
 
@@ -58,21 +58,28 @@ export class SelectTagsComponent {
     if (isPossibleValue && isNotSelected) {
       //emits the tag string to the parent component for use
       this.add.emit(input);
+      this.selectedTags?.push(input);
 
       //Takes the first 2 emitted values from the state variable 'tagSuccess$', the first being null by default
       //The second value will be whether the tag was successfully added to the database
-      this.responsesStore.tagSuccess$.pipe(take(2)).subscribe((data) => {
-        //Adds the tag to the chip display if it was successfully added to the database
-        if (data) {
-          this.selectedTags?.push(input);
-          // Clear the input values
-          if (event.chipInput) {
-            event.chipInput.clear();
+      this.responsesStore.tagSuccess$
+        .pipe(skip(1), first())
+        .subscribe((data) => {
+          //Adds the tag to the chip display if it was successfully added to the database
+          if (data) {
+            // Clear the input values
+            if (event.chipInput) {
+              event.chipInput.clear();
+            }
+          } else {
+            //Removes the tag if tag success returns false
+            this.selectedTags = this.selectedTags?.filter(
+              (item) => item != input
+            );
           }
-        }
-        //Resets the tag success boolean to null
-        this.responsesStore.resetTagStatus();
-      });
+          //Resets the tag success boolean to null
+          this.responsesStore.resetTagStatus();
+        });
     }
   }
 
@@ -84,7 +91,7 @@ export class SelectTagsComponent {
     this.remove.emit(tagToRemove);
     this.selectedTags = this.selectedTags?.filter((tag) => tag !== tagToRemove);
     this.responsesStore.tagRemoveSuccess$
-      .pipe(skip(1), take(1))
+      .pipe(skip(1), first())
       .subscribe((data) => {
         if (!data) {
           this.selectedTags?.push(tagToRemove);
@@ -101,7 +108,7 @@ export class SelectTagsComponent {
   selectTag(event: MatAutocompleteSelectedEvent) {
     if (this.selectedTags?.includes(event.option.value)) return;
     this.add.emit(event.option.value);
-    this.responsesStore.tagSuccess$.pipe(take(2)).subscribe((data) => {
+    this.responsesStore.tagSuccess$.pipe(skip(1), first()).subscribe((data) => {
       if (data) {
         this.selectedTags?.push(event.option.value);
       }
