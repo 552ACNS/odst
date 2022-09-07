@@ -67,6 +67,13 @@ const routes: Routes = [
         (m) => m.FeedbackQuestionsModule
       ),
   },
+  {
+    path: 'password-recovery',
+    loadChildren: () =>
+      import('./password-recovery/password-recovery.module').then(
+        (m) => m.FeedbackQuestionsModule
+      ),
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
