@@ -51,6 +51,7 @@ describe('ods', () => {
       surveyID = $txt.text();
     });
 
+    // Makes sure the copy to clipboard button exists and responds when clicked
     cy.get('#btnCopy').click();
     cy.get('#copyCheck').should('be.visible');
   });
