@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { OrgTier } from '../../types.graphql';
 import { EditOrgService } from './edit-org.service';
 import {
   CustomValidators,

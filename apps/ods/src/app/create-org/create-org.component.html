@@ -67,6 +67,7 @@
         </label>
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Child Unit</mat-label>
+          <!--
           <mat-select placeholder="Unit" formControlName="childOrg">
             <mat-option
               *ngFor="let orgBelow of orgsBelow | async"
@@ -74,7 +75,26 @@
             >
               {{ orgBelow }}
             </mat-option>
-          </mat-select>
+          </mat-select> -->
+
+          <mat-chip-list #chipList>
+            <mat-chip
+              *ngFor="let orgBelow of orgsBelow | async"
+              (removed)="(orgBelow)"
+            >
+              {{ orgBelow }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+            <input
+              placeholder="Unit"
+              #orgInput
+              [formControl]="orgCtrl"
+              [matChipInputFor]="chipList"
+            />
+          </mat-chip-list>
+
           <mat-error> Please select an organization. </mat-error>
         </mat-form-field>
       </mat-card-content>

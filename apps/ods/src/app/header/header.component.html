@@ -7,7 +7,12 @@
     <button mat-menu-item [routerLink]="['/requested-accounts']">
       Requested Accounts
     </button>
-    <button mat-menu-item>TBD 2</button>
+    <button mat-menu-item [routerLink]="['/create-organization']">
+      Create Organization
+    </button>
+    <button mat-menu-item [routerLink]="['/edit-organization']">
+      Edit Organization
+    </button>
   </mat-menu>
 
   <div *ngIf="user && user.orgs" class="w-screen">

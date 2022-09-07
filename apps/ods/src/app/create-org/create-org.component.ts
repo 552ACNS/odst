@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormControl, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import { CreateOrgService } from './create-org.service';
@@ -9,6 +9,9 @@ import {
   regExpForOrgNames,
   errorMessagesForOrgNames,
 } from '@odst/shared/angular';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+// import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+// import {MatChipInputEvent} from '@angular/material/chips';
 
 @Component({
   selector: 'odst-create-org',
@@ -23,6 +26,7 @@ export class CreateOrgComponent implements OnInit {
   errors = errorMessagesForOrgNames;
   orgsBelow: Observable<string[]>;
   orgsAbove: Observable<string[]>;
+  orgCtrl = new FormControl();
   constructor(
     private fb: UntypedFormBuilder,
     private createOrgService: CreateOrgService
