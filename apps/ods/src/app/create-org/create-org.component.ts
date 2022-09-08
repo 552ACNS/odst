@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, UntypedFormBuilder, Validators } from '@angular/forms';
-import { first, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import { CreateOrgService } from './create-org.service';
 import {
@@ -10,10 +10,10 @@ import {
   errorMessagesForOrgNames,
 } from '@odst/shared/angular';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { map, startWith } from 'rxjs/operators';
-import { Console } from 'console';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 // import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 // import {MatChipInputEvent} from '@angular/material/chips';
 
@@ -39,6 +39,7 @@ export class CreateOrgComponent implements OnInit {
 
   constructor(
     private fb: UntypedFormBuilder,
+    private snackBar: MatSnackBar,
     private createOrgService: CreateOrgService
   ) {
     // this.filteredOrgs = this.orgCtrl.valueChanges.pipe(
@@ -103,18 +104,29 @@ export class CreateOrgComponent implements OnInit {
     });
   }
 
+  checkValidChild(str: string) {
+    if (!this.filteredOrgs.includes(str)) {
+      this.snackBar.open('Organization not available', '', {
+        duration: 1500,
+        panelClass: 'primary-text-contrast',
+      });
+      return false;
+    } else return true;
+  }
+
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
-    // Add our fruit
-    if (value) {
-      this.selectedChildren.push(value);
-    }
-
-    // Clear the input value
     event.chipInput?.clear();
 
-    this.orgCtrl.setValue(null);
+    if (this.checkValidChild(value)) {
+      this.selectedChildren.push(value);
+
+      // Clear the input value
+
+      this.orgCtrl.setValue(null);
+      this.generateFilteredOrgs();
+    }
   }
 
   remove(orgsRemoved: string): void {
