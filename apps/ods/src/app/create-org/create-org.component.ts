@@ -84,26 +84,6 @@ export class CreateOrgComponent implements OnInit {
     });
   }
 
-  async submit() {
-    //TODO: add logic for N/A children and parent
-    //TODO: add tooltip for regex.
-    (
-      await this.createOrgService.createOrg({
-        name: this.form.value['confirmName'].toUpperCase().trim(),
-        orgTier: this.form.value['orgTier'],
-        parent: { connect: { name: this.form.value['parentOrg'] } },
-      })
-    ).subscribe(({ data, errors }) => {
-      if (!errors && !!data) {
-        this.submitSuccess = true;
-        this.submitError = false;
-      } else {
-        this.submitSuccess = false;
-        this.submitError = true;
-      }
-    });
-  }
-
   checkValidChild(str: string) {
     if (!this.filteredOrgs.includes(str)) {
       this.snackBar.open('Organization not available', '', {
@@ -166,6 +146,47 @@ export class CreateOrgComponent implements OnInit {
       );
     }
   }
+
+  async submit() {
+    //TODO: add logic for N/A children and parent
+    //TODO: add tooltip for regex.
+    if (
+      this.form.value['parentOrg'] == '' ||
+      this.form.value['parentOrg'] == 'N/A'
+    ) {
+      (
+        await this.createOrgService.createOrg({
+          name: this.form.value['confirmName'].toUpperCase().trim(),
+          orgTier: this.form.value['orgTier'],
+        })
+      ).subscribe(({ data, errors }) => {
+        if (!errors && !!data) {
+          this.submitSuccess = true;
+          this.submitError = false;
+        } else {
+          this.submitSuccess = false;
+          this.submitError = true;
+        }
+      });
+    } else {
+      (
+        await this.createOrgService.createOrg({
+          name: this.form.value['confirmName'].toUpperCase().trim(),
+          orgTier: this.form.value['orgTier'],
+          parent: { connect: { name: this.form.value['parentOrg'] } },
+        })
+      ).subscribe(({ data, errors }) => {
+        if (!errors && !!data) {
+          this.submitSuccess = true;
+          this.submitError = false;
+        } else {
+          this.submitSuccess = false;
+          this.submitError = true;
+        }
+      });
+    }
+  }
+
   //TODO: add logic for N/A children and parent
   //TODO: fix N/A not being added from backend
   // eslint-disable-next-line complexity

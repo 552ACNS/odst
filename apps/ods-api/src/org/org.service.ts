@@ -136,8 +136,6 @@ export class OrgService {
             },
           })
           .then((responses) => responses.map((response) => response.name));
-        //TODO: fix the push thingy
-        //result.push('N/A');
         return result;
       default:
         return (temp = ['N/A']);
@@ -153,7 +151,6 @@ export class OrgService {
         },
       })
       .then((responses) => responses.map((response) => response.name));
-    //result.push('N/A');
     return result;
   }
 
@@ -175,7 +172,6 @@ export class OrgService {
             },
           })
           .then((responses) => responses.map((response) => response.name));
-        //result.push('N/A');
         return result;
       default:
         return (temp = ['N/A']);
@@ -191,13 +187,8 @@ export class OrgService {
         },
       })
       .then((responses) => responses.map((response) => response.name));
-    //result.push('N/A');
     return result;
   }
-
-  // async getOrgTiers(): Promise<string[]> {
-
-  // }
 
   async getOrgNames(): Promise<string[]> {
     return this.prisma.org
