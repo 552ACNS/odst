@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, UntypedFormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { first, Observable } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import { CreateOrgService } from './create-org.service';
 import {
@@ -10,6 +10,10 @@ import {
   errorMessagesForOrgNames,
 } from '@odst/shared/angular';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { map, startWith } from 'rxjs/operators';
+import { Console } from 'console';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 // import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 // import {MatChipInputEvent} from '@angular/material/chips';
 
@@ -24,20 +28,34 @@ export class CreateOrgComponent implements OnInit {
   submitError: boolean;
   matcher = new MyErrorStateMatcher();
   errors = errorMessagesForOrgNames;
-  orgsBelow: Observable<string[]>;
-  orgsAbove: Observable<string[]>;
+  parentOrgs: Observable<string[]>;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
   orgCtrl = new FormControl();
+  filteredOrgs: string[];
+  selectedChildren: string[] = [];
+  childrenOrgs: string[];
+
+  @ViewChild('orgInput') orgInput: ElementRef<HTMLInputElement>;
+
   constructor(
     private fb: UntypedFormBuilder,
     private createOrgService: CreateOrgService
-  ) {}
-  //TODO: Make N/A an option for children and parent
+  ) {
+    // this.filteredOrgs = this.orgCtrl.valueChanges.pipe(
+    //   startWith(null),
+    //   map((org: string | null) =>
+    //     org ? this._filter(org) : this.childrenOrgs?.slice()
+    //   )
+    // );
+  }
 
+  //TODO: Make N/A an option for children and parent
   async ngOnInit(): Promise<void> {
     (await this.createOrgService.getTierByUser()).subscribe((tier) => {
       this.groupTiers = tier;
     });
   }
+
   //TODO: make sure it kicks back an error visible to the user if unit name already exists
   // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group(
@@ -50,16 +68,19 @@ export class CreateOrgComponent implements OnInit {
       confirmName: ['', [Validators.required]],
       parentOrg: [''],
       childOrg: [''],
+      orgInput: [''],
     },
     { validators: CustomValidators.matchingNames }
   );
 
   async getOrgTierAbove(tier: OrgTier) {
-    this.orgsAbove = await this.createOrgService.getOrgsByTierAbove(tier);
+    this.parentOrgs = await this.createOrgService.getOrgsByTierAbove(tier);
   }
 
   async getOrgTierBelow(tier: OrgTier) {
-    this.orgsBelow = await this.createOrgService.getOrgsByTierBelow(tier);
+    (await this.createOrgService.getOrgsByTierBelow(tier)).subscribe((data) => {
+      this.childrenOrgs = data;
+    });
   }
 
   async submit() {
@@ -80,6 +101,58 @@ export class CreateOrgComponent implements OnInit {
         this.submitError = true;
       }
     });
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value) {
+      this.selectedChildren.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput?.clear();
+
+    this.orgCtrl.setValue(null);
+  }
+
+  remove(orgsRemoved: string): void {
+    const index = this.selectedChildren.indexOf(orgsRemoved);
+
+    if (index >= 0) {
+      this.selectedChildren.splice(index, 1);
+    }
+    this.generateFilteredOrgs();
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedChildren.push(event.option.viewValue);
+    this.orgInput.nativeElement.value = '';
+    this.orgCtrl.setValue(null);
+    this.generateFilteredOrgs();
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.childrenOrgs.filter((org) =>
+      org.toLowerCase().includes(filterValue)
+    );
+  }
+
+  generateFilteredOrgs() {
+    this.filteredOrgs = this.childrenOrgs.filter(
+      (org) => !this.selectedChildren?.includes(org)
+    );
+
+    const input = this.orgInput?.nativeElement.value.trim().toLowerCase();
+
+    if (input) {
+      this.filteredOrgs = this.filteredOrgs.filter((org) =>
+        org.toLowerCase().includes(input)
+      );
+    }
   }
   //TODO: add logic for N/A children and parent
   //TODO: fix N/A not being added from backend

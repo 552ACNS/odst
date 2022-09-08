@@ -54,10 +54,10 @@
           <mat-label>Parent Unit</mat-label>
           <mat-select placeholder="Unit" formControlName="parentOrg">
             <mat-option
-              *ngFor="let orgAbove of orgsAbove | async"
-              [value]="orgAbove"
+              *ngFor="let parentOrg of parentOrgs | async"
+              [value]="parentOrg"
             >
-              {{ orgAbove }}
+              {{ parentOrg }}
             </mat-option>
           </mat-select>
           <mat-error> Please select an organization. </mat-error>
@@ -67,22 +67,12 @@
         </label>
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Child Unit</mat-label>
-          <!--
-          <mat-select placeholder="Unit" formControlName="childOrg">
-            <mat-option
-              *ngFor="let orgBelow of orgsBelow | async"
-              [value]="orgBelow"
-            >
-              {{ orgBelow }}
-            </mat-option>
-          </mat-select> -->
-
           <mat-chip-list #chipList>
             <mat-chip
-              *ngFor="let orgBelow of orgsBelow | async"
-              (removed)="(orgBelow)"
+              *ngFor="let childOrg of selectedChildren"
+              (removed)="remove(childOrg)"
             >
-              {{ orgBelow }}
+              {{ childOrg }}
               <button matChipRemove>
                 <mat-icon>cancel</mat-icon>
               </button>
@@ -91,9 +81,22 @@
               placeholder="Unit"
               #orgInput
               [formControl]="orgCtrl"
+              [matAutocomplete]="auto"
               [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="add($event)"
+              (input)="generateFilteredOrgs()"
+              (focus)="generateFilteredOrgs()"
             />
           </mat-chip-list>
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
+            <mat-option *ngFor="let child of filteredOrgs" [value]="child">
+              {{ child }}
+            </mat-option>
+          </mat-autocomplete>
 
           <mat-error> Please select an organization. </mat-error>
         </mat-form-field>
