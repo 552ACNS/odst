@@ -3,6 +3,7 @@ import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { FeedbackQuestionsService } from './feedback-questions.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'odst-feedback-questions',
@@ -31,13 +32,15 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
   querySubscription: Subscription;
   loading = true;
   submitSuccess = false;
+  copySuccess = false;
   violatorSpec = '';
   personSpec = '';
 
   constructor(
     private fb: UntypedFormBuilder,
     private snackBar: MatSnackBar,
-    private feedbackService: FeedbackQuestionsService
+    private feedbackService: FeedbackQuestionsService,
+    private clipboard: Clipboard
   ) {}
 
   private violatorSpecification(): string {
@@ -123,6 +126,12 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
           });
       });
   }
+
+  clickedCopyToClipboard() {
+    this.clipboard.copy(<string>this.feedbackResponseID);
+    this.copySuccess = true;
+  }
+
   ngOnDestroy() {
     if (this.querySubscription) {
       this.querySubscription.unsubscribe();

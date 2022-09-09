@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FeedbackQuestionsComponent } from './feedback-questions.component';
 import { FeedbackQuestionsRoutes } from './feedback-questions.routing';
 import { RouterModule } from '@angular/router';
@@ -26,6 +27,7 @@ import { RouterModule } from '@angular/router';
     MatCardModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatTooltipModule,
     FormsModule,
   ],
   exports: [],
