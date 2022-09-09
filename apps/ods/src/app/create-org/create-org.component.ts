@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./create-org.component.scss'],
 })
 export class CreateOrgComponent implements OnInit {
+  //TODO: fix error shown when org name already exists
   groupTiers: string[];
   submitSuccess = false;
   submitError: boolean;
@@ -48,6 +49,7 @@ export class CreateOrgComponent implements OnInit {
   }
 
   //TODO: make sure it kicks back an error visible to the user if unit name already exists
+
   // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group(
     {

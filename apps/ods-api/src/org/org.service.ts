@@ -141,6 +141,8 @@ export class OrgService {
         return (temp = ['N/A']);
     }
     // eslint-disable-next-line prefer-const
+
+    //TODO: see if we want orgs that already have parents not appear
     result = this.prisma.org
       .findMany({
         select: {
@@ -148,6 +150,11 @@ export class OrgService {
         },
         where: {
           orgTier: temp,
+          AND: {
+            parent: {
+              is: null,
+            },
+          },
         },
       })
       .then((responses) => responses.map((response) => response.name));
