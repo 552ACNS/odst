@@ -14,9 +14,6 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-// import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-// import {MatChipInputEvent} from '@angular/material/chips';
-
 @Component({
   selector: 'odst-create-org',
   templateUrl: './create-org.component.html',
@@ -41,14 +38,7 @@ export class CreateOrgComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private snackBar: MatSnackBar,
     private createOrgService: CreateOrgService
-  ) {
-    // this.filteredOrgs = this.orgCtrl.valueChanges.pipe(
-    //   startWith(null),
-    //   map((org: string | null) =>
-    //     org ? this._filter(org) : this.childrenOrgs?.slice()
-    //   )
-    // );
-  }
+  ) {}
 
   //TODO: Make N/A an option for children and parent
   async ngOnInit(): Promise<void> {
@@ -147,6 +137,14 @@ export class CreateOrgComponent implements OnInit {
     }
   }
 
+  childrenConnection(selectedChildren: string[]): { name: string }[] {
+    const result: any[] = [];
+    for (let i = 0; i < selectedChildren.length; i++) {
+      result[i] = { name: selectedChildren[i] };
+    }
+    return result;
+  }
+
   async submit() {
     //TODO: add logic for N/A children and parent
     //TODO: add tooltip for regex.
@@ -158,6 +156,7 @@ export class CreateOrgComponent implements OnInit {
         await this.createOrgService.createOrg({
           name: this.form.value['confirmName'].toUpperCase().trim(),
           orgTier: this.form.value['orgTier'],
+          children: { connect: this.childrenConnection(this.selectedChildren) },
         })
       ).subscribe(({ data, errors }) => {
         if (!errors && !!data) {
@@ -174,6 +173,7 @@ export class CreateOrgComponent implements OnInit {
           name: this.form.value['confirmName'].toUpperCase().trim(),
           orgTier: this.form.value['orgTier'],
           parent: { connect: { name: this.form.value['parentOrg'] } },
+          children: { connect: this.childrenConnection(this.selectedChildren) },
         })
       ).subscribe(({ data, errors }) => {
         if (!errors && !!data) {
@@ -186,49 +186,4 @@ export class CreateOrgComponent implements OnInit {
       });
     }
   }
-
-  //TODO: add logic for N/A children and parent
-  //TODO: fix N/A not being added from backend
-  // eslint-disable-next-line complexity
-  // submitConditions(): CreateOrgMutationVariables['orgCreateInput'] {
-  //   if (
-  //     this.form.value['parentOrg'] == 'N/A' &&
-  //     this.form.value['childOrg'] == 'N/A'
-  //   ) {
-  //     return {
-  //       name: this.form.value['confirmName'],
-  //       orgTier: this.form.value['orgTier'],
-  //     };
-  //   } else if (
-  //     this.form.value['parentOrg'] != 'N/A' &&
-  //     this.form.value['childOrg'] != 'N/A'
-  //   ) {
-  //     return {
-  //       name: this.form.value['confirmName'],
-  //       orgTier: this.form.value['orgTier'],
-  //       parent: <OrgWhereUniqueInput>this.form.value['parentOrg'],
-  //       children: <OrgWhereUniqueInput>this.form.value['childOrg'],
-  //     };
-  //   } else if (
-  //     this.form.value['parentOrg'] != 'N/A' &&
-  //     this.form.value['childOrg'] == 'N/A'
-  //   ) {
-  //     return {
-  //       name: this.form.value['confirmName'],
-  //       orgTier: this.form.value['orgTier'],
-  //       parent: <OrgWhereUniqueInput>this.form.value['parentOrg'],
-  //     };
-  //   } else if (
-  //     this.form.value['parentOrg'] == 'N/A' &&
-  //     this.form.value['childOrg'] != 'N/A'
-  //   ) {
-  //     return {
-  //       name: this.form.value['confirmName'],
-  //       orgTier: this.form.value['orgTier'],
-  //       children: <OrgWhereUniqueInput>this.form.value['childOrg'],
-  //     };
-  //   }
-  //   else{
-  //   }
-  // }
 }
