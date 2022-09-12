@@ -74,13 +74,7 @@ export class CreateOrgComponent implements OnInit {
     (await this.createOrgService.getOrgsByTierBelow(tier)).subscribe((data) => {
       this.childrenOrgs = data;
     });
-    for (
-      this.selectedChildren.length;
-      this.selectedChildren.length > 0;
-      this.selectedChildren.length--
-    ) {
-      this.selectedChildren.pop();
-    }
+    this.selectedChildren = [];
   }
 
   checkValidChild(str: string) {
