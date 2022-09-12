@@ -33,7 +33,7 @@
     "@graphql-codegen/typed-document-node": "^2.3.3",
     "@graphql-codegen/typescript": "^2.7.3",
     "@graphql-codegen/typescript-operations": "^2.5.2",
-    "@nestjs/apollo": "^10.0.19",
+    "@nestjs/apollo": "^10.0.22",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "9.0.11",
     "@nestjs/core": "9.0.11",
