@@ -1,7 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
+import { OrgTier } from '../../types.graphql';
 import {
+  GetOrgsByTierBelowDocument,
+  GetOrgsByTierBelowQuery,
+  GetOrgsByTierBelowQueryVariables,
+} from '../create-org/create-org.generated';
+import {
+  GetChildrenDocument,
+  GetChildrenQuery,
+  GetChildrenQueryVariables,
+  GetOrgTierDocument,
+  GetOrgTierQuery,
+  GetOrgTierQueryVariables,
   GetUserOrgsNamesDocument,
   GetUserOrgsNamesQuery,
   GetUserOrgsNamesQueryVariables,
@@ -31,5 +43,41 @@ export class EditOrgService {
       variables: updateOrgMutationVariables,
       errorPolicy: 'all',
     });
+  }
+
+  async getChildren(name: string): Promise<Observable<string[]>> {
+    return this.apollo
+      .watchQuery<GetChildrenQuery, GetChildrenQueryVariables>({
+        query: GetChildrenDocument,
+        variables: {
+          orgName: name,
+        },
+        errorPolicy: 'all',
+      })
+      .valueChanges.pipe(map((result) => result.data.getOrgChildren));
+  }
+
+  async getOrgTier(name: string): Promise<Observable<string>> {
+    return this.apollo
+      .watchQuery<GetOrgTierQuery, GetOrgTierQueryVariables>({
+        query: GetOrgTierDocument,
+        variables: {
+          orgName: name,
+        },
+        errorPolicy: 'all',
+      })
+      .valueChanges.pipe(map((result) => result.data.getOrgTier));
+  }
+
+  async getOrgsByTierBelow(orgTier: OrgTier) {
+    return this.apollo
+      .watchQuery<GetOrgsByTierBelowQuery, GetOrgsByTierBelowQueryVariables>({
+        query: GetOrgsByTierBelowDocument,
+        variables: {
+          orgTier,
+        },
+        errorPolicy: 'all',
+      })
+      .valueChanges.pipe(map((result) => result.data.getOrgsBelowTier));
   }
 }

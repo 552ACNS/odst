@@ -7,3 +7,15 @@ mutation updateOrg($data: OrgUpdateInput!, $where: OrgWhereUniqueInput!) {
     name
   }
 }
+
+query getChildren($orgName: String!) {
+  getOrgChildren(orgName: $orgName)
+}
+
+query getOrgTier($orgName: String!) {
+  getOrgTier(orgName: $orgName)
+}
+
+query getOrgsByTierBelow($orgTier: OrgTier!) {
+  getOrgsBelowTier(orgTier: $orgTier)
+}

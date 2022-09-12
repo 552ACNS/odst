@@ -118,14 +118,6 @@ export class CreateOrgComponent implements OnInit {
     this.generateFilteredOrgs();
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.childrenOrgs.filter((org) =>
-      org.toLowerCase().includes(filterValue)
-    );
-  }
-
   generateFilteredOrgs() {
     this.filteredOrgs = this.childrenOrgs.filter(
       (org) => !this.selectedChildren?.includes(org)

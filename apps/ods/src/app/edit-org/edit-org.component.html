@@ -7,8 +7,13 @@
           Select one of your organizations to edit.
         </label>
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Select Organization Type</mat-label>
-          <mat-select formControlName="orgToEdit" required>
+          <mat-label>Select Organization To Edit</mat-label>
+          <mat-select
+            formControlName="orgToEdit"
+            (selectionChange)="getChildren($event.value)"
+            (selectionChange)="getOrgTier($event.value)"
+            required
+          >
             <mat-option *ngFor="let userOrg of userOrgs" [value]="userOrg">
               {{ userOrg }}
             </mat-option>
@@ -38,6 +43,43 @@
             Please confirm the new organization's name.
             {{ errors['orgName'] }}
           </mat-error>
+        </mat-form-field>
+        <label class="mt-6 mb-2">
+          Is your Unit over another organization?
+        </label>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Child Unit</mat-label>
+          <mat-chip-list #chipList>
+            <mat-chip
+              *ngFor="let childOrg of selectedChildren"
+              (removed)="remove(childOrg)"
+            >
+              {{ childOrg }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+            <input
+              placeholder="Unit"
+              #orgInput
+              [formControl]="orgCtrl"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="add($event)"
+              (input)="generateFilteredOrgs()"
+              (focus)="generateFilteredOrgs()"
+            />
+          </mat-chip-list>
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
+            <mat-option *ngFor="let child of filteredOrgs" [value]="child">
+              {{ child }}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error> Please select an organization. </mat-error>
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions>

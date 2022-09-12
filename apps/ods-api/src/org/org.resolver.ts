@@ -12,14 +12,11 @@ import {
   Feedback,
   OrgTier,
   OrgCreateInput,
-  OrgUpdateInput,
-  OrgWhereUniqueInput,
   UpdateOneOrgArgs,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { Args } from '@nestjs/graphql';
 import { GetCurrentUser } from '@odst/shared/nest';
-import { PrismaModule } from '../prisma/prisma.module';
 import { Prisma } from '.prisma/ods/client';
 
 @Resolver(() => Org)
@@ -41,6 +38,20 @@ export class OrgResolver {
   @Query(() => [String], { name: 'getOrgNames' })
   async getOrgNames(): Promise<string[]> {
     return this.orgService.getOrgNames();
+  }
+
+  @Query(() => [String])
+  async getOrgChildren(
+    @Args('orgName', { type: () => String }) name: string
+  ): Promise<string[]> {
+    return this.orgService.getOrgChildren(name);
+  }
+
+  @Query(() => OrgTier)
+  async getOrgTier(
+    @Args('orgName') name: string
+  ): Promise<OrgTier | string | undefined> {
+    return this.orgService.getOrgTier(name);
   }
 
   @Query(() => [String])

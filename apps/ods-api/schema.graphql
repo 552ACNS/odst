@@ -403,6 +403,8 @@ type Query {
   getUserOrgsNames: [String!]!
   getOrgLineage: [String!]!
   getOrgNames: [String!]!
+  getOrgChildren(orgName: String!): [String!]!
+  getOrgTier(orgName: String!): OrgTier!
   getOrgsBelowTier(orgTier: OrgTier!): [String!]!
   getOrgsAboveTier(orgTier: OrgTier!): [String!]!
   getTiersByUser: [String!]!

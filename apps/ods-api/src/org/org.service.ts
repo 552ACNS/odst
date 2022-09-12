@@ -118,6 +118,33 @@ export class OrgService {
     return authorizedToCreateOrg;
   }
 
+  async getOrgChildren(name: string): Promise<string[]> {
+    return this.prisma.org
+      .findMany({
+        select: {
+          name: true,
+        },
+        where: {
+          parent: {
+            name: {
+              equals: name,
+            },
+          },
+        },
+      })
+      .then((children) => children.map((children) => children.name));
+  }
+
+  async getOrgTier(name: string): Promise<OrgTier | string | undefined> {
+    return this.prisma.org
+      .findUnique({
+        where: {
+          name: name,
+        },
+      })
+      .then((org) => org?.orgTier);
+  }
+
   async getOrgsBelowTier(tier: OrgTier): Promise<string[]> {
     let temp;
     let result;
