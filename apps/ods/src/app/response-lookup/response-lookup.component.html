@@ -29,18 +29,26 @@
         An issue with the entered ID could not be found.
       </p>
       <mat-card-content *ngIf="success" class="text-sm space-y-3">
-        <p *ngIf="status">
-          This feedback report was submitted on
-          {{ openedDate | date: 'd MMM yy' }} and was resolved on
-          {{ closedDate | date: 'd MMM yy' }}. The following issue was resolved
-          by: {{ grade }} {{ firstName }} {{ lastName }}
+        <div *ngIf="status" class="text-center">
+          <p>
+            This feedback report was submitted on:
+            <strong>{{ openedDate | date: 'd MMM yy' }}</strong>
+          </p>
+          <p>
+            And was resolved on:
+            <strong>{{ closedDate | date: 'd MMM yy' }}</strong>
+          </p>
+          <p>
+            By: <strong>{{ grade }} {{ firstName }} {{ lastName }}</strong>
+          </p>
+
           <!--TODO Replace the mat-list with tag component -->
-          <mat-list>
-            <mat-list-item *ngFor="let tag of tags">
+          <mat-list class="items-center">
+            <mat-list-item *ngFor="let tag of tags" class="items-center flex">
               {{ tag }}
             </mat-list-item>
           </mat-list>
-        </p>
+        </div>
         <p *ngIf="!status">
           This feedback report was submitted on
           {{ openedDate | date: 'd MMM yy' }}, and is awaiting resolution.
