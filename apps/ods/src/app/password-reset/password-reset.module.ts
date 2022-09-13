@@ -9,6 +9,7 @@ import { PasswordResetComponent } from './password-reset.component';
 import { PasswordResetRoutes } from './password-reset.routing';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   declarations: [PasswordResetComponent],
   imports: [
@@ -21,6 +22,7 @@ import { RouterModule } from '@angular/router';
     MatCardModule,
     MatIconModule,
     FormsModule,
+    MatTooltipModule,
   ],
   exports: [],
 })

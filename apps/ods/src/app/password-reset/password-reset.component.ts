@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { PasswordResetService } from './password-reset.service';
+import { regExps } from '@odst/shared/angular';
 
 @Component({
   selector: 'odst-password-reset',
@@ -14,7 +15,10 @@ export class PasswordResetComponent {
   ) {}
 
   passwordResetForm = this.fb.group({
-    newPassword: ['', Validators.required],
+    newPassword: [
+      '',
+      [Validators.required, Validators.pattern(regExps['password'])],
+    ],
     confirmPassword: ['', Validators.required],
   });
 
