@@ -16,6 +16,6 @@ query getOrgTier($orgName: String!) {
   getOrgTier(orgName: $orgName)
 }
 
-query getOrgsByTierBelow($orgTier: OrgTier!) {
-  getOrgsBelowTier(orgTier: $orgTier)
+query getTiersBelowKeepParents($orgTier: OrgTier!) {
+  getOrgsBelowTierWithKeepParents(orgTier: $orgTier)
 }

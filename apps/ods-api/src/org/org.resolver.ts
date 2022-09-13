@@ -62,6 +62,13 @@ export class OrgResolver {
   }
 
   @Query(() => [String])
+  async getOrgsBelowTierWithKeepParents(
+    @Args('orgTier', { type: () => OrgTier }) tier: OrgTier
+  ): Promise<string[]> {
+    return this.orgService.getOrgsBelowTierWithKeepParents(tier);
+  }
+
+  @Query(() => [String])
   async getOrgsAboveTier(
     @Args('orgTier', { type: () => OrgTier }) tier: OrgTier
   ): Promise<string[]> {

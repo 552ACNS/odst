@@ -406,6 +406,7 @@ type Query {
   getOrgChildren(orgName: String!): [String!]!
   getOrgTier(orgName: String!): OrgTier!
   getOrgsBelowTier(orgTier: OrgTier!): [String!]!
+  getOrgsBelowTierWithKeepParents(orgTier: OrgTier!): [String!]!
   getOrgsAboveTier(orgTier: OrgTier!): [String!]!
   getTiersByUser: [String!]!
   getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [String!]!

@@ -3,17 +3,15 @@ import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import {
-  GetOrgsByTierBelowDocument,
-  GetOrgsByTierBelowQuery,
-  GetOrgsByTierBelowQueryVariables,
-} from '../create-org/create-org.generated';
-import {
   GetChildrenDocument,
   GetChildrenQuery,
   GetChildrenQueryVariables,
   GetOrgTierDocument,
   GetOrgTierQuery,
   GetOrgTierQueryVariables,
+  GetTiersBelowKeepParentsDocument,
+  GetTiersBelowKeepParentsQuery,
+  GetTiersBelowKeepParentsQueryVariables,
   GetUserOrgsNamesDocument,
   GetUserOrgsNamesQuery,
   GetUserOrgsNamesQueryVariables,
@@ -71,13 +69,18 @@ export class EditOrgService {
 
   async getOrgsByTierBelow(orgTier: OrgTier) {
     return this.apollo
-      .watchQuery<GetOrgsByTierBelowQuery, GetOrgsByTierBelowQueryVariables>({
-        query: GetOrgsByTierBelowDocument,
+      .watchQuery<
+        GetTiersBelowKeepParentsQuery,
+        GetTiersBelowKeepParentsQueryVariables
+      >({
+        query: GetTiersBelowKeepParentsDocument,
         variables: {
           orgTier,
         },
         errorPolicy: 'all',
       })
-      .valueChanges.pipe(map((result) => result.data.getOrgsBelowTier));
+      .valueChanges.pipe(
+        map((result) => result.data.getOrgsBelowTierWithKeepParents)
+      );
   }
 }

@@ -6,13 +6,12 @@
         <label class="mt-6 mb-2">
           Select one of your organizations to edit.
         </label>
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full mb-1">
           <mat-label>Select Organization To Edit</mat-label>
           <mat-select
             formControlName="orgToEdit"
             (selectionChange)="getChildren($event.value)"
             (selectionChange)="getOrgTier($event.value)"
-            required
           >
             <mat-option *ngFor="let userOrg of userOrgs" [value]="userOrg">
               {{ userOrg }}
@@ -20,23 +19,26 @@
           </mat-select>
           <mat-error> Please select an organization to edit. </mat-error>
         </mat-form-field>
+        <hr class="opacity-50 mb-4" />
+        <label class="mt-6 mb-2">
+          Do you want to edit the name of this organization?
+        </label>
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>New Organization Name</mat-label>
           <input
             matInput
             placeholder="Enter the name of the organization"
             formControlName="orgName"
-            required
+            (onkeydown)="onInputMakeRequired()"
           />
           <mat-error> Please enter the new organization's name </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full mb-3">
           <mat-label>Confirm New Organization Name</mat-label>
           <input
             matInput
             placeholder="Confirm the name of the organization"
             formControlName="confirmName"
-            required
             [errorStateMatcher]="matcher"
           />
           <mat-error *ngIf="form.hasError('notSame')">
@@ -44,6 +46,7 @@
             {{ errors['orgName'] }}
           </mat-error>
         </mat-form-field>
+        <hr class="opacity-50 mb-3" />
         <label class="mt-6 mb-2">
           Is your Unit over another organization?
         </label>

@@ -188,6 +188,42 @@ export class OrgService {
     return result;
   }
 
+  async getOrgsBelowTierWithKeepParents(tier: OrgTier): Promise<string[]> {
+    let temp;
+    let result;
+    switch (tier) {
+      case 'GROUP':
+        temp = { equals: 'SQUADRON' };
+        break;
+      case 'WING':
+        temp = { equals: 'GROUP' };
+        break;
+      case 'OTHER':
+        result = this.prisma.org
+          .findMany({
+            select: {
+              name: true,
+            },
+          })
+          .then((responses) => responses.map((response) => response.name));
+        return result;
+      default:
+        return (temp = ['N/A']);
+    }
+    // eslint-disable-next-line prefer-const
+    result = this.prisma.org
+      .findMany({
+        select: {
+          name: true,
+        },
+        where: {
+          orgTier: temp,
+        },
+      })
+      .then((responses) => responses.map((response) => response.name));
+    return result;
+  }
+
   async getOrgsAboveTier(tier: OrgTier): Promise<string[]> {
     let temp;
     let result;

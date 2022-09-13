@@ -23,6 +23,7 @@
           </mat-select>
           <mat-error> Please select an organization. </mat-error>
         </mat-form-field>
+        <hr class="opacity-50 mb-4" />
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Organization Name</mat-label>
           <input
@@ -33,7 +34,7 @@
           />
           <mat-error> Please enter the organization's name </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full mb-3">
           <mat-label>Confirm Organization Name</mat-label>
           <input
             matInput
@@ -47,6 +48,7 @@
             {{ errors['orgName'] }}
           </mat-error>
         </mat-form-field>
+        <hr class="opacity-50 mb-4" />
         <label class="mt-6 mb-2">
           Is your Unit under another organization?
         </label>

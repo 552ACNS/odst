@@ -52,14 +52,21 @@ export class EditOrgComponent implements OnInit {
       orgInput: [''],
       childOrg: [''],
       orgToEdit: ['', [Validators.required]],
-      orgName: [
-        '',
-        [Validators.required, Validators.pattern(regExpForOrgNames['orgName'])],
-      ],
-      confirmName: ['', [Validators.required]],
+      orgName: ['', [Validators.pattern(regExpForOrgNames['orgName'])]],
+      confirmName: [''],
     },
     { validators: CustomValidators.matchingNames }
   );
+
+  onInputMakeRequired() {
+    if (this.form.value['orgName'] !== '') {
+      this.form.controls['orgName'].setValidators([Validators.required]);
+      this.form.controls['confirmName'].setValidators([Validators.required]);
+    } else {
+      this.form.controls['confirmName'].clearValidators();
+      this.form.controls['orgName'].clearValidators();
+    }
+  }
 
   async getChildren(name: string) {
     (await this.editOrgService.getChildren(name)).subscribe((children) => {
