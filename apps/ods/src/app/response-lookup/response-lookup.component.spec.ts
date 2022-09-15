@@ -58,7 +58,7 @@ describe('ResponsesComponent', () => {
   };
 
   const mockResponseLookupService = {
-    getFeedbackReponseById: jest.fn(),
+    getFeedbackResponseById: jest.fn(),
   };
 
   it('should create', () => {
@@ -67,7 +67,7 @@ describe('ResponsesComponent', () => {
 
   it('should submit a response ID to lookup', fakeAsync(() => {
     //Mocks the service function and the return value it gives as an observable using of()
-    mockResponseLookupService.getFeedbackReponseById = jest
+    mockResponseLookupService.getFeedbackResponseById = jest
       .fn()
       .mockReturnValue(of(response));
 

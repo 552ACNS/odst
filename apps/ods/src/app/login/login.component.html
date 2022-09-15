@@ -68,16 +68,20 @@
 
       <div class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full">
         <mat-checkbox
-          class="align-middle float-left"
+          class="float-left mt-2"
           [color]="'primary'"
           [formControlName]="'rememberMe'"
         >
           Remember Me
         </mat-checkbox>
         <!-- Set link color to primary color of theme -->
-        <div class="pt-0.5 float-right font-medium underline">
-          Forgot Password?
-        </div>
+        <button
+          mat-button
+          class="float-right"
+          [routerLink]="['/password-recovery']"
+        >
+          Forgot password
+        </button>
       </div>
 
       <!-- Buttons -->
