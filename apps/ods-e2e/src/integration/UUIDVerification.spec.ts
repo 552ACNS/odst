@@ -58,7 +58,7 @@ describe('ods', () => {
     cy.get('button').contains('Lookup ID').click();
     cy.wait('@graphql');
     cy.get('[class="ng-star-inserted"]').contains(
-      'This feedback report was submitted on',
+      'This feedback was submitted on',
       {
         timeout: 5000,
       }
@@ -132,7 +132,7 @@ describe('ods', () => {
     cy.get('[class="ng-star-inserted"]').contains('was resolved on', {
       timeout: 5000,
     });
-    cy.get('mat-list-item').contains('Addressed In Organizational All-call');
+    cy.get('p').contains('Addressed In Organizational All-call');
   });
 
   it('Verify that a comment was made and that the feedback was catagorized as resolved', () => {
