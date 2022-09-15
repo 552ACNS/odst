@@ -35,23 +35,22 @@
             <strong>{{ openedDate | date: 'd MMM yy' }}</strong>
           </p>
           <p>
-            And was resolved on:
+            And was <span class="text-green-500">resolved</span> on:
             <strong>{{ closedDate | date: 'd MMM yy' }}</strong>
           </p>
           <p>
             By: <strong>{{ grade }} {{ firstName }} {{ lastName }}</strong>
           </p>
-
+          <mat-divider class="mb-3"></mat-divider>
           <!--TODO Replace the mat-list with tag component -->
-          <mat-list class="items-center">
-            <mat-list-item *ngFor="let tag of tags" class="items-center flex">
-              {{ tag }}
-            </mat-list-item>
-          </mat-list>
+          <p *ngFor="let tag of tags" class="text-center">
+            {{ tag }}
+          </p>
         </div>
         <p *ngIf="!status">
-          This feedback report was submitted on
-          {{ openedDate | date: 'd MMM yy' }}, and is awaiting resolution.
+          This feedback was submitted on
+          {{ openedDate | date: 'd MMM yy' }}, and is
+          <span class="text-yellow-500">awaiting resolution</span>.
         </p>
       </mat-card-content>
       <!-- Buttons -->
