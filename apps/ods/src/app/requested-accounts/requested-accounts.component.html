@@ -1,8 +1,10 @@
 <div class="parent-div space-y-3">
   <mat-card class="shadow-md font-medium">
-    <mat-card-title> Requested Accounts </mat-card-title>
-
-    <table mat-table class="w-full" [dataSource]="dataSource">
+    <mat-card-title class="text-center"> Requested Accounts </mat-card-title>
+    <mat-card-subtitle class="text-center"
+      >Please click the account request you wish to view</mat-card-subtitle
+    >
+    <table mat-table class="w-full border-separate" [dataSource]="dataSource">
       <ng-container
         *ngFor="let column of columnData | keyvalue: keepOrder"
         matColumnDef="{{ column.key }}"
