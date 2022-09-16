@@ -939,6 +939,7 @@ type Mutation {
   updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
   createOrg(orgCreateInput: OrgCreateInput!): String!
   updateOrg(data: OrgUpdateInput!, where: OrgWhereUniqueInput!): Org!
+  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org
   createUser(userCreateInput: UserCreateInput!): String!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User

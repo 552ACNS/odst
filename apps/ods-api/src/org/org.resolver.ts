@@ -13,6 +13,7 @@ import {
   OrgTier,
   OrgCreateInput,
   UpdateOneOrgArgs,
+  OrgWhereUniqueInput,
 } from '@odst/types/ods';
 import { Public } from '@odst/auth';
 import { Args } from '@nestjs/graphql';
@@ -106,6 +107,14 @@ export class OrgResolver {
       where as Prisma.OrgWhereUniqueInput,
       data as Prisma.OrgUpdateInput
     );
+  }
+
+  @Mutation(() => Org, { name: 'deleteOrg', nullable: true })
+  async delete(
+    @Args('orgWhereUniqueInput')
+    orgWhereUniqueInput: OrgWhereUniqueInput
+  ): Promise<Org | null> {
+    return this.orgService.deleteOrg(orgWhereUniqueInput);
   }
 
   @ResolveField(() => [User])

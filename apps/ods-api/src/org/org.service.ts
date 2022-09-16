@@ -339,6 +339,23 @@ export class OrgService {
     return orgNames;
   }
 
+  async deleteOrg(
+    orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
+  ): Promise<Org | null> {
+    let deletedOrg: Org | null = null;
+
+    try {
+      deletedOrg = await this.prisma.org.delete({
+        where: orgWhereUniqueInput,
+      });
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        console.log(err?.meta?.cause);
+      }
+    }
+    return deletedOrg;
+  }
+
   async users(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
   ): Promise<User[]> {
