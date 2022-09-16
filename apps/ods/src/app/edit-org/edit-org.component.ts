@@ -7,11 +7,13 @@ import {
   regExpForOrgNames,
   errorMessagesForOrgNames,
 } from '@odst/shared/angular';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, E, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrgTier } from '../../types.graphql';
+import { HttpClientJsonpModule } from '@angular/common/http';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'odst-create-org',
@@ -39,11 +41,22 @@ export class EditOrgComponent implements OnInit {
     private editOrgService: EditOrgService
   ) {}
   async ngOnInit(): Promise<void> {
-    (await this.editOrgService.getUserOrgsNames()).subscribe((orgNames) => {
-      this.userOrgs = orgNames;
-    });
+    const temp: string[] = [];
+    (await this.editOrgService.getUserOrgsNames()).subscribe(
+      async (orgNames) => {
+        (await this.editOrgService.getChildren(orgNames[0])).subscribe(
+          (children) => {
+            children.forEach((child) => {
+              temp.push(child);
+            });
+
+            temp.push(orgNames[0]);
+          }
+        );
+        this.userOrgs = temp;
+      }
+    );
   }
-  //TODO: Make N/A an option for children and parent
 
   //TODO: make sure it kicks back an error visible to the user if unit name already exists
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -69,6 +82,7 @@ export class EditOrgComponent implements OnInit {
   }
 
   async getChildren(name: string) {
+    this.selectedChildren = [];
     (await this.editOrgService.getChildren(name)).subscribe((children) => {
       for (let i = 0; i < children.length; i++) {
         this.selectedChildren.push(children[i]);
@@ -149,24 +163,59 @@ export class EditOrgComponent implements OnInit {
     for (let i = 0; i < selectedChildren.length; i++) {
       result[i] = { name: selectedChildren[i] };
     }
+    console.log(result);
     return result;
   }
 
   async submit() {
-    (
-      await this.editOrgService.updateOrg({
-        where: { name: this.form.value.orgToEdit },
-        data: { name: this.form.value.orgName },
-      })
-    ).subscribe(({ data, errors }) => {
-      if (!errors && !!data) {
-        this.submitSuccess = true;
-        this.submitError = false;
-      } else {
-        this.submitSuccess = false;
-        this.submitError = true;
-      }
-    });
-    //TODO: add tooltip for regex.
+    this.form.value['orgName'] = this.form.value['orgName']
+      .trim()
+      .toUpperCase();
+    this.form.value['orgName'] = this.form.value['orgName']
+      .trim()
+      .toUpperCase();
+    let temp = '';
+    (await this.editOrgService.checkOrg(this.form.value['orgName']))
+      .pipe(first())
+      .subscribe(async (result) => {
+        if (result.data.checkOrg && this.form.value['confirmName'] !== '') {
+          this.snackBar.open(
+            'Organization name already exists, please choose a different name',
+            '',
+            {
+              duration: 2500,
+              panelClass: 'primary-text-contrast',
+            }
+          );
+          return;
+        } else {
+          if (this.form.value['confirmName'] === '') {
+            temp = this.form.value['orgToEdit'];
+          } else {
+            temp = this.form.value['confirmName'];
+          }
+          (
+            await this.editOrgService.updateOrg({
+              where: { name: this.form.value.orgToEdit },
+              data: {
+                name: {
+                  set: temp,
+                },
+                children: {
+                  set: this.childrenConnection(this.selectedChildren),
+                },
+              },
+            })
+          ).subscribe(({ data, errors }) => {
+            if (!errors && !!data) {
+              this.submitSuccess = true;
+              this.submitError = false;
+            } else {
+              this.submitSuccess = false;
+              this.submitError = true;
+            }
+          });
+        }
+      });
   }
 }

@@ -3,6 +3,9 @@ import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import {
+  CheckOrgDocument,
+  CheckOrgQueryVariables,
+  CheckOrgQuery,
   GetChildrenDocument,
   GetChildrenQuery,
   GetChildrenQueryVariables,
@@ -82,5 +85,15 @@ export class EditOrgService {
       .valueChanges.pipe(
         map((result) => result.data.getOrgsBelowTierWithKeepParents)
       );
+  }
+
+  async checkOrg(orgName: string) {
+    return this.apollo.watchQuery<CheckOrgQuery, CheckOrgQueryVariables>({
+      query: CheckOrgDocument,
+      variables: {
+        orgName,
+      },
+      errorPolicy: 'all',
+    }).valueChanges;
   }
 }

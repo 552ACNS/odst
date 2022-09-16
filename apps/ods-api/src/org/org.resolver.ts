@@ -47,6 +47,13 @@ export class OrgResolver {
     return this.orgService.getOrgChildren(name);
   }
 
+  @Query(() => Boolean)
+  async checkOrg(
+    @Args('orgName', { type: () => String }) name: string
+  ): Promise<boolean> {
+    return this.orgService.checkOrg(name);
+  }
+
   @Query(() => OrgTier)
   async getOrgTier(
     @Args('orgName') name: string

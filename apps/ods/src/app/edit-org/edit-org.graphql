@@ -19,3 +19,11 @@ query getOrgTier($orgName: String!) {
 query getTiersBelowKeepParents($orgTier: OrgTier!) {
   getOrgsBelowTierWithKeepParents(orgTier: $orgTier)
 }
+
+query checkOrg($orgName: String!) {
+  checkOrg(orgName: $orgName)
+}
+
+query getOrgChildren($orgName: String!) {
+  getOrgChildren(orgName: $orgName)
+}

@@ -13,3 +13,7 @@ query getTiersByUser {
 mutation CreateOrg($orgCreateInput: OrgCreateInput!) {
   createOrg(orgCreateInput: $orgCreateInput)
 }
+
+query checkOrg($orgName: String!) {
+  checkOrg(orgName: $orgName)
+}

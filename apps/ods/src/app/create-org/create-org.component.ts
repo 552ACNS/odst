@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, UntypedFormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { first, Observable, of, switchMap } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import { CreateOrgService } from './create-org.service';
 import {
@@ -20,13 +20,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./create-org.component.scss'],
 })
 export class CreateOrgComponent implements OnInit {
-  //TODO: fix error shown when org name already exists
   groupTiers: string[];
   submitSuccess = false;
   submitError: boolean;
   matcher = new MyErrorStateMatcher();
   errors = errorMessagesForOrgNames;
-  parentOrgs: Observable<string[]>;
+  parentOrgs: string[];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   orgCtrl = new FormControl();
   filteredOrgs: string[];
@@ -41,14 +40,11 @@ export class CreateOrgComponent implements OnInit {
     private createOrgService: CreateOrgService
   ) {}
 
-  //TODO: Make N/A an option for children and parent
   async ngOnInit(): Promise<void> {
     (await this.createOrgService.getTierByUser()).subscribe((tier) => {
       this.groupTiers = tier;
     });
   }
-
-  //TODO: make sure it kicks back an error visible to the user if unit name already exists
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group(
@@ -67,7 +63,14 @@ export class CreateOrgComponent implements OnInit {
   );
 
   async getOrgTierAbove(tier: OrgTier) {
-    this.parentOrgs = await this.createOrgService.getOrgsByTierAbove(tier);
+    (await this.createOrgService.getOrgsByTierAbove(tier)).subscribe((data) => {
+      const result: any[] = [];
+      for (let i = 0; i < data.length; i++) {
+        result[i] = data[i];
+      }
+      result.push('N/A');
+      this.parentOrgs = result;
+    });
   }
 
   async getOrgTierBelow(tier: OrgTier) {
@@ -77,10 +80,19 @@ export class CreateOrgComponent implements OnInit {
     this.selectedChildren = [];
   }
 
+  checkForChildren() {
+    if (this.childrenOrgs.length == 0) {
+      this.snackBar.open('No children available', '', {
+        duration: 2500,
+        panelClass: 'primary-text-contrast',
+      });
+    }
+  }
+
   checkValidChild(str: string) {
     if (!this.filteredOrgs.includes(str)) {
       this.snackBar.open('Organization not available', '', {
-        duration: 1500,
+        duration: 2500,
         panelClass: 'primary-text-contrast',
       });
       return false;
@@ -141,44 +153,54 @@ export class CreateOrgComponent implements OnInit {
   }
 
   async submit() {
-    //TODO: add logic for N/A children and parent
-    //TODO: add tooltip for regex.
-    if (
-      this.form.value['parentOrg'] == '' ||
-      this.form.value['parentOrg'] == 'N/A'
-    ) {
-      (
-        await this.createOrgService.createOrg({
-          name: this.form.value['confirmName'].toUpperCase().trim(),
-          orgTier: this.form.value['orgTier'],
-          children: { connect: this.childrenConnection(this.selectedChildren) },
-        })
-      ).subscribe(({ data, errors }) => {
-        if (!errors && !!data) {
-          this.submitSuccess = true;
-          this.submitError = false;
+    this.form.value['orgName'] = this.form.value['orgName']
+      .trim()
+      .toUpperCase();
+    this.form.value['confirmName'] = this.form.value['confirmName']
+      .trim()
+      .toUpperCase();
+    this.form.value['parentOrg'] = this.form.value['parentOrg']
+      .trim()
+      .toUpperCase();
+
+    (await this.createOrgService.checkOrg(this.form.value['orgName']))
+      .pipe(first())
+      .subscribe(async (result) => {
+        if (!result.data.checkOrg) {
+          let parentConnection: any = {
+            connect: { name: this.form.value['parentOrg'] },
+          };
+          if (
+            this.form.value['parentOrg'] == '' ||
+            this.form.value['parentOrg'] == 'N/A'
+          ) {
+            parentConnection = undefined;
+          }
+          (
+            await this.createOrgService.createOrg({
+              name: this.form.value['confirmName'],
+              orgTier: this.form.value['orgTier'],
+              parent: parentConnection,
+              children: {
+                connect: this.childrenConnection(this.selectedChildren),
+              },
+            })
+          ).subscribe(({ data, errors }) => {
+            if (!errors && !!data) {
+              this.submitSuccess = true;
+              this.submitError = false;
+            } else {
+              this.submitSuccess = false;
+              this.submitError = true;
+            }
+          });
         } else {
-          this.submitSuccess = false;
-          this.submitError = true;
+          console.log(result);
+          this.snackBar.open('Organization already exists', '', {
+            duration: 2500,
+            panelClass: 'primary-text-contrast',
+          });
         }
       });
-    } else {
-      (
-        await this.createOrgService.createOrg({
-          name: this.form.value['confirmName'].toUpperCase().trim(),
-          orgTier: this.form.value['orgTier'],
-          parent: { connect: { name: this.form.value['parentOrg'] } },
-          children: { connect: this.childrenConnection(this.selectedChildren) },
-        })
-      ).subscribe(({ data, errors }) => {
-        if (!errors && !!data) {
-          this.submitSuccess = true;
-          this.submitError = false;
-        } else {
-          this.submitSuccess = false;
-          this.submitError = true;
-        }
-      });
-    }
   }
 }

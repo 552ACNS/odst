@@ -56,7 +56,7 @@
           <mat-label>Parent Unit</mat-label>
           <mat-select placeholder="Unit" formControlName="parentOrg">
             <mat-option
-              *ngFor="let parentOrg of parentOrgs | async"
+              *ngFor="let parentOrg of parentOrgs"
               [value]="parentOrg"
             >
               {{ parentOrg }}
@@ -89,6 +89,7 @@
               (matChipInputTokenEnd)="add($event)"
               (input)="generateFilteredOrgs()"
               (focus)="generateFilteredOrgs()"
+              (focus)="checkForChildren()"
             />
           </mat-chip-list>
           <mat-autocomplete

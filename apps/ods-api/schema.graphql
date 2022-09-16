@@ -404,6 +404,7 @@ type Query {
   getOrgLineage: [String!]!
   getOrgNames: [String!]!
   getOrgChildren(orgName: String!): [String!]!
+  checkOrg(orgName: String!): Boolean!
   getOrgTier(orgName: String!): OrgTier!
   getOrgsBelowTier(orgTier: OrgTier!): [String!]!
   getOrgsBelowTierWithKeepParents(orgTier: OrgTier!): [String!]!

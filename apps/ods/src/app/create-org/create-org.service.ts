@@ -3,6 +3,9 @@ import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import {
+  CheckOrgDocument,
+  CheckOrgQuery,
+  CheckOrgQueryVariables,
   CreateOrgDocument,
   CreateOrgMutation,
   CreateOrgMutationVariables,
@@ -67,5 +70,15 @@ export class CreateOrgService {
       },
       errorPolicy: 'all',
     });
+  }
+
+  async checkOrg(orgName: string) {
+    return this.apollo.watchQuery<CheckOrgQuery, CheckOrgQueryVariables>({
+      query: CheckOrgDocument,
+      variables: {
+        orgName,
+      },
+      errorPolicy: 'all',
+    }).valueChanges;
   }
 }

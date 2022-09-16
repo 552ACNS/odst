@@ -7,7 +7,7 @@ export class OrgService {
   constructor(private prisma: PrismaService) {}
 
   async getUserOrgsNames(user: User): Promise<string[]> {
-    return this.prisma.org
+    const temp = this.prisma.org
       .findMany({
         select: {
           name: true,
@@ -21,6 +21,8 @@ export class OrgService {
         },
       })
       .then((responses) => responses.map((response) => response.name));
+    // (await temp).forEach(async (parentOrg) => {
+    return temp;
   }
 
   // eslint-disable-next-line complexity
@@ -165,7 +167,7 @@ export class OrgService {
           .then((responses) => responses.map((response) => response.name));
         return result;
       default:
-        return (temp = ['N/A']);
+        return (temp = []);
     }
     // eslint-disable-next-line prefer-const
 
@@ -208,7 +210,7 @@ export class OrgService {
           .then((responses) => responses.map((response) => response.name));
         return result;
       default:
-        return (temp = ['N/A']);
+        return (temp = []);
     }
     // eslint-disable-next-line prefer-const
     result = this.prisma.org
@@ -222,6 +224,22 @@ export class OrgService {
       })
       .then((responses) => responses.map((response) => response.name));
     return result;
+  }
+
+  async checkOrg(orgName: string): Promise<boolean> {
+    return this.prisma.org
+      .findUnique({
+        where: {
+          name: orgName,
+        },
+      })
+      .then((org) => {
+        if (org) {
+          return true;
+        } else {
+          return false;
+        }
+      });
   }
 
   async getOrgsAboveTier(tier: OrgTier): Promise<string[]> {
@@ -244,7 +262,7 @@ export class OrgService {
           .then((responses) => responses.map((response) => response.name));
         return result;
       default:
-        return (temp = ['N/A']);
+        return (temp = []);
     }
     // eslint-disable-next-line prefer-const
     result = this.prisma.org
