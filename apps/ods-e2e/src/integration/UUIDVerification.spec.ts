@@ -47,9 +47,13 @@ describe('ods', () => {
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
     //Grabs the value of the text from the card and sets it as surveyID
-    cy.get('[class="flex justify-center font-bold"]').then(($txt) => {
+    cy.get('#responseID').then(($txt) => {
       surveyID = $txt.text();
     });
+
+    // Makes sure the copy to clipboard button exists and responds when clicked
+    cy.get('#btnCopy').click();
+    cy.get('#copyCheck').should('be.visible');
   });
 
   it('Verify that users can track submitted surveys after a survey is submitted', () => {
