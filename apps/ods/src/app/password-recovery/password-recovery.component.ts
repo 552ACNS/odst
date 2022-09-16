@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./password-recovery.component.scss'],
 })
 export class PasswordRecoveryComponent {
+  submitSuccess = false;
   constructor(
     private fb: UntypedFormBuilder,
     private passwordRecoveryService: PasswordRecoveryService,
