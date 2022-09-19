@@ -78,8 +78,7 @@ export class RequestedAccountsComponent implements OnInit {
 
   removeRow(): void {
     this.dataSource = this.dataSource.filter(
-      (item, index) =>
-        index !== this.dataSource.indexOf(this.displayedAccountRequest)
+      (item, index) => index !== this.displayedAccountRequest
     );
     this.requestViewIsOpen = false;
     this.displayedAccountRequest = {};
