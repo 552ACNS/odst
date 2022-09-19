@@ -147,9 +147,15 @@
             Your report has been successfully submitted! Please use the
             following ID to track the status of your report:
           </p>
-          <p class="flex justify-center font-bold">
-            {{ feedbackResponseID }}
-          </p>
+          <div class="flex flex-nowrap justify-center">
+            <p id="responseID" class="font-bold mr-5">
+              {{ feedbackResponseID }}
+            </p>
+            <button id="btnCopy" (click)="clickedCopyToClipboard()">
+              <mat-icon id="copyCheck" *ngIf="copySuccess">check</mat-icon>
+              <mat-icon *ngIf="!copySuccess">content_copy</mat-icon>
+            </button>
+          </div>
         </mat-card-content>
       </mat-card>
       <mat-card-actions class="flex justify-center">

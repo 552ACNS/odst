@@ -11,7 +11,7 @@ import {
 })
 export class ResponseLookupService {
   constructor(private apollo: Apollo) {}
-  async getFeedbackReponseById(id: string) {
+  async getFeedbackResponseById(id: string) {
     return this.apollo.watchQuery<
       FeedbackResponseByIdQuery,
       FeedbackResponseByIdQueryVariables
