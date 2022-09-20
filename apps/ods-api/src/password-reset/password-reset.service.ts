@@ -5,7 +5,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 export class PasswordResetService {
   constructor(private mailer: MailerService) {}
 
-  async sendConfirmationLetter(to: string): Promise<void> {
+  async sendConfirmationLetter(to: string, from: string): Promise<void> {
     try {
       await this.mailer.sendMail({
         to: 'to',
