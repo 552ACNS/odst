@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrgResolver } from './org.resolver';
 import { OrgService } from './org.service';
-import { MockOrgs, MockOrgCreateInput } from './org.repo';
+import { MockOrgs } from './org.repo';
 import { MockUsers } from '../user/user.repo';
-import { OrgTier, OrgUpdateInput, OrgWhereUniqueInput } from '@odst/types/ods';
+import { OrgTier } from '@odst/types/ods';
 
 describe('Org Resolver', () => {
   let resolver: OrgResolver;
@@ -31,7 +31,7 @@ describe('Org Resolver', () => {
               .mockResolvedValue(MockOrgs),
             getOrgsAboveTier: jest.fn().mockResolvedValue(MockOrgs),
             getTiersByUser: jest.fn().mockResolvedValue(MockOrgs[0].orgTier),
-            createOrg: jest.fn().mockResolvedValue(MockOrgs),
+            createOrg: jest.fn().mockResolvedValue(MockOrgs[0]),
             updateOrg: jest.fn().mockResolvedValue(MockOrgs[0]),
             delete: jest.fn().mockResolvedValue(MockOrgs[0]),
           },
@@ -124,9 +124,10 @@ describe('Org Resolver', () => {
 
   describe('createOrg', () => {
     it('should create an organization', async () => {
+      console.log(resolver.createOrg);
       await expect(
         resolver.createOrg(MockUsers[0], MockOrgs[0])
-      ).resolves.toEqual(MockOrgs);
+      ).resolves.toEqual(MockOrgs[0].id);
     });
   });
 

@@ -102,7 +102,6 @@ export class OrgResolver {
     //where entities with several relations overflow the stack
 
     const { data, where } = updateArgs;
-
     return this.orgService.updateOrg(
       where as Prisma.OrgWhereUniqueInput,
       data as Prisma.OrgUpdateInput
