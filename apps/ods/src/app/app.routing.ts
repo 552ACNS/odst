@@ -71,6 +71,18 @@ const routes: Routes = [
     loadChildren: () =>
       import('./edit-org/edit-org.module').then((m) => m.EditOrgModule),
     canActivate: [AuthGuard],
+    path: 'password-reset',
+    loadChildren: () =>
+      import('./password-reset/password-reset.module').then(
+        (m) => m.PasswordResetModule
+      ),
+  },
+  {
+    path: 'password-recovery',
+    loadChildren: () =>
+      import('./password-recovery/password-recovery.module').then(
+        (m) => m.PasswordRecoveryModule
+      ),
   },
 ];
 @NgModule({

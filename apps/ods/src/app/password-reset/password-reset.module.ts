@@ -3,30 +3,27 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { RequestAccountComponent } from './request-account.component';
-import { RequestAccountRoutes } from './request-account.routing';
+import { PasswordResetComponent } from './password-reset.component';
+import { PasswordResetRoutes } from './password-reset.routing';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
 @NgModule({
-  declarations: [RequestAccountComponent],
+  declarations: [PasswordResetComponent],
   imports: [
-    RouterModule.forChild(RequestAccountRoutes),
+    RouterModule.forChild(PasswordResetRoutes),
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatIconModule,
     MatButtonModule,
     MatSelectModule,
     MatCardModule,
-    MatSnackBarModule,
-    MatTooltipModule,
+    MatIconModule,
     FormsModule,
+    MatTooltipModule,
   ],
   exports: [],
 })
-export class RequestAccountModule {}
+export class PasswordResetModule {}
