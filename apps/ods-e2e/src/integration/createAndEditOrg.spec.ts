@@ -167,7 +167,7 @@ it('Verify that a wing CC can create others type organizations and then successf
   cy.get('input[formcontrolname="confirmName"]').type('444 TESTORG');
 
   cy.get('mat-select[formcontrolname="parentOrg"]').click();
-  cy.get('mat-option').contains('552 ACW').click();
+  cy.get('mat-option').contains('552 ACG').click();
 
   cy.get('#btnSubmit').click();
   // eslint-disable-next-line cypress/no-unnecessary-waiting
@@ -245,7 +245,7 @@ it('Verify that an admin can create every type of organization and then successf
 });
 
 it('Verify that a CC can edit an organizations name that they are a part of or an organization below them', () => {
-  onNewUserLogin.loginAndEditOrg('keven.coyle@us.af.mil', 'admin');
+  onNewUserLogin.loginAndEditOrg('kenneth.voigt@us.af.mil', 'admin');
 
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(1000);
@@ -270,8 +270,11 @@ it('Verify that a CC can edit an organization children relationship that they ar
   cy.get('mat-option').contains('552 ACW');
   cy.get('mat-option').contains('552 ACG').click();
 
-  //TODO:find a way to click the button on the correct chip
-  //cy.get('mat-chip').contains('333 TESTORG').contains('button').click();
+  cy.get('mat-chip')
+    .contains('444 EDITORG')
+    .within(() => {
+      cy.get('button').click();
+    });
 
   cy.get('#btnSubmit').click();
 });

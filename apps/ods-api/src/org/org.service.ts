@@ -1,6 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotImplementedException,
+} from '@nestjs/common';
 import { Org, Prisma, User, Feedback, OrgTier } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
+//import { FindManyOrgArgs, OrgWhereInput } from '@odst/types/ods';
 
 @Injectable()
 export class OrgService {
@@ -147,38 +152,32 @@ export class OrgService {
       .then((org) => org?.orgTier);
   }
 
+  // eslint-disable-next-line complexity
   async getOrgsBelowTier(tier: OrgTier): Promise<string[]> {
-    let temp;
-    let result;
-    switch (tier) {
-      case 'GROUP':
-        temp = { equals: 'SQUADRON' };
-        break;
-      case 'WING':
-        temp = { equals: 'GROUP' };
-        break;
-      case 'OTHER':
-        result = this.prisma.org
-          .findMany({
-            select: {
-              name: true,
-            },
-          })
-          .then((responses) => responses.map((response) => response.name));
-        return result;
-      default:
-        return (temp = []);
-    }
-    // eslint-disable-next-line prefer-const
+    let tempTier;
 
-    //TODO: see if we want orgs that already have parents not appear
-    result = this.prisma.org
+    switch (tier) {
+      case 'WING':
+        tempTier = { equals: 'GROUP' };
+        break;
+      case 'GROUP':
+        tempTier = { equals: 'SQUADRON' };
+        break;
+      case 'SQUADRON':
+        return [];
+      case 'OTHER':
+        tempTier = [];
+        break;
+      default:
+        throw new NotImplementedException();
+    }
+    return this.prisma.org
       .findMany({
         select: {
           name: true,
         },
         where: {
-          orgTier: temp,
+          orgTier: tempTier,
           AND: {
             parent: {
               is: null,
@@ -187,43 +186,69 @@ export class OrgService {
         },
       })
       .then((responses) => responses.map((response) => response.name));
-    return result;
   }
 
+  // eslint-disable-next-line complexity
   async getOrgsBelowTierWithKeepParents(tier: OrgTier): Promise<string[]> {
-    let temp;
-    let result;
+    let tempTier;
+
     switch (tier) {
-      case 'GROUP':
-        temp = { equals: 'SQUADRON' };
-        break;
       case 'WING':
-        temp = { equals: 'GROUP' };
+        tempTier = { equals: 'GROUP' };
         break;
+      case 'GROUP':
+        tempTier = { equals: 'SQUADRON' };
+        break;
+      case 'SQUADRON':
+        return [];
       case 'OTHER':
-        result = this.prisma.org
-          .findMany({
-            select: {
-              name: true,
-            },
-          })
-          .then((responses) => responses.map((response) => response.name));
-        return result;
+        tempTier = [];
+        break;
+
       default:
-        return (temp = []);
+        throw new NotImplementedException();
     }
-    // eslint-disable-next-line prefer-const
-    result = this.prisma.org
+    return this.prisma.org
       .findMany({
         select: {
           name: true,
         },
         where: {
-          orgTier: temp,
+          orgTier: tempTier,
         },
       })
       .then((responses) => responses.map((response) => response.name));
-    return result;
+  }
+
+  // eslint-disable-next-line complexity
+  async getOrgsAboveTier(tier: OrgTier): Promise<string[]> {
+    let tempTier;
+    switch (tier) {
+      case 'WING':
+        return [];
+      case 'GROUP':
+        tempTier = { equals: 'WING' };
+        break;
+      case 'SQUADRON':
+        tempTier = { equals: 'GROUP' };
+        break;
+      case 'OTHER':
+        tempTier = [];
+        break;
+      default:
+        throw new NotImplementedException();
+    }
+    // eslint-disable-next-line prefer-const
+    return this.prisma.org
+      .findMany({
+        select: {
+          name: true,
+        },
+        where: {
+          orgTier: tempTier,
+        },
+      })
+      .then((responses) => responses.map((response) => response.name));
   }
 
   async checkOrg(orgName: string): Promise<boolean> {
@@ -240,42 +265,6 @@ export class OrgService {
           return false;
         }
       });
-  }
-
-  async getOrgsAboveTier(tier: OrgTier): Promise<string[]> {
-    let temp;
-    let result;
-    switch (tier) {
-      case 'GROUP':
-        temp = { equals: 'WING' };
-        break;
-      case 'SQUADRON':
-        temp = { equals: 'GROUP' };
-        break;
-      case 'OTHER':
-        result = this.prisma.org
-          .findMany({
-            select: {
-              name: true,
-            },
-          })
-          .then((responses) => responses.map((response) => response.name));
-        return result;
-      default:
-        return (temp = []);
-    }
-    // eslint-disable-next-line prefer-const
-    result = this.prisma.org
-      .findMany({
-        select: {
-          name: true,
-        },
-        where: {
-          orgTier: temp,
-        },
-      })
-      .then((responses) => responses.map((response) => response.name));
-    return result;
   }
 
   async getOrgNames(): Promise<string[]> {
