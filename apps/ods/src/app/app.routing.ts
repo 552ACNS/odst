@@ -71,6 +71,8 @@ const routes: Routes = [
     loadChildren: () =>
       import('./edit-org/edit-org.module').then((m) => m.EditOrgModule),
     canActivate: [AuthGuard],
+  },
+  {
     path: 'password-reset',
     loadChildren: () =>
       import('./password-reset/password-reset.module').then(
