@@ -2,19 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
-export class ExampleService {
-  constructor(private readonly mailerService: MailerService) {}
+export class PasswordResetService {
+  constructor(private mailer: MailerService) {}
 
-  public example(): void {
-    this.mailerService
-      .sendMail({
-        to: 'test@nestjs.com', // list of receivers
-        from: 'noreply@nestjs.com', // sender address
-        subject: 'Testing Nest MailerModule ✔', // Subject line
-        text: 'welcome', // plaintext body
-        html: '<b>welcome</b>', // HTML body content
-      })
-      .then(() => {})
-      .catch(() => {});
+  async sendConfirmationLetter(to: string): Promise<void> {
+    try {
+      await this.mailer.sendMail({
+        to: 'to',
+        from: 'from',
+        subject: 'subject',
+        text: 'some text',
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
