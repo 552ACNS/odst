@@ -32,6 +32,7 @@ model User {
   orgs         Org[]
   comments     Comment[]
   reviewedResponses FeedbackResponse[]
+  sendEmail    SendEmail?
 }
 
 model RefreshToken {
@@ -109,6 +110,12 @@ model Tag {
   value             String             @unique
   type              TagType
   feedbackResponses FeedbackResponse[]
+}
+
+model SendEmail {
+  Sender  String  @unique
+  user        User     @relation(fields: [userEmail], references: [email])
+  userEmail        String @unique
 }
 
 enum TagType {
