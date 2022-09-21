@@ -89,17 +89,15 @@ export class EditOrgComponent implements OnInit {
       }
     });
   }
-  //TODO: figure out if we want to pull orgs of a tier without parents(currently) or all orgs of that tier
-  async getOrgTierBelow(tier: OrgTier) {
-    (await this.editOrgService.getOrgsByTierBelow(tier)).subscribe((data) => {
-      this.childrenOrgs = data;
-      console.log(this.childrenOrgs);
-    });
-  }
 
-  async getOrgTier(orgName: string) {
-    (await this.editOrgService.getOrgTier(orgName)).subscribe((data) => {
-      this.getOrgTierBelow(<OrgTier>data);
+  //TODO: figure out if we want to pull orgs of a tier without parents(currently) or all orgs of that tier
+  async getOrgTierBelow(orgName: string) {
+    (await this.editOrgService.getOrgTier(orgName)).subscribe(async (tier) => {
+      (await this.editOrgService.getOrgsByTierBelow(<OrgTier>tier)).subscribe(
+        (data) => {
+          this.childrenOrgs = data;
+        }
+      );
     });
   }
 
@@ -163,19 +161,15 @@ export class EditOrgComponent implements OnInit {
     for (let i = 0; i < selectedChildren.length; i++) {
       result[i] = { name: selectedChildren[i] };
     }
-    console.log(result);
     return result;
   }
 
   async submit() {
-    this.form.value['orgName'] = this.form.value['orgName']
-      .trim()
-      .toUpperCase();
-    this.form.value['orgName'] = this.form.value['orgName']
+    this.form.value['confirmName'] = this.form.value['confirmName']
       .trim()
       .toUpperCase();
     let temp = '';
-    (await this.editOrgService.checkOrg(this.form.value['orgName']))
+    (await this.editOrgService.checkOrg(this.form.value['confirmName']))
       .pipe(first())
       .subscribe(async (result) => {
         if (result.data.checkOrg && this.form.value['confirmName'] !== '') {

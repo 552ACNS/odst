@@ -11,7 +11,7 @@
           <mat-select
             formControlName="orgToEdit"
             (selectionChange)="getChildren($event.value)"
-            (selectionChange)="getOrgTier($event.value)"
+            (selectionChange)="getOrgTierBelow($event.value)"
           >
             <mat-option *ngFor="let userOrg of userOrgs" [value]="userOrg">
               {{ userOrg }}
