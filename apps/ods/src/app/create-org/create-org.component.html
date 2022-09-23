@@ -14,11 +14,8 @@
             (selectionChange)="getOrgTierAbove($event.value)"
             required
           >
-            <mat-option
-              *ngFor="let groupTier of groupTiers"
-              [value]="groupTier"
-            >
-              {{ groupTier }}
+            <mat-option *ngFor="let orgTier of orgTiers" [value]="orgTier">
+              {{ orgTier }}
             </mat-option>
           </mat-select>
           <mat-error> Please select an organization. </mat-error>
