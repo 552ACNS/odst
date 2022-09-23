@@ -64,12 +64,7 @@ export class CreateOrgComponent implements OnInit {
 
   async getOrgTierAbove(tier: OrgTier) {
     (await this.createOrgService.getOrgsByTierAbove(tier)).subscribe((data) => {
-      const result: any[] = [];
-      for (let i = 0; i < data.length; i++) {
-        result[i] = data[i];
-      }
-      result.push('N/A');
-      this.parentOrgs = result;
+      this.parentOrgs = [...data, 'N/A'];
     });
   }
 
