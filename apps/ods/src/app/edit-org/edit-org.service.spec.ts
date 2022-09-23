@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, flush } from '@angular/core/testing';
 import {
   ApolloTestingController,
   ApolloTestingModule,
@@ -27,11 +27,14 @@ describe('CreateOrgService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get Orgs based off the user', async () => {
+  it('should get Orgs based off the user', fakeAsync(async () => {
+    const org = {
+      name: ['123 TEST'],
+    };
     //The subscribe will not exit until the response is resolved.
     (await service.getUserOrgsNames()).subscribe((response) => {
       //Make some assertion about the result
-      expect(response.map.name).toEqual('123 TEST');
+      expect(response).toEqual(org);
     });
 
     //Catches the outgoing request body held in the controller, which is the acting backend
@@ -40,43 +43,27 @@ describe('CreateOrgService', () => {
     //Returns data to the subscribe from before
     op.flush({
       data: {
-        orgs: {
-          name: '123 TEST',
-          id: '00000000-0000-0000-0000-000000000000',
-          orgTier: 'GROUP',
-          users: [],
-          parentId: undefined,
-          children: {
-            set: {
-              name: '456 CHILD',
-              id: '11100000-0000-0000-0000-000000000111',
-              orgTier: 'SQUADRON',
-              users: [],
-              parentId: '00000000-0000-0000-0000-000000000000',
-              children: [],
-              feedbacks: [],
-            },
-          },
-          feedbacks: [],
+        getUserOrgsNames: {
+          name: ['123 TEST'],
         },
       },
     });
-  });
+    flush();
+  }));
 
-  it('should update the org', async () => {
-    (
-      await service.updateOrg({
-        where: {},
-        data: {
-          name: {
-            set: '123 EDIT',
-          },
-          children: {
-            set: [],
-          },
+  it('should update the org', fakeAsync(async () => {
+    const data = {
+      where: {},
+      data: {
+        name: {
+          set: '123 EDIT',
         },
-      })
-    ).subscribe((response) => {
+        children: {
+          set: [],
+        },
+      },
+    };
+    (await service.updateOrg(data)).subscribe((response) => {
       expect(response.data?.updateOrg.name).toEqual('123 TEST');
     });
 
@@ -84,154 +71,91 @@ describe('CreateOrgService', () => {
 
     op.flush({
       data: {
-        orgs: {
+        updateOrg: {
           name: '123 TEST',
-          id: '00000000-0000-0000-0000-000000000000',
-          orgTier: 'GROUP',
-          users: [],
-          parentId: undefined,
-          children: {
-            set: {
-              name: '456 CHILD',
-              id: '11100000-0000-0000-0000-000000000111',
-              orgTier: 'SQUADRON',
-              users: [],
-              parentId: '00000000-0000-0000-0000-000000000000',
-              children: [],
-              feedbacks: [],
-            },
-          },
-          feedbacks: [],
         },
       },
     });
-  });
+    flush();
+  }));
 
-  it('should get da kiddos', async () => {
+  it('should get da kiddos', fakeAsync(async () => {
+    const children = {
+      name: ['456 TEST'],
+    };
     (await service.getChildren('123 TEST')).subscribe((response) => {
-      expect(response.map.name).toEqual('456 CHILD');
+      expect(response).toEqual(children);
     });
 
     const op = controller.expectOne('getChildren');
 
     op.flush({
       data: {
-        orgs: {
-          name: '123 TEST',
-          id: '00000000-0000-0000-0000-000000000000',
-          orgTier: 'GROUP',
-          users: [],
-          parentId: undefined,
-          children: {
-            set: {
-              name: '456 CHILD',
-              id: '11100000-0000-0000-0000-000000000111',
-              orgTier: 'SQUADRON',
-              users: [],
-              parentId: '00000000-0000-0000-0000-000000000000',
-              children: [],
-              feedbacks: [],
-            },
-          },
-          feedbacks: [],
+        getOrgChildren: {
+          name: ['456 TEST'],
         },
       },
     });
-  });
+    flush();
+  }));
 
-  it('should get the org tier', async () => {
+  it('should get the org tier', fakeAsync(async () => {
+    const tier = {
+      orgTier: OrgTier.Group,
+    };
     (await service.getOrgTier('123 TEST')).subscribe((response) => {
-      expect(response).toEqual('GROUP');
+      expect(response).toEqual(tier);
     });
 
     const op = controller.expectOne('getOrgTier');
 
     op.flush({
       data: {
-        orgs: {
-          name: '123 TEST',
-          id: '00000000-0000-0000-0000-000000000000',
+        getOrgTier: {
           orgTier: 'GROUP',
-          users: [],
-          parentId: undefined,
-          children: {
-            set: {
-              name: '456 CHILD',
-              id: '11100000-0000-0000-0000-000000000111',
-              orgTier: 'SQUADRON',
-              users: [],
-              parentId: '00000000-0000-0000-0000-000000000000',
-              children: [],
-              feedbacks: [],
-            },
-          },
-          feedbacks: [],
         },
       },
     });
-  });
+    flush();
+  }));
 
-  it('should get orgs by tier below', async () => {
+  it('should get orgs by tier below', fakeAsync(async () => {
+    const children = {
+      string: ['123 TEST'],
+    };
     (await service.getOrgsByTierBelow(OrgTier.Group)).subscribe((response) => {
-      expect(response.map.name).toEqual('456 CHILD');
+      expect(response).toEqual(children);
     });
 
     const op = controller.expectOne('getTiersBelowKeepParents');
 
     op.flush({
       data: {
-        orgs: {
-          name: '123 TEST',
-          id: '00000000-0000-0000-0000-000000000000',
-          orgTier: 'GROUP',
-          users: [],
-          parentId: undefined,
-          children: {
-            set: {
-              name: '456 CHILD',
-              id: '11100000-0000-0000-0000-000000000111',
-              orgTier: 'SQUADRON',
-              users: [],
-              parentId: '00000000-0000-0000-0000-000000000000',
-              children: [],
-              feedbacks: [],
-            },
-          },
-          feedbacks: [],
+        getOrgsBelowTierWithKeepParents: {
+          string: ['123 TEST'],
         },
       },
     });
-  });
+    flush();
+  }));
 
-  it('should check if the org exists', async () => {
+  it('should check if the org exists', fakeAsync(async () => {
+    const org = {
+      name: '123 TEST',
+    };
     (await service.checkOrg('123 TEST')).subscribe((response) => {
-      expect(response).toEqual(true);
+      expect(response.data.checkOrg).toEqual(org);
     });
 
     const op = controller.expectOne('checkOrg');
 
     op.flush({
       data: {
-        orgs: {
+        checkOrg: {
           name: '123 TEST',
-          id: '00000000-0000-0000-0000-000000000000',
-          orgTier: 'GROUP',
-          users: [],
-          parentId: undefined,
-          children: {
-            set: {
-              name: '456 CHILD',
-              id: '11100000-0000-0000-0000-000000000111',
-              orgTier: 'SQUADRON',
-              users: [],
-              parentId: '00000000-0000-0000-0000-000000000000',
-              children: [],
-              feedbacks: [],
-            },
-          },
-          feedbacks: [],
         },
       },
     });
-  });
+    flush();
+  }));
 });

@@ -30,7 +30,7 @@ describe('ResponsesService', () => {
     //The subscribe will not exit until the response is resolved.
     (await service.getFeedbackResponseById('Test ID')).subscribe((response) => {
       //Make some assertion about the result
-      expect(response.data.feedbackResponseByID.firstName).toEqual('Sandy');
+      expect(response.data.feedbackResponseByID.firstName).toEqual('');
     });
 
     //Catches the outgoing request body held in the controller, which is the acting backend

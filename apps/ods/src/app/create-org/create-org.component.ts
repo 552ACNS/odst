@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, UntypedFormBuilder, Validators } from '@angular/forms';
-import { first, Observable, of, switchMap } from 'rxjs';
+import { first } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import { CreateOrgService } from './create-org.service';
 import {
@@ -20,7 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./create-org.component.scss'],
 })
 export class CreateOrgComponent implements OnInit {
-  groupTiers: string[];
+  orgTiers: string[];
   submitSuccess = false;
   submitError: boolean;
   matcher = new MyErrorStateMatcher();
@@ -42,7 +42,7 @@ export class CreateOrgComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     (await this.createOrgService.getTierByUser()).subscribe((tier) => {
-      this.groupTiers = tier;
+      this.orgTiers = tier;
     });
   }
 
@@ -195,7 +195,6 @@ export class CreateOrgComponent implements OnInit {
             }
           });
         } else {
-          console.log(result);
           this.snackBar.open('Organization already exists', '', {
             duration: 2500,
             panelClass: 'primary-text-contrast',

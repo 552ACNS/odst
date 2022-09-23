@@ -7,12 +7,11 @@ import {
   regExpForOrgNames,
   errorMessagesForOrgNames,
 } from '@odst/shared/angular';
-import { COMMA, E, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrgTier } from '../../types.graphql';
-import { HttpClientJsonpModule } from '@angular/common/http';
 import { first } from 'rxjs';
 
 @Component({
@@ -37,7 +36,6 @@ export class EditOrgComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private snackBar: MatSnackBar,
-
     private editOrgService: EditOrgService
   ) {}
   async ngOnInit(): Promise<void> {

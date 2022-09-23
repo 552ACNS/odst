@@ -25,9 +25,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { OrgTier } from '../../types.graphql';
 import { MatChipInputEvent } from '@angular/material/chips';
-import _default from '@apollo/client/utilities/globals/DEV';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatOption, _MatOptionBase } from '@angular/material/core';
+import { MatOption } from '@angular/material/core';
 
 describe('EditOrgComponent', () => {
   let component: EditOrgComponent;
@@ -54,12 +53,6 @@ describe('EditOrgComponent', () => {
       ],
     }).compileComponents();
   });
-
-  const user = {
-    data: {
-      id: '1',
-    },
-  };
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditOrgComponent);
