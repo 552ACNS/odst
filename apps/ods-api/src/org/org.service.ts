@@ -166,7 +166,7 @@ export class OrgService {
       case 'SQUADRON':
         return [];
       case 'OTHER':
-        tempTier = [];
+        tempTier = {};
         break;
       default:
         throw new NotImplementedException();
@@ -202,7 +202,7 @@ export class OrgService {
       case 'SQUADRON':
         return [];
       case 'OTHER':
-        tempTier = [];
+        tempTier = {};
         break;
 
       default:
@@ -233,7 +233,7 @@ export class OrgService {
         tempTier = { equals: 'GROUP' };
         break;
       case 'OTHER':
-        tempTier = [];
+        tempTier = {};
         break;
       default:
         throw new NotImplementedException();
