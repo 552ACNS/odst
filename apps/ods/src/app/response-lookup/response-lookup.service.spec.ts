@@ -29,7 +29,6 @@ describe('ResponsesService', () => {
   it('should call the graphQL query', fakeAsync(async () => {
     //The subscribe will not exit until the response is resolved.
     (await service.getFeedbackResponseById('Test ID')).subscribe((response) => {
-      console.log(response.data.feedbackResponseByID.firstName);
       //Make some assertion about the result
       expect(response.data.feedbackResponseByID.firstName).toEqual('Sandy');
     });
