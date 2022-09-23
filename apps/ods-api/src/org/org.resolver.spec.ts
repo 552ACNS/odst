@@ -124,7 +124,6 @@ describe('Org Resolver', () => {
 
   describe('createOrg', () => {
     it('should create an organization', async () => {
-      console.log(resolver.createOrg);
       await expect(
         resolver.createOrg(MockUsers[0], MockOrgs[0])
       ).resolves.toEqual(MockOrgs[0].id);

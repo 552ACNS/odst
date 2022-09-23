@@ -214,7 +214,7 @@ describe('OrgService', () => {
           name: true,
         },
         where: {
-          orgTier: [],
+          orgTier: {},
           AND: {
             parent: {
               is: null,
@@ -293,7 +293,7 @@ describe('OrgService', () => {
           name: true,
         },
         where: {
-          orgTier: [],
+          orgTier: {},
         },
       });
     });
