@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestedAccountsService } from './requested-accounts.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'odst-requested-accounts',
@@ -30,23 +31,25 @@ export class RequestedAccountsComponent implements OnInit {
   totalCount: number;
 
   ngOnInit(): void {
-    this.requestedAccountsService.getRequestedAccounts().subscribe((data) => {
-      if (!data.errors && !!data.data) {
-        this.dataSource = data.data.findManyAccountRequests;
-        this.hasNoData = this.dataSource.length === 0;
-        this.totalCount = this.dataSource.length;
-      } else {
-        this.hasNoData = true;
-        this.snackBar.open(
-          'There was an error getting the requested accounts on our end. Please try again later.'
-        );
-      }
-    });
+    this.requestedAccountsService
+      .getRequestedAccounts()
+      .pipe(first())
+      .subscribe((data) => {
+        if (!data.errors && !!data.data) {
+          this.dataSource = data.data.findManyAccountRequests;
+          this.hasNoData = this.dataSource.length === 0;
+          this.totalCount = this.dataSource.length;
+        } else {
+          this.hasNoData = true;
+          this.snackBar.open(
+            'There was an error getting the requested accounts on our end. Please try again later.'
+          );
+        }
+      });
   }
 
   viewAccountRequest(row) {
     this.displayedAccountRequest = row;
-    //this.displayedAccountRequest.date = new Date(formatDate(row['date'], 'shortDate', 'en-US'));
     this.displayedRequestData = {
       'First Name': row.firstName,
       'Last Name': row.lastName,
@@ -78,7 +81,7 @@ export class RequestedAccountsComponent implements OnInit {
 
   removeRow(): void {
     this.dataSource = this.dataSource.filter(
-      (item, index) => index !== this.displayedAccountRequest
+      (item) => item !== this.displayedAccountRequest
     );
     this.requestViewIsOpen = false;
     this.displayedAccountRequest = {};
