@@ -166,7 +166,7 @@ export class EditOrgComponent implements OnInit {
     this.form.value['confirmName'] = this.form.value['confirmName']
       .trim()
       .toUpperCase();
-    let temp = '';
+    let orgName = '';
     (await this.editOrgService.checkOrg(this.form.value['confirmName']))
       .pipe(first())
       .subscribe(async (result) => {
@@ -182,16 +182,16 @@ export class EditOrgComponent implements OnInit {
           return;
         } else {
           if (this.form.value['confirmName'] === '') {
-            temp = this.form.value['orgToEdit'];
+            orgName = this.form.value['orgToEdit'];
           } else {
-            temp = this.form.value['confirmName'];
+            orgName = this.form.value['confirmName'];
           }
           (
             await this.editOrgService.updateOrg({
               where: { name: this.form.value.orgToEdit },
               data: {
                 name: {
-                  set: temp,
+                  set: orgName,
                 },
                 children: {
                   set: this.childrenConnection(this.selectedChildren),

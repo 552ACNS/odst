@@ -129,7 +129,10 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
 
   clickedCopyToClipboard() {
     this.clipboard.copy(<string>this.feedbackResponseID);
-    this.copySuccess = true;
+    this.snackBar.open('Copied Survey ID To Clipboard', '', {
+      duration: 3000,
+      panelClass: 'primary-text-contrast',
+    });
   }
 
   ngOnDestroy() {

@@ -1,11 +1,6 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotImplementedException,
-} from '@nestjs/common';
+import { Injectable, NotImplementedException } from '@nestjs/common';
 import { Org, Prisma, User, Feedback, OrgTier } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
-//import { FindManyOrgArgs, OrgWhereInput } from '@odst/types/ods';
 
 @Injectable()
 export class OrgService {

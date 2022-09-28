@@ -152,8 +152,7 @@
               {{ feedbackResponseID }}
             </p>
             <button id="btnCopy" (click)="clickedCopyToClipboard()">
-              <mat-icon id="copyCheck" *ngIf="copySuccess">check</mat-icon>
-              <mat-icon *ngIf="!copySuccess">content_copy</mat-icon>
+              <mat-icon>content_copy</mat-icon>
             </button>
           </div>
         </mat-card-content>

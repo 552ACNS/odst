@@ -143,9 +143,3 @@ enum OrgTier {
   SQUADRON
   OTHER
 }
-
-// model OrgTiers {
-//   id         String @id @default(uuid())
-//   tierName   String
-//   tierNumber Int
-// }
