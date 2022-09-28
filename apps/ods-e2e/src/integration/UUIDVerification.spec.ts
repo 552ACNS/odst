@@ -53,7 +53,7 @@ describe('ods', () => {
 
     // Makes sure the copy to clipboard button exists and responds when clicked
     cy.get('#btnCopy').click();
-    cy.get('#copyCheck').should('be.visible');
+    cy.contains('Copied Survey ID To Clipboard');
   });
 
   it('Verify that users can track submitted surveys after a survey is submitted', () => {
