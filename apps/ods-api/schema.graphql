@@ -400,8 +400,16 @@ type Query {
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
   ResponseCount: ResponseCount!
   getIssuesByStatus(status: String!, where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, distinct: [FeedbackResponseScalarFieldEnum!]): [FeedbackResponse!]!
+  getUserOrgsNames: [String!]!
   getOrgLineage: [String!]!
   getOrgNames: [String!]!
+  getOrgChildren(orgName: String!): [String!]!
+  checkOrg(orgName: String!): Boolean!
+  getOrgTier(orgName: String!): OrgTier!
+  getOrgsBelowTier(orgTier: OrgTier!): [String!]!
+  getOrgsBelowTierWithKeepParents(orgTier: OrgTier!): [String!]!
+  getOrgsAboveTier(orgTier: OrgTier!): [String!]!
+  getTiersByUser: [String!]!
   getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [String!]!
   findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   getCommanders: [String!]!
@@ -929,6 +937,9 @@ type Mutation {
   updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
   createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): String!
   updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
+  createOrg(orgCreateInput: OrgCreateInput!): String!
+  updateOrg(data: OrgUpdateInput!, where: OrgWhereUniqueInput!): Org!
+  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org
   createUser(userCreateInput: UserCreateInput!): String!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
@@ -2424,6 +2435,26 @@ input FeedbackResponseUpdateInput {
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+}
+
+input OrgCreateInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  users: UserCreateNestedManyWithoutOrgsInput
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  children: OrgCreateNestedManyWithoutParentInput
+  feedbacks: FeedbackCreateNestedManyWithoutOrgsInput
+}
+
+input OrgUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  children: OrgUpdateManyWithoutParentInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsInput
 }
 
 input UserCreateInput {
