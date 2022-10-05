@@ -5,7 +5,6 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AddCommentMutationVariables,
-  AddResolvedCommentMutationVariables,
   GetReportByStatusQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
@@ -42,8 +41,6 @@ export class ResponsesComponent implements OnInit {
   comments: GetReportByStatusQuery['getIssuesByStatus'][0]['comments'] = [];
 
   AddCommentMutationVariables: AddCommentMutationVariables;
-
-  AddResolvedCommentMutationVariables: AddResolvedCommentMutationVariables;
 
   // TODO [ODST-291]: Change resolved status back to bool
   status: string;
@@ -339,7 +336,7 @@ export class ResponsesComponent implements OnInit {
     this.resolvedComment = this.resolutionForm.value.resolvedCommentForm.trim();
     console.log(this.resolvedComment);
 
-    this.AddResolvedCommentMutationVariables = {
+    const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
       where: {
         id: this.response.id,
       },
@@ -351,7 +348,7 @@ export class ResponsesComponent implements OnInit {
     };
 
     this.responsesService
-      .updateResolvedComment(this.AddResolvedCommentMutationVariables)
+      .updateResolved(updateResolvedMutationVariables)
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
           this.actualResolution = data.updateFeedbackResponse['resolved'];
