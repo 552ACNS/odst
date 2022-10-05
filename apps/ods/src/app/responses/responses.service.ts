@@ -16,6 +16,9 @@ import {
   GetAllTagsQueryVariables,
   GetAllTagsQuery,
   GetAllTagsDocument,
+  AddResolvedCommentMutationVariables,
+  AddResolvedCommentDocument,
+  AddResolvedCommentMutation,
 } from './responses.generated';
 
 @Injectable({
@@ -47,6 +50,18 @@ export class ResponsesService {
     return this.apollo.mutate<AddCommentMutation, AddCommentMutationVariables>({
       mutation: AddCommentDocument,
       variables: addCommentMutationVariables,
+    });
+  }
+
+  updateResolvedComment(
+    addResolvedCommentMutationVariables: AddResolvedCommentMutationVariables
+  ) {
+    return this.apollo.mutate<
+      AddResolvedCommentMutation,
+      AddResolvedCommentMutationVariables
+    >({
+      mutation: AddResolvedCommentDocument,
+      variables: addResolvedCommentMutationVariables,
     });
   }
 

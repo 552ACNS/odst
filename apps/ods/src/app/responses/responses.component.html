@@ -175,13 +175,6 @@
           <form [formGroup]="resolutionForm">
             <p class="text-base font-medium text-center">Add a Comment</p>
             <!-- Not empty validator -->
-            <mat-slide-toggle
-              color="primary"
-              [checked]="actualResolution"
-              (change)="updateResolved()"
-            >
-              Mark this issue as resolved
-            </mat-slide-toggle>
 
             <mat-form-field appearance="outline" class="w-full">
               <!-- <mat-label>I took the following actions...</mat-label> -->
@@ -189,13 +182,7 @@
               </textarea>
             </mat-form-field>
             <!-- ACTION TAGS -->
-            <select-tags
-              [tags]="actionTags"
-              [selectedTags]="selectedActionTags"
-              [tagType]="'Action'"
-              (add)="add($event)"
-              (remove)="remove($event)"
-            ></select-tags>
+
             <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
               <button
                 mat-stroked-button
@@ -213,12 +200,59 @@
                 (click)="submitComment()"
               >
                 <!-- TODO [ODST-290]: redirect to dashboard when there are no more reports to address -->
-                Submit
+                Submit Comment
               </button>
             </mat-card-actions>
           </form>
         </mat-card-content>
       </mat-card>
+      <!-- Resolution Field -->
+      <ng-container>
+        <h2 class="text-center">Resolve</h2>
+        <form [formGroup]="resolutionForm">
+          <mat-card class="pb-5">
+            <mat-form-field appearance="outline" class="w-full">
+              <p class="text-base font-medium text-center">
+                Add a Custom Response
+              </p>
+              <mat-form-field appearance="outline" class="w-full">
+                <textarea
+                  matInput
+                  formControlName="resolvedCommentForm"
+                  rows="3"
+                ></textarea>
+              </mat-form-field>
+              <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="w-full text-white shadow-md rounded-full"
+                  type="submit"
+                  (click)="submitCustomResponse()"
+                >
+                  Submit Custom Response
+                </button>
+              </mat-card-actions>
+            </mat-form-field>
+            <select-tags
+              [tags]="actionTags"
+              [selectedTags]="selectedActionTags"
+              [tagType]="'Action'"
+              (add)="add($event)"
+              (remove)="remove($event)"
+            ></select-tags>
+            <mat-slide-toggle
+              class="ml-20"
+              color="primary"
+              [checked]="actualResolution"
+              (change)="updateResolved()"
+            >
+              Mark this issue as resolved
+            </mat-slide-toggle>
+          </mat-card>
+        </form>
+      </ng-container>
+      <!-- End of Resolution -->
     </div>
   </div>
 </div>

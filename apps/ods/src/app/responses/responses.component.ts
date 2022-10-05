@@ -5,6 +5,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AddCommentMutationVariables,
+  AddResolvedCommentMutationVariables,
   GetReportByStatusQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
@@ -23,6 +24,7 @@ export class ResponsesComponent implements OnInit {
   //#region Variables
   resolutionForm = this.fb.group({
     comment: [''],
+    resolvedCommentForm: [''],
   });
 
   actionTags: string[];
@@ -41,6 +43,8 @@ export class ResponsesComponent implements OnInit {
 
   AddCommentMutationVariables: AddCommentMutationVariables;
 
+  AddResolvedCommentMutationVariables: AddResolvedCommentMutationVariables;
+
   // TODO [ODST-291]: Change resolved status back to bool
   status: string;
 
@@ -58,6 +62,8 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   take = 1;
+
+  resolvedComment: any;
 
   response: GetReportByStatusQuery['getIssuesByStatus'][0];
   //#endregion
@@ -153,6 +159,11 @@ export class ResponsesComponent implements OnInit {
           });
 
           this.comments = this.response.comments;
+
+          this.resolvedComment = this.response.resolvedComment;
+          this.resolutionForm
+            .get('resolvedCommentForm')
+            ?.setValue(this.resolvedComment);
 
           this.actualResolution = this.response['resolved'];
 
@@ -322,5 +333,31 @@ export class ResponsesComponent implements OnInit {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['./'], { relativeTo: this.route });
+  }
+
+  async submitCustomResponse(): Promise<void> {
+    this.resolvedComment = this.resolutionForm.value.resolvedCommentForm.trim();
+    console.log(this.resolvedComment);
+
+    this.AddResolvedCommentMutationVariables = {
+      where: {
+        id: this.response.id,
+      },
+      data: {
+        resolvedComment: {
+          set: this.resolvedComment,
+        },
+      },
+    };
+
+    this.responsesService
+      .updateResolvedComment(this.AddResolvedCommentMutationVariables)
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.actualResolution = data.updateFeedbackResponse['resolved'];
+        }
+      });
+    //Looks like reloadPage() does the same as our custom this.reload(), expect it actually works
+    reloadPage();
   }
 }
