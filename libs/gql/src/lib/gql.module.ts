@@ -165,7 +165,15 @@ export function createApollo() {
 
   const client = new ApolloClient({
     link: from([errorLink, authLink, httpLink]),
-    cache,
+    cache: cache,
+    defaultOptions: {
+      query: {
+        fetchPolicy: 'no-cache',
+      },
+      watchQuery: {
+        fetchPolicy: 'no-cache',
+      },
+    },
   });
 
   return client;
