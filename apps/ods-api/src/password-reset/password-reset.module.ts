@@ -12,7 +12,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
         secure: true,
         auth: {
           user: process.env.EMAIL_ID, // change to the users email
-          pass: process.env.EMAIL_PASS, // authenticate that this is a valid user email
+          pass: process.env.EMAIL_PASS, // will authenticate that this is a valid user email
         },
       },
     }),
