@@ -146,20 +146,23 @@ export class UserService {
             status: true,
           },
           where: {
-            orgs: {
-              some: {
-                OR: [
-                  whereUser,
-                  {
-                    parent: whereUser,
-                  },
-
-                  {
-                    parent: {
+            AND: {
+              status: 'REQUESTED',
+              orgs: {
+                some: {
+                  OR: [
+                    whereUser,
+                    {
                       parent: whereUser,
                     },
-                  },
-                ],
+
+                    {
+                      parent: {
+                        parent: whereUser,
+                      },
+                    },
+                  ],
+                },
               },
             },
           },
