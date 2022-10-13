@@ -62,6 +62,8 @@ export class ResponsesComponent implements OnInit {
 
   resolvedComment: any;
 
+  resolvedCommentSuccess = false;
+
   response: GetReportByStatusQuery['getIssuesByStatus'][0];
   //#endregion
 
@@ -265,7 +267,7 @@ export class ResponsesComponent implements OnInit {
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
           this.actualResolution = data.updateFeedbackResponse['resolved'];
-          this.reload();
+          reloadPage();
         }
       });
   }
@@ -332,9 +334,8 @@ export class ResponsesComponent implements OnInit {
     this.router.navigate(['./'], { relativeTo: this.route });
   }
 
-  async submitCustomResponse(): Promise<void> {
+  async submitResolvedComment(): Promise<void> {
     this.resolvedComment = this.resolutionForm.value.resolvedCommentForm.trim();
-    console.log(this.resolvedComment);
 
     const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
       where: {
@@ -351,10 +352,10 @@ export class ResponsesComponent implements OnInit {
       .updateResolved(updateResolvedMutationVariables)
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          this.actualResolution = data.updateFeedbackResponse['resolved'];
+          this.resolvedCommentSuccess = true;
+        } else {
+          this.resolvedCommentSuccess = false;
         }
       });
-    //Looks like reloadPage() does the same as our custom this.reload(), expect it actually works
-    reloadPage();
   }
 }

@@ -17,6 +17,7 @@ export class ResponseLookupComponent {
   lastName?: string | null;
   success: boolean;
   submitError: boolean;
+  resolvedComment?: string | null;
   constructor(
     private fb: UntypedFormBuilder,
     private lookupService: ResponseLookupService
@@ -39,6 +40,7 @@ export class ResponseLookupComponent {
         this.grade = data.feedbackResponseByID.grade;
         this.firstName = data.feedbackResponseByID.firstName;
         this.lastName = data.feedbackResponseByID.lastName;
+        this.resolvedComment = data.feedbackResponseByID.resolvedComment;
         this.success = true;
         this.submitError = false;
       } else {

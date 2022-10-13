@@ -4,6 +4,7 @@ query FeedbackResponseByID(
   feedbackResponseByID(
     feedbackResponseWhereUniqueInput: $feedbackResponseWhereUniqueInput
   ) {
+    resolvedComment
     openedDate
     closedDate
     resolved

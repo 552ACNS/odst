@@ -108,6 +108,7 @@ export class FeedbackResponseService {
     const result = await this.prisma.feedbackResponse.findUnique({
       where: feedbackResponseWhereUniqueInput,
       select: {
+        resolvedComment: true,
         openedDate: true,
         closedDate: true,
         resolved: true,
@@ -140,6 +141,7 @@ export class FeedbackResponseService {
         grade: result.reviewedBy?.grade,
         firstName: result.reviewedBy?.firstName,
         lastName: result.reviewedBy?.lastName,
+        resolvedComment: result.resolvedComment,
       };
     } else if (result) {
       trackedResults = {
@@ -150,6 +152,7 @@ export class FeedbackResponseService {
         grade: null,
         firstName: null,
         lastName: null,
+        resolvedComment: result.resolvedComment,
       };
     } else {
       trackedResults = null;

@@ -395,6 +395,7 @@ type TrackedFeedback {
   grade: String
   firstName: String
   lastName: String
+  resolvedComment: String
 }
 
 type Query {

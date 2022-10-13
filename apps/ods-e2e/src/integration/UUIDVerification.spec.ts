@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 describe('ods', () => {
   const feedbackResponseUUID = uuidv4();
   const commentUUID = uuidv4();
+  const resolvedCommentUUID = uuidv4();
   let surveyID = '';
 
   beforeEach(() => {
@@ -110,7 +111,7 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
-    cy.get('textarea').type(commentUUID);
+    cy.get('#comment').type(commentUUID);
     cy.get('button').contains('Submit').click();
   });
 
@@ -184,5 +185,16 @@ describe('ods', () => {
     cy.get('mat-chip')
       .contains('Addressed In Organizational All-call')
       .should('not.exist');
+  });
+
+  it('should test for resolved comment functionality', () => {
+    cy.login('keven.coyle@us.af.mil', 'admin');
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Resolved').click();
+    cy.location('pathname').should('include', '/responses');
+    cy.scrollTo('bottom');
+    cy.get('#resolvedComment').type(resolvedCommentUUID);
+    cy.get('button').contains('Submit Custom Response').click();
+    cy.get('p').contains('Custom Response Successfully Updated');
   });
 });

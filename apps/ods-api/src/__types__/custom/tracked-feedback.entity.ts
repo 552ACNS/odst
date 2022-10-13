@@ -22,4 +22,7 @@ export class TrackedFeedback {
 
   @Field(() => String)
   lastName: string | null;
+
+  @Field(() => String)
+  resolvedComment: string | null;
 }
