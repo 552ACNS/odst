@@ -197,4 +197,13 @@ describe('ods', () => {
     cy.get('button').contains('Submit Custom Response').click();
     cy.get('p').contains('Custom Response Successfully Updated');
   });
+
+  it('should not cache any query results between users', () => {
+    cy.login('keven.coyle@us.af.mil', 'admin');
+    cy.get('#userNameGrade').contains(' Keven Coyle, O-6 ').should('exist');
+    cy.get('mat-icon').contains('account_circle').click();
+    cy.get('button').contains('Logout').click();
+    cy.login('admin@admin.com', 'admin');
+    cy.get('#userNameGrade').contains(' Admin Admin, E-∞ ').should('exist');
+  });
 });

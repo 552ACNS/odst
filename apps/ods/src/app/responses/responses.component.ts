@@ -10,7 +10,6 @@ import {
 } from './responses.generated';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { getUserId } from '@odst/helpers';
-import { reloadPage } from '@odst/helpers';
 import { ResponsesStore } from './responses.store';
 import { first, skipWhile } from 'rxjs';
 @Component({
@@ -226,8 +225,6 @@ export class ResponsesComponent implements OnInit {
             this.comments = data.updateFeedbackResponse['comments'];
             this.actualResolution = data.updateFeedbackResponse['resolved'];
             this.resolutionForm.reset();
-            //TODO: unable to get page to refresh using other methods.  Need to redo this on another sprint.
-            reloadPage();
           }
         });
     }
@@ -267,7 +264,6 @@ export class ResponsesComponent implements OnInit {
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
           this.actualResolution = data.updateFeedbackResponse['resolved'];
-          reloadPage();
         }
       });
   }
@@ -326,14 +322,6 @@ export class ResponsesComponent implements OnInit {
     }
   }
   //#endregion
-
-  //TODO: This will need to be made into a function at the application level.
-  async reload(): Promise<void> {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['./'], { relativeTo: this.route });
-  }
-
   async submitResolvedComment(): Promise<void> {
     this.resolvedComment = this.resolutionForm.value.resolvedCommentForm.trim();
 
