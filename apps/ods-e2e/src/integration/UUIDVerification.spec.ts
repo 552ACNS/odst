@@ -197,7 +197,6 @@ describe('ods', () => {
     cy.scrollTo('bottom');
     cy.get('#resolvedComment').type(resolvedCommentUUID);
     cy.get('button').contains('Submit Custom Response').click();
-    //cy.get('textarea#resolvedComment').contains(resolvedCommentUUID);
     cy.get('#resolvedCommentSuccess').contains(
       'Custom Response Successfully Updated'
     );
