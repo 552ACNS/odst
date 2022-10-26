@@ -197,7 +197,10 @@ describe('ods', () => {
     cy.scrollTo('bottom');
     cy.get('#resolvedComment').type(resolvedCommentUUID);
     cy.get('button').contains('Submit Custom Response').click();
-    cy.get('p').contains('Custom Response Successfully Updated');
+    //cy.get('textarea#resolvedComment').contains(resolvedCommentUUID);
+    cy.get('#resolvedCommentSuccess').contains(
+      'Custom Response Successfully Updated'
+    );
   });
 
   it('should not cache any query results between users', () => {
