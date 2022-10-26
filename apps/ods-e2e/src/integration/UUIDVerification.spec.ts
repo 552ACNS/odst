@@ -87,7 +87,9 @@ describe('ods', () => {
     if (cy.get('mat-card').contains('Unresolved').click())
       cy.location('pathname').then((x) => {
         if (x.includes('/responses')) {
-          cy.get('mat-card-content').should('not.' + feedbackResponseUUID);
+          cy.get('mat-card-content')
+            .contains(feedbackResponseUUID)
+            .should('not.exist');
         }
       });
   });
