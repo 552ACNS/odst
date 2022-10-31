@@ -207,7 +207,7 @@
         <form [formGroup]="resolutionForm">
           <mat-card class="pb-5">
             <p class="text-base font-medium text-center">
-              {{ resolvedComment === '' ? 'Add' : 'Edit' }} A Custom Response
+              {{ !resolvedComment ? 'Add' : 'Edit' }} A Custom Response
             </p>
             <mat-form-field appearance="outline" class="w-full">
               <textarea
