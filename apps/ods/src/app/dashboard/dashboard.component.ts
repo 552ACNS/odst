@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { ResponseCountQuery } from './dashboard.generated';
-import { reloadPage } from '@odst/helpers';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -26,10 +25,6 @@ export class DashboardComponent implements OnInit {
   }[];
 
   ngOnInit() {
-    //TODO: unable to get dashboard to refresh using other methods.  Need to redo this on another sprint.
-    //reloads current page so it wont show previous cached values
-    reloadPage();
-
     this.dashboardService.GetResponseCount().subscribe(({ data, errors }) => {
       const success = !errors && !!data;
       if (success) {
