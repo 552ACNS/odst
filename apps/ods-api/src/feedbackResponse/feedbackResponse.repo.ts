@@ -10,6 +10,7 @@ export const MockFeedbackResponses: FeedbackResponse[] = [
     routeOutside: false,
     resolved: true,
     reviewerId: 'user id 1',
+    resolvedComment: 'resolved comment',
   },
   {
     id: 'resolved response 2',
@@ -19,6 +20,7 @@ export const MockFeedbackResponses: FeedbackResponse[] = [
     routeOutside: false,
     resolved: true,
     reviewerId: 'user id 1',
+    resolvedComment: 'resolved comment',
   },
   //add condition for unresolved
   {
@@ -29,6 +31,7 @@ export const MockFeedbackResponses: FeedbackResponse[] = [
     routeOutside: false,
     resolved: false,
     reviewerId: null,
+    resolvedComment: 'resolved comment',
   },
   //add condition for overdue
   {
@@ -39,6 +42,7 @@ export const MockFeedbackResponses: FeedbackResponse[] = [
     routeOutside: false,
     resolved: false,
     reviewerId: null,
+    resolvedComment: 'resolved comment',
   },
 ];
 

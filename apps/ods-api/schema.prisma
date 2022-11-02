@@ -68,6 +68,7 @@ model FeedbackResponse {
   resolved     Boolean   @default(false)
   reviewedBy   User?     @relation(fields: [reviewerId], references: [id])
   reviewerId   String?
+  resolvedComment String?
 }
 
 model Comment {

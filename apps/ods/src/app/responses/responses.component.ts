@@ -22,6 +22,7 @@ export class ResponsesComponent implements OnInit {
   //#region Variables
   resolutionForm = this.fb.group({
     comment: [''],
+    resolvedCommentForm: [''],
   });
 
   actionTags: string[];
@@ -57,6 +58,10 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   take = 1;
+
+  resolvedComment: any;
+
+  resolvedCommentSuccess = false;
 
   response: GetReportByStatusQuery['getIssuesByStatus'][0];
   //#endregion
@@ -152,6 +157,11 @@ export class ResponsesComponent implements OnInit {
           });
 
           this.comments = this.response.comments;
+
+          this.resolvedComment = this.response.resolvedComment;
+          this.resolutionForm
+            .get('resolvedCommentForm')
+            ?.setValue(this.resolvedComment);
 
           this.actualResolution = this.response['resolved'];
 
@@ -312,4 +322,28 @@ export class ResponsesComponent implements OnInit {
     }
   }
   //#endregion
+  async submitResolvedComment(): Promise<void> {
+    this.resolvedComment = this.resolutionForm.value.resolvedCommentForm.trim();
+
+    const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
+      where: {
+        id: this.response.id,
+      },
+      data: {
+        resolvedComment: {
+          set: this.resolvedComment,
+        },
+      },
+    };
+
+    this.responsesService
+      .updateResolved(updateResolvedMutationVariables)
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.resolvedCommentSuccess = true;
+        } else {
+          this.resolvedCommentSuccess = false;
+        }
+      });
+  }
 }

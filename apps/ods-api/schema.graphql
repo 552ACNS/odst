@@ -75,6 +75,7 @@ type FeedbackResponse {
   resolved: Boolean!
   reviewedBy: User
   reviewerId: String
+  resolvedComment: String
   _count: FeedbackResponseCount!
 }
 
@@ -233,6 +234,7 @@ type FeedbackResponseCountAggregate {
   routeOutside: Int!
   resolved: Int!
   reviewerId: Int!
+  resolvedComment: Int!
   _all: Int!
 }
 
@@ -244,6 +246,7 @@ type FeedbackResponseMinAggregate {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: String
+  resolvedComment: String
 }
 
 type FeedbackResponseMaxAggregate {
@@ -254,6 +257,7 @@ type FeedbackResponseMaxAggregate {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: String
+  resolvedComment: String
 }
 
 type OrgCountAggregate {
@@ -391,6 +395,7 @@ type TrackedFeedback {
   grade: String
   firstName: String
   lastName: String
+  resolvedComment: String
 }
 
 type Query {
@@ -444,6 +449,7 @@ input FeedbackResponseWhereInput {
   resolved: BoolFilter
   reviewedBy: UserRelationFilter
   reviewerId: StringNullableFilter
+  resolvedComment: StringNullableFilter
 }
 
 input StringFilter {
@@ -811,6 +817,7 @@ input FeedbackResponseOrderByWithRelationInput {
   resolved: SortOrder
   reviewedBy: UserOrderByWithRelationInput
   reviewerId: SortOrder
+  resolvedComment: SortOrder
 }
 
 enum SortOrder {
@@ -883,6 +890,7 @@ input FeedbackResponseCountAggregateInput {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: Boolean
+  resolvedComment: Boolean
   _all: Boolean
 }
 
@@ -894,6 +902,7 @@ input FeedbackResponseMinAggregateInput {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: Boolean
+  resolvedComment: Boolean
 }
 
 input FeedbackResponseMaxAggregateInput {
@@ -904,6 +913,7 @@ input FeedbackResponseMaxAggregateInput {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: Boolean
+  resolvedComment: Boolean
 }
 
 enum FeedbackResponseScalarFieldEnum {
@@ -914,6 +924,7 @@ enum FeedbackResponseScalarFieldEnum {
   routeOutside
   resolved
   reviewerId
+  resolvedComment
 }
 
 input UserWhereUniqueInput {
@@ -1060,6 +1071,7 @@ input FeedbackResponseCreateWithoutCommentsInput {
   tags: TagCreateNestedManyWithoutFeedbackResponsesInput
   resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
+  resolvedComment: String
 }
 
 input FeedbackCreateNestedOneWithoutFeedbackResponsesInput {
@@ -1127,6 +1139,7 @@ input FeedbackResponseCreateWithoutAnswersInput {
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
   resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
+  resolvedComment: String
 }
 
 input TagCreateNestedManyWithoutFeedbackResponsesInput {
@@ -1245,6 +1258,7 @@ input FeedbackResponseCreateWithoutFeedbackInput {
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
   resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
+  resolvedComment: String
 }
 
 input AnswerCreateNestedManyWithoutFeedbackResponseInput {
@@ -1362,6 +1376,7 @@ input FeedbackResponseCreateManyFeedbackInput {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: String
+  resolvedComment: String
 }
 
 input FeedbackCreateOrConnectWithoutOrgsInput {
@@ -1428,6 +1443,7 @@ input FeedbackResponseCreateWithoutReviewedByInput {
   tags: TagCreateNestedManyWithoutFeedbackResponsesInput
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
   resolved: Boolean
+  resolvedComment: String
 }
 
 input FeedbackResponseCreateOrConnectWithoutReviewedByInput {
@@ -1447,6 +1463,7 @@ input FeedbackResponseCreateManyReviewedByInput {
   closedDate: DateTime
   routeOutside: Boolean
   resolved: Boolean
+  resolvedComment: String
 }
 
 input UserCreateOrConnectWithoutCommentsInput {
@@ -1680,6 +1697,7 @@ input FeedbackResponseUpdateWithoutCommentsInput {
   tags: TagUpdateManyWithoutFeedbackResponsesInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput {
@@ -1776,6 +1794,7 @@ input FeedbackResponseUpdateWithoutAnswersInput {
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input NullableDateTimeFieldUpdateOperationsInput {
@@ -1998,6 +2017,7 @@ input FeedbackResponseUpdateWithoutFeedbackInput {
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input AnswerUpdateManyWithoutFeedbackResponseInput {
@@ -2169,6 +2189,7 @@ input FeedbackResponseScalarWhereInput {
   routeOutside: BoolFilter
   resolved: BoolFilter
   reviewerId: StringNullableFilter
+  resolvedComment: StringNullableFilter
 }
 
 input FeedbackResponseUpdateManyMutationInput {
@@ -2177,6 +2198,7 @@ input FeedbackResponseUpdateManyMutationInput {
   closedDate: NullableDateTimeFieldUpdateOperationsInput
   routeOutside: BoolFieldUpdateOperationsInput
   resolved: BoolFieldUpdateOperationsInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input FeedbackUpdateWithWhereUniqueWithoutOrgsInput {
@@ -2284,6 +2306,7 @@ input FeedbackResponseUpdateWithoutReviewedByInput {
   tags: TagUpdateManyWithoutFeedbackResponsesInput
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input FeedbackResponseUpdateWithWhereUniqueWithoutReviewedByInput {
@@ -2422,6 +2445,7 @@ input FeedbackResponseCreateInput {
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
   resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
+  resolvedComment: String
 }
 
 input FeedbackResponseUpdateInput {
@@ -2435,6 +2459,7 @@ input FeedbackResponseUpdateInput {
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input OrgCreateInput {

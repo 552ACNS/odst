@@ -1,17 +1,19 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import {
   ApolloTestingController,
   ApolloTestingModule,
 } from 'apollo-angular/testing';
-
+import { ResponsesService } from './responses.service';
 describe('ResponsesService', () => {
   let controller: ApolloTestingController;
+  let service: ResponsesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ApolloTestingModule],
+      providers: [ResponsesService],
     });
-
+    service = TestBed.inject(ResponsesService);
     controller = TestBed.inject(ApolloTestingController);
   });
 
@@ -20,9 +22,34 @@ describe('ResponsesService', () => {
   });
 
   it('should be created', () => {
-    // expect(service).toBeTruthy();
-    expect(true).toBeTruthy();
+    expect(service).toBeTruthy();
   });
+
+  it('should update a resolved response', fakeAsync(async () => {
+    const testData: any = {
+      data: {
+        id: 'test id',
+      },
+      where: {
+        resolved: {
+          set: true,
+        },
+      },
+    };
+    (await service.updateResolved(testData)).subscribe((response) => {
+      expect(response.data?.updateFeedbackResponse.resolved).toEqual(true);
+    });
+
+    const op = controller.expectOne('UpdateResolved');
+    op.flush({
+      data: {
+        updateFeedbackResponse: {
+          resolved: true,
+        },
+      },
+    });
+    flush();
+  }));
 
   // test('expect and answer', () => {
   //   //Scaffold the component

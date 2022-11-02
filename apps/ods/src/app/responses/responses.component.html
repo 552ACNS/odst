@@ -49,7 +49,7 @@
       <ng-container *ngIf="comments">
         <h2 class="text-center">Comments</h2>
 
-        <mat-card *ngIf="comments.length">
+        <mat-card>
           <!-- Generates comments if the response has comments -->
           <ng-container
             *ngFor="
@@ -166,29 +166,76 @@
               </div>
             </div>
           </ng-container>
+          <div></div>
+          <mat-card-content class="text-sm text-left">
+            <form [formGroup]="resolutionForm">
+              <p class="text-base font-medium text-center">Add a Comment</p>
+              <!-- Not empty validator -->
+
+              <mat-form-field appearance="outline" class="w-full">
+                <!-- <mat-label>I took the following actions...</mat-label> -->
+                <textarea
+                  id="comment"
+                  matInput
+                  [formControlName]="'comment'"
+                  rows="3"
+                >
+                </textarea>
+              </mat-form-field>
+              <!-- ACTION TAGS -->
+
+              <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="w-full text-white shadow-md rounded-full"
+                  type="submit"
+                  (click)="submitComment()"
+                >
+                  <!-- TODO [ODST-290]: redirect to dashboard when there are no more reports to address -->
+                  Submit Comment
+                </button>
+              </mat-card-actions>
+            </form>
+          </mat-card-content>
         </mat-card>
       </ng-container>
 
-      <!-- ADD A COMMENT -->
-      <mat-card class="shadow-md">
-        <mat-card-content class="text-sm text-left">
-          <form [formGroup]="resolutionForm">
-            <p class="text-base font-medium text-center">Add a Comment</p>
-            <!-- Not empty validator -->
-            <mat-slide-toggle
-              color="primary"
-              [checked]="actualResolution"
-              (change)="updateResolved()"
-            >
-              Mark this issue as resolved
-            </mat-slide-toggle>
-
+      <!-- Resolution Field -->
+      <ng-container>
+        <h2 class="text-center">Resolve</h2>
+        <form [formGroup]="resolutionForm">
+          <mat-card class="pb-5">
+            <p class="text-base font-medium text-center">
+              {{ !resolvedComment ? 'Add' : 'Edit' }} A Custom Response
+            </p>
             <mat-form-field appearance="outline" class="w-full">
-              <!-- <mat-label>I took the following actions...</mat-label> -->
-              <textarea matInput [formControlName]="'comment'" rows="3">
-              </textarea>
+              <textarea
+                id="resolvedComment"
+                matInput
+                formControlName="resolvedCommentForm"
+                rows="3"
+                (input)="resolvedCommentSuccess = false"
+              ></textarea>
             </mat-form-field>
-            <!-- ACTION TAGS -->
+            <div *ngIf="resolvedCommentSuccess">
+              <p id="resolvedCommentSuccess" class="text-green-500 text-center">
+                Custom Response Successfully Updated
+              </p>
+            </div>
+            <mat-card-actions class="flex h-8 space-x-4 mb-5 py-0 mx-1">
+              <button
+                mat-raised-button
+                color="primary"
+                class="w-full text-white shadow-md rounded-full"
+                type="submit"
+                [disabled]="resolvedCommentSuccess"
+                (click)="submitResolvedComment()"
+              >
+                Submit Custom Response
+              </button>
+            </mat-card-actions>
+
             <select-tags
               [tags]="actionTags"
               [selectedTags]="selectedActionTags"
@@ -196,29 +243,26 @@
               (add)="add($event)"
               (remove)="remove($event)"
             ></select-tags>
-            <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
-              <button
-                mat-stroked-button
-                class="w-full shadow-md rounded-full"
-                type="reset"
-                [routerLink]="['/dashboard']"
-              >
-                Back
-              </button>
-              <button
-                mat-raised-button
-                color="primary"
-                class="w-full text-white shadow-md rounded-full"
-                type="submit"
-                (click)="submitComment()"
-              >
-                <!-- TODO [ODST-290]: redirect to dashboard when there are no more reports to address -->
-                Submit
-              </button>
-            </mat-card-actions>
-          </form>
-        </mat-card-content>
-      </mat-card>
+            <mat-slide-toggle
+              class="ml-20"
+              color="primary"
+              [checked]="actualResolution"
+              (change)="updateResolved()"
+            >
+              Mark this issue as resolved
+            </mat-slide-toggle>
+          </mat-card>
+        </form>
+      </ng-container>
+      <button
+        mat-stroked-button
+        class="w-full shadow-md rounded-full"
+        type="reset"
+        [routerLink]="['/dashboard']"
+      >
+        Back
+      </button>
+      <!-- End of Resolution -->
     </div>
   </div>
 </div>
