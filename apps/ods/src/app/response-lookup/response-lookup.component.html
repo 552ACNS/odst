@@ -1,0 +1,84 @@
+<div class="parent-div">
+  <mat-card>
+    <mat-card-title class="flex justify-center font-medium mb-5">
+      Check Report Status
+    </mat-card-title>
+    <mat-card-content class="text-sm space-y-3 text-justify">
+      <p class="flex justify-center">
+        Check the status of an active report by entering your tracking ID below:
+      </p>
+    </mat-card-content>
+
+    <form [formGroup]="form">
+      <!-- User Name field -->
+      <mat-form-field class="mx-0 w-full" appearance="outline">
+        <mat-label>Feedback Report ID</mat-label>
+        <input
+          id="reportID"
+          formcontrolname="reportID"
+          type="text"
+          matInput
+          required="true"
+          placeholder="Feedback Report ID"
+          [formControlName]="'reportID'"
+        />
+        <mat-error> Please provide a valid ID </mat-error>
+      </mat-form-field>
+      <br />
+      <p class="mb-4 error-text text-center" *ngIf="submitError">
+        An issue with the entered ID could not be found.
+      </p>
+      <mat-card-content *ngIf="success" class="text-sm space-y-3">
+        <div *ngIf="status" class="text-center">
+          <p>
+            This feedback report was submitted on:
+            <strong>{{ openedDate | date: 'd MMM yy' }}</strong>
+          </p>
+          <p>
+            And was <span class="text-green-500">resolved</span> on:
+            <strong>{{ closedDate | date: 'd MMM yy' }}</strong>
+          </p>
+          <p>
+            By: <strong>{{ grade }} {{ firstName }} {{ lastName }}</strong>
+          </p>
+          <mat-divider class="mb-3"></mat-divider>
+          <!--TODO Replace the mat-list with tag component -->
+          <p *ngFor="let tag of tags" class="text-center">
+            {{ tag }}
+          </p>
+          <mat-divider class="mb-3"></mat-divider>
+          <p *ngIf="resolvedComment">
+            Message from reviewer: {{ resolvedComment }}
+          </p>
+        </div>
+        <p *ngIf="!status">
+          This feedback was submitted on
+          {{ openedDate | date: 'd MMM yy' }}, and is
+          <span class="text-yellow-500">awaiting resolution</span>.
+        </p>
+      </mat-card-content>
+      <!-- Buttons -->
+      <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
+        <button
+          type="reset"
+          mat-stroked-button
+          class="w-full shadow-md rounded-full"
+          [routerLink]="['/disclaimer']"
+        >
+          Back
+        </button>
+
+        <button
+          mat-raised-button
+          type="submit"
+          color="primary"
+          class="w-full text-white shadow-md rounded-full"
+          (click)="submit()"
+          [disabled]="!form.valid"
+        >
+          Lookup ID
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

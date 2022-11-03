@@ -1,0 +1,29 @@
+query getUserOrgsNames {
+  getUserOrgsNames
+}
+
+mutation updateOrg($data: OrgUpdateInput!, $where: OrgWhereUniqueInput!) {
+  updateOrg(data: $data, where: $where) {
+    name
+  }
+}
+
+query getChildren($orgName: String!) {
+  getOrgChildren(orgName: $orgName)
+}
+
+query getOrgTier($orgName: String!) {
+  getOrgTier(orgName: $orgName)
+}
+
+query getTiersBelowKeepParents($orgTier: OrgTier!) {
+  getOrgsBelowTierWithKeepParents(orgTier: $orgTier)
+}
+
+query checkOrg($orgName: String!) {
+  checkOrg(orgName: $orgName)
+}
+
+query getOrgChildren($orgName: String!) {
+  getOrgChildren(orgName: $orgName)
+}

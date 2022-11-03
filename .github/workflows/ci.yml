@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
+        uses: nrwl/nx-set-shas@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
@@ -51,7 +51,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
+        uses: nrwl/nx-set-shas@v3
         with:
           main-branch-name: master
       - uses: actions/setup-node@v3
@@ -83,7 +83,7 @@ jobs:
       #   run: reportgenerator -reports:**/cobertura-coverage.xml -targetdir:./coverage/merged "-reporttypes:TextSummary;"
       #   continue-on-error: true
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.1.1
         # Always run this, even if something fails
         if: always()
         with:

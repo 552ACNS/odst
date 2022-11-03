@@ -3,6 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 describe('ods', () => {
   const feedbackResponseUUID = uuidv4();
   const commentUUID = uuidv4();
+  const resolvedCommentUUID = uuidv4();
+  let surveyID = '';
+
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
@@ -44,6 +47,37 @@ describe('ods', () => {
 
     cy.get('#btnSubmit').click();
     cy.get('#submitCheck', { timeout: 10000 }).should('be.visible');
+    //Grabs the value of the text from the card and sets it as surveyID
+    cy.get('#responseID').then(($txt) => {
+      surveyID = $txt.text();
+    });
+
+    // Makes sure the copy to clipboard button exists and responds when clicked
+    cy.get('#btnCopy').click();
+    cy.contains('Copied Survey ID To Clipboard');
+  });
+
+  it('Verify that users can track submitted surveys after a survey is submitted', () => {
+    cy.visit('/response-lookup');
+    cy.get('[formcontrolname="reportID"]').type(surveyID);
+    cy.get('button').contains('Lookup ID').click();
+    cy.wait('@graphql');
+    cy.get('[class="ng-star-inserted"]').contains(
+      'This feedback was submitted on',
+      {
+        timeout: 5000,
+      }
+    );
+  });
+
+  it('Verify that users will recieve a message when an invalid ID is submitted', () => {
+    cy.visit('/response-lookup');
+    cy.get('[formcontrolname="reportID"]').type('faultyID');
+    cy.get('button').contains('Lookup ID').click();
+    cy.wait('@graphql');
+    cy.get('[class="mb-4 error-text text-center ng-star-inserted"]').contains(
+      'An issue with the entered ID could not be found.'
+    );
   });
 
   it("Verify that only people with wrong permission can't view a specific feedback", () => {
@@ -53,7 +87,9 @@ describe('ods', () => {
     if (cy.get('mat-card').contains('Unresolved').click())
       cy.location('pathname').then((x) => {
         if (x.includes('/responses')) {
-          cy.get('mat-card-content').should('not.' + feedbackResponseUUID);
+          cy.get('mat-card-content')
+            .contains(feedbackResponseUUID)
+            .should('not.exist');
         }
       });
   });
@@ -77,7 +113,7 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
-    cy.get('textarea').type(commentUUID);
+    cy.get('#comment').type(commentUUID);
     cy.get('button').contains('Submit').click();
   });
 
@@ -89,11 +125,21 @@ describe('ods', () => {
     //selects the action tag selector
     cy.get('#mat-chip-list-input-1').type('Add');
     cy.get('span').contains('Addressed In Organizational All-call').click();
-    cy.get('.mat-simple-snack-bar-content').contains('Tag added');
     cy.get('mat-chip').contains('Addressed In Organizational All-call');
     cy.scrollTo('bottom');
     //Marks the issue as resolved
     cy.get('mat-slide-toggle').click();
+  });
+
+  it('should verify a user can track when and how an issue was resolved', () => {
+    cy.visit('/response-lookup');
+    cy.get('[formcontrolname="reportID"]').type(surveyID);
+    cy.get('button').contains('Lookup ID').click();
+    cy.wait('@graphql');
+    cy.get('[class="ng-star-inserted"]').contains('was resolved on', {
+      timeout: 5000,
+    });
+    cy.get('p').contains('Addressed In Organizational All-call');
   });
 
   it('Verify that a comment was made and that the feedback was catagorized as resolved', () => {
@@ -133,11 +179,35 @@ describe('ods', () => {
     cy.get('#mat-chip-list-input-1')
       .type('Routed Up The Chain Of Command{enter}')
       .wait('@graphql');
-    cy.get('.mat-simple-snack-bar-content').contains('Tag added');
-    cy.get('mat-chip').contains('Routed Up The Chain Of Command');
+    cy.scrollTo('bottom');
+    cy.get('mat-chip')
+      .contains('Routed Up The Chain Of Command')
+      .wait('@graphql');
     cy.get('mat-icon').contains('cancel').click();
     cy.get('mat-chip')
       .contains('Addressed In Organizational All-call')
       .should('not.exist');
+  });
+
+  it('should test for resolved comment functionality', () => {
+    cy.login('keven.coyle@us.af.mil', 'admin');
+    cy.location('pathname').should('include', '/dashboard');
+    cy.get('mat-card').contains('Resolved').click();
+    cy.location('pathname').should('include', '/responses');
+    cy.scrollTo('bottom');
+    cy.get('#resolvedComment').type(resolvedCommentUUID);
+    cy.get('button').contains('Submit Custom Response').click();
+    cy.get('#resolvedCommentSuccess').contains(
+      'Custom Response Successfully Updated'
+    );
+  });
+
+  it('should not cache any query results between users', () => {
+    cy.login('keven.coyle@us.af.mil', 'admin');
+    cy.get('#userNameGrade').contains(' Keven Coyle, O-6 ').should('exist');
+    cy.get('mat-icon').contains('account_circle').click();
+    cy.get('button').contains('Logout').click();
+    cy.login('admin@admin.com', 'admin');
+    cy.get('#userNameGrade').contains(' Admin Admin, E-∞ ').should('exist');
   });
 });

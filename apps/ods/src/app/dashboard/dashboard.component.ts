@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { ResponseCountQuery } from './dashboard.generated';
-import { reloadPage } from '@odst/helpers';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'odst-dashboard',
@@ -9,7 +9,10 @@ import { reloadPage } from '@odst/helpers';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  constructor(private dashboardService: DashboardService) {}
+  constructor(
+    private dashboardService: DashboardService,
+    private snackBar: MatSnackBar
+  ) {}
 
   responses: ResponseCountQuery['ResponseCount'];
   cardSpecs: {
@@ -22,12 +25,21 @@ export class DashboardComponent implements OnInit {
   }[];
 
   ngOnInit() {
-    //TODO: unable to get dashboard to refresh using other methods.  Need to redo this on another sprint.
-    //reloads current page so it wont show previous cached values
-    reloadPage();
-
-    this.dashboardService.GetResponseCount().subscribe(({ data }) => {
-      this.responses = data.ResponseCount;
+    this.dashboardService.GetResponseCount().subscribe(({ data, errors }) => {
+      const success = !errors && !!data;
+      if (success) {
+        this.responses = data.ResponseCount;
+      } else {
+        this.responses = {
+          unresolved: 0,
+          overdue: 0,
+          resolved: 0,
+        };
+        this.snackBar.open(
+          'There was an error retrieving your data on our end. Please reload the page or try again later.',
+          'Okay'
+        );
+      }
 
       this.cardSpecs = [
         {

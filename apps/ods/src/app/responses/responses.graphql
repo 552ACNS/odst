@@ -11,6 +11,7 @@ query GetReportByStatus($status: String!, $skip: Int!, $take: Int!) {
     routeOutside
     resolved
     openedDate
+    resolvedComment
     answers {
       value
       question {

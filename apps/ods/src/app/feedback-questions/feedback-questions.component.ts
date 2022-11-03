@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { FeedbackQuestionsService } from './feedback-questions.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'odst-feedback-questions',
@@ -20,6 +22,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
 
   questionIDs: string[];
   feedbackID?: string;
+  feedbackResponseID?: string;
 
   outsideRouting = false;
   answers: string[];
@@ -29,12 +32,15 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
   querySubscription: Subscription;
   loading = true;
   submitSuccess = false;
+  copySuccess = false;
   violatorSpec = '';
   personSpec = '';
 
   constructor(
     private fb: UntypedFormBuilder,
-    private feedbackService: FeedbackQuestionsService
+    private snackBar: MatSnackBar,
+    private feedbackService: FeedbackQuestionsService,
+    private clipboard: Clipboard
   ) {}
 
   private violatorSpecification(): string {
@@ -108,10 +114,27 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
               )
               .subscribe(({ errors, data }) => {
                 this.submitSuccess = !errors && !!data;
+                if (this.submitSuccess) {
+                  this.feedbackResponseID = data?.createFeedbackResponse;
+                } else {
+                  this.snackBar.open(
+                    'There was an error submitting your issue. Please try again or contact your DEI office.',
+                    'Okay'
+                  );
+                }
               });
           });
       });
   }
+
+  clickedCopyToClipboard() {
+    this.clipboard.copy(<string>this.feedbackResponseID);
+    this.snackBar.open('Copied Survey ID To Clipboard', '', {
+      duration: 3000,
+      panelClass: 'primary-text-contrast',
+    });
+  }
+
   ngOnDestroy() {
     if (this.querySubscription) {
       this.querySubscription.unsubscribe();

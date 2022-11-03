@@ -10,8 +10,8 @@ import {
 } from './responses.generated';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { getUserId } from '@odst/helpers';
-import { reloadPage } from '@odst/helpers';
 import { ResponsesStore } from './responses.store';
+import { first, skipWhile } from 'rxjs';
 @Component({
   selector: 'odst-responses',
   templateUrl: './responses.component.html',
@@ -22,6 +22,7 @@ export class ResponsesComponent implements OnInit {
   //#region Variables
   resolutionForm = this.fb.group({
     comment: [''],
+    resolvedCommentForm: [''],
   });
 
   actionTags: string[];
@@ -58,6 +59,10 @@ export class ResponsesComponent implements OnInit {
 
   take = 1;
 
+  resolvedComment: any;
+
+  resolvedCommentSuccess = false;
+
   response: GetReportByStatusQuery['getIssuesByStatus'][0];
   //#endregion
 
@@ -88,20 +93,26 @@ export class ResponsesComponent implements OnInit {
   }
 
   async getFeedback(index: number): Promise<void> {
-    this.responsesService.getTags().subscribe(({ data }) => {
-      this.actionTags = data.getTags
-        .filter((tag) => tag.type == 'Action')
-        .map((tag) => tag.value)
-        .sort();
-      this.trackingTags = data.getTags
-        .filter((tag) => tag.type == 'Resolution')
-        .map((tag) => tag.value)
-        .sort();
-      this.allTags = data.getTags.map((tag) => tag.value).sort();
-    });
-
+    this.responsesService
+      .getTags()
+      .pipe(first())
+      .subscribe(({ data, errors }) => {
+        if (!errors && !!data) {
+          this.actionTags = data.getTags
+            .filter((tag) => tag.type == 'Action')
+            .map((tag) => tag.value)
+            .sort();
+          this.trackingTags = data.getTags
+            .filter((tag) => tag.type == 'Resolution')
+            .map((tag) => tag.value)
+            .sort();
+          this.allTags = data.getTags.map((tag) => tag.value).sort();
+        } else {
+          this.responsesStore.updateFetchStatus(false);
+        }
+      });
     // Get resolved value form route params
-    this.route.queryParams.subscribe(async (params) => {
+    this.route.queryParams.pipe(first()).subscribe(async (params) => {
       this.status = params['resolved'];
     });
     //method takes the status of the response, the index its querying for, and the number of responses to take
@@ -113,49 +124,70 @@ export class ResponsesComponent implements OnInit {
       )
     )
       // eslint-disable-next-line complexity
-      .subscribe(({ data }) => {
-        //it then uses the data to determin the current status and gets and displays the other appropriate data
-        if (this.numberOfResponses !== 0) {
-          this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
-        }
+      .subscribe(({ data, errors }) => {
+        if (!errors && !!data) {
+          //it then uses the data to determine the current status and gets and displays the other appropriate data
+          if (this.numberOfResponses !== 0) {
+            this.pageEvent = { pageIndex: 0, pageSize: 1, length: 1 };
+          }
 
-        //took the get data method and put it in our new method, this one
-        this.numberOfResponses = data.ResponseCount[this.status];
-        this.pageEvent.length = data.ResponseCount[this.status];
+          //took the get data method and put it in our new method, this one
+          this.numberOfResponses = data.ResponseCount[this.status];
+          this.pageEvent.length = data.ResponseCount[this.status];
 
-        //getIssuesByStatus invokes findMany, which returns an array.
-        //This turns single element array into just the datatype.
-        //Use this instead of data.getIssuesByStatus
-        this.response = data.getIssuesByStatus[0];
+          //getIssuesByStatus invokes findMany, which returns an array.
+          //This turns single element array into just the datatype.
+          //Use this instead of data.getIssuesByStatus
+          this.response = data.getIssuesByStatus[0];
 
-        this.openedDate = this.response.openedDate;
+          this.openedDate = this.response.openedDate;
 
-        // Clear contents of QA array
-        this.questionsAnswers = [];
-        this.comments = [];
-
-        // Handle the Questions & Answers
-        this.response.answers?.forEach((answer) => {
           // Clear contents of QA array
-          // Create the Question/Answer Array
-          this.questionsAnswers.push([
-            String(answer?.question?.value),
-            answer.value,
-          ]);
-        });
+          this.questionsAnswers = [];
+          this.comments = [];
 
-        this.comments = this.response.comments;
+          // Handle the Questions & Answers
+          this.response.answers?.forEach((answer) => {
+            // Clear contents of QA array
+            // Create the Question/Answer Array
+            this.questionsAnswers.push([
+              String(answer?.question?.value),
+              answer.value,
+            ]);
+          });
 
-        this.actualResolution = this.response['resolved'];
+          this.comments = this.response.comments;
 
-        //TODO don't hardcode tag types
-        this.selectedActionTags = this.response['tags']
-          ?.filter((tag) => tag.type == 'Action')
-          .map((tag) => tag.value);
+          this.resolvedComment = this.response.resolvedComment;
+          this.resolutionForm
+            .get('resolvedCommentForm')
+            ?.setValue(this.resolvedComment);
 
-        this.selectedTrackingTags = this.response['tags']
-          ?.filter((tag) => tag.type == 'Resolution')
-          .map((tag) => tag.value);
+          this.actualResolution = this.response['resolved'];
+
+          //TODO don't hardcode tag types
+          this.selectedActionTags = this.response['tags']
+            ?.filter((tag) => tag.type == 'Action')
+            .map((tag) => tag.value);
+
+          this.selectedTrackingTags = this.response['tags']
+            ?.filter((tag) => tag.type == 'Resolution')
+            .map((tag) => tag.value);
+        } else {
+          this.responsesStore.updateFetchStatus(false);
+        }
+      });
+    this.responsesStore.fetchSuccess$
+      .pipe(
+        skipWhile((status) => status),
+        first()
+      )
+      .subscribe(() => {
+        this.snackBar.open(
+          'Something went wrong fetching the required data',
+          'okay',
+          { duration: 1500 }
+        );
       });
   }
 
@@ -193,14 +225,26 @@ export class ResponsesComponent implements OnInit {
             this.comments = data.updateFeedbackResponse['comments'];
             this.actualResolution = data.updateFeedbackResponse['resolved'];
             this.resolutionForm.reset();
-            //TODO: unable to get page to refresh using other methods.  Need to redo this on another sprint.
-            reloadPage();
           }
         });
     }
   }
 
-  async updateResolved(): Promise<void> {
+  updateResolved() {
+    let reviewedBy: UpdateResolvedMutationVariables['data']['reviewedBy'];
+
+    if (!this.actualResolution) {
+      reviewedBy = {
+        connect: {
+          id: this.userId,
+        },
+      };
+    } else {
+      reviewedBy = {
+        disconnect: true,
+      };
+    }
+
     const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
       where: {
         id: this.response.id,
@@ -209,15 +253,17 @@ export class ResponsesComponent implements OnInit {
         resolved: {
           set: !this.actualResolution,
         },
+        closedDate: {
+          set: !this.actualResolution ? Date.now() : null,
+        },
+        reviewedBy: reviewedBy,
       },
     };
-
     this.responsesService
       .updateResolved(updateResolvedMutationVariables)
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
           this.actualResolution = data.updateFeedbackResponse['resolved'];
-          this.reload();
         }
       });
   }
@@ -238,7 +284,12 @@ export class ResponsesComponent implements OnInit {
       })
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
-          //Placeholder
+          this.responsesStore.updateTagRemoveStatus(true);
+        } else {
+          this.responsesStore.updateTagRemoveStatus(false);
+          this.snackBar.open('There was an issue removing that tag', 'okay', {
+            duration: 1500,
+          });
         }
       });
   }
@@ -258,10 +309,6 @@ export class ResponsesComponent implements OnInit {
         })
         .subscribe(({ data, errors }) => {
           if (!errors && !!data) {
-            this.snackBar.open('Tag added', '', {
-              duration: 1500,
-              panelClass: 'primary-text-contrast',
-            });
             this.responsesStore.updateTagStatus(true);
           } else {
             this.snackBar.open(
@@ -275,11 +322,28 @@ export class ResponsesComponent implements OnInit {
     }
   }
   //#endregion
+  async submitResolvedComment(): Promise<void> {
+    this.resolvedComment = this.resolutionForm.value.resolvedCommentForm.trim();
 
-  //TODO: This will need to be made into a function at the application level.
-  async reload(): Promise<void> {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['./'], { relativeTo: this.route });
+    const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
+      where: {
+        id: this.response.id,
+      },
+      data: {
+        resolvedComment: {
+          set: this.resolvedComment,
+        },
+      },
+    };
+
+    this.responsesService
+      .updateResolved(updateResolvedMutationVariables)
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.resolvedCommentSuccess = true;
+        } else {
+          this.resolvedCommentSuccess = false;
+        }
+      });
   }
 }

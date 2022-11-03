@@ -1,0 +1,16 @@
+query FeedbackResponseByID(
+  $feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!
+) {
+  feedbackResponseByID(
+    feedbackResponseWhereUniqueInput: $feedbackResponseWhereUniqueInput
+  ) {
+    resolvedComment
+    openedDate
+    closedDate
+    resolved
+    tags
+    firstName
+    lastName
+    grade
+  }
+}
