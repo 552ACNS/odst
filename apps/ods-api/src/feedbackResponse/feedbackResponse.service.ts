@@ -335,7 +335,7 @@ export class FeedbackResponseService {
    * @param user Current user
    * @returns An array of Org Names ['552 ACNS', '552 ACW', '752 OSS'] etc.
    */
-  private async getUsersOrgs(user: User): Promise<string[]> {
+  async getUsersOrgs(user: User): Promise<string[]> {
     // represents the user's identity
     const whereUser: Prisma.OrgWhereInput = {
       users: {
@@ -377,7 +377,7 @@ export class FeedbackResponseService {
                 {
                   parent: whereUser,
                 },
-                // where the user is a member of the grand parent
+                // where the user is a member of the grandparent
                 {
                   parent: {
                     parent: whereUser,
