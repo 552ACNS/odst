@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import {
+  RequiredValidator,
+  UntypedFormBuilder,
+  Validators,
+} from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { FeedbackQuestionsService } from './feedback-questions.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -56,6 +60,20 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
     } else {
       return this.form.value['personSpec'];
     }
+  }
+
+  makeInputRequired(event: any) {
+    if (event.value === 'other') {
+      this.form
+        .get(['violatorOtherSpec'])
+        ?.setValidators([Validators.required]);
+      this.form.get(['personOtherSpec'])?.setValidators([Validators.required]);
+    } else {
+      this.form.get(['violatorOtherSpec'])?.clearValidators();
+      this.form.get(['personOtherSpec'])?.clearValidators();
+    }
+    this.form.get(['violatorOtherSpec'])?.updateValueAndValidity();
+    this.form.get(['personOtherSpec'])?.updateValueAndValidity();
   }
 
   //validators didnt need to be inside the formControlName and caused it to break, so i removed

@@ -58,7 +58,7 @@
         <br />
         <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
         <br />
-        <mat-radio-button value="other">
+        <mat-radio-button (click)="(makeInputRequired)" value="other">
           <mat-form-field>
             <input
               matInput
