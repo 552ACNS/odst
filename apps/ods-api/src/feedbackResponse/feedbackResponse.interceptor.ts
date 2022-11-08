@@ -8,6 +8,8 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable, tap } from 'rxjs';
 import { logger } from 'nx/src/utils/logger';
 import { FeedbackResponseService } from './feedbackResponse.service';
+import { merge } from 'lodash';
+import { Prisma } from '.prisma/ods/client';
 
 @Injectable()
 export class FeedbackResponseInterceptor implements NestInterceptor {
@@ -16,9 +18,49 @@ export class FeedbackResponseInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler
   ): Promise<Observable<any>> {
-    const ctx = GqlExecutionContext.create(context);
+    const ctx = GqlExecutionContext.create(context).getContext();
 
-    logger.log(ctx.getContext().req);
+    logger.log(ctx.req.body.variables.where);
+
+    const restrictor: Prisma.FeedbackResponseWhereInput = {
+      // whatever the previous where clause was, add the user's orgs to it
+      AND: {
+        // Get the original where feedbackresponse count args
+        // Find me the feedbacks where the
+        answers: {
+          // answers have some
+          some: {
+            AND: {
+              // question
+              question: {
+                // where the value is
+                value: {
+                  equals: 'What organization did the event occur in?',
+                },
+              },
+              // and that value
+              value: {
+                // is contained in the user's orgs
+                in: await this.feedbackResponseService.getUsersOrgs(
+                  ctx.req.user
+                ),
+              },
+            },
+          },
+        },
+      },
+    };
+
+    // if the args has a where already, merge args with the restrictor
+    if (ctx.req.body.variables.where) {
+      // the merge will modify the references in the left argument (args.where)
+      merge(ctx.req.body.variables.where, restrictor);
+    } else {
+      // args does not have a where, make it the restrictor
+      ctx.req.body.variables.where = restrictor;
+    }
+
+    logger.log(ctx.req.body.variables.where);
 
     return next.handle().pipe(tap((data) => logger.log(data)));
   }
