@@ -49,30 +49,36 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
 
   private violatorSpecification(): string {
     if (this.form.value['violatorSpec'] === 'other') {
-      return this.form.value['violatorOtherSpec'];
+      return this.form.value['violatorOtherSpec'].trim();
     } else {
       return this.form.value['violatorSpec'];
     }
   }
   private personSpecification(): string {
     if (this.form.value['personSpec'] === 'other') {
-      return this.form.value['personOtherSpec'];
+      return this.form.value['personOtherSpec'].trim();
     } else {
       return this.form.value['personSpec'];
     }
   }
 
-  makeInputRequired(event: any) {
-    if (event.value === 'other') {
+  makeViolatorOtherRequired() {
+    if (this.form.value['violatorSpec'] === 'other') {
       this.form
         .get(['violatorOtherSpec'])
         ?.setValidators([Validators.required]);
-      this.form.get(['personOtherSpec'])?.setValidators([Validators.required]);
     } else {
       this.form.get(['violatorOtherSpec'])?.clearValidators();
-      this.form.get(['personOtherSpec'])?.clearValidators();
     }
     this.form.get(['violatorOtherSpec'])?.updateValueAndValidity();
+  }
+
+  makePersonOtherRequired() {
+    if (this.form.value['personSpec'] === 'other') {
+      this.form.get(['personOtherSpec'])?.setValidators([Validators.required]);
+    } else {
+      this.form.get(['personOtherSpec'])?.clearValidators();
+    }
     this.form.get(['personOtherSpec'])?.updateValueAndValidity();
   }
 

@@ -42,9 +42,11 @@
       </label>
       <!-- TODO [ODST-274] Fix to use tailwind for spacing in future -->
       <mat-radio-group
+        id="violatorSpecID"
         name="violator_spec"
         formControlName="violatorSpec"
         color="primary"
+        (change)="makeViolatorOtherRequired()"
         required
       >
         <mat-radio-button value="AD">Active Duty</mat-radio-button>
@@ -58,7 +60,7 @@
         <br />
         <mat-radio-button value="RESERVE_GUARD">Guard/Reserve</mat-radio-button>
         <br />
-        <mat-radio-button (click)="(makeInputRequired)" value="other">
+        <mat-radio-button value="other">
           <mat-form-field>
             <input
               matInput
@@ -86,9 +88,11 @@
       </label>
       <!-- TODO [ODST-277] Fix to use tailwind for spacing in future -->
       <mat-radio-group
+        id="personSpecID"
         name="person_spec"
         formControlName="personSpec"
         color="primary"
+        (change)="makePersonOtherRequired()"
         required
       >
         <mat-radio-button value="AD">Active Duty</mat-radio-button>
