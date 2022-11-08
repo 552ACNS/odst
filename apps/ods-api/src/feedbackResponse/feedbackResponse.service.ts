@@ -35,10 +35,7 @@ export class FeedbackResponseService {
     // modify the feedback response count args to include the user's orgs
 
     return this.prisma.feedbackResponse.count(
-      this.restrictor(
-        user,
-        feedbackResponseCountArgs
-      ) as Prisma.FeedbackResponseCountArgs
+      (await this.getWhere(user)) as Prisma.FeedbackResponseCountArgs
     );
   }
 
