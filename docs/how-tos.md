@@ -19,8 +19,3 @@
 3. Follow the instructions in How to Update Packages to update only the problematic dependency. Sometimes the faulty dependency is not updated yet.
 
 4. In such instances you will have to create a resolution for the faulty package.
-
-   "@nestjs/platform-express/multer/busboy": "^1.6",
-   "@graphql-codegen/cli/\*\*/got": "^11.8",
-   "glob-parent": "^6.0.1",
-   "terser": "^5.14.2"
