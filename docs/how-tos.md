@@ -1,8 +1,8 @@
 ### How to Update Packages
 
-1. type `nx migrate latest` in the terminal to update the packages. This may take a few minutes. It will also make code changes so that the newly updated packages do not cause API conflicts. Follow the instructions in the terminal when the install completes.
+1. Run `npm install nx -g` to update NX. Then type `nx migrate latest` in the terminal to update the packages. This may take a few minutes. It will also make code changes so that the newly updated packages do not cause API conflicts. Follow the instructions in the terminal when the install completes.
 
-2. If migrations are needed, make sure to run `yarn nx migrate --run-migrations`. ONLY IF migrations are needed.
+2. If migrations are needed, make sure to run `nx migrate --run-migrations`. ONLY IF migrations are needed.
 
 3. Verify that E2E tests pass then commit the changes.
 
