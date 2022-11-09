@@ -1,4 +1,5 @@
 {
+  "name": "ods-api",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "apps/ods-api/src",
   "projectType": "application",
@@ -85,7 +86,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/ods-api"],
+      "outputs": ["{workspaceRoot}/coverage/apps/ods-api"],
       "options": {
         "jestConfig": "apps/ods-api/jest.config.ts",
         "passWithNoTests": true

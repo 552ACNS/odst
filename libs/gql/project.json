@@ -1,4 +1,5 @@
 {
+  "name": "gql",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/gql/src",
@@ -12,7 +13,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/gql"],
+      "outputs": ["{workspaceRoot}/coverage/libs/gql"],
       "options": {
         "jestConfig": "libs/gql/jest.config.ts",
         "passWithNoTests": true
