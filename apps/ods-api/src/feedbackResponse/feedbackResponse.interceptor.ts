@@ -5,11 +5,12 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { logger } from 'nx/src/utils/logger';
 import { FeedbackResponseService } from './feedbackResponse.service';
 import { merge } from 'lodash';
 import { Prisma } from '.prisma/ods/client';
+import { setContext } from '@apollo/client/link/context';
 
 @Injectable()
 export class FeedbackResponseInterceptor implements NestInterceptor {
@@ -19,8 +20,6 @@ export class FeedbackResponseInterceptor implements NestInterceptor {
     next: CallHandler
   ): Promise<Observable<any>> {
     const ctx = GqlExecutionContext.create(context).getContext();
-
-    logger.log(ctx.req.body.variables.where);
 
     const restrictor: Prisma.FeedbackResponseWhereInput = {
       // whatever the previous where clause was, add the user's orgs to it
@@ -60,8 +59,6 @@ export class FeedbackResponseInterceptor implements NestInterceptor {
       ctx.req.body.variables.where = restrictor;
     }
 
-    logger.log(ctx.req.body.variables.where);
-
-    return next.handle().pipe(tap((data) => logger.log(data)));
+    return next.handle();
   }
 }

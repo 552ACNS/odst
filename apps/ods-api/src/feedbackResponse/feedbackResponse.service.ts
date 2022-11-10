@@ -13,6 +13,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { merge } from 'lodash';
 import { ResponseCount, TrackedFeedback } from '../__types__';
+import { logger } from 'nx/src/utils/logger';
 
 @Injectable()
 export class FeedbackResponseService {

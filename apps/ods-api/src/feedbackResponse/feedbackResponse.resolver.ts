@@ -6,6 +6,7 @@ import {
   Int,
   ResolveField,
   Parent,
+  Context,
 } from '@nestjs/graphql';
 import { FeedbackResponseService } from './feedbackResponse.service';
 import {
@@ -27,6 +28,7 @@ import { GetCurrentUser } from '@odst/shared/nest';
 import { ResponseCount, TrackedFeedback } from '../__types__';
 import { UseInterceptors } from '@nestjs/common';
 import { FeedbackResponseInterceptor } from './feedbackResponse.interceptor';
+import { logger } from 'nx/src/utils/logger';
 
 @Resolver(() => FeedbackResponse)
 export class FeedbackResponseResolver {
@@ -83,12 +85,13 @@ export class FeedbackResponseResolver {
   @Mutation(() => FeedbackResponse, { name: 'updateFeedbackResponse' })
   @UseInterceptors(FeedbackResponseInterceptor)
   async update(
+    @Context('req') req,
     @Args()
     updateArgs: UpdateOneFeedbackResponseArgs
   ): Promise<FeedbackResponse> {
     const { data, where } = updateArgs;
 
-    // Logger.log(info)
+    updateArgs.where = req.body.variables.where;
 
     return this.feedbackResponseService.update(
       data as Prisma.FeedbackResponseUpdateInput,
@@ -106,12 +109,12 @@ export class FeedbackResponseResolver {
   // TODO: Use the FindManyFeedbackResponse to use where instead of string status.
   //TODO: pass whole object of FindManyFeedbackResponseArgs instead of deconstructing object
   @Query(() => [FeedbackResponse], { name: 'getIssuesByStatus' })
-  @UseInterceptors(FeedbackResponseInterceptor)
   async getIssuesByStatus(
     @Args('status') status: string,
     @GetCurrentUser() user: User,
     @Args() findManyFeedbackResponseArgs: FindManyFeedbackResponseArgs
   ): Promise<FeedbackResponse[]> {
+    logger.log(findManyFeedbackResponseArgs);
     const { skip, take } = findManyFeedbackResponseArgs;
     return this.feedbackResponseService.getIssuesByStatus(
       status,
