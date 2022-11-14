@@ -1,4 +1,5 @@
 {
+  "name": "ods-e2e",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "apps/ods-e2e/src",
   "projectType": "application",

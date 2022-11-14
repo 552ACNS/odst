@@ -1,4 +1,5 @@
 {
+  "name": "shared-nest",
   "$schema": "..\\..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "libs/shared/nest/src",
   "targets": {
@@ -11,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/shared/nest"],
+      "outputs": ["{workspaceRoot}/coverage/libs/shared/nest"],
       "options": {
         "jestConfig": "libs/shared/nest/jest.config.ts",
         "passWithNoTests": true

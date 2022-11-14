@@ -1,4 +1,5 @@
 {
+  "name": "waypoint",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/waypoint/src",
@@ -65,7 +66,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/waypoint"],
+      "outputs": ["{workspaceRoot}/coverage/apps/waypoint"],
       "options": {
         "jestConfig": "apps/waypoint/jest.config.ts",
         "passWithNoTests": true
