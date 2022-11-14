@@ -31,6 +31,7 @@ import { FeedbackResponseInterceptor } from './feedbackResponse.interceptor';
 import { logger } from 'nx/src/utils/logger';
 
 @Resolver(() => FeedbackResponse)
+@UseInterceptors(FeedbackResponseInterceptor)
 export class FeedbackResponseResolver {
   constructor(
     private readonly feedbackResponseService: FeedbackResponseService
@@ -62,13 +63,9 @@ export class FeedbackResponseResolver {
   @Query(() => Int, { name: 'getResponseCount' })
   async count(
     @GetCurrentUser() user: User,
-    @Args()
-    feedbackResponseAggregateArgs: FeedbackResponseAggregateArgs
+    @Context('req') req
   ): Promise<number> {
-    return this.feedbackResponseService.count(
-      user,
-      feedbackResponseAggregateArgs
-    );
+    return this.feedbackResponseService.count(user, req.body.variables.where);
   }
 
   @Mutation(() => String, { name: 'createFeedbackResponse' })
@@ -83,7 +80,6 @@ export class FeedbackResponseResolver {
   }
 
   @Mutation(() => FeedbackResponse, { name: 'updateFeedbackResponse' })
-  @UseInterceptors(FeedbackResponseInterceptor)
   async update(
     @Context('req') req,
     @Args()
@@ -102,8 +98,14 @@ export class FeedbackResponseResolver {
   // TODO [ODST-271]: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   // TODO write tests for this
   @Query(() => ResponseCount, { name: 'ResponseCount' })
-  async ResponseCount(@GetCurrentUser() user: User): Promise<ResponseCount> {
-    return this.feedbackResponseService.countResponses(user);
+  async ResponseCount(
+    @GetCurrentUser() user: User,
+    @Context('req') req
+  ): Promise<ResponseCount> {
+    return this.feedbackResponseService.countResponses(
+      user,
+      req.body.variables.where
+    );
   }
 
   // TODO: Use the FindManyFeedbackResponse to use where instead of string status.
@@ -112,21 +114,23 @@ export class FeedbackResponseResolver {
   async getIssuesByStatus(
     @Args('status') status: string,
     @GetCurrentUser() user: User,
+    @Context('req') req,
     @Args() findManyFeedbackResponseArgs: FindManyFeedbackResponseArgs
   ): Promise<FeedbackResponse[]> {
-    logger.log(findManyFeedbackResponseArgs);
     const { skip, take } = findManyFeedbackResponseArgs;
     return this.feedbackResponseService.getIssuesByStatus(
       status,
       user,
       Number(skip),
-      Number(take)
+      Number(take),
+      req.body.variables.where
     );
   }
 
   @ResolveField(() => [Answer])
   async answers(
-    @Parent() feedbackResponse: FeedbackResponse
+    @Parent() feedbackResponse: FeedbackResponse,
+    @Context('req') req
   ): Promise<Answer[]> {
     return this.feedbackResponseService.answers({ id: feedbackResponse.id });
   }

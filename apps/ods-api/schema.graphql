@@ -402,7 +402,7 @@ type Query {
   findUniqueFeedback(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): Feedback!
   findUniqueFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
   feedbackResponseByID(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): TrackedFeedback!
-  getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
+  getResponseCount: Int!
   ResponseCount: ResponseCount!
   getIssuesByStatus(status: String!, where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, distinct: [FeedbackResponseScalarFieldEnum!]): [FeedbackResponse!]!
   getUserOrgsNames: [String!]!
@@ -880,40 +880,6 @@ input RefreshTokenOrderByWithRelationInput {
   issuedDate: SortOrder
   expiredDate: SortOrder
   hash: SortOrder
-}
-
-input FeedbackResponseCountAggregateInput {
-  id: Boolean
-  feedbackId: Boolean
-  openedDate: Boolean
-  closedDate: Boolean
-  routeOutside: Boolean
-  resolved: Boolean
-  reviewerId: Boolean
-  resolvedComment: Boolean
-  _all: Boolean
-}
-
-input FeedbackResponseMinAggregateInput {
-  id: Boolean
-  feedbackId: Boolean
-  openedDate: Boolean
-  closedDate: Boolean
-  routeOutside: Boolean
-  resolved: Boolean
-  reviewerId: Boolean
-  resolvedComment: Boolean
-}
-
-input FeedbackResponseMaxAggregateInput {
-  id: Boolean
-  feedbackId: Boolean
-  openedDate: Boolean
-  closedDate: Boolean
-  routeOutside: Boolean
-  resolved: Boolean
-  reviewerId: Boolean
-  resolvedComment: Boolean
 }
 
 enum FeedbackResponseScalarFieldEnum {

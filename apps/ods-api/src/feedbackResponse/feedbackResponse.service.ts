@@ -11,9 +11,7 @@ import {
 } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { merge } from 'lodash';
 import { ResponseCount, TrackedFeedback } from '../__types__';
-import { logger } from 'nx/src/utils/logger';
 
 @Injectable()
 export class FeedbackResponseService {
@@ -36,59 +34,8 @@ export class FeedbackResponseService {
     // modify the feedback response count args to include the user's orgs
 
     return this.prisma.feedbackResponse.count(
-      (await this.getWhere(user)) as Prisma.FeedbackResponseCountArgs
+      feedbackResponseCountArgs as Prisma.FeedbackResponseCountArgs
     );
-  }
-
-  /**
-   *
-   * @param user Current user, obtained from resolver
-   * @param args Arguments for the query/mutation, obtained from resolver
-   * @returns A new query/mutation with the user's orgs added to the where clause
-   */
-  async restrictor(
-    user: User,
-    args: Prisma.FeedbackResponseCountArgs | Prisma.FeedbackResponseFindManyArgs
-  ): Promise<
-    Prisma.FeedbackResponseCountArgs | Prisma.FeedbackResponseFindManyArgs
-  > {
-    const restrictor: Prisma.FeedbackResponseWhereInput = {
-      // whatever the previous where clause was, add the user's orgs to it
-      AND: {
-        // Get the original where feedbackresponse count args
-        // Find me the feedbacks where the
-        answers: {
-          // answers have some
-          some: {
-            AND: {
-              // question
-              question: {
-                // where the value is
-                value: {
-                  equals: 'What organization did the event occur in?',
-                },
-              },
-              // and that value
-              value: {
-                // is contained in the user's orgs
-                in: await this.getUsersOrgs(user),
-              },
-            },
-          },
-        },
-      },
-    };
-
-    // if the args has a where already, merge args with the restrictor
-    if (args.where) {
-      // the merge will modify the references in the left argument (args.where)
-      merge(args.where, restrictor);
-    } else {
-      // args does not have a where, make it the restrictor
-      args.where = restrictor;
-    }
-
-    return args;
   }
 
   async findUnique(
@@ -209,16 +156,14 @@ export class FeedbackResponseService {
   }
 
   // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
-  async countResponses(user: User): Promise<ResponseCount> {
-    const whereBasedOnUserOrgs = await this.getWhere(user);
-
+  async countResponses(user: User, where): Promise<ResponseCount> {
     // TODO: Optimize at a later date, so we don't go back and forth to the server
 
     const [unresolved, overdue, resolved] = await this.prisma.$transaction([
       this.prisma.feedbackResponse.count({
         where: {
           resolved: false,
-          ...whereBasedOnUserOrgs,
+          ...where,
         },
       }),
 
@@ -228,14 +173,14 @@ export class FeedbackResponseService {
             lt: new Date(Date.now() - 2592000000),
           },
           resolved: false,
-          ...whereBasedOnUserOrgs,
+          ...where,
         },
       }),
 
       this.prisma.feedbackResponse.count({
         where: {
           resolved: true,
-          ...whereBasedOnUserOrgs,
+          ...where,
         },
       }),
     ]);
@@ -273,14 +218,15 @@ export class FeedbackResponseService {
     status: string,
     user: User,
     skip: number,
-    take: number
+    take: number,
+    where
   ): Promise<FeedbackResponse[]> {
     return this.prisma.feedbackResponse.findMany({
       skip: skip,
       take: take,
       where: {
         ...this.determineStatus(status),
-        ...(await this.getWhere(user)),
+        ...where,
       },
       orderBy: {
         openedDate: 'desc',
@@ -324,117 +270,5 @@ export class FeedbackResponseService {
           date: 'asc',
         },
       });
-  }
-
-  //TODO refactor for complexity
-  // eslint-disable-next-line complexity
-  /**
-   *
-   * @param user Current user
-   * @returns An array of Org Names ['552 ACNS', '552 ACW', '752 OSS'] etc.
-   */
-  async getUsersOrgs(user: User): Promise<string[]> {
-    // represents the user's identity
-    const whereUser: Prisma.OrgWhereInput = {
-      users: {
-        some: {
-          id: user.id,
-        },
-      },
-    };
-
-    switch (user.role) {
-      case Role.ADMIN: {
-        // Admins see all orgs
-        return this.prisma.org
-          .findMany({
-            select: {
-              name: true,
-            },
-          })
-          .then((orgs) => orgs.map((org) => org.name));
-      }
-      // DEI and CC basically have the same logic on who sees what based on their org membership
-      case Role.DEI:
-      case Role.CC: {
-        // get all orgs where user is either a member of it,
-        // a member of the parent
-        // or a member of the grandparent
-        // Refactor to allow for (N-levels of orgs)
-        return this.prisma.org
-          .findMany({
-            select: {
-              name: true,
-            },
-            // find me the orgs where
-            where: {
-              OR: [
-                // where the user is a member of it
-                whereUser,
-                // where the user is a member of the parent
-                {
-                  parent: whereUser,
-                },
-                // where the user is a member of the grand parent
-                {
-                  parent: {
-                    parent: whereUser,
-                  },
-                },
-              ],
-            },
-            // I only want the distinct results
-            distinct: 'name',
-          })
-          .then((orgs) => orgs.map((org) => org.name));
-      }
-      default: {
-        // if we for some reason assign to a role that we don't define here
-        // they don't have access to anything
-        return [];
-      }
-    }
-  }
-
-  //TODO [ODST-273] refactor for complexity
-  // TODO: DELETE THIS ONCE FRONTEND IS RECONFIGURED
-  // eslint-disable-next-line complexity
-  async getWhere(user: User): Promise<Prisma.FeedbackResponseWhereInput> {
-    // Get the user's Orgs
-    const usersOrgs = await this.getUsersOrgs(user);
-    //[552 ACG, 552 ACNS, Anything below the ACG]
-
-    // Only look at the feedbackResponses where a specific answer contains one of the user's orgs
-    //Checks a specific question asking for the organization the event occured in.
-    const whereAnswer = {
-      answers: {
-        some: {
-          question: {
-            value: {
-              //TODO hardcoded value
-              equals: 'What organization did the event occur in?',
-            },
-          },
-          value: {
-            in: usersOrgs,
-          },
-        },
-      },
-    };
-
-    switch (user.role) {
-      case Role.ADMIN:
-        //admin sees everything
-        return {};
-      case Role.DEI:
-      case Role.CC:
-        return {
-          AND: {
-            //no feedbackResponses that are routed outside
-            routeOutside: false,
-            ...whereAnswer,
-          },
-        };
-    }
   }
 }

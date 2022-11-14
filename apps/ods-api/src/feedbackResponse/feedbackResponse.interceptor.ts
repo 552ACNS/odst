@@ -5,16 +5,18 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { Observable, of, tap } from 'rxjs';
-import { logger } from 'nx/src/utils/logger';
+import { Observable } from 'rxjs';
 import { FeedbackResponseService } from './feedbackResponse.service';
 import { merge } from 'lodash';
-import { Prisma } from '.prisma/ods/client';
-import { setContext } from '@apollo/client/link/context';
+import { Prisma, Role, User } from '.prisma/ods/client';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class FeedbackResponseInterceptor implements NestInterceptor {
-  constructor(private feedbackResponseService: FeedbackResponseService) {}
+  constructor(
+    private feedbackResponseService: FeedbackResponseService,
+    private prisma: PrismaService
+  ) {}
   async intercept(
     context: ExecutionContext,
     next: CallHandler
@@ -40,9 +42,7 @@ export class FeedbackResponseInterceptor implements NestInterceptor {
               // and that value
               value: {
                 // is contained in the user's orgs
-                in: await this.feedbackResponseService.getUsersOrgs(
-                  ctx.req.user
-                ),
+                in: await this.getUsersOrgs(ctx.req.user),
               },
             },
           },
@@ -60,5 +60,73 @@ export class FeedbackResponseInterceptor implements NestInterceptor {
     }
 
     return next.handle();
+  }
+
+  /**
+   *
+   * @param user Current user
+   * @returns An array of Org Names ['552 ACNS', '552 ACW', '752 OSS'] etc.
+   */
+  async getUsersOrgs(user: User): Promise<string[]> {
+    // represents the user's identity
+    const whereUser: Prisma.OrgWhereInput = {
+      users: {
+        some: {
+          id: user.id,
+        },
+      },
+    };
+
+    switch (user.role) {
+      case Role.ADMIN: {
+        // Admins see all orgs
+        return this.prisma.org
+          .findMany({
+            select: {
+              name: true,
+            },
+          })
+          .then((orgs) => orgs.map((org) => org.name));
+      }
+      // DEI and CC basically have the same logic on who sees what based on their org membership
+      case Role.DEI:
+      case Role.CC: {
+        // get all orgs where user is either a member of it,
+        // a member of the parent
+        // or a member of the grandparent
+        // Refactor to allow for (N-levels of orgs)
+        return this.prisma.org
+          .findMany({
+            select: {
+              name: true,
+            },
+            // find me the orgs where
+            where: {
+              OR: [
+                // where the user is a member of it
+                whereUser,
+                // where the user is a member of the parent
+                {
+                  parent: whereUser,
+                },
+                // where the user is a member of the grand parent
+                {
+                  parent: {
+                    parent: whereUser,
+                  },
+                },
+              ],
+            },
+            // I only want the distinct results
+            distinct: 'name',
+          })
+          .then((orgs) => orgs.map((org) => org.name));
+      }
+      default: {
+        // if we for some reason assign to a role that we don't define here
+        // they don't have access to anything
+        return [];
+      }
+    }
   }
 }
