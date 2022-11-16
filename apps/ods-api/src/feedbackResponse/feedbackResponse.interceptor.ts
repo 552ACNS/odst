@@ -6,17 +6,14 @@ import {
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
-import { FeedbackResponseService } from './feedbackResponse.service';
 import { merge } from 'lodash';
 import { Prisma, Role, User } from '.prisma/ods/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class FeedbackResponseInterceptor implements NestInterceptor {
-  constructor(
-    private feedbackResponseService: FeedbackResponseService,
-    private prisma: PrismaService
-  ) {}
+  constructor(private prisma: PrismaService) {}
+
   async intercept(
     context: ExecutionContext,
     next: CallHandler

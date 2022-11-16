@@ -5,8 +5,7 @@ import {
   MockFeedbackResponses,
   MockFeedbackResponseCreateInput,
 } from './feedbackResponse.repo';
-
-describe('FeedbackResponse Resolver', () => {
++describe('FeedbackResponse Resolver', () => {
   let resolver: FeedbackResponseResolver;
 
   beforeEach(async () => {
