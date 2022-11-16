@@ -33,9 +33,10 @@
           required
         >
         </textarea>
-        <mat-error>
-          Please describe the microaggression or discrimination that took place.
-        </mat-error>
+        <mat-error *ngIf="form.controls['event'].errors"
+          >Please describe the microaggression or discrimination that took
+          place.</mat-error
+        >
       </mat-form-field>
       <label class="mt-6 mb-2">
         {{ questions[2] }}
@@ -46,7 +47,7 @@
         name="violator_spec"
         formControlName="violatorSpec"
         color="primary"
-        (change)="makeViolatorOtherRequired()"
+        (change)="otherRequired('violatorSpec')"
         required
       >
         <mat-radio-button value="AD">Active Duty</mat-radio-button>
@@ -64,10 +65,13 @@
           <mat-form-field>
             <input
               matInput
-              formControlName="violatorOtherSpec"
+              formControlName="violatorSpecOther"
               placeholder="Other"
             />
           </mat-form-field>
+          <mat-error *ngIf="form.controls['violatorSpecOther'].errors"
+            >Please enter the title of the individual</mat-error
+          >
         </mat-radio-button>
       </mat-radio-group>
       <label class="mt-6 mb-1">
@@ -92,7 +96,7 @@
         name="person_spec"
         formControlName="personSpec"
         color="primary"
-        (change)="makePersonOtherRequired()"
+        (change)="otherRequired('personSpec')"
         required
       >
         <mat-radio-button value="AD">Active Duty</mat-radio-button>
@@ -110,10 +114,13 @@
           <mat-form-field>
             <input
               matInput
-              formControlName="personOtherSpec"
+              formControlName="personSpecOther"
               placeholder="Other"
             />
           </mat-form-field>
+          <mat-error *ngIf="form.controls['personSpecOther'].errors"
+            >Please enter your title</mat-error
+          >
         </mat-radio-button>
       </mat-radio-group>
       <label class="mt-6 mb-1">
@@ -128,7 +135,9 @@
           required
         >
         </textarea>
-        <mat-error> Please describe the events impact </mat-error>
+        <mat-error *ngIf="form.controls['impact'].errors"
+          >Please enter your impact</mat-error
+        >
       </mat-form-field>
       <label class="mt-6 mb-1">
         Click the box below if your Commander was involved in the event (this

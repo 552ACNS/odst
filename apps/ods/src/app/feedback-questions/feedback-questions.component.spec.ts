@@ -14,7 +14,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { DebugElement } from '@angular/core';
 
 describe('FeedbackQuestionsComponent', () => {
   let component: FeedbackQuestionsComponent;
@@ -62,10 +61,10 @@ describe('FeedbackQuestionsComponent', () => {
       eventOrg: '552 ACNS',
       event: 'I was violated viciously with words',
       violatorSpec: 'other',
-      violatorOtherSpec: '',
+      violatorSpecOther: '',
       CC: 'Matos',
       personSpec: 'other',
-      personOtherSpec: 'Hickey',
+      personSpecOther: 'Hickey',
       impact: 'I felt bad',
       outsideRouting: false,
     });
@@ -81,10 +80,10 @@ describe('FeedbackQuestionsComponent', () => {
       eventOrg: '552 ACNS',
       event: 'I was violated viciously with words',
       violatorSpec: 'other',
-      violatorOtherSpec: 'Sherrit',
+      violatorSpecOther: 'Sherrit',
       CC: 'Matos',
       personSpec: 'other',
-      personOtherSpec: 'Hickey',
+      personSpecOther: 'Hickey',
       impact: 'I felt bad',
       outsideRouting: false,
     });
@@ -97,10 +96,10 @@ describe('FeedbackQuestionsComponent', () => {
       eventOrg: '552 ACNS',
       event: 'I was violated viciously with words',
       violatorSpec: 'other',
-      violatorOtherSpec: 'Sherrit',
+      violatorSpecOther: 'Sherrit',
       CC: 'Matos',
       personSpec: 'other',
-      personOtherSpec: '',
+      personSpecOther: '',
       impact: 'I felt bad',
       outsideRouting: false,
     });
@@ -116,10 +115,10 @@ describe('FeedbackQuestionsComponent', () => {
       eventOrg: '552 ACNS',
       event: 'I was violated viciously with words',
       violatorSpec: 'other',
-      violatorOtherSpec: 'Sherrit',
+      violatorSpecOther: 'Sherrit',
       CC: 'Matos',
       personSpec: 'other',
-      personOtherSpec: 'Hickey',
+      personSpecOther: 'Hickey',
       impact: 'I felt bad',
       outsideRouting: false,
     });
