@@ -28,8 +28,7 @@
             }
           ]
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "docker": {
       "executor": "@nx-tools/nx-docker:build",
