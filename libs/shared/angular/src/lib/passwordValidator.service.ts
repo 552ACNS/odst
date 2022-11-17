@@ -1,4 +1,8 @@
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import {
+  FormControl,
+  UntypedFormControl,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 //This is the tells the ghtml when to trigger an error state
@@ -22,6 +26,12 @@ export class CustomValidators {
     const confirmName = group.controls['confirmName'].value;
 
     return name === confirmName ? null : { notSame: true };
+  }
+
+  static noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { whitespace: true };
   }
 }
 

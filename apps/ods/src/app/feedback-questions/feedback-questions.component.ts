@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FeedbackQuestionsService } from './feedback-questions.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { CustomValidators } from '@odst/shared/angular';
 
 @Component({
   selector: 'odst-feedback-questions',
@@ -43,19 +44,35 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
     private clipboard: Clipboard
   ) {}
 
+  //TODO: find way to combine these bottom two functions
   private violatorSpecification(): string {
     if (this.form.value['violatorSpec'] === 'other') {
-      return this.form.value['violatorOtherSpec'];
+      return this.form.value['violatorSpecOther'].trim();
     } else {
       return this.form.value['violatorSpec'];
     }
   }
   private personSpecification(): string {
     if (this.form.value['personSpec'] === 'other') {
-      return this.form.value['personOtherSpec'];
+      return this.form.value['personSpecOther'].trim();
     } else {
       return this.form.value['personSpec'];
     }
+  }
+
+  otherRequired(formControlName: string) {
+    const otherControl = formControlName + 'Other';
+    if (this.form.value[formControlName] === 'other') {
+      this.form
+        .get([otherControl])
+        ?.setValidators([
+          Validators.required,
+          CustomValidators.noWhitespaceValidator,
+        ]);
+    } else {
+      this.form.get([otherControl])?.clearValidators();
+    }
+    this.form.get([otherControl])?.updateValueAndValidity();
   }
 
   //validators didnt need to be inside the formControlName and caused it to break, so i removed
@@ -64,13 +81,13 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   form = this.fb.group({
     eventOrg: ['', [Validators.required]],
-    event: ['', [Validators.required]],
+    event: ['', [Validators.required, CustomValidators.noWhitespaceValidator]],
     violatorSpec: ['', [Validators.required]],
-    violatorOtherSpec: [],
+    violatorSpecOther: [],
     CC: ['', [Validators.required]],
     personSpec: ['', [Validators.required]],
-    personOtherSpec: [],
-    impact: ['', [Validators.required]],
+    personSpecOther: [],
+    impact: ['', [Validators.required, CustomValidators.noWhitespaceValidator]],
     outsideRouting: [],
   });
 
