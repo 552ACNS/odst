@@ -74,9 +74,9 @@
                 !local.userIsAuthorOfComment
             }"
           >
+            <!-- TODO: fix max width of comment card when large comments are made -->
             <mat-card-content
-              class="text-sm text-left"
-              [ngClass]="{ 'text-right': local.userIsAuthorOfComment }"
+              class="text-sm text-left whitespace-pre-line"
               #tooltip="matTooltip"
               matTooltip="{{ comment.date | date: 'd MMM yy, h:mm a' }}"
             >
@@ -113,7 +113,6 @@
     </ng-container>
     <div></div>
     <mat-card-content class="text-sm text-left">
-      <!-- <form [formGroup]="comments"> -->
       <p class="text-base font-medium text-center">Add a Comment</p>
       <!-- Not empty validator -->
 
@@ -140,6 +139,7 @@
           class="w-full text-white shadow-md rounded-full"
           type="submit"
           (click)="submitComment()"
+          [disabled]="!newComment.valid"
         >
           <!-- TODO [ODST-290]: redirect to dashboard when there are no more reports to address -->
           Submit Comment

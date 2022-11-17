@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -27,6 +27,7 @@ import { CustomValidators } from '@odst/shared/angular';
 export class CommentsComponent implements OnInit {
   @Input() comments: GetReportByStatusQuery['getIssuesByStatus'][0]['comments'];
   @Input() userId: string;
+  @Output() commentToSubmit = new EventEmitter<string>();
 
   // addComment = new FormGroup({
   newComment = new FormControl('', [
@@ -44,7 +45,8 @@ export class CommentsComponent implements OnInit {
   }
 
   submitComment() {
-    console.log('submitComment');
+    this.commentToSubmit.emit(this.newComment.value?.trim());
+    this.newComment.reset();
   }
 
   resetField() {
