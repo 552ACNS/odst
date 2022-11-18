@@ -19,6 +19,7 @@
           userIsAuthorOfComment: userId === comment.author.id
         } as local"
       >
+        <!-- 2  -->
         <!-- Generates the DATE of a new day -->
         <!-- if it's the first comment -->
         <!-- or if the day of the comment changes -->
@@ -35,6 +36,7 @@
           </div>
         </ng-container>
 
+        <!-- 2 -->
         <!-- align comments to the left by default -->
         <!-- If the user is equal to the comment's author, then align to the right -->
         <!-- Adjust margins depending on ownership -->
@@ -46,10 +48,12 @@
             'mb-3': last
           }"
         >
+          <!-- 3 -->
           <!-- Displays the authors identity-->
           <!-- if the comment's author is not the user and if the previous comment's
-                 author is not the same as the current one -->
-          <!-- Display the name if it's the first comment and the autor is not the same -->
+                author is not the same as the current one -->
+          <!-- Display the name if it's the first comment of the day
+                and the author is not the same -->
           <!-- Always displays the author if it's a new day -->
           <p
             *ngIf="
@@ -84,6 +88,7 @@
             </mat-card-content>
           </mat-card>
 
+          <!-- 4 -->
           <!-- Display the time below comment -->
           <!-- If there's only 1 comment -->
           <!-- If it's the last comment  -->
@@ -117,7 +122,7 @@
       <!-- Not empty validator -->
 
       <mat-form-field appearance="outline" class="w-full">
-        <!-- <mat-label>I took the following actions...</mat-label> -->
+        <mat-label>Add a comment...</mat-label>
         <textarea
           id="comment"
           matInput
@@ -132,6 +137,7 @@
       </mat-form-field>
       <!-- ACTION TAGS -->
 
+      <!-- 1 -->
       <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
         <button
           mat-raised-button
@@ -149,3 +155,5 @@
     </mat-card-content>
   </mat-card>
 </ng-container>
+
+<p>hickeys kinda cute ngl</p>
