@@ -1,16 +1,20 @@
-import { HttpModule } from '@nestjs/axios';
-import { Test, TestingModule } from '@nestjs/testing';
 import { LoginService } from './login.service';
+import {
+  ApolloTestingController,
+  ApolloTestingModule,
+} from 'apollo-angular/testing';
+import { TestBed } from '@angular/core/testing';
 
 describe('LoginService', () => {
   let service: LoginService;
+  let controller: ApolloTestingController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [LoginService],
-      imports: [HttpModule],
-    }).compile();
-    service = module.get<LoginService>(LoginService);
+    TestBed.configureTestingModule({
+      imports: [ApolloTestingModule],
+    });
+    controller = TestBed.inject(ApolloTestingController);
+    service = TestBed.inject(LoginService);
   });
 
   it('ApiService - should be defined', () => {

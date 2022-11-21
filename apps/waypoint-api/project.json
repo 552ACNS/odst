@@ -1,17 +1,20 @@
 {
+  "name": "waypoint-api",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "apps/waypoint-api/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/waypoint-api",
         "main": "apps/waypoint-api/src/main.ts",
         "tsConfig": "apps/waypoint-api/tsconfig.app.json",
         "tsPlugins": ["@nestjs/graphql/plugin"],
-        "assets": ["apps/waypoint-api/src/assets"]
+        "assets": ["apps/waypoint-api/src/assets"],
+        "target": "node",
+        "compiler": "tsc"
       },
       "configurations": {
         "production": {
@@ -36,7 +39,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/waypoint-api"],
+      "outputs": ["{workspaceRoot}/coverage/apps/waypoint-api"],
       "options": {
         "jestConfig": "apps/waypoint-api/jest.config.ts",
         "passWithNoTests": true
@@ -49,13 +52,13 @@
       }
     },
     "prisma-generate": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "npx prisma generate --schema=apps/waypoint-api/schema.prisma"
       }
     },
     "prisma-migrate": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "commands": [
           "env-cmd -f apps/waypoint-api/.env.local npx prisma db push --accept-data-loss --schema=apps/waypoint-api/schema.prisma",
@@ -70,7 +73,7 @@
       }
     },
     "prisma-studio": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "env-cmd -f apps/waypoint-api/.env.local npx prisma studio --schema=apps/waypoint-api/schema.prisma"
       }

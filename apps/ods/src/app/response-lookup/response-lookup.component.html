@@ -46,6 +46,10 @@
           <p *ngFor="let tag of tags" class="text-center">
             {{ tag }}
           </p>
+          <mat-divider class="mb-3"></mat-divider>
+          <p *ngIf="resolvedComment">
+            Message from reviewer: {{ resolvedComment }}
+          </p>
         </div>
         <p *ngIf="!status">
           This feedback was submitted on

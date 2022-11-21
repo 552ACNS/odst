@@ -1,4 +1,5 @@
 import { User, UserCreateInput } from '@odst/types/ods';
+import { MockOrgs } from '../org/org.repo';
 
 export const MockUsers: User[] = [
   {
@@ -21,6 +22,7 @@ export const MockUsers: User[] = [
     grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
+    orgs: [MockOrgs[0]],
   },
 ];
 

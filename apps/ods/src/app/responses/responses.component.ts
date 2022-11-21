@@ -10,7 +10,6 @@ import {
 } from './responses.generated';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { getUserId } from '@odst/helpers';
-import { reloadPage } from '@odst/helpers';
 import { ResponsesStore } from './responses.store';
 import { first, skipWhile } from 'rxjs';
 @Component({
@@ -23,6 +22,7 @@ export class ResponsesComponent implements OnInit {
   //#region Variables
   resolutionForm = this.fb.group({
     comment: [''],
+    resolvedCommentForm: [''],
   });
 
   actionTags: string[];
@@ -58,6 +58,10 @@ export class ResponsesComponent implements OnInit {
   pageEvent: PageEvent;
 
   take = 1;
+
+  resolvedComment: any;
+
+  resolvedCommentSuccess = false;
 
   response: GetReportByStatusQuery['getIssuesByStatus'][0];
   //#endregion
@@ -154,6 +158,11 @@ export class ResponsesComponent implements OnInit {
 
           this.comments = this.response.comments;
 
+          this.resolvedComment = this.response.resolvedComment;
+          this.resolutionForm
+            .get('resolvedCommentForm')
+            ?.setValue(this.resolvedComment);
+
           this.actualResolution = this.response['resolved'];
 
           //TODO don't hardcode tag types
@@ -216,8 +225,6 @@ export class ResponsesComponent implements OnInit {
             this.comments = data.updateFeedbackResponse['comments'];
             this.actualResolution = data.updateFeedbackResponse['resolved'];
             this.resolutionForm.reset();
-            //TODO: unable to get page to refresh using other methods.  Need to redo this on another sprint.
-            reloadPage();
           }
         });
     }
@@ -257,7 +264,6 @@ export class ResponsesComponent implements OnInit {
       .subscribe(({ data, errors }) => {
         if (!errors && data) {
           this.actualResolution = data.updateFeedbackResponse['resolved'];
-          this.reload();
         }
       });
   }
@@ -316,11 +322,28 @@ export class ResponsesComponent implements OnInit {
     }
   }
   //#endregion
+  async submitResolvedComment(): Promise<void> {
+    this.resolvedComment = this.resolutionForm.value.resolvedCommentForm.trim();
 
-  //TODO: This will need to be made into a function at the application level.
-  async reload(): Promise<void> {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['./'], { relativeTo: this.route });
+    const updateResolvedMutationVariables: UpdateResolvedMutationVariables = {
+      where: {
+        id: this.response.id,
+      },
+      data: {
+        resolvedComment: {
+          set: this.resolvedComment,
+        },
+      },
+    };
+
+    this.responsesService
+      .updateResolved(updateResolvedMutationVariables)
+      .subscribe(({ data, errors }) => {
+        if (!errors && data) {
+          this.resolvedCommentSuccess = true;
+        } else {
+          this.resolvedCommentSuccess = false;
+        }
+      });
   }
 }

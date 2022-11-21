@@ -19,18 +19,18 @@ generator nestgraphql {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  email        String        @unique
+  id                String             @id @default(uuid())
+  email             String             @unique
   /// @HideField()
-  password     String
-  grade        String?
-  firstName    String
-  lastName     String
-  status       Status
-  role         Role
-  refreshToken RefreshToken?
-  orgs         Org[]
-  comments     Comment[]
+  password          String
+  grade             String?
+  firstName         String
+  lastName          String
+  status            Status
+  role              Role
+  refreshToken      RefreshToken?
+  orgs              Org[]
+  comments          Comment[]
   reviewedResponses FeedbackResponse[]
   sendEmail    SendEmail?
 }
@@ -69,6 +69,7 @@ model FeedbackResponse {
   resolved     Boolean   @default(false)
   reviewedBy   User?     @relation(fields: [reviewerId], references: [id])
   reviewerId   String?
+  resolvedComment String?
 }
 
 model Comment {
@@ -100,7 +101,7 @@ model Feedback {
 
 model Question {
   id        String     @id @default(uuid())
-  value    String     @unique
+  value     String     @unique
   feedbacks Feedback[]
   answers   Answer[]
 }
@@ -131,10 +132,10 @@ enum Role {
 
 //applies to user accounts
 enum Status {
-  DISABLED   //account suspended
-  ENABLED   //request approved or account reinstated
+  DISABLED //account suspended
+  ENABLED //request approved or account reinstated
   REQUESTED //initial request
-  DENIED    //request disapproved
+  DENIED //request disapproved
 }
 
 enum Spec {

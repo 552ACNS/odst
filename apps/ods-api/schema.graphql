@@ -75,6 +75,7 @@ type FeedbackResponse {
   resolved: Boolean!
   reviewedBy: User
   reviewerId: String
+  resolvedComment: String
   _count: FeedbackResponseCount!
 }
 
@@ -233,6 +234,7 @@ type FeedbackResponseCountAggregate {
   routeOutside: Int!
   resolved: Int!
   reviewerId: Int!
+  resolvedComment: Int!
   _all: Int!
 }
 
@@ -244,6 +246,7 @@ type FeedbackResponseMinAggregate {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: String
+  resolvedComment: String
 }
 
 type FeedbackResponseMaxAggregate {
@@ -254,6 +257,7 @@ type FeedbackResponseMaxAggregate {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: String
+  resolvedComment: String
 }
 
 type OrgCountAggregate {
@@ -391,6 +395,7 @@ type TrackedFeedback {
   grade: String
   firstName: String
   lastName: String
+  resolvedComment: String
 }
 
 type Query {
@@ -400,8 +405,16 @@ type Query {
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
   ResponseCount: ResponseCount!
   getIssuesByStatus(status: String!, where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, distinct: [FeedbackResponseScalarFieldEnum!]): [FeedbackResponse!]!
+  getUserOrgsNames: [String!]!
   getOrgLineage: [String!]!
   getOrgNames: [String!]!
+  getOrgChildren(orgName: String!): [String!]!
+  checkOrg(orgName: String!): Boolean!
+  getOrgTier(orgName: String!): OrgTier!
+  getOrgsBelowTier(orgTier: OrgTier!): [String!]!
+  getOrgsBelowTierWithKeepParents(orgTier: OrgTier!): [String!]!
+  getOrgsAboveTier(orgTier: OrgTier!): [String!]!
+  getTiersByUser: [String!]!
   getSubQuestions(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): [String!]!
   findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
   getCommanders: [String!]!
@@ -436,6 +449,7 @@ input FeedbackResponseWhereInput {
   resolved: BoolFilter
   reviewedBy: UserRelationFilter
   reviewerId: StringNullableFilter
+  resolvedComment: StringNullableFilter
 }
 
 input StringFilter {
@@ -803,6 +817,7 @@ input FeedbackResponseOrderByWithRelationInput {
   resolved: SortOrder
   reviewedBy: UserOrderByWithRelationInput
   reviewerId: SortOrder
+  resolvedComment: SortOrder
 }
 
 enum SortOrder {
@@ -875,6 +890,7 @@ input FeedbackResponseCountAggregateInput {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: Boolean
+  resolvedComment: Boolean
   _all: Boolean
 }
 
@@ -886,6 +902,7 @@ input FeedbackResponseMinAggregateInput {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: Boolean
+  resolvedComment: Boolean
 }
 
 input FeedbackResponseMaxAggregateInput {
@@ -896,6 +913,7 @@ input FeedbackResponseMaxAggregateInput {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: Boolean
+  resolvedComment: Boolean
 }
 
 enum FeedbackResponseScalarFieldEnum {
@@ -906,6 +924,7 @@ enum FeedbackResponseScalarFieldEnum {
   routeOutside
   resolved
   reviewerId
+  resolvedComment
 }
 
 input UserWhereUniqueInput {
@@ -929,6 +948,9 @@ type Mutation {
   updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
   createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): String!
   updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
+  createOrg(orgCreateInput: OrgCreateInput!): String!
+  updateOrg(data: OrgUpdateInput!, where: OrgWhereUniqueInput!): Org!
+  deleteOrg(orgWhereUniqueInput: OrgWhereUniqueInput!): Org
   createUser(userCreateInput: UserCreateInput!): String!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
@@ -1049,6 +1071,7 @@ input FeedbackResponseCreateWithoutCommentsInput {
   tags: TagCreateNestedManyWithoutFeedbackResponsesInput
   resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
+  resolvedComment: String
 }
 
 input FeedbackCreateNestedOneWithoutFeedbackResponsesInput {
@@ -1116,6 +1139,7 @@ input FeedbackResponseCreateWithoutAnswersInput {
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
   resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
+  resolvedComment: String
 }
 
 input TagCreateNestedManyWithoutFeedbackResponsesInput {
@@ -1234,6 +1258,7 @@ input FeedbackResponseCreateWithoutFeedbackInput {
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
   resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
+  resolvedComment: String
 }
 
 input AnswerCreateNestedManyWithoutFeedbackResponseInput {
@@ -1351,6 +1376,7 @@ input FeedbackResponseCreateManyFeedbackInput {
   routeOutside: Boolean
   resolved: Boolean
   reviewerId: String
+  resolvedComment: String
 }
 
 input FeedbackCreateOrConnectWithoutOrgsInput {
@@ -1417,6 +1443,7 @@ input FeedbackResponseCreateWithoutReviewedByInput {
   tags: TagCreateNestedManyWithoutFeedbackResponsesInput
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
   resolved: Boolean
+  resolvedComment: String
 }
 
 input FeedbackResponseCreateOrConnectWithoutReviewedByInput {
@@ -1436,6 +1463,7 @@ input FeedbackResponseCreateManyReviewedByInput {
   closedDate: DateTime
   routeOutside: Boolean
   resolved: Boolean
+  resolvedComment: String
 }
 
 input UserCreateOrConnectWithoutCommentsInput {
@@ -1669,6 +1697,7 @@ input FeedbackResponseUpdateWithoutCommentsInput {
   tags: TagUpdateManyWithoutFeedbackResponsesInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput {
@@ -1765,6 +1794,7 @@ input FeedbackResponseUpdateWithoutAnswersInput {
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input NullableDateTimeFieldUpdateOperationsInput {
@@ -1987,6 +2017,7 @@ input FeedbackResponseUpdateWithoutFeedbackInput {
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input AnswerUpdateManyWithoutFeedbackResponseInput {
@@ -2158,6 +2189,7 @@ input FeedbackResponseScalarWhereInput {
   routeOutside: BoolFilter
   resolved: BoolFilter
   reviewerId: StringNullableFilter
+  resolvedComment: StringNullableFilter
 }
 
 input FeedbackResponseUpdateManyMutationInput {
@@ -2166,6 +2198,7 @@ input FeedbackResponseUpdateManyMutationInput {
   closedDate: NullableDateTimeFieldUpdateOperationsInput
   routeOutside: BoolFieldUpdateOperationsInput
   resolved: BoolFieldUpdateOperationsInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input FeedbackUpdateWithWhereUniqueWithoutOrgsInput {
@@ -2273,6 +2306,7 @@ input FeedbackResponseUpdateWithoutReviewedByInput {
   tags: TagUpdateManyWithoutFeedbackResponsesInput
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input FeedbackResponseUpdateWithWhereUniqueWithoutReviewedByInput {
@@ -2411,6 +2445,7 @@ input FeedbackResponseCreateInput {
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
   resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
+  resolvedComment: String
 }
 
 input FeedbackResponseUpdateInput {
@@ -2424,6 +2459,27 @@ input FeedbackResponseUpdateInput {
   comments: CommentUpdateManyWithoutFeedbackResponseInput
   resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
+}
+
+input OrgCreateInput {
+  id: String
+  name: String!
+  orgTier: OrgTier!
+  users: UserCreateNestedManyWithoutOrgsInput
+  parent: OrgCreateNestedOneWithoutChildrenInput
+  children: OrgCreateNestedManyWithoutParentInput
+  feedbacks: FeedbackCreateNestedManyWithoutOrgsInput
+}
+
+input OrgUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  orgTier: EnumOrgTierFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutOrgsInput
+  parent: OrgUpdateOneWithoutChildrenInput
+  children: OrgUpdateManyWithoutParentInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsInput
 }
 
 input UserCreateInput {
