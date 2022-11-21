@@ -302,7 +302,7 @@ export class FeedbackResponseService {
 
   async answers(
     feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
-  ): Promise<Answer[]> {
+  ): Promise<Answer[] | null> {
     return this.prisma.feedbackResponse
       .findUnique({ where: feedbackResponseWhereUniqueInput })
       .answers();
@@ -310,7 +310,7 @@ export class FeedbackResponseService {
 
   async tags(
     feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
-  ): Promise<Tag[]> {
+  ): Promise<Tag[] | null> {
     return this.prisma.feedbackResponse
       .findUnique({ where: feedbackResponseWhereUniqueInput })
       .tags();
@@ -318,7 +318,7 @@ export class FeedbackResponseService {
 
   async comments(
     feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
-  ): Promise<Comment[]> {
+  ): Promise<Comment[] | null> {
     return this.prisma.feedbackResponse
       .findUnique({ where: feedbackResponseWhereUniqueInput })
       .comments({

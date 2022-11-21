@@ -117,12 +117,12 @@ export class OrgResolver {
   }
 
   @ResolveField(() => [User])
-  async users(@Parent() org: Org): Promise<User[]> {
+  async users(@Parent() org: Org): Promise<User[] | null> {
     return this.orgService.users({ id: org.id });
   }
 
   @ResolveField(() => [Org])
-  async children(@Parent() org: Org): Promise<Org[]> {
+  async children(@Parent() org: Org): Promise<Org[] | null> {
     return this.orgService.children({ id: org.id });
   }
 
@@ -132,7 +132,7 @@ export class OrgResolver {
   }
 
   @ResolveField(() => [Feedback])
-  async feedbacks(@Parent() org: Org): Promise<Feedback[]> {
+  async feedbacks(@Parent() org: Org): Promise<Feedback[] | null> {
     return this.orgService.feedbacks({ id: org.id });
   }
 }

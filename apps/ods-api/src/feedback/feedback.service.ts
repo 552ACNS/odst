@@ -95,7 +95,7 @@ export class FeedbackService {
 
   async orgs(
     feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
-  ): Promise<Org[]> {
+  ): Promise<Org[] | null> {
     return this.prisma.feedback
       .findUnique({ where: feedbackWhereUniqueInput })
       .orgs();
@@ -103,7 +103,7 @@ export class FeedbackService {
 
   async questions(
     feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
-  ): Promise<Question[]> {
+  ): Promise<Question[] | null> {
     return this.prisma.feedback
       .findUnique({ where: feedbackWhereUniqueInput })
       .questions();
@@ -111,7 +111,7 @@ export class FeedbackService {
 
   async feedbackResponses(
     feedbackWhereUniqueInput: Prisma.FeedbackWhereUniqueInput
-  ): Promise<FeedbackResponse[]> {
+  ): Promise<FeedbackResponse[] | null> {
     return this.prisma.feedback
       .findUnique({ where: feedbackWhereUniqueInput })
       .feedbackResponses();

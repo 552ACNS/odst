@@ -23,7 +23,7 @@ export class QuestionService {
 
   async answers(
     questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput
-  ): Promise<Answer[]> {
+  ): Promise<Answer[] | null> {
     return this.prisma.question
       .findUnique({ where: questionWhereUniqueInput })
       .answers();
@@ -31,7 +31,7 @@ export class QuestionService {
 
   async feedbacks(
     questionWhereUniqueInput: Prisma.QuestionWhereUniqueInput
-  ): Promise<Feedback[]> {
+  ): Promise<Feedback[] | null> {
     return this.prisma.question
       .findUnique({ where: questionWhereUniqueInput })
       .feedbacks();

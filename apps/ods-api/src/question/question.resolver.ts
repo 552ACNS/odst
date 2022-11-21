@@ -29,12 +29,12 @@ export class QuestionResolver {
   }
 
   @ResolveField(() => [Answer])
-  async answers(@Parent() question: Question): Promise<Answer[]> {
+  async answers(@Parent() question: Question): Promise<Answer[] | null> {
     return this.questionService.answers({ id: question.id });
   }
 
   @ResolveField(() => [Feedback])
-  async feedbacks(@Parent() question: Question): Promise<Feedback[]> {
+  async feedbacks(@Parent() question: Question): Promise<Feedback[] | null> {
     return this.questionService.feedbacks({ id: question.id });
   }
 }
