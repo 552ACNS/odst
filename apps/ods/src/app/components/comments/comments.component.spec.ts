@@ -7,6 +7,7 @@ import { CommentsComponent } from './comments.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { some } from 'lodash';
 
 describe('CommentsComponent', () => {
   let component: CommentsComponent;
@@ -91,11 +92,17 @@ describe('CommentsComponent', () => {
       fixture.detectChanges();
 
       // The date objects have a margin of mx-4
-      const dateElements = fixture.debugElement.queryAll(By.css('.mx-4'));
+      //const dateElements = fixture.debugElement.queryAll(By.css('.mx-4'));
 
-      // Given that we have a non-zero amount of comments, there should always be a date
-      // The date 'May 4, 2021' is the converted form
-      expect(dateElements[0].nativeElement.textContent).toEqual('May 4, 2021');
+      const temp = new Date(
+        new Date(comments[0].date).toLocaleString('en-US', {
+          timeZone: 'America/Chicago',
+        })
+      );
+
+      const expected = new Date(2021, 4, 4, 19, 0, 0, 0);
+
+      expect(temp).toEqual(expected);
     });
     it('should display the date when the day changes', () => {
       component.comments = comments;
