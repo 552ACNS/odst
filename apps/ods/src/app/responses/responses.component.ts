@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { ResponsesService } from './responses.service';
 import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,7 @@ import {
   GetReportByStatusQuery,
   UpdateResolvedMutationVariables,
 } from './responses.generated';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { getUserId } from '@odst/helpers';
 import { ResponsesStore } from './responses.store';
 import { first, skipWhile } from 'rxjs';
