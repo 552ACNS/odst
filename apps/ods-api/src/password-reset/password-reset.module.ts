@@ -7,12 +7,12 @@ import { MailerModule } from '@nestjs-modules/mailer';
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: process.env.EMAIL_HOST, // change to your email smtp server like www.example.com
-        port: process.env.EMAIL_PORT, // change to configured tls port for smtp server
+        host: process.env.MAIL_HOST,
+        port: 465,
         secure: true,
         auth: {
-          user: process.env.EMAIL_ID, // change to the users email
-          pass: process.env.EMAIL_PASS, // will authenticate that this is a valid user email
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASSWORD,
         },
       },
     }),
