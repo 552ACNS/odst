@@ -1,4 +1,6 @@
 @use '@angular/material' as mat;
+@include mat.core();
+
 @import '@angular/material/theming';
 
 @tailwind base;
@@ -18,10 +20,12 @@ $light-theme: mat.define-light-theme(
       accent: $light-accent,
       error: $error-color,
     ),
+    typography: mat.define-typography-config(),
+    density: 0,
   )
 );
 
-@include mat.all-legacy-component-themes($light-theme);
+@include mat.all-component-themes($light-theme);
 
 .text-link-color {
   color: mat.get-color-from-palette($light-primary, 'text');
@@ -44,10 +48,12 @@ $dark-accent: mat.define-palette(mat.$blue-gray-palette);
         accent: $dark-accent,
         error: $error-color,
       ),
+      typography: mat.define-typography-config(),
+      density: 0,
     )
   );
 
-  @include mat.all-legacy-component-colors($dark-theme);
+  @include mat.all-component-colors($dark-theme);
 }
 
 /* You can add global styles to this file, and also import other style files */
@@ -84,7 +90,7 @@ body {
 }
 
 @layer base {
-  .mat-card {
+  .mat-mdc-card {
     // Need to wrap important in SASS interpolation to work with Tailwind
     @apply rounded-2xl shadow-md #{!important};
   }

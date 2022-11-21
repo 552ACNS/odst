@@ -9,7 +9,7 @@ import { Apollo } from 'apollo-angular';
 import { environment } from '../environments/environment';
 import { AuthGuard, LoggedInGuard } from '@odst/shared/angular';
 import { HeaderModule } from './header/header.module';
-import { MAT_LEGACY_SNACK_BAR_DEFAULT_OPTIONS as MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/legacy-snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],

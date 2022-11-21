@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestedAccountsService } from './requested-accounts.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { first } from 'rxjs';
 
 @Component({

@@ -10,7 +10,7 @@ import {
   regExps,
   errorMessages,
 } from '@odst/shared/angular';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'odst-request-account',
