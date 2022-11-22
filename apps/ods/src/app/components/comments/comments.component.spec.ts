@@ -7,7 +7,7 @@ import { CommentsComponent } from './comments.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { some } from 'lodash';
+import { formatDate } from '@angular/common';
 
 describe('CommentsComponent', () => {
   let component: CommentsComponent;
@@ -93,17 +93,9 @@ describe('CommentsComponent', () => {
 
       // The date objects have a margin of mx-4
       const dateElements = fixture.debugElement.queryAll(By.css('.mx-4'));
+      const expected = formatDate(comments[0].date, 'longDate', 'en-US');
 
-      // We expect the date to be the first comment's date
-      const expected = new Date(component.comments[0].date).toLocaleDateString(
-        'en-us',
-        { timeZone: 'America/Chicago' }
-      );
-
-      const actual = new Date(
-        dateElements[0].nativeElement.textContent
-      ).toLocaleDateString();
-
+      const actual = dateElements[0].nativeElement.textContent;
       expect(expected).toEqual(actual);
     });
     it('should display the date when the day changes', () => {
@@ -201,39 +193,52 @@ describe('CommentsComponent', () => {
       component.comments = oneComment;
       fixture.detectChanges();
 
+      const time = fixture.debugElement.query(By.css('div.flex-col'));
+
+      const expected = formatDate(oneComment[0].date, 'HH:mm', 'en-us');
+      const actual = time.nativeElement.textContent;
+
       // The time is displayed in a div with css of `text-xs`
-      const time = fixture.debugElement.query(By.css('div.text-xs'));
-      expect(time.nativeElement.textContent).toBeTruthy();
+      expect(actual).toContain(expected);
     });
     it('should display the time only below the last comment when the same user made the previous', () => {
       component.comments = comments;
       fixture.detectChanges();
 
-      // The time is displayed in a div with css of `text-xs`
       const times = fixture.debugElement.queryAll(By.css('div.flex-col'));
 
-      expect(times[2].nativeElement.textContent).not.toContain('19:00');
-      expect(times[3].nativeElement.textContent).toContain('19:00');
+      const expected = formatDate(comments[0].date, 'HH:mm', 'en-us');
+      const actual = times[2].nativeElement.textContent;
+      const actual2 = times[3].nativeElement.textContent;
+
+      expect(actual).not.toContain(expected);
+      expect(actual2).toContain(expected);
     });
     it('should display the time below the comments when a different user made the previous', () => {
       component.comments = comments;
       fixture.detectChanges();
 
-      // The time is displayed in a div with css of `text-xs`
       const times = fixture.debugElement.queryAll(By.css('div.flex-col'));
 
-      expect(times[0].nativeElement.textContent).toContain('19:00');
-      expect(times[1].nativeElement.textContent).toContain('19:00');
+      const expected = formatDate(comments[0].date, 'HH:mm', 'en-us');
+      const actual = times[0].nativeElement.textContent;
+      const actual2 = times[1].nativeElement.textContent;
+
+      expect(actual).toContain(expected);
+      expect(actual2).toContain(expected);
     });
     it('should display the time below both comments when commenting on a new day', () => {
-      comments.pop();
-      component.comments = comments;
+      component.comments = comments.slice(0, 3);
       fixture.detectChanges();
 
-      // The time is displayed in a div with css of `text-xs`
       const times = fixture.debugElement.queryAll(By.css('div.flex-col'));
-      expect(times[1].nativeElement.textContent).toContain('19:00');
-      expect(times[2].nativeElement.textContent).toContain('19:00');
+
+      const expected = formatDate(comments[0].date, 'HH:mm', 'en-us');
+      const actual = times[1].nativeElement.textContent;
+      const actual2 = times[2].nativeElement.textContent;
+
+      expect(actual).toContain(expected);
+      expect(actual2).toContain(expected);
     });
   });
 
