@@ -92,17 +92,19 @@ describe('CommentsComponent', () => {
       fixture.detectChanges();
 
       // The date objects have a margin of mx-4
-      //const dateElements = fixture.debugElement.queryAll(By.css('.mx-4'));
+      const dateElements = fixture.debugElement.queryAll(By.css('.mx-4'));
 
-      const temp = new Date(
-        new Date(comments[0].date).toLocaleString('en-US', {
-          timeZone: 'America/Chicago',
-        })
+      // We expect the date to be the first comment's date
+      const expected = new Date(component.comments[0].date).toLocaleDateString(
+        'en-us',
+        { timeZone: 'America/Chicago' }
       );
 
-      const expected = new Date(2021, 4, 4, 19, 0, 0, 0);
+      const actual = new Date(
+        dateElements[0].nativeElement.textContent
+      ).toLocaleDateString();
 
-      expect(temp).toEqual(expected);
+      expect(expected).toEqual(actual);
     });
     it('should display the date when the day changes', () => {
       component.comments = comments;
@@ -111,9 +113,18 @@ describe('CommentsComponent', () => {
       // The date objects have a margin of mx-4
       const dateElements = fixture.debugElement.queryAll(By.css('.mx-4'));
 
-      // Given that we have a non-zero amount of comments, there should always be a date
-      // The date 'May 5, 2021' is the converted form
-      expect(dateElements[1].nativeElement.textContent).toEqual('May 5, 2021');
+      // The expected date is set to the third comment, it was a different day than the first 2
+      const expected = new Date(component.comments[2].date).toLocaleDateString(
+        'en-us',
+        { timeZone: 'America/Chicago' }
+      );
+
+      // If the date displays when the day changes, it should be the 2nd index of dateElements. Index 1 is the date above the first comment
+      const actual = new Date(
+        dateElements[1].nativeElement.textContent
+      ).toLocaleDateString();
+
+      expect(expected).toEqual(actual);
     });
   });
 
