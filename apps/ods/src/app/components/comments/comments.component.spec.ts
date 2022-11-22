@@ -106,17 +106,11 @@ describe('CommentsComponent', () => {
       const dateElements = fixture.debugElement.queryAll(By.css('.mx-4'));
 
       // The expected date is set to the third comment, it was a different day than the first 2
-      const expected = new Date(component.comments[2].date).toLocaleDateString(
-        'en-us',
-        { timeZone: 'America/Chicago' }
-      );
-
       // If the date displays when the day changes, it should be the 2nd index of dateElements. Index 1 is the date above the first comment
-      const actual = new Date(
-        dateElements[1].nativeElement.textContent
-      ).toLocaleDateString();
+      const expected = formatDate(comments[2].date, 'longDate', 'en-us');
+      const actual = dateElements[1].nativeElement.textContent;
 
-      expect(expected).toEqual(actual);
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -128,9 +122,6 @@ describe('CommentsComponent', () => {
 
       // Comments on the right have css of `items-end`
       const userComment = fixture.debugElement.query(By.css('.items-end'));
-
-      console.log(userComment.nativeElement.textContent);
-      console.log(comments[0].value);
 
       expect(userComment.nativeElement.textContent).toContain(
         comments[0].value
@@ -146,7 +137,6 @@ describe('CommentsComponent', () => {
 
       // The author name is displayed in a p with css of `text-xs`
       const authorNames = fixture.debugElement.queryAll(By.css('p.text-xs'));
-      console.log(authorNames[0].nativeElement.textContent);
 
       expect(authorNames[0].nativeElement.textContent).toContain(
         comments[1].author.firstName
