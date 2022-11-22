@@ -66,24 +66,17 @@ describe('CommentsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-    // expect(true).toBeTruthy();
-  });
-
   it('should display comments', () => {
     component.comments = comments;
     fixture.detectChanges();
 
-    // find the elements that have the class of `text-sm text-left whitespace-pre-line`
+    // comment elements have the class of `text-sm text-left whitespace-pre-line`
     const commentElements = fixture.nativeElement.querySelectorAll(
       'text-sm text-left whitespace-pre-line'
     );
 
-    expect(commentElements).toBeTruthy();
-
-    // check that the comment is displayed
-    // expect(commentElements[0].textContent).toContain(comments[0].value);
+    // check that the comments are displayed
+    expect(commentElements.length).toEqual(comments.length);
   });
 
   describe('ensures the date is properly displaying', () => {
@@ -93,9 +86,10 @@ describe('CommentsComponent', () => {
 
       // The date objects have a margin of mx-4
       const dateElements = fixture.debugElement.queryAll(By.css('.mx-4'));
-      const expected = formatDate(comments[0].date, 'longDate', 'en-US');
 
+      const expected = formatDate(comments[0].date, 'longDate', 'en-US');
       const actual = dateElements[0].nativeElement.textContent;
+
       expect(expected).toEqual(actual);
     });
     it('should display the date when the day changes', () => {
@@ -105,8 +99,6 @@ describe('CommentsComponent', () => {
       // The date objects have a margin of mx-4
       const dateElements = fixture.debugElement.queryAll(By.css('.mx-4'));
 
-      // The expected date is set to the third comment, it was a different day than the first 2
-      // If the date displays when the day changes, it should be the 2nd index of dateElements. Index 1 is the date above the first comment
       const expected = formatDate(comments[2].date, 'longDate', 'en-us');
       const actual = dateElements[1].nativeElement.textContent;
 
@@ -120,12 +112,12 @@ describe('CommentsComponent', () => {
       component.userId = comments[0].author.id;
       fixture.detectChanges();
 
-      // Comments on the right have css of `items-end`
+      // Comments on the right (ones made by current user) have css of `items-end`
       const userComment = fixture.debugElement.query(By.css('.items-end'));
 
-      expect(userComment.nativeElement.textContent).toContain(
-        comments[0].value
-      );
+      const expected = comments[0].value;
+      const actual = userComment.nativeElement.textContent;
+      expect(actual).toContain(expected);
     });
   });
 
@@ -138,9 +130,9 @@ describe('CommentsComponent', () => {
       // The author name is displayed in a p with css of `text-xs`
       const authorNames = fixture.debugElement.queryAll(By.css('p.text-xs'));
 
-      expect(authorNames[0].nativeElement.textContent).toContain(
-        comments[1].author.firstName
-      );
+      const expected = comments[1].author.firstName;
+      const actual = authorNames[0].nativeElement.textContent;
+      expect(actual).toContain(expected);
     });
     it('shouldnt display the author name above a comment when the same user left the previous comment', () => {
       component.comments = comments;
@@ -150,8 +142,11 @@ describe('CommentsComponent', () => {
       // The author name is displayed in a p with css of `text-xs`
       const authorNames = fixture.debugElement.queryAll(By.css('div.flex-col'));
 
-      expect(authorNames[3].nativeElement.textContent).not.toContain('Third');
+      const expected = comments[2].author.firstName;
+      const actual = authorNames[3].nativeElement.textContent;
+      expect(actual).not.toContain(expected);
     });
+
     it('should display the author name above a comment when a different user left the previous comment', () => {
       component.comments = comments;
       component.userId = comments[0].author.id;
@@ -160,7 +155,9 @@ describe('CommentsComponent', () => {
       // The author name is displayed in a p with css of `text-xs`
       const authorNames = fixture.debugElement.queryAll(By.css('div.flex-col'));
 
-      expect(authorNames[2].nativeElement.textContent).toContain('Third');
+      const expected = comments[2].author.firstName;
+      const actual = authorNames[2].nativeElement.textContent;
+      expect(actual).toContain(expected);
     });
   });
 
@@ -188,9 +185,9 @@ describe('CommentsComponent', () => {
       const expected = formatDate(oneComment[0].date, 'HH:mm', 'en-us');
       const actual = time.nativeElement.textContent;
 
-      // The time is displayed in a div with css of `text-xs`
       expect(actual).toContain(expected);
     });
+
     it('should display the time only below the last comment when the same user made the previous', () => {
       component.comments = comments;
       fixture.detectChanges();
@@ -217,6 +214,7 @@ describe('CommentsComponent', () => {
       expect(actual).toContain(expected);
       expect(actual2).toContain(expected);
     });
+
     it('should display the time below both comments when commenting on a new day', () => {
       component.comments = comments.slice(0, 3);
       fixture.detectChanges();

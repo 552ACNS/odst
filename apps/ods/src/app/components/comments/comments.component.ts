@@ -24,31 +24,22 @@ import { CustomValidators } from '@odst/shared/angular';
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.scss'],
 })
-export class CommentsComponent implements OnInit {
+export class CommentsComponent {
   @Input() comments: GetReportByStatusQuery['getIssuesByStatus'][0]['comments'];
   @Input() userId: string;
   @Output() commentToSubmit = new EventEmitter<string>();
 
-  // addComment = new FormGroup({
   newComment = new FormControl('', [
     Validators.required,
     CustomValidators.noWhitespaceValidator,
   ]);
-  // });
-
-  constructor() {
-    console.log('CommentsComponent');
-  }
-
-  ngOnInit(): void {
-    console.log('CommentsComponent');
-  }
 
   submitComment() {
     this.commentToSubmit.emit(this.newComment.value?.trim());
     this.newComment.reset();
   }
 
+  //TODO: add test
   resetField() {
     // if the field is empty or only contains whitespace, reset it
     if (this.newComment.value === '' || this.newComment.value === null) {
