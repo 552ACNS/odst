@@ -70,9 +70,9 @@ describe('CommentsComponent', () => {
     component.comments = comments;
     fixture.detectChanges();
 
-    // comment elements have the class of `text-sm text-left whitespace-pre-line`
-    const commentElements = fixture.nativeElement.querySelectorAll(
-      'text-sm text-left whitespace-pre-line'
+    // comment elements have the class of `items-start`
+    const commentElements = fixture.debugElement.queryAll(
+      By.css('.items-start')
     );
 
     // check that the comments are displayed
@@ -112,7 +112,8 @@ describe('CommentsComponent', () => {
       component.userId = comments[0].author.id;
       fixture.detectChanges();
 
-      // Comments on the right (ones made by current user) have css of `items-end`
+      // All comments have the CSS of 'items-start'. The users comments have an additional
+      // class of 'items-end' which takes precedence over 'items-start'
       const userComment = fixture.debugElement.query(By.css('.items-end'));
 
       const expected = comments[0].value;
