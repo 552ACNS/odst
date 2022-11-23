@@ -140,7 +140,6 @@ describe('CommentsComponent', () => {
       component.userId = comments[0].author.id;
       fixture.detectChanges();
 
-      // The author name is displayed in a p with css of `text-xs`
       const authorNames = fixture.debugElement.queryAll(By.css('div.flex-col'));
 
       const expected = comments[2].author.firstName;
@@ -153,7 +152,6 @@ describe('CommentsComponent', () => {
       component.userId = comments[0].author.id;
       fixture.detectChanges();
 
-      // The author name is displayed in a p with css of `text-xs`
       const authorNames = fixture.debugElement.queryAll(By.css('div.flex-col'));
 
       const expected = comments[2].author.firstName;
