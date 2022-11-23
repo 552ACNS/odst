@@ -29,11 +29,12 @@ export class UserResolver {
     return this.userService.findMany(findManyUserArgs);
   }
 
+  @Public()
   @Query(() => [User], { name: 'findUniqueUser' })
   async findUniqueUser(
     @Args() UserWhereUniqueInput: UserWhereUniqueInput
   ): Promise<User | null> {
-    return this.userService.findUnique(UserWhereUniqueInput);
+    return this.userService.findUnique.id;
   }
 
   //TODO [ODST-302] write custom pipe to not need separate route for this
