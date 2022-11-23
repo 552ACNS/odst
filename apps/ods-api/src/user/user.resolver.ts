@@ -1,6 +1,5 @@
 import {
   Args,
-  GraphQLDefinitionsFactory,
   Mutation,
   Parent,
   Query,
@@ -28,6 +27,13 @@ export class UserResolver {
   @Query(() => [User], { name: 'findManyUsers' })
   async findMany(@Args() findManyUserArgs: FindManyUserArgs): Promise<User[]> {
     return this.userService.findMany(findManyUserArgs);
+  }
+
+  @Query(() => [User], { name: 'findUniqueUser' })
+  async findUniqueUser(
+    @Args() UserWhereUniqueInput: UserWhereUniqueInput
+  ): Promise<User | null> {
+    return this.userService.findUnique(UserWhereUniqueInput);
   }
 
   //TODO [ODST-302] write custom pipe to not need separate route for this
