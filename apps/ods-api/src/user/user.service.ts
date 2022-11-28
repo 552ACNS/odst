@@ -21,7 +21,7 @@ export class UserService {
   //TODO write tests for this
   async findUnique(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<User> {
+  ): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
     });
