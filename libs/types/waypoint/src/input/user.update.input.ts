@@ -8,6 +8,6 @@ export class UserUpdateInput implements Prisma.UserUpdateInput {
   password?: string;
 
   @Field(() => PersonUpdateOneRequiredWithoutUserNestedInput)
-  person?: Prisma.PersonUpdateOneRequiredWithoutUserInput;
+  person?: Prisma.PersonUpdateOneRequiredWithoutUserNestedInput;
   enabled?: boolean;
 }
