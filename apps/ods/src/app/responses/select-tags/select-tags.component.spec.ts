@@ -32,7 +32,7 @@ describe('SelectTagsComponent', () => {
 
   it('should display the selected tags', () => {
     const displayedTags: string[] = fixture.debugElement
-      .queryAll(By.css('.mat-chip'))
+      .queryAll(By.css('.mat-mdc-chip'))
       .map((Tag) =>
         //The cancel icon on the remove button returns in the text content as 'cancel'
         //This removes that from the end of the string so only the tag is returned
