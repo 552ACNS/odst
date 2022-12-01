@@ -21,20 +21,22 @@ export class PasswordRecoveryComponent {
   });
 
   recoveryRequestError = false;
-  recoverPassword() {
-    this.passwordRecoveryService
-      .passwordRecovery(this.passwordRecoveryForm.value['email'])
-      .subscribe(async (data) => {
-        const errors = null;
+  async recoverPassword() {
+    (
+      await this.passwordRecoveryService.resetEmail(
+        this.passwordRecoveryForm.value['email']
+      )
+    ).subscribe(async (data) => {
+      const errors = null;
 
-        this.recoveryRequestError = !!errors && !data;
-        if (!this.recoveryRequestError) {
-          this.sb.open(
-            'Password reset request successfully submitted. Please check your email for instructions to reset your password.',
-            'okay',
-            { duration: 4000 }
-          );
-        }
-      });
+      this.recoveryRequestError = !!errors && !data;
+      if (!this.recoveryRequestError) {
+        this.sb.open(
+          'Password reset request successfully submitted. Please check your email for instructions to reset your password.',
+          'okay',
+          { duration: 4000 }
+        );
+      }
+    });
   }
 }

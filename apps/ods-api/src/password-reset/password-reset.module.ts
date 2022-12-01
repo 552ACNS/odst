@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PasswordResetService } from './password-reset.service';
-import { PasswordResetController } from './password-reset.controller';
+import { PasswordResetResolver } from './password-reset.resolver';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
+  exports: [PasswordResetService],
+  providers: [PasswordResetResolver, PasswordResetService, PrismaService],
   imports: [
     MailerModule.forRoot({
       transport: {
@@ -18,4 +21,4 @@ import { MailerModule } from '@nestjs-modules/mailer';
     }),
   ],
 })
-export class MailModule {}
+export class PasswordResetModule {}
