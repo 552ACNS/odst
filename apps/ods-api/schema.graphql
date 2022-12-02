@@ -89,12 +89,6 @@ type Comment {
   feedbackResponseId: String!
 }
 
-type SendEmail {
-  Sender: String!
-  user: User!
-  userEmail: String!
-}
-
 type UserCount {
   orgs: Int!
   comments: Int!
@@ -113,7 +107,7 @@ type User {
   orgs: [Org!]
   comments: [Comment!]
   reviewedResponses: [FeedbackResponse!]
-  sendEmail: SendEmail
+  resetToken: String!
   _count: UserCount!
 }
 
@@ -333,22 +327,6 @@ type RefreshTokenMaxAggregate {
   hash: String
 }
 
-type SendEmailCountAggregate {
-  Sender: Int!
-  userEmail: Int!
-  _all: Int!
-}
-
-type SendEmailMinAggregate {
-  Sender: String
-  userEmail: String
-}
-
-type SendEmailMaxAggregate {
-  Sender: String
-  userEmail: String
-}
-
 type TagCountAggregate {
   id: Int!
   value: Int!
@@ -376,6 +354,7 @@ type UserCountAggregate {
   lastName: Int!
   status: Int!
   role: Int!
+  resetToken: Int!
   _all: Int!
 }
 
@@ -387,6 +366,7 @@ type UserMinAggregate {
   lastName: String
   status: Status
   role: Role
+  resetToken: String
 }
 
 type UserMaxAggregate {
@@ -397,6 +377,7 @@ type UserMaxAggregate {
   lastName: String
   status: Status
   role: Role
+  resetToken: String
 }
 
 type Tokens {
@@ -582,7 +563,7 @@ input UserWhereInput {
   orgs: OrgListRelationFilter
   comments: CommentListRelationFilter
   reviewedResponses: FeedbackResponseListRelationFilter
-  sendEmail: SendEmailRelationFilter
+  resetToken: StringFilter
 }
 
 input StringNullableFilter {
@@ -725,20 +706,6 @@ input FeedbackResponseListRelationFilter {
   every: FeedbackResponseWhereInput
   some: FeedbackResponseWhereInput
   none: FeedbackResponseWhereInput
-}
-
-input SendEmailRelationFilter {
-  is: SendEmailWhereInput
-  isNot: SendEmailWhereInput
-}
-
-input SendEmailWhereInput {
-  AND: [SendEmailWhereInput!]
-  OR: [SendEmailWhereInput!]
-  NOT: [SendEmailWhereInput!]
-  Sender: StringFilter
-  user: UserRelationFilter
-  userEmail: StringFilter
 }
 
 input OrgRelationFilter {
@@ -909,7 +876,7 @@ input UserOrderByWithRelationInput {
   orgs: OrgOrderByRelationAggregateInput
   comments: CommentOrderByRelationAggregateInput
   reviewedResponses: FeedbackResponseOrderByRelationAggregateInput
-  sendEmail: SendEmailOrderByWithRelationInput
+  resetToken: SortOrder
 }
 
 input RefreshTokenOrderByWithRelationInput {
@@ -920,12 +887,6 @@ input RefreshTokenOrderByWithRelationInput {
   issuedDate: SortOrder
   expiredDate: SortOrder
   hash: SortOrder
-}
-
-input SendEmailOrderByWithRelationInput {
-  Sender: SortOrder
-  user: UserOrderByWithRelationInput
-  userEmail: SortOrder
 }
 
 input FeedbackResponseCountAggregateInput {
@@ -987,6 +948,7 @@ enum UserScalarFieldEnum {
   lastName
   status
   role
+  resetToken
 }
 
 type Mutation {
@@ -1062,7 +1024,7 @@ input UserCreateWithoutOrgsInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   comments: CommentCreateNestedManyWithoutAuthorInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
-  sendEmail: SendEmailCreateNestedOneWithoutUserInput
+  resetToken: String!
 }
 
 input RefreshTokenCreateNestedOneWithoutUserInput {
@@ -1244,7 +1206,7 @@ input UserCreateWithoutCommentsInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
-  sendEmail: SendEmailCreateNestedOneWithoutUserInput
+  resetToken: String!
 }
 
 input OrgCreateNestedManyWithoutUsersInput {
@@ -1401,27 +1363,7 @@ input UserCreateWithoutReviewedResponsesInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
   comments: CommentCreateNestedManyWithoutAuthorInput
-  sendEmail: SendEmailCreateNestedOneWithoutUserInput
-}
-
-input SendEmailCreateNestedOneWithoutUserInput {
-  create: SendEmailCreateWithoutUserInput
-  connectOrCreate: SendEmailCreateOrConnectWithoutUserInput
-  connect: SendEmailWhereUniqueInput
-}
-
-input SendEmailCreateWithoutUserInput {
-  Sender: String!
-}
-
-input SendEmailCreateOrConnectWithoutUserInput {
-  where: SendEmailWhereUniqueInput!
-  create: SendEmailCreateWithoutUserInput!
-}
-
-input SendEmailWhereUniqueInput {
-  Sender: String
-  userEmail: String
+  resetToken: String!
 }
 
 input UserCreateOrConnectWithoutReviewedResponsesInput {
@@ -1670,7 +1612,7 @@ input UserUpdateWithoutOrgsInput {
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   comments: CommentUpdateManyWithoutAuthorInput
   reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByInput
-  sendEmail: SendEmailUpdateOneWithoutUserInput
+  resetToken: StringFieldUpdateOperationsInput
 }
 
 input NullableStringFieldUpdateOperationsInput {
@@ -1978,7 +1920,7 @@ input UserUpdateWithoutCommentsInput {
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   orgs: OrgUpdateManyWithoutUsersInput
   reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByInput
-  sendEmail: SendEmailUpdateOneWithoutUserInput
+  resetToken: StringFieldUpdateOperationsInput
 }
 
 input OrgUpdateManyWithoutUsersInput {
@@ -2238,26 +2180,7 @@ input UserUpdateWithoutReviewedResponsesInput {
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   orgs: OrgUpdateManyWithoutUsersInput
   comments: CommentUpdateManyWithoutAuthorInput
-  sendEmail: SendEmailUpdateOneWithoutUserInput
-}
-
-input SendEmailUpdateOneWithoutUserInput {
-  create: SendEmailCreateWithoutUserInput
-  connectOrCreate: SendEmailCreateOrConnectWithoutUserInput
-  upsert: SendEmailUpsertWithoutUserInput
-  disconnect: Boolean
-  delete: Boolean
-  connect: SendEmailWhereUniqueInput
-  update: SendEmailUpdateWithoutUserInput
-}
-
-input SendEmailUpsertWithoutUserInput {
-  update: SendEmailUpdateWithoutUserInput!
-  create: SendEmailCreateWithoutUserInput!
-}
-
-input SendEmailUpdateWithoutUserInput {
-  Sender: StringFieldUpdateOperationsInput
+  resetToken: StringFieldUpdateOperationsInput
 }
 
 input FeedbackResponseUpdateWithWhereUniqueWithoutFeedbackInput {
@@ -2503,6 +2426,7 @@ input UserScalarWhereInput {
   lastName: StringFilter
   status: EnumStatusFilter
   role: EnumRoleFilter
+  resetToken: StringFilter
 }
 
 input UserUpdateManyMutationInput {
@@ -2514,6 +2438,7 @@ input UserUpdateManyMutationInput {
   lastName: StringFieldUpdateOperationsInput
   status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
+  resetToken: StringFieldUpdateOperationsInput
 }
 
 input OrgUpdateWithWhereUniqueWithoutFeedbacksInput {
@@ -2587,7 +2512,7 @@ input UserCreateInput {
   orgs: OrgCreateNestedManyWithoutUsersInput
   comments: CommentCreateNestedManyWithoutAuthorInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
-  sendEmail: SendEmailCreateNestedOneWithoutUserInput
+  resetToken: String!
 }
 
 input LoginUserInput {

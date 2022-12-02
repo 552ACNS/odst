@@ -11,6 +11,7 @@ export const MockUsers: User[] = [
     grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
+    resetToken: '',
   },
 
   {
@@ -23,6 +24,7 @@ export const MockUsers: User[] = [
     firstName: 'firstName',
     lastName: 'lastName',
     orgs: [MockOrgs[0]],
+    resetToken: '',
   },
 ];
 
@@ -35,5 +37,6 @@ export const MockUserCreateInput: UserCreateInput[] = [
     grade: 'grade',
     firstName: 'firstName',
     lastName: 'lastName',
+    resetToken: '',
   },
 ];
