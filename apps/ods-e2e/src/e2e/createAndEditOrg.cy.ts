@@ -270,8 +270,12 @@ it('Verify that a CC can edit an organization children relationship that they ar
   cy.get('mat-option').contains('552 ACW');
   cy.get('mat-option').contains('552 ACG').click();
 
-  cy.get('mat-chip')
+  // ya its gross but it works
+  cy.get('span')
     .contains('444 EDITORG')
+    .parent()
+    .parent()
+    .parent()
     .within(() => {
       cy.get('button').click();
     });
