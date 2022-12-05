@@ -54,7 +54,7 @@ export class UserService {
 
   async comments(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<Comment[]> {
+  ): Promise<Comment[] | null> {
     return this.prisma.user
       .findUnique({ where: userWhereUniqueInput })
       .comments();
@@ -89,7 +89,7 @@ export class UserService {
 
   async orgs(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<Org[]> {
+  ): Promise<Org[] | null> {
     return this.prisma.user.findUnique({ where: userWhereUniqueInput }).orgs();
   }
 

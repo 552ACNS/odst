@@ -342,13 +342,13 @@ export class OrgService {
 
   async users(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<User[]> {
+  ): Promise<User[] | null> {
     return this.prisma.org.findUnique({ where: orgWhereUniqueInput }).users();
   }
 
   async children(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Org[]> {
+  ): Promise<Org[] | null> {
     return this.prisma.org
       .findUnique({ where: orgWhereUniqueInput })
       .children();
@@ -362,7 +362,7 @@ export class OrgService {
 
   async feedbacks(
     orgWhereUniqueInput: Prisma.OrgWhereUniqueInput
-  ): Promise<Feedback[]> {
+  ): Promise<Feedback[] | null> {
     return this.prisma.org
       .findUnique({ where: orgWhereUniqueInput })
       .feedbacks();

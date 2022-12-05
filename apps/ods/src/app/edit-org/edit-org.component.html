@@ -1,6 +1,6 @@
 <div class="parent-div space-y-3 flex justify-center">
   <form [formGroup]="form">
-    <mat-card>
+    <mat-card appearance="outlined">
       <mat-card-title>Edit Organization</mat-card-title>
       <mat-card-content class="mb-0">
         <label class="mt-6 mb-2">
@@ -52,8 +52,8 @@
         </label>
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Child Unit</mat-label>
-          <mat-chip-list #chipList>
-            <mat-chip
+          <mat-chip-grid #chipList>
+            <mat-chip-row
               *ngFor="let childOrg of selectedChildren"
               (removed)="remove(childOrg)"
             >
@@ -61,7 +61,7 @@
               <button matChipRemove>
                 <mat-icon>cancel</mat-icon>
               </button>
-            </mat-chip>
+            </mat-chip-row>
             <input
               placeholder="Unit"
               #orgInput
@@ -73,7 +73,7 @@
               (input)="generateFilteredOrgs()"
               (focus)="generateFilteredOrgs()"
             />
-          </mat-chip-list>
+          </mat-chip-grid>
           <mat-autocomplete
             #auto="matAutocomplete"
             (optionSelected)="selected($event)"
@@ -96,20 +96,20 @@
           </button>
           <button
             id="btnSubmit"
-            class="m-2 rounded-full w-full"
-            mat-raised-button
+            class="m-2 rounded-full w-fit"
+            mat-fab
+            extended
             color="primary"
             (click)="submit()"
             [disabled]="!form.valid || submitSuccess"
           >
             Submit
-            <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess"
-              >check</mat-icon
-            >
+            <mat-icon id="submitCheck" *ngIf="submitSuccess">check</mat-icon>
           </button>
         </div>
       </mat-card-actions>
       <mat-card
+        appearance="outlined"
         *ngIf="submitSuccess"
         class="mt-3 bg-green-500 bg-opacity-50 border-2 border-green-400"
       >
@@ -120,6 +120,7 @@
         </mat-card-content>
       </mat-card>
       <mat-card
+        appearance="outlined"
         *ngIf="submitError"
         class="mt-3 bg-red-500 bg-opacity-50 border-2 border-red-400"
       >

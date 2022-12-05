@@ -62,19 +62,19 @@ export class FeedbackResolver {
   }
 
   @ResolveField(() => [Org])
-  async orgs(@Parent() feedback: Feedback): Promise<Org[]> {
+  async orgs(@Parent() feedback: Feedback): Promise<Org[] | null> {
     return this.feedbackService.orgs({ id: feedback.id });
   }
 
   @ResolveField(() => [Question])
-  async questions(@Parent() feedback: Feedback): Promise<Question[]> {
+  async questions(@Parent() feedback: Feedback): Promise<Question[] | null> {
     return this.feedbackService.questions({ id: feedback.id });
   }
 
   @ResolveField(() => [FeedbackResponse])
   async feedbackResponses(
     @Parent() feedback: Feedback
-  ): Promise<FeedbackResponse[]> {
+  ): Promise<FeedbackResponse[] | null> {
     return this.feedbackService.feedbackResponses({ id: feedback.id });
   }
 }

@@ -270,11 +270,9 @@ it('Verify that a CC can edit an organization children relationship that they ar
   cy.get('mat-option').contains('552 ACW');
   cy.get('mat-option').contains('552 ACG').click();
 
-  cy.get('mat-chip')
-    .contains('444 EDITORG')
-    .within(() => {
-      cy.get('button').click();
-    });
+  cy.contains('mat-chip-row', '444 EDITORG').within(() => {
+    cy.get('button').click();
+  });
 
   cy.get('#btnSubmit').click();
 });

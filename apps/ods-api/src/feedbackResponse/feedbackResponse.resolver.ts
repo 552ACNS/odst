@@ -129,7 +129,7 @@ export class FeedbackResponseResolver {
   async answers(
     @Parent() feedbackResponse: FeedbackResponse,
     @Context('req') req
-  ): Promise<Answer[]> {
+  ): Promise<Answer[] | null> {
     return this.feedbackResponseService.answers({ id: feedbackResponse.id });
   }
 
@@ -141,14 +141,16 @@ export class FeedbackResponseResolver {
   }
 
   @ResolveField(() => [Tag])
-  async tags(@Parent() feedbackResponse: FeedbackResponse): Promise<Tag[]> {
+  async tags(
+    @Parent() feedbackResponse: FeedbackResponse
+  ): Promise<Tag[] | null> {
     return this.feedbackResponseService.tags({ id: feedbackResponse.id });
   }
 
   @ResolveField(() => [Comment])
   async comments(
     @Parent() feedbackResponse: FeedbackResponse
-  ): Promise<Comment[]> {
+  ): Promise<Comment[] | null> {
     return this.feedbackResponseService.comments({ id: feedbackResponse.id });
   }
 }

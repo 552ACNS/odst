@@ -1,6 +1,6 @@
 import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { Prisma } from '.prisma/waypoint/client';
-import { PersonUpdateManyWithoutOrgInput } from './person.update.input';
+import { PersonUncheckedUpdateManyWithoutOrgNestedInput } from './person.update.input';
 import { OrgCreateInput } from './org.create.input';
 import { OrgWhereUniqueInput } from './org.unique.input';
 import { PersonWhereUniqueInput } from './person.unique.input';
@@ -10,13 +10,14 @@ export class OrgUpdateInput
   extends PartialType(OrgCreateInput)
   implements Prisma.OrgUpdateInput
 {
-  @Field(() => [PersonUpdateManyWithoutOrgInput])
-  override persons?: Prisma.PersonUpdateManyWithoutOrgInput;
+  @Field(() => [PersonUncheckedUpdateManyWithoutOrgNestedInput])
+  override persons?: Prisma.PersonUpdateManyWithoutOrgNestedInput;
 }
 
 @InputType()
-export class OrgUpdateOneRequiredWithoutPersonsInput
-  implements Prisma.OrgUpdateOneRequiredWithoutPersonsInput
+// implements Prisma.OrgUpdateOneRequiredWithoutPersonsInput
+export class OrgUpdateOneRequiredWithoutPersonsNestedInput
+  implements Prisma.OrgUpdateOneRequiredWithoutPersonsNestedInput
 {
   @Field(() => [OrgWhereUniqueInput])
   connect?: Prisma.OrgWhereUniqueInput;
@@ -31,8 +32,8 @@ export class OrgUpdateOneRequiredWithoutPersonsInput
 }
 
 @InputType()
-export class PersonUpdateOneRequiredWithoutUserInput
-  implements Prisma.PersonUpdateOneRequiredWithoutUserInput
+export class PersonUpdateOneRequiredWithoutUserNestedInput
+  implements Prisma.PersonUpdateOneRequiredWithoutUserNestedInput
 {
   @Field(() => PersonWhereUniqueInput)
   connect?: Prisma.PersonWhereUniqueInput;

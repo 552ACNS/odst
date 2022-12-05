@@ -1,6 +1,6 @@
 <div class="parent-div">
-  <mat-card>
-    <mat-card-title class="font-medium">
+  <mat-card appearance="outlined">
+    <mat-card-title class="text-center">
       Observations of Discrimination in the Squadron
     </mat-card-title>
     <mat-card-content class="text-sm space-y-3 text-justify">
@@ -21,14 +21,14 @@
       </p>
       <p>False reporting may result in disciplinary actions.</p>
     </mat-card-content>
-    <mat-card-actions class="flex h-8 space-x-4 mb-0 py-0 mx-1">
-      <a
+    <mat-card-actions class="flex h-8 space-x-4 mb-0 mx-1">
+      <button
         mat-stroked-button
         class="w-full shadow-md rounded-full"
-        href="https://www.tinker.af.mil"
+        (click)="goHome()"
       >
         Decline
-      </a>
+      </button>
       <button
         mat-raised-button
         color="primary"
@@ -41,7 +41,7 @@
   </mat-card>
 
   <!-- this lies outside the box -->
-  <div class="flex-auto underline ml-auto mt-2 rounded-2xl dark:text-white">
+  <div class="flex-auto underline ml-auto mt-2 dark:text-white">
     <button mat-button class="float-left" [routerLink]="['/response-lookup']">
       Feedback Response Lookup
     </button>
