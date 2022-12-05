@@ -59,7 +59,6 @@ jobs:
           node-version: '16'
           cache: 'yarn'
       - run: yarn install --frozen-lockfile --prefer-offline
-      - run: yarn audit
       # # - name: Setup .NET 6.x
       # #   uses: actions/setup-dotnet@v1
       # #   with:
