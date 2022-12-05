@@ -18,7 +18,6 @@ import {
   Feedback,
   User,
   Comment,
-  FeedbackResponseAggregateArgs,
   UpdateOneFeedbackResponseArgs,
   FindManyFeedbackResponseArgs,
 } from '@odst/types/ods';
@@ -28,7 +27,6 @@ import { GetCurrentUser } from '@odst/shared/nest';
 import { ResponseCount, TrackedFeedback } from '../__types__';
 import { UseInterceptors } from '@nestjs/common';
 import { FeedbackResponseInterceptor } from './feedbackResponse.interceptor';
-import { logger } from 'nx/src/utils/logger';
 
 @Resolver(() => FeedbackResponse)
 @UseInterceptors(FeedbackResponseInterceptor)

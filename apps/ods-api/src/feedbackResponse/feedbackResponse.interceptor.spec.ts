@@ -58,7 +58,6 @@ describe('feedbackResponseInterceptor', () => {
   });
 
   it('should be defined', () => {
-    console.log(interceptor);
     expect(interceptor).toBeDefined();
   });
 

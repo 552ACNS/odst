@@ -5,7 +5,10 @@ import {
   MockFeedbackResponses,
   MockFeedbackResponseCreateInput,
 } from './feedbackResponse.repo';
-+describe('FeedbackResponse Resolver', () => {
+import { prismaMock } from '../prisma/singleton';
+import { PrismaService } from '../prisma/prisma.service';
+
+describe('FeedbackResponse Resolver', () => {
   let resolver: FeedbackResponseResolver;
 
   beforeEach(async () => {
@@ -31,6 +34,10 @@ import {
                 Promise.resolve(MockFeedbackResponses[0])
               ),
           },
+        },
+        {
+          provide: PrismaService,
+          useValue: prismaMock,
         },
       ],
     }).compile();
