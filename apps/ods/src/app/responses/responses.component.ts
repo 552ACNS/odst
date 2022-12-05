@@ -194,9 +194,9 @@ export class ResponsesComponent implements OnInit {
   /**
    * Creates a list of tags that can be added by filtering out those already in use
    */
-  async submitComment(): Promise<void> {
+  async submitComment(comment: string): Promise<void> {
     // if the resolution field is not empty after a trim
-    if (this.resolutionForm.value.comment.trim() !== '') {
+    if (comment !== '') {
       this.AddCommentMutationVariables = {
         where: {
           id: this.response.id,
@@ -205,7 +205,7 @@ export class ResponsesComponent implements OnInit {
           comments: {
             create: [
               {
-                value: this.resolutionForm.value.comment.trim(),
+                value: comment,
                 author: {
                   connect: {
                     id: this.userId,
