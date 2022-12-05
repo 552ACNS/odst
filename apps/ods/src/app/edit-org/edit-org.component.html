@@ -96,16 +96,15 @@
           </button>
           <button
             id="btnSubmit"
-            class="m-2 rounded-full w-full"
-            mat-raised-button
+            class="m-2 rounded-full w-fit"
+            mat-fab
+            extended
             color="primary"
             (click)="submit()"
             [disabled]="!form.valid || submitSuccess"
           >
             Submit
-            <mat-icon id="submitCheck" class="ml-1" *ngIf="submitSuccess"
-              >check</mat-icon
-            >
+            <mat-icon id="submitCheck" *ngIf="submitSuccess">check</mat-icon>
           </button>
         </div>
       </mat-card-actions>

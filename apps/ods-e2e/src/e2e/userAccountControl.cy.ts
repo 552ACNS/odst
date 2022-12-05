@@ -7,7 +7,7 @@ describe('Test user account controls', () => {
     cy.visit('/disclaimer');
     cy.get('button').contains('I want to login').click();
     cy.location('pathname').should('include', '/login');
-    cy.get('button').contains('Forgot password').click();
+    cy.get('button').contains('Forgot Password').click();
     cy.location('pathname').should('include', '/password-recovery');
     cy.get('input').type('admin@admin.com');
     cy.get('button').contains('Submit').click();
