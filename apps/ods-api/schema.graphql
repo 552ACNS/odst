@@ -965,17 +965,17 @@ input OrgWhereUniqueInput {
 
 input FeedbackUpdateInput {
   id: StringFieldUpdateOperationsInput
-  orgs: OrgUpdateManyWithoutFeedbacksInput
-  questions: QuestionUpdateManyWithoutFeedbacksInput
+  orgs: OrgUpdateManyWithoutFeedbacksNestedInput
+  questions: QuestionUpdateManyWithoutFeedbacksNestedInput
   questionsHash: NullableStringFieldUpdateOperationsInput
-  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackInput
+  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackNestedInput
 }
 
 input StringFieldUpdateOperationsInput {
   set: String
 }
 
-input OrgUpdateManyWithoutFeedbacksInput {
+input OrgUpdateManyWithoutFeedbacksNestedInput {
   create: [OrgCreateWithoutFeedbacksInput!]
   connectOrCreate: [OrgCreateOrConnectWithoutFeedbacksInput!]
   upsert: [OrgUpsertWithWhereUniqueWithoutFeedbacksInput!]
@@ -1560,16 +1560,16 @@ input OrgUpdateWithoutFeedbacksInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   orgTier: EnumOrgTierFieldUpdateOperationsInput
-  users: UserUpdateManyWithoutOrgsInput
-  parent: OrgUpdateOneWithoutChildrenInput
-  children: OrgUpdateManyWithoutParentInput
+  users: UserUpdateManyWithoutOrgsNestedInput
+  parent: OrgUpdateOneWithoutChildrenNestedInput
+  children: OrgUpdateManyWithoutParentNestedInput
 }
 
 input EnumOrgTierFieldUpdateOperationsInput {
   set: OrgTier
 }
 
-input UserUpdateManyWithoutOrgsInput {
+input UserUpdateManyWithoutOrgsNestedInput {
   create: [UserCreateWithoutOrgsInput!]
   connectOrCreate: [UserCreateOrConnectWithoutOrgsInput!]
   upsert: [UserUpsertWithWhereUniqueWithoutOrgsInput!]
@@ -1597,9 +1597,9 @@ input UserUpdateWithoutOrgsInput {
   lastName: StringFieldUpdateOperationsInput
   status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
-  refreshToken: RefreshTokenUpdateOneWithoutUserInput
-  comments: CommentUpdateManyWithoutAuthorInput
-  reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByInput
+  refreshToken: RefreshTokenUpdateOneWithoutUserNestedInput
+  comments: CommentUpdateManyWithoutAuthorNestedInput
+  reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByNestedInput
 }
 
 input NullableStringFieldUpdateOperationsInput {
@@ -1614,7 +1614,7 @@ input EnumRoleFieldUpdateOperationsInput {
   set: Role
 }
 
-input RefreshTokenUpdateOneWithoutUserInput {
+input RefreshTokenUpdateOneWithoutUserNestedInput {
   create: RefreshTokenCreateWithoutUserInput
   connectOrCreate: RefreshTokenCreateOrConnectWithoutUserInput
   upsert: RefreshTokenUpsertWithoutUserInput
@@ -1645,7 +1645,7 @@ input DateTimeFieldUpdateOperationsInput {
   set: DateTime
 }
 
-input CommentUpdateManyWithoutAuthorInput {
+input CommentUpdateManyWithoutAuthorNestedInput {
   create: [CommentCreateWithoutAuthorInput!]
   connectOrCreate: [CommentCreateOrConnectWithoutAuthorInput!]
   upsert: [CommentUpsertWithWhereUniqueWithoutAuthorInput!]
@@ -1669,10 +1669,10 @@ input CommentUpdateWithoutAuthorInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
   date: DateTimeFieldUpdateOperationsInput
-  FeedbackResponse: FeedbackResponseUpdateOneWithoutCommentsInput
+  FeedbackResponse: FeedbackResponseUpdateOneWithoutCommentsNestedInput
 }
 
-input FeedbackResponseUpdateOneWithoutCommentsInput {
+input FeedbackResponseUpdateOneWithoutCommentsNestedInput {
   create: FeedbackResponseCreateWithoutCommentsInput
   connectOrCreate: FeedbackResponseCreateOrConnectWithoutCommentsInput
   upsert: FeedbackResponseUpsertWithoutCommentsInput
@@ -1689,18 +1689,18 @@ input FeedbackResponseUpsertWithoutCommentsInput {
 
 input FeedbackResponseUpdateWithoutCommentsInput {
   id: StringFieldUpdateOperationsInput
-  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
-  answers: AnswerUpdateManyWithoutFeedbackResponseInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   routeOutside: BoolFieldUpdateOperationsInput
-  tags: TagUpdateManyWithoutFeedbackResponsesInput
+  tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
   resolved: BoolFieldUpdateOperationsInput
-  reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  reviewedBy: UserUpdateOneWithoutReviewedResponsesNestedInput
   resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
-input FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput {
+input FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput {
   create: FeedbackCreateWithoutFeedbackResponsesInput
   connectOrCreate: FeedbackCreateOrConnectWithoutFeedbackResponsesInput
   upsert: FeedbackUpsertWithoutFeedbackResponsesInput
@@ -1715,12 +1715,12 @@ input FeedbackUpsertWithoutFeedbackResponsesInput {
 
 input FeedbackUpdateWithoutFeedbackResponsesInput {
   id: StringFieldUpdateOperationsInput
-  orgs: OrgUpdateManyWithoutFeedbacksInput
-  questions: QuestionUpdateManyWithoutFeedbacksInput
+  orgs: OrgUpdateManyWithoutFeedbacksNestedInput
+  questions: QuestionUpdateManyWithoutFeedbacksNestedInput
   questionsHash: NullableStringFieldUpdateOperationsInput
 }
 
-input QuestionUpdateManyWithoutFeedbacksInput {
+input QuestionUpdateManyWithoutFeedbacksNestedInput {
   create: [QuestionCreateWithoutFeedbacksInput!]
   connectOrCreate: [QuestionCreateOrConnectWithoutFeedbacksInput!]
   upsert: [QuestionUpsertWithWhereUniqueWithoutFeedbacksInput!]
@@ -1742,10 +1742,10 @@ input QuestionUpsertWithWhereUniqueWithoutFeedbacksInput {
 input QuestionUpdateWithoutFeedbacksInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
-  answers: AnswerUpdateManyWithoutQuestionInput
+  answers: AnswerUpdateManyWithoutQuestionNestedInput
 }
 
-input AnswerUpdateManyWithoutQuestionInput {
+input AnswerUpdateManyWithoutQuestionNestedInput {
   create: [AnswerCreateWithoutQuestionInput!]
   connectOrCreate: [AnswerCreateOrConnectWithoutQuestionInput!]
   upsert: [AnswerUpsertWithWhereUniqueWithoutQuestionInput!]
@@ -1768,10 +1768,10 @@ input AnswerUpsertWithWhereUniqueWithoutQuestionInput {
 input AnswerUpdateWithoutQuestionInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
-  feedbackResponse: FeedbackResponseUpdateOneRequiredWithoutAnswersInput
+  feedbackResponse: FeedbackResponseUpdateOneRequiredWithoutAnswersNestedInput
 }
 
-input FeedbackResponseUpdateOneRequiredWithoutAnswersInput {
+input FeedbackResponseUpdateOneRequiredWithoutAnswersNestedInput {
   create: FeedbackResponseCreateWithoutAnswersInput
   connectOrCreate: FeedbackResponseCreateOrConnectWithoutAnswersInput
   upsert: FeedbackResponseUpsertWithoutAnswersInput
@@ -1786,14 +1786,14 @@ input FeedbackResponseUpsertWithoutAnswersInput {
 
 input FeedbackResponseUpdateWithoutAnswersInput {
   id: StringFieldUpdateOperationsInput
-  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
   routeOutside: BoolFieldUpdateOperationsInput
-  tags: TagUpdateManyWithoutFeedbackResponsesInput
-  comments: CommentUpdateManyWithoutFeedbackResponseInput
+  tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
+  comments: CommentUpdateManyWithoutFeedbackResponseNestedInput
   resolved: BoolFieldUpdateOperationsInput
-  reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  reviewedBy: UserUpdateOneWithoutReviewedResponsesNestedInput
   resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
@@ -1801,7 +1801,7 @@ input NullableDateTimeFieldUpdateOperationsInput {
   set: DateTime
 }
 
-input TagUpdateManyWithoutFeedbackResponsesInput {
+input TagUpdateManyWithoutFeedbackResponsesNestedInput {
   create: [TagCreateWithoutFeedbackResponsesInput!]
   connectOrCreate: [TagCreateOrConnectWithoutFeedbackResponsesInput!]
   upsert: [TagUpsertWithWhereUniqueWithoutFeedbackResponsesInput!]
@@ -1855,7 +1855,7 @@ input TagUpdateManyMutationInput {
   type: EnumTagTypeFieldUpdateOperationsInput
 }
 
-input CommentUpdateManyWithoutFeedbackResponseInput {
+input CommentUpdateManyWithoutFeedbackResponseNestedInput {
   create: [CommentCreateWithoutFeedbackResponseInput!]
   connectOrCreate: [CommentCreateOrConnectWithoutFeedbackResponseInput!]
   upsert: [CommentUpsertWithWhereUniqueWithoutFeedbackResponseInput!]
@@ -1879,10 +1879,10 @@ input CommentUpdateWithoutFeedbackResponseInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
   date: DateTimeFieldUpdateOperationsInput
-  author: UserUpdateOneRequiredWithoutCommentsInput
+  author: UserUpdateOneRequiredWithoutCommentsNestedInput
 }
 
-input UserUpdateOneRequiredWithoutCommentsInput {
+input UserUpdateOneRequiredWithoutCommentsNestedInput {
   create: UserCreateWithoutCommentsInput
   connectOrCreate: UserCreateOrConnectWithoutCommentsInput
   upsert: UserUpsertWithoutCommentsInput
@@ -1904,12 +1904,12 @@ input UserUpdateWithoutCommentsInput {
   lastName: StringFieldUpdateOperationsInput
   status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
-  refreshToken: RefreshTokenUpdateOneWithoutUserInput
-  orgs: OrgUpdateManyWithoutUsersInput
-  reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByInput
+  refreshToken: RefreshTokenUpdateOneWithoutUserNestedInput
+  orgs: OrgUpdateManyWithoutUsersNestedInput
+  reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByNestedInput
 }
 
-input OrgUpdateManyWithoutUsersInput {
+input OrgUpdateManyWithoutUsersNestedInput {
   create: [OrgCreateWithoutUsersInput!]
   connectOrCreate: [OrgCreateOrConnectWithoutUsersInput!]
   upsert: [OrgUpsertWithWhereUniqueWithoutUsersInput!]
@@ -1932,12 +1932,12 @@ input OrgUpdateWithoutUsersInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   orgTier: EnumOrgTierFieldUpdateOperationsInput
-  parent: OrgUpdateOneWithoutChildrenInput
-  children: OrgUpdateManyWithoutParentInput
-  feedbacks: FeedbackUpdateManyWithoutOrgsInput
+  parent: OrgUpdateOneWithoutChildrenNestedInput
+  children: OrgUpdateManyWithoutParentNestedInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsNestedInput
 }
 
-input OrgUpdateOneWithoutChildrenInput {
+input OrgUpdateOneWithoutChildrenNestedInput {
   create: OrgCreateWithoutChildrenInput
   connectOrCreate: OrgCreateOrConnectWithoutChildrenInput
   upsert: OrgUpsertWithoutChildrenInput
@@ -1956,12 +1956,12 @@ input OrgUpdateWithoutChildrenInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   orgTier: EnumOrgTierFieldUpdateOperationsInput
-  users: UserUpdateManyWithoutOrgsInput
-  parent: OrgUpdateOneWithoutChildrenInput
-  feedbacks: FeedbackUpdateManyWithoutOrgsInput
+  users: UserUpdateManyWithoutOrgsNestedInput
+  parent: OrgUpdateOneWithoutChildrenNestedInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsNestedInput
 }
 
-input FeedbackUpdateManyWithoutOrgsInput {
+input FeedbackUpdateManyWithoutOrgsNestedInput {
   create: [FeedbackCreateWithoutOrgsInput!]
   connectOrCreate: [FeedbackCreateOrConnectWithoutOrgsInput!]
   upsert: [FeedbackUpsertWithWhereUniqueWithoutOrgsInput!]
@@ -1982,12 +1982,12 @@ input FeedbackUpsertWithWhereUniqueWithoutOrgsInput {
 
 input FeedbackUpdateWithoutOrgsInput {
   id: StringFieldUpdateOperationsInput
-  questions: QuestionUpdateManyWithoutFeedbacksInput
+  questions: QuestionUpdateManyWithoutFeedbacksNestedInput
   questionsHash: NullableStringFieldUpdateOperationsInput
-  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackInput
+  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackNestedInput
 }
 
-input FeedbackResponseUpdateManyWithoutFeedbackInput {
+input FeedbackResponseUpdateManyWithoutFeedbackNestedInput {
   create: [FeedbackResponseCreateWithoutFeedbackInput!]
   connectOrCreate: [FeedbackResponseCreateOrConnectWithoutFeedbackInput!]
   upsert: [FeedbackResponseUpsertWithWhereUniqueWithoutFeedbackInput!]
@@ -2011,16 +2011,16 @@ input FeedbackResponseUpdateWithoutFeedbackInput {
   id: StringFieldUpdateOperationsInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
-  answers: AnswerUpdateManyWithoutFeedbackResponseInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   routeOutside: BoolFieldUpdateOperationsInput
-  tags: TagUpdateManyWithoutFeedbackResponsesInput
-  comments: CommentUpdateManyWithoutFeedbackResponseInput
+  tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
+  comments: CommentUpdateManyWithoutFeedbackResponseNestedInput
   resolved: BoolFieldUpdateOperationsInput
-  reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  reviewedBy: UserUpdateOneWithoutReviewedResponsesNestedInput
   resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
-input AnswerUpdateManyWithoutFeedbackResponseInput {
+input AnswerUpdateManyWithoutFeedbackResponseNestedInput {
   create: [AnswerCreateWithoutFeedbackResponseInput!]
   connectOrCreate: [AnswerCreateOrConnectWithoutFeedbackResponseInput!]
   upsert: [AnswerUpsertWithWhereUniqueWithoutFeedbackResponseInput!]
@@ -2043,10 +2043,10 @@ input AnswerUpsertWithWhereUniqueWithoutFeedbackResponseInput {
 input AnswerUpdateWithoutFeedbackResponseInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
-  question: QuestionUpdateOneRequiredWithoutAnswersInput
+  question: QuestionUpdateOneRequiredWithoutAnswersNestedInput
 }
 
-input QuestionUpdateOneRequiredWithoutAnswersInput {
+input QuestionUpdateOneRequiredWithoutAnswersNestedInput {
   create: QuestionCreateWithoutAnswersInput
   connectOrCreate: QuestionCreateOrConnectWithoutAnswersInput
   upsert: QuestionUpsertWithoutAnswersInput
@@ -2062,10 +2062,10 @@ input QuestionUpsertWithoutAnswersInput {
 input QuestionUpdateWithoutAnswersInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
-  feedbacks: FeedbackUpdateManyWithoutQuestionsInput
+  feedbacks: FeedbackUpdateManyWithoutQuestionsNestedInput
 }
 
-input FeedbackUpdateManyWithoutQuestionsInput {
+input FeedbackUpdateManyWithoutQuestionsNestedInput {
   create: [FeedbackCreateWithoutQuestionsInput!]
   connectOrCreate: [FeedbackCreateOrConnectWithoutQuestionsInput!]
   upsert: [FeedbackUpsertWithWhereUniqueWithoutQuestionsInput!]
@@ -2086,9 +2086,9 @@ input FeedbackUpsertWithWhereUniqueWithoutQuestionsInput {
 
 input FeedbackUpdateWithoutQuestionsInput {
   id: StringFieldUpdateOperationsInput
-  orgs: OrgUpdateManyWithoutFeedbacksInput
+  orgs: OrgUpdateManyWithoutFeedbacksNestedInput
   questionsHash: NullableStringFieldUpdateOperationsInput
-  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackInput
+  feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackNestedInput
 }
 
 input FeedbackUpdateWithWhereUniqueWithoutQuestionsInput {
@@ -2139,7 +2139,7 @@ input AnswerUpdateManyMutationInput {
   value: StringFieldUpdateOperationsInput
 }
 
-input UserUpdateOneWithoutReviewedResponsesInput {
+input UserUpdateOneWithoutReviewedResponsesNestedInput {
   create: UserCreateWithoutReviewedResponsesInput
   connectOrCreate: UserCreateOrConnectWithoutReviewedResponsesInput
   upsert: UserUpsertWithoutReviewedResponsesInput
@@ -2163,9 +2163,9 @@ input UserUpdateWithoutReviewedResponsesInput {
   lastName: StringFieldUpdateOperationsInput
   status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
-  refreshToken: RefreshTokenUpdateOneWithoutUserInput
-  orgs: OrgUpdateManyWithoutUsersInput
-  comments: CommentUpdateManyWithoutAuthorInput
+  refreshToken: RefreshTokenUpdateOneWithoutUserNestedInput
+  orgs: OrgUpdateManyWithoutUsersNestedInput
+  comments: CommentUpdateManyWithoutAuthorNestedInput
 }
 
 input FeedbackResponseUpdateWithWhereUniqueWithoutFeedbackInput {
@@ -2211,7 +2211,7 @@ input FeedbackUpdateManyWithWhereWithoutOrgsInput {
   data: FeedbackUpdateManyMutationInput!
 }
 
-input OrgUpdateManyWithoutParentInput {
+input OrgUpdateManyWithoutParentNestedInput {
   create: [OrgCreateWithoutParentInput!]
   connectOrCreate: [OrgCreateOrConnectWithoutParentInput!]
   upsert: [OrgUpsertWithWhereUniqueWithoutParentInput!]
@@ -2235,9 +2235,9 @@ input OrgUpdateWithoutParentInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   orgTier: EnumOrgTierFieldUpdateOperationsInput
-  users: UserUpdateManyWithoutOrgsInput
-  children: OrgUpdateManyWithoutParentInput
-  feedbacks: FeedbackUpdateManyWithoutOrgsInput
+  users: UserUpdateManyWithoutOrgsNestedInput
+  children: OrgUpdateManyWithoutParentNestedInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsNestedInput
 }
 
 input OrgUpdateWithWhereUniqueWithoutParentInput {
@@ -2276,7 +2276,7 @@ input OrgUpdateManyWithWhereWithoutUsersInput {
   data: OrgUpdateManyMutationInput!
 }
 
-input FeedbackResponseUpdateManyWithoutReviewedByInput {
+input FeedbackResponseUpdateManyWithoutReviewedByNestedInput {
   create: [FeedbackResponseCreateWithoutReviewedByInput!]
   connectOrCreate: [FeedbackResponseCreateOrConnectWithoutReviewedByInput!]
   upsert: [FeedbackResponseUpsertWithWhereUniqueWithoutReviewedByInput!]
@@ -2298,13 +2298,13 @@ input FeedbackResponseUpsertWithWhereUniqueWithoutReviewedByInput {
 
 input FeedbackResponseUpdateWithoutReviewedByInput {
   id: StringFieldUpdateOperationsInput
-  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
-  answers: AnswerUpdateManyWithoutFeedbackResponseInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   routeOutside: BoolFieldUpdateOperationsInput
-  tags: TagUpdateManyWithoutFeedbackResponsesInput
-  comments: CommentUpdateManyWithoutFeedbackResponseInput
+  tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
+  comments: CommentUpdateManyWithoutFeedbackResponseNestedInput
   resolved: BoolFieldUpdateOperationsInput
   resolvedComment: NullableStringFieldUpdateOperationsInput
 }
@@ -2450,15 +2450,15 @@ input FeedbackResponseCreateInput {
 
 input FeedbackResponseUpdateInput {
   id: StringFieldUpdateOperationsInput
-  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
-  answers: AnswerUpdateManyWithoutFeedbackResponseInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   routeOutside: BoolFieldUpdateOperationsInput
-  tags: TagUpdateManyWithoutFeedbackResponsesInput
-  comments: CommentUpdateManyWithoutFeedbackResponseInput
+  tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
+  comments: CommentUpdateManyWithoutFeedbackResponseNestedInput
   resolved: BoolFieldUpdateOperationsInput
-  reviewedBy: UserUpdateOneWithoutReviewedResponsesInput
+  reviewedBy: UserUpdateOneWithoutReviewedResponsesNestedInput
   resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
@@ -2476,10 +2476,10 @@ input OrgUpdateInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   orgTier: EnumOrgTierFieldUpdateOperationsInput
-  users: UserUpdateManyWithoutOrgsInput
-  parent: OrgUpdateOneWithoutChildrenInput
-  children: OrgUpdateManyWithoutParentInput
-  feedbacks: FeedbackUpdateManyWithoutOrgsInput
+  users: UserUpdateManyWithoutOrgsNestedInput
+  parent: OrgUpdateOneWithoutChildrenNestedInput
+  children: OrgUpdateManyWithoutParentNestedInput
+  feedbacks: FeedbackUpdateManyWithoutOrgsNestedInput
 }
 
 input UserCreateInput {

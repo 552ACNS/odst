@@ -21,6 +21,8 @@
 
 4. Documentation update. Example: new setup instructions for a new feature.
 
+5. Package updates. Example: updating the version of a package.
+
 ### How Has This Been Tested?
 
 Describe the tests that you created if applicable. Use N/A if no tests were created.

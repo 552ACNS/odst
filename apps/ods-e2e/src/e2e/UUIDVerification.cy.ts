@@ -32,7 +32,7 @@ describe('ods', () => {
     cy.wait('@graphql');
 
     // Select ACW
-    cy.get('.mat-option-text').contains('552 ACW').click();
+    cy.get('.mat-mdc-option').contains('552 ACW').click();
 
     // Gets the spec of the instigator as AD
     cy.get('[ng-reflect-name="violator_spec"]>[value="AD"]').click();
@@ -41,7 +41,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="CC"]').click();
 
     // Selects Col Coyle as the commander (this is a response for the wing)
-    cy.get('.mat-option-text').contains('Coyle').click();
+    cy.get('.mat-mdc-option').contains('Coyle').click();
 
     cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID);
 
@@ -82,7 +82,6 @@ describe('ods', () => {
 
   it("Verify that only people with wrong permission can't view a specific feedback", () => {
     cy.login('henry.henderson.99@us.af.mil', 'admin');
-
     cy.location('pathname').should('include', '/dashboard');
     if (cy.get('mat-card').contains('Unresolved').click())
       cy.location('pathname').then((x) => {
@@ -123,9 +122,9 @@ describe('ods', () => {
     cy.get('mat-card').contains('Unresolved').click();
     cy.location('pathname').should('include', '/responses');
     //selects the action tag selector
-    cy.get('#mat-chip-list-input-1').type('Add');
+    cy.get('#actionTags').type('Add');
     cy.get('span').contains('Addressed In Organizational All-call').click();
-    cy.get('mat-chip').contains('Addressed In Organizational All-call');
+    cy.get('mat-chip-grid').contains('Addressed In Organizational All-call');
     cy.scrollTo('bottom');
     //Marks the issue as resolved
     cy.get('mat-slide-toggle').click();
@@ -154,7 +153,7 @@ describe('ods', () => {
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID
     );
-    cy.get('mat-chip').contains('Addressed In Organizational All-call');
+    cy.get('mat-chip-grid').contains('Addressed In Organizational All-call');
     cy.scrollTo('top');
     cy.get('mat-card-content').contains(commentUUID);
   });
@@ -176,15 +175,15 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/dashboard');
     cy.get('mat-card').contains('Resolved').click();
     cy.location('pathname').should('include', '/responses');
-    cy.get('#mat-chip-list-input-1')
+    cy.get('#actionTags')
       .type('Routed Up The Chain Of Command{enter}')
       .wait('@graphql');
     cy.scrollTo('bottom');
-    cy.get('mat-chip')
+    cy.get('mat-chip-grid')
       .contains('Routed Up The Chain Of Command')
       .wait('@graphql');
     cy.get('mat-icon').contains('cancel').click();
-    cy.get('mat-chip')
+    cy.get('#actionTags')
       .contains('Addressed In Organizational All-call')
       .should('not.exist');
   });
@@ -205,7 +204,7 @@ describe('ods', () => {
   it('should not cache any query results between users', () => {
     cy.login('keven.coyle@us.af.mil', 'admin');
     cy.get('#userNameGrade').contains(' Keven Coyle, O-6 ').should('exist');
-    cy.get('mat-icon').contains('account_circle').click();
+    cy.get('.mat-icon').contains('account_circle').parent().click();
     cy.get('button').contains('Logout').click();
     cy.login('admin@admin.com', 'admin');
     cy.get('#userNameGrade').contains(' Admin Admin, E-∞ ').should('exist');

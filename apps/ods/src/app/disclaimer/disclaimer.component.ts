@@ -5,4 +5,9 @@ import { Component } from '@angular/core';
   templateUrl: './disclaimer.component.html',
   styleUrls: ['./disclaimer.component.scss'],
 })
-export class DisclaimerComponent {}
+export class DisclaimerComponent {
+  goHome() {
+    // navigate to www.tinker.af.mil
+    window.location.href = 'http://www.tinker.af.mil';
+  }
+}

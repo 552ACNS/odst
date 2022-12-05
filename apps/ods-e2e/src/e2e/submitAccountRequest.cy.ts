@@ -71,17 +71,17 @@ describe('ods', () => {
 
     cy.wait('@graphql');
 
-    cy.get('.mat-option-text').contains('O-1').click();
+    cy.get('.mat-mdc-option').contains('O-1').click();
 
     cy.get('[formcontrolname="permissions"]').click();
 
     cy.wait('@graphql');
 
-    cy.get('.mat-option-text').contains('Commander').click();
+    cy.get('.mat-mdc-option').contains('Commander').click();
 
     cy.get('[formcontrolname="org"]').click();
 
-    cy.get('.mat-option-text').contains('552 ACW').click();
+    cy.get('.mat-mdc-option').contains('552 ACW').click();
 
     cy.get('[formcontrolname="password"]').type('thisISaREALLYgreatPA$$word!3');
     cy.get('[formcontrolname="confirmPassword"]').type(

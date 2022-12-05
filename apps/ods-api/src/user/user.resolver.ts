@@ -83,7 +83,7 @@ export class UserResolver {
   }
 
   @ResolveField(() => [Org])
-  async orgs(@Parent() user: User): Promise<Org[]> {
+  async orgs(@Parent() user: User): Promise<Org[] | null> {
     return this.userService.orgs({ id: user.id });
   }
 

@@ -107,17 +107,17 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss --force-reset --schema=apps/ods-api/schema.prisma",
-          "env-cmd -f apps/ods-api/.env.local yarn ts-node ./apps/ods-api/prisma-seed.ts --schema=apps/ods-api/schema.prisma"
+          "npx env-cmd -f apps/ods-api/.env.local npx prisma db push --accept-data-loss --force-reset --schema=apps/ods-api/schema.prisma",
+          "npx env-cmd -f apps/ods-api/.env.local yarn ts-node ./apps/ods-api/prisma-seed.ts --schema=apps/ods-api/schema.prisma"
         ],
         "parallel": false
       },
       "configurations": {
         "test": {
-          "command": "env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
+          "command": "npx env-cmd -f apps/ods-api/.env.test npx prisma db push --accept-data-loss"
         },
         "migrate": {
-          "command": "env-cmd -f apps/ods-api/.env.local prisma migrate dev"
+          "command": "npx env-cmd -f apps/ods-api/.env.local prisma migrate dev"
         }
       }
     },

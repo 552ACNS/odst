@@ -23,7 +23,10 @@
       <h2 class="text-center">Response</h2>
 
       <!-- Will create arrays of questions and answers and generate the proper amount of cards for them -->
-      <mat-card *ngFor="let qa of questionsAnswers; let i = index">
+      <mat-card
+        appearance="outlined"
+        *ngFor="let qa of questionsAnswers; let i = index"
+      >
         <mat-card-content class="text-sm text-left">
           <p class="text-base font-medium">{{ i + 1 }}. {{ qa[0] }}</p>
           <p>{{ qa[1] }}</p>
@@ -34,7 +37,7 @@
       <!-- TRACKING TAGS -->
       <ng-container>
         <h2 class="text-center">Tags</h2>
-        <mat-card class="pb-0">
+        <mat-card appearance="outlined" class="pb-0">
           <select-tags
             [tags]="trackingTags"
             [selectedTags]="selectedTrackingTags"
@@ -54,7 +57,7 @@
       <ng-container>
         <h2 class="text-center">Resolve</h2>
         <form [formGroup]="resolutionForm">
-          <mat-card class="pb-5">
+          <mat-card appearance="outlined" class="pb-5">
             <p class="text-base font-medium text-center">
               {{ !resolvedComment ? 'Add' : 'Edit' }} A Custom Response
             </p>
@@ -86,6 +89,7 @@
             </mat-card-actions>
 
             <select-tags
+              id="actionTags"
               [tags]="actionTags"
               [selectedTags]="selectedActionTags"
               [tagType]="'Action'"

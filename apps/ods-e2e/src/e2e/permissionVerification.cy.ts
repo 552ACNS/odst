@@ -38,7 +38,7 @@ describe('ods', () => {
     cy.wait('@graphql');
 
     // Select ACW
-    cy.get('.mat-option-text').contains('552 ACNS').click();
+    cy.get('.mat-mdc-option').contains('552 ACNS').click();
 
     // Gets the spec of the instigator as AD
     cy.get('[ng-reflect-name="violator_spec"]>[value="AD"]').click();
@@ -47,7 +47,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="CC"]').click();
 
     // Selects Col Coyle as the commander (this is a response for the wing)
-    cy.get('.mat-option-text').contains('Matos').click();
+    cy.get('.mat-mdc-option').contains('Matos').click();
 
     cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID1);
 
@@ -77,7 +77,7 @@ describe('ods', () => {
     cy.wait('@graphql');
 
     // Select ACW
-    cy.get('.mat-option-text').contains('752 OSS').click();
+    cy.get('.mat-mdc-option').contains('752 OSS').click();
 
     // Gets the spec of the instigator as AD
     cy.get('[ng-reflect-name="violator_spec"]>[value="AD"]').click();
@@ -86,7 +86,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="CC"]').click();
 
     // Selects Col Coyle as the commander (this is a response for the wing)
-    cy.get('.mat-option-text').contains('Henderson').click();
+    cy.get('.mat-mdc-option').contains('Henderson').click();
 
     cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID2);
 
@@ -117,7 +117,7 @@ describe('ods', () => {
     cy.wait('@graphql');
 
     // Select ACW
-    cy.get('.mat-option-text').contains('552 MXS').click();
+    cy.get('.mat-mdc-option').contains('552 MXS').click();
 
     // Gets the spec of the instigator as AD
     cy.get('[ng-reflect-name="violator_spec"]>[value="AD"]').click();
@@ -126,7 +126,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="CC"]').click();
 
     // Selects Col Coyle as the commander (this is a response for the wing)
-    cy.get('.mat-option-text').contains('Henry').click();
+    cy.get('.mat-mdc-option').contains('Henry').click();
 
     cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID3);
 
@@ -157,7 +157,7 @@ describe('ods', () => {
     cy.wait('@graphql');
 
     // Select ACW
-    cy.get('.mat-option-text').contains('552 ACG').click();
+    cy.get('.mat-mdc-option').contains('552 ACG').click();
 
     // Gets the spec of the instigator as AD
     cy.get('[ng-reflect-name="violator_spec"]>[value="AD"]').click();
@@ -166,7 +166,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="CC"]').click();
 
     // Selects Col Coyle as the commander (this is a response for the wing)
-    cy.get('.mat-option-text').contains('Voigt').click();
+    cy.get('.mat-mdc-option').contains('Voigt').click();
 
     cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID4);
 
@@ -197,7 +197,7 @@ describe('ods', () => {
     cy.wait('@graphql');
 
     // Select ACW
-    cy.get('.mat-option-text').contains('72 MDG').click();
+    cy.get('.mat-mdc-option').contains('72 MDG').click();
 
     // Gets the spec of the instigator as AD
     cy.get('[ng-reflect-name="violator_spec"]>[value="AD"]').click();
@@ -206,7 +206,7 @@ describe('ods', () => {
     cy.get('[formcontrolname="CC"]').click();
 
     // Selects Col Coyle as the commander (this is a response for the wing)
-    cy.get('.mat-option-text').contains('Trinkle').click();
+    cy.get('.mat-mdc-option').contains('Trinkle').click();
 
     cy.get('[formcontrolname="impact"]').type(feedbackResponseUUID5);
 
@@ -228,7 +228,7 @@ describe('ods', () => {
       feedbackResponseUUID4
     );
     //move to the next feedback
-    cy.get('.mat-paginator-navigation-next').click();
+    cy.get('.mat-mdc-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     //check if ACW CC can view the 552 MXS feedback
@@ -236,7 +236,7 @@ describe('ods', () => {
       feedbackResponseUUID3
     );
     //move to the next feedback
-    cy.get('.mat-paginator-navigation-next').click();
+    cy.get('.mat-mdc-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     //check if ACW CC can view the 752 OSS feedback
@@ -244,7 +244,7 @@ describe('ods', () => {
       feedbackResponseUUID2
     );
     //move to the next feedback
-    cy.get('.mat-paginator-navigation-next').click();
+    cy.get('.mat-mdc-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     //check if ACW CC can view the 552 ACNS feedback
@@ -265,7 +265,7 @@ describe('ods', () => {
       feedbackResponseUUID4
     );
     //move to the next feedback
-    cy.get('.mat-paginator-navigation-next').click();
+    cy.get('.mat-mdc-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     //check if ACG CC can view the 752 OSS feedback
@@ -273,7 +273,7 @@ describe('ods', () => {
       feedbackResponseUUID2
     );
     //move to the next feedback
-    cy.get('.mat-paginator-navigation-next').click();
+    cy.get('.mat-mdc-paginator-navigation-next').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     //check if ACG CC can view the 552 ACNS feedback

@@ -1,12 +1,14 @@
 @use '@angular/material' as mat;
+@include mat.core();
+
 @import '@angular/material/theming';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-$light-primary: mat.define-palette(mat.$indigo-palette);
-$light-accent: mat.define-palette(mat.$pink-palette);
+$light-primary: mat.define-palette(mat.$indigo-palette, 500);
+$light-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $error-color: mat.define-palette(mat.$red-palette);
 
 // Define a light theme
@@ -18,6 +20,8 @@ $light-theme: mat.define-light-theme(
       accent: $light-accent,
       error: $error-color,
     ),
+    typography: mat.define-typography-config(),
+    density: 0,
   )
 );
 
@@ -44,6 +48,8 @@ $dark-accent: mat.define-palette(mat.$blue-gray-palette);
         accent: $dark-accent,
         error: $error-color,
       ),
+      typography: mat.define-typography-config(),
+      density: 0,
     )
   );
 
@@ -55,10 +61,6 @@ $dark-accent: mat.define-palette(mat.$blue-gray-palette);
 html,
 body {
   height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 // declares a parent-div attribute that can be reused in multiple places
@@ -84,8 +86,18 @@ body {
 }
 
 @layer base {
-  .mat-card {
+  mat-card {
     // Need to wrap important in SASS interpolation to work with Tailwind
     @apply rounded-2xl shadow-md #{!important};
+  }
+
+  mat-card-title {
+    // Need to wrap important in SASS interpolation to work with Tailwind
+    @apply m-4 #{!important};
+  }
+
+  // TODO: [ODST-400] [FE] Make selector to change button text spacing more specific
+  button {
+    @apply tracking-normal #{!important};
   }
 }

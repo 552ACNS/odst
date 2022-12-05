@@ -1,5 +1,5 @@
 <div class="parent-div space-y-3">
-  <mat-card class="shadow-md font-medium">
+  <mat-card appearance="outlined" class="shadow-md font-medium">
     <mat-card-title class="text-center"> Requested Accounts </mat-card-title>
     <mat-card-subtitle class="text-center"
       >Please click the account request you wish to view</mat-card-subtitle
@@ -25,14 +25,18 @@
       >No data to display</mat-card-footer
     >
   </mat-card>
-  <mat-card class="shadow-md font-medium" *ngIf="requestViewIsOpen">
+  <mat-card
+    appearance="outlined"
+    class="shadow-md font-medium"
+    *ngIf="requestViewIsOpen"
+  >
     <mat-list class="space-y-6 mt-3">
       <mat-list-item
         *ngFor="
           let accountRequest of displayedRequestData | keyvalue: keepOrder
         "
       >
-        <mat-form-field appearance="standard" class="w-full">
+        <mat-form-field class="w-full">
           <mat-label>{{ accountRequest.key }}</mat-label>
           <input matInput readonly="true" value="{{ accountRequest.value }}" />
         </mat-form-field>

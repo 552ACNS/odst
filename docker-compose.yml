@@ -4,7 +4,10 @@ version: '3.7'
 services:
   postgres:
     container_name: postgres
-    image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
+    # Per Ron, he's okay with using the versions of postgres off the docker hub, it's more updated.
+    # the version from iron bank is literally 3 semvar versions behind (that's a lot!)
+    # image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:latest
+    image: postgres:latest
     restart: unless-stopped
     volumes:
       - postgres-vol:/var/lib/postgresql/data
