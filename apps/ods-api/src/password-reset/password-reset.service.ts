@@ -12,9 +12,10 @@ export class PasswordResetService {
     private readonly userService: UserService
   ) {}
 
-  //remebers to put back in the from input for when we got that figured out ig
+  //remembers to put back in the from input for when we got that figured out ig
   async sendConfirmationLetter(to: string): Promise<string> {
     const resetToken = uuidv4();
+
     if (
       await this.prisma.user.findUnique({
         where: { email: to },
@@ -25,7 +26,10 @@ export class PasswordResetService {
           to: to, //to will be the users email we get from the fe
           from: 'acnssmtp552@gmail.com', // will be whatever we decide the email for our aapplication will be
           subject: 'Password Reset',
-          text: 'This will be the url for resetting the password',
+          html: `
+          <h3>Please click the link below to onreset password</h3>
+          <p>'localhost'/resetpassword/${resetToken}</p>
+           `,
         });
         this.userService.update({ email: to }, { resetToken: resetToken });
       } catch (e) {

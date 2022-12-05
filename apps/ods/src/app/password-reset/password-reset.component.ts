@@ -1,17 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { PasswordResetService } from './password-reset.service';
 import { regExps } from '@odst/shared/angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'odst-password-reset',
   templateUrl: './password-reset.component.html',
   styleUrls: ['./password-reset.component.scss'],
 })
-export class PasswordResetComponent {
+export class PasswordResetComponent implements OnInit {
+  id: string | null;
   constructor(
     private passwordResetService: PasswordResetService,
-    private fb: UntypedFormBuilder
+    private fb: UntypedFormBuilder,
+    private route: ActivatedRoute
   ) {}
 
   passwordResetForm = this.fb.group({
@@ -30,5 +33,9 @@ export class PasswordResetComponent {
 
       this.changeSuccess = !errors && !!data;
     });
+  }
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id');
   }
 }
