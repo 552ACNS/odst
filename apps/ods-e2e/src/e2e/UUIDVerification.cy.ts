@@ -82,7 +82,6 @@ describe('ods', () => {
 
   it("Verify that only people with wrong permission can't view a specific feedback", () => {
     cy.login('henry.henderson.99@us.af.mil', 'admin');
-
     cy.location('pathname').should('include', '/dashboard');
     if (cy.get('mat-card').contains('Unresolved').click())
       cy.location('pathname').then((x) => {
@@ -205,7 +204,7 @@ describe('ods', () => {
   it('should not cache any query results between users', () => {
     cy.login('keven.coyle@us.af.mil', 'admin');
     cy.get('#userNameGrade').contains(' Keven Coyle, O-6 ').should('exist');
-    cy.get('.mat-icon').contains('account_circle').click({ force: true });
+    cy.get('.mat-icon').contains('account_circle').parent().click();
     cy.get('button').contains('Logout').click();
     cy.login('admin@admin.com', 'admin');
     cy.get('#userNameGrade').contains(' Admin Admin, E-∞ ').should('exist');
