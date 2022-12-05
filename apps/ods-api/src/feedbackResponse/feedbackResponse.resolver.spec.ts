@@ -64,7 +64,10 @@ import {
   describe('update', () => {
     it('should update a feedbackResponse', async () => {
       await expect(
-        resolver.update({ where: { id: 'a strange id' }, data: {} })
+        resolver.update(
+          { body: { variables: { where: { id: 'a strange id' } } } },
+          { where: { id: 'a strange id' }, data: {} }
+        )
       ).resolves.toEqual(MockFeedbackResponses[0]);
     });
   });

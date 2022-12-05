@@ -5,38 +5,9 @@ import { MockOrgs } from '../org/org.repo';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ExecutionContext } from '@nestjs/common';
 import { mock } from 'jest-mock-extended';
-
-const mockedCreate = jest.fn().mockImplementation((ctx: ExecutionContext) => {
-  return {
-    getContext: jest.fn().mockReturnValue({
-      req: {
-        body: { variables: { where: false } },
-        user: { id: 'Woah', role: 'CC' },
-      },
-    }),
-  };
-});
-
-// const context = {
-//   switchToHttp: jest.fn().mockReturnThis(),
-//   getClass: jest.fn().mockReturnThis(),
-//   getHandler: jest.fn().mockReturnThis(),
-//   getArgs: jest.fn().mockReturnThis(),
-//   getArgByIndex: jest.fn().mockReturnThis(),
-//   getType: jest.fn().mockReturnThis(),
-//   switchToRpc: jest.fn().mockReturnThis(),
-//   switchToWs: jest.fn().mockReturnThis(),
-// };
-
-GqlExecutionContext.create = mockedCreate;
+import { MockUsers } from '../user/user.repo';
 
 const context: any = mock<GqlExecutionContext>();
-context.getContext.mockReturnValue({
-  req: {
-    body: { variables: { where: false } },
-    user: { id: 'Woah', role: 'CC' },
-  },
-});
 
 const callHandler = {
   handle: jest.fn(),
@@ -51,6 +22,19 @@ describe('feedbackResponseInterceptor', () => {
 
   let prisma: PrismaService;
   let interceptor: FeedbackResponseInterceptor;
+
+  const mockedCreate = jest.fn().mockImplementation((ctx: ExecutionContext) => {
+    return {
+      getContext: jest.fn().mockReturnValue({
+        req: {
+          body: { variables: { where: false } },
+          user: { id: 'Woah', role: 'CC' },
+        },
+      }),
+    };
+  });
+
+  GqlExecutionContext.create = mockedCreate;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -85,9 +69,8 @@ describe('feedbackResponseInterceptor', () => {
   });
 
   it('should change the where property', async () => {
-    console.log(mockedCreate().getContext().req.body);
-    await interceptor.intercept(context, callHandler);
-    console.log(context.getContext());
-    expect(true).toBeTruthy();
+    const actual = await interceptor.getUsersOrgs(MockUsers[0]);
+    const expected = ['org name', 'other org name'];
+    expect(actual).toEqual(expected);
   });
 });
