@@ -85,6 +85,10 @@ body {
   color: mat-color($error-color);
 }
 
+.mdc-notched-outline__notch {
+  @apply border-r-0 #{!important};
+}
+
 @layer base {
   mat-card {
     // Need to wrap important in SASS interpolation to work with Tailwind
