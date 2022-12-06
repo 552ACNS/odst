@@ -89,6 +89,13 @@ type Comment {
   feedbackResponseId: String!
 }
 
+type ResetToken {
+  user: User!
+  userId: String!
+  hash: String!
+  issuedDate: DateTime!
+}
+
 type UserCount {
   orgs: Int!
   comments: Int!
@@ -107,7 +114,7 @@ type User {
   orgs: [Org!]
   comments: [Comment!]
   reviewedResponses: [FeedbackResponse!]
-  resetToken: String!
+  resetToken: ResetToken
   _count: UserCount!
 }
 
@@ -327,6 +334,25 @@ type RefreshTokenMaxAggregate {
   hash: String
 }
 
+type ResetTokenCountAggregate {
+  userId: Int!
+  hash: Int!
+  issuedDate: Int!
+  _all: Int!
+}
+
+type ResetTokenMinAggregate {
+  userId: String
+  hash: String
+  issuedDate: DateTime
+}
+
+type ResetTokenMaxAggregate {
+  userId: String
+  hash: String
+  issuedDate: DateTime
+}
+
 type TagCountAggregate {
   id: Int!
   value: Int!
@@ -354,7 +380,6 @@ type UserCountAggregate {
   lastName: Int!
   status: Int!
   role: Int!
-  resetToken: Int!
   _all: Int!
 }
 
@@ -366,7 +391,6 @@ type UserMinAggregate {
   lastName: String
   status: Status
   role: Role
-  resetToken: String
 }
 
 type UserMaxAggregate {
@@ -377,7 +401,6 @@ type UserMaxAggregate {
   lastName: String
   status: Status
   role: Role
-  resetToken: String
 }
 
 type Tokens {
@@ -563,7 +586,7 @@ input UserWhereInput {
   orgs: OrgListRelationFilter
   comments: CommentListRelationFilter
   reviewedResponses: FeedbackResponseListRelationFilter
-  resetToken: StringFilter
+  resetToken: ResetTokenRelationFilter
 }
 
 input StringNullableFilter {
@@ -706,6 +729,21 @@ input FeedbackResponseListRelationFilter {
   every: FeedbackResponseWhereInput
   some: FeedbackResponseWhereInput
   none: FeedbackResponseWhereInput
+}
+
+input ResetTokenRelationFilter {
+  is: ResetTokenWhereInput
+  isNot: ResetTokenWhereInput
+}
+
+input ResetTokenWhereInput {
+  AND: [ResetTokenWhereInput!]
+  OR: [ResetTokenWhereInput!]
+  NOT: [ResetTokenWhereInput!]
+  user: UserRelationFilter
+  userId: StringFilter
+  hash: StringFilter
+  issuedDate: DateTimeFilter
 }
 
 input OrgRelationFilter {
@@ -876,7 +914,7 @@ input UserOrderByWithRelationInput {
   orgs: OrgOrderByRelationAggregateInput
   comments: CommentOrderByRelationAggregateInput
   reviewedResponses: FeedbackResponseOrderByRelationAggregateInput
-  resetToken: SortOrder
+  resetToken: ResetTokenOrderByWithRelationInput
 }
 
 input RefreshTokenOrderByWithRelationInput {
@@ -887,6 +925,13 @@ input RefreshTokenOrderByWithRelationInput {
   issuedDate: SortOrder
   expiredDate: SortOrder
   hash: SortOrder
+}
+
+input ResetTokenOrderByWithRelationInput {
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+  hash: SortOrder
+  issuedDate: SortOrder
 }
 
 input FeedbackResponseCountAggregateInput {
@@ -948,7 +993,6 @@ enum UserScalarFieldEnum {
   lastName
   status
   role
-  resetToken
 }
 
 type Mutation {
@@ -1024,7 +1068,7 @@ input UserCreateWithoutOrgsInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   comments: CommentCreateNestedManyWithoutAuthorInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
-  resetToken: String!
+  resetToken: ResetTokenCreateNestedOneWithoutUserInput
 }
 
 input RefreshTokenCreateNestedOneWithoutUserInput {
@@ -1206,7 +1250,7 @@ input UserCreateWithoutCommentsInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
-  resetToken: String!
+  resetToken: ResetTokenCreateNestedOneWithoutUserInput
 }
 
 input OrgCreateNestedManyWithoutUsersInput {
@@ -1363,7 +1407,27 @@ input UserCreateWithoutReviewedResponsesInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
   comments: CommentCreateNestedManyWithoutAuthorInput
-  resetToken: String!
+  resetToken: ResetTokenCreateNestedOneWithoutUserInput
+}
+
+input ResetTokenCreateNestedOneWithoutUserInput {
+  create: ResetTokenCreateWithoutUserInput
+  connectOrCreate: ResetTokenCreateOrConnectWithoutUserInput
+  connect: ResetTokenWhereUniqueInput
+}
+
+input ResetTokenCreateWithoutUserInput {
+  hash: String!
+  issuedDate: DateTime
+}
+
+input ResetTokenCreateOrConnectWithoutUserInput {
+  where: ResetTokenWhereUniqueInput!
+  create: ResetTokenCreateWithoutUserInput!
+}
+
+input ResetTokenWhereUniqueInput {
+  userId: String
 }
 
 input UserCreateOrConnectWithoutReviewedResponsesInput {
@@ -1612,7 +1676,7 @@ input UserUpdateWithoutOrgsInput {
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   comments: CommentUpdateManyWithoutAuthorInput
   reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByInput
-  resetToken: StringFieldUpdateOperationsInput
+  resetToken: ResetTokenUpdateOneWithoutUserInput
 }
 
 input NullableStringFieldUpdateOperationsInput {
@@ -1920,7 +1984,7 @@ input UserUpdateWithoutCommentsInput {
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   orgs: OrgUpdateManyWithoutUsersInput
   reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByInput
-  resetToken: StringFieldUpdateOperationsInput
+  resetToken: ResetTokenUpdateOneWithoutUserInput
 }
 
 input OrgUpdateManyWithoutUsersInput {
@@ -2180,7 +2244,27 @@ input UserUpdateWithoutReviewedResponsesInput {
   refreshToken: RefreshTokenUpdateOneWithoutUserInput
   orgs: OrgUpdateManyWithoutUsersInput
   comments: CommentUpdateManyWithoutAuthorInput
-  resetToken: StringFieldUpdateOperationsInput
+  resetToken: ResetTokenUpdateOneWithoutUserInput
+}
+
+input ResetTokenUpdateOneWithoutUserInput {
+  create: ResetTokenCreateWithoutUserInput
+  connectOrCreate: ResetTokenCreateOrConnectWithoutUserInput
+  upsert: ResetTokenUpsertWithoutUserInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: ResetTokenWhereUniqueInput
+  update: ResetTokenUpdateWithoutUserInput
+}
+
+input ResetTokenUpsertWithoutUserInput {
+  update: ResetTokenUpdateWithoutUserInput!
+  create: ResetTokenCreateWithoutUserInput!
+}
+
+input ResetTokenUpdateWithoutUserInput {
+  hash: StringFieldUpdateOperationsInput
+  issuedDate: DateTimeFieldUpdateOperationsInput
 }
 
 input FeedbackResponseUpdateWithWhereUniqueWithoutFeedbackInput {
@@ -2426,7 +2510,6 @@ input UserScalarWhereInput {
   lastName: StringFilter
   status: EnumStatusFilter
   role: EnumRoleFilter
-  resetToken: StringFilter
 }
 
 input UserUpdateManyMutationInput {
@@ -2438,7 +2521,6 @@ input UserUpdateManyMutationInput {
   lastName: StringFieldUpdateOperationsInput
   status: EnumStatusFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
-  resetToken: StringFieldUpdateOperationsInput
 }
 
 input OrgUpdateWithWhereUniqueWithoutFeedbacksInput {
@@ -2512,7 +2594,7 @@ input UserCreateInput {
   orgs: OrgCreateNestedManyWithoutUsersInput
   comments: CommentCreateNestedManyWithoutAuthorInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
-  resetToken: String!
+  resetToken: ResetTokenCreateNestedOneWithoutUserInput
 }
 
 input LoginUserInput {

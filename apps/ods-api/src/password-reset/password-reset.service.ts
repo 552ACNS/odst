@@ -28,7 +28,7 @@ export class PasswordResetService {
           subject: 'Password Reset',
           html: `
           <h3>Please click the link below to onreset password</h3>
-          <p>'localhost'/resetpassword/${resetToken}</p>
+          <p>/resetpassword/${resetToken}</p>
            `,
         });
         this.userService.update({ email: to }, { resetToken: resetToken });

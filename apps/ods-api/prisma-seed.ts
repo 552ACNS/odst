@@ -243,7 +243,7 @@ async function main() {
         lastName: 'Admin',
         grade: 'E-∞',
         status: 'ENABLED',
-        resetToken: '',
+        resetToken: {},
       },
     });
 
@@ -261,7 +261,7 @@ async function main() {
         lastName: 'Voigt',
         grade: 'O-6',
         status: 'ENABLED',
-        resetToken: '',
+        resetToken: {},
       },
     });
 
@@ -280,7 +280,7 @@ async function main() {
         lastName: 'Trinkle',
         grade: 'O-6',
         status: 'ENABLED',
-        resetToken: '',
+        resetToken: {},
       },
     });
 
@@ -298,7 +298,7 @@ async function main() {
         lastName: 'Coyle',
         grade: 'O-6',
         status: 'ENABLED',
-        resetToken: '',
+        resetToken: {},
       },
     });
 
@@ -316,7 +316,7 @@ async function main() {
         lastName: 'Matos',
         grade: 'O-5',
         status: 'ENABLED',
-        resetToken: '',
+        resetToken: {},
       },
     });
 
@@ -334,7 +334,7 @@ async function main() {
         lastName: 'Henry',
         grade: 'O-5',
         status: 'REQUESTED',
-        resetToken: '',
+        resetToken: {},
       },
     });
 
@@ -352,7 +352,7 @@ async function main() {
         lastName: 'Henderson',
         grade: 'O-5',
         status: 'ENABLED',
-        resetToken: '',
+        resetToken: {},
       },
     });
   }

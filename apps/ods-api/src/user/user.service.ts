@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   Comment,
   Org,
@@ -7,6 +7,7 @@ import {
   Role,
   User,
 } from '.prisma/ods/client';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { hash } from 'bcryptjs';
 
@@ -67,6 +68,26 @@ export class UserService {
       data,
       select: { id: true },
     });
+  }
+
+  @Cron(CronExpression.EVERY_30_MINUTES, {
+    name: 'Delete password resetTokens older than 30 minutes',
+  })
+  private async DeleteOneResetTokenArgs(): Promise<void> {
+    Logger.log(
+      'Deleting password ResetTokens older than 30 minutes',
+      'UserService'
+    );
+    // TODO [ODST-272]: Redo with try catch
+    //Will silently fail if delete isn't cascaded properly
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [DeleteOneResetTokenArgs] = await this.prisma.$transaction([
+      this.prisma.resetToken.deleteMany({
+        where: {
+          issuedDate: { lt: new Date(Date.now() - 1800000) },
+        },
+      }),
+    ]);
   }
 
   //TODO write tests for this

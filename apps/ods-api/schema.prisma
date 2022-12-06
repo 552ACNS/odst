@@ -38,7 +38,7 @@ model User {
 model ResetToken {
   user        User     @relation(fields: [userId], references: [id])
   userId      String   @unique
-  id          String
+  hash        String
   issuedDate  DateTime @default(now())
 }
 

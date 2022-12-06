@@ -3,10 +3,16 @@ import { PasswordResetService } from './password-reset.service';
 import { PasswordResetResolver } from './password-reset.resolver';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PrismaService } from '../prisma/prisma.service';
+import { UserService } from '../user/user.service';
 
 @Module({
   exports: [PasswordResetService],
-  providers: [PasswordResetResolver, PasswordResetService, PrismaService],
+  providers: [
+    PasswordResetResolver,
+    PasswordResetService,
+    PrismaService,
+    UserService,
+  ],
   imports: [
     MailerModule.forRoot({
       transport: {
