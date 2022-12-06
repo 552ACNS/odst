@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CommentsComponent } from '../components/comments/comments.component';
 
 @NgModule({
   declarations: [RequestedAccountsComponent],
@@ -23,6 +24,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatInputModule,
     MatSnackBarModule,
+    CommentsComponent,
   ],
 })
 export class RequestedAccountsModule {}

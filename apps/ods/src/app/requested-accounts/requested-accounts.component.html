@@ -25,6 +25,7 @@
       >No data to display</mat-card-footer
     >
   </mat-card>
+
   <mat-card
     appearance="outlined"
     class="shadow-md font-medium"
@@ -42,7 +43,21 @@
         </mat-form-field>
       </mat-list-item>
     </mat-list>
-    <mat-card-actions class="space-y-3 m-1">
+    <mat-card appearance="outlined" class="shadow-md font-medium">
+      <odst-comments
+        class="float-end"
+        [comments]="comments"
+        [userId]="userId"
+        (commentToSubmit)="submitComment($event)"
+      ></odst-comments>
+    </mat-card>
+    <mat-card-actions class="m-1">
+      <button
+        mat-stroked-button
+        class="w-full text-white shadow-md rounded-full"
+      >
+        Deny
+      </button>
       <button
         mat-raised-button
         color="primary"
@@ -50,12 +65,6 @@
         (click)="acceptRequest()"
       >
         Accept
-      </button>
-      <button
-        mat-stroked-button
-        class="w-full text-white shadow-md rounded-full m-0"
-      >
-        Deny
       </button>
     </mat-card-actions>
   </mat-card>

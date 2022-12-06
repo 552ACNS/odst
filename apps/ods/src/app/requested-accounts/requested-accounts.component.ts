@@ -9,6 +9,8 @@ import { first } from 'rxjs';
   styleUrls: ['./requested-accounts.component.scss'],
 })
 export class RequestedAccountsComponent implements OnInit {
+  comments = [];
+  userId = '1';
   constructor(
     private requestedAccountsService: RequestedAccountsService,
     private snackBar: MatSnackBar
@@ -93,4 +95,8 @@ export class RequestedAccountsComponent implements OnInit {
   keepOrder = (a) => {
     return a;
   };
+
+  submitComment(comment) {
+    console.log('reeee');
+  }
 }

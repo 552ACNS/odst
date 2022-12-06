@@ -32,6 +32,14 @@ model User {
   orgs              Org[]
   comments          Comment[]
   reviewedResponses FeedbackResponse[]
+  accountRequests   AccountRequest?
+}
+
+model AccountRequest {
+  id       String    @id @default(uuid())
+  user     User      @relation(fields: [userId], references: [id])
+  userId   String    @unique
+  comments Comment[]
 }
 
 model RefreshToken {
@@ -56,18 +64,18 @@ model Org {
 }
 
 model FeedbackResponse {
-  id           String    @id @default(uuid())
-  feedback     Feedback  @relation(fields: [feedbackId], references: [id])
-  feedbackId   String
-  openedDate   DateTime  @default(now())
-  closedDate   DateTime?
-  answers      Answer[]
-  routeOutside Boolean   @default(false)
-  tags         Tag[]
-  comments     Comment[]
-  resolved     Boolean   @default(false)
-  reviewedBy   User?     @relation(fields: [reviewerId], references: [id])
-  reviewerId   String?
+  id              String    @id @default(uuid())
+  feedback        Feedback  @relation(fields: [feedbackId], references: [id])
+  feedbackId      String
+  openedDate      DateTime  @default(now())
+  closedDate      DateTime?
+  answers         Answer[]
+  routeOutside    Boolean   @default(false)
+  tags            Tag[]
+  comments        Comment[]
+  resolved        Boolean   @default(false)
+  reviewedBy      User?     @relation(fields: [reviewerId], references: [id])
+  reviewerId      String?
   resolvedComment String?
 }
 
@@ -77,8 +85,10 @@ model Comment {
   date               DateTime          @default(now())
   author             User              @relation(fields: [authorId], references: [id])
   authorId           String
-  FeedbackResponse   FeedbackResponse? @relation(fields: [feedbackResponseId], references: [id])
+  feedbackResponse   FeedbackResponse? @relation(fields: [feedbackResponseId], references: [id])
   feedbackResponseId String
+  accountRequest     AccountRequest?   @relation(fields: [accountRequestId], references: [id])
+  accountRequestId   String?
 }
 
 model Answer {

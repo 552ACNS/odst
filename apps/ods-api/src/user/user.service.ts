@@ -52,14 +52,6 @@ export class UserService {
     });
   }
 
-  async comments(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<Comment[] | null> {
-    return this.prisma.user
-      .findUnique({ where: userWhereUniqueInput })
-      .comments();
-  }
-
   async create(data: Prisma.UserCreateInput): Promise<{ id: string }> {
     data.password = await hash(data.password, 10);
 
@@ -172,5 +164,13 @@ export class UserService {
         return [];
       }
     }
+  }
+
+  async comments(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  ): Promise<Comment[] | null> {
+    return this.prisma.user
+      .findUnique({ where: userWhereUniqueInput })
+      .comments();
   }
 }
