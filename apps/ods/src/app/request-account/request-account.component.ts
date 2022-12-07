@@ -120,7 +120,7 @@ export class RequestAccountComponent implements OnInit {
           ],
         },
         password: this.form.value['confirmPassword'].trim(),
-        resetToken: '',
+        resetToken: {},
       })
       .subscribe(({ errors, data }) => {
         this.submitSuccess = !errors && !!data;

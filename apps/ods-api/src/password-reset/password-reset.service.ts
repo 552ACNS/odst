@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 import { UserService } from '../user/user.service';
+import { Prisma, ResetToken } from '.prisma/ods/client';
 
 @Injectable()
 export class PasswordResetService {
@@ -14,7 +15,11 @@ export class PasswordResetService {
 
   //remembers to put back in the from input for when we got that figured out ig
   async sendConfirmationLetter(to: string): Promise<string> {
-    const resetToken = uuidv4();
+    const hash: string = uuidv4();
+    const resetToken: any = {
+      hash,
+      CurrentDate: Date.now(),
+    };
 
     if (
       await this.prisma.user.findUnique({
@@ -27,8 +32,8 @@ export class PasswordResetService {
           from: 'acnssmtp552@gmail.com', // will be whatever we decide the email for our aapplication will be
           subject: 'Password Reset',
           html: `
-          <h3>Please click the link below to onreset password</h3>
-          <p>/resetpassword/${resetToken}</p>
+          <h3>Please click the link below to reset password</h3>
+          <p>localhost:4210/password-reset/${hash}</p>
            `,
         });
         this.userService.update({ email: to }, { resetToken: resetToken });
@@ -37,5 +42,13 @@ export class PasswordResetService {
       }
     }
     return 'Email has been sent';
+  }
+
+  async findUnique(
+    resetTokenWhereUniqueInput: Prisma.ResetTokenWhereUniqueInput
+  ): Promise<boolean> {
+    return !!this.prisma.resetToken.findUnique({
+      where: resetTokenWhereUniqueInput,
+    });
   }
 }
