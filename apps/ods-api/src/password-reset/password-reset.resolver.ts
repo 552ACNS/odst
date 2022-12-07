@@ -14,8 +14,10 @@ export class PasswordResetResolver {
   }
 
   @Public()
-  @Query(() => Boolean)
-  async checkResetToken(@Args() resetToken: string): Promise<boolean> {
+  @Query(() => Boolean, { name: 'checkResetToken' })
+  async checkResetToken(
+    @Args('checkResetToken') resetToken: string
+  ): Promise<boolean> {
     return this.passwordResetService.findUnique({ id: resetToken });
   }
 }

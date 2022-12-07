@@ -90,9 +90,9 @@ type Comment {
 }
 
 type ResetToken {
+  id: ID!
   user: User!
   userId: String!
-  hash: String!
   issuedDate: DateTime!
 }
 
@@ -335,21 +335,21 @@ type RefreshTokenMaxAggregate {
 }
 
 type ResetTokenCountAggregate {
+  id: Int!
   userId: Int!
-  hash: Int!
   issuedDate: Int!
   _all: Int!
 }
 
 type ResetTokenMinAggregate {
+  id: String
   userId: String
-  hash: String
   issuedDate: DateTime
 }
 
 type ResetTokenMaxAggregate {
+  id: String
   userId: String
-  hash: String
   issuedDate: DateTime
 }
 
@@ -449,6 +449,7 @@ type Query {
   me: User!
   findManyAccountRequests: [User!]!
   getTags: [Tag!]!
+  checkResetToken(checkResetToken: String!): Boolean!
   usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
@@ -740,9 +741,9 @@ input ResetTokenWhereInput {
   AND: [ResetTokenWhereInput!]
   OR: [ResetTokenWhereInput!]
   NOT: [ResetTokenWhereInput!]
+  id: StringFilter
   user: UserRelationFilter
   userId: StringFilter
-  hash: StringFilter
   issuedDate: DateTimeFilter
 }
 
@@ -928,9 +929,9 @@ input RefreshTokenOrderByWithRelationInput {
 }
 
 input ResetTokenOrderByWithRelationInput {
+  id: SortOrder
   user: UserOrderByWithRelationInput
   userId: SortOrder
-  hash: SortOrder
   issuedDate: SortOrder
 }
 
@@ -1417,8 +1418,8 @@ input ResetTokenCreateNestedOneWithoutUserInput {
 }
 
 input ResetTokenCreateWithoutUserInput {
-  hash: String!
-  issuedDate: DateTime
+  id: String
+  issuedDate: DateTime!
 }
 
 input ResetTokenCreateOrConnectWithoutUserInput {
@@ -1427,6 +1428,7 @@ input ResetTokenCreateOrConnectWithoutUserInput {
 }
 
 input ResetTokenWhereUniqueInput {
+  id: String
   userId: String
 }
 
@@ -2263,7 +2265,7 @@ input ResetTokenUpsertWithoutUserInput {
 }
 
 input ResetTokenUpdateWithoutUserInput {
-  hash: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
   issuedDate: DateTimeFieldUpdateOperationsInput
 }
 

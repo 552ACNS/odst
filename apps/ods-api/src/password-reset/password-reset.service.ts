@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 import { UserService } from '../user/user.service';
-import { Prisma, ResetToken } from '.prisma/ods/client';
+import { Prisma } from '.prisma/ods/client';
 
 @Injectable()
 export class PasswordResetService {
@@ -15,10 +15,12 @@ export class PasswordResetService {
 
   //remembers to put back in the from input for when we got that figured out ig
   async sendConfirmationLetter(to: string): Promise<string> {
-    const hash: string = uuidv4();
+    const id: string = uuidv4();
+    const CurrentDate = Date.now();
+    console.log(id);
     const resetToken: any = {
-      hash,
-      CurrentDate: Date.now(),
+      hash: id,
+      CurrentDate,
     };
 
     if (
@@ -33,7 +35,7 @@ export class PasswordResetService {
           subject: 'Password Reset',
           html: `
           <h3>Please click the link below to reset password</h3>
-          <p>localhost:4210/password-reset/${hash}</p>
+          <p><a href="http://${process.env.PASSWORD_RESET}">${process.env.PASSWORD_RESET}/password-reset/${id}</a></p>
            `,
         });
         this.userService.update({ email: to }, { resetToken: resetToken });
@@ -44,11 +46,15 @@ export class PasswordResetService {
     return 'Email has been sent';
   }
 
+  // /password-reset/${id}"></p>
+
   async findUnique(
     resetTokenWhereUniqueInput: Prisma.ResetTokenWhereUniqueInput
   ): Promise<boolean> {
-    return !!this.prisma.resetToken.findUnique({
+    const tokenFound = this.prisma.resetToken.findUnique({
       where: resetTokenWhereUniqueInput,
     });
+
+    return !!(await tokenFound);
   }
 }

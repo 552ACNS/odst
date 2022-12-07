@@ -13,7 +13,7 @@ export const MockUsers: User[] = [
     lastName: 'lastName',
     resetToken: {
       userId: 'user id 1',
-      hash: '',
+      id: '1234',
       issuedDate: new Date(),
     },
   },
@@ -30,7 +30,7 @@ export const MockUsers: User[] = [
     orgs: [MockOrgs[0]],
     resetToken: {
       userId: 'user id 2',
-      hash: '',
+      id: '12345',
       issuedDate: new Date(),
     },
   },
