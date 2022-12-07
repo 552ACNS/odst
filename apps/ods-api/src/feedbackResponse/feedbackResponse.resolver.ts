@@ -29,7 +29,6 @@ import { UseInterceptors } from '@nestjs/common';
 import { FeedbackResponseInterceptor } from './feedbackResponse.interceptor';
 
 @Resolver(() => FeedbackResponse)
-@UseInterceptors(FeedbackResponseInterceptor)
 export class FeedbackResponseResolver {
   constructor(
     private readonly feedbackResponseService: FeedbackResponseService
@@ -58,6 +57,7 @@ export class FeedbackResponseResolver {
   }
 
   //TODO write tests for this
+  @UseInterceptors(FeedbackResponseInterceptor)
   @Query(() => Int, { name: 'getResponseCount' })
   async count(
     @GetCurrentUser() user: User,
@@ -77,6 +77,7 @@ export class FeedbackResponseResolver {
     ).id;
   }
 
+  @UseInterceptors(FeedbackResponseInterceptor)
   @Mutation(() => FeedbackResponse, { name: 'updateFeedbackResponse' })
   async update(
     @Context('req') req,
@@ -95,6 +96,7 @@ export class FeedbackResponseResolver {
 
   // TODO [ODST-271]: DELETE THIS ONCE FRONTEND IS RECONFIGURED
   // TODO write tests for this
+  @UseInterceptors(FeedbackResponseInterceptor)
   @Query(() => ResponseCount, { name: 'ResponseCount' })
   async ResponseCount(
     @GetCurrentUser() user: User,
@@ -108,6 +110,7 @@ export class FeedbackResponseResolver {
 
   // TODO: Use the FindManyFeedbackResponse to use where instead of string status.
   //TODO: pass whole object of FindManyFeedbackResponseArgs instead of deconstructing object
+  @UseInterceptors(FeedbackResponseInterceptor)
   @Query(() => [FeedbackResponse], { name: 'getIssuesByStatus' })
   async getIssuesByStatus(
     @Args('status') status: string,
@@ -125,6 +128,7 @@ export class FeedbackResponseResolver {
     );
   }
 
+  @UseInterceptors(FeedbackResponseInterceptor)
   @ResolveField(() => [Answer])
   async answers(
     @Parent() feedbackResponse: FeedbackResponse,
