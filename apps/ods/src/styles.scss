@@ -3,7 +3,7 @@
 
 @import '@angular/material/theming';
 
-@tailwind base;
+//@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -85,23 +85,20 @@ body {
   color: mat-color($error-color);
 }
 
-.mdc-notched-outline__notch {
-  @apply border-r-0 #{!important};
+//@layer base {
+
+mat-card {
+  // Need to wrap important in SASS interpolation to work with Tailwind
+  @apply rounded-2xl shadow-md #{!important};
 }
 
-@layer base {
-  mat-card {
-    // Need to wrap important in SASS interpolation to work with Tailwind
-    @apply rounded-2xl shadow-md #{!important};
-  }
-
-  mat-card-title {
-    // Need to wrap important in SASS interpolation to work with Tailwind
-    @apply m-4 #{!important};
-  }
-
-  // TODO: [ODST-400] [FE] Make selector to change button text spacing more specific
-  button {
-    @apply tracking-normal #{!important};
-  }
+mat-card-title {
+  // Need to wrap important in SASS interpolation to work with Tailwind
+  @apply m-4 #{!important};
 }
+
+// TODO: [ODST-400] [FE] Make selector to change button text spacing more specific
+button {
+  @apply tracking-normal #{!important};
+}
+//}
