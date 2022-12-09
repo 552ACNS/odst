@@ -133,6 +133,13 @@ export class RequestedAccountsComponent implements OnInit {
           },
         },
       };
+      this.requestedAccountsService
+        .updateAccountRequest(this.updateAccountRequestMutationVariables)
+        .subscribe(({ data, errors }) => {
+          if (!errors && !!data) {
+            this.comments = data.updateAccountRequest.comments;
+          }
+        });
     }
   }
 }

@@ -87,7 +87,7 @@ model Comment {
   authorId           String
   feedbackResponse   FeedbackResponse? @relation(fields: [feedbackResponseId], references: [id])
   feedbackResponseId String?
-  accountRequest     AccountRequest?   @relation(fields: [accountRequestId], references: [id])
+  accountRequest     AccountRequest?   @relation(fields: [accountRequestId], references: [id], onDelete: Cascade)
   accountRequestId   String?
 }
 
