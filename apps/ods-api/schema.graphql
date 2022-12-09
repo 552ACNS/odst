@@ -2,26 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AnswerCountAggregate {
+type AccountRequestCountAggregate {
   id: Int!
-  value: Int!
-  questionId: Int!
-  feedbackResponseId: Int!
+  userId: Int!
   _all: Int!
 }
 
-type AnswerMinAggregate {
-  id: String
-  value: String
-  questionId: String
-  feedbackResponseId: String
+type AccountRequestCount {
+  comments: Int!
 }
 
-type AnswerMaxAggregate {
+type AccountRequestMinAggregate {
   id: String
-  value: String
-  questionId: String
-  feedbackResponseId: String
+  userId: String
+}
+
+type AccountRequestMaxAggregate {
+  id: String
+  userId: String
 }
 
 type RefreshToken {
@@ -56,6 +54,18 @@ enum TagType {
   Action
 }
 
+type Comment {
+  id: ID!
+  value: String!
+  date: DateTime!
+  author: User!
+  authorId: String!
+  feedbackResponse: FeedbackResponse
+  feedbackResponseId: String
+  accountRequest: AccountRequest
+  accountRequestId: String
+}
+
 type FeedbackResponseCount {
   answers: Int!
   tags: Int!
@@ -79,48 +89,41 @@ type FeedbackResponse {
   _count: FeedbackResponseCount!
 }
 
-type Comment {
+type Answer {
   id: ID!
   value: String!
-  date: DateTime!
-  author: User!
-  authorId: String!
-  FeedbackResponse: FeedbackResponse
+  question: Question!
+  questionId: String!
+  feedbackResponse: FeedbackResponse!
   feedbackResponseId: String!
 }
 
-type UserCount {
-  orgs: Int!
-  comments: Int!
-  reviewedResponses: Int!
+type QuestionCount {
+  feedbacks: Int!
+  answers: Int!
 }
 
-type User {
+type Question {
   id: ID!
-  email: String!
-  grade: String
-  firstName: String!
-  lastName: String!
-  status: Status!
-  role: Role!
-  refreshToken: RefreshToken
+  value: String!
+  feedbacks: [Feedback!]
+  answers: [Answer!]
+  _count: QuestionCount!
+}
+
+type FeedbackCount {
+  orgs: Int!
+  questions: Int!
+  feedbackResponses: Int!
+}
+
+type Feedback {
+  id: ID!
   orgs: [Org!]
-  comments: [Comment!]
-  reviewedResponses: [FeedbackResponse!]
-  _count: UserCount!
-}
-
-enum Status {
-  DISABLED
-  ENABLED
-  REQUESTED
-  DENIED
-}
-
-enum Role {
-  ADMIN
-  DEI
-  CC
+  questions: [Question!]
+  questionsHash: String
+  feedbackResponses: [FeedbackResponse!]
+  _count: FeedbackCount!
 }
 
 type OrgCount {
@@ -148,41 +151,69 @@ enum OrgTier {
   OTHER
 }
 
-type FeedbackCount {
+type UserCount {
   orgs: Int!
-  questions: Int!
-  feedbackResponses: Int!
+  comments: Int!
+  reviewedResponses: Int!
 }
 
-type Feedback {
+type User {
   id: ID!
+  email: String!
+  grade: String
+  firstName: String!
+  lastName: String!
+  status: Status!
+  role: Role!
+  refreshToken: RefreshToken
   orgs: [Org!]
-  questions: [Question!]
-  questionsHash: String
-  feedbackResponses: [FeedbackResponse!]
-  _count: FeedbackCount!
+  comments: [Comment!]
+  reviewedResponses: [FeedbackResponse!]
+  accountRequest: AccountRequest
+  _count: UserCount!
 }
 
-type QuestionCount {
-  feedbacks: Int!
-  answers: Int!
+enum Status {
+  DISABLED
+  ENABLED
+  REQUESTED
+  DENIED
 }
 
-type Question {
+enum Role {
+  ADMIN
+  DEI
+  CC
+}
+
+type AccountRequest {
   id: ID!
-  value: String!
-  feedbacks: [Feedback!]
-  answers: [Answer!]
-  _count: QuestionCount!
+  user: User!
+  userId: String!
+  comments: [Comment!]
+  _count: AccountRequestCount!
 }
 
-type Answer {
-  id: ID!
-  value: String!
-  question: Question!
-  questionId: String!
-  feedbackResponse: FeedbackResponse!
-  feedbackResponseId: String!
+type AnswerCountAggregate {
+  id: Int!
+  value: Int!
+  questionId: Int!
+  feedbackResponseId: Int!
+  _all: Int!
+}
+
+type AnswerMinAggregate {
+  id: String
+  value: String
+  questionId: String
+  feedbackResponseId: String
+}
+
+type AnswerMaxAggregate {
+  id: String
+  value: String
+  questionId: String
+  feedbackResponseId: String
 }
 
 type CommentCountAggregate {
@@ -191,6 +222,7 @@ type CommentCountAggregate {
   date: Int!
   authorId: Int!
   feedbackResponseId: Int!
+  accountRequestId: Int!
   _all: Int!
 }
 
@@ -200,6 +232,7 @@ type CommentMinAggregate {
   date: DateTime
   authorId: String
   feedbackResponseId: String
+  accountRequestId: String
 }
 
 type CommentMaxAggregate {
@@ -208,6 +241,7 @@ type CommentMaxAggregate {
   date: DateTime
   authorId: String
   feedbackResponseId: String
+  accountRequestId: String
 }
 
 type FeedbackCountAggregate {
@@ -421,6 +455,7 @@ type Query {
   me: User!
   findManyAccountRequests: [User!]!
   getTags: [Tag!]!
+  findUniqueAccountRequest(accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!): AccountRequest!
   usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
@@ -558,6 +593,7 @@ input UserWhereInput {
   orgs: OrgListRelationFilter
   comments: CommentListRelationFilter
   reviewedResponses: FeedbackResponseListRelationFilter
+  accountRequest: AccountRequestRelationFilter
 }
 
 input StringNullableFilter {
@@ -687,13 +723,30 @@ input CommentWhereInput {
   date: DateTimeFilter
   author: UserRelationFilter
   authorId: StringFilter
-  FeedbackResponse: FeedbackResponseRelationFilter
-  feedbackResponseId: StringFilter
+  feedbackResponse: FeedbackResponseRelationFilter
+  feedbackResponseId: StringNullableFilter
+  accountRequest: AccountRequestRelationFilter
+  accountRequestId: StringNullableFilter
 }
 
 input FeedbackResponseRelationFilter {
   is: FeedbackResponseWhereInput
   isNot: FeedbackResponseWhereInput
+}
+
+input AccountRequestRelationFilter {
+  is: AccountRequestWhereInput
+  isNot: AccountRequestWhereInput
+}
+
+input AccountRequestWhereInput {
+  AND: [AccountRequestWhereInput!]
+  OR: [AccountRequestWhereInput!]
+  NOT: [AccountRequestWhereInput!]
+  id: StringFilter
+  user: UserRelationFilter
+  userId: StringFilter
+  comments: CommentListRelationFilter
 }
 
 input FeedbackResponseListRelationFilter {
@@ -870,6 +923,7 @@ input UserOrderByWithRelationInput {
   orgs: OrgOrderByRelationAggregateInput
   comments: CommentOrderByRelationAggregateInput
   reviewedResponses: FeedbackResponseOrderByRelationAggregateInput
+  accountRequest: AccountRequestOrderByWithRelationInput
 }
 
 input RefreshTokenOrderByWithRelationInput {
@@ -880,6 +934,13 @@ input RefreshTokenOrderByWithRelationInput {
   issuedDate: SortOrder
   expiredDate: SortOrder
   hash: SortOrder
+}
+
+input AccountRequestOrderByWithRelationInput {
+  id: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+  comments: CommentOrderByRelationAggregateInput
 }
 
 input FeedbackResponseCountAggregateInput {
@@ -943,6 +1004,11 @@ enum UserScalarFieldEnum {
   role
 }
 
+input AccountRequestWhereUniqueInput {
+  id: String
+  userId: String
+}
+
 type Mutation {
   createFeedbackWithQuestions(questionValues: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): String!
   updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
@@ -954,6 +1020,7 @@ type Mutation {
   createUser(userCreateInput: UserCreateInput!): String!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
+  updateAccountRequest(data: AccountRequestUpdateInput!, where: AccountRequestWhereUniqueInput!): AccountRequest!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -1015,6 +1082,7 @@ input UserCreateWithoutOrgsInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   comments: CommentCreateNestedManyWithoutAuthorInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
+  accountRequest: AccountRequestCreateNestedOneWithoutUserInput
 }
 
 input RefreshTokenCreateNestedOneWithoutUserInput {
@@ -1052,7 +1120,8 @@ input CommentCreateWithoutAuthorInput {
   id: String
   value: String!
   date: DateTime
-  FeedbackResponse: FeedbackResponseCreateNestedOneWithoutCommentsInput
+  feedbackResponse: FeedbackResponseCreateNestedOneWithoutCommentsInput
+  accountRequest: AccountRequestCreateNestedOneWithoutCommentsInput
 }
 
 input FeedbackResponseCreateNestedOneWithoutCommentsInput {
@@ -1176,6 +1245,7 @@ input CommentCreateWithoutFeedbackResponseInput {
   value: String!
   date: DateTime
   author: UserCreateNestedOneWithoutCommentsInput!
+  accountRequest: AccountRequestCreateNestedOneWithoutCommentsInput
 }
 
 input UserCreateNestedOneWithoutCommentsInput {
@@ -1196,6 +1266,7 @@ input UserCreateWithoutCommentsInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
+  accountRequest: AccountRequestCreateNestedOneWithoutUserInput
 }
 
 input OrgCreateNestedManyWithoutUsersInput {
@@ -1352,6 +1423,60 @@ input UserCreateWithoutReviewedResponsesInput {
   refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
   orgs: OrgCreateNestedManyWithoutUsersInput
   comments: CommentCreateNestedManyWithoutAuthorInput
+  accountRequest: AccountRequestCreateNestedOneWithoutUserInput
+}
+
+input AccountRequestCreateNestedOneWithoutUserInput {
+  create: AccountRequestCreateWithoutUserInput
+  connectOrCreate: AccountRequestCreateOrConnectWithoutUserInput
+  connect: AccountRequestWhereUniqueInput
+}
+
+input AccountRequestCreateWithoutUserInput {
+  id: String
+  comments: CommentCreateNestedManyWithoutAccountRequestInput
+}
+
+input CommentCreateNestedManyWithoutAccountRequestInput {
+  create: [CommentCreateWithoutAccountRequestInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutAccountRequestInput!]
+  createMany: CommentCreateManyAccountRequestInputEnvelope
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutAccountRequestInput {
+  id: String
+  value: String!
+  date: DateTime
+  author: UserCreateNestedOneWithoutCommentsInput!
+  feedbackResponse: FeedbackResponseCreateNestedOneWithoutCommentsInput
+}
+
+input CommentCreateOrConnectWithoutAccountRequestInput {
+  where: CommentWhereUniqueInput!
+  create: CommentCreateWithoutAccountRequestInput!
+}
+
+input CommentWhereUniqueInput {
+  id: String
+}
+
+input CommentCreateManyAccountRequestInputEnvelope {
+  data: [CommentCreateManyAccountRequestInput!]!
+  skipDuplicates: Boolean
+}
+
+input CommentCreateManyAccountRequestInput {
+  id: String
+  value: String!
+  date: DateTime
+  authorId: String!
+  feedbackResponseId: String
+}
+
+input AccountRequestCreateOrConnectWithoutUserInput {
+  where: AccountRequestWhereUniqueInput!
+  create: AccountRequestCreateWithoutUserInput!
 }
 
 input UserCreateOrConnectWithoutReviewedResponsesInput {
@@ -1471,13 +1596,51 @@ input UserCreateOrConnectWithoutCommentsInput {
   create: UserCreateWithoutCommentsInput!
 }
 
+input AccountRequestCreateNestedOneWithoutCommentsInput {
+  create: AccountRequestCreateWithoutCommentsInput
+  connectOrCreate: AccountRequestCreateOrConnectWithoutCommentsInput
+  connect: AccountRequestWhereUniqueInput
+}
+
+input AccountRequestCreateWithoutCommentsInput {
+  id: String
+  user: UserCreateNestedOneWithoutAccountRequestInput!
+}
+
+input UserCreateNestedOneWithoutAccountRequestInput {
+  create: UserCreateWithoutAccountRequestInput
+  connectOrCreate: UserCreateOrConnectWithoutAccountRequestInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutAccountRequestInput {
+  id: String
+  email: String!
+  password: String!
+  grade: String
+  firstName: String!
+  lastName: String!
+  status: Status!
+  role: Role!
+  refreshToken: RefreshTokenCreateNestedOneWithoutUserInput
+  orgs: OrgCreateNestedManyWithoutUsersInput
+  comments: CommentCreateNestedManyWithoutAuthorInput
+  reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
+}
+
+input UserCreateOrConnectWithoutAccountRequestInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutAccountRequestInput!
+}
+
+input AccountRequestCreateOrConnectWithoutCommentsInput {
+  where: AccountRequestWhereUniqueInput!
+  create: AccountRequestCreateWithoutCommentsInput!
+}
+
 input CommentCreateOrConnectWithoutFeedbackResponseInput {
   where: CommentWhereUniqueInput!
   create: CommentCreateWithoutFeedbackResponseInput!
-}
-
-input CommentWhereUniqueInput {
-  id: String
 }
 
 input CommentCreateManyFeedbackResponseInputEnvelope {
@@ -1490,6 +1653,7 @@ input CommentCreateManyFeedbackResponseInput {
   value: String!
   date: DateTime
   authorId: String!
+  accountRequestId: String
 }
 
 input FeedbackResponseCreateOrConnectWithoutAnswersInput {
@@ -1542,7 +1706,8 @@ input CommentCreateManyAuthorInput {
   id: String
   value: String!
   date: DateTime
-  feedbackResponseId: String!
+  feedbackResponseId: String
+  accountRequestId: String
 }
 
 input UserCreateOrConnectWithoutOrgsInput {
@@ -1600,6 +1765,7 @@ input UserUpdateWithoutOrgsInput {
   refreshToken: RefreshTokenUpdateOneWithoutUserNestedInput
   comments: CommentUpdateManyWithoutAuthorNestedInput
   reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByNestedInput
+  accountRequest: AccountRequestUpdateOneWithoutUserNestedInput
 }
 
 input NullableStringFieldUpdateOperationsInput {
@@ -1669,7 +1835,8 @@ input CommentUpdateWithoutAuthorInput {
   id: StringFieldUpdateOperationsInput
   value: StringFieldUpdateOperationsInput
   date: DateTimeFieldUpdateOperationsInput
-  FeedbackResponse: FeedbackResponseUpdateOneWithoutCommentsNestedInput
+  feedbackResponse: FeedbackResponseUpdateOneWithoutCommentsNestedInput
+  accountRequest: AccountRequestUpdateOneWithoutCommentsNestedInput
 }
 
 input FeedbackResponseUpdateOneWithoutCommentsNestedInput {
@@ -1880,6 +2047,7 @@ input CommentUpdateWithoutFeedbackResponseInput {
   value: StringFieldUpdateOperationsInput
   date: DateTimeFieldUpdateOperationsInput
   author: UserUpdateOneRequiredWithoutCommentsNestedInput
+  accountRequest: AccountRequestUpdateOneWithoutCommentsNestedInput
 }
 
 input UserUpdateOneRequiredWithoutCommentsNestedInput {
@@ -1907,6 +2075,7 @@ input UserUpdateWithoutCommentsInput {
   refreshToken: RefreshTokenUpdateOneWithoutUserNestedInput
   orgs: OrgUpdateManyWithoutUsersNestedInput
   reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByNestedInput
+  accountRequest: AccountRequestUpdateOneWithoutUserNestedInput
 }
 
 input OrgUpdateManyWithoutUsersNestedInput {
@@ -2166,6 +2335,83 @@ input UserUpdateWithoutReviewedResponsesInput {
   refreshToken: RefreshTokenUpdateOneWithoutUserNestedInput
   orgs: OrgUpdateManyWithoutUsersNestedInput
   comments: CommentUpdateManyWithoutAuthorNestedInput
+  accountRequest: AccountRequestUpdateOneWithoutUserNestedInput
+}
+
+input AccountRequestUpdateOneWithoutUserNestedInput {
+  create: AccountRequestCreateWithoutUserInput
+  connectOrCreate: AccountRequestCreateOrConnectWithoutUserInput
+  upsert: AccountRequestUpsertWithoutUserInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: AccountRequestWhereUniqueInput
+  update: AccountRequestUpdateWithoutUserInput
+}
+
+input AccountRequestUpsertWithoutUserInput {
+  update: AccountRequestUpdateWithoutUserInput!
+  create: AccountRequestCreateWithoutUserInput!
+}
+
+input AccountRequestUpdateWithoutUserInput {
+  id: StringFieldUpdateOperationsInput
+  comments: CommentUpdateManyWithoutAccountRequestNestedInput
+}
+
+input CommentUpdateManyWithoutAccountRequestNestedInput {
+  create: [CommentCreateWithoutAccountRequestInput!]
+  connectOrCreate: [CommentCreateOrConnectWithoutAccountRequestInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutAccountRequestInput!]
+  createMany: CommentCreateManyAccountRequestInputEnvelope
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutAccountRequestInput!]
+  updateMany: [CommentUpdateManyWithWhereWithoutAccountRequestInput!]
+  deleteMany: [CommentScalarWhereInput!]
+}
+
+input CommentUpsertWithWhereUniqueWithoutAccountRequestInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutAccountRequestInput!
+  create: CommentCreateWithoutAccountRequestInput!
+}
+
+input CommentUpdateWithoutAccountRequestInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
+  author: UserUpdateOneRequiredWithoutCommentsNestedInput
+  feedbackResponse: FeedbackResponseUpdateOneWithoutCommentsNestedInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutAccountRequestInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutAccountRequestInput!
+}
+
+input CommentUpdateManyWithWhereWithoutAccountRequestInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyMutationInput!
+}
+
+input CommentScalarWhereInput {
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
+  id: StringFilter
+  value: StringFilter
+  date: DateTimeFilter
+  authorId: StringFilter
+  feedbackResponseId: StringNullableFilter
+  accountRequestId: StringNullableFilter
+}
+
+input CommentUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  value: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
 }
 
 input FeedbackResponseUpdateWithWhereUniqueWithoutFeedbackInput {
@@ -2319,6 +2565,54 @@ input FeedbackResponseUpdateManyWithWhereWithoutReviewedByInput {
   data: FeedbackResponseUpdateManyMutationInput!
 }
 
+input AccountRequestUpdateOneWithoutCommentsNestedInput {
+  create: AccountRequestCreateWithoutCommentsInput
+  connectOrCreate: AccountRequestCreateOrConnectWithoutCommentsInput
+  upsert: AccountRequestUpsertWithoutCommentsInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: AccountRequestWhereUniqueInput
+  update: AccountRequestUpdateWithoutCommentsInput
+}
+
+input AccountRequestUpsertWithoutCommentsInput {
+  update: AccountRequestUpdateWithoutCommentsInput!
+  create: AccountRequestCreateWithoutCommentsInput!
+}
+
+input AccountRequestUpdateWithoutCommentsInput {
+  id: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutAccountRequestNestedInput
+}
+
+input UserUpdateOneRequiredWithoutAccountRequestNestedInput {
+  create: UserCreateWithoutAccountRequestInput
+  connectOrCreate: UserCreateOrConnectWithoutAccountRequestInput
+  upsert: UserUpsertWithoutAccountRequestInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutAccountRequestInput
+}
+
+input UserUpsertWithoutAccountRequestInput {
+  update: UserUpdateWithoutAccountRequestInput!
+  create: UserCreateWithoutAccountRequestInput!
+}
+
+input UserUpdateWithoutAccountRequestInput {
+  id: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
+  grade: NullableStringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  status: EnumStatusFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
+  refreshToken: RefreshTokenUpdateOneWithoutUserNestedInput
+  orgs: OrgUpdateManyWithoutUsersNestedInput
+  comments: CommentUpdateManyWithoutAuthorNestedInput
+  reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByNestedInput
+}
+
 input CommentUpdateWithWhereUniqueWithoutFeedbackResponseInput {
   where: CommentWhereUniqueInput!
   data: CommentUpdateWithoutFeedbackResponseInput!
@@ -2327,23 +2621,6 @@ input CommentUpdateWithWhereUniqueWithoutFeedbackResponseInput {
 input CommentUpdateManyWithWhereWithoutFeedbackResponseInput {
   where: CommentScalarWhereInput!
   data: CommentUpdateManyMutationInput!
-}
-
-input CommentScalarWhereInput {
-  AND: [CommentScalarWhereInput!]
-  OR: [CommentScalarWhereInput!]
-  NOT: [CommentScalarWhereInput!]
-  id: StringFilter
-  value: StringFilter
-  date: DateTimeFilter
-  authorId: StringFilter
-  feedbackResponseId: StringFilter
-}
-
-input CommentUpdateManyMutationInput {
-  id: StringFieldUpdateOperationsInput
-  value: StringFieldUpdateOperationsInput
-  date: DateTimeFieldUpdateOperationsInput
 }
 
 input AnswerUpdateWithWhereUniqueWithoutQuestionInput {
@@ -2495,6 +2772,13 @@ input UserCreateInput {
   orgs: OrgCreateNestedManyWithoutUsersInput
   comments: CommentCreateNestedManyWithoutAuthorInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
+  accountRequest: AccountRequestCreateNestedOneWithoutUserInput
+}
+
+input AccountRequestUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutAccountRequestNestedInput
+  comments: CommentUpdateManyWithoutAccountRequestNestedInput
 }
 
 input LoginUserInput {

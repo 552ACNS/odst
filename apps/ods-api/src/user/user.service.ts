@@ -42,6 +42,11 @@ export class UserService {
   async enableAccount(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User> {
+    this.prisma.accountRequest.delete({
+      where: {
+        userId: userWhereUniqueInput.id,
+      },
+    });
     return this.prisma.user.update({
       where: userWhereUniqueInput,
       data: {
@@ -55,10 +60,21 @@ export class UserService {
   async create(data: Prisma.UserCreateInput): Promise<{ id: string }> {
     data.password = await hash(data.password, 10);
 
-    return this.prisma.user.create({
+    const createUser = this.prisma.user.create({
       data,
       select: { id: true },
     });
+
+    this.prisma.accountRequest.create({
+      data: {
+        user: {
+          connect: {
+            id: data.id,
+          },
+        },
+      },
+    });
+    return createUser;
   }
 
   //TODO write tests for this
@@ -166,11 +182,23 @@ export class UserService {
     }
   }
 
-  async comments(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Promise<Comment[] | null> {
-    return this.prisma.user
-      .findUnique({ where: userWhereUniqueInput })
-      .comments();
-  }
+  // async comments(
+  //   userWhereUniqueInput: Prisma.UserWhereUniqueInput
+  // ): Promise<Comment[] | null> {
+  //   return this.prisma.user
+  //     .findUnique({ where: userWhereUniqueInput })
+  //     .comments();
+  // }
+
+  // async comments(
+  //   feedbackResponseWhereUniqueInput: Prisma.FeedbackResponseWhereUniqueInput
+  // ): Promise<Comment[] | null> {
+  //   return this.prisma.feedbackResponse
+  //     .findUnique({ where: feedbackResponseWhereUniqueInput })
+  //     .comments({
+  //       orderBy: {
+  //         date: 'asc',
+  //       },
+  //     });
+  // }
 }

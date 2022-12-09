@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { RequestedAccountsService } from './requested-accounts.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { first } from 'rxjs';
+import {
+  FindUniqueAccountRequestQuery,
+  UpdateAccountRequestMutationVariables,
+} from './requested-accounts.generated';
+import { getUserId } from '@odst/helpers';
 
 @Component({
   selector: 'odst-requested-accounts',
@@ -9,13 +14,11 @@ import { first } from 'rxjs';
   styleUrls: ['./requested-accounts.component.scss'],
 })
 export class RequestedAccountsComponent implements OnInit {
-  comments = [];
-  userId = '1';
-  constructor(
-    private requestedAccountsService: RequestedAccountsService,
-    private snackBar: MatSnackBar
-  ) {}
-
+  comments: FindUniqueAccountRequestQuery['findUniqueAccountRequest']['comments'] =
+    [];
+  accountRequest: FindUniqueAccountRequestQuery['findUniqueAccountRequest'];
+  currentSelectedRowId: string;
+  userId: string;
   objectKeys = Object.keys;
   dataSource;
   columnData = {
@@ -25,12 +28,15 @@ export class RequestedAccountsComponent implements OnInit {
     'Requested Permissions': 'role',
   };
   hasNoData: boolean;
-
   requestViewIsOpen = false;
   displayedAccountRequest;
   displayedRequestData;
-
+  updateAccountRequestMutationVariables: UpdateAccountRequestMutationVariables;
   totalCount: number;
+  constructor(
+    private requestedAccountsService: RequestedAccountsService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.requestedAccountsService
@@ -48,6 +54,8 @@ export class RequestedAccountsComponent implements OnInit {
           );
         }
       });
+
+    this.userId = getUserId();
   }
 
   viewAccountRequest(row) {
@@ -60,6 +68,16 @@ export class RequestedAccountsComponent implements OnInit {
       'E-mail': row.email,
       Organization: row.orgs[0].name,
     };
+    this.requestedAccountsService
+      .findUniqueAccountRequest(row.id)
+      .subscribe(({ data, errors }) => {
+        if (!errors && !!data) {
+          this.comments = data.findUniqueAccountRequest.comments;
+          this.accountRequest = data.findUniqueAccountRequest;
+          this.currentSelectedRowId = row.id;
+        }
+      });
+
     this.requestViewIsOpen = true;
   }
 
@@ -96,7 +114,25 @@ export class RequestedAccountsComponent implements OnInit {
     return a;
   };
 
-  submitComment(comment) {
-    console.log('reeee');
+  submitComment(comment: string) {
+    if (comment !== '') {
+      this.updateAccountRequestMutationVariables = {
+        where: { id: this.accountRequest.id },
+        data: {
+          comments: {
+            create: [
+              {
+                value: comment,
+                author: {
+                  connect: {
+                    id: this.userId,
+                  },
+                },
+              },
+            ],
+          },
+        },
+      };
+    }
   }
 }

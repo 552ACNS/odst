@@ -7,6 +7,12 @@ import {
   FindManyAccountRequestsDocument,
   FindManyAccountRequestsQuery,
   FindManyAccountRequestsQueryVariables,
+  FindUniqueAccountRequestDocument,
+  FindUniqueAccountRequestQuery,
+  FindUniqueAccountRequestQueryVariables,
+  UpdateAccountRequestDocument,
+  UpdateAccountRequestMutation,
+  UpdateAccountRequestMutationVariables,
 } from './requested-accounts.generated';
 
 @Injectable({
@@ -34,6 +40,32 @@ export class RequestedAccountsService {
           id: id,
         },
       },
+    });
+  }
+
+  findUniqueAccountRequest(id: string) {
+    return this.apollo.query<
+      FindUniqueAccountRequestQuery,
+      FindUniqueAccountRequestQueryVariables
+    >({
+      query: FindUniqueAccountRequestDocument,
+      variables: {
+        accountRequestWhereUniqueInput: {
+          userId: id,
+        },
+      },
+    });
+  }
+
+  updateAccountRequest(
+    updateAccountRequestMutationVariables: UpdateAccountRequestMutationVariables
+  ) {
+    return this.apollo.mutate<
+      UpdateAccountRequestMutation,
+      UpdateAccountRequestMutationVariables
+    >({
+      mutation: UpdateAccountRequestDocument,
+      variables: updateAccountRequestMutationVariables,
     });
   }
 }

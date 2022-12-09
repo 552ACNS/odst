@@ -72,7 +72,7 @@ export class FeedbackResponseResolver {
   async create(
     @Args('feedbackResponseCreateInput')
     feedbackResponseCreateInput: FeedbackResponseCreateInput
-  ): Promise<string> {
+  ): Promise<string | undefined> {
     return (
       await this.feedbackResponseService.create(feedbackResponseCreateInput)
     ).id;

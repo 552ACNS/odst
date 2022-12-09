@@ -19,3 +19,50 @@ mutation ApproveAccountRequest($userWhereUniqueInput: UserWhereUniqueInput!) {
     status
   }
 }
+
+query FindUniqueAccountRequest(
+  $accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!
+) {
+  findUniqueAccountRequest(
+    accountRequestWhereUniqueInput: $accountRequestWhereUniqueInput
+  ) {
+    id
+    comments {
+      value
+      date
+      author {
+        id
+        firstName
+        lastName
+        grade
+        role
+        orgs {
+          name
+        }
+      }
+    }
+  }
+}
+
+mutation UpdateAccountRequest(
+  $data: AccountRequestUpdateInput!
+  $where: AccountRequestWhereUniqueInput!
+) {
+  updateAccountRequest(data: $data, where: $where) {
+    id
+    comments {
+      value
+      date
+      author {
+        id
+        firstName
+        lastName
+        grade
+        role
+        orgs {
+          name
+        }
+      }
+    }
+  }
+}

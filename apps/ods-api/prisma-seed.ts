@@ -329,6 +329,11 @@ async function main() {
         lastName: 'Henry',
         grade: 'O-5',
         status: 'REQUESTED',
+        accountRequest: {
+          create: {
+            id: 'AccoutRequest1',
+          },
+        },
       },
     });
 
