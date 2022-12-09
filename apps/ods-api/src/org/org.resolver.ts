@@ -93,7 +93,12 @@ export class OrgResolver {
     @GetCurrentUser() user: User,
     @Args('orgCreateInput') orgCreateInput: OrgCreateInput
   ): Promise<string> {
-    return (await this.orgService.createOrg(user, orgCreateInput)).id;
+    return (
+      await this.orgService.createOrg(
+        user,
+        orgCreateInput as Prisma.OrgCreateInput
+      )
+    ).id;
   }
 
   @Mutation(() => Org, { name: 'updateOrg' })

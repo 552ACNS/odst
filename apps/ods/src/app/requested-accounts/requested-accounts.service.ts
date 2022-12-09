@@ -7,12 +7,12 @@ import {
   FindManyAccountRequestsDocument,
   FindManyAccountRequestsQuery,
   FindManyAccountRequestsQueryVariables,
-  FindUniqueAccountRequestDocument,
   FindUniqueAccountRequestQuery,
   FindUniqueAccountRequestQueryVariables,
-  UpdateAccountRequestDocument,
-  UpdateAccountRequestMutation,
+  FindUniqueAccountRequestDocument,
   UpdateAccountRequestMutationVariables,
+  UpdateAccountRequestMutation,
+  UpdateAccountRequestDocument,
 } from './requested-accounts.generated';
 
 @Injectable({

@@ -250,7 +250,7 @@ Ensure that you marked Tailwind as "Important" under tailwind config.
 
 Don't import from the .graphql file, import from .generated file
 
-### - "excesive stack depth" error on prisma/graphql types
+### - "Excessive stack depth" error on prisma/graphql types
 
 Coerce the type to the expected prisma type. Will probably need to do it on resolver. <br/>
 Example: `UserWhereInput as Prisma.UserWhereInput`
