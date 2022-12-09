@@ -83,7 +83,7 @@ model Comment {
   id                 String            @id @default(uuid())
   value              String
   date               DateTime          @default(now())
-  author             User              @relation(fields: [authorId], references: [id])
+  author             User              @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId           String
   feedbackResponse   FeedbackResponse? @relation(fields: [feedbackResponseId], references: [id])
   feedbackResponseId String?

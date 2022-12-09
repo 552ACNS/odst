@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AccountRequestService } from './accountRequest.service';
-import { AccountRequestResolver } from './accountRequest.resolver';
+import { AccountRequestService } from './account-request.service';
+import { AccountRequestResolver } from './account-request.resolver';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Module({

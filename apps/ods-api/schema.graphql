@@ -434,6 +434,7 @@ type TrackedFeedback {
 
 type Query {
   findUniqueFeedback(feedbackWhereUniqueInput: FeedbackWhereUniqueInput!): Feedback!
+  findUniqueAccountRequest(accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!): AccountRequest!
   findUniqueFeedbackResponse(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
   feedbackResponseByID(feedbackResponseWhereUniqueInput: FeedbackResponseWhereUniqueInput!): TrackedFeedback!
   getResponseCount(where: FeedbackResponseWhereInput, orderBy: [FeedbackResponseOrderByWithRelationInput!], cursor: FeedbackResponseWhereUniqueInput, take: Int, skip: Int, _count: FeedbackResponseCountAggregateInput, _min: FeedbackResponseMinAggregateInput, _max: FeedbackResponseMaxAggregateInput): Int!
@@ -455,13 +456,17 @@ type Query {
   me: User!
   findManyAccountRequests: [User!]!
   getTags: [Tag!]!
-  findUniqueAccountRequest(accountRequestWhereUniqueInput: AccountRequestWhereUniqueInput!): AccountRequest!
   usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
 input FeedbackWhereUniqueInput {
   id: String
   questionsHash: String
+}
+
+input AccountRequestWhereUniqueInput {
+  id: String
+  userId: String
 }
 
 input FeedbackResponseWhereUniqueInput {
@@ -1004,14 +1009,10 @@ enum UserScalarFieldEnum {
   role
 }
 
-input AccountRequestWhereUniqueInput {
-  id: String
-  userId: String
-}
-
 type Mutation {
   createFeedbackWithQuestions(questionValues: [String!]!, orgWhereUniqueInput: OrgWhereUniqueInput!): String!
   updateFeedback(data: FeedbackUpdateInput!, where: FeedbackWhereUniqueInput!): Feedback!
+  updateAccountRequest(data: AccountRequestUpdateInput!, where: AccountRequestWhereUniqueInput!): AccountRequest!
   createFeedbackResponse(feedbackResponseCreateInput: FeedbackResponseCreateInput!): String!
   updateFeedbackResponse(data: FeedbackResponseUpdateInput!, where: FeedbackResponseWhereUniqueInput!): FeedbackResponse!
   createOrg(orgCreateInput: OrgCreateInput!): String!
@@ -1020,7 +1021,6 @@ type Mutation {
   createUser(userCreateInput: UserCreateInput!): String!
   enableAccount(userWhereUniqueInput: UserWhereUniqueInput!): User!
   deleteUser(userWhereUniqueInput: UserWhereUniqueInput!): User
-  updateAccountRequest(data: AccountRequestUpdateInput!, where: AccountRequestWhereUniqueInput!): AccountRequest!
   login(loginUserInput: LoginUserInput!): Tokens!
   refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
 }
@@ -2711,6 +2711,12 @@ input OrgUpdateManyWithWhereWithoutFeedbacksInput {
   data: OrgUpdateManyMutationInput!
 }
 
+input AccountRequestUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutAccountRequestNestedInput
+  comments: CommentUpdateManyWithoutAccountRequestNestedInput
+}
+
 input FeedbackResponseCreateInput {
   id: String
   feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
@@ -2773,12 +2779,6 @@ input UserCreateInput {
   comments: CommentCreateNestedManyWithoutAuthorInput
   reviewedResponses: FeedbackResponseCreateNestedManyWithoutReviewedByInput
   accountRequest: AccountRequestCreateNestedOneWithoutUserInput
-}
-
-input AccountRequestUpdateInput {
-  id: StringFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutAccountRequestNestedInput
-  comments: CommentUpdateManyWithoutAccountRequestNestedInput
 }
 
 input LoginUserInput {

@@ -6,7 +6,7 @@ import {
   Resolver,
   Mutation,
 } from '@nestjs/graphql';
-import { AccountRequestService } from './accountRequest.service';
+import { AccountRequestService } from './account-request.service';
 import {
   AccountRequest,
   AccountRequestWhereUniqueInput,
