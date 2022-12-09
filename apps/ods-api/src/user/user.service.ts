@@ -70,26 +70,6 @@ export class UserService {
     });
   }
 
-  @Cron(CronExpression.EVERY_30_MINUTES, {
-    name: 'Delete password resetTokens older than 30 minutes',
-  })
-  private async DeleteOneResetTokenArgs(): Promise<void> {
-    Logger.log(
-      'Deleting password ResetTokens older than 30 minutes',
-      'UserService'
-    );
-    // TODO [ODST-272]: Redo with try catch
-    //Will silently fail if delete isn't cascaded properly
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [DeleteOneResetTokenArgs] = await this.prisma.$transaction([
-      this.prisma.resetToken.deleteMany({
-        where: {
-          issuedDate: { lt: new Date(Date.now() - 1800000) },
-        },
-      }),
-    ]);
-  }
-
   //TODO write tests for this
   async delete(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput

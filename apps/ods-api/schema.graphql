@@ -1419,7 +1419,7 @@ input ResetTokenCreateNestedOneWithoutUserInput {
 
 input ResetTokenCreateWithoutUserInput {
   id: String
-  issuedDate: DateTime!
+  issuedDate: DateTime
 }
 
 input ResetTokenCreateOrConnectWithoutUserInput {

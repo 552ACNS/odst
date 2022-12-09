@@ -35,7 +35,12 @@ export class PasswordResetComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.id = this.route.snapshot.paramMap.get('id');
+
+    // const value = await this.passwordResetService.checkToken(
+    //   this.id
+    // );
+    console.log(this.id);
   }
 }

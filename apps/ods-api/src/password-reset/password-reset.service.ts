@@ -1,9 +1,9 @@
 import { MailerService } from '@nestjs-modules/mailer';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { v4 as uuidv4 } from 'uuid';
 import { UserService } from '../user/user.service';
 import { Prisma } from '.prisma/ods/client';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class PasswordResetService {
@@ -15,38 +15,36 @@ export class PasswordResetService {
 
   //remembers to put back in the from input for when we got that figured out ig
   async sendConfirmationLetter(to: string): Promise<string> {
-    const id: string = uuidv4();
-    const CurrentDate = Date.now();
-    console.log(id);
-    const resetToken: any = {
-      hash: id,
-      CurrentDate,
-    };
+    const userId = await this.prisma.user.findUnique({
+      where: { email: to },
+      select: { id: true },
+    });
 
-    if (
-      await this.prisma.user.findUnique({
-        where: { email: to },
-      })
-    ) {
+    //checks that email is valid
+    if (userId) {
       try {
+        const resetToken = this.create({
+          user: { connect: { id: userId.id } },
+        });
         await this.mailer.sendMail({
           to: to, //to will be the users email we get from the fe
           from: 'acnssmtp552@gmail.com', // will be whatever we decide the email for our aapplication will be
           subject: 'Password Reset',
           html: `
           <h3>Please click the link below to reset password</h3>
-          <p><a href="http://${process.env.PASSWORD_RESET}">${process.env.PASSWORD_RESET}/password-reset/${id}</a></p>
+          <p><a href="http://${process.env.PASSWORD_RESET}/${
+            (
+              await resetToken
+            ).id
+          }">Reset Password</a></p>
            `,
         });
-        this.userService.update({ email: to }, { resetToken: resetToken });
       } catch (e) {
         console.log(e);
       }
     }
     return 'Email has been sent';
   }
-
-  // /password-reset/${id}"></p>
 
   async findUnique(
     resetTokenWhereUniqueInput: Prisma.ResetTokenWhereUniqueInput
@@ -56,5 +54,36 @@ export class PasswordResetService {
     });
 
     return !!(await tokenFound);
+  }
+
+  async create(data: Prisma.ResetTokenCreateInput): Promise<{
+    id: string;
+  }> {
+    return this.prisma.resetToken.create({
+      data,
+      select: {
+        id: true,
+      },
+    });
+  }
+
+  @Cron(CronExpression.EVERY_30_MINUTES, {
+    name: 'Delete password resetTokens older than 30 minutes',
+  })
+  private async DeleteOneResetTokenArgs(): Promise<void> {
+    Logger.log(
+      'Deleting password ResetTokens older than 30 minutes',
+      'UserService'
+    );
+    // TODO [ODST-272]: Redo with try catch
+    //Will silently fail if delete isn't cascaded properly
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [DeleteOneResetTokenArgs] = await this.prisma.$transaction([
+      this.prisma.resetToken.deleteMany({
+        where: {
+          issuedDate: { lt: new Date(Date.now() - 1800000) },
+        },
+      }),
+    ]);
   }
 }
