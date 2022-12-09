@@ -1,11 +1,9 @@
 <div class="parent-div">
-  <mat-card appearance="outlined">
+  <mat-card appearance="outlined" class="px-2">
     <mat-card-title class="ml-0 text-4xl font-extrabold text-center">
       Sign In
     </mat-card-title>
-    <mat-card-content
-      class="mt-2 flex justify-center font-medium h-fit space-x-2"
-    >
+    <mat-card-content class="flex justify-center font-medium h-fit space-x-2">
       <div>Don't have an account?</div>
       <a
         class="underline text-right text-link-color"
@@ -16,9 +14,9 @@
     </mat-card-content>
 
     <!-- Sign in form -->
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" class="mt-2">
       <!-- User Name field -->
-      <mat-form-field class="mx-0 w-full" appearance="outline">
+      <mat-form-field class="w-full" appearance="outline">
         <mat-label>Email</mat-label>
         <input
           id="email"
@@ -66,9 +64,9 @@
         Wrong email or password. Try again or click Forgot Password to reset it.
       </p>
 
-      <div class="mt-0 mb-4 flow-root font-medium h-fit space-x-2 w-full">
+      <div class="mt-1 mb-2 flow-root font-medium h-fit space-x-2 w-full">
         <mat-checkbox
-          class="float-left mt-2"
+          class="float-left"
           [color]="'primary'"
           [formControlName]="'rememberMe'"
         >
