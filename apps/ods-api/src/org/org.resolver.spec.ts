@@ -42,10 +42,6 @@ describe('Org Resolver', () => {
     resolver = module.get<OrgResolver>(OrgResolver);
   });
 
-  it('should be defined', () => {
-    expect(resolver).toBeDefined();
-  });
-
   describe('getOrgNames', () => {
     it('should get an array of orgs names', async () => {
       await expect(resolver.getOrgNames()).resolves.toEqual(
