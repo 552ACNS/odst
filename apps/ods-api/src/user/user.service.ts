@@ -42,8 +42,8 @@ export class UserService {
   async enableAccount(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput
   ): Promise<User> {
-    console.log('blaghr');
-    this.prisma.accountRequest.delete({
+    console.log(userWhereUniqueInput.id);
+    await this.prisma.accountRequest.delete({
       where: {
         userId: userWhereUniqueInput.id,
       },
