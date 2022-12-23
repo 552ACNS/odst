@@ -30,7 +30,7 @@
     "@golevelup/nestjs-modules": "^0.6.0",
     "@graphql-codegen/cli": "^2.13.12",
     "@graphql-codegen/near-operation-file-preset": "^2.4.4",
-    "@graphql-codegen/typed-document-node": "^2.3.7",
+    "@graphql-codegen/typed-document-node": "^2.3.8",
     "@graphql-codegen/typescript": "^2.7.4",
     "@graphql-codegen/typescript-operations": "^2.5.7",
     "@nestjs/apollo": "^10.1.6",
