@@ -38,7 +38,7 @@
     "@nestjs/common": "9.1.6",
     "@nestjs/core": "9.1.6",
     "@nestjs/graphql": "^10.1.6",
-    "@nestjs/jwt": "^8.0.0",
+    "@nestjs/jwt": "^10.0.0",
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "9.1.6",
     "@nestjs/schedule": "^2.1.0",
