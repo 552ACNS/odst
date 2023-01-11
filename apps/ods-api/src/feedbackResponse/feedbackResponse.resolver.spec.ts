@@ -5,6 +5,8 @@ import {
   MockFeedbackResponses,
   MockFeedbackResponseCreateInput,
 } from './feedbackResponse.repo';
+import { prismaMock } from '../prisma/singleton';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('FeedbackResponse Resolver', () => {
   let resolver: FeedbackResponseResolver;
@@ -32,6 +34,10 @@ describe('FeedbackResponse Resolver', () => {
                 Promise.resolve(MockFeedbackResponses[0])
               ),
           },
+        },
+        {
+          provide: PrismaService,
+          useValue: prismaMock,
         },
       ],
     }).compile();
@@ -65,7 +71,10 @@ describe('FeedbackResponse Resolver', () => {
   describe('update', () => {
     it('should update a feedbackResponse', async () => {
       await expect(
-        resolver.update({ where: { id: 'a strange id' }, data: {} })
+        resolver.update(
+          { body: { variables: { where: { id: 'a strange id' } } } },
+          { where: { id: 'a strange id' }, data: {} }
+        )
       ).resolves.toEqual(MockFeedbackResponses[0]);
     });
   });

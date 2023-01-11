@@ -21,6 +21,22 @@ const db = {
   },
 };
 
+const fakeWhere = {
+  AND: {
+    answers: {
+      some: {
+        AND: {
+          question: {
+            value: {
+              equals: 'What organization did the event occur in?',
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
 describe('FeedbackResponseService', () => {
   let service: FeedbackResponseService;
   let prisma: PrismaService;
@@ -99,7 +115,8 @@ describe('FeedbackResponseService', () => {
         'resolved',
         MockUsers[0],
         0,
-        2
+        2,
+        fakeWhere
       );
 
       expect(feedbackResponse).toHaveLength(2);
@@ -117,7 +134,8 @@ describe('FeedbackResponseService', () => {
         'unresolved',
         MockUsers[0],
         0,
-        1
+        1,
+        fakeWhere
       );
 
       expect(feedbackResponse).toHaveLength(2);
@@ -137,7 +155,8 @@ describe('FeedbackResponseService', () => {
         'overdue',
         MockUsers[0],
         0,
-        1
+        1,
+        fakeWhere
       );
 
       expect(feedbackResponse).toHaveLength(1);
@@ -147,10 +166,17 @@ describe('FeedbackResponseService', () => {
     it('should return reports using unresolved status', async () => {
       const spy = jest.spyOn(prisma.feedbackResponse, 'findMany');
 
-      await service.getIssuesByStatus('unresolved', MockUsers[0], 0, 1);
+      await service.getIssuesByStatus(
+        'unresolved',
+        MockUsers[0],
+        0,
+        1,
+        fakeWhere
+      );
 
       expect(spy).toHaveBeenCalledWith({
         where: {
+          ...fakeWhere,
           resolved: false,
         },
         skip: 0,
@@ -164,10 +190,17 @@ describe('FeedbackResponseService', () => {
     it('should return reports using resolved status', async () => {
       const spy = jest.spyOn(prisma.feedbackResponse, 'findMany');
 
-      await service.getIssuesByStatus('resolved', MockUsers[0], 0, 1);
+      await service.getIssuesByStatus(
+        'resolved',
+        MockUsers[0],
+        0,
+        1,
+        fakeWhere
+      );
 
       expect(spy).toHaveBeenCalledWith({
         where: {
+          ...fakeWhere,
           resolved: true,
         },
         skip: 0,
