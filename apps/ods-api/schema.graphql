@@ -26,12 +26,12 @@ type AnswerMaxAggregate {
 
 type RefreshToken {
   id: ID!
-  user: User!
   userId: String!
   isRevoked: Boolean!
   issuedDate: DateTime!
   expiredDate: DateTime!
   hash: String!
+  user: User!
 }
 
 """
@@ -64,18 +64,18 @@ type FeedbackResponseCount {
 
 type FeedbackResponse {
   id: ID!
-  feedback: Feedback!
   feedbackId: String!
   openedDate: DateTime!
   closedDate: DateTime
-  answers: [Answer!]
   routeOutside: Boolean!
-  tags: [Tag!]
-  comments: [Comment!]
   resolved: Boolean!
-  reviewedBy: User
   reviewerId: String
   resolvedComment: String
+  feedback: Feedback!
+  answers: [Answer!]
+  tags: [Tag!]
+  comments: [Comment!]
+  reviewedBy: User
   _count: FeedbackResponseCount!
 }
 
@@ -83,10 +83,10 @@ type Comment {
   id: ID!
   value: String!
   date: DateTime!
-  author: User!
   authorId: String!
-  FeedbackResponse: FeedbackResponse
   feedbackResponseId: String!
+  author: User!
+  FeedbackResponse: FeedbackResponse
 }
 
 type UserCount {
@@ -133,8 +133,8 @@ type Org {
   id: ID!
   name: String!
   orgTier: OrgTier!
-  users: [User!]
   parentId: String
+  users: [User!]
   parent: Org
   children: [Org!]
   feedbacks: [Feedback!]
@@ -156,9 +156,9 @@ type FeedbackCount {
 
 type Feedback {
   id: ID!
+  questionsHash: String
   orgs: [Org!]
   questions: [Question!]
-  questionsHash: String
   feedbackResponses: [FeedbackResponse!]
   _count: FeedbackCount!
 }
@@ -179,10 +179,10 @@ type Question {
 type Answer {
   id: ID!
   value: String!
-  question: Question!
   questionId: String!
-  feedbackResponse: FeedbackResponse!
   feedbackResponseId: String!
+  question: Question!
+  feedbackResponse: FeedbackResponse!
 }
 
 type CommentCountAggregate {
@@ -438,18 +438,18 @@ input FeedbackResponseWhereInput {
   OR: [FeedbackResponseWhereInput!]
   NOT: [FeedbackResponseWhereInput!]
   id: StringFilter
-  feedback: FeedbackRelationFilter
   feedbackId: StringFilter
   openedDate: DateTimeFilter
   closedDate: DateTimeNullableFilter
-  answers: AnswerListRelationFilter
   routeOutside: BoolFilter
-  tags: TagListRelationFilter
-  comments: CommentListRelationFilter
   resolved: BoolFilter
-  reviewedBy: UserRelationFilter
   reviewerId: StringNullableFilter
   resolvedComment: StringNullableFilter
+  feedback: FeedbackRelationFilter
+  answers: AnswerListRelationFilter
+  tags: TagListRelationFilter
+  comments: CommentListRelationFilter
+  reviewedBy: UserRelationFilter
 }
 
 input StringFilter {
@@ -486,6 +486,89 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableFilter
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableFilter
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
 input FeedbackRelationFilter {
   is: FeedbackWhereInput
   isNot: FeedbackWhereInput
@@ -496,9 +579,9 @@ input FeedbackWhereInput {
   OR: [FeedbackWhereInput!]
   NOT: [FeedbackWhereInput!]
   id: StringFilter
+  questionsHash: StringNullableFilter
   orgs: OrgListRelationFilter
   questions: QuestionListRelationFilter
-  questionsHash: StringNullableFilter
   feedbackResponses: FeedbackResponseListRelationFilter
 }
 
@@ -515,8 +598,8 @@ input OrgWhereInput {
   id: StringFilter
   name: StringFilter
   orgTier: EnumOrgTierFilter
-  users: UserListRelationFilter
   parentId: StringNullableFilter
+  users: UserListRelationFilter
   parent: OrgRelationFilter
   children: OrgListRelationFilter
   feedbacks: FeedbackListRelationFilter
@@ -560,35 +643,6 @@ input UserWhereInput {
   reviewedResponses: FeedbackResponseListRelationFilter
 }
 
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  mode: QueryMode
-  not: NestedStringNullableFilter
-}
-
-input NestedStringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringNullableFilter
-}
-
 input EnumStatusFilter {
   equals: Status
   in: [Status!]
@@ -627,49 +681,17 @@ input RefreshTokenWhereInput {
   OR: [RefreshTokenWhereInput!]
   NOT: [RefreshTokenWhereInput!]
   id: StringFilter
-  user: UserRelationFilter
   userId: StringFilter
   isRevoked: BoolFilter
   issuedDate: DateTimeFilter
   expiredDate: DateTimeFilter
   hash: StringFilter
+  user: UserRelationFilter
 }
 
 input UserRelationFilter {
   is: UserWhereInput
   isNot: UserWhereInput
-}
-
-input BoolFilter {
-  equals: Boolean
-  not: NestedBoolFilter
-}
-
-input NestedBoolFilter {
-  equals: Boolean
-  not: NestedBoolFilter
-}
-
-input DateTimeFilter {
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-  not: NestedDateTimeFilter
-}
-
-input NestedDateTimeFilter {
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-  not: NestedDateTimeFilter
 }
 
 input CommentListRelationFilter {
@@ -685,10 +707,10 @@ input CommentWhereInput {
   id: StringFilter
   value: StringFilter
   date: DateTimeFilter
-  author: UserRelationFilter
   authorId: StringFilter
-  FeedbackResponse: FeedbackResponseRelationFilter
   feedbackResponseId: StringFilter
+  author: UserRelationFilter
+  FeedbackResponse: FeedbackResponseRelationFilter
 }
 
 input FeedbackResponseRelationFilter {
@@ -741,37 +763,15 @@ input AnswerWhereInput {
   NOT: [AnswerWhereInput!]
   id: StringFilter
   value: StringFilter
-  question: QuestionRelationFilter
   questionId: StringFilter
-  feedbackResponse: FeedbackResponseRelationFilter
   feedbackResponseId: StringFilter
+  question: QuestionRelationFilter
+  feedbackResponse: FeedbackResponseRelationFilter
 }
 
 input QuestionRelationFilter {
   is: QuestionWhereInput
   isNot: QuestionWhereInput
-}
-
-input DateTimeNullableFilter {
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-  not: NestedDateTimeNullableFilter
-}
-
-input NestedDateTimeNullableFilter {
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-  not: NestedDateTimeNullableFilter
 }
 
 input TagListRelationFilter {
@@ -806,18 +806,18 @@ input NestedEnumTagTypeFilter {
 
 input FeedbackResponseOrderByWithRelationInput {
   id: SortOrder
-  feedback: FeedbackOrderByWithRelationInput
   feedbackId: SortOrder
   openedDate: SortOrder
   closedDate: SortOrder
-  answers: AnswerOrderByRelationAggregateInput
   routeOutside: SortOrder
-  tags: TagOrderByRelationAggregateInput
-  comments: CommentOrderByRelationAggregateInput
   resolved: SortOrder
-  reviewedBy: UserOrderByWithRelationInput
   reviewerId: SortOrder
   resolvedComment: SortOrder
+  feedback: FeedbackOrderByWithRelationInput
+  answers: AnswerOrderByRelationAggregateInput
+  tags: TagOrderByRelationAggregateInput
+  comments: CommentOrderByRelationAggregateInput
+  reviewedBy: UserOrderByWithRelationInput
 }
 
 enum SortOrder {
@@ -827,9 +827,9 @@ enum SortOrder {
 
 input FeedbackOrderByWithRelationInput {
   id: SortOrder
+  questionsHash: SortOrder
   orgs: OrgOrderByRelationAggregateInput
   questions: QuestionOrderByRelationAggregateInput
-  questionsHash: SortOrder
   feedbackResponses: FeedbackResponseOrderByRelationAggregateInput
 }
 
@@ -874,12 +874,12 @@ input UserOrderByWithRelationInput {
 
 input RefreshTokenOrderByWithRelationInput {
   id: SortOrder
-  user: UserOrderByWithRelationInput
   userId: SortOrder
   isRevoked: SortOrder
   issuedDate: SortOrder
   expiredDate: SortOrder
   hash: SortOrder
+  user: UserOrderByWithRelationInput
 }
 
 enum FeedbackResponseScalarFieldEnum {
@@ -931,13 +931,17 @@ input OrgWhereUniqueInput {
 
 input FeedbackUpdateInput {
   id: StringFieldUpdateOperationsInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
   orgs: OrgUpdateManyWithoutFeedbacksNestedInput
   questions: QuestionUpdateManyWithoutFeedbacksNestedInput
-  questionsHash: NullableStringFieldUpdateOperationsInput
   feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackNestedInput
 }
 
 input StringFieldUpdateOperationsInput {
+  set: String
+}
+
+input NullableStringFieldUpdateOperationsInput {
   set: String
 }
 
@@ -1029,15 +1033,15 @@ input FeedbackResponseCreateNestedOneWithoutCommentsInput {
 
 input FeedbackResponseCreateWithoutCommentsInput {
   id: String
-  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
   openedDate: DateTime
   closedDate: DateTime
-  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
   routeOutside: Boolean
-  tags: TagCreateNestedManyWithoutFeedbackResponsesInput
   resolved: Boolean
-  reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
   resolvedComment: String
+  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
+  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
+  tags: TagCreateNestedManyWithoutFeedbackResponsesInput
+  reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
 }
 
 input FeedbackCreateNestedOneWithoutFeedbackResponsesInput {
@@ -1048,9 +1052,9 @@ input FeedbackCreateNestedOneWithoutFeedbackResponsesInput {
 
 input FeedbackCreateWithoutFeedbackResponsesInput {
   id: String
+  questionsHash: String
   orgs: OrgCreateNestedManyWithoutFeedbacksInput
   questions: QuestionCreateNestedManyWithoutFeedbacksInput
-  questionsHash: String
 }
 
 input OrgCreateNestedManyWithoutFeedbacksInput {
@@ -1097,15 +1101,15 @@ input FeedbackResponseCreateNestedOneWithoutAnswersInput {
 
 input FeedbackResponseCreateWithoutAnswersInput {
   id: String
-  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
   openedDate: DateTime
   closedDate: DateTime
   routeOutside: Boolean
+  resolved: Boolean
+  resolvedComment: String
+  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
   tags: TagCreateNestedManyWithoutFeedbackResponsesInput
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
-  resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
-  resolvedComment: String
 }
 
 input TagCreateNestedManyWithoutFeedbackResponsesInput {
@@ -1202,8 +1206,8 @@ input FeedbackCreateNestedManyWithoutOrgsInput {
 
 input FeedbackCreateWithoutOrgsInput {
   id: String
-  questions: QuestionCreateNestedManyWithoutFeedbacksInput
   questionsHash: String
+  questions: QuestionCreateNestedManyWithoutFeedbacksInput
   feedbackResponses: FeedbackResponseCreateNestedManyWithoutFeedbackInput
 }
 
@@ -1218,13 +1222,13 @@ input FeedbackResponseCreateWithoutFeedbackInput {
   id: String
   openedDate: DateTime
   closedDate: DateTime
-  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
   routeOutside: Boolean
+  resolved: Boolean
+  resolvedComment: String
+  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
   tags: TagCreateNestedManyWithoutFeedbackResponsesInput
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
-  resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
-  resolvedComment: String
 }
 
 input AnswerCreateNestedManyWithoutFeedbackResponseInput {
@@ -1260,8 +1264,8 @@ input FeedbackCreateNestedManyWithoutQuestionsInput {
 
 input FeedbackCreateWithoutQuestionsInput {
   id: String
-  orgs: OrgCreateNestedManyWithoutFeedbacksInput
   questionsHash: String
+  orgs: OrgCreateNestedManyWithoutFeedbacksInput
   feedbackResponses: FeedbackResponseCreateNestedManyWithoutFeedbackInput
 }
 
@@ -1401,15 +1405,15 @@ input FeedbackResponseCreateNestedManyWithoutReviewedByInput {
 
 input FeedbackResponseCreateWithoutReviewedByInput {
   id: String
-  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
   openedDate: DateTime
   closedDate: DateTime
-  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
   routeOutside: Boolean
-  tags: TagCreateNestedManyWithoutFeedbackResponsesInput
-  comments: CommentCreateNestedManyWithoutFeedbackResponseInput
   resolved: Boolean
   resolvedComment: String
+  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
+  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
+  tags: TagCreateNestedManyWithoutFeedbackResponsesInput
+  comments: CommentCreateNestedManyWithoutFeedbackResponseInput
 }
 
 input FeedbackResponseCreateOrConnectWithoutReviewedByInput {
@@ -1568,10 +1572,6 @@ input UserUpdateWithoutOrgsInput {
   reviewedResponses: FeedbackResponseUpdateManyWithoutReviewedByNestedInput
 }
 
-input NullableStringFieldUpdateOperationsInput {
-  set: String
-}
-
 input EnumStatusFieldUpdateOperationsInput {
   set: Status
 }
@@ -1655,15 +1655,19 @@ input FeedbackResponseUpsertWithoutCommentsInput {
 
 input FeedbackResponseUpdateWithoutCommentsInput {
   id: StringFieldUpdateOperationsInput
-  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
-  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   routeOutside: BoolFieldUpdateOperationsInput
-  tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
   resolved: BoolFieldUpdateOperationsInput
-  reviewedBy: UserUpdateOneWithoutReviewedResponsesNestedInput
   resolvedComment: NullableStringFieldUpdateOperationsInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
+  tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
+  reviewedBy: UserUpdateOneWithoutReviewedResponsesNestedInput
+}
+
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
 }
 
 input FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput {
@@ -1681,9 +1685,9 @@ input FeedbackUpsertWithoutFeedbackResponsesInput {
 
 input FeedbackUpdateWithoutFeedbackResponsesInput {
   id: StringFieldUpdateOperationsInput
+  questionsHash: NullableStringFieldUpdateOperationsInput
   orgs: OrgUpdateManyWithoutFeedbacksNestedInput
   questions: QuestionUpdateManyWithoutFeedbacksNestedInput
-  questionsHash: NullableStringFieldUpdateOperationsInput
 }
 
 input QuestionUpdateManyWithoutFeedbacksNestedInput {
@@ -1752,19 +1756,15 @@ input FeedbackResponseUpsertWithoutAnswersInput {
 
 input FeedbackResponseUpdateWithoutAnswersInput {
   id: StringFieldUpdateOperationsInput
-  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
   routeOutside: BoolFieldUpdateOperationsInput
+  resolved: BoolFieldUpdateOperationsInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
   tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
   comments: CommentUpdateManyWithoutFeedbackResponseNestedInput
-  resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesNestedInput
-  resolvedComment: NullableStringFieldUpdateOperationsInput
-}
-
-input NullableDateTimeFieldUpdateOperationsInput {
-  set: DateTime
 }
 
 input TagUpdateManyWithoutFeedbackResponsesNestedInput {
@@ -1948,8 +1948,8 @@ input FeedbackUpsertWithWhereUniqueWithoutOrgsInput {
 
 input FeedbackUpdateWithoutOrgsInput {
   id: StringFieldUpdateOperationsInput
-  questions: QuestionUpdateManyWithoutFeedbacksNestedInput
   questionsHash: NullableStringFieldUpdateOperationsInput
+  questions: QuestionUpdateManyWithoutFeedbacksNestedInput
   feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackNestedInput
 }
 
@@ -1977,13 +1977,13 @@ input FeedbackResponseUpdateWithoutFeedbackInput {
   id: StringFieldUpdateOperationsInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
-  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   routeOutside: BoolFieldUpdateOperationsInput
+  resolved: BoolFieldUpdateOperationsInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
   comments: CommentUpdateManyWithoutFeedbackResponseNestedInput
-  resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesNestedInput
-  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input AnswerUpdateManyWithoutFeedbackResponseNestedInput {
@@ -2052,8 +2052,8 @@ input FeedbackUpsertWithWhereUniqueWithoutQuestionsInput {
 
 input FeedbackUpdateWithoutQuestionsInput {
   id: StringFieldUpdateOperationsInput
-  orgs: OrgUpdateManyWithoutFeedbacksNestedInput
   questionsHash: NullableStringFieldUpdateOperationsInput
+  orgs: OrgUpdateManyWithoutFeedbacksNestedInput
   feedbackResponses: FeedbackResponseUpdateManyWithoutFeedbackNestedInput
 }
 
@@ -2264,15 +2264,15 @@ input FeedbackResponseUpsertWithWhereUniqueWithoutReviewedByInput {
 
 input FeedbackResponseUpdateWithoutReviewedByInput {
   id: StringFieldUpdateOperationsInput
-  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
-  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   routeOutside: BoolFieldUpdateOperationsInput
-  tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
-  comments: CommentUpdateManyWithoutFeedbackResponseNestedInput
   resolved: BoolFieldUpdateOperationsInput
   resolvedComment: NullableStringFieldUpdateOperationsInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
+  tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
+  comments: CommentUpdateManyWithoutFeedbackResponseNestedInput
 }
 
 input FeedbackResponseUpdateWithWhereUniqueWithoutReviewedByInput {
@@ -2402,30 +2402,30 @@ input OrgUpdateManyWithWhereWithoutFeedbacksInput {
 
 input FeedbackResponseCreateInput {
   id: String
-  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
   openedDate: DateTime
   closedDate: DateTime
-  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
   routeOutside: Boolean
+  resolved: Boolean
+  resolvedComment: String
+  feedback: FeedbackCreateNestedOneWithoutFeedbackResponsesInput!
+  answers: AnswerCreateNestedManyWithoutFeedbackResponseInput
   tags: TagCreateNestedManyWithoutFeedbackResponsesInput
   comments: CommentCreateNestedManyWithoutFeedbackResponseInput
-  resolved: Boolean
   reviewedBy: UserCreateNestedOneWithoutReviewedResponsesInput
-  resolvedComment: String
 }
 
 input FeedbackResponseUpdateInput {
   id: StringFieldUpdateOperationsInput
-  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
   openedDate: DateTimeFieldUpdateOperationsInput
   closedDate: NullableDateTimeFieldUpdateOperationsInput
-  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   routeOutside: BoolFieldUpdateOperationsInput
+  resolved: BoolFieldUpdateOperationsInput
+  resolvedComment: NullableStringFieldUpdateOperationsInput
+  feedback: FeedbackUpdateOneRequiredWithoutFeedbackResponsesNestedInput
+  answers: AnswerUpdateManyWithoutFeedbackResponseNestedInput
   tags: TagUpdateManyWithoutFeedbackResponsesNestedInput
   comments: CommentUpdateManyWithoutFeedbackResponseNestedInput
-  resolved: BoolFieldUpdateOperationsInput
   reviewedBy: UserUpdateOneWithoutReviewedResponsesNestedInput
-  resolvedComment: NullableStringFieldUpdateOperationsInput
 }
 
 input OrgCreateInput {
