@@ -3,8 +3,8 @@ import { FeedbackModule } from '../feedback/feedback.module';
 import { OrgModule } from '../org/org.module';
 import {
   ApolloServerPluginLandingPageLocalDefault,
-  ApolloServerPluginLandingPageDisabled,
-} from 'apollo-server-core';
+  ApolloServerPluginLandingPageProductionDefault,
+} from '@apollo/server/plugin/landingPage/default';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -32,8 +32,11 @@ import { TagModule } from '../tag/tag.module';
       driver: ApolloDriver,
       plugins: [
         process.env.NODE_ENV === 'production'
-          ? ApolloServerPluginLandingPageDisabled()
-          : ApolloServerPluginLandingPageLocalDefault(),
+          ? ApolloServerPluginLandingPageProductionDefault({
+              graphRef: 'my-graph-id@my-graph-variant',
+              footer: false,
+            })
+          : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
       ],
     }),
     FeedbackModule,
