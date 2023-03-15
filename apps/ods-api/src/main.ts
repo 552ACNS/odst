@@ -13,7 +13,10 @@ async function bootstrap() {
 
   const prismaService: PrismaService = app.get(PrismaService);
   prismaService.enableShutdownHooks(app);
-
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  });
   const globalPrefix = 'ods-api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3343;

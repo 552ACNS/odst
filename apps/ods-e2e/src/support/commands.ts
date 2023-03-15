@@ -13,6 +13,7 @@ declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
     login(email: string, password: string): void;
+    logout(): void;
   }
 }
 //
@@ -20,10 +21,15 @@ declare namespace Cypress {
 Cypress.Commands.add('login', (email, password) => {
   cy.visit('/login');
   //email has capitalized letters in it to test case insensitivity
-  cy.get('[formcontrolname="userEmail"]').type(email);
-  cy.get('[formcontrolname="userPassword"]').type(password);
+  cy.get('[formControlName="userEmail"]').type(email);
+  cy.get('[formControlName="userPassword"]').type(password);
 
   cy.get('odst-login').find('button').contains('Sign In').click();
+});
+
+Cypress.Commands.add('logout', () => {
+  cy.get('mat-icon').contains('account_circle').parent().click();
+  cy.get('button').contains('Logout').click();
 });
 //
 // -- This is a child command --

@@ -98,7 +98,8 @@
           "browserTarget": "ods:build:production"
         },
         "development": {
-          "browserTarget": "ods:build:development"
+          "browserTarget": "ods:build:development",
+          "proxyConfig": "apps/ods/src/proxy.conf.json"
         }
       },
       "defaultConfiguration": "development",
