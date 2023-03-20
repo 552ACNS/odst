@@ -28,8 +28,12 @@ Cypress.Commands.add('login', (email, password) => {
 });
 
 Cypress.Commands.add('logout', () => {
-  cy.get('mat-icon').contains('account_circle').parent().click();
-  cy.get('button').contains('Logout').click();
+  cy.get('body').then(($body) => {
+    if ($body.find('.right-4').length > 0) {
+      cy.get('mat-icon').contains('account_circle').parent().click();
+      cy.get('button').contains('Logout').click();
+    }
+  });
 });
 //
 // -- This is a child command --

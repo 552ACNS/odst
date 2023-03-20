@@ -9,6 +9,10 @@ describe('ods', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
+  afterEach(() => {
+    cy.logout();
+  });
+
   it('submit a feedback with a unique uuid', () => {
     cy.visit('/disclaimer');
     cy.get('odst-disclaimer').find('button').contains('Accept').click();
@@ -90,7 +94,6 @@ describe('ods', () => {
             .contains(feedbackResponseUUID)
             .should('not.exist');
         }
-        cy.logout();
       });
   });
 
@@ -106,7 +109,6 @@ describe('ods', () => {
     cy.get('mat-card-content', { timeout: 5000 }).contains(
       feedbackResponseUUID
     );
-    cy.logout();
   });
 
   it('should submit a comment on a response', () => {
@@ -116,7 +118,6 @@ describe('ods', () => {
     cy.location('pathname').should('include', '/responses');
     cy.get('#comment').type(commentUUID);
     cy.get('button').contains('Submit').click();
-    cy.logout();
   });
 
   it('should mark an issue as resolved', () => {
@@ -131,7 +132,6 @@ describe('ods', () => {
     cy.scrollTo('bottom');
     //Marks the issue as resolved
     cy.get('mat-slide-toggle').click();
-    cy.logout();
   });
 
   it('should verify a user can track when and how an issue was resolved', () => {
@@ -160,7 +160,6 @@ describe('ods', () => {
     cy.get('mat-chip-grid').contains('Addressed In Organizational All-call');
     cy.scrollTo('top');
     cy.get('mat-card-content').contains(commentUUID);
-    cy.logout();
   });
 
   it("Verify that only people with wrong permission can't view a specific resolved feedback", () => {
@@ -173,7 +172,6 @@ describe('ods', () => {
           cy.get('mat-card-content').should('not.' + feedbackResponseUUID);
         }
       });
-    cy.logout();
   });
 
   it('should test for tag functionality', () => {
@@ -192,7 +190,6 @@ describe('ods', () => {
     cy.get('#actionTags')
       .contains('Addressed In Organizational All-call')
       .should('not.exist');
-    cy.logout();
   });
 
   it('should test for resolved comment functionality', () => {
@@ -206,7 +203,6 @@ describe('ods', () => {
     cy.get('#resolvedCommentSuccess').contains(
       'Custom Response Successfully Updated'
     );
-    cy.logout();
   });
 
   it('should not cache any query results between users', () => {
@@ -216,6 +212,5 @@ describe('ods', () => {
     cy.get('button').contains('Logout').click();
     cy.login('admin@admin.com', 'admin');
     cy.get('#userNameGrade').contains(' Admin Admin, E-∞ ').should('exist');
-    cy.logout();
   });
 });
