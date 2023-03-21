@@ -42,6 +42,7 @@ const routes: Routes = [
       import('./requested-accounts/requested-accounts.module').then(
         (m) => m.RequestedAccountsModule
       ),
+    canActivate: [AuthGuard],
   },
   //TODO [ODST-293]: add functionality to auto redirect to login if refresh token not found
   //Should be done, just check that it functions properly every where
