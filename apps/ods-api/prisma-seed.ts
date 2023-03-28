@@ -109,6 +109,79 @@ const tagSeed: Prisma.TagCreateInput[] = [
   { value: 'Routed Up The Chain Of Command', type: 'Action' },
 ];
 
+const userSeed: Prisma.UserCreateInput[] = [
+  {
+    email: 'admin@admin.com',
+    password: '',
+    orgs: { connect: { name: 'Scorpion Developers' } },
+    role: 'ADMIN',
+    firstName: 'Admin',
+    lastName: 'Admin',
+    grade: 'E-∞',
+    status: 'ENABLED',
+  },
+  {
+    email: 'kenneth.voigt@us.af.mil',
+    password: '',
+    orgs: { connect: { name: '552 ACG' } },
+    role: 'CC',
+    firstName: 'Kenneth',
+    lastName: 'Voigt',
+    grade: 'O-6',
+    status: 'ENABLED',
+  },
+  {
+    email: 'jennifer.trinkle@us.af.mil',
+    password: '',
+    orgs: { connect: { name: '72 MDG' } },
+    role: 'CC',
+    firstName: 'Jennifer',
+    lastName: 'Trinkle',
+    grade: 'O-6',
+    status: 'ENABLED',
+  },
+  {
+    email: 'keven.coyle@us.af.mil',
+    password: '',
+    orgs: { connect: { name: '552 ACW' } },
+    role: 'CC',
+    firstName: 'Keven',
+    lastName: 'Coyle',
+    grade: 'O-6',
+    status: 'ENABLED',
+  },
+  {
+    email: 'emmanuel.matos@us.af.mil',
+    password: '',
+    orgs: { connect: { name: '552 ACNS' } },
+    role: 'CC',
+    firstName: 'Emmanuel',
+    lastName: 'Matos',
+    grade: 'O-5',
+    status: 'ENABLED',
+  },
+  {
+    email: 'michael.henry.2@us.af.mil',
+    password: '',
+    orgs: { connect: { name: '552 MXS' } },
+    role: 'CC',
+    firstName: 'Michael',
+    lastName: 'Henry',
+    grade: 'O-5',
+    status: 'REQUESTED',
+  },
+  {
+    email: 'henry.henderson.99@us.af.mil',
+    password: '',
+    orgs: { connect: { name: '752 OSS' } },
+    role: 'CC',
+    firstName: 'Henry',
+    lastName: 'Henderson',
+    grade: 'O-5',
+    status: 'ENABLED',
+  },
+];
+
 async function main() {
   // Upsert Orgs
   for (const org of orgSeed) {
@@ -156,221 +229,57 @@ async function main() {
     }
   }
 
-  //#region user admin
-  //delete existing user
-  try {
-    await prisma.refreshToken.deleteMany({
-      where: { user: { email: 'admin@admin.com' } },
-    });
-    await prisma.user.delete({ where: { email: 'admin@admin.com' } });
-  } catch (e) {
-    //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
-      throw e;
-    }
-  }
-
-  try {
-    await prisma.refreshToken.deleteMany({
-      where: { user: { email: 'emmanuel.matos@us.af.mil' } },
-    });
-    await prisma.user.delete({ where: { email: 'emmanuel.matos@us.af.mil' } });
-  } catch (e) {
-    //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
-      throw e;
-    }
-  }
-
-  try {
-    await prisma.refreshToken.deleteMany({
-      where: { user: { email: 'michael.henry.2@us.af.mil' } },
-    });
-    await prisma.user.delete({ where: { email: 'michael.henry.2@us.af.mil' } });
-  } catch (e) {
-    //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
-      throw e;
-    }
-  }
-
-  try {
-    await prisma.refreshToken.deleteMany({
-      where: { user: { email: 'henry.henderson.99@us.af.mil' } },
-    });
-    await prisma.user.delete({
-      where: { email: 'henry.henderson.99@us.af.mil' },
-    });
-  } catch (e) {
-    //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
-      throw e;
-    }
-  }
-
-  //added the following for 72MDG
-  try {
-    await prisma.refreshToken.deleteMany({
-      where: { user: { email: 'jennifer.trinkle@us.af.mil' } },
-    });
-    await prisma.user.delete({
-      where: { email: 'jennifer.trinkle@us.af.mil' },
-    });
-  } catch (e) {
-    //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
-      throw e;
-    }
-  }
-
   if (
     process.env.NODE_ENV !== 'PRODUCTION' &&
     process.env.NX_DEV_ACCOUNT_PASSWORD
   ) {
     const pw = await hash(process.env.NX_DEV_ACCOUNT_PASSWORD, 10);
 
-    await prisma.user.upsert({
-      where: {
-        email: 'admin@admin.com',
-      },
-      update: {},
-      create: {
-        email: 'admin@admin.com',
-        password: pw,
-        orgs: { connect: { name: 'Scorpion Developers' } },
-        role: 'ADMIN',
-        firstName: 'Admin',
-        lastName: 'Admin',
-        grade: 'E-∞',
-        status: 'ENABLED',
-      },
+    for (const user of userSeed) {
+      try {
+        await prisma.user.upsert({
+          where: {
+            email: user.email,
+          },
+          update: {},
+          create: {
+            email: user.email,
+            password: pw,
+            orgs: user.orgs,
+            role: user.role,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            grade: user.grade,
+            status: user.status,
+          },
+        });
+      } catch (e) {
+        if (!(e instanceof PrismaClientKnownRequestError)) {
+          throw e;
+        }
+      }
+    }
+
+    //delete existing test feedbacks
+    const orgNames = orgSeed.map((o) => {
+      return { name: o.name };
     });
 
-    await prisma.user.upsert({
-      where: {
-        email: 'kenneth.voigt@us.af.mil',
-      },
-      update: {},
-      create: {
-        email: 'kenneth.voigt@us.af.mil',
-        password: pw,
-        orgs: { connect: { name: '552 ACG' } },
-        role: 'CC',
-        firstName: 'Kenneth',
-        lastName: 'Voigt',
-        grade: 'O-6',
-        status: 'ENABLED',
-      },
-    });
-
-    //added following for the 72 MDG
-    await prisma.user.upsert({
-      where: {
-        email: 'jennifer.trinkle@us.af.mil',
-      },
-      update: {},
-      create: {
-        email: 'jennifer.trinkle@us.af.mil',
-        password: pw,
-        orgs: { connect: { name: '72 MDG' } },
-        role: 'CC',
-        firstName: 'Jennifer',
-        lastName: 'Trinkle',
-        grade: 'O-6',
-        status: 'ENABLED',
-      },
-    });
-
-    await prisma.user.upsert({
-      where: {
-        email: 'keven.coyle@us.af.mil',
-      },
-      update: {},
-      create: {
-        email: 'keven.coyle@us.af.mil',
-        password: pw,
-        orgs: { connect: { name: '552 ACW' } },
-        role: 'CC',
-        firstName: 'Keven',
-        lastName: 'Coyle',
-        grade: 'O-6',
-        status: 'ENABLED',
-      },
-    });
-
-    await prisma.user.upsert({
-      where: {
-        email: 'emmanuel.matos@us.af.mil',
-      },
-      update: {},
-      create: {
-        email: 'emmanuel.matos@us.af.mil',
-        password: pw,
-        orgs: { connect: { name: '552 ACNS' } },
-        role: 'CC',
-        firstName: 'Emmanuel',
-        lastName: 'Matos',
-        grade: 'O-5',
-        status: 'ENABLED',
-      },
-    });
-
-    await prisma.user.upsert({
-      where: {
-        email: 'michael.henry.2@us.af.mil',
-      },
-      update: {},
-      create: {
-        email: 'michael.henry.2@us.af.mil',
-        password: pw,
-        orgs: { connect: { name: '552 MXS' } },
-        role: 'CC',
-        firstName: 'Michael',
-        lastName: 'Henry',
-        grade: 'O-5',
-        status: 'REQUESTED',
-      },
-    });
-
-    await prisma.user.upsert({
-      where: {
-        email: 'henry.henderson.99@us.af.mil',
-      },
-      update: {},
-      create: {
-        email: 'henry.henderson.99@us.af.mil',
-        password: pw,
-        orgs: { connect: { name: '752 OSS' } },
-        role: 'CC',
-        firstName: 'Henry',
-        lastName: 'Henderson',
-        grade: 'O-5',
-        status: 'ENABLED',
-      },
-    });
-  }
-  //#endregion user admin
-
-  //#region feedback
-  //delete existing test feedbacks
-  const orgNames = orgSeed.map((o) => {
-    return { name: o.name };
-  });
-
-  try {
-    await prisma.feedback.deleteMany({
-      where: {
-        orgs: {
-          some: {
-            OR: orgNames,
+    try {
+      await prisma.feedback.deleteMany({
+        where: {
+          orgs: {
+            some: {
+              OR: orgNames,
+            },
           },
         },
-      },
-    });
-  } catch (e) {
-    //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
-      throw e;
+      });
+    } catch (e) {
+      //delete can fail if no entities are found. Ignore that
+      if (!(e instanceof PrismaClientKnownRequestError)) {
+        throw e;
+      }
     }
   }
 }

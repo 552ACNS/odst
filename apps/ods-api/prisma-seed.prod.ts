@@ -1,5 +1,7 @@
 /* eslint-disable complexity */
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { PrismaClient, Prisma } from '.prisma/ods/client';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
 
 import { hash } from 'bcryptjs';
