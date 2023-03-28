@@ -8,7 +8,6 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../../node_modules/.prisma/ods/client"
 }
 
 generator nestgraphql {
@@ -56,18 +55,18 @@ model Org {
 }
 
 model FeedbackResponse {
-  id           String    @id @default(uuid())
-  feedback     Feedback  @relation(fields: [feedbackId], references: [id])
-  feedbackId   String
-  openedDate   DateTime  @default(now())
-  closedDate   DateTime?
-  answers      Answer[]
-  routeOutside Boolean   @default(false)
-  tags         Tag[]
-  comments     Comment[]
-  resolved     Boolean   @default(false)
-  reviewedBy   User?     @relation(fields: [reviewerId], references: [id])
-  reviewerId   String?
+  id              String    @id @default(uuid())
+  feedback        Feedback  @relation(fields: [feedbackId], references: [id])
+  feedbackId      String
+  openedDate      DateTime  @default(now())
+  closedDate      DateTime?
+  answers         Answer[]
+  routeOutside    Boolean   @default(false)
+  tags            Tag[]
+  comments        Comment[]
+  resolved        Boolean   @default(false)
+  reviewedBy      User?     @relation(fields: [reviewerId], references: [id])
+  reviewerId      String?
   resolvedComment String?
 }
 
@@ -123,12 +122,12 @@ enum Role {
   CC // Commander
 }
 
-//applies to user accounts
+// applies to user accounts
 enum Status {
-  DISABLED //account suspended
-  ENABLED //request approved or account reinstated
-  REQUESTED //initial request
-  DENIED //request disapproved
+  DISABLED // account suspended
+  ENABLED // request approved or account reinstated
+  REQUESTED // initial request
+  DENIED // request disapproved
 }
 
 enum Spec {

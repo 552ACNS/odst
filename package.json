@@ -45,7 +45,7 @@
     "@nestjs/schedule": "^2.1.0",
     "@ngrx/component-store": "15.3.0",
     "@nrwl/angular": "15.8.5",
-    "@prisma/client": "^4.6.1",
+    "@prisma/client": "^4.11.0",
     "apollo-angular": "^4.1.1",
     "apollo-server-express": "^3.11.1",
     "bcryptjs": "^2.4.3",

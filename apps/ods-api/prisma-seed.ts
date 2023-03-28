@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
-import { PrismaClient, Prisma } from '.prisma/ods/client';
-import { PrismaClientKnownRequestError } from '.prisma/ods/client/runtime';
+import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClientKnownRequestError } from 'prisma/prisma-client/runtime';
 import { hash } from 'bcryptjs';
 
 //TODO refactor to not repeat code so much(DRY) - like the org/tag are done

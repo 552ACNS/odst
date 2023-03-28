@@ -98,6 +98,7 @@ type UserCount {
 type User {
   id: ID!
   email: String!
+  password: String!
   grade: String
   firstName: String!
   lastName: String!
@@ -348,6 +349,7 @@ type TagMaxAggregate {
 type UserCountAggregate {
   id: Int!
   email: Int!
+  password: Int!
   grade: Int!
   firstName: Int!
   lastName: Int!
@@ -359,6 +361,7 @@ type UserCountAggregate {
 type UserMinAggregate {
   id: String
   email: String
+  password: String
   grade: String
   firstName: String
   lastName: String
@@ -369,6 +372,7 @@ type UserMinAggregate {
 type UserMaxAggregate {
   id: String
   email: String
+  password: String
   grade: String
   firstName: String
   lastName: String
