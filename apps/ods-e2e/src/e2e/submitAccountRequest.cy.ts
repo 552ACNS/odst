@@ -85,18 +85,15 @@ describe('ods', () => {
     // We don't use this login method anymore, refer to cy.login
     cy.login('admin@admin.com', 'admin');
 
-    // This should use the UI elements to navigate to the account request page
-    // Not a hardcoded path
+    cy.wait('@graphql');
+
     cy.visit('/requested-accounts');
     cy.location('pathname').should('include', '/requested-accounts');
 
-    // THis is not descriptive, nor clear what it's doing,
     cy.contains('td', 'e2e').click().wait('@graphql');
     cy.contains('div', 'e2e').wait('@graphql');
     cy.contains('button', 'Accept').click();
 
-    // THis doesn't actually check whether the account was actually accepted,
-    // you're removing the row regardless of whether it was accepted
     cy.contains('td', 'e2e').should('not.exist');
   });
 

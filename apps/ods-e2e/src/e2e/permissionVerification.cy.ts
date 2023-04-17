@@ -13,6 +13,10 @@ describe('ods', () => {
     cy.intercept('POST', '**/graphql').as('graphql');
   });
 
+  afterEach(() => {
+    cy.logout();
+  });
+
   //Create 5 freedback one linked to the ACG, one to the 72 MDG and three to differing ACW squadrons
   //to use for further testing.
   it('submit a feedback for ACNS with a unique uuid', () => {
