@@ -21,7 +21,7 @@ import {
   UpdateOneFeedbackResponseArgs,
   FindManyFeedbackResponseArgs,
 } from '@odst/types/ods';
-import { Prisma } from '.prisma/ods/client';
+import { Prisma } from '@prisma/client';
 import { Public } from '@odst/auth';
 import { GetCurrentUser } from '@odst/shared/nest';
 import { ResponseCount, TrackedFeedback } from '../__types__';

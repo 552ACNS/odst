@@ -17,7 +17,7 @@ import {
   OrgWhereUniqueInput,
   UpdateOneFeedbackArgs,
 } from '@odst/types/ods';
-import { Prisma } from '.prisma/ods/client';
+import { Prisma } from '@prisma/client';
 import { Public } from '@odst/auth';
 
 @Resolver(() => Feedback)

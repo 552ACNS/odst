@@ -1,12 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  Comment,
-  Org,
-  Prisma,
-  RefreshToken,
-  Role,
-  User,
-} from '.prisma/ods/client';
+import { Comment, Org, Prisma, RefreshToken, Role, User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { hash } from 'bcryptjs';
 

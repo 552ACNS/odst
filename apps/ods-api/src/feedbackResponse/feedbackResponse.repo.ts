@@ -1,6 +1,5 @@
 import { FeedbackResponseCreateInput } from '@odst/types/ods';
-import { FeedbackResponse } from '.prisma/ods/client';
-import { User } from '.prisma/ods/client';
+import { FeedbackResponse, User } from '@prisma/client';
 export const MockFeedbackResponses: FeedbackResponse[] = [
   {
     id: 'resolved response 1',

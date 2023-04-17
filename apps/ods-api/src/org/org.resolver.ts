@@ -18,7 +18,7 @@ import {
 import { Public } from '@odst/auth';
 import { Args } from '@nestjs/graphql';
 import { GetCurrentUser } from '@odst/shared/nest';
-import { Prisma } from '.prisma/ods/client';
+import { Prisma } from '@prisma/client';
 
 @Resolver(() => Org)
 export class OrgResolver {

@@ -5,7 +5,7 @@ import {
   FeedbackResponse,
   Question,
   Org,
-} from '.prisma/ods/client';
+} from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import * as crypto from 'crypto';
 

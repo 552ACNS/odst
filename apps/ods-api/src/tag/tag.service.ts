@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Tag } from '.prisma/ods/client';
+import { Tag } from '@prisma/client';
 
 @Injectable()
 export class TagService {

@@ -1,4 +1,4 @@
-import { Comment, Prisma } from '.prisma/ods/client';
+import { Comment, Prisma } from '@prisma/client';
 
 export const MockComments: Comment[] = [
   {

@@ -8,7 +8,7 @@ import {
   User,
   Tag,
   Comment,
-} from '.prisma/ods/client';
+} from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ResponseCount, TrackedFeedback } from '../__types__';

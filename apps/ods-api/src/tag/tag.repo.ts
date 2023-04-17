@@ -1,4 +1,4 @@
-import { Tag } from '.prisma/ods/client';
+import { Tag } from '@prisma/client';
 
 export const MockTags: Tag[] = [
   { id: '1', value: 'Tag 1', type: 'Action' },

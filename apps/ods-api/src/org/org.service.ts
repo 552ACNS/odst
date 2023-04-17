@@ -1,5 +1,5 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
-import { Org, Prisma, User, Feedback, OrgTier } from '.prisma/ods/client';
+import { Org, Prisma, User, Feedback, OrgTier } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
