@@ -5096,10 +5096,10 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apollo-angular@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/apollo-angular/-/apollo-angular-4.1.1.tgz#82ab8662205ac61259f0b7febe2dbffc3366861a"
-  integrity sha512-O774MlURHlp5pu1S6l0NQ6MB+sGonntYtcaKaDFe2hmlFlIUtCSIv5CrbCrco5w8JJDYPOwgSyTjbb3O96oBEQ==
+apollo-angular@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/apollo-angular/-/apollo-angular-4.2.1.tgz#74f805195c3bf908b41a16ac3d0e5693faeb4739"
+  integrity sha512-lMFVZmw7hIa4+VGutoiUMwHWggXFiDhbsrnZddQYzfdV6lkJRjm0hANG0KxXoaoLqEqkGTHdq5DaMCdsp6E4rw==
   dependencies:
     tslib "^2.0.0"
 
