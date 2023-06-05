@@ -5,7 +5,7 @@
     </mat-card-title>
   </mat-card>
   <form [formGroup]="form">
-    <mat-card appearance="outlined" class="flex flex-col flex-wrap">
+    <mat-card appearance="outlined" class="flex flex-col flex-wrap px-3 pt-2">
       <label class="mb-1">
         {{ questions[0] }}
       </label>
@@ -126,7 +126,7 @@
       <label class="mt-6 mb-1">
         {{ questions[5] }}
       </label>
-      <mat-form-field appearance="outline" class="w-full border-solid">
+      <mat-form-field appearance="outline" class="w-full">
         <mat-label>Event impact</mat-label>
         <textarea
           matInput

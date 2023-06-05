@@ -71,7 +71,8 @@
           <mat-card
             class="p-3"
             [ngClass]="{
-              'primary-text-contrast': local.userIsAuthorOfComment,
+              'dark:bg-teal-600 bg-teal-100 shadow-none':
+                local.userIsAuthorOfComment,
               'dark:bg-gray-500 bg-gray-100 shadow-none':
                 !local.userIsAuthorOfComment
             }"

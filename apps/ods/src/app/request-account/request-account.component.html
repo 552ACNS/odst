@@ -129,28 +129,27 @@
           </button>
         </mat-form-field>
       </mat-card-content>
-      <mat-card-actions>
-        <div class="flex justify-center">
-          <button
-            class="m-2 border-1 shadow-md rounded-full w-full"
-            mat-stroked-button
-            [routerLink]="['/login']"
-          >
-            Back
-          </button>
-          <button
-            id="btnSubmit"
-            class="m-2 rounded-full w-full"
-            mat-fab
-            extended
-            color="primary"
-            (click)="submit()"
-            [disabled]="!form.valid || submitSuccess"
-          >
-            Submit
-            <mat-icon id="submitCheck" *ngIf="submitSuccess">check</mat-icon>
-          </button>
-        </div>
+      <mat-card-actions class="flex justify-center">
+        <button
+          class="m-2 border-1 rounded-full w-full"
+          type="button"
+          mat-stroked-button
+          [routerLink]="['/disclaimer']"
+        >
+          Back
+        </button>
+        <button
+          id="btnSubmit"
+          class="m-2 rounded-full w-full"
+          type="submit"
+          mat-raised-button
+          color="primary"
+          (click)="submit()"
+          [disabled]="!form.valid || submitSuccess"
+        >
+          Submit
+          <mat-icon id="submitCheck" *ngIf="submitSuccess">check</mat-icon>
+        </button>
       </mat-card-actions>
     </mat-card>
   </form>

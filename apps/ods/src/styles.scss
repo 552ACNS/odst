@@ -61,6 +61,7 @@ $dark-accent: mat.define-palette(mat.$blue-gray-palette);
 html,
 body {
   height: 100%;
+  margin: 0px;
 }
 
 // declares a parent-div attribute that can be reused in multiple places
