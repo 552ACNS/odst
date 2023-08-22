@@ -18,6 +18,13 @@ generator nestgraphql {
   reExport    = All
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+  output = "./"
+  projectName = "corps"
+  projectDatabaseType = "PostgreSQL"
+}
+
 model User {
   id        String @id @default(uuid())
   email     String @unique

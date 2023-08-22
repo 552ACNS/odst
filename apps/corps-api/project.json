@@ -84,6 +84,13 @@
       "options": {
         "command": "env-cmd -f apps/corps-api/.env.local npx prisma studio --schema=apps/corps-api/schema.prisma"
       }
+    },
+    "dbdocs": {
+      "executor": "nx:run-commands",
+      "options": {
+        //this possibily will only work on unix, due to env variable
+        "command": "npx dbdocs build ./apps/corps-api/schema.dbml --password \"$NX_DBDOCS_PASSWORD\""
+      }
     }
   },
   "tags": []
