@@ -2,6 +2,9 @@
   "version": 2,
   "projects": {
     "auth": "libs/auth",
+    "corps": "apps/corps",
+    "corps-api": "apps/corps-api",
+    "corps-e2e": "apps/corps-e2e",
     "gql": "libs/gql",
     "helpers": "libs/helpers",
     "ods": "apps/ods",
