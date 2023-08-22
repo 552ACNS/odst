@@ -54,6 +54,36 @@
         "jestConfig": "apps/corps-api/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "prisma-generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma generate --schema=apps/corps-api/schema.prisma"
+      }
+    },
+    "prisma-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npx env-cmd -f apps/corps-api/.env.local npx prisma db push --accept-data-loss --force-reset --schema=apps/corps-api/schema.prisma",
+          "npx env-cmd -f apps/corps-api/.env.local yarn ts-node ./apps/corps-api/prisma-seed.ts --schema=apps/corps-api/schema.prisma"
+        ],
+        "parallel": false
+      },
+      "configurations": {
+        "test": {
+          "command": "npx env-cmd -f apps/corps-api/.env.test npx prisma db push --accept-data-loss"
+        },
+        "migrate": {
+          "command": "npx env-cmd -f apps/corps-api/.env.local prisma migrate dev"
+        }
+      }
+    },
+    "prisma-studio": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "env-cmd -f apps/corps-api/.env.local npx prisma studio --schema=apps/corps-api/schema.prisma"
+      }
     }
   },
   "tags": []

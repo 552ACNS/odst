@@ -12,6 +12,7 @@
     "ods-e2e": "apps/ods-e2e",
     "shared-angular": "libs/shared/angular",
     "shared-nest": "libs/shared/nest",
+    "types-corps": "libs/types/corps",
     "types-ods": "libs/types/ods",
     "types-waypoint": "libs/types/waypoint",
     "waypoint": "apps/waypoint",

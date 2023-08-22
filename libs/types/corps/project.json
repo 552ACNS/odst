@@ -1,0 +1,19 @@
+{
+  "name": "types-corps",
+  "$schema": "..\\..\\..\\node_modules\\nx\\schemas\\project-schema.json",
+  "sourceRoot": "libs/types/corps/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/types/corps/src/**/*.ts",
+          "libs/types/corps/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,124 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Tokens {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type UserCountAggregate {
+  id: Int!
+  email: Int!
+  firstName: Int!
+  lastName: Int!
+  _all: Int!
+}
+
+type UserMinAggregate {
+  id: String
+  email: String
+  firstName: String
+  lastName: String
+}
+
+type UserMaxAggregate {
+  id: String
+  email: String
+  firstName: String
+  lastName: String
+}
+
+type User {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+}
+
+type Query {
+  usernameOrEmailExists(usernameOrEmail: String!): Boolean!
+  findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  id: StringFilter
+  email: StringFilter
+  firstName: StringFilter
+  lastName: StringFilter
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
+}
+
+input UserOrderByWithRelationInput {
+  id: SortOrder
+  email: SortOrder
+  firstName: SortOrder
+  lastName: SortOrder
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input UserWhereUniqueInput {
+  id: String
+  email: String
+}
+
+enum UserScalarFieldEnum {
+  id
+  email
+  firstName
+  lastName
+}
+
+type Mutation {
+  login(loginUserInput: LoginUserInput!): Tokens!
+  refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
+}
+
+input LoginUserInput {
+  username: String!
+  password: String!
+}
+
+input RefreshLoginInput {
+  refreshToken: String!
+}

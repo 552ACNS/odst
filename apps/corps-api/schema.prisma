@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgres"
+  url      = env("NX_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/.prisma/corps/client"
+}
+
+generator nestgraphql {
+  provider    = "prisma-nestjs-graphql"
+  output      = "../../libs/types/corps/src"
+  purgeOutput = true
+  reExport    = All
+}
+
+model User {
+  id        String @id @default(uuid())
+  email     String @unique
+  firstName String
+  lastName  String
+}
