@@ -6,9 +6,8 @@ import {
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-// import { AuthModule,JWTAuthGuard } from '@odst/auth';
+import { AuthModule,JWTAuthGuard } from '@odst/auth';
 import { APP_GUARD } from '@nestjs/core';
-import { ScheduleModule } from '@nestjs/schedule';
 import { UserService } from '../user/user.service';
 import { UserModule } from '../user/user.module';
 
@@ -29,22 +28,22 @@ import { UserModule } from '../user/user.module';
       ],
     }),
     UserModule,
-    // AuthModule.forRootAsync(AuthModule, {
-    //   imports: [UserModule],
-    //   inject: [UserService],
-    //   useFactory: (userService: UserService) => {
-    //     return {
-    //       secret: process.env.NX_JWT_SECRET || 'secret',
-    //       userService,
-    //     };
-    //   },
-    // }),
+    AuthModule.forRootAsync(AuthModule, {
+      imports: [UserModule],
+      inject: [UserService],
+      useFactory: (userService: UserService) => {
+        return {
+          secret: process.env.NX_JWT_SECRET || 'secret',
+          userService,
+        };
+      },
+    }),
   ],
   providers: [
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JWTAuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JWTAuthGuard,
+    },
   ],
 })
 export class AppModule {}

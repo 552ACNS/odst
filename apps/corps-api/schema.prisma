@@ -19,9 +19,9 @@ generator nestgraphql {
 }
 
 generator dbml {
-  provider = "prisma-dbml-generator"
-  output = "./"
-  projectName = "corps"
+  provider            = "prisma-dbml-generator"
+  output              = "./"
+  projectName         = "corps"
   projectDatabaseType = "PostgreSQL"
 }
 
@@ -30,4 +30,16 @@ model User {
   email     String @unique
   firstName String
   lastName  String
+  password  String
+  refreshToken      RefreshToken?
+}
+
+model RefreshToken {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
+  isRevoked   Boolean  @default(false)
+  issuedDate  DateTime @default(now())
+  expiredDate DateTime
+  hash        String
 }

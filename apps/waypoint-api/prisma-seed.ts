@@ -53,7 +53,7 @@ async function main() {
     await prisma.user.delete({ where: { username: 'admin' } });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
+    if (!(e instanceof PrismaClientKnownRequestError || e.name == 'PrismaClientKnownRequestError')) {
       throw e;
     }
   }

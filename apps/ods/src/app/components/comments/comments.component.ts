@@ -31,7 +31,7 @@ export class CommentsComponent {
 
   newComment = new FormControl('', [
     Validators.required,
-    CustomValidators.noWhitespaceValidator,
+    () => CustomValidators.noWhitespaceValidator,
   ]);
 
   submitComment() {

@@ -67,7 +67,7 @@ export class FeedbackQuestionsComponent implements OnInit, OnDestroy {
         .get([otherControl])
         ?.setValidators([
           Validators.required,
-          CustomValidators.noWhitespaceValidator,
+          () => CustomValidators.noWhitespaceValidator,
         ]);
     } else {
       this.form.get([otherControl])?.clearValidators();

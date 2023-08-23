@@ -129,7 +129,7 @@
           rows="3"
         >
         </textarea>
-        <mat-error *ngIf="newComment.hasError && newComment.dirty">
+        <mat-error *ngIf="newComment.errors && newComment.dirty">
           Please enter a comment</mat-error
         >
       </mat-form-field>

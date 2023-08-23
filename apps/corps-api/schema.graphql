@@ -2,11 +2,69 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Tokens {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type RefreshTokenCountAggregate {
+  id: Int!
+  userId: Int!
+  isRevoked: Int!
+  issuedDate: Int!
+  expiredDate: Int!
+  hash: Int!
+  _all: Int!
+}
+
+type RefreshTokenMinAggregate {
+  id: String
+  userId: String
+  isRevoked: Boolean
+  issuedDate: DateTime
+  expiredDate: DateTime
+  hash: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type RefreshTokenMaxAggregate {
+  id: String
+  userId: String
+  isRevoked: Boolean
+  issuedDate: DateTime
+  expiredDate: DateTime
+  hash: String
+}
+
+type User {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  refreshToken: RefreshToken
+}
+
+type RefreshToken {
+  id: ID!
+  userId: String!
+  isRevoked: Boolean!
+  issuedDate: DateTime!
+  expiredDate: DateTime!
+  hash: String!
+  user: User!
+}
+
 type UserCountAggregate {
   id: Int!
   email: Int!
   firstName: Int!
   lastName: Int!
+  password: Int!
   _all: Int!
 }
 
@@ -15,6 +73,7 @@ type UserMinAggregate {
   email: String
   firstName: String
   lastName: String
+  password: String
 }
 
 type UserMaxAggregate {
@@ -22,17 +81,12 @@ type UserMaxAggregate {
   email: String
   firstName: String
   lastName: String
-}
-
-type User {
-  id: ID!
-  email: String!
-  firstName: String!
-  lastName: String!
+  password: String
 }
 
 type Query {
   findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
+  usernameOrEmailExists(usernameOrEmail: String!): Boolean!
 }
 
 input UserWhereInput {
@@ -43,6 +97,8 @@ input UserWhereInput {
   email: StringFilter
   firstName: StringFilter
   lastName: StringFilter
+  password: StringFilter
+  refreshToken: RefreshTokenRelationFilter
 }
 
 input StringFilter {
@@ -79,16 +135,83 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input RefreshTokenRelationFilter {
+  is: RefreshTokenWhereInput
+  isNot: RefreshTokenWhereInput
+}
+
+input RefreshTokenWhereInput {
+  AND: [RefreshTokenWhereInput!]
+  OR: [RefreshTokenWhereInput!]
+  NOT: [RefreshTokenWhereInput!]
+  id: StringFilter
+  userId: StringFilter
+  isRevoked: BoolFilter
+  issuedDate: DateTimeFilter
+  expiredDate: DateTimeFilter
+  hash: StringFilter
+  user: UserRelationFilter
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input UserRelationFilter {
+  is: UserWhereInput
+  isNot: UserWhereInput
+}
+
 input UserOrderByWithRelationInput {
   id: SortOrder
   email: SortOrder
   firstName: SortOrder
   lastName: SortOrder
+  password: SortOrder
+  refreshToken: RefreshTokenOrderByWithRelationInput
 }
 
 enum SortOrder {
   asc
   desc
+}
+
+input RefreshTokenOrderByWithRelationInput {
+  id: SortOrder
+  userId: SortOrder
+  isRevoked: SortOrder
+  issuedDate: SortOrder
+  expiredDate: SortOrder
+  hash: SortOrder
+  user: UserOrderByWithRelationInput
 }
 
 input UserWhereUniqueInput {
@@ -101,4 +224,19 @@ enum UserScalarFieldEnum {
   email
   firstName
   lastName
+  password
+}
+
+type Mutation {
+  login(loginUserInput: LoginUserInput!): Tokens!
+  refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
+}
+
+input LoginUserInput {
+  username: String!
+  password: String!
+}
+
+input RefreshLoginInput {
+  refreshToken: String!
 }

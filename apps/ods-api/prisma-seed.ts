@@ -129,7 +129,7 @@ async function main() {
         },
       });
     } catch (e) {
-      if (!(e instanceof PrismaClientKnownRequestError)) {
+      if (!(e instanceof PrismaClientKnownRequestError || e.name == 'PrismaClientKnownRequestError')) {
         throw e;
       }
     }
@@ -150,7 +150,7 @@ async function main() {
         },
       });
     } catch (e) {
-      if (!(e instanceof PrismaClientKnownRequestError)) {
+      if (!(e instanceof PrismaClientKnownRequestError || e.name == 'PrismaClientKnownRequestError')) {
         throw e;
       }
     }
@@ -165,7 +165,7 @@ async function main() {
     await prisma.user.delete({ where: { email: 'admin@admin.com' } });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
+    if (!(e instanceof PrismaClientKnownRequestError || e.name == 'PrismaClientKnownRequestError')) {
       throw e;
     }
   }
@@ -177,7 +177,7 @@ async function main() {
     await prisma.user.delete({ where: { email: 'emmanuel.matos@us.af.mil' } });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
+    if (!(e instanceof PrismaClientKnownRequestError || e.name == 'PrismaClientKnownRequestError')) {
       throw e;
     }
   }
@@ -189,7 +189,7 @@ async function main() {
     await prisma.user.delete({ where: { email: 'michael.henry.2@us.af.mil' } });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
+    if (!(e instanceof PrismaClientKnownRequestError || e.name == 'PrismaClientKnownRequestError')) {
       throw e;
     }
   }
@@ -203,7 +203,7 @@ async function main() {
     });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
+    if (!(e instanceof PrismaClientKnownRequestError || e.name == 'PrismaClientKnownRequestError')) {
       throw e;
     }
   }
@@ -218,7 +218,7 @@ async function main() {
     });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
+    if (!(e instanceof PrismaClientKnownRequestError || e.name == 'PrismaClientKnownRequestError')) {
       throw e;
     }
   }
@@ -369,7 +369,7 @@ async function main() {
     });
   } catch (e) {
     //delete can fail if no entities are found. Ignore that
-    if (!(e instanceof PrismaClientKnownRequestError)) {
+    if (!(e instanceof PrismaClientKnownRequestError || e.name == 'PrismaClientKnownRequestError')) {
       throw e;
     }
   }

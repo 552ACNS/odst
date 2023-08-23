@@ -1,6 +1,5 @@
 import {
   Args,
-  GraphQLDefinitionsFactory,
   Mutation,
   Parent,
   Query,

@@ -6,6 +6,7 @@ export const MockUsers: User[] = [
     email: 'email',
     firstName: 'firstName',
     lastName: 'lastName',
+    password: "",
   }
 ];
 
@@ -14,5 +15,6 @@ export const MockUserCreateInput: UserCreateInput[] = [
     email: 'email',
     firstName: 'firstName',
     lastName: 'lastName',
+    password: ""
   },
 ];
