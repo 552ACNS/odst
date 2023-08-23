@@ -5,11 +5,10 @@
     {
       "files": ["*.ts"],
       "extends": [
-        "plugin:@nrwl/nx/angular",
+        "plugin:@nx/angular",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-        //Bug - this rule collides with something in the two above plugins or the other rules below, causing it to not run if placed any where else
         "no-restricted-imports": [
           "error",
           {
@@ -41,7 +40,7 @@
     },
     {
       "files": ["*.html"],
-      "extends": ["plugin:@nrwl/nx/angular-template"],
+      "extends": ["plugin:@nx/angular-template"],
       "rules": {}
     }
   ]

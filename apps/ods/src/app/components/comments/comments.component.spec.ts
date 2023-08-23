@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { Role } from 'apps/ods/src/types.graphql';
 import { GetReportByStatusQuery } from '../../responses/responses.generated';
 

@@ -1,3 +1,4 @@
+node_modules
 *.generated.ts
 types.graphql.ts
 graphql-generated.ts

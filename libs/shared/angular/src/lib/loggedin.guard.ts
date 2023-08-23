@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
   Router,
-  CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
 import { isLoggedIn } from '@odst/helpers';
 
 @Injectable()
-export class LoggedInGuard implements CanActivate {
+export class LoggedInGuard {
   constructor(private router: Router) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
