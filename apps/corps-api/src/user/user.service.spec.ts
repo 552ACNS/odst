@@ -37,11 +37,4 @@ describe('UserService', () => {
       expect(users).toEqual(MockUsers);
     });
   });
-
-  describe('enableAccount', () => {
-    it('should enable an account', async () => {
-      const result = await service.enableAccount({ email: 'email2' });
-      expect(result).toEqual(MockUsers[1]);
-    });
-  });
 });

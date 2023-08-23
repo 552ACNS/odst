@@ -2,11 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Tokens {
-  accessToken: String!
-  refreshToken: String!
-}
-
 type UserCountAggregate {
   id: Int!
   email: Int!
@@ -37,7 +32,6 @@ type User {
 }
 
 type Query {
-  usernameOrEmailExists(usernameOrEmail: String!): Boolean!
   findManyUsers(where: UserWhereInput, orderBy: [UserOrderByWithRelationInput!], cursor: UserWhereUniqueInput, take: Int, skip: Int, distinct: [UserScalarFieldEnum!]): [User!]!
 }
 
@@ -107,18 +101,4 @@ enum UserScalarFieldEnum {
   email
   firstName
   lastName
-}
-
-type Mutation {
-  login(loginUserInput: LoginUserInput!): Tokens!
-  refreshTokens(refreshLoginInput: RefreshLoginInput!): Tokens!
-}
-
-input LoginUserInput {
-  username: String!
-  password: String!
-}
-
-input RefreshLoginInput {
-  refreshToken: String!
 }

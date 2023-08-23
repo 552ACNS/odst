@@ -41,14 +41,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/corps-api/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/corps-api/jest.config.ts",
@@ -88,7 +88,6 @@
     "dbdocs": {
       "executor": "nx:run-commands",
       "options": {
-        //this possibily will only work on unix, due to env variable
         "command": "npx dbdocs build ./apps/corps-api/schema.dbml --password \"$NX_DBDOCS_PASSWORD\""
       }
     }

@@ -6,13 +6,13 @@
   "prefix": "odst",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/gql/src/**/*.ts", "libs/gql/src/**/*.html"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/gql"],
       "options": {
         "jestConfig": "libs/gql/jest.config.ts",
