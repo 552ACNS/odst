@@ -324,10 +324,10 @@ input PersonUpdateInput {
   NDA: Boolean
   grade: Float
   height: Float
-  org: [OrgUpdateOneRequiredWithoutPersonsInput!]
+  org: [OrgUpdateOneRequiredWithoutPersonsNestedInput!]
 }
 
-input OrgUpdateOneRequiredWithoutPersonsInput {
+input OrgUpdateOneRequiredWithoutPersonsNestedInput {
   connect: [OrgWhereUniqueInput!]
 }
 
@@ -367,14 +367,14 @@ input OrgCreateOrConnectWithoutParentInput {
 
 input OrgUpdateInput {
   orgTier: OrgTier
-  persons: [PersonUpdateManyWithoutOrgInput!]
+  persons: [PersonUncheckedUpdateManyWithoutOrgNestedInput!]
   parent: OrgCreateNestedOneWithoutChildrenInput
   children: OrgCreateNestedManyWithoutParentInput
   name: String
   aliases: [String!]
 }
 
-input PersonUpdateManyWithoutOrgInput {
+input PersonUncheckedUpdateManyWithoutOrgNestedInput {
   create: [PersonCreateWithoutOrgInput!]
   createMany: PersonCreateManyOrgInputEnvelope
   update: [PersonUpdateWithWhereUniqueWithoutOrgInput!]
@@ -445,13 +445,13 @@ input RefreshTokenGQLInput {
 }
 
 input UserUpdateInput {
-  person: PersonUpdateOneRequiredWithoutUserInput
+  person: PersonUpdateOneRequiredWithoutUserNestedInput
   username: String
   password: String
   enabled: Boolean
 }
 
-input PersonUpdateOneRequiredWithoutUserInput {
+input PersonUpdateOneRequiredWithoutUserNestedInput {
   connect: PersonWhereUniqueInput
 }
 

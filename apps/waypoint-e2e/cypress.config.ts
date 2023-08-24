@@ -2,11 +2,6 @@ import { defineConfig } from 'cypress';
 import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 
 const cypressJsonConfig = {
-  testFiles: [
-    '../integration/highPriorityTests/*.ts',
-    '../integration/mediumPriorityTests/*.ts',
-    '../integration/lowPriorityTests/*.ts',
-  ],
   fileServerFolder: '.',
   fixturesFolder: './src/fixtures',
   video: true,
