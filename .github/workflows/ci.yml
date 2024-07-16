@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '16'
           cache: 'yarn'
@@ -54,7 +54,7 @@ jobs:
         uses: nrwl/nx-set-shas@v3
         with:
           main-branch-name: master
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '16'
           cache: 'yarn'
